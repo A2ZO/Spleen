@@ -20,6 +20,8 @@ export const colorRoles = [
   "midnight",
   "wood",
   "wood-dark",
+  "vinyl",
+  "vinyl-groove",
 ] as const;
 
 export type ColorRole = (typeof colorRoles)[number];
@@ -40,6 +42,8 @@ export const dark: Theme = {
   midnight: palette.midnight,
   wood: "#5A3B26",
   "wood-dark": "#3B2618",
+  vinyl: "#0D0C10",
+  "vinyl-groove": "#2E2A35",
 };
 
 export const light: Theme = {
@@ -57,6 +61,8 @@ export const light: Theme = {
   midnight: palette.midnight,
   wood: "#8A5E3C",
   "wood-dark": "#6B4529",
+  vinyl: "#0D0C10",
+  "vinyl-groove": "#2E2A35",
 };
 
 export const themes = { dark, light } as const;

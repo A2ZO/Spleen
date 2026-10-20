@@ -12,3 +12,4 @@ export {
 export { fontFamily, motion, radius, shadow } from "./scales";
 export { contrastRatio, luminance } from "./contrast";
 export { buildThemeCss } from "./css";
+export { coverSwatches } from "./covers";
