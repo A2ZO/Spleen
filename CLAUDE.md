@@ -95,8 +95,7 @@ Next 16 allows a single dev server per app: Playwright reuses the one on port 30
 
 Never commit or push to `main`. One branch per milestone `feat/<nn>-<name>` from up-to-date
 `main`. At milestone end: lint + typecheck + tests green, PR with `gh pr create`, wait for
-review and merge. No force push. Milestone 2 is stacked on `feat/01-fondations` and is
-rebased onto `main` once PR #1 is merged.
+review and merge. No force push.
 
 ## Milestones
 
