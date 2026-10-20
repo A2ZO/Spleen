@@ -12,6 +12,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@spleen/db": "workspace:*",
     "@spleen/validators": "workspace:*",
     "@trpc/server": "11.19.0",
     "zod": "4.6.7"

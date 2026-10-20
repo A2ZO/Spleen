@@ -1,0 +1,4 @@
+{
+  "extends": "@spleen/config/tsconfig/library.json",
+  "include": ["src", "scripts", "drizzle.config.ts"]
+}

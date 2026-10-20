@@ -5,6 +5,9 @@ node_modules/
 out/
 dist/
 coverage/
+
+# Local PGlite database
+.data/
 *.tsbuildinfo
 next-env.d.ts
 

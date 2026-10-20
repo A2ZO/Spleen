@@ -1,0 +1,159 @@
+import { sql } from "drizzle-orm";
+import {
+  date,
+  index,
+  integer,
+  pgEnum,
+  pgTable,
+  primaryKey,
+  smallint,
+  text,
+  uuid,
+  varchar,
+} from "drizzle-orm/pg-core";
+
+import { id, searchable, timestamps } from "./_shared";
+
+/* MusicBrainz mapping: release-group = release (album / EP / single), recording = track. */
+
+export const releaseType = pgEnum("release_type", ["album", "ep", "single"]);
+export const datePrecision = pgEnum("date_precision", ["year", "month", "day"]);
+
+export const artists = pgTable(
+  "artists",
+  {
+    id: id(),
+    slug: text("slug").notNull().unique(),
+    name: text("name").notNull(),
+    sortName: text("sort_name"),
+    disambiguation: text("disambiguation"),
+    country: varchar("country", { length: 2 }),
+    imageUrl: text("image_url"),
+    mbid: uuid("mbid").unique(),
+    ...timestamps(),
+  },
+  (t) => [
+    index("artists_name_trgm_idx").using("gin", sql`${searchable(t.name)} gin_trgm_ops`),
+    index("artists_name_fts_idx").using(
+      "gin",
+      sql`to_tsvector('simple', immutable_unaccent(${t.name}))`,
+    ),
+  ],
+);
+
+export const releases = pgTable(
+  "releases",
+  {
+    id: id(),
+    slug: text("slug").notNull().unique(),
+    title: text("title").notNull(),
+    type: releaseType("type").notNull(),
+    releaseDate: date("release_date"),
+    releaseDatePrecision: datePrecision("release_date_precision"),
+    coverUrl: text("cover_url"),
+    /** Main language of the release, drives FR / EN trending charts. */
+    language: varchar("language", { length: 8 }),
+    /** MusicBrainz release-group id. */
+    mbid: uuid("mbid").unique(),
+    /** MusicBrainz release chosen as the reference tracklist (rule documented in milestone 4). */
+    referenceReleaseMbid: uuid("reference_release_mbid"),
+    ...timestamps(),
+  },
+  (t) => [
+    index("releases_title_trgm_idx").using("gin", sql`${searchable(t.title)} gin_trgm_ops`),
+    index("releases_title_fts_idx").using(
+      "gin",
+      sql`to_tsvector('simple', immutable_unaccent(${t.title}))`,
+    ),
+    index("releases_release_date_idx").on(t.releaseDate),
+  ],
+);
+
+export const tracks = pgTable(
+  "tracks",
+  {
+    id: id(),
+    slug: text("slug").notNull().unique(),
+    title: text("title").notNull(),
+    durationMs: integer("duration_ms"),
+    /** MusicBrainz recording id. */
+    mbid: uuid("mbid").unique(),
+    ...timestamps(),
+  },
+  (t) => [index("tracks_title_trgm_idx").using("gin", sql`${searchable(t.title)} gin_trgm_ops`)],
+);
+
+export const releaseArtists = pgTable(
+  "release_artists",
+  {
+    releaseId: uuid("release_id")
+      .notNull()
+      .references(() => releases.id, { onDelete: "cascade" }),
+    artistId: uuid("artist_id")
+      .notNull()
+      .references(() => artists.id, { onDelete: "restrict" }),
+    position: smallint("position").notNull().default(1),
+    creditName: text("credit_name"),
+  },
+  (t) => [
+    primaryKey({ columns: [t.releaseId, t.artistId] }),
+    index("release_artists_artist_idx").on(t.artistId),
+  ],
+);
+
+export const releaseTracks = pgTable(
+  "release_tracks",
+  {
+    releaseId: uuid("release_id")
+      .notNull()
+      .references(() => releases.id, { onDelete: "cascade" }),
+    trackId: uuid("track_id")
+      .notNull()
+      .references(() => tracks.id, { onDelete: "restrict" }),
+    disc: smallint("disc").notNull().default(1),
+    position: smallint("position").notNull(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.releaseId, t.disc, t.position] }),
+    index("release_tracks_track_idx").on(t.trackId),
+  ],
+);
+
+export const trackArtists = pgTable(
+  "track_artists",
+  {
+    trackId: uuid("track_id")
+      .notNull()
+      .references(() => tracks.id, { onDelete: "cascade" }),
+    artistId: uuid("artist_id")
+      .notNull()
+      .references(() => artists.id, { onDelete: "restrict" }),
+    position: smallint("position").notNull().default(1),
+  },
+  (t) => [
+    primaryKey({ columns: [t.trackId, t.artistId] }),
+    index("track_artists_artist_idx").on(t.artistId),
+  ],
+);
+
+export const genres = pgTable("genres", {
+  id: id(),
+  slug: text("slug").notNull().unique(),
+  name: text("name").notNull(),
+});
+
+export const releaseGenres = pgTable(
+  "release_genres",
+  {
+    releaseId: uuid("release_id")
+      .notNull()
+      .references(() => releases.id, { onDelete: "cascade" }),
+    genreId: uuid("genre_id")
+      .notNull()
+      .references(() => genres.id, { onDelete: "cascade" }),
+  },
+  (t) => [
+    primaryKey({ columns: [t.releaseId, t.genreId] }),
+    index("release_genres_genre_idx").on(t.genreId),
+  ],
+);
