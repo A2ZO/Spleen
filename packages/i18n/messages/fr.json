@@ -1,0 +1,157 @@
+{
+  "metadata": {
+    "title": "Spleen",
+    "tagline": "Le carnet d'écoute qui a une âme",
+    "description": "Note, critique et range tes albums, EP et morceaux. Tiens ton journal d'écoute et partage tes goûts."
+  },
+  "common": {
+    "skipToContent": "Aller au contenu",
+    "mockupNotice": "Maquette : les données sont factices et rien n'est enregistré."
+  },
+  "nav": {
+    "label": "Navigation principale",
+    "home": "Accueil",
+    "myShelf": "Mon étagère",
+    "searchPlaceholder": "Un album, un artiste, un morceau…",
+    "searchLabel": "Rechercher"
+  },
+  "theme": {
+    "toggle": "Changer de thème",
+    "toDark": "Passer en mode nuit",
+    "toLight": "Passer en mode papier crème"
+  },
+  "locale": {
+    "label": "Langue",
+    "fr": "Français",
+    "en": "English"
+  },
+  "footer": {
+    "tagline": "Écouté à la lueur d'une lampe de chevet.",
+    "sources": "Données musicales : MusicBrainz et Cover Art Archive.",
+    "legal": "Mentions légales, conditions et confidentialité : bientôt."
+  },
+  "releaseType": {
+    "album": "Album",
+    "ep": "EP",
+    "single": "Single"
+  },
+  "format": {
+    "vinyl": "Vinyle",
+    "cd": "CD",
+    "cassette": "Cassette",
+    "streaming": "Streaming",
+    "live": "Concert",
+    "other": "Autre"
+  },
+  "rating": {
+    "outOfFive": "{stars} sur 5",
+    "none": "Pas encore de note",
+    "count": "{count, plural, =0 {aucune note} one {# note} other {# notes}}",
+    "sliderLabel": "Ta note",
+    "valueText": "{stars, plural, one {# étoile} other {# étoiles}}",
+    "empty": "Pas de note",
+    "clear": "Effacer la note",
+    "keyboardHint": "Flèches pour ajuster par demi-étoile, Suppr pour effacer."
+  },
+  "home": {
+    "kicker": "Il est tard, la ville dort",
+    "title": "Qu'as-tu écouté ce soir ?",
+    "subtitle": "Note tes disques, tiens ton journal d'écoute, range tes albums préférés sur ton étagère. Doucement.",
+    "ctaShelf": "Voir une étagère",
+    "ctaAlbum": "Ouvrir un album",
+    "trendingTitle": "Tendances de la semaine",
+    "trendingFr": "Francophone",
+    "trendingEn": "Anglophone",
+    "trendingTabs": "Langue des tendances",
+    "recentTitle": "Sorties récentes",
+    "reviewsTitle": "Critiques populaires"
+  },
+  "album": {
+    "by": "par",
+    "releasedOn": "Sorti le {date}",
+    "tracklist": "Liste des titres",
+    "trackCount": "{count, plural, one {# titre} other {# titres}}",
+    "duration": "{minutes} min",
+    "genres": "Genres",
+    "ratingsTitle": "Notes de la communauté",
+    "distributionLabel": "Répartition des notes",
+    "reviewsTitle": "Critiques",
+    "reviewsEmpty": "Personne n'a encore écrit sur ce disque. La première critique t'attend.",
+    "listsTitle": "Dans les listes",
+    "listenOn": "Écouter sur",
+    "report": "Signaler une erreur ou proposer un ajout",
+    "coverAlt": "Pochette de {title}",
+    "actions": {
+      "title": "Ton écoute",
+      "listened": "J'ai écouté",
+      "listenedDone": "Écouté ce soir",
+      "like": "Coup de cœur",
+      "wantToListen": "À écouter",
+      "inQueue": "Dans ta pile",
+      "mockNote": "Maquette : rien n'est enregistré pour l'instant."
+    }
+  },
+  "services": {
+    "spotify": "Spotify",
+    "deezer": "Deezer",
+    "appleMusic": "Apple Music",
+    "youtube": "YouTube"
+  },
+  "review": {
+    "byline": "Critique de {name}",
+    "likes": "{count, plural, =0 {aucun j'aime} one {# j'aime} other {# j'aime}}",
+    "comments": "{count, plural, =0 {aucun commentaire} one {# commentaire} other {# commentaires}}",
+    "noRating": "Sans note"
+  },
+  "list": {
+    "ranked": "Classée",
+    "itemCount": "{count, plural, one {# disque} other {# disques}}",
+    "byline": "par {name}"
+  },
+  "profile": {
+    "followers": "{count, plural, one {# abonné} other {# abonnés}}",
+    "following": "{count, plural, one {# abonnement} other {# abonnements}}",
+    "joined": "Ici depuis {date}",
+    "shelfTitle": "L'Étagère",
+    "shelfEmptyOwn": "Ton étagère prend la poussière.",
+    "shelfEmpty": "L'étagère de {name} prend la poussière.",
+    "shelfEmptySlot": "Emplacement libre",
+    "recentTitle": "Écouté récemment",
+    "tabsLabel": "Sections du profil",
+    "tabs": {
+      "diary": "Journal",
+      "reviews": "Critiques",
+      "lists": "Listes",
+      "stats": "Stats"
+    },
+    "diaryEmpty": "Le journal est encore vierge.",
+    "reviewsEmpty": "Aucune critique pour l'instant.",
+    "listsEmpty": "Aucune liste pour l'instant.",
+    "relisten": "Réécoute",
+    "liked": "Coup de cœur",
+    "listenedOn": "Écouté le {date}"
+  },
+  "stats": {
+    "thisYear": "En {year}",
+    "total": "Depuis toujours",
+    "albums": "{count, plural, one {album} other {albums}}",
+    "eps": "{count, plural, one {EP} other {EP}}",
+    "singles": "{count, plural, one {single} other {singles}}",
+    "ratings": "Répartition des notes",
+    "topArtists": "Top artistes {year}",
+    "topGenres": "Top genres {year}",
+    "decades": "Décennies écoutées",
+    "activity": "Activité {year}",
+    "listens": "{count, plural, one {# écoute} other {# écoutes}}",
+    "decade": "Années {decade}",
+    "empty": "Pas encore assez d'écoutes pour des stats."
+  },
+  "notFound": {
+    "metaTitle": "Page introuvable",
+    "quoteLine1": "Je suis comme le roi d'un pays pluvieux,",
+    "quoteLine2": "Riche, mais impuissant, jeune et pourtant très vieux…",
+    "attribution": "Charles Baudelaire, « Spleen », Les Fleurs du mal (1857)",
+    "body": "Cette page s'est perdue sous la pluie. Le disque que tu cherches n'est pas sur cette étagère.",
+    "back": "Retourner à l'accueil"
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "metadata": {
+    "title": "Spleen",
+    "tagline": "The listening diary with a soul",
+    "description": "Rate, review and list your albums, EPs and tracks. Keep a listening diary and share your taste."
+  },
+  "common": {
+    "skipToContent": "Skip to content",
+    "mockupNotice": "Mockup: all data is fictional and nothing is saved."
+  },
+  "nav": {
+    "label": "Main navigation",
+    "home": "Home",
+    "myShelf": "My shelf",
+    "searchPlaceholder": "An album, an artist, a track…",
+    "searchLabel": "Search"
+  },
+  "theme": {
+    "toggle": "Change theme",
+    "toDark": "Switch to night mode",
+    "toLight": "Switch to cream paper mode"
+  },
+  "locale": {
+    "label": "Language",
+    "fr": "Français",
+    "en": "English"
+  },
+  "footer": {
+    "tagline": "Listened to by the light of a bedside lamp.",
+    "sources": "Music data: MusicBrainz and Cover Art Archive.",
+    "legal": "Legal notice, terms and privacy: coming soon."
+  },
+  "releaseType": {
+    "album": "Album",
+    "ep": "EP",
+    "single": "Single"
+  },
+  "format": {
+    "vinyl": "Vinyl",
+    "cd": "CD",
+    "cassette": "Cassette",
+    "streaming": "Streaming",
+    "live": "Live",
+    "other": "Other"
+  },
+  "rating": {
+    "outOfFive": "{stars} out of 5",
+    "none": "Not rated yet",
+    "count": "{count, plural, =0 {no ratings} one {# rating} other {# ratings}}",
+    "sliderLabel": "Your rating",
+    "valueText": "{stars, plural, one {# star} other {# stars}}",
+    "empty": "No rating",
+    "clear": "Clear rating",
+    "keyboardHint": "Arrow keys adjust by half a star, Delete clears."
+  },
+  "home": {
+    "kicker": "It's late, the city is asleep",
+    "title": "What did you listen to tonight?",
+    "subtitle": "Rate your records, keep a listening diary, put your favourite albums on your shelf. Gently.",
+    "ctaShelf": "See a shelf",
+    "ctaAlbum": "Open an album",
+    "trendingTitle": "Trending this week",
+    "trendingFr": "French-speaking",
+    "trendingEn": "English-speaking",
+    "trendingTabs": "Trending language",
+    "recentTitle": "New releases",
+    "reviewsTitle": "Popular reviews"
+  },
+  "album": {
+    "by": "by",
+    "releasedOn": "Released {date}",
+    "tracklist": "Tracklist",
+    "trackCount": "{count, plural, one {# track} other {# tracks}}",
+    "duration": "{minutes} min",
+    "genres": "Genres",
+    "ratingsTitle": "Community ratings",
+    "distributionLabel": "Rating distribution",
+    "reviewsTitle": "Reviews",
+    "reviewsEmpty": "Nobody has written about this record yet. The first review is waiting for you.",
+    "listsTitle": "In lists",
+    "listenOn": "Listen on",
+    "report": "Report an error or suggest an addition",
+    "coverAlt": "Cover of {title}",
+    "actions": {
+      "title": "Your listen",
+      "listened": "I listened",
+      "listenedDone": "Listened tonight",
+      "like": "Favourite",
+      "wantToListen": "Listen later",
+      "inQueue": "In your pile",
+      "mockNote": "Mockup: nothing is saved yet."
+    }
+  },
+  "services": {
+    "spotify": "Spotify",
+    "deezer": "Deezer",
+    "appleMusic": "Apple Music",
+    "youtube": "YouTube"
+  },
+  "review": {
+    "byline": "Review by {name}",
+    "likes": "{count, plural, =0 {no likes} one {# like} other {# likes}}",
+    "comments": "{count, plural, =0 {no comments} one {# comment} other {# comments}}",
+    "noRating": "No rating"
+  },
+  "list": {
+    "ranked": "Ranked",
+    "itemCount": "{count, plural, one {# record} other {# records}}",
+    "byline": "by {name}"
+  },
+  "profile": {
+    "followers": "{count, plural, one {# follower} other {# followers}}",
+    "following": "{count} following",
+    "joined": "Here since {date}",
+    "shelfTitle": "The Shelf",
+    "shelfEmptyOwn": "Your shelf is gathering dust.",
+    "shelfEmpty": "{name}'s shelf is gathering dust.",
+    "shelfEmptySlot": "Empty slot",
+    "recentTitle": "Recently listened",
+    "tabsLabel": "Profile sections",
+    "tabs": {
+      "diary": "Diary",
+      "reviews": "Reviews",
+      "lists": "Lists",
+      "stats": "Stats"
+    },
+    "diaryEmpty": "The diary is still blank.",
+    "reviewsEmpty": "No reviews yet.",
+    "listsEmpty": "No lists yet.",
+    "relisten": "Relisten",
+    "liked": "Favourite",
+    "listenedOn": "Listened {date}"
+  },
+  "stats": {
+    "thisYear": "In {year}",
+    "total": "All time",
+    "albums": "{count, plural, one {album} other {albums}}",
+    "eps": "{count, plural, one {EP} other {EPs}}",
+    "singles": "{count, plural, one {single} other {singles}}",
+    "ratings": "Rating distribution",
+    "topArtists": "Top artists {year}",
+    "topGenres": "Top genres {year}",
+    "decades": "Decades",
+    "activity": "Activity {year}",
+    "listens": "{count, plural, one {# listen} other {# listens}}",
+    "decade": "{decade}s",
+    "empty": "Not enough listens for stats yet."
+  },
+  "notFound": {
+    "metaTitle": "Page not found",
+    "quoteLine1": "I am like the king of a rainy land,",
+    "quoteLine2": "Rich, yet powerless, young and yet so very old…",
+    "attribution": "Charles Baudelaire, “Spleen”, Les Fleurs du mal (1857)",
+    "body": "This page got lost in the rain. The record you're looking for isn't on this shelf.",
+    "back": "Back to home"
+  }
+}
