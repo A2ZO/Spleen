@@ -1,6 +1,8 @@
-import { createDb } from "../src/client";
+import { createDb, migrationDatabaseUrl } from "../src/client";
+import { loadRootEnv } from "../src/env";
 
-const handle = createDb();
+loadRootEnv();
+const handle = createDb(migrationDatabaseUrl());
 try {
   await handle.migrate();
   console.log(`db: migrations applied (${handle.kind})`);

@@ -1,3 +1,4 @@
+import type { Db } from "@spleen/db";
 import { initTRPC } from "@trpc/server";
 
 /**
@@ -6,10 +7,12 @@ import { initTRPC } from "@trpc/server";
  */
 export interface Context {
   now: Date;
+  /** Database, opened on first use: procedures that only read fixtures never connect. */
+  db: () => Db;
 }
 
-export function createContext(): Context {
-  return { now: new Date() };
+export function createContext(db: () => Db): Context {
+  return { now: new Date(), db };
 }
 
 const t = initTRPC.context<Context>().create();

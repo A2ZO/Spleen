@@ -1,3 +1,4 @@
+import { createDb } from "@spleen/db";
 import { describe, expect, it } from "vitest";
 
 import { buildListenLinks } from "./lib/listen-links";
@@ -5,7 +6,25 @@ import { averageFromDistribution } from "./lib/ratings";
 import { computeBaseStats, type StatsInput } from "./lib/stats";
 import { createCaller } from "./root";
 
-const caller = createCaller({ now: new Date("2026-10-20T12:00:00Z") });
+const caller = createCaller({
+  now: new Date("2026-10-20T12:00:00Z"),
+  db: () => {
+    throw new Error("fixture-backed procedures must not open the database");
+  },
+});
+
+describe("system.health", () => {
+  it("queries the database", async () => {
+    const handle = createDb("memory://");
+    try {
+      await handle.migrate();
+      const health = createCaller({ now: new Date(), db: () => handle.db }).system.health();
+      expect(await health).toEqual({ ok: true, releases: 0 });
+    } finally {
+      await handle.close();
+    }
+  }, 60_000);
+});
 
 describe("discover.home", () => {
   it("splits trending charts by audience language and sorts them", async () => {

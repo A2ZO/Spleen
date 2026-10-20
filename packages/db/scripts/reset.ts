@@ -1,11 +1,16 @@
 import { rmSync } from "node:fs";
 
 import { createDb, defaultPgliteDir, isPostgresUrl } from "../src/client";
+import { loadRootEnv } from "../src/env";
 import { seed } from "../src/seed/seed";
+
+loadRootEnv();
 
 // Safety: only the local PGlite database can be wiped by this script.
 if (isPostgresUrl(process.env.DATABASE_URL)) {
-  console.error("db:reset only works on the local PGlite database. Unset DATABASE_URL.");
+  console.error(
+    "db:reset only works on the local PGlite database. Comment out DATABASE_URL in .env.",
+  );
   process.exit(1);
 }
 

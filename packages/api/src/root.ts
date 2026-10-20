@@ -1,10 +1,14 @@
 import { slugSchema, usernameSchema } from "@spleen/validators";
 import { z } from "zod";
 
+import { checkHealth } from "./lib/health";
 import { getHomeFeed, getProfileByUsername, getReleaseBySlug } from "./mock/repository";
 import { createCallerFactory, publicProcedure, router } from "./trpc";
 
 export const appRouter = router({
+  system: router({
+    health: publicProcedure.query(({ ctx }) => checkHealth(ctx.db())),
+  }),
   discover: router({
     home: publicProcedure.query(() => getHomeFeed()),
   }),

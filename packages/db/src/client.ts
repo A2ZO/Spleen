@@ -1,4 +1,5 @@
 import { mkdirSync } from "node:fs";
+import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { PGlite } from "@electric-sql/pglite";
@@ -24,24 +25,51 @@ export interface DbHandle {
   kind: "postgres" | "pglite";
 }
 
-const migrationsFolder = fileURLToPath(new URL("../migrations", import.meta.url));
+// `path.resolve` rather than `new URL(…, import.meta.url)`, which bundlers (Next) would try to
+// pull into the bundle as assets.
+const here = path.dirname(fileURLToPath(import.meta.url));
+const migrationsFolder = path.resolve(here, "../migrations");
 
 /** Local PGlite data directory used when DATABASE_URL is not set: `<repo>/.data/pglite`. */
-export const defaultPgliteDir = fileURLToPath(new URL("../../../.data/pglite", import.meta.url));
+export const defaultPgliteDir = path.resolve(here, "../../../.data/pglite");
 
-export function isPostgresUrl(url: string | undefined): url is string {
+export function isPostgresUrl(url: string | undefined): boolean {
   return !!url && /^postgres(ql)?:\/\//.test(url);
 }
 
 /**
+ * Connection for migrations and the seed. On Postgres they need the DIRECT connection
+ * (`DATABASE_URL_UNPOOLED`): Neon's pooler is PgBouncer in transaction mode, which migration
+ * tools do not support. `DATABASE_URL` stays the switch: unset → local PGlite, as for the app.
+ */
+export function migrationDatabaseUrl(env: NodeJS.ProcessEnv = process.env): string | undefined {
+  if (!isPostgresUrl(env.DATABASE_URL)) return env.DATABASE_URL;
+  const direct = env.DATABASE_URL_UNPOOLED;
+  if (!direct || !isPostgresUrl(direct)) {
+    throw new Error(
+      "DATABASE_URL_UNPOOLED (direct connection) is required to migrate or seed a Postgres database.",
+    );
+  }
+  return direct;
+}
+
+/**
  * Opens the database.
- * - `postgres://…` → a real Postgres server (Neon later), via postgres.js.
+ * - `postgres://…` → a Postgres server (Neon), via postgres.js. The app passes the pooled
+ *   `DATABASE_URL`; scripts pass `migrationDatabaseUrl()`.
  * - `memory://` → throwaway in-memory PGlite (tests).
- * - anything else / undefined → PGlite persisted on disk (local development).
+ * - a directory path / unset or empty → PGlite persisted on disk (local development).
  */
 export function createDb(url: string | undefined = process.env.DATABASE_URL): DbHandle {
-  if (isPostgresUrl(url)) {
-    const client = postgres(url, { max: 5 });
+  if (url && isPostgresUrl(url)) {
+    const client = postgres(url, {
+      max: 5,
+      // Close idle connections quickly (serverless) and allow for Neon waking up from sleep.
+      idle_timeout: 20,
+      connect_timeout: 15,
+      // Silences "already exists, skipping" notices from idempotent migrations.
+      onnotice: () => {},
+    });
     const db = drizzlePostgres(client, { schema });
     return {
       db: db as unknown as Db,
@@ -51,7 +79,14 @@ export function createDb(url: string | undefined = process.env.DATABASE_URL): Db
     };
   }
 
-  const dataDir = url ?? defaultPgliteDir;
+  // A malformed URL (stray quotes, typo in the scheme) must fail loudly, not become a PGlite
+  // directory named after it. The value is never echoed: it holds a password.
+  if (url?.includes("://") && !url.startsWith("memory://")) {
+    throw new Error(
+      "Database URL must start with postgres:// or postgresql:// (check quotes and spaces in .env).",
+    );
+  }
+  const dataDir = url || defaultPgliteDir;
   if (!dataDir.startsWith("memory://")) mkdirSync(dataDir, { recursive: true });
   const client = new PGlite(dataDir, { extensions: { pg_trgm, unaccent } });
   const db = drizzlePglite(client, { schema });

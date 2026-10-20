@@ -1,8 +1,10 @@
-import { createDb } from "../src/client";
+import { createDb, migrationDatabaseUrl } from "../src/client";
+import { loadRootEnv } from "../src/env";
 import { seed } from "../src/seed/seed";
 
 // Migrations are idempotent, so seeding a fresh database works in one step.
-const handle = createDb();
+loadRootEnv();
+const handle = createDb(migrationDatabaseUrl());
 try {
   await handle.migrate();
   await seed(handle.db);

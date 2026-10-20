@@ -4,7 +4,7 @@ import { sql } from "drizzle-orm";
 import { generateDrizzleJson, generateMigration } from "drizzle-kit/api";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { createDb, type DbHandle } from "./client";
+import { createDb, migrationDatabaseUrl, type DbHandle } from "./client";
 import * as s from "./schema";
 import { fixtureId } from "./seed/fixtures";
 import { seed } from "./seed/seed";
@@ -162,5 +162,40 @@ describe("slugify", () => {
     expect(slugify("Café crème")).toBe("cafe-creme");
     expect(slugify("Brass & Bone")).toBe("brass-and-bone");
     expect(slugify("  Le Roi d'un pays pluvieux ")).toBe("le-roi-d-un-pays-pluvieux");
+  });
+});
+
+describe("migrationDatabaseUrl", () => {
+  const pooled = "postgresql://u:p@ep-x-pooler.example.test/db";
+  const direct = "postgresql://u:p@ep-x.example.test/db";
+
+  it("uses the direct connection on Postgres", () => {
+    expect(migrationDatabaseUrl({ DATABASE_URL: pooled, DATABASE_URL_UNPOOLED: direct })).toBe(
+      direct,
+    );
+  });
+
+  it("refuses to migrate through the pooler", () => {
+    expect(() => migrationDatabaseUrl({ DATABASE_URL: pooled })).toThrow(/DATABASE_URL_UNPOOLED/);
+  });
+
+  it("rejects a malformed URL without echoing it", () => {
+    const failure = (url: string) => {
+      try {
+        createDb(url);
+      } catch (error) {
+        return (error as Error).message;
+      }
+      return "opened";
+    };
+    for (const url of ['"postgresql://u:secret@host/db"', "postgress://u:secret@host/db"]) {
+      expect(failure(url)).toMatch(/must start with postgres:\/\//);
+      expect(failure(url)).not.toMatch(/secret/);
+    }
+  });
+
+  it("falls back to PGlite without DATABASE_URL", () => {
+    expect(migrationDatabaseUrl({ DATABASE_URL_UNPOOLED: direct })).toBeUndefined();
+    expect(migrationDatabaseUrl({ DATABASE_URL: "memory://" })).toBe("memory://");
   });
 });
