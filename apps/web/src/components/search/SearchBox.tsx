@@ -13,7 +13,7 @@ const DEBOUNCE_MS = 250;
  * server renders the local results). Without JavaScript it is a plain GET form.
  */
 export function SearchBox({ q, type }: { q: string; type: string }) {
-  const t = useTranslations("nav");
+  const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
   const [value, setValue] = useState(q);
@@ -37,7 +37,7 @@ export function SearchBox({ q, type }: { q: string; type: string }) {
   return (
     <form role="search" className="relative" onSubmit={(event) => event.preventDefault()}>
       <label htmlFor="search-q" className="sr-only">
-        {t("searchLabel")}
+        {t("search.fieldLabel")}
       </label>
       <SearchIcon className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-lg text-fg-muted" />
       <input
@@ -48,7 +48,7 @@ export function SearchBox({ q, type }: { q: string; type: string }) {
         onChange={(event) => setValue(event.target.value)}
         maxLength={100}
         autoFocus
-        placeholder={t("searchPlaceholder")}
+        placeholder={t("nav.searchPlaceholder")}
         className="w-full rounded-md border border-border bg-surface py-3 pr-4 pl-11 text-lg text-fg placeholder:text-fg-muted/70 focus:border-star focus:outline-none"
       />
       {type !== "all" && <input type="hidden" name="type" value={type} />}

@@ -306,6 +306,7 @@
   "search": {
     "metaTitle": "Search",
     "title": "Search",
+    "fieldLabel": "Search Spleen",
     "resultsFor": "Results for “{q}”",
     "prompt": "Look for an album, an artist or a track.",
     "filtersLabel": "Result type",
