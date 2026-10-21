@@ -251,6 +251,9 @@ importers:
       '@spleen/db':
         specifier: workspace:*
         version: link:../db
+      '@spleen/infra':
+        specifier: workspace:*
+        version: link:../infra
       '@spleen/validators':
         specifier: workspace:*
         version: link:../validators

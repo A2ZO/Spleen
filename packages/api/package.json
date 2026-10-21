@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@spleen/db": "workspace:*",
+    "@spleen/infra": "workspace:*",
     "@spleen/validators": "workspace:*",
     "@trpc/server": "11.19.0",
     "zod": "4.6.7"

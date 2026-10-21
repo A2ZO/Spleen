@@ -1,6 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import { ratingSchema, ratingToStars, slugSchema, starsToRating, usernameSchema } from "./index";
+import {
+  isReservedUsername,
+  onboardingSchema,
+  ratingSchema,
+  ratingToStars,
+  slugSchema,
+  starsToRating,
+  usernameSchema,
+} from "./index";
 
 describe("rating", () => {
   it("converts stored ratings to stars", () => {
@@ -44,5 +52,36 @@ describe("slugSchema", () => {
     expect(slugSchema.safeParse("nocturnes-pour-pluie-fine").success).toBe(true);
     expect(slugSchema.safeParse("Bad Slug").success).toBe(false);
     expect(slugSchema.safeParse("double--dash").success).toBe(false);
+  });
+});
+
+describe("reserved usernames", () => {
+  it.each(["admin", "Settings", "s.p.l.e.e.n", "sup_port"])("reserves %s", (value) => {
+    expect(isReservedUsername(value)).toBe(true);
+  });
+
+  it("lets ordinary names through", () => {
+    expect(isReservedUsername("nuitblanche")).toBe(false);
+  });
+});
+
+describe("onboardingSchema", () => {
+  const valid = {
+    username: "Camille",
+    displayName: " Camille ",
+    ageConfirmed: true,
+    locale: "fr",
+    theme: "dark",
+  };
+
+  it("normalizes the input", () => {
+    expect(onboardingSchema.parse(valid)).toMatchObject({
+      username: "camille",
+      displayName: "Camille",
+    });
+  });
+
+  it("requires the age confirmation", () => {
+    expect(onboardingSchema.safeParse({ ...valid, ageConfirmed: false }).success).toBe(false);
   });
 });
