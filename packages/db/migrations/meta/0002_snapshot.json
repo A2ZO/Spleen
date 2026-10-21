@@ -133,12 +133,8 @@
           "name": "account_user_id_user_id_fk",
           "tableFrom": "account",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -289,12 +285,8 @@
           "name": "profiles_user_id_user_id_fk",
           "tableFrom": "profiles",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -371,12 +363,8 @@
           "name": "push_tokens_user_id_user_id_fk",
           "tableFrom": "push_tokens",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -386,9 +374,7 @@
         "push_tokens_token_unique": {
           "name": "push_tokens_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -473,12 +459,8 @@
           "name": "session_user_id_user_id_fk",
           "tableFrom": "session",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -488,9 +470,7 @@
         "session_token_unique": {
           "name": "session_token_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "token"
-          ]
+          "columns": ["token"]
         }
       },
       "policies": {},
@@ -598,12 +578,8 @@
           "name": "subscriptions_user_id_user_id_fk",
           "tableFrom": "subscriptions",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -672,9 +648,7 @@
         "user_email_unique": {
           "name": "user_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -761,12 +735,8 @@
           "name": "username_history_user_id_user_id_fk",
           "tableFrom": "username_history",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -951,16 +921,12 @@
         "artists_slug_unique": {
           "name": "artists_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         },
         "artists_mbid_unique": {
           "name": "artists_mbid_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "mbid"
-          ]
+          "columns": ["mbid"]
         }
       },
       "policies": {},
@@ -998,9 +964,7 @@
         "genres_slug_unique": {
           "name": "genres_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         }
       },
       "policies": {},
@@ -1059,12 +1023,8 @@
           "name": "release_artists_release_id_releases_id_fk",
           "tableFrom": "release_artists",
           "tableTo": "releases",
-          "columnsFrom": [
-            "release_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["release_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1072,12 +1032,8 @@
           "name": "release_artists_artist_id_artists_id_fk",
           "tableFrom": "release_artists",
           "tableTo": "artists",
-          "columnsFrom": [
-            "artist_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["artist_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1085,10 +1041,7 @@
       "compositePrimaryKeys": {
         "release_artists_release_id_artist_id_pk": {
           "name": "release_artists_release_id_artist_id_pk",
-          "columns": [
-            "release_id",
-            "artist_id"
-          ]
+          "columns": ["release_id", "artist_id"]
         }
       },
       "uniqueConstraints": {},
@@ -1135,12 +1088,8 @@
           "name": "release_genres_release_id_releases_id_fk",
           "tableFrom": "release_genres",
           "tableTo": "releases",
-          "columnsFrom": [
-            "release_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["release_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1148,12 +1097,8 @@
           "name": "release_genres_genre_id_genres_id_fk",
           "tableFrom": "release_genres",
           "tableTo": "genres",
-          "columnsFrom": [
-            "genre_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["genre_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1161,10 +1106,7 @@
       "compositePrimaryKeys": {
         "release_genres_release_id_genre_id_pk": {
           "name": "release_genres_release_id_genre_id_pk",
-          "columns": [
-            "release_id",
-            "genre_id"
-          ]
+          "columns": ["release_id", "genre_id"]
         }
       },
       "uniqueConstraints": {},
@@ -1224,12 +1166,8 @@
           "name": "release_tracks_release_id_releases_id_fk",
           "tableFrom": "release_tracks",
           "tableTo": "releases",
-          "columnsFrom": [
-            "release_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["release_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1237,12 +1175,8 @@
           "name": "release_tracks_track_id_tracks_id_fk",
           "tableFrom": "release_tracks",
           "tableTo": "tracks",
-          "columnsFrom": [
-            "track_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["track_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1250,11 +1184,7 @@
       "compositePrimaryKeys": {
         "release_tracks_release_id_disc_position_pk": {
           "name": "release_tracks_release_id_disc_position_pk",
-          "columns": [
-            "release_id",
-            "disc",
-            "position"
-          ]
+          "columns": ["release_id", "disc", "position"]
         }
       },
       "uniqueConstraints": {},
@@ -1397,16 +1327,12 @@
         "releases_slug_unique": {
           "name": "releases_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         },
         "releases_mbid_unique": {
           "name": "releases_mbid_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "mbid"
-          ]
+          "columns": ["mbid"]
         }
       },
       "policies": {},
@@ -1459,12 +1385,8 @@
           "name": "track_artists_track_id_tracks_id_fk",
           "tableFrom": "track_artists",
           "tableTo": "tracks",
-          "columnsFrom": [
-            "track_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["track_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1472,12 +1394,8 @@
           "name": "track_artists_artist_id_artists_id_fk",
           "tableFrom": "track_artists",
           "tableTo": "artists",
-          "columnsFrom": [
-            "artist_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["artist_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1485,10 +1403,7 @@
       "compositePrimaryKeys": {
         "track_artists_track_id_artist_id_pk": {
           "name": "track_artists_track_id_artist_id_pk",
-          "columns": [
-            "track_id",
-            "artist_id"
-          ]
+          "columns": ["track_id", "artist_id"]
         }
       },
       "uniqueConstraints": {},
@@ -1569,16 +1484,12 @@
         "tracks_slug_unique": {
           "name": "tracks_slug_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "slug"
-          ]
+          "columns": ["slug"]
         },
         "tracks_mbid_unique": {
           "name": "tracks_mbid_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "mbid"
-          ]
+          "columns": ["mbid"]
         }
       },
       "policies": {},
@@ -1614,12 +1525,8 @@
           "name": "favorites_user_id_user_id_fk",
           "tableFrom": "favorites",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1627,12 +1534,8 @@
           "name": "favorites_release_id_releases_id_fk",
           "tableFrom": "favorites",
           "tableTo": "releases",
-          "columnsFrom": [
-            "release_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["release_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1640,20 +1543,14 @@
       "compositePrimaryKeys": {
         "favorites_user_id_position_pk": {
           "name": "favorites_user_id_position_pk",
-          "columns": [
-            "user_id",
-            "position"
-          ]
+          "columns": ["user_id", "position"]
         }
       },
       "uniqueConstraints": {
         "favorites_user_release_unique": {
           "name": "favorites_user_release_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "user_id",
-            "release_id"
-          ]
+          "columns": ["user_id", "release_id"]
         }
       },
       "policies": {},
@@ -1786,12 +1683,8 @@
           "name": "list_items_list_id_lists_id_fk",
           "tableFrom": "list_items",
           "tableTo": "lists",
-          "columnsFrom": [
-            "list_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["list_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -1799,12 +1692,8 @@
           "name": "list_items_release_id_releases_id_fk",
           "tableFrom": "list_items",
           "tableTo": "releases",
-          "columnsFrom": [
-            "release_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["release_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -1812,12 +1701,8 @@
           "name": "list_items_track_id_tracks_id_fk",
           "tableFrom": "list_items",
           "tableTo": "tracks",
-          "columnsFrom": [
-            "track_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["track_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -1825,12 +1710,8 @@
           "name": "list_items_artist_id_artists_id_fk",
           "tableFrom": "list_items",
           "tableTo": "artists",
-          "columnsFrom": [
-            "artist_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["artist_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -1920,12 +1801,8 @@
           "name": "lists_user_id_user_id_fk",
           "tableFrom": "lists",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -2089,12 +1966,8 @@
           "name": "reviews_user_id_user_id_fk",
           "tableFrom": "reviews",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2102,12 +1975,8 @@
           "name": "reviews_entry_id_entries_id_fk",
           "tableFrom": "reviews",
           "tableTo": "entries",
-          "columnsFrom": [
-            "entry_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["entry_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         },
@@ -2115,12 +1984,8 @@
           "name": "reviews_release_id_releases_id_fk",
           "tableFrom": "reviews",
           "tableTo": "releases",
-          "columnsFrom": [
-            "release_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["release_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -2128,12 +1993,8 @@
           "name": "reviews_track_id_tracks_id_fk",
           "tableFrom": "reviews",
           "tableTo": "tracks",
-          "columnsFrom": [
-            "track_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["track_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -2141,12 +2002,8 @@
           "name": "reviews_artist_id_artists_id_fk",
           "tableFrom": "reviews",
           "tableTo": "artists",
-          "columnsFrom": [
-            "artist_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["artist_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -2322,12 +2179,8 @@
           "name": "entries_user_id_user_id_fk",
           "tableFrom": "entries",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2335,12 +2188,8 @@
           "name": "entries_release_id_releases_id_fk",
           "tableFrom": "entries",
           "tableTo": "releases",
-          "columnsFrom": [
-            "release_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["release_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -2348,12 +2197,8 @@
           "name": "entries_track_id_tracks_id_fk",
           "tableFrom": "entries",
           "tableTo": "tracks",
-          "columnsFrom": [
-            "track_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["track_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -2361,12 +2206,8 @@
           "name": "entries_artist_id_artists_id_fk",
           "tableFrom": "entries",
           "tableTo": "artists",
-          "columnsFrom": [
-            "artist_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["artist_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -2425,12 +2266,8 @@
           "name": "entry_moods_entry_id_entries_id_fk",
           "tableFrom": "entry_moods",
           "tableTo": "entries",
-          "columnsFrom": [
-            "entry_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["entry_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2438,12 +2275,8 @@
           "name": "entry_moods_mood_id_moods_id_fk",
           "tableFrom": "entry_moods",
           "tableTo": "moods",
-          "columnsFrom": [
-            "mood_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["mood_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -2451,10 +2284,7 @@
       "compositePrimaryKeys": {
         "entry_moods_entry_id_mood_id_pk": {
           "name": "entry_moods_entry_id_mood_id_pk",
-          "columns": [
-            "entry_id",
-            "mood_id"
-          ]
+          "columns": ["entry_id", "mood_id"]
         }
       },
       "uniqueConstraints": {},
@@ -2543,12 +2373,8 @@
           "name": "moods_owner_id_user_id_fk",
           "tableFrom": "moods",
           "tableTo": "user",
-          "columnsFrom": [
-            "owner_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["owner_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -2588,12 +2414,8 @@
           "name": "track_ratings_entry_id_entries_id_fk",
           "tableFrom": "track_ratings",
           "tableTo": "entries",
-          "columnsFrom": [
-            "entry_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["entry_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2601,12 +2423,8 @@
           "name": "track_ratings_track_id_tracks_id_fk",
           "tableFrom": "track_ratings",
           "tableTo": "tracks",
-          "columnsFrom": [
-            "track_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["track_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -2614,10 +2432,7 @@
       "compositePrimaryKeys": {
         "track_ratings_entry_id_track_id_pk": {
           "name": "track_ratings_entry_id_track_id_pk",
-          "columns": [
-            "entry_id",
-            "track_id"
-          ]
+          "columns": ["entry_id", "track_id"]
         }
       },
       "uniqueConstraints": {},
@@ -2818,12 +2633,8 @@
           "name": "user_item_state_user_id_user_id_fk",
           "tableFrom": "user_item_state",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2831,12 +2642,8 @@
           "name": "user_item_state_release_id_releases_id_fk",
           "tableFrom": "user_item_state",
           "tableTo": "releases",
-          "columnsFrom": [
-            "release_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["release_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -2844,12 +2651,8 @@
           "name": "user_item_state_track_id_tracks_id_fk",
           "tableFrom": "user_item_state",
           "tableTo": "tracks",
-          "columnsFrom": [
-            "track_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["track_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -2857,12 +2660,8 @@
           "name": "user_item_state_artist_id_artists_id_fk",
           "tableFrom": "user_item_state",
           "tableTo": "artists",
-          "columnsFrom": [
-            "artist_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["artist_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         }
@@ -2928,12 +2727,8 @@
           "name": "blocks_blocker_id_user_id_fk",
           "tableFrom": "blocks",
           "tableTo": "user",
-          "columnsFrom": [
-            "blocker_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["blocker_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -2941,12 +2736,8 @@
           "name": "blocks_blocked_id_user_id_fk",
           "tableFrom": "blocks",
           "tableTo": "user",
-          "columnsFrom": [
-            "blocked_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["blocked_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -2954,10 +2745,7 @@
       "compositePrimaryKeys": {
         "blocks_blocker_id_blocked_id_pk": {
           "name": "blocks_blocker_id_blocked_id_pk",
-          "columns": [
-            "blocker_id",
-            "blocked_id"
-          ]
+          "columns": ["blocker_id", "blocked_id"]
         }
       },
       "uniqueConstraints": {},
@@ -3075,12 +2863,8 @@
           "name": "comments_user_id_user_id_fk",
           "tableFrom": "comments",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3088,12 +2872,8 @@
           "name": "comments_review_id_reviews_id_fk",
           "tableFrom": "comments",
           "tableTo": "reviews",
-          "columnsFrom": [
-            "review_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["review_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3101,12 +2881,8 @@
           "name": "comments_list_id_lists_id_fk",
           "tableFrom": "comments",
           "tableTo": "lists",
-          "columnsFrom": [
-            "list_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["list_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -3168,12 +2944,8 @@
           "name": "follows_follower_id_user_id_fk",
           "tableFrom": "follows",
           "tableTo": "user",
-          "columnsFrom": [
-            "follower_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["follower_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3181,12 +2953,8 @@
           "name": "follows_followee_id_user_id_fk",
           "tableFrom": "follows",
           "tableTo": "user",
-          "columnsFrom": [
-            "followee_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["followee_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -3194,10 +2962,7 @@
       "compositePrimaryKeys": {
         "follows_follower_id_followee_id_pk": {
           "name": "follows_follower_id_followee_id_pk",
-          "columns": [
-            "follower_id",
-            "followee_id"
-          ]
+          "columns": ["follower_id", "followee_id"]
         }
       },
       "uniqueConstraints": {},
@@ -3328,12 +3093,8 @@
           "name": "likes_user_id_user_id_fk",
           "tableFrom": "likes",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3341,12 +3102,8 @@
           "name": "likes_review_id_reviews_id_fk",
           "tableFrom": "likes",
           "tableTo": "reviews",
-          "columnsFrom": [
-            "review_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["review_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3354,12 +3111,8 @@
           "name": "likes_list_id_lists_id_fk",
           "tableFrom": "likes",
           "tableTo": "lists",
-          "columnsFrom": [
-            "list_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["list_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -3465,12 +3218,8 @@
           "name": "notifications_user_id_user_id_fk",
           "tableFrom": "notifications",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3478,12 +3227,8 @@
           "name": "notifications_actor_id_user_id_fk",
           "tableFrom": "notifications",
           "tableTo": "user",
-          "columnsFrom": [
-            "actor_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["actor_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3491,12 +3236,8 @@
           "name": "notifications_review_id_reviews_id_fk",
           "tableFrom": "notifications",
           "tableTo": "reviews",
-          "columnsFrom": [
-            "review_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["review_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3504,12 +3245,8 @@
           "name": "notifications_list_id_lists_id_fk",
           "tableFrom": "notifications",
           "tableTo": "lists",
-          "columnsFrom": [
-            "list_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["list_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3517,12 +3254,8 @@
           "name": "notifications_comment_id_comments_id_fk",
           "tableFrom": "notifications",
           "tableTo": "comments",
-          "columnsFrom": [
-            "comment_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["comment_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -3675,12 +3408,8 @@
           "name": "reports_reporter_id_user_id_fk",
           "tableFrom": "reports",
           "tableTo": "user",
-          "columnsFrom": [
-            "reporter_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["reporter_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3688,12 +3417,8 @@
           "name": "reports_reported_user_id_user_id_fk",
           "tableFrom": "reports",
           "tableTo": "user",
-          "columnsFrom": [
-            "reported_user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["reported_user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3701,12 +3426,8 @@
           "name": "reports_review_id_reviews_id_fk",
           "tableFrom": "reports",
           "tableTo": "reviews",
-          "columnsFrom": [
-            "review_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["review_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3714,12 +3435,8 @@
           "name": "reports_list_id_lists_id_fk",
           "tableFrom": "reports",
           "tableTo": "lists",
-          "columnsFrom": [
-            "list_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["list_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3727,12 +3444,8 @@
           "name": "reports_comment_id_comments_id_fk",
           "tableFrom": "reports",
           "tableTo": "comments",
-          "columnsFrom": [
-            "comment_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["comment_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -3740,12 +3453,8 @@
           "name": "reports_release_id_releases_id_fk",
           "tableFrom": "reports",
           "tableTo": "releases",
-          "columnsFrom": [
-            "release_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["release_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -3753,12 +3462,8 @@
           "name": "reports_track_id_tracks_id_fk",
           "tableFrom": "reports",
           "tableTo": "tracks",
-          "columnsFrom": [
-            "track_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["track_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -3766,12 +3471,8 @@
           "name": "reports_artist_id_artists_id_fk",
           "tableFrom": "reports",
           "tableTo": "artists",
-          "columnsFrom": [
-            "artist_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["artist_id"],
+          "columnsTo": ["id"],
           "onDelete": "restrict",
           "onUpdate": "no action"
         },
@@ -3779,12 +3480,8 @@
           "name": "reports_resolved_by_id_user_id_fk",
           "tableFrom": "reports",
           "tableTo": "user",
-          "columnsFrom": [
-            "resolved_by_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["resolved_by_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -3901,12 +3598,8 @@
           "name": "catalog_import_jobs_requested_by_id_user_id_fk",
           "tableFrom": "catalog_import_jobs",
           "tableTo": "user",
-          "columnsFrom": [
-            "requested_by_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["requested_by_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -3916,10 +3609,7 @@
         "catalog_import_jobs_kind_mbid_unique": {
           "name": "catalog_import_jobs_kind_mbid_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "kind",
-            "mbid"
-          ]
+          "columns": ["kind", "mbid"]
         }
       },
       "policies": {},
@@ -3995,12 +3685,8 @@
           "name": "user_stats_cache_user_id_user_id_fk",
           "tableFrom": "user_stats_cache",
           "tableTo": "user",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -4016,86 +3702,47 @@
     "public.push_platform": {
       "name": "push_platform",
       "schema": "public",
-      "values": [
-        "ios",
-        "android",
-        "web"
-      ]
+      "values": ["ios", "android", "web"]
     },
     "public.subscription_platform": {
       "name": "subscription_platform",
       "schema": "public",
-      "values": [
-        "stripe",
-        "apple",
-        "google"
-      ]
+      "values": ["stripe", "apple", "google"]
     },
     "public.subscription_status": {
       "name": "subscription_status",
       "schema": "public",
-      "values": [
-        "trialing",
-        "active",
-        "past_due",
-        "canceled",
-        "expired"
-      ]
+      "values": ["trialing", "active", "past_due", "canceled", "expired"]
     },
     "public.theme_preference": {
       "name": "theme_preference",
       "schema": "public",
-      "values": [
-        "dark",
-        "light"
-      ]
+      "values": ["dark", "light"]
     },
     "public.user_role": {
       "name": "user_role",
       "schema": "public",
-      "values": [
-        "member",
-        "admin"
-      ]
+      "values": ["member", "admin"]
     },
     "public.date_precision": {
       "name": "date_precision",
       "schema": "public",
-      "values": [
-        "year",
-        "month",
-        "day"
-      ]
+      "values": ["year", "month", "day"]
     },
     "public.release_type": {
       "name": "release_type",
       "schema": "public",
-      "values": [
-        "album",
-        "ep",
-        "single"
-      ]
+      "values": ["album", "ep", "single"]
     },
     "public.listen_format": {
       "name": "listen_format",
       "schema": "public",
-      "values": [
-        "vinyl",
-        "cd",
-        "cassette",
-        "streaming",
-        "live",
-        "other"
-      ]
+      "values": ["vinyl", "cd", "cassette", "streaming", "live", "other"]
     },
     "public.notification_type": {
       "name": "notification_type",
       "schema": "public",
-      "values": [
-        "follow",
-        "like",
-        "comment"
-      ]
+      "values": ["follow", "like", "comment"]
     },
     "public.report_reason": {
       "name": "report_reason",
@@ -4114,30 +3761,17 @@
     "public.report_status": {
       "name": "report_status",
       "schema": "public",
-      "values": [
-        "open",
-        "resolved",
-        "dismissed"
-      ]
+      "values": ["open", "resolved", "dismissed"]
     },
     "public.import_kind": {
       "name": "import_kind",
       "schema": "public",
-      "values": [
-        "release_group",
-        "artist",
-        "recording"
-      ]
+      "values": ["release_group", "artist", "recording"]
     },
     "public.import_status": {
       "name": "import_status",
       "schema": "public",
-      "values": [
-        "pending",
-        "running",
-        "done",
-        "failed"
-      ]
+      "values": ["pending", "running", "done", "failed"]
     }
   },
   "schemas": {},
