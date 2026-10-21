@@ -36,6 +36,8 @@ export function createPostgresThrottle(db: Db, maxWaitMs: number): Throttle {
 export interface CatalogProviderOptions {
   /** How long a request may wait for its slot: short for pages, long for scripts. */
   maxWaitMs?: number;
+  /** Tries per request when MusicBrainz is overloaded (scripts can afford more). */
+  maxAttempts?: number;
   userAgent?: string;
 }
 
@@ -47,6 +49,7 @@ export function createCatalogProvider(
   return createMusicBrainzProvider({
     userAgent: options.userAgent ?? process.env.MUSICBRAINZ_USER_AGENT,
     throttle: createPostgresThrottle(db, options.maxWaitMs ?? 8000),
+    maxAttempts: options.maxAttempts,
   });
 }
 

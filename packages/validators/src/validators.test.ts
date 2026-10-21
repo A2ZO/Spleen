@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  catalogImportSchema,
+  catalogSearchSchema,
   isReservedUsername,
   onboardingSchema,
   ratingSchema,
@@ -83,5 +85,24 @@ describe("onboardingSchema", () => {
 
   it("requires the age confirmation", () => {
     expect(onboardingSchema.safeParse({ ...valid, ageConfirmed: false }).success).toBe(false);
+  });
+});
+
+describe("catalog search and import", () => {
+  it("trims the query, defaults to every kind and caps the length", () => {
+    expect(catalogSearchSchema.parse({ q: "  kind of blue " })).toEqual({
+      q: "kind of blue",
+      type: "all",
+    });
+    expect(catalogSearchSchema.safeParse({ q: "   " }).success).toBe(false);
+    expect(catalogSearchSchema.safeParse({ q: "x".repeat(101) }).success).toBe(false);
+    expect(catalogSearchSchema.safeParse({ q: "x", type: "playlist" }).success).toBe(false);
+  });
+
+  it("accepts MusicBrainz ids only", () => {
+    const mbid = "8e8a594f-2175-38c7-a871-abb68ec363e7";
+    expect(catalogImportSchema.safeParse({ kind: "release_group", mbid }).success).toBe(true);
+    expect(catalogImportSchema.safeParse({ kind: "release_group", mbid: "x" }).success).toBe(false);
+    expect(catalogImportSchema.safeParse({ kind: "label", mbid }).success).toBe(false);
   });
 });
