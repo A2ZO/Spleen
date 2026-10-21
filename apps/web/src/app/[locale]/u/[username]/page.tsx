@@ -21,7 +21,7 @@ type Props = { params: Promise<{ locale: string; username: string }> };
 const getProfile = cache(async (username: string) => {
   const parsed = usernameSchema.safeParse(decodeURIComponent(username));
   if (!parsed.success) return null;
-  return getApi().profile.byUsername({ username: parsed.data });
+  return (await getApi()).profile.byUsername({ username: parsed.data });
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -47,7 +47,12 @@ export default async function ProfilePage({ params }: Props) {
   return (
     <div className="space-y-16">
       <header className="flex flex-col gap-5 sm:flex-row sm:items-center">
-        <Avatar name={profile.displayName} seed={profile.username} className="size-20 text-3xl" />
+        <Avatar
+          name={profile.displayName}
+          seed={profile.username}
+          src={profile.avatarUrl}
+          className="size-20 text-3xl"
+        />
         <div className="min-w-0 flex-1">
           <h1 className="text-4xl font-semibold">{profile.displayName}</h1>
           <p className="font-mono text-sm text-fg-muted">@{profile.username}</p>

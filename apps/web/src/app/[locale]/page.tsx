@@ -7,7 +7,6 @@ import { ReviewCard } from "@/components/social/ReviewCard";
 import { ButtonLink } from "@/components/ui/Button";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tabs } from "@/components/ui/Tabs";
-import { DEMO_USERNAME } from "@/lib/demo";
 import { initRouteLocale } from "@/i18n/locale";
 import { getApi } from "@/server/api";
 
@@ -27,7 +26,9 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   initRouteLocale(locale);
   const t = await getTranslations("home");
-  const feed = await getApi().discover.home();
+  const api = await getApi();
+  const [feed, me] = await Promise.all([api.discover.home(), api.account.me()]);
+  const shelfHref = me?.profile ? `/u/${me.profile.username}` : me ? "/welcome" : "/sign-in";
   const featured = feed.trending.fr[1] ?? feed.recent[0];
 
   return (
@@ -40,7 +41,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
           </h1>
           <p className="mt-6 max-w-xl text-lg text-fg-muted text-pretty">{t("subtitle")}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <ButtonLink href={`/u/${DEMO_USERNAME}`}>{t("ctaShelf")}</ButtonLink>
+            <ButtonLink href={shelfHref}>{t("ctaShelf")}</ButtonLink>
             {featured && (
               <ButtonLink href={`/album/${featured.slug}`} variant="outline">
                 {t("ctaAlbum")}

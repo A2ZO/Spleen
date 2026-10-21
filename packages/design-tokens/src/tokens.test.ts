@@ -28,6 +28,8 @@ describe.each(Object.entries(themes))("%s theme is AA compliant", (_name, t) => 
     ["fg-muted on surface", t["fg-muted"], t.surface, AA_TEXT],
     ["link on bg", t.link, t.bg, AA_TEXT],
     ["link on surface", t.link, t.surface, AA_TEXT],
+    ["danger on bg", t.danger, t.bg, AA_TEXT],
+    ["danger on surface", t.danger, t.surface, AA_TEXT],
     ["accent-fg on accent", t["accent-fg"], t.accent, AA_TEXT],
     ["accent-fg on accent-hover", t["accent-fg"], t["accent-hover"], AA_TEXT],
     ["star on bg", t.star, t.bg, AA_UI],

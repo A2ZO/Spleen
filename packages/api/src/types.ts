@@ -103,6 +103,7 @@ export interface ProfileDetail {
   username: string;
   displayName: string;
   bio: string;
+  avatarUrl: string | null;
   joinedOn: string;
   followerCount: number;
   followingCount: number;
@@ -119,4 +120,33 @@ export interface HomeFeed {
   trending: Record<AudienceLang, ReleaseCard[]>;
   recent: ReleaseCard[];
   popularReviews: ReviewCard[];
+}
+
+/** The signed-in member's own profile (settings). */
+export interface MyProfile {
+  username: string;
+  displayName: string;
+  bio: string;
+  avatarUrl: string | null;
+  locale: "fr" | "en";
+  theme: "dark" | "light";
+  statsPrivate: boolean;
+  diaryPrivate: boolean;
+  blindMode: boolean;
+  /** ISO date from which the @username can change again; null when it can now. */
+  usernameChangeAvailableAt: string | null;
+}
+
+/** Who is calling. `profile` is null until the member picks a @username (onboarding). */
+export interface Me {
+  userId: string;
+  email: string;
+  profile: MyProfile | null;
+}
+
+/** Data export (JSON download). Versioned so the format can evolve. */
+export interface AccountExport {
+  format: "spleen-export/1";
+  exportedAt: string;
+  [section: string]: unknown;
 }

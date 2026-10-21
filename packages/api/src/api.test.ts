@@ -1,24 +1,30 @@
-import { createDb } from "@spleen/db";
-import { describe, expect, it } from "vitest";
+import { createDb, seed, type DbHandle } from "@spleen/db";
+import { loadMessages, locales } from "@spleen/i18n";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { API_ERROR_CODES } from "./errors";
 import { buildListenLinks } from "./lib/listen-links";
 import { averageFromDistribution } from "./lib/ratings";
 import { computeBaseStats, type StatsInput } from "./lib/stats";
 import { createCaller } from "./root";
+import { createContext } from "./trpc";
 
-const caller = createCaller({
-  now: new Date("2026-10-20T12:00:00Z"),
-  db: () => {
-    throw new Error("fixture-backed procedures must not open the database");
-  },
-});
+const now = new Date("2026-10-20T12:00:00Z");
+const caller = createCaller(
+  createContext({
+    now,
+    db: () => {
+      throw new Error("fixture-backed procedures must not open the database");
+    },
+  }),
+);
 
 describe("system.health", () => {
   it("queries the database", async () => {
     const handle = createDb("memory://");
     try {
       await handle.migrate();
-      const health = createCaller({ now: new Date(), db: () => handle.db }).system.health();
+      const health = createCaller(createContext({ db: () => handle.db })).system.health();
       expect(await health).toEqual({ ok: true, releases: 0 });
     } finally {
       await handle.close();
@@ -63,6 +69,16 @@ describe("release.bySlug", () => {
 });
 
 describe("profile.byUsername", () => {
+  let handle: DbHandle;
+  let caller: ReturnType<typeof createCaller>;
+  beforeAll(async () => {
+    handle = createDb("memory://");
+    await handle.migrate();
+    await seed(handle.db);
+    caller = createCaller(createContext({ now, db: () => handle.db }));
+  }, 60_000);
+  afterAll(() => handle.close());
+
   it("returns a profile with a 4-slot shelf and stats", async () => {
     const profile = await caller.profile.byUsername({ username: "NuitBlanche" });
     expect(profile?.shelf).toHaveLength(4);
@@ -137,5 +153,14 @@ describe("computeBaseStats", () => {
     ]);
     expect(stats.activityByMonth[2]).toBe(1);
     expect(stats.activityByMonth[4]).toBe(1);
+  });
+});
+
+describe("error codes", () => {
+  it("all have a message in both languages", async () => {
+    for (const locale of locales) {
+      const messages = await loadMessages(locale);
+      for (const code of API_ERROR_CODES) expect(messages.errors[code]).toBeTruthy();
+    }
   });
 });

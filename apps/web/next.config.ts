@@ -9,9 +9,11 @@ const nextConfig: NextConfig = {
   // Internal packages ship TypeScript sources; Next compiles them.
   transpilePackages: [
     "@spleen/api",
+    "@spleen/auth",
     "@spleen/db",
     "@spleen/design-tokens",
     "@spleen/i18n",
+    "@spleen/infra",
     "@spleen/validators",
   ],
   // PGlite (local fallback database) loads its WebAssembly files at runtime: keep it unbundled.

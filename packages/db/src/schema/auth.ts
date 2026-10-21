@@ -113,6 +113,26 @@ export const profiles = pgTable(
   (t) => [uniqueIndex("profiles_username_lower_uidx").on(sql`lower(${t.username})`)],
 );
 
+/*
+ * Former usernames. A row keeps `username` reserved for 30 days after `changed_at` (except
+ * for its former owner), throttles renames to one per 30 days, and will back redirects
+ * later. On account deletion the current username gets a row too and `user_id` becomes
+ * NULL: the names stay reserved without any link to the person, then are purged.
+ */
+export const usernameHistory = pgTable(
+  "username_history",
+  {
+    id: id(),
+    userId: uuid("user_id").references(() => user.id, { onDelete: "set null" }),
+    username: text("username").notNull(),
+    changedAt: timestamp("changed_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("username_history_username_idx").on(sql`lower(${t.username})`, t.changedAt),
+    index("username_history_user_idx").on(t.userId, t.changedAt),
+  ],
+);
+
 /* Spleen+ (empty until monetisation), store-agnostic. */
 
 export const subscriptionPlatform = pgEnum("subscription_platform", ["stripe", "apple", "google"]);

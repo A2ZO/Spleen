@@ -1,14 +1,19 @@
-import { useTranslations } from "next-intl";
+import { getLocale, getTranslations } from "next-intl/server";
 
+import { buttonClasses } from "@/components/ui/Button";
 import { Link } from "@/i18n/navigation";
-import { DEMO_USERNAME } from "@/lib/demo";
+import { getApi } from "@/server/api";
 
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
+import { UserMenu } from "./UserMenu";
 
-export function Header() {
-  const t = useTranslations("nav");
+export async function Header() {
+  const t = await getTranslations("nav");
+  const locale = await getLocale();
+  const me = await (await getApi()).account.me();
+  const profile = me?.profile;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-bg/85 backdrop-blur-md">
@@ -24,19 +29,33 @@ export function Header() {
                 {t("home")}
               </Link>
             </li>
-            <li>
-              <Link
-                href={`/u/${DEMO_USERNAME}`}
-                className="rounded-md px-3 py-2 text-fg-muted hover:text-fg"
-              >
-                {t("myShelf")}
-              </Link>
-            </li>
+            {profile && (
+              <li className="hidden sm:block">
+                <Link
+                  href={`/u/${profile.username}`}
+                  className="rounded-md px-3 py-2 text-fg-muted hover:text-fg"
+                >
+                  {t("myShelf")}
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
         <div className="flex items-center gap-2 sm:ml-auto">
           <LocaleSwitcher />
           <ThemeToggle />
+          {me ? (
+            <UserMenu
+              locale={locale}
+              username={profile?.username ?? null}
+              displayName={profile?.displayName ?? me.email}
+              avatarUrl={profile?.avatarUrl ?? null}
+            />
+          ) : (
+            <Link href="/sign-in" className={buttonClasses("outline", "px-3")}>
+              {t("signIn")}
+            </Link>
+          )}
         </div>
       </div>
     </header>

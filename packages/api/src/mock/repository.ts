@@ -41,6 +41,12 @@ const LIST_PREVIEW_SIZE = 4;
 const releaseBySlug = new Map(releases.map((r) => [r.slug, r]));
 const artistBySlug = new Map(artists.map((a) => [a.slug, a]));
 const userByUsername = new Map(users.map((u) => [u.username, u]));
+const userById = new Map(users.map((u) => [u.id, u]));
+
+/** Fixture username of a demo member, by id (to overlay real profile data on the mockup). */
+export function fixtureUsernameById(id: string): string | null {
+  return userById.get(id)?.username ?? null;
+}
 
 function mustGet<K, V>(map: Map<K, V>, key: K, kind: string): V {
   const value = map.get(key);
@@ -200,6 +206,7 @@ export function getProfileByUsername(username: string, now: Date): ProfileDetail
     username: user.username,
     displayName: user.displayName,
     bio: user.bio,
+    avatarUrl: null,
     joinedOn: user.joinedOn,
     followerCount: user.followerCount,
     followingCount: user.followingCount,
