@@ -155,8 +155,7 @@ Milestone 3+ variables (auth, emails, S3, MusicBrainz) are listed in `.env.examp
 - Never commit or push to `main`; no force push; no history rewrite of pushed branches.
 - One branch per milestone `feat/<nn>-<name>` from an up-to-date `main`
   (`git switch main; git pull`).
-- Milestone end: format, lint, typecheck, tests (and e2e) green → PR with `gh pr create`
-  → watch `gh pr checks` → French recap → wait for the user's merge before the next one.
+- Milestone end: run `/fin-de-jalon` (`.claude/skills/fin-de-jalon/SKILL.md`).
 - Present a plan before starting a milestone; ask before costly or irreversible decisions.
 
 ## Milestones
