@@ -187,10 +187,8 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 - [ ] 7. Social
 - [ ] 8. Lists & discovery
 - [ ] 9. Admin, legal, polish
-- [ ] 10. Launch
-
-**Real services are not connected yet** (Google, Brevo, R2, Neon `main`, domain, legal pages):
-see `docs/mise-en-ligne.md`, to do in milestone 10 before any deployment.
+- [ ] 10. Launch. **Real services are not connected yet** (Google, Brevo, R2, Neon `main`,
+      domain, legal pages): follow `docs/mise-en-ligne.md` before any deployment.
 
 ## Mockup data
 
