@@ -45,6 +45,8 @@ const BROWSE_PAGE_SIZE = 100;
 const ALBUM_PAGES = 2;
 const SINGLE_PAGES = 1;
 const MAX_GENRES = 5;
+/** Longest pause after a 503 / 429, whatever the attempt number or `Retry-After`. */
+const MAX_BACK_OFF_SECONDS = 30;
 /** Search ranking: live albums, compilations, remixes… after studio releases of equal score. */
 const SECONDARY_TYPE_PENALTY = 10;
 
@@ -81,7 +83,8 @@ export function createMusicBrainzProvider(options: MusicBrainzOptions): CatalogP
       }
       if (response.status === 503 || response.status === 429) {
         const retryAfter = Number(response.headers.get("retry-after"));
-        await options.throttle.backOff(retryAfter > 0 ? Math.min(retryAfter, 30) : 2 ** attempt);
+        const seconds = retryAfter > 0 ? retryAfter : 2 ** attempt;
+        await options.throttle.backOff(Math.min(seconds, MAX_BACK_OFF_SECONDS));
       }
     }
     throw new CatalogError(

@@ -28,7 +28,9 @@ const SEARCH_LIMIT = 25;
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const list = JSON.parse(readFileSync(path.join(here, "catalog-seed.json"), "utf8")) as SeedList;
-const same = (a: string, b: string) => slugify(a) === slugify(b);
+/** Same name once slugged; titles without Latin letters ("★") must match exactly. */
+const same = (a: string, b: string) =>
+  slugify(a) || slugify(b) ? slugify(a) === slugify(b) : a.trim() === b.trim();
 const overlaps = (a: string, b: string) =>
   slugify(a).includes(slugify(b)) || slugify(b).includes(slugify(a));
 
