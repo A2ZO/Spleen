@@ -151,7 +151,7 @@ Chaque jalon se termine par : lint + typecheck + tests verts, commit, mise à jo
 7. **Social** — suivre, fil, likes, commentaires, notifications, blocage, signalement.
 8. **Listes et découverte** — listes, tendances FR/EN, sorties récentes, classements par genre / année / décennie.
 9. **Admin, légal, finitions** — modération, fusion de doublons, pages légales, PWA, Open Graph, limitation de débit, accessibilité.
-10. **Mise en ligne** — tests Playwright des parcours clés (inscription → noter un album → le voir dans son journal et ses stats → suivre quelqu'un), déploiement sur Vercel Hobby + Neon, et une note `docs/deploiement.md` expliquant comment migrer vers Cloudflare Workers (OpenNext) le jour où le site devient commercial (vérifie la taille du worker générée).
+10. **Mise en ligne** — avant tout déploiement, suivre et cocher `docs/mise-en-ligne.md`. Puis tests Playwright des parcours clés (inscription → noter un album → le voir dans son journal et ses stats → suivre quelqu'un), déploiement sur Vercel Hobby + Neon, et une note `docs/deploiement.md` expliquant comment migrer vers Cloudflare Workers (OpenNext) le jour où le site devient commercial (vérifie la taille du worker générée).
 
 ## À ne pas faire
 
