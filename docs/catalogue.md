@@ -72,6 +72,9 @@ et à travers le pooler Neon (pas de verrou de session). Intervalle : 1,1 s.
   essai (3 au plus) ; échec → `CATALOG_UNAVAILABLE`. 404 / 400 → `CATALOG_NOT_FOUND`.
 - En plus, par membre : 60 recherches MusicBrainz et 30 imports par heure.
 - User-Agent obligatoire : `MUSICBRAINZ_USER_AGENT` (`Spleen/0.1 ( contact@… )`).
+- Le créneau est stocké **dans la base** : deux bases différentes (PGlite local et Neon
+  `dev`) utilisées en même temps depuis la même machine font deux limiteurs, donc jusqu'à
+  2 requêtes/s. Ne lance pas `db:seed:catalog` sur l'une pendant que l'autre importe.
 
 ## Pochettes
 

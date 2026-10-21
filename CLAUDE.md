@@ -15,8 +15,11 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
 - `apps/web`: Next.js 16 (App Router, Turbopack, `src/proxy.ts` = former middleware),
   React 19, Tailwind CSS 4 (CSS-first), next-intl 4. Next docs for this version:
   `apps/web/node_modules/next/dist/docs`.
-- `packages/api`: tRPC 11 routers = all business logic. Pages still read fixtures through
-  `src/mock/repository.ts`; routers move to the database in milestones 4–6.
+- `packages/api`: tRPC 11 routers = all business logic. Catalog pages and search read the
+  database (`src/lib/catalog`); home feed and member activity still read fixtures
+  (`src/mock/repository.ts`) until milestones 5–8.
+- `packages/catalog`: `CatalogProvider` + MusicBrainz implementation (no DB access), tested on
+  recorded responses (`@spleen/catalog/testing`). Flow, rules, limiter: `docs/catalogue.md`.
 - `packages/db`: Drizzle schema (`src/schema/*`, one file per domain), SQL migrations
   (`migrations/`), `createDb()`, `loadRootEnv()`, demo seed and fixtures (`@spleen/db/fixtures`).
 - `packages/auth`: Better Auth config (`createAuth()`, `getSessionUser()`), magic-link emails.
@@ -27,21 +30,21 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
 - `packages/design-tokens`: palette, dark / light themes, cover swatches, WCAG helpers;
   generates `generated/theme.css` for Tailwind.
 - `packages/config`: shared ESLint flat config, tsconfigs, Prettier.
-- To come: `packages/catalog` (MusicBrainz, M4), `apps/mobile` (Expo).
+- To come: `apps/mobile` (Expo).
 
 ## Commands (PowerShell, from the repo root)
 
 ```
 pnpm install
 pnpm dev                 # http://localhost:3000 (redirects to /fr or /en)
-pnpm lint; pnpm typecheck
+pnpm lint; pnpm typecheck; pnpm format         # format = Prettier write (CI: format:check)
 pnpm test                # Vitest in every package (always in-memory PGlite)
-pnpm format              # Prettier write (CI runs format:check)
 pnpm --filter @spleen/design-tokens generate   # after editing tokens
 pnpm db:generate         # new SQL migration after editing packages/db/src/schema
 pnpm db:migrate          # apply migrations (direct connection on Neon)
 pnpm db:seed             # migrate + insert demo data (idempotent) — never in production
 pnpm db:reset            # wipe the LOCAL PGlite database, migrate, seed (refuses Postgres)
+pnpm db:seed:catalog     # import packages/api/scripts/catalog-seed.json from MusicBrainz
 $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # Playwright with the installed Chrome
 ```
 
@@ -69,6 +72,7 @@ print only "set / missing" (or booleans like "starts with postgres://", "has -po
 | `GOOGLE_CLIENT_ID` / `_SECRET`              | Google OAuth client (Web)          | Google button (hidden if unset) |
 | `BREVO_API_KEY` / `EMAIL_FROM`              | Brevo v3 key / verified sender     | magic links (dev: terminal)     |
 | `S3_*` (endpoint, bucket, keys, public URL) | Cloudflare R2, EU bucket           | avatars (dev: `.data/uploads`)  |
+| `MUSICBRAINZ_USER_AGENT`                    | `Spleen/0.1 ( contact@… )`         | catalog imports (required)      |
 
 Where to get each value: `.env.example`. Production refuses to start without the auth,
 Brevo and S3 variables (`assertProductionConfig()`, `apps/web/src/instrumentation.ts`).
@@ -92,7 +96,11 @@ Brevo and S3 variables (`assertProductionConfig()`, `apps/web/src/instrumentatio
   (`targetColumns()` / `targetCheck()` in `src/schema/target.ts`).
 - Catalog rows are never hard-deleted (`on delete restrict`); duplicate merges re-point
   references first (milestone 9). Member data cascades when a user is deleted.
-- Fixture `ratingCounts` / `weeklyListens` are mockup-only (no fake raters are seeded).
+- Demo seed: members `<username>@example.test` (`nuitblanche` full shelf, `vinylvince`,
+  `rainydaysam` empty shelf), fictional artists/albums (generated covers). Fixture
+  `ratingCounts` / `weeklyListens` are mockup-only (home page). MusicBrainz imports carry
+  real data and Cover Art Archive covers. `computeBaseStats` (`src/lib/stats.ts` in api) is
+  the reference behaviour for the future SQL aggregates.
 
 ## Conventions
 
@@ -128,8 +136,7 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 
 ## Decisions and why
 
-- TypeScript 6.0, not 7: typescript-eslint 8.x requires < 6.1.
-- ESLint 9, not 10: Next's ESLint plugins do not support 10 yet.
+- TypeScript 6.0 (typescript-eslint 8 needs < 6.1); ESLint 9 (Next's plugins lack 10).
 - Drizzle ORM 0.45 / drizzle-kit 0.31: latest stable (1.0 was still a pre-release).
 - postgres.js, not Neon's serverless driver: plain Postgres protocol keeps hosting portable.
 - dotenv-cli for Next rather than one `.env` per app: a single secrets file.
@@ -138,6 +145,9 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
   header (Better Auth's official flow); no `sharp` (not on Workers): avatars resized client-side.
 - Public profiles: identity from the database, activity from fixtures for demo members
   until milestones 5-6 (`packages/api/src/lib/profiles.ts`).
+- Catalog: MusicBrainz WS/2 with plain `fetch` (no client library); global gate = one atomic
+  `rate_limits` statement (`reserveSlot`); imports and stub completion for members only;
+  covers from Cover Art Archive shown `unoptimized` (no image service, no quota).
 
 ## Pitfalls already met (and the fix)
 
@@ -148,8 +158,7 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 - Quotes or spaces around a URL in `.env` broke parsing; `createDb()` now throws on a
   malformed URL without echoing it. Never log raw DB errors that may contain the URL.
 - Neon pooler = PgBouncer transaction mode: no `SET`, `LISTEN`, session advisory locks or
-  SQL `PREPARE` (protocol-level prepared statements are fine). Migrations need the direct URL.
-- Neon free tier sleeps after 5 min: first query is slow (`connect_timeout: 15`).
+  SQL `PREPARE`. Migrations need the direct URL. Free tier sleeps after 5 min (slow 1st query).
 - Next 16 allows one dev server per app; Playwright reuses port 3000. Stopping turbo may
   leave `next` running on Windows: `Get-NetTCPConnection -LocalPort 3000` → `Stop-Process`.
   The dev log `apps/web/.next/dev/logs` can contain error details: never paste it as is.
@@ -159,10 +168,13 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 - Two drizzle-orm copies (different peer sets) break types: import `sql`, `eq`… from
   `@spleen/db`, never from `drizzle-orm` outside packages/db.
 - Client components import `@spleen/api/errors` (or types only), never `@spleen/api`.
-- drizzle-kit writes unformatted `migrations/meta/*.json`: run Prettier on them.
-- Backticks inside `node -e "…"` / unquoted heredocs run as shell commands: use the editor.
-- PowerShell `Set-Content -Encoding utf8` writes a BOM: write files with the editor tools.
-- next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`.
+  drizzle-kit writes unformatted `migrations/meta/*.json`: run Prettier on them.
+- Backticks in `node -e "…"` / unquoted heredocs run as shell commands; PowerShell
+  `Set-Content -Encoding utf8` writes a BOM: write files with the editor tools.
+- next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`. Typed message
+  keys: map dynamic values through typed helpers (`apps/web/src/lib/catalog-labels.ts`).
+- MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
+  keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
 
 ## Git
 
@@ -179,21 +191,10 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
       migrations) with PGlite fallback, idempotent demo seed, `/api/health`.
 - [x] 3. Accounts: Better Auth magic link + optional Google (+ Expo plugin), onboarding,
       settings, @username history, avatars, export, deletion.
-- [ ] 4. Catalog — next: `CatalogProvider` (MusicBrainz + Cover Art Archive), global 1 req/s
-      limiter in Postgres, on-demand import, local search, album/artist/track pages,
-      `db:seed:catalog`. The user provides a contact email for `MUSICBRAINZ_USER_AGENT`.
-- [ ] 5. Listening
-- [ ] 6. Profile & base stats
-- [ ] 7. Social
-- [ ] 8. Lists & discovery
-- [ ] 9. Admin, legal, polish
+- [x] 4. Catalog: `CatalogProvider` (MusicBrainz + Cover Art Archive), Postgres 1 req/s gate,
+      on-demand import (stubs), trigram search, album/artist/track pages, `db:seed:catalog`.
+- [ ] 5. Listening — next: "J'ai écouté", ratings, likes, reviews, diary, moods, formats,
+      relistens, track ratings, "À écouter", blind mode (real `entries` / `user_item_state`).
+- [ ] 6. Profile & base stats · 7. Social · 8. Lists & discovery · 9. Admin, legal, polish
 - [ ] 10. Launch. **Real services are not connected yet** (Google, Brevo, R2, Neon `main`,
       domain, legal pages): follow `docs/mise-en-ligne.md` before any deployment.
-
-## Mockup data
-
-- Fake members (`<username>@example.test`): `nuitblanche` (full shelf), `vinylvince`,
-  `rainydaysam` (empty shelf). Artists and albums are fictional; covers are generated from
-  the slug (`Cover`) until Cover Art Archive is wired.
-- `computeBaseStats` (`packages/api/src/lib/stats.ts`) is the reference behaviour for the
-  future SQL aggregates.
