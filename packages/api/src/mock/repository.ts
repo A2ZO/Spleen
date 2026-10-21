@@ -1,14 +1,17 @@
-import { artists, releases, type ReleaseFixture } from "../fixtures/catalog";
 import {
+  artists,
   diaryEntries,
   lists,
+  releases,
   reviews,
   users,
   type DiaryFixture,
   type ListFixture,
+  type ReleaseFixture,
   type ReviewFixture,
   type UserFixture,
-} from "../fixtures/social";
+} from "@spleen/db/fixtures";
+
 import { buildListenLinks } from "../lib/listen-links";
 import { averageFromDistribution, countRatings } from "../lib/ratings";
 import { computeBaseStats } from "../lib/stats";

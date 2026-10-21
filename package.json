@@ -14,7 +14,11 @@
     "test": "turbo run test",
     "e2e": "turbo run e2e",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:generate": "pnpm --filter @spleen/db generate",
+    "db:migrate": "pnpm --filter @spleen/db migrate",
+    "db:seed": "pnpm --filter @spleen/db seed",
+    "db:reset": "pnpm --filter @spleen/db reset"
   },
   "devDependencies": {
     "@spleen/config": "workspace:*",
