@@ -219,9 +219,13 @@ export function createMusicBrainzProvider(options: MusicBrainzOptions): CatalogP
  * "miles davis kind of blue" finds the album rather than anything titled "Miles Davis".
  */
 function everyWordIn(text: string, titleField: string, artistField: string): string {
-  return text
+  // "&", "-" or "†" alone are not words: as required terms they would match nothing.
+  const words = text
     .trim()
     .split(/\s+/)
+    .filter((word) => /[\p{L}\p{N}]/u.test(word));
+  if (words.length === 0) return `${titleField}:(${escapeLucene(text.trim())})`;
+  return words
     .map(escapeLucene)
     .map((word) => `(${titleField}:${word} OR ${artistField}:${word})`)
     .join(" AND ");

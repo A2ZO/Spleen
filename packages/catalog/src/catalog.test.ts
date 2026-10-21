@@ -161,6 +161,20 @@ describe("MusicBrainz provider (errors)", () => {
     );
   });
 
+  it("requires every word, ignoring punctuation-only ones", async () => {
+    const fetchMock = vi.fn(async () => new Response('{"release-groups":[]}'));
+    const provider = createMusicBrainzProvider({
+      userAgent: "Spleen-test/0.1 ( test@example.test )",
+      throttle: noThrottle(),
+      fetch: fetchMock as unknown as typeof fetch,
+    });
+    await provider.searchReleaseGroups("Simon & Garfunkel");
+    const [url] = fetchMock.mock.calls[0] as unknown as [string];
+    expect(new URL(url).searchParams.get("query")).toBe(
+      "(releasegroup:Simon OR artist:Simon) AND (releasegroup:Garfunkel OR artist:Garfunkel)",
+    );
+  });
+
   it("backs every caller off on 503 and retries", async () => {
     const { provider, throttle, fetchMock } = withResponses(503, 200);
     expect((await provider.getArtist("x")).name).toBe("X");
