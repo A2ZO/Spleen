@@ -1,6 +1,8 @@
 import { createDb, seed, type DbHandle } from "@spleen/db";
+import { loadMessages, locales } from "@spleen/i18n";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { API_ERROR_CODES } from "./errors";
 import { buildListenLinks } from "./lib/listen-links";
 import { averageFromDistribution } from "./lib/ratings";
 import { computeBaseStats, type StatsInput } from "./lib/stats";
@@ -151,5 +153,14 @@ describe("computeBaseStats", () => {
     ]);
     expect(stats.activityByMonth[2]).toBe(1);
     expect(stats.activityByMonth[4]).toBe(1);
+  });
+});
+
+describe("error codes", () => {
+  it("all have a message in both languages", async () => {
+    for (const locale of locales) {
+      const messages = await loadMessages(locale);
+      for (const code of API_ERROR_CODES) expect(messages.errors[code]).toBeTruthy();
+    }
   });
 });

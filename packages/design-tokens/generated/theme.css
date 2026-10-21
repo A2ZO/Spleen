@@ -13,6 +13,7 @@
   --sp-accent-fg: #F3EAD8;
   --sp-star: #C9A25C;
   --sp-link: #A9BCE3;
+  --sp-danger: #F0A8A8;
   --sp-midnight: #1E2A44;
   --sp-wood: #5A3B26;
   --sp-wood-dark: #3B2618;
@@ -33,6 +34,7 @@
   --sp-accent-fg: #F3EAD8;
   --sp-star: #7A5B22;
   --sp-link: #1E2A44;
+  --sp-danger: #8E1F2B;
   --sp-midnight: #1E2A44;
   --sp-wood: #8A5E3C;
   --sp-wood-dark: #6B4529;
@@ -52,6 +54,7 @@
   --color-accent-fg: var(--sp-accent-fg);
   --color-star: var(--sp-star);
   --color-link: var(--sp-link);
+  --color-danger: var(--sp-danger);
   --color-midnight: var(--sp-midnight);
   --color-wood: var(--sp-wood);
   --color-wood-dark: var(--sp-wood-dark);

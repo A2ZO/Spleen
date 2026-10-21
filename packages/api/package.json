@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./errors": "./src/errors.ts"
   },
   "scripts": {
     "lint": "eslint .",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@spleen/config": "workspace:*",
+    "@spleen/i18n": "workspace:*",
     "@types/node": "24.19.2",
     "eslint": "9.39.5",
     "typescript": "6.0.3",
