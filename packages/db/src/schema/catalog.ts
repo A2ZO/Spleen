@@ -8,6 +8,7 @@ import {
   primaryKey,
   smallint,
   text,
+  timestamp,
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
@@ -28,8 +29,12 @@ export const artists = pgTable(
     sortName: text("sort_name"),
     disambiguation: text("disambiguation"),
     country: varchar("country", { length: 2 }),
+    /** "person", "group", "orchestra"… as given by the catalog provider. */
+    type: text("type"),
     imageUrl: text("image_url"),
     mbid: uuid("mbid").unique(),
+    /** Set once the discography has been imported (its releases may still be stubs). */
+    discographyImportedAt: timestamp("discography_imported_at", { withTimezone: true }),
     ...timestamps(),
   },
   (t) => [
@@ -48,6 +53,11 @@ export const releases = pgTable(
     slug: text("slug").notNull().unique(),
     title: text("title").notNull(),
     type: releaseType("type").notNull(),
+    /** MusicBrainz secondary types: "live", "compilation", "soundtrack", "remix"… */
+    secondaryTypes: text("secondary_types")
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
     releaseDate: date("release_date"),
     releaseDatePrecision: datePrecision("release_date_precision"),
     coverUrl: text("cover_url"),
@@ -55,8 +65,13 @@ export const releases = pgTable(
     language: varchar("language", { length: 8 }),
     /** MusicBrainz release-group id. */
     mbid: uuid("mbid").unique(),
-    /** MusicBrainz release chosen as the reference tracklist (rule documented in milestone 4). */
+    /** MusicBrainz release chosen as the reference tracklist (rule in docs/catalogue.md). */
     referenceReleaseMbid: uuid("reference_release_mbid"),
+    /**
+     * Set once the tracklist, genres and cover are imported. Null = stub (known from an
+     * artist's discography only), completed when its page is opened by a member.
+     */
+    tracklistImportedAt: timestamp("tracklist_imported_at", { withTimezone: true }),
     ...timestamps(),
   },
   (t) => [

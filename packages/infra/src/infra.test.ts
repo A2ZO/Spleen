@@ -7,7 +7,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { assertProductionConfig, googleConfigured, missingProductionVariables } from "./config";
 import { createBrevoMailer, createDevMailer, createMailer, parseSender } from "./email";
-import { consumeRateLimit } from "./rate-limit";
+import { consumeRateLimit, deferSlots, reserveSlot } from "./rate-limit";
 import { createLocalStorage, createStorage } from "./storage";
 
 const email = { to: "camille@example.test", subject: "Hi", text: "Text", html: "<p>Html</p>" };
@@ -179,5 +179,32 @@ describe("rate limit", () => {
     expect((await consumeRateLimit(handle.db, "short", rule)).allowed).toBe(false);
     await new Promise((resolve) => setTimeout(resolve, 1100));
     expect((await consumeRateLimit(handle.db, "short", rule)).allowed).toBe(true);
+  });
+
+  it("hands out one global slot per interval, in order, even to concurrent callers", async () => {
+    const rule = { intervalMs: 1000, maxWaitMs: 10_000 };
+    const waits = await Promise.all(
+      Array.from({ length: 4 }, () => reserveSlot(handle.db, "global", rule)),
+    );
+    const sorted = [...waits].map(Number).sort((a, b) => a - b);
+    expect(sorted[0]).toBe(0);
+    sorted.slice(1).forEach((wait, i) => {
+      expect(wait - sorted[i]!).toBeGreaterThan(900);
+      expect(wait - sorted[i]!).toBeLessThan(1100);
+    });
+  });
+
+  it("refuses a slot when the queue is too long, and backs everyone off", async () => {
+    const rule = { intervalMs: 1000, maxWaitMs: 1500 };
+    expect(await reserveSlot(handle.db, "busy", rule)).toBe(0);
+    expect(await reserveSlot(handle.db, "busy", rule)).toBeGreaterThan(900);
+    // The next free slot is 2 s away, beyond the 1.5 s the caller accepts to wait.
+    expect(await reserveSlot(handle.db, "busy", rule)).toBeNull();
+
+    await deferSlots(handle.db, "deferred", 30);
+    expect(await reserveSlot(handle.db, "deferred", rule)).toBeNull();
+    expect(
+      await reserveSlot(handle.db, "deferred", { intervalMs: 1000, maxWaitMs: 60_000 }),
+    ).toBeGreaterThan(29_000);
   });
 });
