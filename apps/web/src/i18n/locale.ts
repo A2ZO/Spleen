@@ -11,3 +11,8 @@ export function initRouteLocale(value: string): Locale {
   setRequestLocale(value);
   return value;
 }
+
+/** Locale for `generateMetadata` (unknown values fall back; the page itself 404s). */
+export function metadataLocale(value: string): Locale {
+  return hasLocale(routing.locales, value) ? value : routing.defaultLocale;
+}

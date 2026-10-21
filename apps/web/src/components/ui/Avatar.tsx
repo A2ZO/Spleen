@@ -3,16 +3,32 @@ import { hashString } from "@/lib/hash";
 
 const TONES = ["bg-accent", "bg-midnight", "bg-wood-dark"] as const;
 
-/** Initials avatar until uploads exist (milestone 3). Decorative: the name is always shown nearby. */
+/**
+ * Uploaded avatar, or initials when there is none. Decorative: the name is always shown
+ * nearby.
+ */
 export function Avatar({
   name,
   seed,
+  src,
   className,
 }: {
   name: string;
   seed: string;
+  src?: string | null;
   className?: string;
 }) {
+  const frame = "inline-flex size-10 shrink-0 rounded-full ring-2 ring-border";
+
+  if (src) {
+    return (
+      // Plain <img>: member uploads come from our storage host (R2 or the dev route),
+      // already resized to 512 px, so Next's optimizer would add nothing.
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={src} alt="" className={cn(frame, "object-cover", className)} />
+    );
+  }
+
   const initials = name
     .split(/\s+/)
     .map((part) => part[0])
@@ -25,7 +41,8 @@ export function Avatar({
     <span
       aria-hidden="true"
       className={cn(
-        "inline-flex size-10 shrink-0 items-center justify-center rounded-full font-serif text-accent-fg italic ring-2 ring-border",
+        frame,
+        "items-center justify-center font-serif text-accent-fg italic",
         tone,
         className,
       )}

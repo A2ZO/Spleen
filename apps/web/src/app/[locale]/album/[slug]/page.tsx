@@ -21,7 +21,7 @@ type Props = { params: Promise<{ locale: string; slug: string }> };
 const getRelease = cache(async (slug: string) => {
   const parsed = slugSchema.safeParse(slug);
   if (!parsed.success) return null;
-  return getApi().release.bySlug({ slug: parsed.data });
+  return (await getApi()).release.bySlug({ slug: parsed.data });
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
