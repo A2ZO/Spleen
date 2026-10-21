@@ -91,7 +91,7 @@ pnpm db:seed:catalog
 ```
 
 Importe les artistes et albums de `packages/api/scripts/catalog-seed.json` (artiste + titre,
-résolus par la recherche MusicBrainz, score ≥ 90). Idempotent ; les introuvables sont listés
+résolus par la recherche MusicBrainz : titre et artiste identiques, sortie principale de préférence ; les scores MusicBrainz sont relatifs, pas de seuil). Idempotent ; les introuvables sont listés
 à la fin. Passe par le même limiteur que le site. Jamais en CI.
 
 ## Tests

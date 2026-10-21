@@ -8,7 +8,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import type { CatalogProvider } from "@spleen/catalog";
+import { isMainRelease, type CatalogProvider } from "@spleen/catalog";
 import { createDb, loadRootEnv, migrationDatabaseUrl, slugify, sql, type Db } from "@spleen/db";
 
 import { importArtist, importReleaseGroup } from "../src/lib/catalog/import";
@@ -19,8 +19,12 @@ interface SeedList {
   releases: { artist: string; title: string }[];
 }
 
-/** Minimum MusicBrainz relevance (0..100) for a search hit to be imported. */
-const MIN_SCORE = 90;
+/**
+ * Search hits examined per release. MusicBrainz scores are relative (the real "Rumours"
+ * scores 70 behind a compilation titled "Fleetwood Mac / Rumours"), so hits are matched on
+ * exact title and artist instead of a score threshold.
+ */
+const SEARCH_LIMIT = 25;
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const list = JSON.parse(readFileSync(path.join(here, "catalog-seed.json"), "utf8")) as SeedList;
@@ -44,20 +48,21 @@ async function alreadyImported(db: Db, artist: string, title: string): Promise<b
 
 async function seedArtist(db: Db, provider: CatalogProvider, name: string) {
   const hits = await provider.searchArtists(name, 5);
-  const hit = hits.find((h) => h.score >= MIN_SCORE && same(h.item.name, name)) ?? null;
+  const hit = hits.find((h) => same(h.item.name, name)) ?? null;
   if (!hit) return null;
   return importArtist(db, provider, hit.item.mbid);
 }
 
 async function seedRelease(db: Db, provider: CatalogProvider, artist: string, title: string) {
   if (await alreadyImported(db, artist, title)) return "skipped";
-  const hits = await provider.searchReleaseGroups(`${artist} ${title}`, 10);
-  const hit = hits.find(
-    ({ score, item }) =>
-      score >= MIN_SCORE &&
+  const hits = await provider.searchReleaseGroups(`${artist} ${title}`, SEARCH_LIMIT);
+  const matches = hits.filter(
+    ({ item }) =>
       same(item.title, title) &&
       item.artists.some((credit) => overlaps(credit.artist.name, artist)),
   );
+  // The studio album rather than its live version or a reissue compilation of the same name.
+  const hit = matches.find(({ item }) => isMainRelease(item.secondaryTypes)) ?? matches[0];
   if (!hit) return null;
   return importReleaseGroup(db, provider, hit.item.mbid);
 }
