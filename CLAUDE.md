@@ -178,8 +178,7 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 - [x] 2. Database: full Drizzle schema, constraints and indexes, Neon (pooled app / direct
       migrations) with PGlite fallback, idempotent demo seed, `/api/health`.
 - [x] 3. Accounts: Better Auth magic link + optional Google (+ Expo plugin), onboarding,
-      settings, @username history, avatars, export, deletion. Before production the user
-      creates: Google OAuth client, Brevo key + sender, R2 bucket.
+      settings, @username history, avatars, export, deletion.
 - [ ] 4. Catalog — next: `CatalogProvider` (MusicBrainz + Cover Art Archive), global 1 req/s
       limiter in Postgres, on-demand import, local search, album/artist/track pages,
       `db:seed:catalog`. The user provides a contact email for `MUSICBRAINZ_USER_AGENT`.
@@ -188,7 +187,8 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 - [ ] 7. Social
 - [ ] 8. Lists & discovery
 - [ ] 9. Admin, legal, polish
-- [ ] 10. Launch
+- [ ] 10. Launch. **Real services are not connected yet** (Google, Brevo, R2, Neon `main`,
+      domain, legal pages): follow `docs/mise-en-ligne.md` before any deployment.
 
 ## Mockup data
 
