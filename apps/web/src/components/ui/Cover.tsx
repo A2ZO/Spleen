@@ -39,7 +39,16 @@ export function Cover({
       )}
     >
       {coverUrl ? (
-        <Image src={coverUrl} alt={alt} fill sizes={sizes ?? "200px"} className="object-cover" />
+        // Covers come from Cover Art Archive in ready-made sizes: no image optimisation
+        // (no host-specific service, no quota), the browser follows the redirect itself.
+        <Image
+          src={coverUrl}
+          alt={alt}
+          fill
+          unoptimized
+          sizes={sizes ?? "200px"}
+          className="object-cover"
+        />
       ) : (
         <GeneratedCover
           slug={slug}

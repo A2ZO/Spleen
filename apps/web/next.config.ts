@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   transpilePackages: [
     "@spleen/api",
     "@spleen/auth",
+    "@spleen/catalog",
     "@spleen/db",
     "@spleen/design-tokens",
     "@spleen/i18n",
@@ -18,6 +19,12 @@ const nextConfig: NextConfig = {
   ],
   // PGlite (local fallback database) loads its WebAssembly files at runtime: keep it unbundled.
   serverExternalPackages: ["@electric-sql/pglite"],
+  // Covers are served unoptimised (see Cover); only Cover Art Archive may be used.
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "coverartarchive.org", pathname: "/release-group/**" },
+    ],
+  },
 };
 
 export default withNextIntl(nextConfig);

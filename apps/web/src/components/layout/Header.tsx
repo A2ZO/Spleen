@@ -4,6 +4,7 @@ import { buttonClasses } from "@/components/ui/Button";
 import { Link } from "@/i18n/navigation";
 import { getApi } from "@/server/api";
 
+import { HeaderSearch } from "./HeaderSearch";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
@@ -22,7 +23,7 @@ export async function Header() {
           <Logo />
           <span className="sr-only">{t("home")}</span>
         </Link>
-        <nav aria-label={t("label")} className="ml-auto sm:ml-6">
+        <nav aria-label={t("label")} className="hidden sm:ml-6 sm:block">
           <ul className="flex items-center gap-1 text-sm">
             <li className="hidden sm:block">
               <Link href="/" className="rounded-md px-3 py-2 text-fg-muted hover:text-fg">
@@ -41,7 +42,8 @@ export async function Header() {
             )}
           </ul>
         </nav>
-        <div className="flex items-center gap-2 sm:ml-auto">
+        <HeaderSearch />
+        <div className="flex items-center gap-2">
           <LocaleSwitcher />
           <ThemeToggle />
           {me ? (

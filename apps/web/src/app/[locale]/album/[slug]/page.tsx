@@ -1,19 +1,26 @@
+import type { Track } from "@spleen/api";
 import { ratingToStars, slugSchema } from "@spleen/validators";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
+import { ArtistLinks } from "@/components/catalog/ArtistLinks";
+import { CatalogNotice } from "@/components/catalog/CatalogNotice";
+import { ListenOn } from "@/components/catalog/ListenOn";
+import { SecondaryTypes } from "@/components/catalog/SecondaryTypes";
 import { ListenControls } from "@/components/release/ListenControls";
 import { ListCard } from "@/components/social/ListCard";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { Badge } from "@/components/ui/Badge";
 import { Cover } from "@/components/ui/Cover";
-import { ExternalIcon, FlagIcon } from "@/components/ui/icons";
+import { FlagIcon } from "@/components/ui/icons";
 import { RatingHistogram } from "@/components/ui/RatingHistogram";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Stars } from "@/components/ui/Stars";
 import { initRouteLocale } from "@/i18n/locale";
+import { Link } from "@/i18n/navigation";
+import { formatDuration, formatReleaseDate } from "@/lib/release-date";
 import { getApi } from "@/server/api";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -31,9 +38,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: `${release.title} – ${release.artists.map((a) => a.name).join(", ")}` };
 }
 
-function formatDuration(ms: number) {
-  const total = Math.round(ms / 1000);
-  return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
+/** Tracks grouped by disc (a single group for one-disc releases). */
+function byDisc(tracks: Track[]): [number, Track[]][] {
+  const discs = new Map<number, Track[]>();
+  for (const track of tracks) discs.set(track.disc, [...(discs.get(track.disc) ?? []), track]);
+  return [...discs.entries()];
 }
 
 export default async function AlbumPage({ params }: Props) {
@@ -44,8 +53,24 @@ export default async function AlbumPage({ params }: Props) {
 
   const t = await getTranslations();
   const format = await getFormatter();
-  const artistNames = release.artists.map((a) => a.name).join(", ");
   const average = release.averageRating;
+  const signedIn = release.isStub ? !!(await (await getApi()).account.me()) : false;
+  const discs = byDisc(release.tracks);
+
+  const facts = [
+    release.releaseDate
+      ? release.releaseDatePrecision === "day"
+        ? t("album.releasedOn", {
+            date: formatReleaseDate(format, release.releaseDate, "day"),
+          })
+        : t("album.releasedIn", {
+            date: formatReleaseDate(format, release.releaseDate, release.releaseDatePrecision),
+          })
+      : t("album.dateUnknown"),
+    release.tracks.length > 0 && t("album.trackCount", { count: release.tracks.length }),
+    release.totalDurationMs > 0 &&
+      t("album.duration", { minutes: Math.round(release.totalDurationMs / 60000) }),
+  ].filter(Boolean);
 
   return (
     <article className="space-y-16">
@@ -63,38 +88,33 @@ export default async function AlbumPage({ params }: Props) {
         <div className="min-w-0">
           <div className="flex flex-wrap gap-2">
             <Badge>{t(`releaseType.${release.type}`)}</Badge>
-            <Badge>{release.year}</Badge>
+            <SecondaryTypes types={release.secondaryTypes} />
+            {release.year !== null && <Badge>{String(release.year)}</Badge>}
           </div>
           <h1 className="mt-3 text-4xl leading-tight font-semibold text-balance sm:text-5xl">
             {release.title}
           </h1>
           <p className="mt-2 text-lg">
             <span className="text-fg-muted">{t("album.by")} </span>
-            {artistNames}
+            <ArtistLinks artists={release.artists} />
           </p>
-          <p className="mt-1 text-sm text-fg-muted">
-            {t("album.releasedOn", {
-              date: format.dateTime(new Date(release.releaseDate), { dateStyle: "long" }),
-            })}
-            {" · "}
-            {t("album.trackCount", { count: release.tracks.length })}
-            {" · "}
-            {t("album.duration", { minutes: Math.round(release.totalDurationMs / 60000) })}
-          </p>
+          <p className="mt-1 text-sm text-fg-muted">{facts.join(" · ")}</p>
 
-          <div className="mt-6">
-            <h2 className="sr-only">{t("album.genres")}</h2>
-            <ul className="flex flex-wrap gap-2">
-              {release.genres.map((genre) => (
-                <li
-                  key={genre}
-                  className="rounded-full border border-border px-3 py-1 text-sm text-fg-muted"
-                >
-                  {genre}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {release.genres.length > 0 && (
+            <div className="mt-6">
+              <h2 className="sr-only">{t("album.genres")}</h2>
+              <ul className="flex flex-wrap gap-2">
+                {release.genres.map((genre) => (
+                  <li
+                    key={genre}
+                    className="rounded-full border border-border px-3 py-1 text-sm text-fg-muted"
+                  >
+                    {genre}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <section aria-labelledby="ratings" className="mt-8 max-w-md">
             <h2 id="ratings" className="font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">
@@ -129,29 +149,7 @@ export default async function AlbumPage({ params }: Props) {
 
         <aside className="space-y-6">
           <ListenControls />
-          <section aria-labelledby="listen-on">
-            <h2
-              id="listen-on"
-              className="font-mono text-xs tracking-[0.2em] text-fg-muted uppercase"
-            >
-              {t("album.listenOn")}
-            </h2>
-            <ul className="mt-3 grid grid-cols-2 gap-2">
-              {release.listenLinks.map((link) => (
-                <li key={link.service}>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between gap-2 rounded-md border border-border px-3 py-2 text-sm text-link hover:border-link"
-                  >
-                    {t(`services.${link.service}`)}
-                    <ExternalIcon className="text-xs opacity-70" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </section>
+          <ListenOn links={release.listenLinks} />
           <button
             type="button"
             className="flex items-center gap-2 text-xs text-fg-muted hover:text-fg"
@@ -164,19 +162,49 @@ export default async function AlbumPage({ params }: Props) {
       <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
         <section aria-labelledby="tracklist">
           <SectionHeading id="tracklist">{t("album.tracklist")}</SectionHeading>
-          <ol className="divide-y divide-border/50">
-            {release.tracks.map((track) => (
-              <li key={track.position} className="flex items-baseline gap-4 py-2.5">
-                <span className="w-6 shrink-0 text-right font-mono text-xs text-fg-muted">
-                  {track.position}
-                </span>
-                <span className="flex-1">{track.title}</span>
-                <span className="font-mono text-xs text-fg-muted tabular">
-                  {formatDuration(track.durationMs)}
-                </span>
-              </li>
-            ))}
-          </ol>
+          {release.isStub ? (
+            <div className="space-y-2">
+              <p className="font-serif text-lg text-fg-muted italic">{t("album.stubTitle")}</p>
+              <CatalogNotice
+                signedIn={signedIn}
+                memberText={t("album.stubMember")}
+                visitorText={t("album.stubVisitor")}
+              />
+            </div>
+          ) : release.tracks.length === 0 ? (
+            <p className="font-serif text-lg text-fg-muted italic">{t("album.noTracks")}</p>
+          ) : (
+            discs.map(([disc, tracks]) => (
+              <div key={disc} className="mb-6 last:mb-0">
+                {discs.length > 1 && (
+                  <h3 className="mb-1 font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">
+                    {t("album.disc", { number: disc })}
+                  </h3>
+                )}
+                <ol className="divide-y divide-border/50">
+                  {tracks.map((track) => (
+                    <li key={track.position} className="flex items-baseline gap-4 py-2.5">
+                      <span className="w-6 shrink-0 text-right font-mono text-xs text-fg-muted">
+                        {track.position}
+                      </span>
+                      <span className="flex-1">
+                        {track.slug ? (
+                          <Link href={`/track/${track.slug}`} className="hover:text-star">
+                            {track.title}
+                          </Link>
+                        ) : (
+                          track.title
+                        )}
+                      </span>
+                      <span className="font-mono text-xs text-fg-muted tabular">
+                        {track.durationMs === null ? "–" : formatDuration(track.durationMs)}
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))
+          )}
         </section>
 
         <section aria-labelledby="reviews">

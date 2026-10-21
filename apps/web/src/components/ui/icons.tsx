@@ -109,3 +109,12 @@ export function PlusIcon(props: IconProps) {
     </Icon>
   );
 }
+
+export function SearchIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m20 20-4.2-4.2" />
+    </Icon>
+  );
+}
