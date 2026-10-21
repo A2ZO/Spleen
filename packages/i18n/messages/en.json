@@ -152,5 +152,16 @@
     "attribution": "Charles Baudelaire, “Spleen”, Les Fleurs du mal (1857)",
     "body": "This page got lost in the rain. The record you're looking for isn't on this shelf.",
     "back": "Back to home"
+  },
+  "email": {
+    "magicLink": {
+      "subject": "Your link to sign in to Spleen",
+      "preview": "One click, and the turntable spins again.",
+      "greeting": "Good evening,",
+      "body": "Here is your link to sign in to Spleen. It is valid for 15 minutes and works only once.",
+      "cta": "Sign in to Spleen",
+      "fallback": "If the button does not work, paste this link into your browser:",
+      "ignore": "Did not ask for this? Just ignore this email."
+    }
   }
 }

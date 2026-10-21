@@ -152,5 +152,16 @@
     "attribution": "Charles Baudelaire, « Spleen », Les Fleurs du mal (1857)",
     "body": "Cette page s'est perdue sous la pluie. Le disque que tu cherches n'est pas sur cette étagère.",
     "back": "Retourner à l'accueil"
+  },
+  "email": {
+    "magicLink": {
+      "subject": "Ton lien pour entrer dans Spleen",
+      "preview": "Un clic, et la platine se remet à tourner.",
+      "greeting": "Bonsoir,",
+      "body": "Voici ton lien pour te connecter à Spleen. Il reste valable 15 minutes et ne sert qu'une fois.",
+      "cta": "Entrer dans Spleen",
+      "fallback": "Si le bouton ne marche pas, copie ce lien dans ton navigateur :",
+      "ignore": "Tu n'as rien demandé ? Ignore simplement cet email."
+    }
   }
 }
