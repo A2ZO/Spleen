@@ -19,3 +19,25 @@ export const slugSchema = z
 export const audienceLangs = ["fr", "en"] as const;
 export const audienceLangSchema = z.enum(audienceLangs);
 export type AudienceLang = z.infer<typeof audienceLangSchema>;
+
+/** What the unified search looks for. */
+export const searchKinds = ["all", "release", "artist", "track"] as const;
+export const searchKindSchema = z.enum(searchKinds);
+export type SearchKind = z.infer<typeof searchKindSchema>;
+
+export const catalogSearchSchema = z.object({
+  q: z.string().trim().min(1).max(100),
+  type: searchKindSchema.default("all"),
+});
+export type CatalogSearchInput = z.infer<typeof catalogSearchSchema>;
+
+/** MusicBrainz identifier (any UUID layout). */
+export const mbidSchema = z.guid();
+
+/** Entities a member can import from the catalog provider. */
+export const importKinds = ["release_group", "artist", "recording"] as const;
+export const importKindSchema = z.enum(importKinds);
+export type ImportKind = z.infer<typeof importKindSchema>;
+
+export const catalogImportSchema = z.object({ kind: importKindSchema, mbid: mbidSchema });
+export type CatalogImportInput = z.infer<typeof catalogImportSchema>;

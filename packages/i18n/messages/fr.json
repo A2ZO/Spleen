@@ -92,7 +92,14 @@
       "like": "Coup de cœur",
       "wantToListen": "À écouter",
       "mockNote": "Maquette : rien n'est enregistré pour l'instant."
-    }
+    },
+    "releasedIn": "Sorti en {date}",
+    "dateUnknown": "Date de sortie inconnue",
+    "disc": "Disque {number}",
+    "stubTitle": "La liste des titres arrive",
+    "stubMember": "Elle n'a pas encore pu être importée depuis MusicBrainz. Recharge la page dans un instant.",
+    "stubVisitor": "Connecte-toi pour importer la liste des titres depuis MusicBrainz.",
+    "noTracks": "MusicBrainz ne connaît pas encore la liste des titres de ce disque."
   },
   "services": {
     "spotify": "Spotify",
@@ -254,6 +261,77 @@
     "AVATAR_TYPE": "Ce fichier n'est pas une image JPEG, PNG ou WebP.",
     "RATE_LIMITED": "Trop de tentatives. Réessaie un peu plus tard.",
     "CONFIRMATION_MISMATCH": "Le pseudo ne correspond pas.",
+    "CATALOG_BUSY": "MusicBrainz est très demandé en ce moment. Réessaie dans une minute.",
+    "CATALOG_UNAVAILABLE": "MusicBrainz ne répond pas. Réessaie un peu plus tard.",
+    "CATALOG_NOT_FOUND": "MusicBrainz ne connaît pas ce disque.",
     "unknown": "Quelque chose s'est mal passé. Réessaie."
+  },
+  "secondaryType": {
+    "compilation": "Compilation",
+    "soundtrack": "Bande originale",
+    "spokenword": "Texte lu",
+    "interview": "Interview",
+    "audiobook": "Livre audio",
+    "audiodrama": "Fiction audio",
+    "live": "Live",
+    "remix": "Remix",
+    "djmix": "DJ mix",
+    "mixtapestreet": "Mixtape",
+    "demo": "Démo",
+    "fieldrecording": "Enregistrement de terrain"
+  },
+  "artist": {
+    "kind": {
+      "person": "Artiste",
+      "group": "Groupe",
+      "orchestra": "Orchestre",
+      "choir": "Chœur",
+      "other": "Artiste"
+    },
+    "albums": "Albums",
+    "eps": "EP",
+    "singles": "Singles",
+    "other": "Live, compilations et autres",
+    "empty": "Aucun disque connu pour l'instant.",
+    "pendingMember": "La discographie n'a pas encore pu être importée depuis MusicBrainz. Recharge la page dans un instant.",
+    "pendingVisitor": "Connecte-toi pour importer toute la discographie depuis MusicBrainz.",
+    "imageAlt": "{name}"
+  },
+  "track": {
+    "kicker": "Morceau",
+    "appearsOn": "Apparaît sur",
+    "notOnRelease": "Ce morceau n'est rattaché à aucun disque pour l'instant.",
+    "duration": "Durée : {duration}"
+  },
+  "search": {
+    "metaTitle": "Recherche",
+    "title": "Recherche",
+    "resultsFor": "Résultats pour « {q} »",
+    "prompt": "Cherche un album, un artiste ou un morceau.",
+    "filtersLabel": "Type de résultat",
+    "filter": {
+      "all": "Tout",
+      "release": "Disques",
+      "artist": "Artistes",
+      "track": "Morceaux"
+    },
+    "releases": "Albums, EP et singles",
+    "artists": "Artistes",
+    "tracks": "Morceaux",
+    "empty": "Rien de tel dans Spleen pour l'instant.",
+    "remoteTitle": "Pas trouvé ? Cherche sur MusicBrainz",
+    "remoteHint": "La base musicale libre d'où vient le catalogue de Spleen. On ajoute le disque une fois pour toutes.",
+    "remoteButton": "Chercher sur MusicBrainz",
+    "remoteSearching": "Recherche sur MusicBrainz…",
+    "remoteEmpty": "MusicBrainz ne trouve rien non plus. Essaie une autre orthographe.",
+    "signInToAdd": "Connecte-toi pour l'ajouter à Spleen",
+    "add": "Ajouter à Spleen",
+    "adding": "Ajout en cours…",
+    "open": "Ouvrir",
+    "kind": {
+      "release_group": "Disque",
+      "artist": "Artiste",
+      "recording": "Morceau"
+    }
   }
 }

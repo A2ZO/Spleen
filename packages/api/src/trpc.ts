@@ -1,3 +1,4 @@
+import type { CatalogProvider } from "@spleen/catalog";
 import type { Db } from "@spleen/db";
 import type { Storage } from "@spleen/infra/storage";
 import { initTRPC, TRPCError } from "@trpc/server";
@@ -19,12 +20,15 @@ export interface Context {
   user: () => Promise<SessionUser | null>;
   /** File storage (avatars), created on first use. */
   storage: () => Storage;
+  /** Catalog provider (MusicBrainz behind the global gate), created on first use. */
+  catalog: () => CatalogProvider;
 }
 
 export interface ContextOptions {
   db: () => Db;
   user?: () => Promise<SessionUser | null>;
   storage?: () => Storage;
+  catalog?: () => CatalogProvider;
   now?: Date;
 }
 
@@ -42,6 +46,12 @@ export function createContext(options: ContextOptions): Context {
       options.storage ??
         (() => {
           throw new Error("No storage configured for this context.");
+        }),
+    ),
+    catalog: once(
+      options.catalog ??
+        (() => {
+          throw new Error("No catalog provider configured for this context.");
         }),
     ),
   };

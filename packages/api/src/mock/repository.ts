@@ -12,7 +12,6 @@ import {
   type UserFixture,
 } from "@spleen/db/fixtures";
 
-import { buildListenLinks } from "../lib/listen-links";
 import { averageFromDistribution, countRatings } from "../lib/ratings";
 import { computeBaseStats } from "../lib/stats";
 import type {
@@ -22,13 +21,12 @@ import type {
   MemberRef,
   ProfileDetail,
   ReleaseCard,
-  ReleaseDetail,
   ReviewCard,
 } from "../types";
 
 /*
- * Read-only data access backed by in-memory fixtures (static mockup).
- * Routers only talk to this module, so swapping it for Drizzle queries leaves pages untouched.
+ * Read-only data access backed by in-memory fixtures (static mockup): home feed and member
+ * activity until milestones 5-8. Catalog pages read the database (`lib/catalog`).
  */
 
 const SHELF_SIZE = 4;
@@ -136,36 +134,6 @@ export function getHomeFeed(): HomeFeed {
       .slice(0, HOME_RECENT_SIZE)
       .map(toReleaseCard),
     popularReviews: [...reviews].sort(byPopularity).slice(0, HOME_REVIEWS_SIZE).map(toReviewCard),
-  };
-}
-
-export function getReleaseBySlug(slug: string): ReleaseDetail | null {
-  const release = releaseBySlug.get(slug);
-  if (!release) return null;
-
-  const card = toReleaseCard(release);
-  const tracks = release.tracks.map(([title, seconds], index) => ({
-    position: index + 1,
-    title,
-    durationMs: seconds * 1000,
-  }));
-
-  return {
-    ...card,
-    releaseDate: release.releaseDate,
-    genres: release.genres,
-    tracks,
-    totalDurationMs: tracks.reduce((acc, t) => acc + t.durationMs, 0),
-    ratingDistribution: [...release.ratingCounts],
-    reviews: reviews
-      .filter((r) => r.releaseSlug === slug)
-      .sort(byPopularity)
-      .map(toReviewCard),
-    lists: lists.filter((l) => l.releaseSlugs.includes(slug)).map(toListCard),
-    listenLinks: buildListenLinks(
-      release.title,
-      card.artists.map((a) => a.name),
-    ),
   };
 }
 

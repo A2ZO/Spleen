@@ -13,6 +13,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@spleen/catalog": "workspace:*",
     "@spleen/db": "workspace:*",
     "@spleen/infra": "workspace:*",
     "@spleen/validators": "workspace:*",
