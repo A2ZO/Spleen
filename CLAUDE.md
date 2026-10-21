@@ -1,8 +1,7 @@
 # Spleen — notes for Claude Code
 
-"Letterboxd for music": rate, review and list albums / EPs / singles / tracks / artists,
-keep a dated listening diary, follow people, see stats. Web first (FR/EN), Expo app later
-reusing every package.
+"Letterboxd for music": rate, review, list music, keep a dated listening diary, follow
+people, see stats. Web first (FR/EN), Expo app later reusing every package.
 
 - Functional reference: `docs/cahier-des-charges.md` (it wins on doubt; ask when ambiguous).
 - Original brief, milestone list and process rules: `docs/prompt-claude-code-spleen.md`.
@@ -21,9 +20,8 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
 - `packages/db`: Drizzle schema (`src/schema/*`, one file per domain), SQL migrations
   (`migrations/`), `createDb()`, `loadRootEnv()`, demo seed and fixtures (`@spleen/db/fixtures`).
 - `packages/auth`: Better Auth config (`createAuth()`, `getSessionUser()`), magic-link emails.
-- `packages/infra`: adapters to outside services, each with a development fallback:
-  `./email` (Brevo / terminal + `.data/outbox`), `./storage` (S3-R2 / `.data/uploads`),
-  `./rate-limit` (atomic fixed window in `rate_limits`), `./config` (production checks).
+- `packages/infra`: outside services with dev fallbacks: `./email` (Brevo), `./storage`
+  (S3-R2), `./rate-limit` (Postgres `rate_limits`), `./config` (production checks).
 - `packages/validators`: Zod 4 schemas shared by API, forms and the future app.
 - `packages/i18n`: `messages/fr.json` (source of keys) and `messages/en.json`.
 - `packages/design-tokens`: palette, dark / light themes, cover swatches, WCAG helpers;
@@ -36,8 +34,7 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
 ```
 pnpm install
 pnpm dev                 # http://localhost:3000 (redirects to /fr or /en)
-pnpm lint
-pnpm typecheck
+pnpm lint; pnpm typecheck
 pnpm test                # Vitest in every package (always in-memory PGlite)
 pnpm format              # Prettier write (CI runs format:check)
 pnpm --filter @spleen/design-tokens generate   # after editing tokens
@@ -57,29 +54,24 @@ One secrets file for the whole monorepo: `.env` at the repository root (git-igno
 template `.env.example`). Never read or write `.env` / `.env.local`: to check a variable,
 print only "set / missing" (or booleans like "starts with postgres://", "has -pooler").
 
-- Next.js only reads env files from `apps/web`, so the `dev` / `build` / `start` scripts run
-  `dotenv -e ../../.env --no-expand -- next …` (dotenv-cli).
-- db scripts, drizzle-kit and the Vitest configs call `loadRootEnv()` (`@spleen/db/env`,
-  Node's `process.loadEnvFile`).
+- Next reads env files only from `apps/web`, so its scripts use dotenv-cli (`--no-expand`);
+  db scripts, drizzle-kit and Vitest configs call `loadRootEnv()` (`@spleen/db/env`).
 - Variables already set in the environment (CI, hosting provider) always win over `.env`.
-- Turborepo filters env vars: declare new ones in `turbo.json` (`globalEnv` for values that
-  affect outputs, `passThroughEnv` otherwise, e.g. `PLAYWRIGHT_CHANNEL`).
+- Turborepo filters env vars: declare new ones in `turbo.json` (`globalEnv` if they affect
+  outputs, `globalPassThroughEnv` / `passThroughEnv` otherwise), or they silently vanish.
 
-| Variable                | Value                           | Used by                       |
-| ----------------------- | ------------------------------- | ----------------------------- |
-| `DATABASE_URL`          | Neon **pooled** URL (`-pooler`) | the app (`getDb()`)           |
-| `DATABASE_URL_UNPOOLED` | Neon **direct** URL             | migrations, seed, drizzle-kit |
-| unset `DATABASE_URL`    | → PGlite in `.data/pglite`      | local offline fallback        |
+| Variable                                    | Value                              | Used by                         |
+| ------------------------------------------- | ---------------------------------- | ------------------------------- |
+| `DATABASE_URL`                              | Neon **pooled** URL (`-pooler`)    | the app (`getDb()`)             |
+| `DATABASE_URL_UNPOOLED`                     | Neon **direct** URL                | migrations, seed, drizzle-kit   |
+| unset `DATABASE_URL`                        | → PGlite in `.data/pglite`         | local offline fallback          |
+| `BETTER_AUTH_SECRET` / `BETTER_AUTH_URL`    | random 32+ chars / public site URL | Better Auth                     |
+| `GOOGLE_CLIENT_ID` / `_SECRET`              | Google OAuth client (Web)          | Google button (hidden if unset) |
+| `BREVO_API_KEY` / `EMAIL_FROM`              | Brevo v3 key / verified sender     | magic links (dev: terminal)     |
+| `S3_*` (endpoint, bucket, keys, public URL) | Cloudflare R2, EU bucket           | avatars (dev: `.data/uploads`)  |
 
-| `BETTER_AUTH_SECRET` / `BETTER_AUTH_URL` | random 32+ chars / public site URL | Better Auth |
-| `GOOGLE_CLIENT_ID` / `_SECRET` | Google OAuth client (Web) | Google button (hidden if unset) |
-| `BREVO_API_KEY` / `EMAIL_FROM` | Brevo v3 key / verified sender | magic links (dev: terminal) |
-| `S3_*` (endpoint, bucket, keys, public URL) | Cloudflare R2, EU bucket | avatars (dev: `.data/uploads`) |
-
-Details and where to get each value: `.env.example`. Development fallbacks never run in
-production: `assertProductionConfig()` (`apps/web/src/instrumentation.ts`) refuses to start
-without the auth secret/URL, Brevo and S3 variables. They are declared in turbo.json
-`globalPassThroughEnv`.
+Where to get each value: `.env.example`. Production refuses to start without the auth,
+Brevo and S3 variables (`assertProductionConfig()`, `apps/web/src/instrumentation.ts`).
 
 ## Database
 
@@ -100,8 +92,6 @@ without the auth secret/URL, Brevo and S3 variables. They are declared in turbo.
   (`targetColumns()` / `targetCheck()` in `src/schema/target.ts`).
 - Catalog rows are never hard-deleted (`on delete restrict`); duplicate merges re-point
   references first (milestone 9). Member data cascades when a user is deleted.
-- Auth tables follow Better Auth's core schema with UUID ids: re-check against the
-  installed version in milestone 3.
 - Fixture `ratingCounts` / `weeklyListens` are mockup-only (no fake raters are seeded).
 
 ## Conventions
@@ -111,11 +101,9 @@ without the auth secret/URL, Brevo and S3 variables. They are declared in turbo.
   (tested). Years/decades go into messages as strings (ICU would print "2 026").
 - Styling only with tokens (`bg-surface`, `text-star`, `text-link`, `fill-vinyl`, ...).
   Never raw hex in components; brand hex values live in `packages/design-tokens`.
-- Ratings are integers 1..10, displayed as 0.5..5 stars (`ratingToStars`).
-- UUIDs everywhere; readable slugs for URLs.
+- Ratings: integers 1..10 shown as 0.5..5 stars (`ratingToStars`). UUIDs; slugs in URLs.
 - Animations neutralised by `prefers-reduced-motion` (global rule in `globals.css`).
-- Theme: `spleen-theme` cookie read server-side in the `[locale]` layout (no flash, no
-  inline script).
+- Theme: `spleen-theme` cookie read server-side in the `[locale]` layout (no flash).
 - Verify library versions on the npm registry / official docs, not from memory.
 
 ## Architecture rules (non-negotiable)
@@ -130,39 +118,13 @@ without the auth secret/URL, Brevo and S3 variables. They are declared in turbo.
 5. Secrets never in code or logs (see Environment variables).
 6. No paid service without asking. Do not modify `.claude/` without being asked.
 
-## Accounts and sessions (milestone 3)
+## Accounts and sessions
 
-- Better Auth 1.7 (`packages/auth`) on the existing tables via `@better-auth/drizzle-adapter`;
-  ids are generated by Postgres (`generateId: false`). Endpoints: `/api/auth/*`.
-- Sign-in: magic link (15 min, single use, token stored hashed) and Google when configured
-  (`accountLinking` joins Google to an existing email). Apple later = one more social provider,
-  no migration. Rate limits (`/sign-in/magic-link` 5 per 10 min) live in `rate_limits`.
-- Session → tRPC: `contextFor(headers)` (`apps/web/src/server/api.ts`) resolves the user
-  lazily; `protectedProcedure` requires it. Errors carry a stable code in `message`
-  (`@spleen/api/errors`, translated under `errors.*`; a test checks both languages).
-- After sign-in everyone lands on `/[locale]/welcome`: onboarding (@username, display name,
-  15+ checkbox → `ageConfirmedAt`) or redirect to `/u/<username>`. `/settings` edits the
-  profile, avatar, @username, export (`/api/account/export`) and deletion.
-- @username rules (`packages/api/src/lib/usernames.ts`): one rename per 30 days; a former
-  username stays reserved 30 days for others (`username_history`). Account deletion adds a
-  row for the current username and `user_id` becomes NULL (anonymous reservation, 30 days);
-  expired anonymous rows are purged whenever a username is claimed.
-- Avatars: resized in the browser (512 px square, WebP/PNG, drops EXIF), uploaded as
-  multipart to `/api/avatar`; the API sniffs magic bytes (WebP/PNG/JPEG, ≤ 1 MB) and stores
-  `avatars/<userId>/<uuid>.<ext>` (new key per upload, old file deleted). No `sharp`: it
-  would not run on Cloudflare Workers.
-- **Expo app (official Better Auth flow)**: server already loads `expo()` and trusts
-  `spleen://` (plus `exp://` in development). In the app: `createAuthClient` from
-  `better-auth/react` with `baseURL` = site URL and
-  `expoClient({ scheme: "spleen", storagePrefix: "spleen", storage: SecureStore })`
-  (`expo-secure-store`; `expo-linking`, `expo-web-browser`, `expo-constants` for Google).
-  For tRPC, `httpBatchLink({ url: <site>/api/trpc, headers: async () => ({ Cookie:
-await authClient.getCookie() }), fetch: (u, o) => fetch(u, { ...o, credentials: "omit" }) })`.
-  The session cookie is sent manually in the `Cookie` header: no bearer token, no change
-  on the server. Avatars: `expo-image-manipulator` then multipart POST to `/api/avatar`
-  with the same header.
-- Dev sign-in as a demo member: request a link for `nuitblanche@example.test`; it is printed
-  in the `pnpm dev` terminal. E2E tests read `.data/outbox/`.
+Read `docs/accounts.md` before touching auth: sign-in, session → tRPC (`contextFor`,
+`protectedProcedure`, error codes), `/welcome` and `/settings`, @username reservation rules
+(`username_history`), avatars, and the **Expo flow** (session cookie sent in the `Cookie`
+header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
+`nuitblanche@example.test`.
 
 ## Decisions and why
 
@@ -172,10 +134,10 @@ await authClient.getCookie() }), fetch: (u, o) => fetch(u, { ...o, credentials: 
 - postgres.js, not Neon's serverless driver: plain Postgres protocol keeps hosting portable.
 - dotenv-cli for Next rather than one `.env` per app: a single secrets file.
 - Tests on PGlite (pg_trgm + unaccent contrib): no Docker, no network, no secrets in CI.
-- Brevo for emails: French company, free tier of 300 emails/day, plain `fetch` (no SDK).
-- Expo sessions via the Cookie header (Better Auth's official Expo flow), not bearer tokens.
-- Public profiles read identity from the database and activity from fixtures for the demo
-  members until milestones 5-6 (`packages/api/src/lib/profiles.ts`).
+- Brevo for emails (French, 300/day free, plain `fetch`); Expo sessions via the Cookie
+  header (Better Auth's official flow); no `sharp` (not on Workers): avatars resized client-side.
+- Public profiles: identity from the database, activity from fixtures for demo members
+  until milestones 5-6 (`packages/api/src/lib/profiles.ts`).
 
 ## Pitfalls already met (and the fix)
 
@@ -191,10 +153,14 @@ await authClient.getCookie() }), fetch: (u, o) => fetch(u, { ...o, credentials: 
 - Next 16 allows one dev server per app; Playwright reuses port 3000. Stopping turbo may
   leave `next` running on Windows: `Get-NetTCPConnection -LocalPort 3000` → `Stop-Process`.
   The dev log `apps/web/.next/dev/logs` can contain error details: never paste it as is.
-- Turbo hides env vars not declared in `turbo.json` (e.g. `PLAYWRIGHT_CHANNEL` was ignored).
 - pnpm `minimumReleaseAge` blocks packages published too recently: pin an older version
-  rather than adding exclusions. Native build scripts are allowed in `pnpm-workspace.yaml`
-  (`allowBuilds`).
+  rather than adding exclusions (`pnpm add` may write `minimumReleaseAgeExclude` into
+  `pnpm-workspace.yaml` by itself: revert it). Native builds: `allowBuilds` there.
+- Two drizzle-orm copies (different peer sets) break types: import `sql`, `eq`… from
+  `@spleen/db`, never from `drizzle-orm` outside packages/db.
+- Client components import `@spleen/api/errors` (or types only), never `@spleen/api`.
+- drizzle-kit writes unformatted `migrations/meta/*.json`: run Prettier on them.
+- Backticks inside `node -e "…"` / unquoted heredocs run as shell commands: use the editor.
 - PowerShell `Set-Content -Encoding utf8` writes a BOM: write files with the editor tools.
 - next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`.
 
@@ -212,9 +178,11 @@ await authClient.getCookie() }), fetch: (u, o) => fetch(u, { ...o, credentials: 
 - [x] 2. Database: full Drizzle schema, constraints and indexes, Neon (pooled app / direct
       migrations) with PGlite fallback, idempotent demo seed, `/api/health`.
 - [x] 3. Accounts: Better Auth magic link + optional Google (+ Expo plugin), onboarding,
-      settings, @username history, avatars, JSON export, deletion. Still to create by the
-      user before production: Google OAuth client, Brevo key + sender, R2 bucket.
-- [ ] 4. Catalog (MusicBrainz)
+      settings, @username history, avatars, export, deletion. Before production the user
+      creates: Google OAuth client, Brevo key + sender, R2 bucket.
+- [ ] 4. Catalog — next: `CatalogProvider` (MusicBrainz + Cover Art Archive), global 1 req/s
+      limiter in Postgres, on-demand import, local search, album/artist/track pages,
+      `db:seed:catalog`. The user provides a contact email for `MUSICBRAINZ_USER_AGENT`.
 - [ ] 5. Listening
 - [ ] 6. Profile & base stats
 - [ ] 7. Social
@@ -224,8 +192,8 @@ await authClient.getCookie() }), fetch: (u, o) => fetch(u, { ...o, credentials: 
 
 ## Mockup data
 
-- Fake members (emails `<username>@example.test`): `nuitblanche` (full shelf), `vinylvince`, `rainydaysam` (empty
-  shelf). All artists/albums are fictional; covers are generated from the slug (`Cover`)
-  until Cover Art Archive is wired.
+- Fake members (`<username>@example.test`): `nuitblanche` (full shelf), `vinylvince`,
+  `rainydaysam` (empty shelf). Artists and albums are fictional; covers are generated from
+  the slug (`Cover`) until Cover Art Archive is wired.
 - `computeBaseStats` (`packages/api/src/lib/stats.ts`) is the reference behaviour for the
   future SQL aggregates.
