@@ -2,44 +2,30 @@
 
 "Letterboxd for music": rate, review and list albums / EPs / singles / tracks / artists,
 keep a dated listening diary, follow people, see stats. Web first (FR/EN), Expo app later
-reusing every package. Functional reference: `docs/cahier-des-charges.md` (it wins on doubt).
-Original brief: `docs/prompt-claude-code-spleen.md`.
+reusing every package.
 
-## Stack
+- Functional reference: `docs/cahier-des-charges.md` (it wins on doubt; ask when ambiguous).
+- Original brief, milestone list and process rules: `docs/prompt-claude-code-spleen.md`.
+- The user works on Windows / PowerShell and speaks French: answer and recap in French.
 
-- Monorepo: pnpm 12 workspaces + Turborepo 2. Node ≥ 24.
+## Monorepo
+
+pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScript sources
+(no build step); Next transpiles them via `transpilePackages`.
+
 - `apps/web`: Next.js 16 (App Router, Turbopack, `src/proxy.ts` = former middleware),
-  React 19, Tailwind CSS 4 (CSS-first), next-intl 4.
-- `packages/api`: tRPC 11 routers (all business logic). Pages still read fixtures through
+  React 19, Tailwind CSS 4 (CSS-first), next-intl 4. Next docs for this version:
+  `apps/web/node_modules/next/dist/docs`.
+- `packages/api`: tRPC 11 routers = all business logic. Pages still read fixtures through
   `src/mock/repository.ts`; routers move to the database in milestones 4–6.
-- `packages/db`: Drizzle ORM 0.45 schema (`src/schema/*`, one file per domain), SQL
-  migrations (`migrations/`), `createDb()` client, demo seed and fixtures (`@spleen/db/fixtures`).
+- `packages/db`: Drizzle schema (`src/schema/*`, one file per domain), SQL migrations
+  (`migrations/`), `createDb()`, `loadRootEnv()`, demo seed and fixtures (`@spleen/db/fixtures`).
 - `packages/validators`: Zod 4 schemas shared by API, forms and the future app.
 - `packages/i18n`: `messages/fr.json` (source of keys) and `messages/en.json`.
-- `packages/design-tokens`: palette, semantic themes (dark / light), scales, cover swatches,
-  WCAG contrast helpers; generates `generated/theme.css` for Tailwind.
-- `packages/config`: shared ESLint 9 flat config, tsconfigs, Prettier.
-- TypeScript 6.0 (not 7: typescript-eslint 8.x requires < 6.1).
-- To come: `packages/catalog` (MusicBrainz, M4), `apps/mobile`.
-
-Internal packages export TypeScript sources directly (no build step); Next transpiles them
-via `transpilePackages`.
-
-## Environment variables
-
-One secrets file for the whole monorepo: `.env` at the repository root (git-ignored, template
-`.env.example`). How each tool reads it:
-
-- Next.js (`apps/web`): Next only reads env files from its own folder, so the `dev`, `build`
-  and `start` scripts run through `dotenv -e ../../.env --no-expand -- next …` (dotenv-cli).
-  (`node --env-file` cannot be used: Next forwards it to child processes via NODE_OPTIONS,
-  which Node rejects.)
-- db scripts, drizzle-kit, Vitest configs: `loadRootEnv()` (`@spleen/db/env`, Node's
-  `process.loadEnvFile`).
-- Variables already in the environment (CI, hosting provider) always win over `.env`.
-- Turborepo: `.env` is a global hash input; `DATABASE_URL*` are declared in `globalEnv`.
-- Never `new URL("…", import.meta.url)` for file paths in code bundled by Next: Turbopack
-  copies the target as a public asset. Use `path.resolve`.
+- `packages/design-tokens`: palette, dark / light themes, cover swatches, WCAG helpers;
+  generates `generated/theme.css` for Tailwind.
+- `packages/config`: shared ESLint flat config, tsconfigs, Prettier.
+- To come: `packages/catalog` (MusicBrainz, M4), `apps/mobile` (Expo).
 
 ## Commands (PowerShell, from the repo root)
 
@@ -48,49 +34,62 @@ pnpm install
 pnpm dev                 # http://localhost:3000 (redirects to /fr or /en)
 pnpm lint
 pnpm typecheck
-pnpm test                # Vitest in every package
+pnpm test                # Vitest in every package (always in-memory PGlite)
 pnpm format              # Prettier write (CI runs format:check)
 pnpm --filter @spleen/design-tokens generate   # after editing tokens
 pnpm db:generate         # new SQL migration after editing packages/db/src/schema
-pnpm db:migrate          # apply migrations
-pnpm db:seed             # migrate + insert demo data (idempotent)
-pnpm db:reset            # wipe the LOCAL PGlite database, migrate, seed
-pnpm e2e                 # Playwright; needs `pnpm --filter @spleen/web exec playwright install chromium`
-                         # or set $env:PLAYWRIGHT_CHANNEL="chrome" to use the installed Chrome
+pnpm db:migrate          # apply migrations (direct connection on Neon)
+pnpm db:seed             # migrate + insert demo data (idempotent) — never in production
+pnpm db:reset            # wipe the LOCAL PGlite database, migrate, seed (refuses Postgres)
+$env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # Playwright with the installed Chrome
 ```
 
-Next 16 allows a single dev server per app: Playwright reuses the one on port 3000.
+CI (`.github/workflows/ci.yml`): install --frozen-lockfile, format:check, lint, typecheck,
+test. No secrets in CI: tests never touch Neon.
+
+## Environment variables
+
+One secrets file for the whole monorepo: `.env` at the repository root (git-ignored,
+template `.env.example`). Never read or write `.env` / `.env.local`: to check a variable,
+print only "set / missing" (or booleans like "starts with postgres://", "has -pooler").
+
+- Next.js only reads env files from `apps/web`, so the `dev` / `build` / `start` scripts run
+  `dotenv -e ../../.env --no-expand -- next …` (dotenv-cli).
+- db scripts, drizzle-kit and the Vitest configs call `loadRootEnv()` (`@spleen/db/env`,
+  Node's `process.loadEnvFile`).
+- Variables already set in the environment (CI, hosting provider) always win over `.env`.
+- Turborepo filters env vars: declare new ones in `turbo.json` (`globalEnv` for values that
+  affect outputs, `passThroughEnv` otherwise, e.g. `PLAYWRIGHT_CHANNEL`).
+
+| Variable                | Value                           | Used by                       |
+| ----------------------- | ------------------------------- | ----------------------------- |
+| `DATABASE_URL`          | Neon **pooled** URL (`-pooler`) | the app (`getDb()`)           |
+| `DATABASE_URL_UNPOOLED` | Neon **direct** URL             | migrations, seed, drizzle-kit |
+| unset `DATABASE_URL`    | → PGlite in `.data/pglite`      | local offline fallback        |
+
+Milestone 3+ variables (auth, emails, S3, MusicBrainz) are listed in `.env.example`.
 
 ## Database
 
-- Database: Neon Postgres (EU). Neon branches: `dev` = local development (URLs in `.env`),
-  `main` = production later (URLs set in the hosting provider's settings, never in a file).
-- `createDb(url)` (`packages/db/src/client.ts`): `postgres://…` → Postgres via postgres.js;
-  `memory://` → in-memory PGlite (tests); unset/empty → PGlite persisted in `.data/pglite`
-  (git-ignored). A malformed URL throws (without echoing it).
-- Which URL for what:
-  - the app (`apps/web/src/server/db.ts`, `getDb()`) uses `DATABASE_URL` = Neon **pooled**
-    connection (`-pooler` host);
-  - `db:migrate` / `db:seed` and drizzle-kit use `DATABASE_URL_UNPOOLED` = **direct**
-    connection (`migrationDatabaseUrl()`), required as soon as `DATABASE_URL` is Postgres;
-  - `db:reset` only ever wipes the local PGlite database;
-  - tests force `DATABASE_URL=memory://` (`vitest.config.ts` in db and api): never Neon.
+- Neon Postgres, EU (Frankfurt), free plan. Branches: `dev` = local development (URLs in
+  `.env`); `main` = production (URLs set in the hosting provider, never in a file).
+  Production deploys run `pnpm db:migrate`; never `db:seed`.
+- `createDb(url)` (`packages/db/src/client.ts`): `postgres://…` → postgres.js;
+  `memory://` → in-memory PGlite; unset/empty → PGlite on disk. Migrations/seed get their
+  URL from `migrationDatabaseUrl()`, which refuses to run through the pooler.
 - Switch PGlite ↔ Neon: comment out / restore `DATABASE_URL` in `.env`, or for one command
-  `$env:DATABASE_URL=""; pnpm dev` (PowerShell; then `Remove-Item Env:DATABASE_URL`).
-- The API context gets the database lazily (`ctx.db()`): fixture-backed procedures never
-  connect. `GET /api/health` (`system.health`) checks the database.
+  `$env:DATABASE_URL=""; pnpm dev` (then `Remove-Item Env:DATABASE_URL`).
+- The web app keeps one pool per process (`apps/web/src/server/db.ts`). The API context
+  opens the database lazily (`ctx.db()`). `GET /api/health` (`system.health`) checks it.
 - Migrations: `0000_search_extensions.sql` is hand-written (pg_trgm, unaccent and the
-  `immutable_unaccent()` wrapper used by search indexes); the rest is generated by
-  drizzle-kit. Never edit generated migrations; a test fails if the schema and the latest
-  snapshot drift apart.
+  `immutable_unaccent()` wrapper needed by search indexes); the rest is generated by
+  drizzle-kit. Never edit generated migrations; a test fails if schema and snapshot drift.
 - "Target" = `release_id` / `track_id` / `artist_id` real FKs + CHECK exactly one
   (`targetColumns()` / `targetCheck()` in `src/schema/target.ts`).
 - Catalog rows are never hard-deleted (`on delete restrict`); duplicate merges re-point
   references first (milestone 9). Member data cascades when a user is deleted.
-- Auth tables follow Better Auth's core schema with UUID ids; to re-check against the
+- Auth tables follow Better Auth's core schema with UUID ids: re-check against the
   installed version in milestone 3.
-- Search: trigram (`similarity`, `%`) and `to_tsvector('simple', …)` on
-  `lower(immutable_unaccent(title|name))`.
 - Fixture `ratingCounts` / `weeklyListens` are mockup-only (no fake raters are seeded).
 
 ## Conventions
@@ -99,12 +98,13 @@ Next 16 allows a single dev server per app: Playwright reuses the one on port 30
 - UI text only through `packages/i18n` (FR uses "tu"). Both files must have identical keys
   (tested). Years/decades go into messages as strings (ICU would print "2 026").
 - Styling only with tokens (`bg-surface`, `text-star`, `text-link`, `fill-vinyl`, ...).
-  Never raw hex in components. Brand hex values live in `packages/design-tokens`.
+  Never raw hex in components; brand hex values live in `packages/design-tokens`.
 - Ratings are integers 1..10, displayed as 0.5..5 stars (`ratingToStars`).
 - UUIDs everywhere; readable slugs for URLs.
-- Animations must be neutralised by `prefers-reduced-motion` (global rule in `globals.css`).
-- Theme: `spleen-theme` cookie (functional, consent-exempt), read server-side in the
-  `[locale]` layout → no flash, no inline script.
+- Animations neutralised by `prefers-reduced-motion` (global rule in `globals.css`).
+- Theme: `spleen-theme` cookie read server-side in the `[locale]` layout (no flash, no
+  inline script).
+- Verify library versions on the npm registry / official docs, not from memory.
 
 ## Architecture rules (non-negotiable)
 
@@ -114,31 +114,58 @@ Next 16 allows a single dev server per app: Playwright reuses the one on port 30
    Better Auth with `@better-auth/expo`; Expo stores the session token in SecureStore and
    sends it as `Authorization: Bearer` to the tRPC HTTP endpoint (to document in M3).
 3. Hosting portability: no Vercel-proprietary services (KV, Blob, Edge Config, Vercel
-   Postgres, crons, queues), no Edge-runtime dependency. Postgres, S3, plain HTTP only.
+   Postgres, crons, queues), no Edge runtime. Postgres, S3, plain HTTP only.
 4. Stable URLs: `/[locale]/album/[slug]`, `/artist/[slug]`, `/track/[slug]`,
    `/u/[username]`, `/u/[username]/diary`, `/list/[id]`.
-5. Secrets never in code; see `.env.example`. Never read or write `.env` / `.env.local`
-   (to check a variable, print only "set / missing", never its value).
-6. Do not modify `.claude/` without being asked.
+5. Secrets never in code or logs (see Environment variables).
+6. No paid service without asking. Do not modify `.claude/` without being asked.
+
+## Decisions and why
+
+- TypeScript 6.0, not 7: typescript-eslint 8.x requires < 6.1.
+- ESLint 9, not 10: Next's ESLint plugins do not support 10 yet.
+- Drizzle ORM 0.45 / drizzle-kit 0.31: latest stable (1.0 was still a pre-release).
+- postgres.js, not Neon's serverless driver: plain Postgres protocol keeps hosting portable.
+- dotenv-cli for Next rather than one `.env` per app: a single secrets file.
+- Tests on PGlite (pg_trgm + unaccent contrib): no Docker, no network, no secrets in CI.
+
+## Pitfalls already met (and the fix)
+
+- `node --env-file` in Next scripts → crash: Next forwards it via NODE_OPTIONS, which Node
+  rejects. Use dotenv-cli.
+- `new URL("…", import.meta.url)` in code bundled by Next → Turbopack copies the target as
+  a public asset (it once exposed `.env`). Use `path.resolve(dirname, …)`.
+- Quotes or spaces around a URL in `.env` broke parsing; `createDb()` now throws on a
+  malformed URL without echoing it. Never log raw DB errors that may contain the URL.
+- Neon pooler = PgBouncer transaction mode: no `SET`, `LISTEN`, session advisory locks or
+  SQL `PREPARE` (protocol-level prepared statements are fine). Migrations need the direct URL.
+- Neon free tier sleeps after 5 min: first query is slow (`connect_timeout: 15`).
+- Next 16 allows one dev server per app; Playwright reuses port 3000. Stopping turbo may
+  leave `next` running on Windows: `Get-NetTCPConnection -LocalPort 3000` → `Stop-Process`.
+  The dev log `apps/web/.next/dev/logs` can contain error details: never paste it as is.
+- Turbo hides env vars not declared in `turbo.json` (e.g. `PLAYWRIGHT_CHANNEL` was ignored).
+- pnpm `minimumReleaseAge` blocks packages published too recently: pin an older version
+  rather than adding exclusions. Native build scripts are allowed in `pnpm-workspace.yaml`
+  (`allowBuilds`).
+- PowerShell `Set-Content -Encoding utf8` writes a BOM: write files with the editor tools.
+- next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`.
 
 ## Git
 
-Never commit or push to `main`. One branch per milestone `feat/<nn>-<name>` from up-to-date
-`main`. At milestone end: lint + typecheck + tests green, PR with `gh pr create`, wait for
-review and merge. No force push.
+- Never commit or push to `main`; no force push; no history rewrite of pushed branches.
+- One branch per milestone `feat/<nn>-<name>` from an up-to-date `main`
+  (`git switch main; git pull`).
+- Milestone end: format, lint, typecheck, tests (and e2e) green → PR with `gh pr create`
+  → watch `gh pr checks` → French recap → wait for the user's merge before the next one.
+- Present a plan before starting a milestone; ask before costly or irreversible decisions.
 
 ## Milestones
 
-- [x] 1a. Foundations: monorepo, shared configs, CI, design tokens (AA-tested), Tailwind,
-      next-intl FR/EN, layout (header, footer, locale + theme switchers).
-- [x] 1b. Static mockup on fixtures: home (trending FR/EN, new releases, popular reviews),
-      album page (rating histogram, local-state "I listened" panel with tonearm, tracklist,
-      reviews, lists, listen-on links), profile (vinyl Shelf, recent, diary, reviews, lists,
-      base stats), Baudelaire 404. Playwright smoke tests.
-- [x] 2. Database: full Drizzle schema (catalog, listening, content, social, accounts,
-      technical), constraints and indexes, Neon (pooled app / direct migrations) with
-      PGlite fallback for local and tests, idempotent demo seed, `/api/health`.
-- [ ] 3. Accounts
+- [x] 1. Foundations + static mockup (home, album, profile with the vinyl Shelf, 404).
+- [x] 2. Database: full Drizzle schema, constraints and indexes, Neon (pooled app / direct
+      migrations) with PGlite fallback, idempotent demo seed, `/api/health`.
+- [ ] 3. Accounts — next: magic-link email + Google with Better Auth (+ Expo plugin).
+      The user must create Google OAuth credentials and an email provider key.
 - [ ] 4. Catalog (MusicBrainz)
 - [ ] 5. Listening
 - [ ] 6. Profile & base stats
@@ -147,10 +174,10 @@ review and merge. No force push.
 - [ ] 9. Admin, legal, polish
 - [ ] 10. Launch
 
-## Mockup notes
+## Mockup data
 
 - Fake members: `nuitblanche` (demo "me", full shelf), `vinylvince`, `rainydaysam` (empty
-  shelf). All artists/albums in fixtures are fictional; covers are generated from the slug
-  (`Cover` component) until Cover Art Archive is wired.
-- Base stats are computed by `computeBaseStats` (`packages/api/src/lib/stats.ts`), the
-  reference behaviour for the future SQL aggregates.
+  shelf). All artists/albums are fictional; covers are generated from the slug (`Cover`)
+  until Cover Art Archive is wired.
+- `computeBaseStats` (`packages/api/src/lib/stats.ts`) is the reference behaviour for the
+  future SQL aggregates.
