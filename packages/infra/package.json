@@ -1,0 +1,28 @@
+{
+  "name": "@spleen/infra",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./config": "./src/config.ts",
+    "./email": "./src/email.ts",
+    "./rate-limit": "./src/rate-limit.ts",
+    "./storage": "./src/storage.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.1154.0",
+    "@spleen/db": "workspace:*"
+  },
+  "devDependencies": {
+    "@spleen/config": "workspace:*",
+    "@types/node": "24.19.2",
+    "eslint": "9.39.5",
+    "typescript": "6.0.3",
+    "vitest": "5.0.5"
+  }
+}
