@@ -1,0 +1,28 @@
+{
+  "name": "@spleen/catalog",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./testing": "./src/test-fixtures.ts"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "typecheck": "tsc",
+    "test": "vitest run",
+    "record": "tsx scripts/record-fixtures.ts"
+  },
+  "dependencies": {
+    "@spleen/validators": "workspace:*"
+  },
+  "devDependencies": {
+    "@spleen/config": "workspace:*",
+    "@spleen/db": "workspace:*",
+    "@types/node": "24.19.2",
+    "eslint": "9.39.5",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "vitest": "5.0.5"
+  }
+}

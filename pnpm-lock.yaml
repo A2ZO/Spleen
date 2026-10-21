@@ -260,6 +260,9 @@ importers:
 
   packages/api:
     dependencies:
+      '@spleen/catalog':
+        specifier: workspace:*
+        version: link:../catalog
       '@spleen/db':
         specifier: workspace:*
         version: link:../db
@@ -328,6 +331,34 @@ importers:
       eslint:
         specifier: 9.39.5
         version: 9.39.5(jiti@2.7.0)(supports-color@7.2.0)
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
+      vitest:
+        specifier: 5.0.5
+        version: 5.0.5(@types/node@24.19.2)(vite@8.3.4(@types/node@24.19.2)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15))
+
+  packages/catalog:
+    dependencies:
+      '@spleen/validators':
+        specifier: workspace:*
+        version: link:../validators
+    devDependencies:
+      '@spleen/config':
+        specifier: workspace:*
+        version: link:../config
+      '@spleen/db':
+        specifier: workspace:*
+        version: link:../db
+      '@types/node':
+        specifier: 24.19.2
+        version: 24.19.2
+      eslint:
+        specifier: 9.39.5
+        version: 9.39.5(jiti@2.7.0)(supports-color@7.2.0)
+      tsx:
+        specifier: 4.23.15
+        version: 4.23.15
       typescript:
         specifier: 6.0.3
         version: 6.0.3

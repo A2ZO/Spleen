@@ -1,0 +1,152 @@
+{
+  "release-group-count": 5,
+  "release-groups": [
+    {
+      "id": "5fd094d1-9ee7-4ff0-8352-c251050074b9",
+      "disambiguation": "",
+      "secondary-types": [
+        "Mixtape/Street"
+      ],
+      "artist-credit": [
+        {
+          "name": "Theodora",
+          "joinphrase": "",
+          "artist": {
+            "sort-name": "Theodora",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "country": "FR",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "disambiguation": "French singer; aka Boss Lady",
+            "name": "Theodora",
+            "type": "Person"
+          }
+        }
+      ],
+      "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "primary-type": "Album",
+      "title": "MEGA BBL",
+      "secondary-type-ids": [
+        "15c1b1f5-d893-3375-a1db-e180c5ae15ed"
+      ],
+      "first-release-date": "2025-05-29"
+    },
+    {
+      "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "primary-type": "Album",
+      "id": "66fc6d80-c186-44bd-8c30-43466083f275",
+      "secondary-types": [
+        "Mixtape/Street"
+      ],
+      "disambiguation": "",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Theodora",
+          "artist": {
+            "name": "Theodora",
+            "type": "Person",
+            "sort-name": "Theodora",
+            "country": "FR",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "disambiguation": "French singer; aka Boss Lady",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46"
+          }
+        }
+      ],
+      "title": "BAD BOY LOVESTORY",
+      "first-release-date": "2024-11-01",
+      "secondary-type-ids": [
+        "15c1b1f5-d893-3375-a1db-e180c5ae15ed"
+      ]
+    },
+    {
+      "first-release-date": "2023-07-06",
+      "secondary-type-ids": [],
+      "primary-type": "EP",
+      "primary-type-id": "6d0c5bf6-7a33-3420-a519-44fc63eedebf",
+      "artist-credit": [
+        {
+          "name": "Theodora",
+          "joinphrase": "",
+          "artist": {
+            "type": "Person",
+            "name": "Theodora",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "disambiguation": "French singer; aka Boss Lady",
+            "sort-name": "Theodora",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "country": "FR"
+          }
+        }
+      ],
+      "id": "89b0ce3c-a229-4e02-beeb-3e63fd6f4352",
+      "secondary-types": [],
+      "disambiguation": "",
+      "title": "Lili Aux Paradis Artificiels : Tome 2"
+    },
+    {
+      "title": "Lili Aux Paradis Artificiels",
+      "primary-type-id": "6d0c5bf6-7a33-3420-a519-44fc63eedebf",
+      "primary-type": "EP",
+      "id": "8cbf5c09-1574-4f22-9830-01159149e567",
+      "secondary-types": [],
+      "disambiguation": "",
+      "artist-credit": [
+        {
+          "artist": {
+            "name": "Theodora",
+            "type": "Person",
+            "disambiguation": "French singer; aka Boss Lady",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "country": "FR",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "sort-name": "Theodora"
+          },
+          "name": "Theodora",
+          "joinphrase": " & "
+        },
+        {
+          "joinphrase": "",
+          "name": "Jeez Suave",
+          "artist": {
+            "name": "Jeez Suave",
+            "type": "Person",
+            "id": "8df3a377-1a6a-4be3-951d-1d56e0b4f50c",
+            "disambiguation": "",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "country": "FR",
+            "sort-name": "Jeez Suave"
+          }
+        }
+      ],
+      "first-release-date": "2023-03-15",
+      "secondary-type-ids": []
+    },
+    {
+      "id": "e1cf1d36-db72-4d83-a69c-15414b1ab5df",
+      "secondary-types": [],
+      "disambiguation": "",
+      "artist-credit": [
+        {
+          "artist": {
+            "name": "Theodora",
+            "type": "Person",
+            "country": "FR",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "sort-name": "Theodora",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "disambiguation": "French singer; aka Boss Lady"
+          },
+          "name": "Theodora",
+          "joinphrase": ""
+        }
+      ],
+      "primary-type-id": "6d0c5bf6-7a33-3420-a519-44fc63eedebf",
+      "primary-type": "EP",
+      "title": "Neptune",
+      "secondary-type-ids": [],
+      "first-release-date": "2021-01-10"
+    }
+  ],
+  "release-group-offset": 0
+}

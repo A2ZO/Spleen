@@ -1,0 +1,43 @@
+{
+  "area": {
+    "id": "08310658-51eb-3801-80de-5a0739207115",
+    "name": "France",
+    "disambiguation": "",
+    "iso-3166-1-codes": [
+      "FR"
+    ],
+    "type": null,
+    "sort-name": "France",
+    "type-id": null
+  },
+  "isnis": [
+    "0000000522696384"
+  ],
+  "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+  "sort-name": "Theodora",
+  "gender": "Female",
+  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+  "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
+  "ipis": [
+    "01170513098",
+    "01260470773"
+  ],
+  "country": "FR",
+  "disambiguation": "French singer; aka Boss Lady",
+  "name": "Theodora",
+  "life-span": {
+    "ended": false,
+    "end": null,
+    "begin": "2003-10-23"
+  },
+  "type": "Person",
+  "begin-area": {
+    "id": "f4524357-871a-4c23-9043-1a785978ad4f",
+    "name": "Lucerne",
+    "disambiguation": "",
+    "type-id": null,
+    "type": null,
+    "sort-name": "Lucerne"
+  },
+  "end-area": null
+}
