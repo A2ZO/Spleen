@@ -1,0 +1,101 @@
+# Catalogue musical (jalon 4)
+
+Le catalogue vient de **MusicBrainz** (données CC0, gratuit, sans clé) et les pochettes de
+**Cover Art Archive**. Tout passe par l'interface `CatalogProvider` (`packages/catalog`) :
+MusicBrainz n'en est qu'une implémentation, une autre source pourra être branchée plus tard.
+
+## Correspondance
+
+| MusicBrainz     | Spleen                       | Clé d'unicité    |
+| --------------- | ---------------------------- | ---------------- |
+| `release-group` | `releases` (album/EP/single) | `releases.mbid`  |
+| `recording`     | `tracks`                     | `tracks.mbid`    |
+| `artist`        | `artists`                    | `artists.mbid`   |
+| `release`       | sortie de référence (titres) | `reference_release_mbid` |
+
+- Type principal Album / EP / Single → `album` / `ep` / `single` ; Broadcast, Other ou absent →
+  `album`. Les types secondaires (live, compilation, soundtrack, remix…) sont gardés dans
+  `releases.secondary_types`. Les mixtapes (`mixtape/street`) comptent comme sorties
+  principales (`isMainRelease`), les autres sont rangées à part sur la page artiste et
+  passent après les sorties principales dans la recherche.
+- Date : `first-release-date` du release-group, avec sa précision (année / mois / jour).
+- Genres : les 5 genres les plus votés du release-group ; à défaut, ceux de l'artiste
+  principal. Les genres sont partagés par slug.
+- Langue : celle de la sortie de référence (`fra` → `fr`, `eng` → `en`, sinon code ISO 639-3).
+- Slugs : choisis une fois pour toutes (URL stables) : titre, puis titre + artiste, puis
+  titre + artiste + année, puis suffixe numérique. Morceaux : titre + artiste.
+
+## Sortie de référence (liste des titres)
+
+Un release-group a souvent des dizaines d'éditions. La liste des titres vient d'une seule,
+choisie par `rankEditions` (`packages/catalog/src/rules.ts`) :
+
+1. éditions officielles d'abord ;
+2. l'année la plus ancienne (l'original, pas une réédition avec bonus) ;
+3. dans cette année, le pays préféré : XW (monde), FR, GB, US, XE (Europe), puis les autres ;
+4. la date la plus précise et la plus ancienne ;
+5. l'identifiant, pour un choix stable.
+
+Si MusicBrainz ne peut pas servir cette édition (erreur répétée), l'import essaie la suivante.
+
+## Flux
+
+1. **Recherche locale d'abord** (`catalog.search`, publique) : similarité trigramme
+   (`pg_trgm`, `word_similarity` dans les deux sens) sur `lower(immutable_unaccent(...))`,
+   donc insensible à la casse, aux accents et tolérante aux fautes ; « artiste + titre »
+   fonctionne ; préfixe pour les requêtes très courtes.
+2. **Recherche MusicBrainz** (`catalog.searchRemote`, membres connectés) quand le catalogue
+   local ne suffit pas. Chaque mot doit apparaître dans le titre ou le nom d'artiste.
+3. **Import à la demande** (`catalog.import`, membres connectés) : release-group (+ artistes,
+   genres, liste des titres, pochette), artiste (+ discographie en « stubs »), ou morceau
+   (importé via l'album où il est paru en premier). Une fois pour toutes, upsert par `mbid`.
+   Chaque import est tracé dans `catalog_import_jobs` (statut, tentatives, dernière erreur).
+4. **Stubs** : une sortie connue seulement par la discographie d'un artiste
+   (`tracklist_imported_at` nul) est complétée quand un membre ouvre sa page. Un visiteur
+   non connecté ne déclenche jamais d'appel à MusicBrainz : il voit une invitation à se
+   connecter. Même chose pour la discographie d'un artiste (`discography_imported_at`).
+
+Discographie : 2 pages de 100 albums/EP et 1 page de 100 singles au plus (4 requêtes), et
+les pochettes des 100 premières sorties principales.
+
+## Limiteur global (1 requête/s pour tout le site)
+
+MusicBrainz limite à environ 1 requête par seconde **par adresse IP**, et toutes nos requêtes
+partent du même serveur. Le créneau suivant est réservé dans Postgres
+(`rate_limits.next_allowed_at`, clé `musicbrainz`) par une seule requête atomique
+(`reserveSlot`, `packages/infra/src/rate-limit.ts`) : ça marche entre instances serverless
+et à travers le pooler Neon (pas de verrou de session). Intervalle : 1,1 s.
+
+- Une requête de page attend au plus 8 s son créneau, sinon erreur `CATALOG_BUSY` ; le
+  script de pré-remplissage attend jusqu'à 2 min.
+- 503 / 429 : tout le site recule (`deferSlots`, en respectant `Retry-After`), puis nouvel
+  essai (3 au plus) ; échec → `CATALOG_UNAVAILABLE`. 404 / 400 → `CATALOG_NOT_FOUND`.
+- En plus, par membre : 60 recherches MusicBrainz et 30 imports par heure.
+- User-Agent obligatoire : `MUSICBRAINZ_USER_AGENT` (`Spleen/0.1 ( contact@… )`).
+
+## Pochettes
+
+URL `https://coverartarchive.org/release-group/{mbid}/front-500`, vérifiée à l'import (HEAD :
+redirection = pochette, 404 = pas de pochette → pochette générée). Affichées sans optimisation
+d'image (pas de service propre à un hébergeur, pas de quota) : le navigateur suit la
+redirection vers archive.org. Usage : identifier le disque, avec crédit des sources en pied
+de page.
+
+## Pré-remplissage
+
+```
+pnpm db:seed:catalog
+```
+
+Importe les artistes et albums de `packages/api/scripts/catalog-seed.json` (artiste + titre,
+résolus par la recherche MusicBrainz, score ≥ 90). Idempotent ; les introuvables sont listés
+à la fin. Passe par le même limiteur que le site. Jamais en CI.
+
+## Tests
+
+Les tests rejouent des réponses MusicBrainz enregistrées (`packages/catalog/test/fixtures`,
+faux `fetch` de `@spleen/catalog/testing`). Pour les réenregistrer (réseau, à la main) :
+
+```
+pnpm --filter @spleen/catalog record
+```
