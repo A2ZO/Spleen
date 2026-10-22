@@ -1,0 +1,11 @@
+{
+  "release-group?limit=10&query=%28releasegroup%3Amiles+OR+artist%3Amiles%29+AND+%28releasegroup%3Adavis+OR+artist%3Adavis%29+AND+%28releasegroup%3Akind+OR+artist%3Akind%29+AND+%28releasegroup%3Aof+OR+artist%3Aof%29+AND+%28releasegroup%3Ablue+OR+artist%3Ablue%29": "01.json",
+  "release-group/8e8a594f-2175-38c7-a871-abb68ec363e7?inc=artist-credits%2Bgenres%2Breleases": "02.json",
+  "release/79ed3ff2-1b33-3245-8755-947554bc8b3d?inc=recordings%2Bartist-credits": "03.json",
+  "artist?limit=10&query=theodora": "04.json",
+  "artist/3d519348-d1eb-4e8d-aab4-85ebe819bc46?": "05.json",
+  "release-group?artist=3d519348-d1eb-4e8d-aab4-85ebe819bc46&inc=artist-credits&limit=100&offset=0&type=album%7Cep": "06.json",
+  "release-group?artist=3d519348-d1eb-4e8d-aab4-85ebe819bc46&inc=artist-credits&limit=100&offset=0&type=single": "07.json",
+  "recording?limit=10&query=%28recording%3Aso+OR+artist%3Aso%29+AND+%28recording%3Awhat+OR+artist%3Awhat%29+AND+%28recording%3Amiles+OR+artist%3Amiles%29+AND+%28recording%3Adavis+OR+artist%3Adavis%29": "08.json",
+  "recording/60f750f4-d222-46b7-ad5c-905334c9a48a?inc=artist-credits%2Breleases%2Brelease-groups": "09.json"
+}

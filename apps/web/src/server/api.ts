@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { cache } from "react";
 
 import { sessionUserFrom } from "./auth";
+import { getCatalog } from "./catalog";
 import { getDb } from "./db";
 import { getStorage } from "./storage";
 
@@ -14,6 +15,7 @@ export function contextFor(requestHeaders: Headers) {
     db: getDb,
     user: () => sessionUserFrom(requestHeaders),
     storage: getStorage,
+    catalog: getCatalog,
   });
 }
 

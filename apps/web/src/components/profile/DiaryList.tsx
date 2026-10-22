@@ -61,7 +61,9 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
                     {entry.release.title}
                   </Link>
                   <p className="truncate text-sm text-fg-muted">
-                    {entry.release.artists.map((a) => a.name).join(", ")} · {entry.release.year}
+                    {[entry.release.artists.map((a) => a.name).join(", "), entry.release.year]
+                      .filter((part) => part !== null && part !== "")
+                      .join(" · ")}
                   </p>
                 </div>
                 <div className="flex shrink-0 flex-col items-end gap-1 sm:flex-row sm:items-center sm:gap-3">

@@ -38,7 +38,7 @@ export function ReleaseTile({ release, rank }: { release: ReleaseCard; rank?: nu
         </Link>
       </h3>
       <p className="mt-0.5 truncate text-sm text-fg-muted">
-        {artistNames} · {release.year}
+        {[artistNames, release.year].filter((part) => part !== null && part !== "").join(" · ")}
       </p>
       {release.averageRating !== null && (
         <p className="mt-1 flex items-center gap-1.5 text-sm">

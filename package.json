@@ -18,7 +18,8 @@
     "db:generate": "pnpm --filter @spleen/db generate",
     "db:migrate": "pnpm --filter @spleen/db migrate",
     "db:seed": "pnpm --filter @spleen/db seed",
-    "db:reset": "pnpm --filter @spleen/db reset"
+    "db:reset": "pnpm --filter @spleen/db reset",
+    "db:seed:catalog": "pnpm --filter @spleen/api seed:catalog"
   },
   "devDependencies": {
     "@spleen/config": "workspace:*",

@@ -1,0 +1,2498 @@
+{
+  "created": "2026-10-21T15:16:12.812Z",
+  "count": 183,
+  "offset": 0,
+  "recordings": [
+    {
+      "id": "15aa06dc-b7f4-41cc-9529-c8615a97eb5c",
+      "score": 100,
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "title": "So What",
+      "length": 652200,
+      "video": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "first-release-date": "1991",
+      "releases": [
+        {
+          "id": "18d46047-850d-4c73-80fa-1defc0c517b0",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Round Midnight",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "9903de67-6211-426d-b049-6c96abe40cde",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Round Midnight",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "track-count": 5,
+          "media": [
+            {
+              "id": "9beee6e0-bf55-33b5-bf48-0d3ff94e90b5",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "c736b701-2b35-428f-b21e-aca2798ac26d",
+                  "number": "1",
+                  "title": "So What",
+                  "length": 653506
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 0
+            }
+          ]
+        },
+        {
+          "id": "44d88bd3-16a9-45a0-9cb1-93e209b1ee0d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Autumn Leaves",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "5e9aaaf6-34c2-4263-9938-325a2f94a980",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Round Midnight",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "date": "1997",
+          "country": "GB",
+          "release-events": [
+            {
+              "date": "1997",
+              "area": {
+                "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+                "name": "United Kingdom",
+                "sort-name": "United Kingdom",
+                "iso-3166-1-codes": [
+                  "GB"
+                ]
+              }
+            }
+          ],
+          "track-count": 5,
+          "media": [
+            {
+              "id": "9bc87a0f-b8b4-352e-8cdd-3250fa08de5b",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "3c236d05-02ee-387c-8556-2cfe92379dc3",
+                  "number": "3",
+                  "title": "So What",
+                  "length": 652200
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 2
+            }
+          ]
+        },
+        {
+          "id": "9d359945-f0fc-4027-b73c-b6a62a12ae75",
+          "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Grandes Maestros del Jazz 11",
+          "status": "Promotion",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "6ef9e21d-ff8b-4963-905a-09cc8929cbe0",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Grandes Maestros del Jazz 11",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "date": "2011",
+          "country": "AR",
+          "release-events": [
+            {
+              "date": "2011",
+              "area": {
+                "id": "0df04709-c7d8-3b55-a6ea-f3e5069a947b",
+                "name": "Argentina",
+                "sort-name": "Argentina",
+                "iso-3166-1-codes": [
+                  "AR"
+                ]
+              }
+            }
+          ],
+          "track-count": 5,
+          "media": [
+            {
+              "id": "aedc3414-58fa-3108-b79d-a4236526b316",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "c070c668-12de-3126-8d18-dbf2925668b3",
+                  "number": "3",
+                  "title": "So What!",
+                  "length": 652000
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 2
+            }
+          ]
+        },
+        {
+          "id": "541c5447-0fb5-4297-a011-15567c4ecc71",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "949a7fd5-fe73-3e8f-922e-01ff4ca958f7",
+          "count": 2,
+          "title": "Jazz Masters",
+          "status": "Official",
+          "disambiguation": "Legendary Archive & Live Recordings",
+          "artist-credit": [
+            {
+              "name": "Various Artists",
+              "artist": {
+                "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                "name": "Various Artists",
+                "sort-name": "Various Artists",
+                "disambiguation": "add compilations to this artist"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "9e3df23c-3000-463c-b408-c43bd26bd862",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Jazz Masters",
+            "disambiguation": "Legendary Archive & Live Recordings",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "date": "2001",
+          "country": "AU",
+          "release-events": [
+            {
+              "date": "2001",
+              "area": {
+                "id": "106e0bec-b638-3b37-b731-f53d507dc00e",
+                "name": "Australia",
+                "sort-name": "Australia",
+                "iso-3166-1-codes": [
+                  "AU"
+                ]
+              }
+            }
+          ],
+          "track-count": 29,
+          "media": [
+            {
+              "id": "2180061b-d603-3105-b8fc-4c490e84c222",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "1dd255fc-977c-46b6-80bb-454ee6e75387",
+                  "number": "4",
+                  "title": "So What",
+                  "length": 649000
+                }
+              ],
+              "track-count": 12,
+              "track-offset": 3
+            }
+          ]
+        },
+        {
+          "id": "4daa3f3b-0eb3-4886-baca-1ca23ae4d8bb",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Walkin' With Miles",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "5e9aaaf6-34c2-4263-9938-325a2f94a980",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Round Midnight",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "track-count": 5,
+          "media": [
+            {
+              "id": "bf5dd65e-c753-3224-b100-f5ff775f742a",
+              "position": 1,
+              "track": [
+                {
+                  "id": "0dcbf1ea-9b1b-3e4f-b2fb-5cd7142f34e4",
+                  "number": "2",
+                  "title": "So What",
+                  "length": 649000
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 1
+            }
+          ]
+        },
+        {
+          "id": "80380853-57ee-4b67-85e0-522eb040a7ab",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "949a7fd5-fe73-3e8f-922e-01ff4ca958f7",
+          "count": 6,
+          "title": "Golden Jazz Box - The Six Best Albums From the Six Best Jazzmen",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Various Artists",
+              "artist": {
+                "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                "name": "Various Artists",
+                "sort-name": "Various Artists",
+                "disambiguation": "add compilations to this artist"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "ab81094c-9729-4da3-a9b4-a1b21322947d",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Golden Jazz Box - The Six Best Albums From the Six Best Jazzmen",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "date": "2015",
+          "country": "BR",
+          "release-events": [
+            {
+              "date": "2015",
+              "area": {
+                "id": "f45b47f8-5796-386e-b172-6c31b009a5d8",
+                "name": "Brazil",
+                "sort-name": "Brazil",
+                "iso-3166-1-codes": [
+                  "BR"
+                ]
+              }
+            }
+          ],
+          "track-count": 77,
+          "media": [
+            {
+              "id": "073aa8db-4005-3f3d-82a5-453383ccbb53",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "68122ad7-8637-4f59-bd6c-39cf57ea96a5",
+                  "number": "1",
+                  "title": "So What",
+                  "length": 649240
+                }
+              ],
+              "track-count": 11,
+              "track-offset": 0
+            }
+          ]
+        },
+        {
+          "id": "babbfc96-e8d6-488b-a911-2a0416c7c244",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Masters of Jazz - Round Midnight",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "5e9aaaf6-34c2-4263-9938-325a2f94a980",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Round Midnight",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "track-count": 5,
+          "media": [
+            {
+              "id": "c52f980f-76e8-3ca2-968b-202f2c0e575c",
+              "position": 1,
+              "track": [
+                {
+                  "id": "3c555b1a-cb1d-3e3e-9cf2-7720104d0c11",
+                  "number": "2",
+                  "title": "So What",
+                  "length": 652826
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 1
+            }
+          ]
+        },
+        {
+          "id": "87a46083-b284-40f3-86d6-f8751309564e",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Round Midnight",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "5e9aaaf6-34c2-4263-9938-325a2f94a980",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Round Midnight",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "date": "1991",
+          "country": "GB",
+          "release-events": [
+            {
+              "date": "1991",
+              "area": {
+                "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+                "name": "United Kingdom",
+                "sort-name": "United Kingdom",
+                "iso-3166-1-codes": [
+                  "GB"
+                ]
+              }
+            }
+          ],
+          "track-count": 5,
+          "media": [
+            {
+              "id": "bd2fe552-522e-3cd7-9d36-ab29c6a31a5d",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "84284a9e-89f1-48e0-8908-cd18581f641b",
+                  "number": "3",
+                  "title": "So What",
+                  "length": 653506
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 2
+            }
+          ]
+        },
+        {
+          "id": "0028c3cd-914e-449d-9851-16d7fe77db4b",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Autumn Leaves",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "b37711c8-7eb9-45bb-9bd2-60243bb66d6c",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Autumn Leaves",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "date": "1993",
+          "country": "DE",
+          "release-events": [
+            {
+              "date": "1993",
+              "area": {
+                "id": "85752fda-13c4-31a3-bee5-0e5cb1f51dad",
+                "name": "Germany",
+                "sort-name": "Germany",
+                "iso-3166-1-codes": [
+                  "DE"
+                ]
+              }
+            }
+          ],
+          "track-count": 5,
+          "media": [
+            {
+              "id": "f13ad833-48a5-3f7f-ae74-b15bb6af9de6",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "29fb7ef1-ffc6-479b-981d-8b14aeb44218",
+                  "number": "3",
+                  "title": "So What",
+                  "length": 653000
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 2
+            }
+          ]
+        },
+        {
+          "id": "5fc7729c-2a4f-489b-b100-4ba1a1c16d82",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "So What!",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "361527d2-9ecc-37b9-a7c3-da89bfe4f185",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "So What!",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "date": "1998",
+          "country": "GB",
+          "release-events": [
+            {
+              "date": "1998",
+              "area": {
+                "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+                "name": "United Kingdom",
+                "sort-name": "United Kingdom",
+                "iso-3166-1-codes": [
+                  "GB"
+                ]
+              }
+            }
+          ],
+          "track-count": 5,
+          "media": [
+            {
+              "id": "642c8d3c-22a4-3a7a-a16b-3637bbedbf3a",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "c9b32ecc-41fd-327e-8085-067b0ee80772",
+                  "number": "2",
+                  "title": "So What",
+                  "length": 653000
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "d7bb4206-a49c-4dee-809c-5eab3107c09a",
+      "score": 100,
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "title": "So What",
+      "length": 222066,
+      "video": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "first-release-date": "2003-07-28",
+      "releases": [
+        {
+          "id": "bc2eb9b0-2fb0-4649-9f89-d26bd7d45481",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "949a7fd5-fe73-3e8f-922e-01ff4ca958f7",
+          "count": 2,
+          "title": "Jazz Cafe: The Smoothest Sounds from the Coolest Artists",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Various Artists",
+              "artist": {
+                "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                "name": "Various Artists",
+                "sort-name": "Various Artists",
+                "disambiguation": "add compilations to this artist"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "be488f9d-129c-37fb-b1d3-7126c60a6044",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Jazz Cafe: The Smoothest Sounds from the Coolest Artists",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "date": "2003-07-28",
+          "country": "GB",
+          "release-events": [
+            {
+              "date": "2003-07-28",
+              "area": {
+                "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+                "name": "United Kingdom",
+                "sort-name": "United Kingdom",
+                "iso-3166-1-codes": [
+                  "GB"
+                ]
+              }
+            }
+          ],
+          "track-count": 36,
+          "media": [
+            {
+              "id": "8d12c9ca-01d2-37af-9d58-986885b17e44",
+              "position": 2,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "1d9f7f9a-8eed-37ca-9ed6-24d6c68c6b4e",
+                  "number": "17",
+                  "title": "So What",
+                  "length": 222066
+                }
+              ],
+              "track-count": 18,
+              "track-offset": 16
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "8ecde485-cad6-4d3d-816b-6176f7a66005",
+      "score": 100,
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "title": "So What",
+      "length": 762506,
+      "video": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "first-release-date": "1961",
+      "releases": [
+        {
+          "id": "9680c0ae-6a70-44d7-969b-de8026f07542",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "In Person: Saturday Night at the Blackhawk",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "930ff792-925d-4a8d-a853-92cf67fc5d3d",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "In Person: Saturday Night at the Blackhawk, San Francisco, Volume 2",
+            "disambiguation": "1-disc album partially covering Saturday night",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "date": "1961",
+          "country": "US",
+          "release-events": [
+            {
+              "date": "1961",
+              "area": {
+                "id": "489ce91b-6658-3307-9877-795b68554c98",
+                "name": "United States",
+                "sort-name": "United States",
+                "iso-3166-1-codes": [
+                  "US"
+                ]
+              }
+            }
+          ],
+          "track-count": 6,
+          "media": [
+            {
+              "id": "50cbe4fe-0808-3ac7-af6d-9feca2b1a4c8",
+              "position": 1,
+              "track": [
+                {
+                  "id": "cb5e86bc-e7ce-32f2-8591-990718d77619",
+                  "number": "3",
+                  "title": "So What",
+                  "length": 762506
+                }
+              ],
+              "track-count": 6,
+              "track-offset": 2
+            }
+          ]
+        },
+        {
+          "id": "e79446c0-06de-3504-9337-8ffc4603e7c0",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "In Person: Saturday Night at the Blackhawk (disc 2)",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "930ff792-925d-4a8d-a853-92cf67fc5d3d",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "In Person: Saturday Night at the Blackhawk, San Francisco, Volume 2",
+            "disambiguation": "1-disc album partially covering Saturday night",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "date": "1991",
+          "country": "US",
+          "release-events": [
+            {
+              "date": "1991",
+              "area": {
+                "id": "489ce91b-6658-3307-9877-795b68554c98",
+                "name": "United States",
+                "sort-name": "United States",
+                "iso-3166-1-codes": [
+                  "US"
+                ]
+              }
+            }
+          ],
+          "track-count": 6,
+          "media": [
+            {
+              "id": "68a3eb36-e7db-3009-bc8d-5271b36b45b6",
+              "position": 1,
+              "track": [
+                {
+                  "id": "25ae2542-7e72-336e-b4f0-36e7904cb0a5",
+                  "number": "3",
+                  "title": "So What",
+                  "length": 762506
+                }
+              ],
+              "track-count": 6,
+              "track-offset": 2
+            }
+          ]
+        }
+      ],
+      "tags": [
+        {
+          "count": 1,
+          "name": "jazz"
+        }
+      ]
+    },
+    {
+      "id": "d7c38507-b8d8-4470-b2f4-b0b0d4c0ed4e",
+      "score": 100,
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "title": "So What",
+      "length": 638000,
+      "disambiguation": "live, 1964-09-25: Philharmonie, Berlin, Germany",
+      "video": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "first-release-date": "1965",
+      "releases": [
+        {
+          "id": "e1379ab9-5315-4a79-9742-a0d3a1d67f7b",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 2,
+          "title": "Heard ’Round the World",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "52493479-af6e-443d-bbb3-a8fd1e688400",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Heard ’Round the World",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation",
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "date": "1983",
+          "country": "US",
+          "release-events": [
+            {
+              "date": "1983",
+              "area": {
+                "id": "489ce91b-6658-3307-9877-795b68554c98",
+                "name": "United States",
+                "sort-name": "United States",
+                "iso-3166-1-codes": [
+                  "US"
+                ]
+              }
+            }
+          ],
+          "track-count": 10,
+          "media": [
+            {
+              "id": "08a988d7-3829-31df-9c98-a205bfff19d5",
+              "position": 2,
+              "format": "12\" Vinyl",
+              "track": [
+                {
+                  "id": "8b2821aa-19c3-494c-bd3b-0d0fbd337df6",
+                  "number": "D1",
+                  "title": "So What",
+                  "length": 638000
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 2
+            }
+          ]
+        },
+        {
+          "id": "2f1a0666-8ab8-48e2-aac5-b525a5ea4fa0",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 2,
+          "title": "Heard ’Round the World",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "52493479-af6e-443d-bbb3-a8fd1e688400",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Heard ’Round the World",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation",
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "date": "1983",
+          "country": "XE",
+          "release-events": [
+            {
+              "date": "1983",
+              "area": {
+                "id": "89a675c2-3e37-3518-b83c-418bad59a85a",
+                "name": "Europe",
+                "sort-name": "Europe",
+                "iso-3166-1-codes": [
+                  "XE"
+                ]
+              }
+            }
+          ],
+          "track-count": 10,
+          "media": [
+            {
+              "id": "b1723a2c-adf9-33de-9646-57b0cd83bd40",
+              "position": 2,
+              "format": "12\" Vinyl",
+              "track": [
+                {
+                  "id": "20764b7e-d09b-4306-88be-c8f91c716445",
+                  "number": "D1",
+                  "title": "So What",
+                  "length": 638000
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 2
+            }
+          ]
+        },
+        {
+          "id": "2e3e6ceb-5a53-49e4-a7c2-de5a3b464bd6",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Miles in Berlin",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "67aa2492-45e6-3036-a86d-e8ff41f29ea3",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Miles in Berlin",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "date": "1983",
+          "country": "JP",
+          "release-events": [
+            {
+              "date": "1983",
+              "area": {
+                "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+                "name": "Japan",
+                "sort-name": "Japan",
+                "iso-3166-1-codes": [
+                  "JP"
+                ]
+              }
+            }
+          ],
+          "track-count": 5,
+          "media": [
+            {
+              "id": "7b053f7b-4dc2-3dc9-acb9-913ed529a87e",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "00737b0d-2714-4ed2-a854-ae8154d77d98",
+                  "number": "3",
+                  "title": "So What",
+                  "length": 640000
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 2
+            }
+          ]
+        },
+        {
+          "id": "ce41a43f-df72-4aec-9b6f-720de9c9aa03",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Miles in Berlin",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "67aa2492-45e6-3036-a86d-e8ff41f29ea3",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Miles in Berlin",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "date": "2006-09-27",
+          "country": "JP",
+          "release-events": [
+            {
+              "date": "2006-09-27",
+              "area": {
+                "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+                "name": "Japan",
+                "sort-name": "Japan",
+                "iso-3166-1-codes": [
+                  "JP"
+                ]
+              }
+            }
+          ],
+          "track-count": 5,
+          "media": [
+            {
+              "id": "440c3391-19a6-3b69-a66d-918ae2972c53",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "3516f551-5a8a-43cc-a732-b8533ab45d2c",
+                  "number": "3",
+                  "title": "So What",
+                  "length": 627000
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 2
+            }
+          ]
+        },
+        {
+          "id": "36badc8e-1fd7-4fec-999f-3fac91aedc44",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Miles in Berlin",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "67aa2492-45e6-3036-a86d-e8ff41f29ea3",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Miles in Berlin",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "date": "1990-04-21",
+          "country": "JP",
+          "release-events": [
+            {
+              "date": "1990-04-21",
+              "area": {
+                "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+                "name": "Japan",
+                "sort-name": "Japan",
+                "iso-3166-1-codes": [
+                  "JP"
+                ]
+              }
+            }
+          ],
+          "track-count": 5,
+          "media": [
+            {
+              "id": "56c8a33f-e9a9-36e7-b44c-9f1cc8cd7f44",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "f24d1e8f-5029-3235-8e4d-c4ed3b4192e8",
+                  "number": "3",
+                  "title": "So What",
+                  "length": 643000
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 2
+            }
+          ]
+        },
+        {
+          "id": "4c1449e1-0931-48a8-9bdb-013ac7d07df0",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Miles in Berlin",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "67aa2492-45e6-3036-a86d-e8ff41f29ea3",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Miles in Berlin",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "date": "1965",
+          "country": "DE",
+          "release-events": [
+            {
+              "date": "1965",
+              "area": {
+                "id": "85752fda-13c4-31a3-bee5-0e5cb1f51dad",
+                "name": "Germany",
+                "sort-name": "Germany",
+                "iso-3166-1-codes": [
+                  "DE"
+                ]
+              }
+            }
+          ],
+          "track-count": 5,
+          "media": [
+            {
+              "id": "1fc1842d-7f7b-3788-b70f-325ac4dac9d1",
+              "position": 1,
+              "format": "12\" Vinyl",
+              "track": [
+                {
+                  "id": "5775750f-a343-4193-ad4f-f2f40d2c502a",
+                  "number": "3",
+                  "title": "So What",
+                  "length": 643000
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "e246ac59-1c20-4992-b34b-80eff134ac05",
+      "score": 100,
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "title": "So What",
+      "length": 530360,
+      "video": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "first-release-date": "2010",
+      "releases": [
+        {
+          "id": "612b6b32-433e-4d44-a987-ca0c92598e5d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Kind of Blue",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+            "type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Kind of Blue",
+            "primary-type": "Album"
+          },
+          "date": "2010",
+          "country": "NL",
+          "release-events": [
+            {
+              "date": "2010",
+              "area": {
+                "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
+                "name": "Netherlands",
+                "sort-name": "Netherlands",
+                "iso-3166-1-codes": [
+                  "NL"
+                ]
+              }
+            }
+          ],
+          "track-count": 5,
+          "media": [
+            {
+              "id": "7c3fea1f-5b79-3d02-9124-8c65e00d4c73",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "3b3d4536-5a8c-4ef7-8b4b-7bfabedcba85",
+                  "number": "1",
+                  "title": "So What",
+                  "length": 532093
+                }
+              ],
+              "track-count": 5,
+              "track-offset": 0
+            }
+          ]
+        },
+        {
+          "id": "a8ca58bf-1196-416f-8cf5-5578078bbf05",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Kind of Blue",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+            "type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Kind of Blue",
+            "primary-type": "Album"
+          },
+          "date": "2010",
+          "country": "XE",
+          "release-events": [
+            {
+              "date": "2010",
+              "area": {
+                "id": "89a675c2-3e37-3518-b83c-418bad59a85a",
+                "name": "Europe",
+                "sort-name": "Europe",
+                "iso-3166-1-codes": [
+                  "XE"
+                ]
+              }
+            }
+          ],
+          "track-count": 9,
+          "media": [
+            {
+              "id": "33759e5e-c771-366d-8ffe-f352b07e7e51",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "06e7f551-b5a0-3e69-9de5-59f641fc141b",
+                  "number": "9",
+                  "title": "So What",
+                  "length": 530360
+                }
+              ],
+              "track-count": 9,
+              "track-offset": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2e74f93c-6cd4-4acf-a7dc-149096e204f0",
+      "score": 100,
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "title": "So What",
+      "length": 597560,
+      "disambiguation": "live, 1966-05-21: Portland State College Jazz Festival, Oriental Theatre, Portland, OR, US",
+      "video": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "releases": [
+        {
+          "id": "ca92a46e-e17d-468e-bfaf-bef39fc16938",
+          "status-id": "1156806e-d06a-38bd-83f0-cf2284a808b9",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "1966 Portland State College CDR 2",
+          "status": "Bootleg",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "17f971a3-2b27-31e8-9e91-d159ae5dca12",
+            "type-id": "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "1966 Portland State College CDR 2",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Live"
+            ],
+            "secondary-type-ids": [
+              "6fd474e2-6b58-3102-9d17-d6f7eb7da0a0"
+            ]
+          },
+          "track-count": 9,
+          "media": [
+            {
+              "id": "062aeda2-7bd3-308c-ada0-330cb8d64700",
+              "position": 1,
+              "track": [
+                {
+                  "id": "775b8908-75b9-3533-b73c-83b313da776f",
+                  "number": "1",
+                  "title": "So What",
+                  "length": 597560
+                }
+              ],
+              "track-count": 9,
+              "track-offset": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "03da94bd-6c3b-4e34-aaee-7db38f88b291",
+      "score": 100,
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "title": "So What",
+      "length": 720333,
+      "video": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "first-release-date": "1988",
+      "releases": [
+        {
+          "id": "31c639d3-ff84-4fdc-baf7-93d1c71e9320",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 4,
+          "title": "The Columbia Years 1955–1985",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "738dfaed-ffe5-35cd-b546-ee40b1fcf126",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "The Columbia Years 1955–1985",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "date": "1988",
+          "country": "US",
+          "release-events": [
+            {
+              "date": "1988",
+              "area": {
+                "id": "489ce91b-6658-3307-9877-795b68554c98",
+                "name": "United States",
+                "sort-name": "United States",
+                "iso-3166-1-codes": [
+                  "US"
+                ]
+              }
+            }
+          ],
+          "track-count": 35,
+          "media": [
+            {
+              "id": "876a1363-49db-3f55-a327-910872b7bdb5",
+              "position": 3,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "81d0c713-ce8e-3853-9b32-a07831abd4c9",
+                  "number": "2",
+                  "title": "So What",
+                  "length": 720333
+                }
+              ],
+              "track-count": 9,
+              "track-offset": 1
+            }
+          ]
+        },
+        {
+          "id": "3a651c1c-67d5-4786-8634-d0a52af3cd5c",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 4,
+          "title": "The CBS Years 1955 - 1985",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "738dfaed-ffe5-35cd-b546-ee40b1fcf126",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "The Columbia Years 1955–1985",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "date": "1988",
+          "country": "GB",
+          "release-events": [
+            {
+              "date": "1988",
+              "area": {
+                "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+                "name": "United Kingdom",
+                "sort-name": "United Kingdom",
+                "iso-3166-1-codes": [
+                  "GB"
+                ]
+              }
+            }
+          ],
+          "track-count": 35,
+          "media": [
+            {
+              "id": "73555cf8-2232-3c7f-bd24-7fb85d5ab295",
+              "position": 3,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "f6b6d579-f552-340c-9d8a-f96eb203cde8",
+                  "number": "2",
+                  "title": "So What",
+                  "length": 721240
+                }
+              ],
+              "track-count": 9,
+              "track-offset": 1
+            }
+          ]
+        }
+      ],
+      "tags": [
+        {
+          "count": 3,
+          "name": "jazz"
+        },
+        {
+          "count": 3,
+          "name": "bebop"
+        },
+        {
+          "count": 2,
+          "name": "cool jazz"
+        }
+      ]
+    },
+    {
+      "id": "b587e597-82bb-42f8-b4ab-bba95b82ffd0",
+      "score": 100,
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "title": "So What",
+      "length": 562000,
+      "video": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "first-release-date": "2013-11-18",
+      "releases": [
+        {
+          "id": "43a5ee1d-6349-4c98-a3a0-7202babd13d2",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 1,
+          "title": "Autour de Minuit : Miles Davis",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "e08712ea-fa91-4843-9e11-bd454954e6df",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Autour de Minuit : Miles Davis",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "date": "2013-11-18",
+          "country": "FR",
+          "release-events": [
+            {
+              "date": "2013-11-18",
+              "area": {
+                "id": "08310658-51eb-3801-80de-5a0739207115",
+                "name": "France",
+                "sort-name": "France",
+                "iso-3166-1-codes": [
+                  "FR"
+                ]
+              }
+            }
+          ],
+          "track-count": 8,
+          "media": [
+            {
+              "id": "20b56c92-16a3-3ecb-aa20-ba55c75e88fa",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "08fe738c-05ca-4f09-be7a-6477d37e381f",
+                  "number": "1",
+                  "title": "So What",
+                  "length": 562000
+                }
+              ],
+              "track-count": 8,
+              "track-offset": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "55b74ed8-4ad4-4433-b34c-66992865d813",
+      "score": 100,
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "title": "So What",
+      "length": 549000,
+      "video": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "first-release-date": "2014",
+      "releases": [
+        {
+          "id": "55db8111-3fbf-493a-87bd-a815b1f15d60",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+          "count": 2,
+          "title": "Kind of Blue",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Miles Davis",
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "sort-name": "Davis, Miles",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+            "type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Kind of Blue",
+            "primary-type": "Album"
+          },
+          "date": "2014",
+          "country": "XE",
+          "release-events": [
+            {
+              "date": "2014",
+              "area": {
+                "id": "89a675c2-3e37-3518-b83c-418bad59a85a",
+                "name": "Europe",
+                "sort-name": "Europe",
+                "iso-3166-1-codes": [
+                  "XE"
+                ]
+              }
+            }
+          ],
+          "track-count": 14,
+          "media": [
+            {
+              "id": "efc8c110-a505-378e-8df6-40430a6877f1",
+              "position": 2,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "cf1cd7ab-ed0a-4b00-9baf-f889eb2753e2",
+                  "number": "1",
+                  "title": "So What",
+                  "length": 549000
+                }
+              ],
+              "track-count": 6,
+              "track-offset": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "e1d5f9bc-a0b8-4aeb-b560-533483c4e847",
+      "score": 100,
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "title": "So What",
+      "length": 561000,
+      "video": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "first-release-date": "2014",
+      "releases": [
+        {
+          "id": "b9b0b734-8afb-4a61-a274-0fb91e3c649c",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "artist-credit-id": "949a7fd5-fe73-3e8f-922e-01ff4ca958f7",
+          "count": 4,
+          "title": "Jazz & The City",
+          "status": "Official",
+          "artist-credit": [
+            {
+              "name": "Various Artists",
+              "artist": {
+                "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+                "name": "Various Artists",
+                "sort-name": "Various Artists",
+                "disambiguation": "add compilations to this artist"
+              }
+            }
+          ],
+          "release-group": {
+            "id": "c41fa432-81c6-4155-9343-096a7f8a02d8",
+            "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+            "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+            "title": "Jazz & The City",
+            "primary-type": "Album",
+            "secondary-types": [
+              "Compilation"
+            ],
+            "secondary-type-ids": [
+              "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+            ]
+          },
+          "date": "2014",
+          "country": "PL",
+          "release-events": [
+            {
+              "date": "2014",
+              "area": {
+                "id": "dd7f80c8-f017-3d01-8608-2a8c9c32b954",
+                "name": "Poland",
+                "sort-name": "Poland",
+                "iso-3166-1-codes": [
+                  "PL"
+                ]
+              }
+            }
+          ],
+          "track-count": 62,
+          "media": [
+            {
+              "id": "d942e109-1263-3277-8f0b-de7588260729",
+              "position": 1,
+              "format": "CD",
+              "track": [
+                {
+                  "id": "d4c2d1a8-cfca-490d-bd19-bc9872545379",
+                  "number": "3",
+                  "title": "So What",
+                  "length": 561000
+                }
+              ],
+              "track-count": 16,
+              "track-offset": 2
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

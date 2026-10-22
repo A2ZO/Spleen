@@ -161,6 +161,8 @@ describe("slugify", () => {
   it("builds URL slugs", () => {
     expect(slugify("Café crème")).toBe("cafe-creme");
     expect(slugify("Brass & Bone")).toBe("brass-and-bone");
+    expect(slugify("Mauvais œil")).toBe("mauvais-oeil");
+    expect(slugify("Ørsted Æther Straße")).toBe("orsted-aether-strasse");
     expect(slugify("  Le Roi d'un pays pluvieux ")).toBe("le-roi-d-un-pays-pluvieux");
   });
 });

@@ -15,6 +15,9 @@ export const API_ERROR_CODES = [
   "AVATAR_TYPE",
   "RATE_LIMITED",
   "CONFIRMATION_MISMATCH",
+  "CATALOG_BUSY",
+  "CATALOG_UNAVAILABLE",
+  "CATALOG_NOT_FOUND",
 ] as const;
 
 export type ApiErrorCode = (typeof API_ERROR_CODES)[number];

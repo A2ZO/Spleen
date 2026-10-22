@@ -1,5 +1,7 @@
 import { consumeRateLimit } from "@spleen/infra/rate-limit";
 import {
+  catalogImportSchema,
+  catalogSearchSchema,
   deleteAccountSchema,
   onboardingSchema,
   profileUpdateSchema,
@@ -18,14 +20,27 @@ import {
   setAvatar,
   updateProfile,
 } from "./lib/account";
+import { importArtist, importEntity, importReleaseGroup } from "./lib/catalog/import";
+import {
+  artistIdBySlug,
+  getArtistDetail,
+  getReleaseDetail,
+  getTrackDetail,
+  releaseIdBySlug,
+} from "./lib/catalog/pages";
+import { tryCatalog, withCatalogErrors } from "./lib/catalog/provider";
+import { searchCatalog, searchRemote } from "./lib/catalog/search";
 import { checkHealth } from "./lib/health";
 import { getPublicProfile } from "./lib/profiles";
 import { usernameStatus } from "./lib/usernames";
-import { getHomeFeed, getReleaseBySlug } from "./mock/repository";
+import { getHomeFeed } from "./mock/repository";
 import { createCallerFactory, fail, protectedProcedure, publicProcedure, router } from "./trpc";
 
 /** Uploads are cheap to abuse: at most 10 per member per hour. */
 const AVATAR_UPLOAD_RULE = { window: 60 * 60, max: 10 };
+/** MusicBrainz is shared by the whole site (1 request/s): per-member budgets on top. */
+const REMOTE_SEARCH_RULE = { window: 60 * 60, max: 60 };
+const IMPORT_RULE = { window: 60 * 60, max: 30 };
 
 export const appRouter = router({
   system: router({
@@ -35,9 +50,63 @@ export const appRouter = router({
     home: publicProcedure.query(() => getHomeFeed()),
   }),
   release: router({
+    /** A stub (known from a discography only) is completed when a member opens it. */
+    bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
+      const found = await releaseIdBySlug(ctx.db(), input.slug);
+      if (!found) return null;
+      const user = found.mbid && !found.tracklistImportedAt ? await ctx.user() : null;
+      if (user && found.mbid) {
+        const mbid = found.mbid;
+        await tryCatalog(() =>
+          importReleaseGroup(ctx.db(), ctx.catalog(), mbid, { requestedById: user.id }),
+        );
+      }
+      return getReleaseDetail(ctx.db(), input.slug);
+    }),
+  }),
+  artist: router({
+    /** The discography is imported when a member first opens the page. */
+    bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
+      const found = await artistIdBySlug(ctx.db(), input.slug);
+      if (!found) return null;
+      const user = found.mbid && !found.discographyImportedAt ? await ctx.user() : null;
+      if (user && found.mbid) {
+        const mbid = found.mbid;
+        await tryCatalog(() =>
+          importArtist(ctx.db(), ctx.catalog(), mbid, { requestedById: user.id }),
+        );
+      }
+      return getArtistDetail(ctx.db(), input.slug);
+    }),
+  }),
+  track: router({
     bySlug: publicProcedure
       .input(z.object({ slug: slugSchema }))
-      .query(({ input }) => getReleaseBySlug(input.slug)),
+      .query(({ input, ctx }) => getTrackDetail(ctx.db(), input.slug)),
+  }),
+  catalog: router({
+    /** Local catalog only: instant, public. */
+    search: publicProcedure
+      .input(catalogSearchSchema)
+      .query(({ input, ctx }) => searchCatalog(ctx.db(), input)),
+    /** MusicBrainz search, for members, when the local catalog lacks something. */
+    searchRemote: protectedProcedure.input(catalogSearchSchema).query(async ({ input, ctx }) => {
+      const key = `catalog-search:${ctx.user.id}`;
+      const limit = await consumeRateLimit(ctx.db(), key, REMOTE_SEARCH_RULE);
+      if (!limit.allowed) fail("TOO_MANY_REQUESTS", "RATE_LIMITED");
+      return withCatalogErrors(() => searchRemote(ctx.db(), ctx.catalog(), input));
+    }),
+    /** Imports a MusicBrainz entity once and for all; returns where to find it. */
+    import: protectedProcedure.input(catalogImportSchema).mutation(async ({ input, ctx }) => {
+      const key = `catalog-import:${ctx.user.id}`;
+      const limit = await consumeRateLimit(ctx.db(), key, IMPORT_RULE);
+      if (!limit.allowed) fail("TOO_MANY_REQUESTS", "RATE_LIMITED");
+      const options = { requestedById: ctx.user.id };
+      const slug = await withCatalogErrors(() =>
+        importEntity(ctx.db(), ctx.catalog(), input.kind, input.mbid, options),
+      );
+      return { kind: input.kind, slug };
+    }),
   }),
   profile: router({
     byUsername: publicProcedure

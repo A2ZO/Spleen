@@ -42,32 +42,6 @@ describe("discover.home", () => {
   });
 });
 
-describe("release.bySlug", () => {
-  it("returns a full release with ratings, reviews and listen links", async () => {
-    const release = await caller.release.bySlug({ slug: "nocturnes-pour-pluie-fine" });
-    expect(release).not.toBeNull();
-    expect(release?.artists).toEqual([{ slug: "lune-basse", name: "Lune Basse" }]);
-    expect(release?.tracks).toHaveLength(7);
-    expect(release?.ratingCount).toBe(286);
-    expect(release?.averageRating).toBeGreaterThan(7);
-    expect(release?.reviews.map((r) => r.author.username)).toContain("rainydaysam");
-    expect(release?.listenLinks.map((l) => l.service)).toEqual([
-      "spotify",
-      "deezer",
-      "appleMusic",
-      "youtube",
-    ]);
-  });
-
-  it("returns null for an unknown slug", async () => {
-    expect(await caller.release.bySlug({ slug: "does-not-exist" })).toBeNull();
-  });
-
-  it("rejects malformed slugs", async () => {
-    await expect(caller.release.bySlug({ slug: "Not A Slug" })).rejects.toThrow();
-  });
-});
-
 describe("profile.byUsername", () => {
   let handle: DbHandle;
   let caller: ReturnType<typeof createCaller>;

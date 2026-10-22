@@ -1,4 +1,4 @@
-import type { AudienceLang, ListenFormat, ReleaseType } from "@spleen/validators";
+import type { AudienceLang, ImportKind, ListenFormat, ReleaseType } from "@spleen/validators";
 
 /* Output shapes of the API. Stable contract for the web app and the future Expo app. */
 
@@ -12,7 +12,8 @@ export interface ReleaseCard {
   slug: string;
   title: string;
   type: ReleaseType;
-  year: number;
+  /** Null when the release date is unknown. */
+  year: number | null;
   coverUrl: string | null;
   artists: ArtistRef[];
   /** Community average on the 1..10 scale, null when nobody rated it yet. */
@@ -21,9 +22,13 @@ export interface ReleaseCard {
 }
 
 export interface Track {
+  /** Null for mockup tracks that have no page. */
+  slug: string | null;
+  disc: number;
   position: number;
   title: string;
-  durationMs: number;
+  /** Null when the catalog does not know the length. */
+  durationMs: number | null;
 }
 
 export interface ListenLink {
@@ -59,7 +64,13 @@ export interface ListCard {
 }
 
 export interface ReleaseDetail extends ReleaseCard {
-  releaseDate: string;
+  /** ISO date padded from `releaseDatePrecision` ("1959" → "1959-01-01"). */
+  releaseDate: string | null;
+  releaseDatePrecision: "year" | "month" | "day" | null;
+  /** "live", "compilation"… */
+  secondaryTypes: string[];
+  /** Known from an artist's discography only: tracklist, genres and cover still to import. */
+  isStub: boolean;
   genres: string[];
   tracks: Track[];
   totalDurationMs: number;
@@ -120,6 +131,72 @@ export interface HomeFeed {
   trending: Record<AudienceLang, ReleaseCard[]>;
   recent: ReleaseCard[];
   popularReviews: ReviewCard[];
+}
+
+export interface ArtistCard {
+  id: string;
+  slug: string;
+  name: string;
+  disambiguation: string | null;
+  country: string | null;
+  imageUrl: string | null;
+}
+
+export interface ArtistDetail extends ArtistCard {
+  /** "person", "group"… */
+  type: string | null;
+  /** The discography has not been imported yet (only releases already known are listed). */
+  discographyPending: boolean;
+  discography: {
+    albums: ReleaseCard[];
+    eps: ReleaseCard[];
+    singles: ReleaseCard[];
+    /** Live albums, compilations, soundtracks, remixes… (mixtapes count as main releases). */
+    other: ReleaseCard[];
+  };
+  listenLinks: ListenLink[];
+}
+
+export interface TrackCard {
+  id: string;
+  slug: string;
+  title: string;
+  durationMs: number | null;
+  artists: ArtistRef[];
+  /** First release the track appears on, for its cover. */
+  release: ReleaseCard | null;
+}
+
+export interface TrackDetail extends TrackCard {
+  appearsOn: ReleaseCard[];
+  averageRating: number | null;
+  ratingCount: number;
+  listenLinks: ListenLink[];
+}
+
+export interface CatalogSearchResults {
+  releases: ReleaseCard[];
+  artists: ArtistCard[];
+  tracks: TrackCard[];
+}
+
+/** A catalog provider (MusicBrainz) result that can be imported. */
+export interface RemoteHit {
+  kind: ImportKind;
+  mbid: string;
+  title: string;
+  /** Artist names, or the disambiguation for an artist. */
+  subtitle: string | null;
+  type: ReleaseType | null;
+  secondaryTypes: string[];
+  year: number | null;
+  /** Already in Spleen: link to it instead of importing. */
+  localSlug: string | null;
+}
+
+export interface ImportResult {
+  kind: ImportKind;
+  slug: string;
 }
 
 /** The signed-in member's own profile (settings). */

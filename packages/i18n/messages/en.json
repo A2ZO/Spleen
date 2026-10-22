@@ -92,7 +92,14 @@
       "like": "Favourite",
       "wantToListen": "Listen later",
       "mockNote": "Mockup: nothing is saved yet."
-    }
+    },
+    "releasedIn": "Released in {date}",
+    "dateUnknown": "Release date unknown",
+    "disc": "Disc {number}",
+    "stubTitle": "The tracklist is on its way",
+    "stubMember": "It could not be imported from MusicBrainz yet. Reload the page in a moment.",
+    "stubVisitor": "Sign in to import the tracklist from MusicBrainz.",
+    "noTracks": "MusicBrainz does not know the tracklist of this record yet."
   },
   "services": {
     "spotify": "Spotify",
@@ -254,6 +261,78 @@
     "AVATAR_TYPE": "This file is not a JPEG, PNG or WebP image.",
     "RATE_LIMITED": "Too many attempts. Try again a bit later.",
     "CONFIRMATION_MISMATCH": "The username does not match.",
+    "CATALOG_BUSY": "MusicBrainz is very busy right now. Try again in a minute.",
+    "CATALOG_UNAVAILABLE": "MusicBrainz is not answering. Try again a little later.",
+    "CATALOG_NOT_FOUND": "MusicBrainz does not know this record.",
     "unknown": "Something went wrong. Try again."
+  },
+  "secondaryType": {
+    "compilation": "Compilation",
+    "soundtrack": "Soundtrack",
+    "spokenword": "Spoken word",
+    "interview": "Interview",
+    "audiobook": "Audiobook",
+    "audiodrama": "Audio drama",
+    "live": "Live",
+    "remix": "Remix",
+    "djmix": "DJ mix",
+    "mixtapestreet": "Mixtape",
+    "demo": "Demo",
+    "fieldrecording": "Field recording"
+  },
+  "artist": {
+    "kind": {
+      "person": "Artist",
+      "group": "Band",
+      "orchestra": "Orchestra",
+      "choir": "Choir",
+      "other": "Artist"
+    },
+    "albums": "Albums",
+    "eps": "EPs",
+    "singles": "Singles",
+    "other": "Live, compilations and more",
+    "empty": "No known records yet.",
+    "pendingMember": "The discography could not be imported from MusicBrainz yet. Reload the page in a moment.",
+    "pendingVisitor": "Sign in to import the whole discography from MusicBrainz.",
+    "imageAlt": "{name}"
+  },
+  "track": {
+    "kicker": "Track",
+    "appearsOn": "Appears on",
+    "notOnRelease": "This track is not on any record yet.",
+    "duration": "Length: {duration}"
+  },
+  "search": {
+    "metaTitle": "Search",
+    "title": "Search",
+    "fieldLabel": "Search Spleen",
+    "resultsFor": "Results for “{q}”",
+    "prompt": "Look for an album, an artist or a track.",
+    "filtersLabel": "Result type",
+    "filter": {
+      "all": "All",
+      "release": "Records",
+      "artist": "Artists",
+      "track": "Tracks"
+    },
+    "releases": "Albums, EPs and singles",
+    "artists": "Artists",
+    "tracks": "Tracks",
+    "empty": "Nothing like that in Spleen yet.",
+    "remoteTitle": "Not found? Search MusicBrainz",
+    "remoteHint": "The open music database Spleen's catalog comes from. A record is added once and for all.",
+    "remoteButton": "Search MusicBrainz",
+    "remoteSearching": "Searching MusicBrainz…",
+    "remoteEmpty": "MusicBrainz finds nothing either. Try another spelling.",
+    "signInToAdd": "Sign in to add it to Spleen",
+    "add": "Add to Spleen",
+    "adding": "Adding…",
+    "open": "Open",
+    "kind": {
+      "release_group": "Record",
+      "artist": "Artist",
+      "recording": "Track"
+    }
   }
 }

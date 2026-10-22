@@ -1,0 +1,3671 @@
+{
+  "created": "2026-10-21T15:15:34.975Z",
+  "count": 8,
+  "offset": 0,
+  "release-groups": [
+    {
+      "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+      "type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "score": 100,
+      "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "count": 136,
+      "title": "Kind of Blue",
+      "first-release-date": "1959-08-17",
+      "primary-type": "Album",
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "releases": [
+        {
+          "id": "da2d5394-60d3-4c0a-aec0-f5a6308a665b",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind Of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "bc37119c-3a4b-414f-a4d1-e1c32d5730ff",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "82bb6cb8-0045-44bf-9a52-5d3fcde6a988",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "6b78821e-b1f5-40f3-b8c3-a03c2e9e67b8",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "6365fb27-2c81-3700-9bb9-1aced97345ab",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "4c5c46ae-cc25-4528-a4df-740e6b2990c5",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "c5db7ff3-9746-4874-a281-b909deb10165",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "79ed3ff2-1b33-3245-8755-947554bc8b3d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "25d4f28c-9ec6-4590-838f-cbd849ab2cde",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "ab8e869e-9fed-456b-934e-4154f157eafa",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "d7dab426-f295-4c3a-b43b-81d25f438f2e",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "890942eb-0248-43a5-8442-ee90ec5321f9",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "844642e8-5ee3-4eed-b153-06fc69996f62",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind Of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "45ea6391-ae09-4ae5-8854-f584f0c32f7c",
+          "title": "Kind Of Blue"
+        },
+        {
+          "id": "5472d4b8-1d33-405d-84fa-9c8385f22531",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "0b84b56e-b0c6-4319-8d81-49cdd0ee3737",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "099c1bb3-091f-4a86-a0e9-ece4b347bd2b",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "62fce4a5-bb8f-4980-a800-b72314819cc5",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "f8f79f3a-3a63-3286-a43d-0135c1a59fea",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "14f34297-ae81-4069-925a-1a320ac19f11",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "bd9c0f19-f6a6-4c97-85c6-4028d8a68d29",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "607ef674-142c-4a59-ba2b-9cdbc2b77264",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "4c8af71f-5746-4981-92d7-0d6c64db1155",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "18c13f03-1df4-4e72-af84-c503c5e6ee5a",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind Of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "935de3c3-212d-4455-bd73-fcacdecc6f7e",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "15eb186f-2856-4852-890c-44d6109357ae",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "0645c88c-5e15-4e61-86ee-cb57a414144c",
+          "title": "Kind of Blue"
+        },
+        {
+          "id": "d3f0f7aa-d53c-4b96-9f19-f34ec06fdbc8",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "cf9412b8-0c90-42dc-9d6c-6832be6e15d7",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "4a9d4dce-2330-41f7-b151-aabeb861ff20",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "0915561a-a75c-493e-aee8-1c2d130c2e3d",
+          "status-id": "55005350-bc3f-441a-b0c7-27c565eae341",
+          "title": "Kind of Blue",
+          "status": "Cancelled"
+        },
+        {
+          "id": "fa7c01ac-5d2c-4968-af26-a0a0ebd1be6e",
+          "status-id": "55005350-bc3f-441a-b0c7-27c565eae341",
+          "title": "Kind of Blue",
+          "status": "Cancelled"
+        },
+        {
+          "id": "f82aa197-f528-46a0-b67b-a9a558bddd4c",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "2899db3e-155b-4990-931e-66c81cc95ae3",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "51c87419-b6cc-4e26-af1f-b82640e89ee4",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "7d7ebace-0e5a-43c2-bd6d-18b5f35bed0b",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "d4da091b-6468-4ff9-afad-a6bc19408b3d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind Of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "6652eb60-0024-450b-8c51-2a9c2d797a33",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "bae43741-b1de-4e18-9851-8aac4a99dd50",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Some Kinds Of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "d647accb-ec48-4e69-b83e-a090ef034e64",
+          "status-id": "1156806e-d06a-38bd-83f0-cf2284a808b9",
+          "title": "Another Tracks of \"Kind of Blue\"",
+          "status": "Bootleg"
+        },
+        {
+          "id": "18416863-1777-4687-bc96-a87056b21664",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "bee5e0cd-1767-4a8e-9578-6455e87ba60b",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "7b1e1ec9-6b29-4c80-b7a2-bab3f4f6b945",
+          "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
+          "title": "Kind of Blue",
+          "status": "Promotion"
+        },
+        {
+          "id": "6949dcd6-8630-490d-bdd6-d997b85014ac",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "5d8188df-3d1e-4413-8b17-471840c9915f",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue: Limited Edition",
+          "status": "Official"
+        },
+        {
+          "id": "1d5960e2-6ba7-4609-8568-18af8cbc8462",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "dc3d4846-6bad-4243-8939-82e53bea0403",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "8379a736-ed20-4dc9-85ea-ed0fb85a2c1d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "66ccecc9-c4ca-4d40-8daf-7427c90ae657",
+          "status-id": "1156806e-d06a-38bd-83f0-cf2284a808b9",
+          "title": "Kind of Blue",
+          "status": "Bootleg"
+        },
+        {
+          "id": "8e600847-0f63-4e2f-a1e2-a979592c70b2",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "fddad804-2edd-46be-bd15-f21ed12a5d8b",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "93bd4496-9653-48bd-8aff-eb8a71e3b439",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "816a4c46-dfbd-4f3d-bb4a-3e72e4a5069d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "8ccc56dd-ff64-4afc-ab06-2e4d2c6ee7e2",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "38de96f7-2dc5-4804-8d2c-5b93cfd803cb",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "8e72d4fb-30bc-441e-b6aa-882bf84bdb92",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "8bc7f495-dc06-4c81-aa0c-6aba94927a69",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "235d3e52-a3e6-4daf-a5d7-9592722a2631",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "3c464efc-77b0-4ecd-9571-5d1d98774d7e",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "4ad5e9a9-f503-4a1d-8151-0dfcc20c168b",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "c5f6c95f-63da-4d45-851c-220d7c2d163c",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "16489a93-888a-454d-a13a-c8bec167bb5e",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "26ab0ad1-f38a-4456-8fc6-320fbfa9e0b2",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "6d0313df-7159-4bdf-a884-e5411bd2cfc3",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "635a79a6-c352-47ae-ab1c-8ac7c1acdae3",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "d319d791-8ccd-42ba-97ab-9c97330f4ae7",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "300a89d6-f48c-41fe-b13b-c60f59e37cac",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "d4d9c3e1-ee06-4cf2-9800-fc05ede9b3cc",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "V.I.P.-Jazz 9",
+          "status": "Official"
+        },
+        {
+          "id": "1b218605-46d0-44f2-bcf2-22149cb1d70f",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "7453bf0d-1839-4e22-b46a-7046d6ea03cf",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "3f909047-f932-4b61-b3bd-2fb10760cbff",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "f2e46edb-c6e7-4fc4-9dfe-9800d1e46e47",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "b078aa62-ed36-4351-b6a2-02b9783ec695",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "c884b971-fa34-429c-912e-1034cd5ee34e",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "ccec1041-3b45-43d5-ae56-6a1cbf347d21",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "a8ca58bf-1196-416f-8cf5-5578078bbf05",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "208090bc-c520-48dd-9cf0-4979961a982a",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "d9024940-bc9f-4f5b-a07b-5ded5bec374a",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "25018b3f-13d4-44bc-96fc-8dc3eb569a91",
+          "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
+          "title": "Kind of Blue",
+          "status": "Promotion"
+        },
+        {
+          "id": "78a51ebe-e753-4ac7-a450-7b65b2fc4f83",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "ec065f05-5932-4ee9-82cb-7f2d586854c1",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "c5a73143-5bd8-4328-955e-ce52e0e7bb8a",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "7b3590f9-27e4-4fee-8757-2692b73d5c5e",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "8db29cd5-74e8-4226-ba12-d9f7d9453ef1",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "530ab29f-37ba-4404-9d8f-a9b9124b2bce",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "7fb2d5c8-8a1f-43e4-8de3-c5f64ed725b4",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "91b60109-f99f-4310-952f-ae2d9869bc10",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "a35a08ab-0f6f-4235-8e54-220c5097cbfc",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "4c76f430-69f9-43b4-84cc-18b8d166e6bc",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "819a8dc6-8018-42f7-a053-cb04acbddade",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "57089ee6-9854-409b-93f7-b0536c9625e6",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "19f628e9-91a7-4037-b7ef-2889aabe9d02",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "9768d0fa-28a0-48c8-ab88-8088651eae60",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "cf540ec1-24c6-4f2f-ad9d-b65c517b3b22",
+          "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
+          "title": "Kind of Blue",
+          "status": "Promotion"
+        },
+        {
+          "id": "28b406fc-3a8b-4c91-baf8-880bfeb990d9",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "42231daa-6ade-49fc-8ab8-c0b19ca6b237",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "1cf21fef-c5d8-480d-8a2f-4a74aa3ab68b",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "53f2acf9-6f05-4bf7-b566-58da62c430df",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "e25dbbbc-7c21-4cf8-9dc7-fdf401b8403c",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "bc4d1870-1614-411b-85d0-6c76ef3fdd9d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "90e7b1b1-b8fe-4c7e-b5d3-8b4416a2eadd",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "375526b3-aa4a-4cf5-9078-e3688a229dd4",
+          "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
+          "title": "Kind of Blue",
+          "status": "Promotion"
+        },
+        {
+          "id": "fa731de1-331d-4713-adcc-2c304817cb88",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "46c3472f-1cb0-481b-9dc9-da67b62bb89b",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "bf48ae37-e630-4e45-92ab-e2e1d6d3a656",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "d79eec92-df03-4327-b3b7-32a7c1dec7af",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "5fec116b-a6f7-4738-b452-0846cfb6dd0a",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "04eeef76-5a4b-4195-a6bb-e64e84eee6e0",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "82ebb36b-0a0f-3608-9c7d-743d9003fbf8",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "d7b496d8-f044-4e34-830a-1dd93c31cabf",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "723f4d97-d88a-4d76-a323-f4c951e147fb",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "a9bd6e04-c2b6-4d70-8043-eb3c115d2d57",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "353021d1-3d84-4f17-9fe4-66788d785a9d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "9c56aa14-559f-4742-ae3c-34781cd83bcf",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "55db8111-3fbf-493a-87bd-a815b1f15d60",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "612b6b32-433e-4d44-a987-ca0c92598e5d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "ca6b19c7-08b3-4d98-a5db-d73a08562a73",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "49234de2-790c-46e5-b780-3cd6be79a2db",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "607f2c9a-3ece-3a44-bbcf-030e3f62f936",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "a25deb78-2bcd-4535-86b6-2c66505e796d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "969e1c1c-d72b-3f05-a412-03679632cc75",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "5272927b-2b43-355d-b914-550ea06eb7e9",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "a2743f6b-5096-416b-8001-fb08a64ec570",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "584c767b-ebb9-37f4-b1fc-c0021552f072",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "eef3606d-0843-370f-8ea9-73b949e8bdfc",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "080d58e3-9e03-4322-aebf-6d42605b3260",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "e32a3f0b-1c19-3170-bb1c-650893774744",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "cd9c728d-2f4d-3f09-aba4-6c90ed255ee1",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "d6a1f166-8a02-4608-849b-9d623912c3e5",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "5db85826-f516-4f39-ba0f-df0efe634668",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "3aaa9d21-4982-4c13-a1bb-caa57195fee6",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "c27e2140-1403-4a76-89ec-6e5aac73767c",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "8ff3c62f-d0a6-4963-8c6f-5bbbea19e56f",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "e8324f18-31cd-4a2f-877b-08affdccfff1",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "1cf538cd-8b5b-4aeb-b1b4-73861b84ceac",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
+        {
+          "id": "e7ba3cb7-a074-45ee-870f-3baeb6d3e8bf",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        }
+      ],
+      "tags": [
+        {
+          "count": 28,
+          "name": "jazz"
+        },
+        {
+          "count": 2,
+          "name": "post-bop"
+        },
+        {
+          "count": 3,
+          "name": "hard bop"
+        },
+        {
+          "count": 4,
+          "name": "modal jazz"
+        },
+        {
+          "count": 7,
+          "name": "cool jazz"
+        },
+        {
+          "count": 0,
+          "name": "jazz and blues"
+        },
+        {
+          "count": 2,
+          "name": "modal"
+        },
+        {
+          "count": 0,
+          "name": "death by pneumonia"
+        },
+        {
+          "count": 2,
+          "name": "jazz instrument"
+        },
+        {
+          "count": 2,
+          "name": "trumpet jazz"
+        },
+        {
+          "count": 2,
+          "name": "modal music"
+        },
+        {
+          "count": 1,
+          "name": "discogs/the most popular album released every year from 1950 to 2020"
+        }
+      ]
+    },
+    {
+      "id": "263bc232-bac3-46c6-bd67-530572d420a4",
+      "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+      "score": 81,
+      "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "artist-credit-id": "99fa2bcf-3761-4129-9db7-5d0a67eec630",
+      "count": 1,
+      "title": "The Miles Davis Sextette / Kind Of Blue / The Three Suns",
+      "first-release-date": "1959",
+      "primary-type": "Album",
+      "secondary-types": [
+        "Compilation"
+      ],
+      "secondary-type-ids": [
+        "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+      ],
+      "artist-credit": [
+        {
+          "joinphrase": " / ",
+          "name": "The Miles Davis Sextette",
+          "artist": {
+            "id": "f137837b-fa55-48d1-8c85-f13961b3ac77",
+            "name": "Miles Davis Sextet",
+            "sort-name": "Davis, Miles, Sextet"
+          }
+        },
+        {
+          "joinphrase": " / ",
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        },
+        {
+          "name": "The Three Suns",
+          "artist": {
+            "id": "3e4d6dff-eb42-4f0b-8b56-fdc6c21ec20c",
+            "name": "The Three Suns",
+            "sort-name": "Three Suns, The",
+            "aliases": [
+              {
+                "sort-name": "The Three Suns With Orchestra",
+                "name": "The Three Suns With Orchestra",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "releases": [
+        {
+          "id": "50e76344-da30-462b-a991-8f5d322574d9",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "The Miles Davis Sextette / Kind Of Blue / The Three Suns",
+          "status": "Official"
+        }
+      ]
+    },
+    {
+      "id": "bed2e7ec-a083-431a-81aa-44dfd69e279d",
+      "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+      "score": 75,
+      "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "artist-credit-id": "ded69772-cc73-43f1-ae42-eb26817c6d2a",
+      "count": 1,
+      "title": "Kind of Blue / Blue Train",
+      "first-release-date": "2026",
+      "primary-type": "Album",
+      "secondary-types": [
+        "Compilation"
+      ],
+      "secondary-type-ids": [
+        "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+      ],
+      "artist-credit": [
+        {
+          "joinphrase": " / ",
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        },
+        {
+          "name": "John Coltrane",
+          "artist": {
+            "id": "b625448e-bf4a-41c3-a421-72ad46cdb831",
+            "name": "John Coltrane",
+            "sort-name": "Coltrane, John",
+            "aliases": [
+              {
+                "sort-name": "J. Coltrane",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "J. Coltrane",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Blue Train",
+                "name": "Blue Train",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "J.Coltrane",
+                "name": "J.Coltrane",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Coltrane, John William",
+                "type-id": "d4dcd0c0-b341-3612-a332-c0ce797b25cf",
+                "name": "John William Coltrane",
+                "locale": null,
+                "type": "Legal name",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "John Coltraine",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "John Coltraine",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Coltrane",
+                "name": "Coltrane",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "ジョン・コルトレーン",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "ジョン・コルトレーン",
+                "locale": "ja",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Trane",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Trane",
+                "locale": null,
+                "type": "Artist name",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "releases": [
+        {
+          "id": "09d0d0fe-7fcd-4273-81ee-c87791e976e5",
+          "title": "Kind of Blue / Blue Train"
+        }
+      ]
+    },
+    {
+      "id": "b8b83480-ac9a-4501-8f12-8c87194d1471",
+      "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+      "score": 75,
+      "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "count": 1,
+      "title": "Sketches of Spain / Kind of Blue / In a Silent Way",
+      "first-release-date": "1997",
+      "primary-type": "Album",
+      "secondary-types": [
+        "Compilation"
+      ],
+      "secondary-type-ids": [
+        "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+      ],
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "releases": [
+        {
+          "id": "c66e1f3d-ae9a-4c61-9e63-bbd5a0c7319f",
+          "title": "Sketches of Spain / Kind of Blue / In a Silent Way"
+        }
+      ]
+    },
+    {
+      "id": "602ff19a-1cfe-4ed0-ab6d-6c046174d248",
+      "type-id": "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1",
+      "score": 72,
+      "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
+      "count": 1,
+      "title": "3 Originals: Porgy and Bess / Birth of the Cool / Kind of Blue",
+      "first-release-date": "2010",
+      "primary-type": "Album",
+      "secondary-types": [
+        "Compilation"
+      ],
+      "secondary-type-ids": [
+        "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+      ],
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "aliases": [
+              {
+                "sort-name": "Miles Dewey Davis III",
+                "name": "Miles Dewey Davis III",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis, Miles",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Miles Davis",
+                "locale": "en",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Davis",
+                "name": "Davis",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Дейвис, Майлз",
+                "name": "Майлз Дейвис",
+                "locale": "bg",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miles Davies",
+                "name": "Miles Davies",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Favis, Miles",
+                "name": "Miles Favis",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "releases": [
+        {
+          "id": "43973306-9f6f-457a-b44b-455c78c274f8",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "3 Originals: Porgy and Bess / Birth of the Cool / Kind of Blue",
+          "status": "Official"
+        }
+      ],
+      "tags": [
+        {
+          "count": 1,
+          "name": "jazz"
+        },
+        {
+          "count": 1,
+          "name": "cool jazz"
+        }
+      ]
+    },
+    {
+      "id": "cae2e785-1482-4da2-834b-0e86b718e20c",
+      "type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "score": 64,
+      "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "artist-credit-id": "a11e34d4-caba-3ee7-a609-bc4ee09c4d02",
+      "count": 1,
+      "title": "Lullaby Versions of Kind of Blue & Miles Davis",
+      "first-release-date": "2013-02-19",
+      "primary-type": "Album",
+      "artist-credit": [
+        {
+          "name": "Twinkle Twinkle Little Rock Star",
+          "artist": {
+            "id": "5cc9cce8-5d13-44de-8492-87ec0e5f8749",
+            "name": "Twinkle Twinkle Little Rock Star",
+            "sort-name": "Twinkle Twinkle Little Rock Star"
+          }
+        }
+      ],
+      "releases": [
+        {
+          "id": "48819492-44a9-4a90-839c-5f179ee561b5",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Lullaby Versions of Kind of Blue & Miles Davis",
+          "status": "Official"
+        }
+      ]
+    },
+    {
+      "id": "411ec11d-70f4-46b1-9127-3ddf7850bbd0",
+      "score": 61,
+      "artist-credit-id": "949a7fd5-fe73-3e8f-922e-01ff4ca958f7",
+      "count": 1,
+      "title": "Kind of Blue Revisited - The Miles Davis Songbook",
+      "first-release-date": "2009",
+      "secondary-types": [
+        "Compilation"
+      ],
+      "secondary-type-ids": [
+        "dd2a21e1-0c00-3729-a7a0-de60b84eb5d1"
+      ],
+      "artist-credit": [
+        {
+          "name": "Various Artists",
+          "artist": {
+            "id": "89ad4ac3-39f7-470e-963a-56509c546377",
+            "name": "Various Artists",
+            "sort-name": "Various Artists",
+            "disambiguation": "add compilations to this artist",
+            "aliases": [
+              {
+                "sort-name": "Soca Gold",
+                "name": "Soca Gold",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Reggae Gold",
+                "name": "Reggae Gold",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "versch. Künstler",
+                "name": "versch. Künstler",
+                "locale": "de",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Multi‐interprètes",
+                "name": "Multi‐interprètes",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "War Child Records",
+                "name": "War Child Records",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "различные исполнители",
+                "name": "[различные исполнители]",
+                "locale": "ru",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "ヴァリアス・アーティスト",
+                "name": "ヴァリアス・アーティスト",
+                "locale": "ja",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Multi‐interprètes",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Multi‐interprètes",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "val",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "val",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Talented Artists",
+                "name": "Various Talented Artists",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Records, Circus",
+                "name": "Circus Records",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Celtic Artists",
+                "name": "Various Celtic Artists",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diverse Kunstnere",
+                "name": "Diverse Kunstnere",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Multi Interprètes",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Multi Interprètes",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various (original artists)",
+                "name": "Various (original artists)",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Variées",
+                "name": "Variées",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Compilaciones",
+                "name": "Compilaciones",
+                "locale": "es",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Artistes variés",
+                "name": "Artistes variés",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "(various)",
+                "name": "(various)",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varius Artist",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Varius Artist",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diversen",
+                "name": "Diversen",
+                "locale": "de",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "AA.VV.",
+                "name": "AA.VV.",
+                "locale": "it",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Hitradio Ö3",
+                "name": "Hitradio Ö3",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Cheapbeats",
+                "name": "Cheapbeats",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Artist - GoGo Wonderful",
+                "name": "Various Artist - GoGo Wonderful",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diverse danske artister",
+                "name": "Diverse danske artister",
+                "locale": "da",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varied",
+                "name": "Varied",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Comp.",
+                "name": "Comp.",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "VAR",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "VAR",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Ｖ．Ａ.",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Ｖ．Ａ.",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "אומנים שונים",
+                "name": "אומנים שונים",
+                "locale": "he",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "A.A.V.V.",
+                "name": "A.A.V.V.",
+                "locale": "it",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Collectif",
+                "name": "Collectif",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "American Folk Blues Festival",
+                "name": "American Folk Blues Festival",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varoius",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Varoius",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varios",
+                "name": "Varios",
+                "locale": "es",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Speakers",
+                "name": "Various Speakers",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "V. A.",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "V. A.",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Variois",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Variois",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "varias",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "varias",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Historia de la Fania, La",
+                "name": "La Historia de la Fania",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "המשתתפים, כל",
+                "name": "כל המשתתפים",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various",
+                "name": "Various",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Verschiedene",
+                "name": "Verschiedene",
+                "locale": "de",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Tốp ca nam",
+                "name": "Tốp ca nam",
+                "locale": "vi",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "VA",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "VA",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Military Bands",
+                "name": "Various Military Bands",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Collégiale",
+                "name": "Collégiale",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Vari",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Vari",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Artistas Varios",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Artistas Varios",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Artists (Rock)",
+                "name": "Various Artists (Rock)",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varios Intérpretes",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Varios Intérpretes",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "さまざまなアーティスト",
+                "name": "さまざまなアーティスト",
+                "locale": "ja",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Vários",
+                "name": "Vários",
+                "locale": "pt",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Rossmann",
+                "name": "Rossmann",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Dominicanos Varios",
+                "name": "Dominicanos Varios",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Verschiedene Interpret:innen",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Verschiedene Interpret:innen",
+                "locale": "de",
+                "type": "Artist name",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diverse",
+                "name": "Diverse",
+                "locale": "de",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "More artists",
+                "name": "More artists",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Composers",
+                "name": "Various Composers",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Suntory Oolong-cha CM Song Collection",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Suntory Oolong-cha CM Song Collection",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "V/a",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "V/a",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varius",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Varius",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Ferkels grosee Abenteuer",
+                "name": "Ferkels grosses Abenteuer",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Nhiều nghệ sĩ",
+                "name": "Nhiều nghệ sĩ",
+                "locale": "vi",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "razlichnye ispolniteli",
+                "name": "razlichnye ispolniteli",
+                "locale": "ru",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Artisti uniti per l'Emilia",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Artisti uniti per l'Emilia",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Nhiều Nghệ Sĩ",
+                "name": "Nhiều Nghệ Sĩ",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Artistes divers",
+                "name": "Artistes divers",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Encrypted Audio",
+                "name": "Encrypted Audio",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Artis JK",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Artis JK",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Danske Kunstnere",
+                "name": "Danske Kunstnere",
+                "locale": "da",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Przeboje, Światowe",
+                "name": "Światowe Przeboje",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varoius Artists",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Varoius Artists",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various DHM Artists",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Various DHM Artists",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Hazbin Hotel",
+                "name": "Hazbin Hotel",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Assorted Christian Artists",
+                "name": "Assorted Christian Artists",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Time Life Music: Various Artists",
+                "name": "Time Life Music: Various Artists",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Variés",
+                "name": "Variés",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Battle of the Bits",
+                "name": "Battle of the Bits",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Div. artister",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Div. artister",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Vari Artisti",
+                "name": "Vari Artisti",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varius Artists",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Varius Artists",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Iedereen",
+                "name": "Iedereen",
+                "locale": "nl",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Rizni vykonavci",
+                "name": "Rizni vykonavci",
+                "locale": "uk",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Vários Artistas",
+                "name": "Vários Artistas",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Bande originale",
+                "name": "Bande originale",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Assorted Artists",
+                "name": "Assorted Artists",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Multi-artistes",
+                "name": "Multi-artistes",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Artist",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Various Artist",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "ヴァリアス",
+                "name": "ヴァリアス",
+                "locale": "ja",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "80's, Various",
+                "name": "Various 80's",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Artsits",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Various Artsits",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Sampler",
+                "name": "Sampler",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Multiple Artists",
+                "name": "Multiple Artists",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "[Various Artists]",
+                "name": "[Various Artists]",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Hợp ca",
+                "name": "Hợp ca",
+                "locale": "vi",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Artists [DIY]",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Various Artists [DIY]",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Insomniac Music Group",
+                "name": "Insomniac Music Group",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varios artists",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Varios artists",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "V. Artist",
+                "name": "V. Artist",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Artitsts",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Various Artitsts",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varies",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Varies",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Woman & Home / Classic FM",
+                "name": "Woman & Home / Classic FM",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "various aritsts",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "various aritsts",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Pacific Northwest Tribute to Ray Charles",
+                "name": "A Pacific Northwest Tribute to Ray Charles",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Различные исполнители",
+                "name": "Различные исполнители",
+                "locale": "ru",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diverse componisten",
+                "name": "Diverse componisten",
+                "locale": "nl",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Vrious Artists",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Vrious Artists",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "V.A.",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "V.A.",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Όλοι",
+                "name": "Όλοι",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Razni",
+                "name": "Razni",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Tốp ca",
+                "name": "Tốp ca",
+                "locale": "vi",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Skratch 'N Sniff",
+                "name": "Skratch 'N Sniff",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Multi-interprètes",
+                "name": "Multi-interprètes",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varias Artistas",
+                "name": "Varias Artistas",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "various artiste",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "various artiste",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Female Artists",
+                "name": "Various Female Artists",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "หลากหลายศิลปิน",
+                "name": "หลากหลายศิลปิน",
+                "locale": "th",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Noevir",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Noevir",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Artistes",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Various Artistes",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "EXIT TUNES/PONY CANYON",
+                "name": "EXIT TUNES/PONY CANYON",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Coletânea",
+                "name": "Coletânea",
+                "locale": "pt",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Różni artyści",
+                "name": "Różni artyści",
+                "locale": "pl",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Assorted Artisits",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Assorted Artisits",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "WitChoirRecords",
+                "name": "WitChoirRecords",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Bassrush",
+                "name": "Bassrush",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Kunstnere, Blandede",
+                "name": "Blandede Kunstnere",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "VV AA",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "VV AA",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various DJ's",
+                "name": "Various DJ's",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "The Metal Observer",
+                "name": "The Metal Observer",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Fitness Workout Music",
+                "name": "Fitness Workout Music",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Amrywiol",
+                "name": "Amrywiol",
+                "locale": "cy",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various artists from CISM 89,3 FM",
+                "name": "Various artists from CISM 89,3 FM",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "KZOK 102.5 FM",
+                "name": "KZOK 102.5FM",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Arists",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Various Arists",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Big Bands",
+                "name": "Various Big Bands",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "30 Vermont Artists",
+                "name": "30 Vermont Artists",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Tabu Recz",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Tabu Recz",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Compilation",
+                "name": "Compilation",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Divers",
+                "name": "Divers",
+                "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Mixed Artists",
+                "name": "Mixed Artists",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "(V.A.)",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "(V.A.)",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "V.A.",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "V.A.",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Items",
+                "name": "Various Items",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Icelandic Folk Music",
+                "name": "Icelandic Folk Music",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Div. kunstnere",
+                "name": "Div. kunstnere",
+                "locale": "da",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "различных исполнителей",
+                "name": "различных исполнителей",
+                "locale": "ru",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "різних виконавців",
+                "name": "різних виконавців",
+                "locale": "uk",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Rizni vykonavtsi",
+                "name": "Rizni vykonavtsi",
+                "locale": "uk",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Intérpretes Diversos",
+                "name": "Intérpretes Diversos",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "WiddFam",
+                "name": "WiddFam",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Verschiedene Interpreten",
+                "name": "Verschiedene Interpreten",
+                "locale": "de",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "DESKPOP",
+                "name": "DESKPOP",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Omnibus",
+                "name": "Omnibus",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various (not original artists)",
+                "name": "Various (not original artists)",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Helluva Boss",
+                "name": "Helluva Boss",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Coala Records",
+                "name": "Coala.Records",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Różni",
+                "name": "Różni",
+                "locale": "pl",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Artisti vari",
+                "name": "Artisti vari",
+                "locale": "it",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Wszyscy artysci",
+                "name": "Wszyscy artysci",
+                "locale": "pl",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Variuos Artists",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Variuos Artists",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "(Karaoke) Various Artists",
+                "name": "(Karaoke) Various Artists",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Records, Reinelex",
+                "name": "Reinelex Records",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Bypass Audio",
+                "name": "Bypass Audio",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Strictly The Best",
+                "name": "Strictly The Best",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Variuos",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Variuos",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Erinevad",
+                "name": "Erinevad",
+                "locale": "et",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "VariousArtist",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "VariousArtist",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "オムニバス",
+                "name": "オムニバス",
+                "locale": "ja",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Vários intérpretes",
+                "name": "Vários intérpretes",
+                "locale": "pt",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Verious",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Verious",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Hver gang vi møtes",
+                "name": "Hver gang vi møtes",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Christmas Karma",
+                "name": "Christmas Karma",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miscellaneous",
+                "name": "Miscellaneous",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "div.",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "div.",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Goths For Palestine",
+                "name": "Goths For Palestine",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Compiled By",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Various Compiled By",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "MUSIC STUDY PROJECT",
+                "name": "MUSIC STUDY PROJECT",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "KC101",
+                "name": "KC101—Connecticut's #1 Hit Music Station",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Blandat",
+                "name": "Blandat",
+                "locale": "sv",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Group, The",
+                "name": "Berühmtesten Opernchören",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "משתתפי פסטיגל",
+                "name": "משתתפי פסטיגל",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Siren Cues",
+                "name": "Siren Cues",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "AAVV",
+                "name": "AAVV",
+                "locale": "it",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Razni izveduvači",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Разни изведувачи",
+                "locale": "mk",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Различни изпълнители",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Различни изпълнители",
+                "locale": "bg",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varios Artistas",
+                "name": "Varios Artistas",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "MDB",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "MDB",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "אמנים שונים",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "אמנים שונים",
+                "locale": "he",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Multi‐interprètes",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Multi‐interprètes",
+                "locale": "fr",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Eri esittäjiä",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Eri esittäjiä",
+                "locale": "fi",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "هنرمندان مختلف",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "هنرمندان مختلف",
+                "locale": "fa",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Hainbat artista",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Hainbat artista",
+                "locale": "eu",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Pluraj artistoj",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Pluraj artistoj",
+                "locale": "eo",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Různí interpreti",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Různí interpreti",
+                "locale": "cs",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "diversos artistes",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "diversos artistes",
+                "locale": "ca",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "розныя выканаўцы",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "розныя выканаўцы",
+                "locale": "be",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "群星",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "群星",
+                "locale": "zh",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Разные артисты",
+                "name": "Разные артисты",
+                "locale": "ru",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diaforoi Kallitechnes",
+                "name": "Διάφοροι Καλλιτέχνες",
+                "locale": "el",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "ヴァリアス・アーティスト",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "ヴァリアス・アーティスト",
+                "locale": "ja",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "atlikėjai, Įvairūs",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Įvairūs atlikėjai",
+                "locale": "lt",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Vari",
+                "name": "Vari",
+                "locale": "it",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Ýmsir hljóðfæraleikarar",
+                "name": "Ýmsir hljóðfæraleikarar",
+                "locale": "is",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Razni Izvođači",
+                "name": "Razni Izvođači",
+                "locale": "sr_Latn",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Razni Izvođači",
+                "name": "Razni Izvođači",
+                "locale": "hr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Razni Izvođači",
+                "name": "Razni Izvođači",
+                "locale": "bs",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "รวมศิลปิน",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "รวมศิลปิน",
+                "locale": "th",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Blandade artister",
+                "name": "Blandade artister",
+                "locale": "sv",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Різні виконавці",
+                "name": "Різні виконавці",
+                "locale": "uk",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diverse Artistar",
+                "name": "Diverse Artistar",
+                "locale": "nn",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diverse Artister",
+                "name": "Diverse Artister",
+                "locale": "nb",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "مختلف الفنانين",
+                "name": "مختلف الفنانين",
+                "locale": "ar",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "여러 아티스트",
+                "name": "여러 아티스트",
+                "locale": "ko",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Artists",
+                "name": "Various Artists",
+                "locale": "en",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diverse Artiesten",
+                "name": "Diverse Artiesten",
+                "locale": "nl",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diverse Interpreten",
+                "name": "Diverse Interpreten",
+                "locale": "de",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diverse kunstnere",
+                "name": "Diverse kunstnere",
+                "locale": "da",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Vários artistas",
+                "name": "Vários artistas",
+                "locale": "pt",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varios artistas",
+                "name": "Varios artistas",
+                "locale": "es",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Erinevad esitajad",
+                "name": "Erinevad esitajad",
+                "locale": "et",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Çeşitli sanatçılar",
+                "name": "Çeşitli sanatçılar",
+                "locale": "tr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Różni wykonawcy",
+                "name": "Różni wykonawcy",
+                "locale": "pl",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Nhiều ca sĩ",
+                "name": "Nhiều ca sĩ",
+                "locale": "vi",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Razlièni izvajalci",
+                "name": "Razlièni izvajalci",
+                "locale": "sl",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Artistiaid Amrywiol",
+                "name": "Artistiaid Amrywiol",
+                "locale": "cy",
+                "type": null,
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "releases": [
+        {
+          "id": "512b5b5b-5e8b-40a5-bec2-d6859008fd93",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue Revisited - The Miles Davis Songbook",
+          "status": "Official"
+        }
+      ]
+    },
+    {
+      "id": "60c5ead7-1199-3936-8423-3b7c54014387",
+      "type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "score": 60,
+      "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+      "artist-credit-id": "2ea43e33-7838-3001-be51-122610315697",
+      "count": 2,
+      "title": "Another Kind of Blue: The Latin Side of Miles Davis",
+      "first-release-date": "2004",
+      "primary-type": "Album",
+      "artist-credit": [
+        {
+          "name": "Conrad Herwig",
+          "artist": {
+            "id": "b80c1c3b-7b22-443b-9e10-c2742b9af7f2",
+            "name": "Conrad Herwig",
+            "sort-name": "Herwig, Conrad",
+            "disambiguation": "American jazz trombonist",
+            "aliases": [
+              {
+                "sort-name": "III, Lee Conrad Herwig",
+                "type-id": "d4dcd0c0-b341-3612-a332-c0ce797b25cf",
+                "name": "Lee Conrad Herwig III",
+                "locale": null,
+                "type": "Legal name",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Herwig, Conrad",
+                "name": "Herwig, Conrad",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
+          }
+        }
+      ],
+      "releases": [
+        {
+          "id": "13f0b6b6-577c-4531-8ae9-43c1d535bb25",
+          "title": "Another Kind of Blue: The Latin Side of Miles Davis"
+        },
+        {
+          "id": "4e686a4e-d724-4a1d-9f70-f4ce9e55e84d",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Another Kind of Blue: The Latin Side of Miles Davis",
+          "status": "Official"
+        }
+      ]
+    }
+  ]
+}

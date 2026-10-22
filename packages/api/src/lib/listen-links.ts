@@ -2,7 +2,7 @@ import type { ListenLink } from "../types";
 
 /** Plain search links to streaming services: no API, no account linking. */
 export function buildListenLinks(title: string, artistNames: string[]): ListenLink[] {
-  const query = encodeURIComponent([...artistNames, title].join(" "));
+  const query = encodeURIComponent([...artistNames, title].filter(Boolean).join(" "));
   return [
     { service: "spotify", url: `https://open.spotify.com/search/${query}` },
     { service: "deezer", url: `https://www.deezer.com/search/${query}` },
