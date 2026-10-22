@@ -1,0 +1,42 @@
+# Dependency updates. Processed with the /maintenance skill (.claude/skills/maintenance).
+# Dependabot officially supports pnpm 7–10; this repo uses pnpm 12: if a PR leaves
+# pnpm-lock.yaml out of sync, CI fails on `install --frozen-lockfile` (see the skill).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/Paris
+    # Skip releases younger than 3 days (above pnpm's minimumReleaseAge, which would
+    # otherwise refuse them).
+    cooldown:
+      default-days: 3
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      # Minor and patch versions together in one PR; majors get one PR each.
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/Paris
+    commit-message:
+      prefix: "ci(deps)"
+    groups:
+      actions-minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
