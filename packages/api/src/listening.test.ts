@@ -287,6 +287,11 @@ describe("undated listens (quick rating and heart)", () => {
     });
     await m.call().listening.quickRate({ target: album, rating: null });
     expect(await entriesOf(m.user.id)).toHaveLength(1);
+    const [snapshot] = await handle.db
+      .select({ rating: schema.reviews.rating })
+      .from(schema.reviews)
+      .where(eq(schema.reviews.id, review.id));
+    expect(snapshot?.rating).toBeNull();
 
     // Without the review, nothing is left on it: it goes.
     await m.call().review.delete({ id: review.id });

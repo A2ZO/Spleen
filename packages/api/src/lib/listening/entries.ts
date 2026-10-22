@@ -105,6 +105,7 @@ async function quickUpdate(
         .update(entries)
         .set({ ...next, updatedAt: new Date() })
         .where(eq(entries.id, undated.id));
+      await tx.update(reviews).set({ rating: next.rating }).where(eq(reviews.entryId, undated.id));
     } else if (next.rating !== null || next.liked) {
       await tx.insert(entries).values({ userId, ...target, listenedOn: null, ...next });
     }

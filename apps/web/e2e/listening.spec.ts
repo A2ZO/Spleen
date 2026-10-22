@@ -33,8 +33,12 @@ test("listen in one click, rate, log with a mood and find it in the diary", asyn
   );
 
   // Full log: dated today by default, with a mood and a track rating.
-  await panel.getByRole("button", { name: "Journaliser…" }).click();
+  // After a reload the server HTML is visible before React hydrates: retry the first click.
   const dialog = page.getByRole("dialog");
+  await expect(async () => {
+    await panel.getByRole("button", { name: "Journaliser…" }).click();
+    await expect(dialog).toBeVisible({ timeout: 1_000 });
+  }).toPass();
   await expect(dialog.getByLabel("Date d'écoute")).not.toHaveValue("");
   await dialog.getByRole("button", { name: "Pluie sur la vitre" }).click();
   await dialog.getByLabel("Format").selectOption("vinyl");

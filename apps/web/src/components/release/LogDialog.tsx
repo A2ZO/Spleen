@@ -82,10 +82,10 @@ export function LogDialog({
     new Map((entry?.trackRatings ?? []).map((r) => [r.trackId, r.rating])),
   );
 
+  // No cleanup: closing here would fire `close` (hence `onClose`) when Strict Mode replays
+  // the effect; the dialog leaves the DOM with the component anyway.
   useEffect(() => {
-    const dialog = ref.current;
-    dialog?.showModal();
-    return () => dialog?.close();
+    if (ref.current && !ref.current.open) ref.current.showModal();
   }, []);
 
   const suggestion = suggestAlbumRating([...trackRatings.values()]);
