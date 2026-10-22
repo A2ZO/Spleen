@@ -1,11 +1,11 @@
 # Spleen — notes for Claude Code
 
-"Letterboxd for music": rate, review, list music, keep a dated listening diary, follow
-people, see stats. Web first (FR/EN), Expo app later reusing every package.
+"Letterboxd for music". Web first (FR/EN), Expo app later reusing every package.
 
 - Functional reference: `docs/cahier-des-charges.md` (it wins on doubt; ask when ambiguous).
 - Original brief, milestone list and process rules: `docs/prompt-claude-code-spleen.md`.
 - The user works on Windows / PowerShell and speaks French: answer and recap in French.
+- Maintenance: `docs/services.md` (service limits, costs, budget alerts) and `/maintenance`.
 
 ## Monorepo
 
