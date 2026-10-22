@@ -100,15 +100,36 @@ describe("computeBaseStats", () => {
   const a = release("a", "album", 1959, "miles");
   const b = release("b", "ep", 2024, "kassim");
   const entries: StatsInput[] = [
-    { listenedOn: "2026-03-01", rating: 6, release: a },
-    { listenedOn: "2026-05-01", rating: 10, release: a },
-    { listenedOn: "2025-12-01", rating: 4, release: b },
+    { listenedOn: "2026-03-01", editedAt: "2026-03-01T21:00:00Z", rating: 6, release: a },
+    { listenedOn: "2026-05-01", editedAt: "2026-05-01T21:00:00Z", rating: 10, release: a },
+    { listenedOn: "2025-12-01", editedAt: "2025-12-01T21:00:00Z", rating: 4, release: b },
   ];
 
   it("counts distinct releases per year and in total", () => {
     const stats = computeBaseStats(entries, 2026);
     expect(stats.listenedThisYear).toEqual({ album: 1, ep: 0, single: 0 });
     expect(stats.listenedTotal).toEqual({ album: 1, ep: 1, single: 0 });
+  });
+
+  it("counts undated listens in all-time totals only", () => {
+    const undated: StatsInput = {
+      listenedOn: null,
+      editedAt: "2026-06-01T21:00:00Z",
+      rating: 8,
+      release: release("c", "single", 2001, "nora"),
+    };
+    const stats = computeBaseStats([...entries, undated], 2026);
+    expect(stats.listenedTotal).toEqual({ album: 1, ep: 1, single: 1 });
+    expect(stats.listenedThisYear).toEqual({ album: 1, ep: 0, single: 0 });
+    expect(stats.activityByMonth.reduce((a, b) => a + b, 0)).toBe(2);
+    expect(stats.topArtists.map((a) => a.slug)).toEqual(["miles"]);
+  });
+
+  it("uses the most recently edited rating per release for the distribution", () => {
+    const reRated: StatsInput = { ...entries[0]!, editedAt: "2026-06-01T21:00:00Z" };
+    const stats = computeBaseStats([reRated, entries[1]!, entries[2]!], 2026);
+    expect(stats.ratingDistribution[5]).toBe(1);
+    expect(stats.ratingDistribution[9]).toBe(0);
   });
 
   it("uses the latest rating per release for the distribution", () => {

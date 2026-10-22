@@ -18,6 +18,14 @@ export const API_ERROR_CODES = [
   "CATALOG_BUSY",
   "CATALOG_UNAVAILABLE",
   "CATALOG_NOT_FOUND",
+  "ITEM_NOT_FOUND",
+  "ENTRY_NOT_FOUND",
+  "REVIEW_NOT_FOUND",
+  "MOOD_NOT_FOUND",
+  "MOOD_LIMIT",
+  "TRACK_NOT_ON_RELEASE",
+  "DATE_IN_FUTURE",
+  "DATE_REQUIRED",
 ] as const;
 
 export type ApiErrorCode = (typeof API_ERROR_CODES)[number];

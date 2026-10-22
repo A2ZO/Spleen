@@ -87,26 +87,18 @@ async function releaseReviews(db: Db, release: ReleaseCard): Promise<ReviewCard[
   }));
 }
 
-/** Lists containing the release, with a preview of their first releases. */
-async function releaseLists(db: Db, releaseId: string): Promise<ListCard[]> {
-  const rows = await db
-    .selectDistinct({
-      id: lists.id,
-      title: lists.title,
-      description: lists.description,
-      ranked: lists.ranked,
-      updatedAt: lists.updatedAt,
-      username: profiles.username,
-      displayName: profiles.displayName,
-    })
-    .from(listItems)
-    .innerJoin(lists, eq(lists.id, listItems.listId))
-    .innerJoin(profiles, eq(profiles.userId, lists.userId))
-    .where(eq(listItems.releaseId, releaseId))
-    .orderBy(desc(lists.updatedAt))
-    .limit(LISTS_ON_PAGE);
-  if (rows.length === 0) return [];
+type ListRow = {
+  id: string;
+  title: string;
+  description: string;
+  ranked: boolean;
+  username: string;
+  displayName: string;
+};
 
+/** List cards with a preview of their first releases (two queries whatever the count). */
+export async function loadListCards(db: Db, rows: ListRow[]): Promise<ListCard[]> {
+  if (rows.length === 0) return [];
   const items = await db
     .select({ listId: listItems.listId, releaseId: listItems.releaseId })
     .from(listItems)
@@ -141,6 +133,29 @@ async function releaseLists(db: Db, releaseId: string): Promise<ListCard[]> {
   });
 }
 
+export const listRowColumns = {
+  id: lists.id,
+  title: lists.title,
+  description: lists.description,
+  ranked: lists.ranked,
+  updatedAt: lists.updatedAt,
+  username: profiles.username,
+  displayName: profiles.displayName,
+};
+
+/** Lists containing the release, with a preview of their first releases. */
+async function releaseLists(db: Db, releaseId: string): Promise<ListCard[]> {
+  const rows = await db
+    .selectDistinct(listRowColumns)
+    .from(listItems)
+    .innerJoin(lists, eq(lists.id, listItems.listId))
+    .innerJoin(profiles, eq(profiles.userId, lists.userId))
+    .where(eq(listItems.releaseId, releaseId))
+    .orderBy(desc(lists.updatedAt))
+    .limit(LISTS_ON_PAGE);
+  return loadListCards(db, rows);
+}
+
 export async function getReleaseDetail(db: Db, slug: string): Promise<ReleaseDetail | null> {
   const [row] = await db.select().from(releases).where(eq(releases.slug, slug)).limit(1);
   if (!row) return null;
@@ -156,6 +171,7 @@ export async function getReleaseDetail(db: Db, slug: string): Promise<ReleaseDet
       .orderBy(asc(genres.name)),
     db
       .select({
+        id: tracks.id,
         slug: tracks.slug,
         disc: releaseTracks.disc,
         position: releaseTracks.position,

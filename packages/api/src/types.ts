@@ -19,10 +19,13 @@ export interface ReleaseCard {
   /** Community average on the 1..10 scale, null when nobody rated it yet. */
   averageRating: number | null;
   ratingCount: number;
+  /** Blind listening: the viewer has not rated it yet, so the community ratings are hidden. */
+  ratingsHidden?: boolean;
 }
 
 export interface Track {
   /** Null for mockup tracks that have no page. */
+  id: string | null;
   slug: string | null;
   disc: number;
   position: number;
@@ -81,14 +84,54 @@ export interface ReleaseDetail extends ReleaseCard {
   listenLinks: ListenLink[];
 }
 
+export interface MoodRef {
+  id: string;
+  slug: string;
+  labelFr: string;
+  labelEn: string;
+  /** Created by the member (labels are the same in both languages). */
+  personal: boolean;
+}
+
+/** A dated listen in a member's public diary. */
 export interface DiaryEntry {
   id: string;
   listenedOn: string;
+  /** The release listened to, or the release of the track listened to. */
   release: ReleaseCard;
+  /** Set when the listen is about a single track. */
+  track: { slug: string; title: string } | null;
   rating: number | null;
   liked: boolean;
   relisten: boolean;
-  format: ListenFormat;
+  format: ListenFormat | null;
+  moods: MoodRef[];
+  hasReview: boolean;
+}
+
+/** One of the member's own listens, as edited in the "log" form. */
+export interface MyEntry {
+  id: string;
+  /** Null for the undated listen (quick rating or heart). */
+  listenedOn: string | null;
+  rating: number | null;
+  liked: boolean;
+  relisten: boolean;
+  format: ListenFormat | null;
+  moodIds: string[];
+  trackRatings: { trackId: string; rating: number }[];
+  review: { id: string; body: string; lang: AudienceLang } | null;
+}
+
+/** The member's state for an item page, with their listens (newest first). */
+export interface MyItemState {
+  rating: number | null;
+  liked: boolean;
+  listened: boolean;
+  wantToListen: boolean;
+  entries: MyEntry[];
+  /** Today in the member's time zone: the default listening date. */
+  today: string;
 }
 
 export interface CountByType {
@@ -124,7 +167,12 @@ export interface ProfileDetail {
   diary: DiaryEntry[];
   reviews: ReviewCard[];
   lists: ListCard[];
+  /** "To listen" queue (empty when the diary is private and the viewer is someone else). */
+  toListen: ReleaseCard[];
   stats: ProfileStats;
+  /** Private diary seen by someone else: diary, recent activity and queue are left empty. */
+  diaryHidden: boolean;
+  statsHidden: boolean;
 }
 
 export interface HomeFeed {
@@ -171,6 +219,8 @@ export interface TrackDetail extends TrackCard {
   appearsOn: ReleaseCard[];
   averageRating: number | null;
   ratingCount: number;
+  /** Blind listening: the viewer has not rated it yet. */
+  ratingsHidden?: boolean;
   listenLinks: ListenLink[];
 }
 
@@ -210,6 +260,8 @@ export interface MyProfile {
   statsPrivate: boolean;
   diaryPrivate: boolean;
   blindMode: boolean;
+  /** IANA time zone used for "today" (default listening date). */
+  timeZone: string;
   /** ISO date from which the @username can change again; null when it can now. */
   usernameChangeAvailableAt: string | null;
 }

@@ -264,6 +264,14 @@
     "CATALOG_BUSY": "MusicBrainz est très demandé en ce moment. Réessaie dans une minute.",
     "CATALOG_UNAVAILABLE": "MusicBrainz ne répond pas. Réessaie un peu plus tard.",
     "CATALOG_NOT_FOUND": "MusicBrainz ne connaît pas ce disque.",
+    "ITEM_NOT_FOUND": "Ce disque n'est pas (ou plus) dans Spleen.",
+    "ENTRY_NOT_FOUND": "Cette écoute n'existe plus.",
+    "REVIEW_NOT_FOUND": "Cette critique n'existe plus.",
+    "MOOD_NOT_FOUND": "Une des humeurs choisies n'existe plus.",
+    "MOOD_LIMIT": "Tu as déjà 50 humeurs personnelles.",
+    "TRACK_NOT_ON_RELEASE": "Ce morceau ne figure pas sur ce disque.",
+    "DATE_IN_FUTURE": "Cette date n'est pas encore arrivée.",
+    "DATE_REQUIRED": "Une écoute datée garde sa date.",
     "unknown": "Quelque chose s'est mal passé. Réessaie."
   },
   "secondaryType": {

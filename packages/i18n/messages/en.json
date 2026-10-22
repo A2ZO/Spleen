@@ -264,6 +264,14 @@
     "CATALOG_BUSY": "MusicBrainz is very busy right now. Try again in a minute.",
     "CATALOG_UNAVAILABLE": "MusicBrainz is not answering. Try again a little later.",
     "CATALOG_NOT_FOUND": "MusicBrainz does not know this record.",
+    "ITEM_NOT_FOUND": "This record is not (or no longer) in Spleen.",
+    "ENTRY_NOT_FOUND": "This listen no longer exists.",
+    "REVIEW_NOT_FOUND": "This review no longer exists.",
+    "MOOD_NOT_FOUND": "One of the chosen moods no longer exists.",
+    "MOOD_LIMIT": "You already have 50 personal moods.",
+    "TRACK_NOT_ON_RELEASE": "This track is not on this record.",
+    "DATE_IN_FUTURE": "That date hasn't come yet.",
+    "DATE_REQUIRED": "A dated listen keeps its date.",
     "unknown": "Something went wrong. Try again."
   },
   "secondaryType": {

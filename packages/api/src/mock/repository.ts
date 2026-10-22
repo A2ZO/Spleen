@@ -1,50 +1,28 @@
 import {
   artists,
-  diaryEntries,
-  lists,
   releases,
   reviews,
   users,
-  type DiaryFixture,
-  type ListFixture,
   type ReleaseFixture,
   type ReviewFixture,
   type UserFixture,
 } from "@spleen/db/fixtures";
 
 import { averageFromDistribution, countRatings } from "../lib/ratings";
-import { computeBaseStats } from "../lib/stats";
-import type {
-  DiaryEntry,
-  HomeFeed,
-  ListCard,
-  MemberRef,
-  ProfileDetail,
-  ReleaseCard,
-  ReviewCard,
-} from "../types";
+import type { HomeFeed, MemberRef, ReleaseCard, ReviewCard } from "../types";
 
 /*
- * Read-only data access backed by in-memory fixtures (static mockup): home feed and member
- * activity until milestones 5-8. Catalog pages read the database (`lib/catalog`).
+ * Read-only data access backed by in-memory fixtures (static mockup): the home feed until
+ * milestone 8. Catalog pages read the database (`lib/catalog`).
  */
 
-const SHELF_SIZE = 4;
 const HOME_TRENDING_SIZE = 6;
 const HOME_RECENT_SIZE = 6;
 const HOME_REVIEWS_SIZE = 3;
-const RECENT_ACTIVITY_SIZE = 5;
-const LIST_PREVIEW_SIZE = 4;
 
 const releaseBySlug = new Map(releases.map((r) => [r.slug, r]));
 const artistBySlug = new Map(artists.map((a) => [a.slug, a]));
 const userByUsername = new Map(users.map((u) => [u.username, u]));
-const userById = new Map(users.map((u) => [u.id, u]));
-
-/** Fixture username of a demo member, by id (to overlay real profile data on the mockup). */
-export function fixtureUsernameById(id: string): string | null {
-  return userById.get(id)?.username ?? null;
-}
 
 function mustGet<K, V>(map: Map<K, V>, key: K, kind: string): V {
   const value = map.get(key);
@@ -93,30 +71,6 @@ function toReviewCard(review: ReviewFixture): ReviewCard {
   };
 }
 
-function toListCard(list: ListFixture): ListCard {
-  return {
-    id: list.id,
-    title: list.title,
-    description: list.description,
-    ranked: list.ranked,
-    owner: toMemberRef(mustGet(userByUsername, list.username, "user")),
-    itemCount: list.releaseSlugs.length,
-    preview: list.releaseSlugs.slice(0, LIST_PREVIEW_SIZE).map(cardOf),
-  };
-}
-
-function toDiaryEntry(entry: DiaryFixture): DiaryEntry {
-  return {
-    id: entry.id,
-    listenedOn: entry.listenedOn,
-    release: cardOf(entry.releaseSlug),
-    rating: entry.rating,
-    liked: entry.liked,
-    relisten: entry.relisten,
-    format: entry.format,
-  };
-}
-
 const byPopularity = (a: ReviewFixture, b: ReviewFixture) => b.likeCount - a.likeCount;
 
 export function getHomeFeed(): HomeFeed {
@@ -134,58 +88,5 @@ export function getHomeFeed(): HomeFeed {
       .slice(0, HOME_RECENT_SIZE)
       .map(toReleaseCard),
     popularReviews: [...reviews].sort(byPopularity).slice(0, HOME_REVIEWS_SIZE).map(toReviewCard),
-  };
-}
-
-export function getProfileByUsername(username: string, now: Date): ProfileDetail | null {
-  const user = userByUsername.get(username);
-  if (!user) return null;
-
-  const entries = diaryEntries
-    .filter((e) => e.username === username)
-    .sort((a, b) => b.listenedOn.localeCompare(a.listenedOn));
-  const diary = entries.map(toDiaryEntry);
-
-  const shelf: (ReleaseCard | null)[] = Array.from({ length: SHELF_SIZE }, (_, i) => {
-    const slug = user.shelf[i];
-    return slug ? cardOf(slug) : null;
-  });
-
-  const stats = computeBaseStats(
-    entries.map((e) => {
-      const release = mustGet(releaseBySlug, e.releaseSlug, "release");
-      return {
-        listenedOn: e.listenedOn,
-        rating: e.rating,
-        release: {
-          id: release.id,
-          type: release.type,
-          releaseYear: Number(release.releaseDate.slice(0, 4)),
-          genres: release.genres,
-          artists: artistRefs(release),
-        },
-      };
-    }),
-    now.getUTCFullYear(),
-  );
-
-  return {
-    id: user.id,
-    username: user.username,
-    displayName: user.displayName,
-    bio: user.bio,
-    avatarUrl: null,
-    joinedOn: user.joinedOn,
-    followerCount: user.followerCount,
-    followingCount: user.followingCount,
-    shelf,
-    recent: diary.slice(0, RECENT_ACTIVITY_SIZE),
-    diary,
-    reviews: reviews
-      .filter((r) => r.username === username)
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-      .map(toReviewCard),
-    lists: lists.filter((l) => l.username === username).map(toListCard),
-    stats,
   };
 }
