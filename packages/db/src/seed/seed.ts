@@ -1,6 +1,18 @@
+import { sql } from "drizzle-orm";
+
 import type { Db } from "../client";
+import { recomputeItemState, setWantToListen } from "../listening-state";
 import * as s from "../schema";
-import { artists, diaryEntries, fixtureId, lists, releases, reviews, users } from "./fixtures";
+import {
+  artists,
+  diaryEntries,
+  fixtureId,
+  lists,
+  releases,
+  reviews,
+  toListen,
+  users,
+} from "./fixtures";
 import { slugify } from "./slugify";
 
 /* Fixed ID ranges for seed rows that have no fixture id (keeps the seed idempotent). */
@@ -9,21 +21,35 @@ const GENRE_ID_BASE = 700;
 const MOOD_ID_BASE = 800;
 const LIST_ITEM_ID_BASE = 20_000;
 
-/** Suggested moods ("Carnet d'humeur"). */
-const suggestedMoods = [
-  { slug: "rain", labelFr: "Pluie", labelEn: "Rain" },
-  { slug: "night", labelFr: "La nuit", labelEn: "Night" },
+/**
+ * Suggested moods ("Carnet d'humeur"). Ids follow this order: append new moods at the end.
+ * Labels are updated on every seed; slugs never change (personal moods may reuse them).
+ */
+export const suggestedMoods = [
+  { slug: "rain", labelFr: "Pluie sur la vitre", labelEn: "Rain on the window" },
+  { slug: "night", labelFr: "Tard dans la nuit", labelEn: "Late night" },
   { slug: "sunday-morning", labelFr: "Dimanche matin", labelEn: "Sunday morning" },
   { slug: "commute", labelFr: "Trajet", labelEn: "Commute" },
+  { slug: "one-am", labelFr: "Une heure du matin", labelEn: "1 a.m." },
+  { slug: "first-coffee", labelFr: "Premier café", labelEn: "First coffee" },
+  { slug: "walk", labelFr: "Balade", labelEn: "Out for a walk" },
+  { slug: "on-the-road", labelFr: "Sur la route", labelEn: "On the road" },
+  { slug: "cooking", labelFr: "En cuisinant", labelEn: "Cooking" },
+  { slug: "reading", labelFr: "En lisant", labelEn: "Reading" },
+  { slug: "focus", labelFr: "Concentration", labelEn: "Deep focus" },
+  { slug: "headphones", labelFr: "Au casque", labelEn: "Headphones on" },
+  { slug: "spleen", labelFr: "Spleen", labelEn: "Spleen" },
+  { slug: "nostalgia", labelFr: "Nostalgie", labelEn: "Nostalgia" },
+  { slug: "heartbreak", labelFr: "Cœur brisé", labelEn: "Heartbreak" },
+  { slug: "date-night", labelFr: "En amoureux", labelEn: "Date night" },
+  { slug: "with-friends", labelFr: "Entre amis", labelEn: "With friends" },
+  { slug: "good-mood", labelFr: "Bonne humeur", labelEn: "Good mood" },
+  { slug: "autumn", labelFr: "Automne", labelEn: "Autumn" },
+  { slug: "summer-evening", labelFr: "Soir d'été", labelEn: "Summer evening" },
 ];
 
-/** A few moods on demo diary entries, by fixture entry number. */
-const entryMoodSlugs: Record<number, string[]> = {
-  403: ["rain", "night"],
-  406: ["sunday-morning"],
-  409: ["night"],
-  411: ["commute"],
-};
+/** Undated listens sort as edited the evening before the demo "today" (2026-10-20). */
+const UNDATED_EDITED_AT = new Date("2026-10-19T20:00:00Z");
 
 const demoFollows: [string, string][] = [
   ["nuitblanche", "vinylvince"],
@@ -111,6 +137,12 @@ export async function seed(db: Db): Promise<void> {
         artistSlugs: r.artistSlugs,
       })),
     );
+    const trackIdByPosition = new Map(
+      trackRows.map((t) => [
+        `${releases.find((r) => r.id === t.releaseId)!.slug}#${t.position}`,
+        t.id,
+      ]),
+    );
     await tx
       .insert(s.tracks)
       .values(trackRows.map(({ id, slug, title, durationMs }) => ({ id, slug, title, durationMs })))
@@ -184,52 +216,67 @@ export async function seed(db: Db): Promise<void> {
     await tx
       .insert(s.moods)
       .values(suggestedMoods.map((m) => ({ id: get(moodIdBySlug, m.slug), ...m })))
-      .onConflictDoNothing();
+      .onConflictDoUpdate({
+        target: s.moods.id,
+        set: { labelFr: sql`excluded.label_fr`, labelEn: sql`excluded.label_en` },
+      });
 
+    // Edit times follow listening dates, so the "most recently modified" rule is realistic.
     await tx
       .insert(s.entries)
       .values(
-        diaryEntries.map((e) => ({
-          id: e.id,
-          userId: get(userIdByName, e.username),
-          releaseId: get(releaseIdBySlug, e.releaseSlug),
-          listenedOn: e.listenedOn,
-          rating: e.rating,
-          liked: e.liked,
-          isRelisten: e.relisten,
-          format: e.format,
-        })),
+        diaryEntries.map((e) => {
+          const editedAt = e.listenedOn ? new Date(`${e.listenedOn}T21:00:00Z`) : UNDATED_EDITED_AT;
+          return {
+            id: e.id,
+            userId: get(userIdByName, e.username),
+            releaseId: get(releaseIdBySlug, e.releaseSlug),
+            listenedOn: e.listenedOn,
+            rating: e.rating,
+            liked: e.liked,
+            isRelisten: e.relisten,
+            format: e.format,
+            createdAt: editedAt,
+            updatedAt: editedAt,
+          };
+        }),
       )
       .onConflictDoNothing();
 
-    await tx
-      .insert(s.entryMoods)
-      .values(
-        Object.entries(entryMoodSlugs).flatMap(([n, slugs]) =>
-          slugs.map((slug) => ({ entryId: fixtureId(Number(n)), moodId: get(moodIdBySlug, slug) })),
-        ),
-      )
-      .onConflictDoNothing();
+    const moodRows = diaryEntries.flatMap((e) =>
+      e.moods.map((slug) => ({ entryId: e.id, moodId: get(moodIdBySlug, slug) })),
+    );
+    if (moodRows.length > 0) await tx.insert(s.entryMoods).values(moodRows).onConflictDoNothing();
 
-    // Latest state per member and release, derived from the diary (newest entry wins).
-    const latest = new Map<string, (typeof diaryEntries)[number]>();
-    for (const e of [...diaryEntries].sort((a, b) => a.listenedOn.localeCompare(b.listenedOn))) {
-      latest.set(`${e.username}|${e.releaseSlug}`, e);
+    const trackRatingRows = diaryEntries.flatMap((e) =>
+      Object.entries(e.trackRatings).map(([position, rating]) => ({
+        entryId: e.id,
+        trackId: get(trackIdByPosition, `${e.releaseSlug}#${position}`),
+        rating,
+      })),
+    );
+    if (trackRatingRows.length > 0) {
+      await tx.insert(s.trackRatings).values(trackRatingRows).onConflictDoNothing();
     }
-    await tx
-      .insert(s.userItemState)
-      .values(
-        [...latest.values()].map((e) => ({
-          userId: get(userIdByName, e.username),
-          releaseId: get(releaseIdBySlug, e.releaseSlug),
-          rating: e.rating,
-          liked: diaryEntries.some(
-            (o) => o.username === e.username && o.releaseSlug === e.releaseSlug && o.liked,
-          ),
-          listened: true,
-        })),
-      )
-      .onConflictDoNothing();
+
+    // Member state is derived from the diary by the same code as the API.
+    for (const u of users) {
+      const userId = u.id;
+      for (const { releaseSlugs } of toListen.filter((q) => q.username === u.username)) {
+        for (const slug of releaseSlugs) {
+          await setWantToListen(tx, userId, { releaseId: get(releaseIdBySlug, slug) }, true);
+        }
+      }
+      const targets = new Map<string, { releaseId: string } | { trackId: string }>();
+      for (const e of diaryEntries.filter((d) => d.username === u.username)) {
+        targets.set(e.releaseSlug, { releaseId: get(releaseIdBySlug, e.releaseSlug) });
+        for (const position of Object.keys(e.trackRatings)) {
+          const trackId = get(trackIdByPosition, `${e.releaseSlug}#${position}`);
+          targets.set(trackId, { trackId });
+        }
+      }
+      for (const target of targets.values()) await recomputeItemState(tx, userId, target);
+    }
 
     // Content
     await tx
@@ -239,6 +286,7 @@ export async function seed(db: Db): Promise<void> {
           id: r.id,
           userId: get(userIdByName, r.username),
           releaseId: get(releaseIdBySlug, r.releaseSlug),
+          entryId: r.entryId,
           rating: r.rating,
           body: r.body,
           lang: r.lang,

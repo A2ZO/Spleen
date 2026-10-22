@@ -57,7 +57,7 @@ describe("seed", () => {
     expect(await count(s.artists)).toBe(11);
     expect(await count(s.releases)).toBe(12);
     expect(await count(s.profiles)).toBe(3);
-    expect(await count(s.entries)).toBe(19);
+    expect(await count(s.entries)).toBe(22);
     expect(await count(s.favorites)).toBe(8);
   });
 
@@ -66,6 +66,47 @@ describe("seed", () => {
     await seed(handle.db);
     const after = await Promise.all([count(s.tracks), count(s.userItemState), count(s.listItems)]);
     expect(after).toEqual(before);
+  });
+});
+
+describe("seeded member state", () => {
+  const stateOf = async (userId: string, releaseId: string) => {
+    const [row] = await handle.db
+      .select()
+      .from(s.userItemState)
+      .where(
+        sql`${s.userItemState.userId} = ${userId} and ${s.userItemState.releaseId} = ${releaseId}`,
+      );
+    return row;
+  };
+
+  it("takes the rating of the most recently edited listen, undated ones included", async () => {
+    // Camille: dated 3/5 in August, then a quick 3.5/5 (undated, edited later).
+    expect((await stateOf(camille, fixtureId(210)))?.rating).toBe(7);
+    // Vince only rated it quickly, without a date.
+    expect(await stateOf(vince, nocturnes)).toMatchObject({ rating: 8, listened: true });
+  });
+
+  it("derives track states from track-by-track ratings", async () => {
+    const rows = await handle.db
+      .select()
+      .from(s.userItemState)
+      .where(
+        sql`${s.userItemState.userId} = ${camille} and ${s.userItemState.trackId} is not null`,
+      );
+    expect(rows).toHaveLength(7);
+    expect(rows.every((r) => r.listened && !r.liked)).toBe(true);
+  });
+
+  it("keeps the 'to listen' queue", async () => {
+    const sam = fixtureId(303);
+    expect(await stateOf(sam, nocturnes)).toMatchObject({ wantToListen: true, listened: false });
+  });
+
+  it("allows one undated listen per member and target", async () => {
+    const insert = () =>
+      handle.db.insert(s.entries).values({ userId: vince, releaseId: nocturnes, listenedOn: null });
+    expect(await pgError(insert)).toMatch(/entries_undated_release_uidx/);
   });
 });
 

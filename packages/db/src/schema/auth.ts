@@ -99,6 +99,8 @@ export const profiles = pgTable(
     bannerUrl: text("banner_url"),
     locale: varchar("locale", { length: 8 }).notNull().default("fr"),
     theme: themePreference("theme").notNull().default("dark"),
+    /** IANA time zone: "today" for a new listen is computed in it, never in the server's. */
+    timeZone: text("time_zone").notNull().default("Europe/Paris"),
     statsPrivate: boolean("stats_private").notNull().default(false),
     diaryPrivate: boolean("diary_private").notNull().default(false),
     /** Hide community averages until the member has rated ("blind listening"). */
