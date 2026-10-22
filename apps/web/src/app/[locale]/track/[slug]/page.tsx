@@ -6,6 +6,7 @@ import { cache } from "react";
 
 import { ArtistLinks } from "@/components/catalog/ArtistLinks";
 import { ListenOn } from "@/components/catalog/ListenOn";
+import { ListenControls } from "@/components/release/ListenControls";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { Cover } from "@/components/ui/Cover";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -38,6 +39,12 @@ export default async function TrackPage({ params }: Props) {
   const t = await getTranslations();
   const format = await getFormatter();
   const cover = track.release;
+  const api = await getApi();
+  const target = { kind: "track" as const, id: track.id };
+  const [mine, moods] = await Promise.all([
+    api.listening.myState(target),
+    api.listening.moods.list(),
+  ]);
 
   return (
     <article className="space-y-14">
@@ -88,9 +95,19 @@ export default async function TrackPage({ params }: Props) {
                 {t("rating.count", { count: track.ratingCount })}
               </span>
             </div>
+            {track.ratingsHidden && (
+              <p className="mt-2 text-sm text-fg-muted italic">{t("listening.blindHidden")}</p>
+            )}
           </section>
         </div>
-        <aside>
+        <aside className="space-y-6">
+          <ListenControls
+            target={target}
+            title={track.title}
+            initial={mine}
+            moods={moods}
+            tracks={[]}
+          />
           <ListenOn links={track.listenLinks} />
         </aside>
       </header>

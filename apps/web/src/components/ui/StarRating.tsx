@@ -13,13 +13,16 @@ export interface StarRatingProps {
   value: number | null;
   onChange: (value: number | null) => void;
   className?: string;
+  /** Accessible name; defaults to the generic "Your rating". */
+  label?: string;
+  size?: "sm" | "md";
 }
 
 /**
  * Half-star rating input. Exposed as a slider: arrows/Home/End adjust,
  * Delete/Backspace clears. Pointer position picks the half star under the cursor.
  */
-export function StarRating({ value, onChange, className }: StarRatingProps) {
+export function StarRating({ value, onChange, className, label, size = "md" }: StarRatingProps) {
   const t = useTranslations("rating");
   const ref = useRef<HTMLDivElement>(null);
   const hintId = useId();
@@ -58,7 +61,7 @@ export function StarRating({ value, onChange, className }: StarRatingProps) {
         ref={ref}
         role="slider"
         tabIndex={0}
-        aria-label={t("sliderLabel")}
+        aria-label={label ?? t("sliderLabel")}
         aria-valuemin={RATING_MIN}
         aria-valuemax={RATING_MAX}
         aria-valuenow={value ?? undefined}
@@ -73,7 +76,10 @@ export function StarRating({ value, onChange, className }: StarRatingProps) {
           const picked = fromPointer(e.clientX);
           if (picked !== null) onChange(picked === value ? null : picked);
         }}
-        className="cursor-pointer touch-none rounded-sm text-3xl leading-none"
+        className={cn(
+          "cursor-pointer touch-none rounded-sm leading-none",
+          size === "md" ? "text-3xl" : "text-lg",
+        )}
       >
         <Stars rating={shown} />
       </div>

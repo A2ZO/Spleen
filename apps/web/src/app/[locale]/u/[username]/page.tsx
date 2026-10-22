@@ -14,6 +14,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Tabs } from "@/components/ui/Tabs";
 import { VinylShelf } from "@/components/ui/VinylShelf";
 import { initRouteLocale } from "@/i18n/locale";
+import { Link } from "@/i18n/navigation";
 import { getApi } from "@/server/api";
 
 type Props = { params: Promise<{ locale: string; username: string }> };
@@ -30,6 +31,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!profile) return {};
   return { title: `${profile.displayName} (@${profile.username})` };
 }
+
+/** Latest diary entries on the profile; the rest is on /u/[username]/diary. */
+const DIARY_PREVIEW_SIZE = 30;
 
 function EmptyState({ children }: { children: string }) {
   return <p className="py-6 font-serif text-lg text-fg-muted italic">{children}</p>;
@@ -100,12 +104,40 @@ export default async function ProfilePage({ params }: Props) {
           {
             id: "diary",
             label: t("profile.tabs.diary"),
-            content:
-              profile.diary.length > 0 ? (
-                <DiaryList entries={profile.diary} />
-              ) : (
-                <EmptyState>{t("profile.diaryEmpty")}</EmptyState>
-              ),
+            content: profile.diaryHidden ? (
+              <EmptyState>{t("profile.diaryPrivate", { name: profile.displayName })}</EmptyState>
+            ) : profile.diary.length > 0 ? (
+              <div className="space-y-6">
+                <DiaryList entries={profile.diary.slice(0, DIARY_PREVIEW_SIZE)} />
+                {profile.diary.length > DIARY_PREVIEW_SIZE && (
+                  <Link
+                    href={`/u/${profile.username}/diary`}
+                    className="inline-block text-sm text-link underline-offset-2 hover:underline"
+                  >
+                    {t("profile.diaryAll")}
+                  </Link>
+                )}
+              </div>
+            ) : (
+              <EmptyState>{t("profile.diaryEmpty")}</EmptyState>
+            ),
+          },
+          {
+            id: "to-listen",
+            label: t("profile.tabs.toListen"),
+            content: profile.diaryHidden ? (
+              <EmptyState>{t("profile.diaryPrivate", { name: profile.displayName })}</EmptyState>
+            ) : profile.toListen.length > 0 ? (
+              <ul className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
+                {profile.toListen.map((release) => (
+                  <li key={release.id}>
+                    <ReleaseTile release={release} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <EmptyState>{t("profile.toListenEmpty")}</EmptyState>
+            ),
           },
           {
             id: "reviews",
@@ -142,12 +174,16 @@ export default async function ProfilePage({ params }: Props) {
           {
             id: "stats",
             label: t("profile.tabs.stats"),
-            content:
-              profile.diary.length > 0 ? (
-                <StatsPanel stats={profile.stats} />
-              ) : (
-                <EmptyState>{t("stats.empty")}</EmptyState>
-              ),
+            content: profile.statsHidden ? (
+              <EmptyState>{t("profile.statsPrivate", { name: profile.displayName })}</EmptyState>
+            ) : profile.stats.listenedTotal.album +
+                profile.stats.listenedTotal.ep +
+                profile.stats.listenedTotal.single >
+              0 ? (
+              <StatsPanel stats={profile.stats} />
+            ) : (
+              <EmptyState>{t("stats.empty")}</EmptyState>
+            ),
           },
         ]}
       />

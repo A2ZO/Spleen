@@ -1,13 +1,15 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useActionState } from "react";
+import { useActionState, useSyncExternalStore } from "react";
 
 import { checkUsername, onboardAction, type OnboardingState } from "@/app/[locale]/welcome/actions";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, FormMessage, TextField } from "@/components/ui/Field";
 
 import { UsernameField } from "./UsernameField";
+
+const noSubscription = () => () => {};
 
 export function OnboardingForm({
   locale,
@@ -22,11 +24,18 @@ export function OnboardingForm({
   const te = useTranslations("errors");
   const [state, action, pending] = useActionState<OnboardingState, FormData>(onboardAction, {});
   const usernameError = state.field === "username" ? state.error : undefined;
+  // The browser's zone (the server falls back to Europe/Paris before hydration).
+  const timeZone = useSyncExternalStore(
+    noSubscription,
+    () => Intl.DateTimeFormat().resolvedOptions().timeZone,
+    () => "",
+  );
 
   return (
     <form action={action} className="space-y-5">
       <input type="hidden" name="locale" value={locale} />
       <input type="hidden" name="theme" value={theme} />
+      <input type="hidden" name="timeZone" value={timeZone} />
       <UsernameField label={t("usernameLabel")} serverError={usernameError} check={checkUsername} />
       <TextField
         label={t("displayNameLabel")}

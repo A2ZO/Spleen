@@ -45,7 +45,9 @@
     "cassette": "Cassette",
     "streaming": "Streaming",
     "live": "Live",
-    "other": "Other"
+    "other": "Other",
+    "download": "Download",
+    "radio": "Radio"
   },
   "rating": {
     "outOfFive": "{stars} out of 5",
@@ -88,10 +90,13 @@
     "actions": {
       "title": "Your listen",
       "listened": "I listened",
-      "listenedDone": "Listened tonight",
+      "listenedDone": "Listened",
       "like": "Favourite",
       "wantToListen": "Listen later",
-      "mockNote": "Mockup: nothing is saved yet."
+      "log": "Log…",
+      "signIn": "Sign in to keep track of what you listen to.",
+      "signInLink": "Sign in",
+      "error": "That didn't work. Try again."
     },
     "releasedIn": "Released in {date}",
     "dateUnknown": "Release date unknown",
@@ -132,14 +137,23 @@
       "diary": "Diary",
       "reviews": "Reviews",
       "lists": "Lists",
-      "stats": "Stats"
+      "stats": "Stats",
+      "toListen": "To listen"
     },
     "diaryEmpty": "The diary is still blank.",
     "reviewsEmpty": "No reviews yet.",
     "listsEmpty": "No lists yet.",
     "relisten": "Relisten",
     "liked": "Favourite",
-    "listenedOn": "Listened {date}"
+    "listenedOn": "Listened {date}",
+    "toListenEmpty": "Nothing waiting on the turntable.",
+    "diaryPrivate": "{name} keeps their diary private.",
+    "statsPrivate": "{name} keeps their stats private.",
+    "diaryAll": "Full diary",
+    "diaryTitle": "{name}'s diary",
+    "diaryBack": "Back to profile",
+    "reviewed": "Review written",
+    "moods": "Moods"
   },
   "stats": {
     "thisYear": "In {year}",
@@ -246,7 +260,9 @@
     "deleteBody": "Everything goes: profile, diary, reviews, lists and follows. This is permanent. Your username stays reserved for 30 days, with no link to you, then it becomes free again.",
     "deleteConfirmLabel": "Type your username ({username}) to confirm",
     "deleteButton": "Delete permanently",
-    "deleting": "Deleting…"
+    "deleting": "Deleting…",
+    "timeZoneLabel": "Time zone",
+    "timeZoneHint": "Used to date your listens \"today\"."
   },
   "errors": {
     "UNAUTHENTICATED": "Sign in to continue.",
@@ -342,5 +358,40 @@
       "artist": "Artist",
       "recording": "Track"
     }
+  },
+  "listening": {
+    "prompt": "What did you listen to tonight?",
+    "dialogTitle": "Log \"{title}\"",
+    "editTitle": "Edit listen",
+    "date": "Listened on",
+    "undated": "No date",
+    "undatedHint": "An undated listen counts for your rating, not your diary. Give it a date to add it there.",
+    "rating": "Your rating",
+    "liked": "Loved it",
+    "relisten": "Relisten",
+    "format": "Format",
+    "formatNone": "Not specified",
+    "moods": "Moods",
+    "moodsHint": "{max, plural, one {# at most} other {# at most}}",
+    "moodNew": "New mood",
+    "moodAdd": "Add",
+    "review": "Review (optional)",
+    "reviewHint": "Your rating and your review are independent: one doesn't need the other.",
+    "reviewLang": "Review language",
+    "reviewExisting": "The review written with this listen is edited from your profile.",
+    "tracks": "Track-by-track ratings",
+    "tracksHint": "Optional. Your album rating stays yours.",
+    "suggestion": "Suggested from your tracks: {stars} ★",
+    "applySuggestion": "Apply",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteConfirm": "Really delete?",
+    "myListens": "Your listens",
+    "quickListen": "Quick rating, no date",
+    "edit": "Edit",
+    "blindHidden": "Blind listening: the average shows up once you have rated.",
+    "today": "Today"
   }
 }

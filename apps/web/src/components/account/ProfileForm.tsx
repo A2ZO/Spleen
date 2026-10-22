@@ -8,7 +8,16 @@ import { updateProfileAction, type FormState } from "@/app/[locale]/settings/act
 import { Button } from "@/components/ui/Button";
 import { Checkbox, FormMessage, SelectField, TextArea, TextField } from "@/components/ui/Field";
 
-export function ProfileForm({ profile, locale }: { profile: MyProfile; locale: string }) {
+export function ProfileForm({
+  profile,
+  locale,
+  timeZones,
+}: {
+  profile: MyProfile;
+  locale: string;
+  /** IANA zones known to the server (the list is built there, so it matches the API). */
+  timeZones: string[];
+}) {
   const t = useTranslations("settings");
   const tl = useTranslations("locale");
   const te = useTranslations("errors");
@@ -41,6 +50,18 @@ export function ProfileForm({ profile, locale }: { profile: MyProfile; locale: s
           <option value="light">{t("themeLight")}</option>
         </SelectField>
       </div>
+      <SelectField
+        label={t("timeZoneLabel")}
+        hint={t("timeZoneHint")}
+        name="timeZone"
+        defaultValue={profile.timeZone}
+      >
+        {timeZones.map((zone) => (
+          <option key={zone} value={zone}>
+            {zone.replaceAll("_", " ")}
+          </option>
+        ))}
+      </SelectField>
       <fieldset className="space-y-3">
         <legend className="mb-2 font-serif text-xl">{t("privacyTitle")}</legend>
         <Checkbox

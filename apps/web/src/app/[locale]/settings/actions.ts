@@ -27,6 +27,7 @@ export async function updateProfileAction(
     statsPrivate: formData.get("statsPrivate") === "on",
     diaryPrivate: formData.get("diaryPrivate") === "on",
     blindMode: formData.get("blindMode") === "on",
+    timeZone: formData.get("timeZone"),
   });
   if (!parsed.success) return { error: "unknown" };
   const currentLocale = formData.get("currentLocale");

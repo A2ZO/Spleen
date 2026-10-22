@@ -45,7 +45,9 @@
     "cassette": "Cassette",
     "streaming": "Streaming",
     "live": "Concert",
-    "other": "Autre"
+    "other": "Autre",
+    "download": "Téléchargement",
+    "radio": "Radio"
   },
   "rating": {
     "outOfFive": "{stars} sur 5",
@@ -88,10 +90,13 @@
     "actions": {
       "title": "Ton écoute",
       "listened": "J'ai écouté",
-      "listenedDone": "Écouté ce soir",
+      "listenedDone": "Écouté",
       "like": "Coup de cœur",
       "wantToListen": "À écouter",
-      "mockNote": "Maquette : rien n'est enregistré pour l'instant."
+      "log": "Journaliser…",
+      "signIn": "Connecte-toi pour garder une trace de tes écoutes.",
+      "signInLink": "Se connecter",
+      "error": "Ça n'a pas marché. Réessaie."
     },
     "releasedIn": "Sorti en {date}",
     "dateUnknown": "Date de sortie inconnue",
@@ -132,14 +137,23 @@
       "diary": "Journal",
       "reviews": "Critiques",
       "lists": "Listes",
-      "stats": "Stats"
+      "stats": "Stats",
+      "toListen": "À écouter"
     },
     "diaryEmpty": "Le journal est encore vierge.",
     "reviewsEmpty": "Aucune critique pour l'instant.",
     "listsEmpty": "Aucune liste pour l'instant.",
     "relisten": "Réécoute",
     "liked": "Coup de cœur",
-    "listenedOn": "Écouté le {date}"
+    "listenedOn": "Écouté le {date}",
+    "toListenEmpty": "Rien en attente sur la platine.",
+    "diaryPrivate": "{name} garde son journal pour soi.",
+    "statsPrivate": "{name} garde ses stats pour soi.",
+    "diaryAll": "Tout le journal",
+    "diaryTitle": "Journal de {name}",
+    "diaryBack": "Retour au profil",
+    "reviewed": "Critique écrite",
+    "moods": "Humeurs"
   },
   "stats": {
     "thisYear": "En {year}",
@@ -246,7 +260,9 @@
     "deleteBody": "Tout disparaît : profil, journal, critiques, listes et abonnements. C'est définitif. Ton pseudo reste réservé 30 jours, sans aucun lien avec toi, puis il redevient libre.",
     "deleteConfirmLabel": "Tape ton pseudo ({username}) pour confirmer",
     "deleteButton": "Supprimer définitivement",
-    "deleting": "Suppression…"
+    "deleting": "Suppression…",
+    "timeZoneLabel": "Fuseau horaire",
+    "timeZoneHint": "Sert à dater tes écoutes « aujourd'hui »."
   },
   "errors": {
     "UNAUTHENTICATED": "Connecte-toi pour continuer.",
@@ -342,5 +358,40 @@
       "artist": "Artiste",
       "recording": "Morceau"
     }
+  },
+  "listening": {
+    "prompt": "Qu'as-tu écouté ce soir ?",
+    "dialogTitle": "Journaliser « {title} »",
+    "editTitle": "Modifier l'écoute",
+    "date": "Date d'écoute",
+    "undated": "Sans date",
+    "undatedHint": "Une écoute sans date compte pour ta note, pas pour ton journal. Donne-lui une date pour l'y faire entrer.",
+    "rating": "Ta note",
+    "liked": "Coup de cœur",
+    "relisten": "Réécoute",
+    "format": "Format",
+    "formatNone": "Non précisé",
+    "moods": "Humeurs",
+    "moodsHint": "{max, plural, one {# au plus} other {# au plus}}",
+    "moodNew": "Nouvelle humeur",
+    "moodAdd": "Ajouter",
+    "review": "Critique (facultative)",
+    "reviewHint": "Ta note et ta critique sont indépendantes : l'une ne demande pas l'autre.",
+    "reviewLang": "Langue de la critique",
+    "reviewExisting": "Ta critique écrite avec cette écoute se modifie depuis ton profil.",
+    "tracks": "Note piste par piste",
+    "tracksHint": "Facultatif. Ta note d'album reste la tienne.",
+    "suggestion": "Suggestion d'après tes pistes : {stars} ★",
+    "applySuggestion": "Appliquer",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "deleteConfirm": "Vraiment supprimer ?",
+    "myListens": "Tes écoutes",
+    "quickListen": "Note rapide, sans date",
+    "edit": "Modifier",
+    "blindHidden": "Écoute à l'aveugle : la moyenne apparaîtra quand tu auras noté.",
+    "today": "Aujourd'hui"
   }
 }

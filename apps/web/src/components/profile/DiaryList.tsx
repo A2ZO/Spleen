@@ -1,10 +1,10 @@
 import type { DiaryEntry } from "@spleen/api";
 import { ratingToStars } from "@spleen/validators";
-import { useFormatter, useTranslations } from "next-intl";
+import { useFormatter, useLocale, useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/Badge";
 import { Cover } from "@/components/ui/Cover";
-import { HeartIcon, RepeatIcon } from "@/components/ui/icons";
+import { HeartIcon, PenIcon, RepeatIcon } from "@/components/ui/icons";
 import { Stars } from "@/components/ui/Stars";
 import { Link } from "@/i18n/navigation";
 
@@ -12,6 +12,7 @@ import { Link } from "@/i18n/navigation";
 export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
   const t = useTranslations();
   const format = useFormatter();
+  const locale = useLocale();
 
   const months = new Map<string, DiaryEntry[]>();
   for (const entry of entries) {
@@ -55,16 +56,29 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
                 />
                 <div className="min-w-0 flex-1">
                   <Link
-                    href={`/album/${entry.release.slug}`}
+                    href={
+                      entry.track ? `/track/${entry.track.slug}` : `/album/${entry.release.slug}`
+                    }
                     className="block truncate font-serif text-lg leading-tight hover:text-star"
                   >
-                    {entry.release.title}
+                    {entry.track?.title ?? entry.release.title}
                   </Link>
                   <p className="truncate text-sm text-fg-muted">
-                    {[entry.release.artists.map((a) => a.name).join(", "), entry.release.year]
+                    {[
+                      entry.release.artists.map((a) => a.name).join(", "),
+                      entry.track ? entry.release.title : entry.release.year,
+                    ]
                       .filter((part) => part !== null && part !== "")
                       .join(" · ")}
                   </p>
+                  {entry.moods.length > 0 && (
+                    <p className="truncate text-xs text-fg-muted italic">
+                      <span className="sr-only">{t("profile.moods")} : </span>
+                      {entry.moods
+                        .map((m) => (locale === "en" ? m.labelEn : m.labelFr))
+                        .join(" · ")}
+                    </p>
+                  )}
                 </div>
                 <div className="flex shrink-0 flex-col items-end gap-1 sm:flex-row sm:items-center sm:gap-3">
                   {entry.rating !== null && (
@@ -94,7 +108,12 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
                         role="img"
                       />
                     )}
-                    <Badge className="hidden sm:inline-flex">{t(`format.${entry.format}`)}</Badge>
+                    {entry.hasReview && (
+                      <PenIcon aria-label={t("profile.reviewed")} aria-hidden={false} role="img" />
+                    )}
+                    {entry.format && (
+                      <Badge className="hidden sm:inline-flex">{t(`format.${entry.format}`)}</Badge>
+                    )}
                   </span>
                 </div>
               </li>

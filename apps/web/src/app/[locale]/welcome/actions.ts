@@ -28,6 +28,7 @@ export async function onboardAction(
     ageConfirmed: formData.get("ageConfirmed") === "on",
     locale: formData.get("locale"),
     theme: formData.get("theme"),
+    timeZone: formData.get("timeZone") || undefined,
   });
   if (!parsed.success) {
     const field = parsed.error.issues[0]?.path[0] as OnboardingState["field"];
