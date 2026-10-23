@@ -20,17 +20,24 @@ export interface DiaryFixture {
   id: string;
   username: string;
   releaseSlug: string;
-  listenedOn: string;
+  /** Null for an undated listen (quick rating or heart from the album page). */
+  listenedOn: string | null;
   rating: number | null;
   liked: boolean;
   relisten: boolean;
-  format: ListenFormat;
+  format: ListenFormat | null;
+  /** Suggested mood slugs. */
+  moods: string[];
+  /** Track-by-track ratings, by track position on the release (album listens only). */
+  trackRatings: Record<number, number>;
 }
 
 export interface ReviewFixture {
   id: string;
   username: string;
   releaseSlug: string;
+  /** Diary entry the review was written with, if any. */
+  entryId: string | null;
   rating: number | null;
   body: string;
   lang: AudienceLang;
@@ -90,10 +97,15 @@ const diary = (
   n: number,
   username: string,
   releaseSlug: string,
-  listenedOn: string,
+  listenedOn: string | null,
   rating: number | null,
-  format: ListenFormat,
-  options: { liked?: boolean; relisten?: boolean } = {},
+  format: ListenFormat | null,
+  options: {
+    liked?: boolean;
+    relisten?: boolean;
+    moods?: string[];
+    trackRatings?: Record<number, number>;
+  } = {},
 ): DiaryFixture => ({
   id: id(n),
   username,
@@ -103,6 +115,8 @@ const diary = (
   format,
   liked: options.liked ?? false,
   relisten: options.relisten ?? false,
+  moods: options.moods ?? [],
+  trackRatings: options.trackRatings ?? {},
 });
 
 export const diaryEntries: DiaryFixture[] = [
@@ -111,20 +125,24 @@ export const diaryEntries: DiaryFixture[] = [
   diary(403, "nuitblanche", "nocturnes-pour-pluie-fine", "2026-10-11", 10, "vinyl", {
     liked: true,
     relisten: true,
+    moods: ["rain", "night"],
+    trackRatings: { 1: 9, 2: 10, 3: 8, 4: 10, 5: 9, 6: 8, 7: 9 },
   }),
   diary(404, "nuitblanche", "beton-velours", "2026-10-04", 7, "streaming"),
   diary(405, "nuitblanche", "brass-and-bone", "2026-09-20", 8, "cd", { liked: true }),
   diary(406, "nuitblanche", "le-roi-d-un-pays-pluvieux", "2026-09-06", 9, "vinyl", {
     relisten: true,
+    moods: ["sunday-morning", "reading"],
   }),
   diary(407, "nuitblanche", "spleen-d-automne", "2026-08-29", 6, "cassette"),
   diary(408, "nuitblanche", "paper-moon-motel", "2026-07-17", 7, "streaming"),
   diary(409, "nuitblanche", "smoke-rings-at-1-am", "2026-06-02", 10, "vinyl", {
     liked: true,
     relisten: true,
+    moods: ["one-am", "spleen"],
   }),
   diary(410, "nuitblanche", "gold-leaf-sessions", "2026-05-23", 8, "live"),
-  diary(411, "nuitblanche", "sous-le-periph", "2026-05-02", 6, "streaming"),
+  diary(411, "nuitblanche", "sous-le-periph", "2026-05-02", 6, "streaming", { moods: ["commute"] }),
   diary(412, "nuitblanche", "cafe-creme", "2026-04-12", 9, "vinyl", { liked: true }),
   diary(413, "nuitblanche", "le-roi-d-un-pays-pluvieux", "2026-03-15", 8, "streaming"),
   diary(414, "nuitblanche", "smoke-rings-at-1-am", "2025-12-31", 9, "vinyl"),
@@ -133,6 +151,16 @@ export const diaryEntries: DiaryFixture[] = [
   diary(422, "vinylvince", "brass-and-bone", "2026-10-02", 10, "vinyl", { liked: true }),
   diary(423, "vinylvince", "beton-velours", "2026-09-30", 7, "streaming"),
   diary(424, "vinylvince", "paper-moon-motel", "2026-08-15", null, "cd"),
+  // Undated listens: quick ratings / hearts given from the album page.
+  diary(416, "nuitblanche", "spleen-d-automne", null, 7, null),
+  diary(425, "vinylvince", "nocturnes-pour-pluie-fine", null, 8, null),
+  diary(426, "vinylvince", "cafe-creme", null, null, null, { liked: true }),
+];
+
+/** "To listen" queue of the demo members (release slugs). */
+export const toListen: { username: string; releaseSlugs: string[] }[] = [
+  { username: "nuitblanche", releaseSlugs: ["gold-leaf-sessions"] },
+  { username: "rainydaysam", releaseSlugs: ["nocturnes-pour-pluie-fine", "cafe-creme"] },
 ];
 
 export const reviews: ReviewFixture[] = [
@@ -140,6 +168,7 @@ export const reviews: ReviewFixture[] = [
     id: id(501),
     username: "nuitblanche",
     releaseSlug: "nocturnes-pour-pluie-fine",
+    entryId: id(403),
     rating: 10,
     body: "Le genre de disque qu'on pose quand la ville s'endort. La contrebasse de « Une heure du matin » me suit encore dans l'escalier. Rien à jeter, tout à garder.",
     lang: "fr",
@@ -151,6 +180,7 @@ export const reviews: ReviewFixture[] = [
     id: id(502),
     username: "vinylvince",
     releaseSlug: "brass-and-bone",
+    entryId: id(422),
     rating: 10,
     body: "Warm, generous, a little bruised. Okafor sings like she's leaning on the piano at closing time. 'Sunday Choir' is the one that got me.",
     lang: "en",
@@ -162,6 +192,7 @@ export const reviews: ReviewFixture[] = [
     id: id(503),
     username: "nuitblanche",
     releaseSlug: "le-roi-d-un-pays-pluvieux",
+    entryId: id(406),
     rating: 9,
     body: "Baudelaire mis en musique sans poussière. Les cordes sont d'une douceur folle, et « Recueillement » termine la nuit comme il faut.",
     lang: "fr",
@@ -173,6 +204,7 @@ export const reviews: ReviewFixture[] = [
     id: id(504),
     username: "vinylvince",
     releaseSlug: "nocturnes-pour-pluie-fine",
+    entryId: id(425),
     rating: 8,
     body: "Didn't understand a word of the titles, understood every note. Perfect rainy-window record.",
     lang: "en",
@@ -184,6 +216,7 @@ export const reviews: ReviewFixture[] = [
     id: id(505),
     username: "rainydaysam",
     releaseSlug: "nocturnes-pour-pluie-fine",
+    entryId: null,
     rating: null,
     body: "Pas encore de note, je l'écoute depuis trois soirs et je change d'avis à chaque fois. C'est peut-être bon signe.",
     lang: "fr",
@@ -195,6 +228,7 @@ export const reviews: ReviewFixture[] = [
     id: id(506),
     username: "nuitblanche",
     releaseSlug: "beton-velours",
+    entryId: id(404),
     rating: 7,
     body: "Des samples de sax magnifiques, quelques couplets en trop. « Quai de Seine » tourne en boucle depuis une semaine.",
     lang: "fr",
@@ -206,6 +240,7 @@ export const reviews: ReviewFixture[] = [
     id: id(507),
     username: "vinylvince",
     releaseSlug: "gold-leaf-sessions",
+    entryId: id(421),
     rating: 9,
     body: "The Hammond on 'Hammond Sunrise' could warm a whole street in January.",
     lang: "en",

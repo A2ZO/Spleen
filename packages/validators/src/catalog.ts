@@ -4,7 +4,17 @@ export const releaseTypes = ["album", "ep", "single"] as const;
 export const releaseTypeSchema = z.enum(releaseTypes);
 export type ReleaseType = z.infer<typeof releaseTypeSchema>;
 
-export const listenFormats = ["vinyl", "cd", "cassette", "streaming", "live", "other"] as const;
+/** Display order matters: forms and the database enum use it. */
+export const listenFormats = [
+  "vinyl",
+  "cd",
+  "cassette",
+  "streaming",
+  "download",
+  "radio",
+  "live",
+  "other",
+] as const;
 export const listenFormatSchema = z.enum(listenFormats);
 export type ListenFormat = z.infer<typeof listenFormatSchema>;
 

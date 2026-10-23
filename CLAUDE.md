@@ -15,9 +15,8 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
 - `apps/web`: Next.js 16 (App Router, Turbopack, `src/proxy.ts` = former middleware),
   React 19, Tailwind CSS 4 (CSS-first), next-intl 4. Next docs for this version:
   `apps/web/node_modules/next/dist/docs`.
-- `packages/api`: tRPC 11 routers = all business logic. Catalog pages and search read the
-  database (`src/lib/catalog`); home feed and member activity still read fixtures
-  (`src/mock/repository.ts`) until milestones 5–8.
+- `packages/api`: tRPC 11 routers = all business logic, on the database (catalog, listening,
+  profiles); only the home feed still reads fixtures (`src/mock/repository.ts`) until 8.
 - `packages/catalog`: `CatalogProvider` + MusicBrainz implementation (no DB access), tested on
   recorded responses (`@spleen/catalog/testing`). Flow, rules, limiter: `docs/catalogue.md`.
 - `packages/db`: Drizzle schema (`src/schema/*`, one file per domain), SQL migrations
@@ -97,10 +96,11 @@ Brevo and S3 variables (`assertProductionConfig()`, `apps/web/src/instrumentatio
 - Catalog rows are never hard-deleted (`on delete restrict`); duplicate merges re-point
   references first (milestone 9). Member data cascades when a user is deleted.
 - Demo seed: members `<username>@example.test` (`nuitblanche` full shelf, `vinylvince`,
-  `rainydaysam` empty shelf), fictional artists/albums (generated covers). Fixture
-  `ratingCounts` / `weeklyListens` are mockup-only (home page). MusicBrainz imports carry
-  real data and Cover Art Archive covers. `computeBaseStats` (`src/lib/stats.ts` in api) is
-  the reference behaviour for the future SQL aggregates.
+  `rainydaysam` empty shelf, queue only), fictional albums, real listens/reviews/moods.
+  Fixture `ratingCounts` / `weeklyListens` are home-page mockup only.
+- Listening: read `docs/ecoute.md`. `user_item_state` is derived by `recomputeItemState()`
+  in the write's transaction. Stats (6): `api/src/lib/stats-source.ts`; undated listens count
+  in all-time totals only, never per year/month nor in the calendar.
 
 ## Conventions
 
@@ -143,8 +143,7 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 - Tests on PGlite (pg_trgm + unaccent contrib): no Docker, no network, no secrets in CI.
 - Brevo for emails (French, 300/day free, plain `fetch`); Expo sessions via the Cookie
   header (Better Auth's official flow); no `sharp` (not on Workers): avatars resized client-side.
-- Public profiles: identity from the database, activity from fixtures for demo members
-  until milestones 5-6 (`packages/api/src/lib/profiles.ts`).
+- "Today" for a listen = member's `profiles.time_zone` (IANA), never the server's zone.
 - Catalog: MusicBrainz WS/2 with plain `fetch` (no client library); global gate = one atomic
   `rate_limits` statement (`reserveSlot`); imports and stub completion for members only;
   covers from Cover Art Archive shown `unoptimized` (no image service, no quota).
@@ -155,8 +154,8 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
   rejects. Use dotenv-cli.
 - `new URL("…", import.meta.url)` in code bundled by Next → Turbopack copies the target as
   a public asset (it once exposed `.env`). Use `path.resolve(dirname, …)`.
-- Quotes or spaces around a URL in `.env` broke parsing; `createDb()` now throws on a
-  malformed URL without echoing it. Never log raw DB errors that may contain the URL.
+- Quotes/spaces around a URL in `.env` broke parsing; `createDb()` throws without echoing it.
+  Never log raw DB errors that may contain the URL.
 - Neon pooler = PgBouncer transaction mode: no `SET`, `LISTEN`, session advisory locks or
   SQL `PREPARE`. Migrations need the direct URL. Free tier sleeps after 5 min (slow 1st query).
 - Next 16 allows one dev server per app; Playwright reuses port 3000. Stopping turbo may
@@ -169,10 +168,11 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
   `@spleen/db`, never from `drizzle-orm` outside packages/db.
 - Client components import `@spleen/api/errors` (or types only), never `@spleen/api`.
   drizzle-kit writes unformatted `migrations/meta/*.json`: run Prettier on them.
-- Backticks in `node -e "…"` / unquoted heredocs run as shell commands; PowerShell
-  `Set-Content -Encoding utf8` writes a BOM: write files with the editor tools.
+- Backticks in `node -e`/unquoted heredocs run; `Set-Content -Encoding utf8` adds a BOM.
 - next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`. Typed message
   keys: map dynamic values through typed helpers (`apps/web/src/lib/catalog-labels.ts`).
+- Strict Mode replays effects in dev: a `<dialog>` closed in an effect cleanup fires `close`
+  and unmounts itself. e2e after `reload()`: SSR HTML shows before hydration, retry clicks.
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
 
@@ -186,15 +186,12 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 
 ## Milestones
 
-- [x] 1. Foundations + static mockup (home, album, profile with the vinyl Shelf, 404).
-- [x] 2. Database: full Drizzle schema, constraints and indexes, Neon (pooled app / direct
-      migrations) with PGlite fallback, idempotent demo seed, `/api/health`.
-- [x] 3. Accounts: Better Auth magic link + optional Google (+ Expo plugin), onboarding,
-      settings, @username history, avatars, export, deletion.
+- [x] 1. Foundations + mockup · 2. Database (Drizzle, Neon/PGlite, seed, `/api/health`) · 3. Accounts (Better Auth magic link + Google, onboarding, settings, avatars, export).
 - [x] 4. Catalog: `CatalogProvider` (MusicBrainz + Cover Art Archive), Postgres 1 req/s gate,
       on-demand import (stubs), trigram search, album/artist/track pages, `db:seed:catalog`.
-- [ ] 5. Listening — next: "J'ai écouté", ratings, likes, reviews, diary, moods, formats,
-      relistens, track ratings, "À écouter", blind mode (real `entries` / `user_item_state`).
-- [ ] 6. Profile & base stats · 7. Social · 8. Lists & discovery · 9. Admin, legal, polish
+- [x] 5. Listening: one-click listen, quick rating/heart (undated listen), log dialog (moods,
+      formats, review, track ratings), diary, "À écouter", blind mode, private diary.
+- [ ] 6. Profile & base stats — next: Shelf editing, diary calendar + paging, SQL stats cached
+      in `user_stats_cache`. Nothing to provide. · 7. Social · 8. Lists & discovery · 9. Admin
 - [ ] 10. Launch. **Real services are not connected yet** (Google, Brevo, R2, Neon `main`,
       domain, legal pages): follow `docs/mise-en-ligne.md` before any deployment.

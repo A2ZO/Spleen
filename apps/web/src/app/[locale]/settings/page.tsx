@@ -21,6 +21,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: t("metaTitle"), robots: { index: false } };
 }
 
+/** IANA zones of the runtime, plus the member's own if the runtime no longer lists it. */
+function timeZoneList(current: string): string[] {
+  const zones = Intl.supportedValuesOf("timeZone");
+  return zones.includes(current) ? zones : [current, ...zones];
+}
+
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
     <section aria-labelledby={id}>
@@ -53,7 +59,7 @@ export default async function SettingsPage({ params }: Props) {
       </Section>
 
       <Section id="profile" title={t("profileTitle")}>
-        <ProfileForm profile={profile} locale={locale} />
+        <ProfileForm profile={profile} locale={locale} timeZones={timeZoneList(profile.timeZone)} />
       </Section>
 
       <Section id="username" title={t("usernameTitle")}>

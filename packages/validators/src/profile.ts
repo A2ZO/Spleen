@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { timeZoneSchema } from "./listening";
+
 /** @username: 3-30 chars, lowercase letters, digits, underscores and dots (not leading/trailing). */
 export const usernameSchema = z
   .string()
@@ -78,6 +80,8 @@ export const onboardingSchema = z.object({
   ageConfirmed: z.literal(true),
   locale: localeSchema,
   theme: themeSchema,
+  /** Detected by the browser; the default zone is kept when missing or unknown. */
+  timeZone: timeZoneSchema.optional(),
 });
 export type OnboardingInput = z.infer<typeof onboardingSchema>;
 
@@ -89,6 +93,7 @@ export const profileUpdateSchema = z.object({
   statsPrivate: z.boolean(),
   diaryPrivate: z.boolean(),
   blindMode: z.boolean(),
+  timeZone: timeZoneSchema,
 });
 export type ProfileUpdateInput = z.infer<typeof profileUpdateSchema>;
 

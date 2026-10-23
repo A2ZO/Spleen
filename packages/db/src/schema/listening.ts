@@ -1,3 +1,4 @@
+import { listenFormats } from "@spleen/validators";
 import { sql } from "drizzle-orm";
 import {
   boolean,
@@ -17,16 +18,13 @@ import { user } from "./auth";
 import { tracks } from "./catalog";
 import { targetCheck, targetColumns } from "./target";
 
-export const listenFormat = pgEnum("listen_format", [
-  "vinyl",
-  "cd",
-  "cassette",
-  "streaming",
-  "live",
-  "other",
-]);
+export const listenFormat = pgEnum("listen_format", listenFormats);
 
-/** The diary: one row per listen. */
+/**
+ * The diary: one row per listen. `listened_on` is null for the member's single "undated"
+ * listen of a target (quick rating or heart from an item page): it counts for the current
+ * state and all-time totals, but stays out of the diary, the calendar and per-year stats.
+ */
 export const entries = pgTable(
   "entries",
   {
@@ -35,7 +33,7 @@ export const entries = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
     ...targetColumns(),
-    listenedOn: date("listened_on").notNull(),
+    listenedOn: date("listened_on"),
     rating: rating(),
     liked: boolean("liked").notNull().default(false),
     isRelisten: boolean("is_relisten").notNull().default(false),
@@ -49,6 +47,12 @@ export const entries = pgTable(
     index("entries_release_idx").on(t.releaseId),
     index("entries_track_idx").on(t.trackId),
     index("entries_artist_idx").on(t.artistId),
+    uniqueIndex("entries_undated_release_uidx")
+      .on(t.userId, t.releaseId)
+      .where(sql`${t.listenedOn} is null and ${t.releaseId} is not null`),
+    uniqueIndex("entries_undated_track_uidx")
+      .on(t.userId, t.trackId)
+      .where(sql`${t.listenedOn} is null and ${t.trackId} is not null`),
   ],
 );
 

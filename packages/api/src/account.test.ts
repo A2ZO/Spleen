@@ -196,8 +196,10 @@ describe("account.updateProfile", () => {
       statsPrivate: true,
       diaryPrivate: true,
       blindMode: true,
+      timeZone: "America/Los_Angeles",
     });
     expect((await api(user).account.me())?.profile).toMatchObject({
+      timeZone: "America/Los_Angeles",
       displayName: "Édith",
       bio: "Du jazz, la nuit.",
       statsPrivate: true,

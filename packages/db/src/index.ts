@@ -8,6 +8,14 @@ export {
   type Schema,
 } from "./client";
 export { loadRootEnv, rootEnvFile } from "./env";
+export {
+  listenedTargets,
+  ratedTrackIds,
+  recomputeItemState,
+  setWantToListen,
+  type DbOrTx,
+  type ListenTarget,
+} from "./listening-state";
 export * as schema from "./schema";
 export { seed } from "./seed/seed";
 export { slugify } from "./seed/slugify";

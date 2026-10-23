@@ -26,16 +26,11 @@ test("home page is available in English", async ({ page }) => {
   );
 });
 
-test("album page shows the tracklist and a keyboard-accessible rating", async ({ page }) => {
+test("album page shows the tracklist and invites visitors to sign in", async ({ page }) => {
   await page.goto("/fr/album/nocturnes-pour-pluie-fine");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Nocturnes pour pluie fine");
   await expect(page.getByRole("heading", { name: "Liste des titres" })).toBeVisible();
-
-  const slider = page.getByRole("slider", { name: "Ta note" });
-  await slider.focus();
-  await page.keyboard.press("End");
-  await page.keyboard.press("ArrowLeft");
-  await expect(slider).toHaveAttribute("aria-valuenow", "9");
+  await expect(page.getByText("Connecte-toi pour garder une trace de tes écoutes.")).toBeVisible();
 });
 
 test("profile page shows the shelf", async ({ page }) => {

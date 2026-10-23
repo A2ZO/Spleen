@@ -58,6 +58,7 @@ export async function getMe(db: Db, user: SessionUser, now: Date): Promise<Me> {
       statsPrivate: row.statsPrivate,
       diaryPrivate: row.diaryPrivate,
       blindMode: row.blindMode,
+      timeZone: row.timeZone,
       usernameChangeAvailableAt: renameAt?.toISOString() ?? null,
     };
   }
@@ -82,6 +83,7 @@ export async function onboard(
         displayName: input.displayName,
         locale: input.locale,
         theme: input.theme,
+        ...(input.timeZone ? { timeZone: input.timeZone } : {}),
         ageConfirmedAt: now,
       });
       await tx

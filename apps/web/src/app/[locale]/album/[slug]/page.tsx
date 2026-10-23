@@ -54,8 +54,24 @@ export default async function AlbumPage({ params }: Props) {
   const t = await getTranslations();
   const format = await getFormatter();
   const average = release.averageRating;
-  const signedIn = release.isStub ? !!(await (await getApi()).account.me()) : false;
+  const api = await getApi();
+  const target = { kind: "release" as const, id: release.id };
+  const [mine, moods] = await Promise.all([
+    api.listening.myState(target),
+    api.listening.moods.list(),
+  ]);
+  const signedIn = mine !== null;
   const discs = byDisc(release.tracks);
+  // A track appearing on several discs is rated once.
+  const logTracks = [
+    ...new Map(
+      release.tracks.flatMap((track) =>
+        track.id
+          ? [[track.id, { id: track.id, title: track.title, position: track.position }]]
+          : [],
+      ),
+    ).values(),
+  ];
 
   const facts = [
     release.releaseDate
@@ -144,11 +160,20 @@ export default async function AlbumPage({ params }: Props) {
                 label={t("album.distributionLabel")}
               />
             </div>
+            {release.ratingsHidden && (
+              <p className="mt-3 text-sm text-fg-muted italic">{t("listening.blindHidden")}</p>
+            )}
           </section>
         </div>
 
         <aside className="space-y-6">
-          <ListenControls />
+          <ListenControls
+            target={target}
+            title={release.title}
+            initial={mine}
+            moods={moods}
+            tracks={logTracks}
+          />
           <ListenOn links={release.listenLinks} />
           <button
             type="button"

@@ -5,12 +5,15 @@ import { emptyDistribution } from "./ratings";
 
 /** Minimal listen data needed to compute base stats; mirrors future SQL aggregates. */
 export interface StatsInput {
-  listenedOn: string;
+  /** Null for an undated listen: all-time totals only (not per year, month or calendar). */
+  listenedOn: string | null;
+  /** Last edit (ISO): the rating of the most recently edited listen is the current one. */
+  editedAt: string;
   rating: number | null;
   release: {
     id: string;
     type: ReleaseType;
-    releaseYear: number;
+    releaseYear: number | null;
     genres: string[];
     artists: { slug: string; name: string }[];
   };
@@ -28,11 +31,11 @@ function topN<T extends { count: number }>(map: Map<string, T>): T[] {
 
 /**
  * Free-tier stats: distinct releases listened (this year / total), rating distribution
- * (latest rating per release), top 5 artists and genres of the year, decades, activity per month.
+ * (current rating per release), top 5 artists and genres of the year, decades, activity per month.
  */
 export function computeBaseStats(entries: StatsInput[], year: number): ProfileStats {
   const yearPrefix = `${year}-`;
-  const thisYear = entries.filter((e) => e.listenedOn.startsWith(yearPrefix));
+  const thisYear = entries.filter((e) => e.listenedOn?.startsWith(yearPrefix));
 
   const countDistinct = (list: StatsInput[]): CountByType => {
     const seen = new Map<string, ReleaseType>();
@@ -42,12 +45,12 @@ export function computeBaseStats(entries: StatsInput[], year: number): ProfileSt
     return counts;
   };
 
-  const latestRating = new Map<string, { on: string; rating: number }>();
+  const latestRating = new Map<string, { at: string; rating: number }>();
   for (const e of entries) {
     if (e.rating === null) continue;
     const prev = latestRating.get(e.release.id);
-    if (!prev || e.listenedOn > prev.on)
-      latestRating.set(e.release.id, { on: e.listenedOn, rating: e.rating });
+    if (!prev || e.editedAt > prev.at)
+      latestRating.set(e.release.id, { at: e.editedAt, rating: e.rating });
   }
   const ratingDistribution = emptyDistribution();
   for (const { rating } of latestRating.values()) ratingDistribution[rating - 1]! += 1;
@@ -66,11 +69,12 @@ export function computeBaseStats(entries: StatsInput[], year: number): ProfileSt
       cur.count += 1;
       genreCounts.set(g, cur);
     }
-    activityByMonth[Number(e.listenedOn.slice(5, 7)) - 1]! += 1;
+    activityByMonth[Number(e.listenedOn!.slice(5, 7)) - 1]! += 1;
   }
 
   const decadeCounts = new Map<number, number>();
   for (const e of entries) {
+    if (e.release.releaseYear === null) continue;
     const decade = Math.floor(e.release.releaseYear / 10) * 10;
     decadeCounts.set(decade, (decadeCounts.get(decade) ?? 0) + 1);
   }
