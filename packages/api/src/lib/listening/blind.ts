@@ -6,6 +6,7 @@ import type {
   CatalogSearchResults,
   ReleaseCard,
   ReleaseDetail,
+  ReviewCard,
   TrackCard,
   TrackDetail,
 } from "../../types";
@@ -18,7 +19,7 @@ import type {
 const { profiles, userItemState } = schema;
 
 /** A signed-in member with blind listening on (null: nothing is hidden). */
-interface BlindViewer {
+export interface BlindViewer {
   userId: string;
 }
 
@@ -147,4 +148,39 @@ export async function blindSearchResults(
     releases: results.releases.map(maskRelease),
     tracks: results.tracks.map(maskTrack),
   };
+}
+
+/** Masks release cards anywhere in a list of items (profile sections). */
+export async function blindReleaseItems<T>(
+  db: Db,
+  viewer: BlindViewer | null,
+  items: T[],
+  releaseOf: (item: T) => ReleaseCard | null,
+  withRelease: (item: T, release: ReleaseCard) => T,
+): Promise<T[]> {
+  if (!viewer) return items;
+  const mask = await releaseMasker(
+    db,
+    viewer,
+    items.flatMap((item) => releaseOf(item) ?? []),
+  );
+  return items.map((item) => {
+    const release = releaseOf(item);
+    return release ? withRelease(item, mask(release)) : item;
+  });
+}
+
+/** Review cards: the review's rating is hidden too while the viewer has not rated the release. */
+export function blindReviewCards(
+  db: Db,
+  viewer: BlindViewer | null,
+  reviews: ReviewCard[],
+): Promise<ReviewCard[]> {
+  return blindReleaseItems(
+    db,
+    viewer,
+    reviews,
+    (r) => r.release,
+    (r, release) => ({ ...r, release, rating: release.ratingsHidden ? null : r.rating }),
+  );
 }

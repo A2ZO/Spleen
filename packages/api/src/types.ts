@@ -56,6 +56,17 @@ export interface ReviewCard {
   commentCount: number;
 }
 
+/** One of the member's own reviews, as edited on the review edit screen. */
+export interface MyReview {
+  id: string;
+  /** The release reviewed, or the release of the track reviewed. */
+  release: ReleaseCard;
+  rating: number | null;
+  body: string;
+  lang: AudienceLang;
+  createdAt: string;
+}
+
 export interface ListCard {
   id: string;
   title: string;
@@ -134,22 +145,51 @@ export interface MyItemState {
   today: string;
 }
 
-export interface CountByType {
+/** Distinct items listened to; `track` = tracks logged on their own (not inside an album). */
+export interface ListenedCounts {
   album: number;
   ep: number;
   single: number;
+  track: number;
 }
 
-export interface ProfileStats {
+/** Free-tier stats (rules in `lib/stats/source.ts`). */
+export interface BaseStats {
+  /** The member's current year, in their time zone. */
   year: number;
-  listenedThisYear: CountByType;
-  listenedTotal: CountByType;
+  listenedThisYear: ListenedCounts;
+  listenedTotal: ListenedCounts;
+  /** Current rating per release, for each value 1..10 (index 0 = rating 1). */
   ratingDistribution: number[];
+  /** Top 5 of `year`, in listens (relistens included). */
   topArtists: { slug: string; name: string; count: number }[];
   topGenres: { name: string; count: number }[];
+  /** All-time release listens by decade of release, oldest first. */
   decades: { decade: number; count: number }[];
-  /** 12 values, January first, for `year`. */
+  /** 12 listen counts, January first, for `year`. */
   activityByMonth: number[];
+}
+
+/** Stats shown on a profile. `plus` is reserved for Spleen+ advanced stats (not built yet). */
+export interface MemberStats {
+  tier: "free";
+  base: BaseStats;
+  plus: null;
+  computedAt: string;
+}
+
+/** One page of a paginated list (pages start at 1). */
+export interface Page<T> {
+  items: T[];
+  page: number;
+  pageCount: number;
+  total: number;
+}
+
+/** A release the member hearted, with when (most recent first in the Hearts tab). */
+export interface LikedRelease {
+  release: ReleaseCard;
+  likedAt: string;
 }
 
 export interface ProfileDetail {
@@ -161,16 +201,13 @@ export interface ProfileDetail {
   joinedOn: string;
   followerCount: number;
   followingCount: number;
-  /** Always 4 slots; null means an empty slot on the Shelf. */
+  /** Always 4 slots (positions 1..4); null means an empty slot on the Shelf. */
   shelf: (ReleaseCard | null)[];
+  /** Latest dated listens (empty when the diary is hidden). */
   recent: DiaryEntry[];
-  diary: DiaryEntry[];
-  reviews: ReviewCard[];
-  lists: ListCard[];
-  /** "To listen" queue (empty when the diary is private and the viewer is someone else). */
-  toListen: ReleaseCard[];
-  stats: ProfileStats;
-  /** Private diary seen by someone else: diary, recent activity and queue are left empty. */
+  /** The viewer is this member. */
+  isOwner: boolean;
+  /** Private diary seen by someone else: diary, recent activity, hearts and queue are empty. */
   diaryHidden: boolean;
   statsHidden: boolean;
 }

@@ -288,6 +288,7 @@
     "TRACK_NOT_ON_RELEASE": "Ce morceau ne figure pas sur ce disque.",
     "DATE_IN_FUTURE": "Cette date n'est pas encore arrivée.",
     "DATE_REQUIRED": "Une écoute datée garde sa date.",
+    "SHELF_MISMATCH": "Ton étagère a changé entre-temps : recharge la page.",
     "unknown": "Quelque chose s'est mal passé. Réessaie."
   },
   "secondaryType": {

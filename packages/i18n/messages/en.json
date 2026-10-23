@@ -288,6 +288,7 @@
     "TRACK_NOT_ON_RELEASE": "This track is not on this record.",
     "DATE_IN_FUTURE": "That date hasn't come yet.",
     "DATE_REQUIRED": "A dated listen keeps its date.",
+    "SHELF_MISMATCH": "Your shelf changed in the meantime: reload the page.",
     "unknown": "Something went wrong. Try again."
   },
   "secondaryType": {

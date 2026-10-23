@@ -26,6 +26,7 @@ export const API_ERROR_CODES = [
   "TRACK_NOT_ON_RELEASE",
   "DATE_IN_FUTURE",
   "DATE_REQUIRED",
+  "SHELF_MISMATCH",
 ] as const;
 
 export type ApiErrorCode = (typeof API_ERROR_CODES)[number];

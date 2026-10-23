@@ -2,6 +2,8 @@ import { and, eq, recomputeItemState, schema, type Db } from "@spleen/db";
 import type { AudienceLang, ListenTargetInput } from "@spleen/validators";
 
 import { fail } from "../../trpc";
+import type { MyReview } from "../../types";
+import { loadReleaseCards, loadTrackCards, toReleaseCard } from "../catalog/cards";
 import { pruneUndated } from "./entries";
 import { requireListener, requireTarget, targetWhere } from "./targets";
 
@@ -81,4 +83,32 @@ export async function deleteReview(db: Db, userId: string, id: string): Promise<
     await pruneUndated(tx, userId, target);
     await recomputeItemState(tx, userId, target);
   });
+}
+
+/** One of the member's own reviews, for the edit screen (null if missing or someone else's). */
+export async function getMyReview(db: Db, userId: string, id: string): Promise<MyReview | null> {
+  const [row] = await db
+    .select({
+      id: reviews.id,
+      releaseId: reviews.releaseId,
+      trackId: reviews.trackId,
+      rating: reviews.rating,
+      body: reviews.body,
+      lang: reviews.lang,
+      createdAt: reviews.createdAt,
+    })
+    .from(reviews)
+    .where(and(eq(reviews.id, id), eq(reviews.userId, userId)));
+  if (!row) return null;
+  const releaseId = row.releaseId ?? (await loadTrackCards(db, [row.trackId!]))[0]?.release?.id;
+  const [card] = releaseId ? await loadReleaseCards(db, [releaseId]) : [];
+  if (!card) return null;
+  return {
+    id: row.id,
+    release: toReleaseCard(card),
+    rating: row.rating,
+    body: row.body,
+    lang: row.lang as AudienceLang,
+    createdAt: row.createdAt.toISOString(),
+  };
 }

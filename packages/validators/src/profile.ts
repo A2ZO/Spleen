@@ -102,3 +102,22 @@ export const deleteAccountSchema = z.object({ confirmUsername: z.string().trim()
 
 export const AVATAR_MAX_BYTES = 1024 * 1024;
 export const AVATAR_SIZE_PX = 512;
+
+/** The Shelf: 4 favourite records (any release type), positions 1..4. */
+export const SHELF_SIZE = 4;
+export const shelfPositionSchema = z.number().int().min(1).max(SHELF_SIZE);
+/** Puts a release in a slot; a release already on the Shelf moves there (no duplicates). */
+export const shelfSetSchema = z.object({ releaseId: z.uuid(), position: shelfPositionSchema });
+export const shelfRemoveSchema = z.object({ position: shelfPositionSchema });
+/** New order of the records on the Shelf, slot 1 first (null = empty slot). */
+export const shelfReorderSchema = z.object({
+  releaseIds: z.array(z.uuid().nullable()).length(SHELF_SIZE),
+});
+
+/** Paginated profile sections; pages start at 1. */
+export const pageNumberSchema = z.number().int().min(1).max(10_000);
+/** A calendar month, "2026-10". */
+export const monthSchema = z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/);
+
+export const profilePageSchema = z.object({ username: usernameSchema, page: pageNumberSchema });
+export const profileMonthSchema = z.object({ username: usernameSchema, month: monthSchema });

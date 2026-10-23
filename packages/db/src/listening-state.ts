@@ -47,7 +47,8 @@ const newestFirst = (a: Opinion, b: Opinion) => b.updatedAt.getTime() - a.update
  * - listened: at least one listen;
  * - rating: rating of the most recently *modified* listen that has one (not the latest
  *   listening date: re-rating an old listen must change the current rating);
- * - liked: heart of the most recently modified listen;
+ * - liked: heart of the most recently modified listen; likedAt is kept while the heart stays,
+ *   and set to that listen's edit time when the heart is (given again);
  * - wantToListen is kept, or cleared with `clearWantToListen` (a new listen);
  * - no listen and not "to listen" → the state row is deleted.
  * Also invalidates the member's stats cache.
@@ -64,7 +65,14 @@ export async function recomputeItemState(
 
   const [opinions, [current]] = await Promise.all([
     opinionsFor(db, userId, target),
-    db.select({ wantToListen: userItemState.wantToListen }).from(userItemState).where(where),
+    db
+      .select({
+        wantToListen: userItemState.wantToListen,
+        liked: userItemState.liked,
+        likedAt: userItemState.likedAt,
+      })
+      .from(userItemState)
+      .where(where),
   ]);
   await db.delete(userStatsCache).where(eq(userStatsCache.userId, userId));
 
@@ -74,9 +82,16 @@ export async function recomputeItemState(
     await db.delete(userItemState).where(where);
     return;
   }
+  const liked = sorted[0]?.liked ?? false;
+  const likedAt = !liked
+    ? null
+    : current?.liked && current.likedAt
+      ? current.likedAt
+      : sorted[0]!.updatedAt;
   const values = {
     rating: sorted.find((o) => o.rating !== null)?.rating ?? null,
-    liked: sorted[0]?.liked ?? false,
+    liked,
+    likedAt,
     listened: sorted.length > 0,
     wantToListen,
   };
