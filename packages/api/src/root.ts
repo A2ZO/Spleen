@@ -266,10 +266,12 @@ export const appRouter = router({
       const user = await ctx.user();
       return user ? getMyItemState(ctx.db(), user.id, input, ctx.now) : null;
     }),
-    /** Quick rating (null clears it), kept on the member's single undated listen. */
+    /** Quick rating (null clears it) on the member's undated listen; `order` drops stale ones. */
     quickRate: listenWrite
       .input(quickRateSchema)
-      .mutation(({ input, ctx }) => quickRate(ctx.db(), ctx.user.id, input.target, input.rating)),
+      .mutation(({ input, ctx }) =>
+        quickRate(ctx.db(), ctx.user.id, input.target, input.rating, input.order),
+      ),
     quickLike: listenWrite
       .input(quickLikeSchema)
       .mutation(({ input, ctx }) => quickLike(ctx.db(), ctx.user.id, input.target, input.liked)),

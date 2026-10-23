@@ -209,6 +209,37 @@ describe("undated listens (quick rating and heart)", () => {
     await expectConsistent(m.user.id, { releaseId: nocturnes });
   });
 
+  it("ignores a quick rating older than the last one applied from the same panel", async () => {
+    const m = await member();
+    const clientId = crypto.randomUUID();
+    const rate = (rating: number | null, seq: number, id = clientId) =>
+      m.call().listening.quickRate({ target: album, rating, order: { clientId: id, seq } });
+    // Clicks 4.5 then clears, but the clearing request reaches the server first.
+    await rate(null, 2);
+    await rate(9, 1);
+    expect(await stateOf(m.user.id, { releaseId: nocturnes })).toBeNull();
+    expect(await entriesOf(m.user.id)).toHaveLength(0);
+
+    await rate(10, 3);
+    await rate(8, 3); // a replayed number is stale too
+    expect(await stateOf(m.user.id, { releaseId: nocturnes })).toMatchObject({ rating: 10 });
+    // Another panel (a reload, another tab) starts its own numbering: last write wins.
+    await rate(6, 1, crypto.randomUUID());
+    expect(await stateOf(m.user.id, { releaseId: nocturnes })).toMatchObject({ rating: 6 });
+  });
+
+  it("applies concurrent quick ratings in their order", async () => {
+    const m = await member();
+    const clientId = crypto.randomUUID();
+    await Promise.all(
+      [3, 1, 4, 2].map((seq) =>
+        m.call().listening.quickRate({ target: album, rating: seq * 2, order: { clientId, seq } }),
+      ),
+    );
+    expect(await stateOf(m.user.id, { releaseId: nocturnes })).toMatchObject({ rating: 8 });
+    await expectConsistent(m.user.id, { releaseId: nocturnes });
+  });
+
   it("a heart updates the same undated listen without changing the rating", async () => {
     const m = await member();
     await m.call().listening.quickRate({ target: album, rating: 7 });

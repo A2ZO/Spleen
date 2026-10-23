@@ -1,15 +1,16 @@
-import { eq, schema, type Db } from "@spleen/db";
+import { eq, schema, sql, type Db } from "@spleen/db";
 import { todayIn } from "@spleen/validators";
 
 import type { BaseStats, MemberStats } from "../../types";
 import { computeBaseStats } from "./base";
 
 /*
- * Member stats, cached per member in `user_stats_cache`. The cache is deleted by every
- * listening write (`recomputeItemState`), and recomputed on read when its format changed,
- * when the member's year turned, or after `MAX_AGE_MS` (catalog data such as genres can be
- * completed later by an import). A read racing a write may cache slightly stale figures:
- * the age limit bounds it.
+ * Member stats, cached per member in `user_stats_cache`. Every listening write bumps the
+ * member's stats version in its own transaction (`bumpStatsVersion`); the cache keeps the
+ * version read *before* computing, so a read that raced a write stores an outdated version
+ * and the next read recomputes. It is also recomputed when its format changed, when the
+ * member's year turned, or after `MAX_AGE_MS` (catalog data such as genres can be completed
+ * later by an import).
  *
  * Spleen+ (later): advanced stats become another cached section next to `base`, filled only
  * for subscribers and returned in `MemberStats.plus`; free stats never change shape.
@@ -19,13 +20,13 @@ import { computeBaseStats } from "./base";
 const CACHE_VERSION = 1;
 const MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
-interface CachedStats {
+export interface CachedStats {
   version: number;
   year: number;
   sections: { base: BaseStats };
 }
 
-const { profiles, userStatsCache } = schema;
+const { profiles, userListeningVersion, userStatsCache } = schema;
 
 function isFresh(data: unknown, computedAt: Date, year: number, now: Date): data is CachedStats {
   const cached = data as Partial<CachedStats> | null;
@@ -36,36 +37,76 @@ function isFresh(data: unknown, computedAt: Date, year: number, now: Date): data
   );
 }
 
+/** The member's time zone and current stats version; null for an unknown member. */
+export async function readStatsMember(db: Db, userId: string) {
+  const [row] = await db
+    .select({
+      timeZone: profiles.timeZone,
+      statsVersion: sql<number>`coalesce(${userListeningVersion.statsVersion}, 0)`.mapWith(Number),
+    })
+    .from(profiles)
+    .leftJoin(userListeningVersion, eq(userListeningVersion.userId, profiles.userId))
+    .where(eq(profiles.userId, userId));
+  return row ?? null;
+}
+
+export async function computeStats(db: Db, userId: string, year: number): Promise<CachedStats> {
+  return {
+    version: CACHE_VERSION,
+    year,
+    sections: { base: await computeBaseStats(db, userId, year) },
+  };
+}
+
+/**
+ * Stores computed stats with the stats version read before computing. A slower reader never
+ * replaces a cache computed from a newer version.
+ */
+export async function storeStats(
+  db: Db,
+  userId: string,
+  statsVersion: number,
+  data: CachedStats,
+  now: Date,
+): Promise<void> {
+  await db
+    .insert(userStatsCache)
+    .values({ userId, statsVersion, data, computedAt: now })
+    .onConflictDoUpdate({
+      target: userStatsCache.userId,
+      set: { statsVersion, data, computedAt: now },
+      setWhere: sql`${userStatsCache.statsVersion} <= ${statsVersion}`,
+    });
+}
+
 /** Stats of a member, from the cache when fresh. Null for an unknown member. */
 export async function getMemberStats(
   db: Db,
   userId: string,
   now: Date,
 ): Promise<MemberStats | null> {
-  const [profile] = await db
-    .select({ timeZone: profiles.timeZone })
-    .from(profiles)
-    .where(eq(profiles.userId, userId));
-  if (!profile) return null;
-  const year = Number(todayIn(profile.timeZone, now).slice(0, 4));
+  const member = await readStatsMember(db, userId);
+  if (!member) return null;
+  const year = Number(todayIn(member.timeZone, now).slice(0, 4));
 
   const [row] = await db
-    .select({ data: userStatsCache.data, computedAt: userStatsCache.computedAt })
+    .select({
+      statsVersion: userStatsCache.statsVersion,
+      data: userStatsCache.data,
+      computedAt: userStatsCache.computedAt,
+    })
     .from(userStatsCache)
     .where(eq(userStatsCache.userId, userId));
-  if (row && isFresh(row.data, row.computedAt, year, now)) {
+  if (
+    row &&
+    row.statsVersion === member.statsVersion &&
+    isFresh(row.data, row.computedAt, year, now)
+  ) {
     return toMemberStats(row.data, row.computedAt);
   }
 
-  const data: CachedStats = {
-    version: CACHE_VERSION,
-    year,
-    sections: { base: await computeBaseStats(db, userId, year) },
-  };
-  await db
-    .insert(userStatsCache)
-    .values({ userId, data, computedAt: now })
-    .onConflictDoUpdate({ target: userStatsCache.userId, set: { data, computedAt: now } });
+  const data = await computeStats(db, userId, year);
+  await storeStats(db, userId, member.statsVersion, data, now);
   return toMemberStats(data, now);
 }
 

@@ -4,7 +4,7 @@ import type { MoodRef, MyEntry, MyItemState } from "@spleen/api";
 import type { ListenTargetInput } from "@spleen/validators";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
-import { useOptimistic, useState, useTransition } from "react";
+import { useEffect, useOptimistic, useRef, useState, useTransition } from "react";
 
 import {
   markListenedAction,
@@ -33,10 +33,15 @@ export interface ListenControlsProps {
   tracks: LogTrack[];
 }
 
+/** Quick ratings made within this delay are sent as one (the last value). */
+const RATE_DELAY_MS = 350;
+
 /**
  * "I listened" panel: one-click listen, quick rating and heart (kept on the member's undated
  * listen), "to listen" queue, and the full "log" form. Writes go through Server Actions that
  * return the fresh state; the page is then refreshed for the community figures.
+ * Quick ratings are grouped (`RATE_DELAY_MS`), numbered for the server (which drops older
+ * ones arriving late), and only the answer to the latest one is applied.
  */
 export function ListenControls({ target, title, initial, moods, tracks }: ListenControlsProps) {
   const t = useTranslations("album.actions");
@@ -49,6 +54,23 @@ export function ListenControls({ target, title, initial, moods, tracks }: Listen
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState(false);
   const [editing, setEditing] = useState<MyEntry | "new" | null>(null);
+  // Rating chosen but not yet confirmed by the server (wrapped: null clears the rating).
+  const [draft, setDraft] = useState<{ rating: number | null } | null>(null);
+  const rateOrder = useRef({ clientId: "", seq: 0 });
+  const rateTimer = useRef<{ timer: ReturnType<typeof setTimeout>; send: () => void } | null>(null);
+
+  // Leaving the page within the delay still saves the last rating.
+  useEffect(
+    () => () => {
+      const pending = rateTimer.current;
+      if (pending) {
+        clearTimeout(pending.timer);
+        rateTimer.current = null;
+        pending.send();
+      }
+    },
+    [],
+  );
 
   if (!optimistic) {
     return (
@@ -77,6 +99,36 @@ export function ListenControls({ target, title, initial, moods, tracks }: Listen
       apply(await action());
     });
 
+  const rate = (rating: number | null) => {
+    const order = rateOrder.current;
+    order.clientId ||= crypto.randomUUID();
+    const seq = ++order.seq;
+    setDraft({ rating });
+    if (rateTimer.current) clearTimeout(rateTimer.current.timer);
+    const send = () => quickRateAction(target, rating, { clientId: order.clientId, seq });
+    rateTimer.current = {
+      send,
+      timer: setTimeout(() => {
+        rateTimer.current = null;
+        startTransition(async () => {
+          const result = await send();
+          // A newer rating was made since: its own answer will be applied.
+          if (seq !== rateOrder.current.seq) return;
+          setDraft(null);
+          apply(result);
+        });
+      }, RATE_DELAY_MS),
+    };
+  };
+
+  const shown = draft
+    ? {
+        ...optimistic,
+        rating: draft.rating,
+        listened: optimistic.listened || draft.rating !== null,
+      }
+    : optimistic;
+
   const toggleClasses = (active: boolean) =>
     cn(
       "flex flex-1 flex-col items-center gap-1 rounded-md border px-2 py-2 text-xs transition-colors",
@@ -95,35 +147,28 @@ export function ListenControls({ target, title, initial, moods, tracks }: Listen
         {t("title")}
       </h2>
       <div className="flex items-center gap-3">
-        <Turntable playing={optimistic.listened} className="h-12 w-16 shrink-0" />
+        <Turntable playing={shown.listened} className="h-12 w-16 shrink-0" />
         <button
           type="button"
-          aria-pressed={optimistic.listened}
+          aria-pressed={shown.listened}
           disabled={pending}
           onClick={() =>
             write({ listened: true, wantToListen: false }, () => markListenedAction(target))
           }
           className={cn(
             "flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-3 font-medium transition-colors",
-            optimistic.listened
+            shown.listened
               ? "border border-star text-star"
               : "bg-accent text-accent-fg shadow-card hover:bg-accent-hover",
           )}
         >
-          {optimistic.listened && <CheckIcon />}
-          {optimistic.listened ? t("listenedDone") : t("listened")}
+          {shown.listened && <CheckIcon />}
+          {shown.listened ? t("listenedDone") : t("listened")}
         </button>
       </div>
 
       <div className="mt-4 flex justify-center">
-        <StarRating
-          value={optimistic.rating}
-          onChange={(rating) =>
-            write({ rating, listened: optimistic.listened || rating !== null }, () =>
-              quickRateAction(target, rating),
-            )
-          }
-        />
+        <StarRating value={shown.rating} onChange={rate} />
       </div>
 
       <div className="mt-4 flex gap-2">

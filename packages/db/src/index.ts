@@ -9,6 +9,7 @@ export {
 } from "./client";
 export { loadRootEnv, rootEnvFile } from "./env";
 export {
+  bumpStatsVersion,
   listenedTargets,
   ratedTrackIds,
   recomputeItemState,

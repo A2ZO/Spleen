@@ -1,5 +1,6 @@
 import {
   and,
+  bumpStatsVersion,
   desc,
   eq,
   inArray,
@@ -19,6 +20,7 @@ import {
   type EntryCreateInput,
   type EntryUpdateInput,
   type ListenTargetInput,
+  type QuickOrderInput,
 } from "@spleen/validators";
 
 import { fail } from "../../trpc";
@@ -31,7 +33,16 @@ import { requireListener, requireTarget, targetWhere, toTarget } from "./targets
  * never drifts from `entries`.
  */
 
-const { entries, entryMoods, moods, releaseTracks, reviews, trackRatings, userItemState } = schema;
+const {
+  entries,
+  entryMoods,
+  moods,
+  releaseTracks,
+  reviews,
+  trackRatings,
+  userItemState,
+  userListeningVersion,
+} = schema;
 
 async function currentState(db: DbOrTx, userId: string, target: ListenTarget) {
   const [row] = await db
@@ -76,17 +87,29 @@ export async function pruneUndated(db: DbOrTx, userId: string, target: ListenTar
  * Quick rating or heart from an item page: updates the member's single undated listen
  * (created on demand). The undated listen first mirrors the current state, so changing the
  * rating never flips the heart and vice versa; it then becomes the most recently modified
- * listen, hence the current one.
+ * listen, hence the current one. With an `order`, a request older than the last one applied
+ * from the same panel is ignored (the member's writes are serialised by `bumpStatsVersion`).
  */
 async function quickUpdate(
   db: Db,
   userId: string,
   input: ListenTargetInput,
   change: { rating: number | null } | { liked: boolean },
+  order?: QuickOrderInput,
 ): Promise<void> {
   await requireListener(db, userId);
   await db.transaction(async (tx) => {
     const target = await requireTarget(tx, input);
+    const last = await bumpStatsVersion(tx, userId);
+    if (order && last.quickClientId === order.clientId && order.seq <= (last.quickSeq ?? 0)) {
+      return;
+    }
+    if (order) {
+      await tx
+        .update(userListeningVersion)
+        .set({ quickClientId: order.clientId, quickSeq: order.seq })
+        .where(eq(userListeningVersion.userId, userId));
+    }
     const state = await currentState(tx, userId, target);
     const next = { rating: state.rating, liked: state.liked, ...change };
 
@@ -114,8 +137,14 @@ async function quickUpdate(
   });
 }
 
-export function quickRate(db: Db, userId: string, input: ListenTargetInput, rating: number | null) {
-  return quickUpdate(db, userId, input, { rating });
+export function quickRate(
+  db: Db,
+  userId: string,
+  input: ListenTargetInput,
+  rating: number | null,
+  order?: QuickOrderInput,
+) {
+  return quickUpdate(db, userId, input, { rating }, order);
 }
 
 export function quickLike(db: Db, userId: string, input: ListenTargetInput, liked: boolean) {

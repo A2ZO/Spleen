@@ -4,6 +4,7 @@ import { TRPCError } from "@trpc/server";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { DIARY_PAGE_SIZE } from "./lib/profiles";
+import { computeStats, getMemberStats, readStatsMember, storeStats } from "./lib/stats";
 import { computeBaseStats } from "./lib/stats/base";
 import { createCaller } from "./root";
 import { createContext, type SessionUser } from "./trpc";
@@ -373,14 +374,36 @@ describe("stats cache", () => {
     const later = new Date(now.getTime() + 60_000);
     expect((await stats(later))?.computedAt).toBe(first?.computedAt);
 
+    const cachedVersion = (await cacheOf(m.user.id))?.statsVersion;
     await m.call().listening.quickLike({ target: release(leRoi), liked: true });
-    expect(await cacheOf(m.user.id)).toBeNull();
+    expect((await readStatsMember(handle.db, m.user.id))?.statsVersion).toBeGreaterThan(
+      cachedVersion!,
+    );
     expect((await stats(later))?.base.listenedTotal.album).toBe(2);
 
     const newYear = new Date("2027-01-01T12:00:00Z");
     const renewed = await stats(newYear);
     expect(renewed?.base.year).toBe(2027);
     expect(renewed?.base.listenedThisYear.album).toBe(0);
+  });
+
+  it("recomputes after a read that raced a listening write", async () => {
+    const m = await member();
+    await m.call().listening.entry.create(listen(release(nocturnes), "2026-10-01"));
+    // A slow reader reads the version and computes from the old listens...
+    const before = await readStatsMember(handle.db, m.user.id);
+    const stale = await computeStats(handle.db, m.user.id, 2026);
+    // ...meanwhile a listen is written...
+    await m.call().listening.entry.create(listen(release(leRoi), "2026-10-02"));
+    // ...and the reader stores its result after the write committed.
+    await storeStats(handle.db, m.user.id, before!.statsVersion, stale, now);
+
+    const stats = await getMemberStats(handle.db, m.user.id, now);
+    expect(stats?.base.listenedTotal.album).toBe(2);
+    // A reader still slower, holding an even older result, cannot replace the fresh cache.
+    await storeStats(handle.db, m.user.id, before!.statsVersion, stale, now);
+    expect((await getMemberStats(handle.db, m.user.id, now))?.base.listenedTotal.album).toBe(2);
+    expect((await cacheOf(m.user.id))?.statsVersion).toBeGreaterThan(before!.statsVersion);
   });
 
   it("expires after a day (catalog data can be completed later)", async () => {

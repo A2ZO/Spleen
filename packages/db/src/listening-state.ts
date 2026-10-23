@@ -1,7 +1,7 @@
-import { and, eq, inArray, isNotNull } from "drizzle-orm";
+import { and, eq, inArray, isNotNull, sql } from "drizzle-orm";
 
 import type { Db } from "./client";
-import { entries, trackRatings, userItemState, userStatsCache } from "./schema";
+import { entries, trackRatings, userItemState, userListeningVersion } from "./schema";
 
 /** What a member listens to: an album/EP/single or a track (artists are not "listened"). */
 export type ListenTarget = { releaseId: string } | { trackId: string };
@@ -51,7 +51,7 @@ const newestFirst = (a: Opinion, b: Opinion) => b.updatedAt.getTime() - a.update
  *   and set to that listen's edit time when the heart is (given again);
  * - wantToListen is kept, or cleared with `clearWantToListen` (a new listen);
  * - no listen and not "to listen" → the state row is deleted.
- * Also invalidates the member's stats cache.
+ * Also bumps the member's stats version (`bumpStatsVersion`), which outdates their cache.
  */
 export async function recomputeItemState(
   db: DbOrTx,
@@ -74,7 +74,7 @@ export async function recomputeItemState(
       .from(userItemState)
       .where(where),
   ]);
-  await db.delete(userStatsCache).where(eq(userStatsCache.userId, userId));
+  await bumpStatsVersion(db, userId);
 
   const sorted = [...opinions].sort(newestFirst);
   const wantToListen = options.clearWantToListen ? false : (current?.wantToListen ?? false);
@@ -103,6 +103,27 @@ export async function recomputeItemState(
       targetWhere: isNotNull(column),
       set: values,
     });
+}
+
+/**
+ * Bumps the member's stats version and returns their last quick rating order. Call it inside
+ * the write's transaction: the row stays locked until it commits, so it also serialises the
+ * member's listening writes.
+ */
+export async function bumpStatsVersion(db: DbOrTx, userId: string) {
+  const [row] = await db
+    .insert(userListeningVersion)
+    .values({ userId, statsVersion: 1 })
+    .onConflictDoUpdate({
+      target: userListeningVersion.userId,
+      set: { statsVersion: sql`${userListeningVersion.statsVersion} + 1` },
+    })
+    .returning({
+      statsVersion: userListeningVersion.statsVersion,
+      quickClientId: userListeningVersion.quickClientId,
+      quickSeq: userListeningVersion.quickSeq,
+    });
+  return row!;
 }
 
 /** Sets or clears "to listen" for a target, keeping the rest of the state derived. */

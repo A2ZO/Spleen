@@ -51,9 +51,20 @@ export const entryUpdateSchema = z.object({
 });
 export type EntryUpdateInput = z.infer<typeof entryUpdateSchema>;
 
+/**
+ * Order of the quick ratings sent by one item panel (a random id per mounted panel, and a
+ * number growing with each rating): an older request arriving late never overwrites a newer.
+ */
+export const quickOrderSchema = z.object({
+  clientId: z.uuid(),
+  seq: z.number().int().min(1).max(2_147_483_647),
+});
+export type QuickOrderInput = z.infer<typeof quickOrderSchema>;
+
 export const quickRateSchema = z.object({
   target: listenTargetSchema,
   rating: ratingSchema.nullable(),
+  order: quickOrderSchema.optional(),
 });
 export const quickLikeSchema = z.object({ target: listenTargetSchema, liked: z.boolean() });
 export const wantToListenSchema = z.object({
