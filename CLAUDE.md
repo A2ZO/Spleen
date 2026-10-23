@@ -101,11 +101,9 @@ Brevo and S3 variables (`assertProductionConfig()`, `apps/web/src/instrumentatio
   Fixture `ratingCounts` / `weeklyListens` are home-page mockup only.
 - Listening: read `docs/ecoute.md`. `user_item_state` is derived by `recomputeItemState()`
   in the write's transaction (also `liked_at`, the Hearts tab order).
-- Profile & stats: read `docs/profil-stats.md`. One tRPC call per profile section (paged,
-  `Page<T>`); Shelf in `favorites` (`shelf.*`). Stats = SQL aggregates (`api/src/lib/stats/`,
-  rules in `source.ts`) cached in `user_stats_cache` (version + member's year + 24 h; deleted
-  by every listening write): bump `CACHE_VERSION` when a rule changes. Undated listens count
-  in all-time totals and decades only, never per year/month nor in the calendar.
+- Profile & stats: read `docs/profil-stats.md`. One paged tRPC call per profile section;
+  stats = SQL aggregates (rules in `api/src/lib/stats/source.ts`) cached in `user_stats_cache`
+  (deleted by every listening write): bump `CACHE_VERSION` when a rule changes.
 
 ## Conventions
 
@@ -173,16 +171,13 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
   `@spleen/db`, never from `drizzle-orm` outside packages/db.
 - Client components import `@spleen/api/errors` (or types only), never `@spleen/api`.
   drizzle-kit writes unformatted `migrations/meta/*.json`: run Prettier on them.
-- Backticks in `node -e`/unquoted heredocs run; `Set-Content -Encoding utf8` adds a BOM.
+- Backticks in `node -e` run; `Set-Content -Encoding utf8` adds a BOM; Python writes CRLF.
 - next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`. Typed message
   keys: map dynamic values through typed helpers (`apps/web/src/lib/catalog-labels.ts`).
 - Strict Mode replays effects in dev: a `<dialog>` closed in an effect cleanup fires `close`
   and unmounts itself. e2e after `reload()`: SSR HTML shows before hydration, retry clicks.
-- Python `open(…, "w")` on Windows writes CRLF: pass `newline=""`, or run Prettier after.
-- `updated_at` comes from `$onUpdate(() => new Date())` (wall clock), not the request's
-  `ctx.now`: tests compare orders, not exact timestamps.
-- A new migration must reach the database of the running dev server (`pnpm db:migrate`),
-  or new columns fail at query time (500 on the page using them).
+- `updated_at` is wall clock (`$onUpdate`), not `ctx.now`: tests compare orders, not times.
+- New migration → `pnpm db:migrate` on the running dev server's database, or its page 500s.
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
 
@@ -196,14 +191,8 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 
 ## Milestones
 
-- [x] 1. Foundations + mockup · 2. Database (Drizzle, Neon/PGlite, seed, `/api/health`) · 3. Accounts (Better Auth magic link + Google, onboarding, settings, avatars, export).
-- [x] 4. Catalog: `CatalogProvider` (MusicBrainz + Cover Art Archive), Postgres 1 req/s gate,
-      on-demand import (stubs), trigram search, album/artist/track pages, `db:seed:catalog`.
-- [x] 5. Listening: one-click listen, quick rating/heart (undated listen), log dialog (moods,
-      formats, review, track ratings), diary, "À écouter", blind mode, private diary.
-- [x] 6. Profile & base stats: Shelf editing (profile, album page, Hearts tab), Hearts tab,
-      paged diary + monthly calendar, URL-driven profile tabs, SQL stats cached per member,
-      blind mode on profile cards, review edit screen (`/review/[id]/edit`).
-- [ ] 7. Social · 8. Lists & discovery · 9. Admin
-- [ ] 10. Launch. **Real services are not connected yet** (Google, Brevo, R2, Neon `main`,
-      domain, legal pages): follow `docs/mise-en-ligne.md` before any deployment.
+- [x] 1. Foundations · 2. Database · 3. Accounts · 4. Catalog (`docs/catalogue.md`) · 5. Listening (`docs/ecoute.md`) · 6. Profile & base stats (`docs/profil-stats.md`).
+- [ ] 7. **Social** (next): follow, feed (replaces the home fixtures), likes, comments,
+      notifications, blocking, reporting. Nothing to provide (no outside service).
+- [ ] 8. Lists & discovery · 9. Admin, legal, polish · 10. Launch. **Real services are not
+      connected yet** (Google, Brevo, R2, Neon `main`, domain): follow `docs/mise-en-ligne.md`.
