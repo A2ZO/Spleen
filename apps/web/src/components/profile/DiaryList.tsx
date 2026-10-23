@@ -8,7 +8,7 @@ import { HeartIcon, PenIcon, RepeatIcon } from "@/components/ui/icons";
 import { Stars } from "@/components/ui/Stars";
 import { Link } from "@/i18n/navigation";
 
-/** Diary, list view, grouped by month (the calendar view comes with milestone 6). */
+/** Diary, list view, grouped by month (the calendar view is `DiaryCalendar`). */
 export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
   const t = useTranslations();
   const format = useFormatter();

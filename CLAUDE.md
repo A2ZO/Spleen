@@ -16,7 +16,8 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
   React 19, Tailwind CSS 4 (CSS-first), next-intl 4. Next docs for this version:
   `apps/web/node_modules/next/dist/docs`.
 - `packages/api`: tRPC 11 routers = all business logic, on the database (catalog, listening,
-  profiles); only the home feed still reads fixtures (`src/mock/repository.ts`) until 8.
+  profiles, shelf, stats); only the home feed still reads fixtures (`src/mock/repository.ts`)
+  until 8.
 - `packages/catalog`: `CatalogProvider` + MusicBrainz implementation (no DB access), tested on
   recorded responses (`@spleen/catalog/testing`). Flow, rules, limiter: `docs/catalogue.md`.
 - `packages/db`: Drizzle schema (`src/schema/*`, one file per domain), SQL migrations
@@ -99,8 +100,12 @@ Brevo and S3 variables (`assertProductionConfig()`, `apps/web/src/instrumentatio
   `rainydaysam` empty shelf, queue only), fictional albums, real listens/reviews/moods.
   Fixture `ratingCounts` / `weeklyListens` are home-page mockup only.
 - Listening: read `docs/ecoute.md`. `user_item_state` is derived by `recomputeItemState()`
-  in the write's transaction. Stats (6): `api/src/lib/stats-source.ts`; undated listens count
-  in all-time totals only, never per year/month nor in the calendar.
+  in the write's transaction (also `liked_at`, the Hearts tab order).
+- Profile & stats: read `docs/profil-stats.md`. One tRPC call per profile section (paged,
+  `Page<T>`); Shelf in `favorites` (`shelf.*`). Stats = SQL aggregates (`api/src/lib/stats/`,
+  rules in `source.ts`) cached in `user_stats_cache` (version + member's year + 24 h; deleted
+  by every listening write): bump `CACHE_VERSION` when a rule changes. Undated listens count
+  in all-time totals and decades only, never per year/month nor in the calendar.
 
 ## Conventions
 
@@ -173,6 +178,11 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
   keys: map dynamic values through typed helpers (`apps/web/src/lib/catalog-labels.ts`).
 - Strict Mode replays effects in dev: a `<dialog>` closed in an effect cleanup fires `close`
   and unmounts itself. e2e after `reload()`: SSR HTML shows before hydration, retry clicks.
+- Python `open(…, "w")` on Windows writes CRLF: pass `newline=""`, or run Prettier after.
+- `updated_at` comes from `$onUpdate(() => new Date())` (wall clock), not the request's
+  `ctx.now`: tests compare orders, not exact timestamps.
+- A new migration must reach the database of the running dev server (`pnpm db:migrate`),
+  or new columns fail at query time (500 on the page using them).
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
 
@@ -191,7 +201,9 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
       on-demand import (stubs), trigram search, album/artist/track pages, `db:seed:catalog`.
 - [x] 5. Listening: one-click listen, quick rating/heart (undated listen), log dialog (moods,
       formats, review, track ratings), diary, "À écouter", blind mode, private diary.
-- [ ] 6. Profile & base stats — next: Shelf editing, diary calendar + paging, SQL stats cached
-      in `user_stats_cache`. Nothing to provide. · 7. Social · 8. Lists & discovery · 9. Admin
+- [x] 6. Profile & base stats: Shelf editing (profile, album page, Hearts tab), Hearts tab,
+      paged diary + monthly calendar, URL-driven profile tabs, SQL stats cached per member,
+      blind mode on profile cards, review edit screen (`/review/[id]/edit`).
+- [ ] 7. Social · 8. Lists & discovery · 9. Admin
 - [ ] 10. Launch. **Real services are not connected yet** (Google, Brevo, R2, Neon `main`,
       domain, legal pages): follow `docs/mise-en-ligne.md` before any deployment.

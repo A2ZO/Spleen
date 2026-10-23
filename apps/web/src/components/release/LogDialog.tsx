@@ -22,6 +22,7 @@ import {
 import { Button } from "@/components/ui/Button";
 import { Checkbox, FormMessage, SelectField, TextArea, TextField } from "@/components/ui/Field";
 import { StarRating } from "@/components/ui/StarRating";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 
 export interface LogTrack {
@@ -319,7 +320,17 @@ export function LogDialog({
             )}
           </div>
         ) : (
-          entry.review && <p className="text-sm text-fg-muted">{t("reviewExisting")}</p>
+          entry.review && (
+            <p className="text-sm text-fg-muted">
+              {t("reviewExisting")}{" "}
+              <Link
+                href={`/review/${entry.review.id}/edit`}
+                className="text-link underline-offset-2 hover:underline"
+              >
+                {t("reviewEdit")}
+              </Link>
+            </p>
+          )
         )}
 
         {error && <FormMessage tone="error">{te(error)}</FormMessage>}

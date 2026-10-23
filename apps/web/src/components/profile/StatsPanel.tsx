@@ -1,32 +1,43 @@
-import type { CountByType, ProfileStats } from "@spleen/api";
+import type { BaseStats, ListenedCounts } from "@spleen/api";
 import { useFormatter, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { Card } from "@/components/ui/Card";
 import { RatingHistogram } from "@/components/ui/RatingHistogram";
 
-function StatBlock({ title, children }: { title: string; children: ReactNode }) {
+function StatBlock({
+  title,
+  note,
+  children,
+}: {
+  title: string;
+  /** How the block counts, e.g. "in listens, relistens included". */
+  note?: string;
+  children: ReactNode;
+}) {
   return (
     <Card>
       <h3 className="font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">{title}</h3>
+      {note && <p className="mt-1 text-xs text-fg-muted">{note}</p>}
       <div className="mt-4">{children}</div>
     </Card>
   );
 }
 
-function Counts({ counts }: { counts: CountByType }) {
+function Counts({ counts }: { counts: ListenedCounts }) {
   const t = useTranslations("stats");
   const rows = [
     ["albums", counts.album],
     ["eps", counts.ep],
     ["singles", counts.single],
+    ["tracks", counts.track],
   ] as const;
   return (
-    <dl className="grid grid-cols-3 gap-2">
+    <dl className="grid grid-cols-2 gap-x-2 gap-y-4 sm:grid-cols-4">
       {rows.map(([key, count]) => (
         <div key={key} className="flex flex-col-reverse">
           <dt className="mt-1 text-sm text-fg-muted">{t(key, { count })}</dt>
-          <dd className="font-mono text-4xl leading-none text-star tabular">{count}</dd>
+          <dd className="font-mono text-3xl leading-none text-star tabular">{count}</dd>
         </div>
       ))}
     </dl>
@@ -59,7 +70,8 @@ function BarList({ items }: { items: { key: string; label: ReactNode; count: num
   );
 }
 
-export function StatsPanel({ stats }: { stats: ProfileStats }) {
+/** Free-tier stats; Spleen+ blocks will be a separate panel fed by `MemberStats.plus`. */
+export function StatsPanel({ stats }: { stats: BaseStats }) {
   const t = useTranslations("stats");
   const format = useFormatter();
   const maxMonth = Math.max(1, ...stats.activityByMonth);
@@ -71,13 +83,13 @@ export function StatsPanel({ stats }: { stats: ProfileStats }) {
       <StatBlock title={t("thisYear", { year })}>
         <Counts counts={stats.listenedThisYear} />
       </StatBlock>
-      <StatBlock title={t("total")}>
+      <StatBlock title={t("total")} note={t("totalNote")}>
         <Counts counts={stats.listenedTotal} />
       </StatBlock>
-      <StatBlock title={t("ratings")}>
+      <StatBlock title={t("ratings")} note={t("ratingsNote")}>
         <RatingHistogram distribution={stats.ratingDistribution} label={t("ratings")} />
       </StatBlock>
-      <StatBlock title={t("activity", { year })}>
+      <StatBlock title={t("activity", { year })} note={t("inListens")}>
         <ol className="flex h-24 items-end gap-1">
           {stats.activityByMonth.map((count, month) => {
             const label = format.dateTime(new Date(Date.UTC(stats.year, month, 15)), {
@@ -107,17 +119,17 @@ export function StatsPanel({ stats }: { stats: ProfileStats }) {
           })}
         </ol>
       </StatBlock>
-      <StatBlock title={t("topArtists", { year })}>
+      <StatBlock title={t("topArtists", { year })} note={t("inListens")}>
         <BarList
           items={stats.topArtists.map((a) => ({ key: a.slug, label: a.name, count: a.count }))}
         />
       </StatBlock>
-      <StatBlock title={t("topGenres", { year })}>
+      <StatBlock title={t("topGenres", { year })} note={t("inListens")}>
         <BarList
           items={stats.topGenres.map((g) => ({ key: g.name, label: g.name, count: g.count }))}
         />
       </StatBlock>
-      <StatBlock title={t("decades")}>
+      <StatBlock title={t("decades")} note={t("decadesNote")}>
         <BarList
           items={stats.decades.map((d) => ({
             key: String(d.decade),

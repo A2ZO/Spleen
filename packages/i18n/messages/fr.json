@@ -116,7 +116,8 @@
     "byline": "Critique de {name}",
     "likes": "{count, plural, =0 {aucun j'aime} one {# j'aime} other {# j'aime}}",
     "comments": "{count, plural, =0 {aucun commentaire} one {# commentaire} other {# commentaires}}",
-    "noRating": "Sans note"
+    "noRating": "Sans note",
+    "edit": "Modifier"
   },
   "list": {
     "ranked": "Classée",
@@ -128,7 +129,6 @@
     "following": "{count, plural, one {# abonnement} other {# abonnements}}",
     "joined": "Ici depuis {date}",
     "shelfTitle": "L'Étagère",
-    "shelfEmptyOwn": "Ton étagère prend la poussière.",
     "shelfEmpty": "L'étagère de {name} prend la poussière.",
     "shelfEmptySlot": "Emplacement libre",
     "recentTitle": "Écouté récemment",
@@ -138,7 +138,8 @@
       "reviews": "Critiques",
       "lists": "Listes",
       "stats": "Stats",
-      "toListen": "À écouter"
+      "toListen": "À écouter",
+      "likes": "Coups de cœur"
     },
     "diaryEmpty": "Le journal est encore vierge.",
     "reviewsEmpty": "Aucune critique pour l'instant.",
@@ -153,7 +154,9 @@
     "diaryTitle": "Journal de {name}",
     "diaryBack": "Retour au profil",
     "reviewed": "Critique écrite",
-    "moods": "Humeurs"
+    "moods": "Humeurs",
+    "likesEmpty": "Pas encore de coup de cœur.",
+    "diaryCalendar": "Vue calendrier"
   },
   "stats": {
     "thisYear": "En {year}",
@@ -168,7 +171,12 @@
     "activity": "Activité {year}",
     "listens": "{count, plural, one {# écoute} other {# écoutes}}",
     "decade": "Années {decade}",
-    "empty": "Pas encore assez d'écoutes pour des stats."
+    "empty": "Pas encore assez d'écoutes pour des stats.",
+    "tracks": "{count, plural, one {morceau} other {morceaux}}",
+    "inListens": "En écoutes, réécoutes comprises.",
+    "decadesNote": "Par année de sortie, en écoutes, depuis toujours.",
+    "ratingsNote": "La note actuelle de chaque disque.",
+    "totalNote": "Disques et morceaux différents, écoutes sans date comprises."
   },
   "notFound": {
     "metaTitle": "Page introuvable",
@@ -379,7 +387,7 @@
     "review": "Critique (facultative)",
     "reviewHint": "Ta note et ta critique sont indépendantes : l'une ne demande pas l'autre.",
     "reviewLang": "Langue de la critique",
-    "reviewExisting": "Ta critique écrite avec cette écoute se modifie depuis ton profil.",
+    "reviewExisting": "Une critique est liée à cette écoute.",
     "tracks": "Note piste par piste",
     "tracksHint": "Facultatif. Ta note d'album reste la tienne.",
     "suggestion": "Suggestion d'après tes pistes : {stars} ★",
@@ -393,6 +401,63 @@
     "quickListen": "Note rapide, sans date",
     "edit": "Modifier",
     "blindHidden": "Écoute à l'aveugle : la moyenne apparaîtra quand tu auras noté.",
-    "today": "Aujourd'hui"
+    "today": "Aujourd'hui",
+    "reviewEdit": "Modifier la critique"
+  },
+  "shelf": {
+    "subtitleOwn": "Mes 4 disques favoris",
+    "subtitle": "Les 4 disques favoris de {name}",
+    "put": "Mettre sur mon Étagère",
+    "onShelf": "Sur mon Étagère",
+    "pickTitle": "Où poser « {title} » ?",
+    "pickHint": "Choisis un emplacement. S'il est pris, le disque qui l'occupe redescend dans le bac.",
+    "slotHere": "Il est ici",
+    "slotReplace": "Remplacer « {title} »",
+    "slotFree": "Emplacement {position}, libre",
+    "remove": "Retirer de mon Étagère",
+    "cancel": "Annuler",
+    "emptyOwn": "Ton étagère prend la poussière.",
+    "emptyHint": "Choisis tes 4 disques favoris : depuis la fiche d'un disque ou tes coups de cœur, « Mettre sur mon Étagère ».",
+    "findRecord": "Chercher un disque",
+    "edit": "Modifier mon Étagère",
+    "done": "Terminé",
+    "editLabel": "Ordre de l'Étagère",
+    "free": "Emplacement libre",
+    "moveLeft": "Décaler « {title} » vers la gauche",
+    "moveRight": "Décaler « {title} » vers la droite",
+    "removeOne": "Retirer « {title} » de l'Étagère",
+    "removeShort": "Retirer",
+    "moved": "« {title} » est maintenant à la place {position}.",
+    "removed": "« {title} » a quitté l'Étagère."
+  },
+  "pagination": {
+    "label": "Pages",
+    "previous": "Plus récents",
+    "next": "Plus anciens",
+    "position": "Page {page} sur {pageCount}"
+  },
+  "diary": {
+    "views": "Affichage du journal",
+    "list": "Liste",
+    "calendar": "Calendrier",
+    "monthNav": "Changer de mois",
+    "previousMonth": "Mois précédent",
+    "nextMonth": "Mois suivant",
+    "calendarCaption": "Écoutes de {month}",
+    "dayListens": "{date} : {count, plural, one {# écoute} other {# écoutes}} ({titles})",
+    "monthEmpty": "Aucune écoute ce mois-ci."
+  },
+  "reviewEdit": {
+    "metaTitle": "Modifier ma critique",
+    "kicker": "Modifier ma critique",
+    "body": "Ta critique",
+    "lang": "Langue de la critique",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "cancel": "Annuler",
+    "delete": "Supprimer la critique",
+    "deleteConfirm": "Supprimer pour de bon ?",
+    "deleteYes": "Oui, supprimer",
+    "deleteNo": "Non, la garder"
   }
 }

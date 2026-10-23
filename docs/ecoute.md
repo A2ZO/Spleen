@@ -75,9 +75,8 @@ un bouton « Appliquer ». Elle n'est **jamais** appliquée par l'API.
 Écritures d'écoute (écoutes, notes, cœurs, « À écouter ») 300 · critiques 30 · humeurs
 personnelles 30 → `RATE_LIMITED`.
 
-## Stats (jalon 6)
+## Stats et profil (jalon 6)
 
-Source décrite dans `packages/api/src/lib/stats-source.ts` : les écoutes d'albums du membre.
-Une écoute **sans date** compte dans les totaux « depuis toujours », jamais dans les stats
-par année ou par mois ni dans le calendrier. La répartition des notes utilise la note
-actuelle (écoute modifiée le plus récemment).
+Voir `docs/profil-stats.md` (Étagère, coups de cœur, journal liste et calendrier, stats SQL
+et leur cache). `user_item_state.liked_at` est dérivé ici aussi : gardé tant que le cœur
+reste, remis à la date de l'écoute quand le cœur est (re)donné.

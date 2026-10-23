@@ -10,6 +10,7 @@ import { CatalogNotice } from "@/components/catalog/CatalogNotice";
 import { ListenOn } from "@/components/catalog/ListenOn";
 import { SecondaryTypes } from "@/components/catalog/SecondaryTypes";
 import { ListenControls } from "@/components/release/ListenControls";
+import { ShelfPicker } from "@/components/shelf/ShelfPicker";
 import { ListCard } from "@/components/social/ListCard";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { Badge } from "@/components/ui/Badge";
@@ -61,6 +62,7 @@ export default async function AlbumPage({ params }: Props) {
     api.listening.moods.list(),
   ]);
   const signedIn = mine !== null;
+  const shelf = signedIn ? await api.shelf.mine() : null;
   const discs = byDisc(release.tracks);
   // A track appearing on several discs is rated once.
   const logTracks = [
@@ -174,6 +176,9 @@ export default async function AlbumPage({ params }: Props) {
             moods={moods}
             tracks={logTracks}
           />
+          {shelf && (
+            <ShelfPicker release={{ id: release.id, title: release.title }} shelf={shelf} />
+          )}
           <ListenOn links={release.listenLinks} />
           <button
             type="button"
