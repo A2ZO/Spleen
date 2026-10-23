@@ -237,18 +237,14 @@ export default async function ProfilePage({ params, searchParams }: Props) {
       </header>
 
       <section aria-labelledby="shelf">
-        <SectionHeading
-          id="shelf"
-          action={
-            <p className="font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">
-              {profile.isOwner
-                ? t("shelf.subtitleOwn")
-                : t("shelf.subtitle", { name: profile.displayName })}
-            </p>
-          }
-        >
+        <SectionHeading id="shelf" className="mb-2">
           {t("profile.shelfTitle")}
         </SectionHeading>
+        <p className="font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">
+          {profile.isOwner
+            ? t("shelf.subtitleOwn")
+            : t("shelf.subtitle", { name: profile.displayName })}
+        </p>
         {profile.isOwner ? (
           <ShelfEditor shelf={profile.shelf} />
         ) : (

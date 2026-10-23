@@ -160,6 +160,7 @@
   },
   "stats": {
     "thisYear": "In {year}",
+    "thisYearNote": "Distinct records and tracks, dated listens.",
     "total": "All time",
     "albums": "{count, plural, one {album} other {albums}}",
     "eps": "{count, plural, one {EP} other {EPs}}",

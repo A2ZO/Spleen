@@ -80,7 +80,7 @@ export function StatsPanel({ stats }: { stats: BaseStats }) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      <StatBlock title={t("thisYear", { year })}>
+      <StatBlock title={t("thisYear", { year })} note={t("thisYearNote")}>
         <Counts counts={stats.listenedThisYear} />
       </StatBlock>
       <StatBlock title={t("total")} note={t("totalNote")}>

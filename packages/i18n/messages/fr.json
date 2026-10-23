@@ -160,6 +160,7 @@
   },
   "stats": {
     "thisYear": "En {year}",
+    "thisYearNote": "Disques et morceaux différents, écoutes datées.",
     "total": "Depuis toujours",
     "albums": "{count, plural, one {album} other {albums}}",
     "eps": "{count, plural, one {EP} other {EP}}",
