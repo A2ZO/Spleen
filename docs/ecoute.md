@@ -12,7 +12,7 @@ utilisent exactement le même code.
 - `user_item_state` = l'état actuel d'un membre pour un disque ou un morceau, **toujours
   dérivé** des écoutes par `recomputeItemState()`, appelée dans la même transaction que
   chaque écriture (création, modification, suppression d'écoute ou de note de piste). Elle
-  invalide aussi `user_stats_cache`.
+  augmente aussi la version de stats du membre (voir `docs/profil-stats.md`).
 - `reviews` : indépendantes des notes. Une critique peut être liée à une écoute
   (`entry_id`) ; sa note est un instantané de cette écoute (mis à jour quand l'écoute change).
 
@@ -43,6 +43,17 @@ une fiche :
   `updated_at`) ;
 - on peut donner une date à une écoute sans date : elle entre dans le journal. Une écoute
   datée garde toujours sa date (`DATE_REQUIRED`).
+
+**Ordre des notes rapides.** Plusieurs clics rapprochés ne doivent jamais laisser une
+ancienne note enregistrée :
+
+- client (`ListenControls`) : les clics à moins de 350 ms d'intervalle partent en une seule
+  requête (la dernière valeur) ; seule la réponse à la dernière note est appliquée ;
+- serveur : chaque note porte un `order` `{ clientId, seq }` (un identifiant tiré au hasard
+  par panneau affiché, un numéro croissant). Sous le verrou du membre (`bumpStatsVersion`),
+  une requête du même panneau dont le numéro n'est pas plus grand que le dernier appliqué
+  est ignorée (`user_listening_version.quick_client_id` / `quick_seq`). Un autre panneau
+  (rechargement, autre onglet) a sa propre numérotation : la dernière écriture gagne.
 
 « J'ai écouté » et le formulaire « Journaliser » créent une écoute datée : **aujourd'hui dans
 le fuseau du membre** (`profiles.time_zone`, IANA, détecté à l'inscription, modifiable dans

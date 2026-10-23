@@ -65,12 +65,21 @@ L'interface indique « en écoutes, réécoutes comprises » sous les tops et l'
 
 ### Cache
 
-`user_stats_cache` : `{ version, year, sections: { base } }`, une ligne par membre.
-Supprimé par chaque écriture d'écoute (`recomputeItemState`). Recalculé à la lecture si
-`version` a changé (`CACHE_VERSION` dans `lib/stats/index.ts` : à incrémenter quand une
-règle ou la forme change), si l'année du membre a tourné, ou après 24 h (des genres peuvent
-arriver plus tard avec un import). Une lecture concurrente d'une écriture peut mettre en
-cache des chiffres un peu anciens : l'âge maximal le borne.
+`user_stats_cache` : `{ version, year, sections: { base } }` et `stats_version`, une ligne
+par membre.
+
+- **Version de stats par membre** : `user_listening_version.stats_version`, augmentée par
+  `bumpStatsVersion()` dans la transaction de chaque écriture d'écoute (appelée par
+  `recomputeItemState`). La ligne reste verrouillée jusqu'au commit : les écritures d'écoute
+  d'un même membre passent l'une après l'autre.
+- Le calcul lit la version **avant** les agrégats et l'enregistre avec le résultat
+  (`storeStats`). Une lecture croisée avec une écriture garde donc l'ancienne version : la
+  lecture suivante voit une version différente et recalcule. Un lecteur plus lent ne remplace
+  jamais un cache calculé à partir d'une version plus récente (`setWhere` sur l'upsert).
+- Recalcul aussi si `version` a changé (`CACHE_VERSION` dans `lib/stats/index.ts` : à
+  incrémenter quand une règle ou la forme change), si l'année du membre a tourné, ou après
+  24 h (des genres peuvent arriver plus tard avec un import).
+- Testé dans `profile.test.ts` (« recomputes after a read that raced a listening write »).
 
 ### Spleen+ (plus tard)
 

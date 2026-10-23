@@ -102,8 +102,8 @@ Brevo and S3 variables (`assertProductionConfig()`, `apps/web/src/instrumentatio
 - Listening: read `docs/ecoute.md`. `user_item_state` is derived by `recomputeItemState()`
   in the write's transaction (also `liked_at`, the Hearts tab order).
 - Profile & stats: read `docs/profil-stats.md`. One paged tRPC call per profile section;
-  stats = SQL aggregates (rules in `api/src/lib/stats/source.ts`) cached in `user_stats_cache`
-  (deleted by every listening write): bump `CACHE_VERSION` when a rule changes.
+  stats = SQL aggregates (rules in `api/src/lib/stats/source.ts`) cached with the member's
+  stats version (bumped by every listening write): bump `CACHE_VERSION` when a rule changes.
 
 ## Conventions
 
@@ -178,6 +178,7 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
   and unmounts itself. e2e after `reload()`: SSR HTML shows before hydration, retry clicks.
 - `updated_at` is wall clock (`$onUpdate`), not `ctx.now`: tests compare orders, not times.
 - New migration → `pnpm db:migrate` on the running dev server's database, or its page 500s.
+- Burst writes arrive out of order: group clicks, send an `order` (`docs/ecoute.md`).
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
 
