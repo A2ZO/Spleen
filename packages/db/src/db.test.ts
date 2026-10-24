@@ -54,11 +54,11 @@ describe("migrations", () => {
 
 describe("seed", () => {
   it("loads the demo dataset", async () => {
-    expect(await count(s.artists)).toBe(11);
-    expect(await count(s.releases)).toBe(12);
-    expect(await count(s.profiles)).toBe(3);
-    expect(await count(s.entries)).toBe(22);
-    expect(await count(s.favorites)).toBe(8);
+    expect(await count(s.artists)).toBe(12);
+    expect(await count(s.releases)).toBe(42);
+    expect(await count(s.profiles)).toBe(4);
+    expect(await count(s.entries)).toBe(52);
+    expect(await count(s.favorites)).toBe(12);
   });
 
   it("is idempotent", async () => {
