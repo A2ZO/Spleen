@@ -41,7 +41,7 @@ Règles :
 - [ ] Région de la branche : Europe (Francfort).
 - [ ] **Vérifier** : `GET https://<domaine>/api/health` répond `200` avec `{"ok":true,…}`, et
       la base `main` ne contient aucun membre de démo (`nuitblanche`, `vinylvince`,
-      `rainydaysam`).
+      `rainydaysam`, `fouilleuse`).
 
 ## 4. Brevo : emails des liens magiques
 

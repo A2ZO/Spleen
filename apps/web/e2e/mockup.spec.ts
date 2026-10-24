@@ -57,6 +57,29 @@ test("diary calendar shows a month", async ({ page }) => {
   await expect(page).toHaveURL(/view=calendar&month=\d{4}-\d{2}/);
 });
 
+test("hearts are paged, and a page past the last one goes to the last page", async ({ page }) => {
+  await page.goto("/fr/u/fouilleuse?tab=likes");
+  const sections = page.getByRole("region", { name: "Sections du profil" });
+  await expect(sections.getByText("Page 1 sur 2")).toBeVisible();
+  await sections.getByRole("link", { name: /Plus anciens/ }).click();
+  await expect(page).toHaveURL(/tab=likes&page=2$/);
+  await expect(sections.getByRole("link", { name: "Brume sur le canal" })).toBeVisible();
+  await page.goto("/fr/u/fouilleuse?tab=likes&page=9");
+  await expect(page).toHaveURL(/tab=likes&page=2$/);
+});
+
+test("switching language keeps the profile tab", async ({ page }) => {
+  await page.goto("/fr/u/nuitblanche?tab=stats");
+  // After a navigation the server HTML shows before React hydrates: retry the click.
+  await expect(async () => {
+    await page.getByRole("banner").getByRole("button", { name: "English" }).click();
+    await expect(page).toHaveURL(/\/en\/u\/nuitblanche\?tab=stats$/, { timeout: 2_000 });
+  }).toPass();
+  await expect(page.getByRole("region", { name: "Profile sections" })).toContainText(
+    "Rating distribution",
+  );
+});
+
 test("empty shelf gathers dust", async ({ page }) => {
   await page.goto("/fr/u/rainydaysam");
   await expect(page.getByText("L'étagère de Sam prend la poussière.")).toBeVisible();

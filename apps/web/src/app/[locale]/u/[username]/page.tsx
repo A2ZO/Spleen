@@ -2,7 +2,7 @@ import type { ProfileDetail } from "@spleen/api";
 import { usernameSchema } from "@spleen/validators";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getFormatter, getTranslations } from "next-intl/server";
+import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
 import { DiaryList } from "@/components/profile/DiaryList";
@@ -18,7 +18,7 @@ import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { VinylShelf } from "@/components/ui/VinylShelf";
 import { initRouteLocale } from "@/i18n/locale";
-import { Link } from "@/i18n/navigation";
+import { Link, redirect } from "@/i18n/navigation";
 import { firstParam, hrefWith, pageParam, type SearchParams } from "@/lib/search-params";
 import { getApi } from "@/server/api";
 
@@ -63,6 +63,13 @@ async function TabContent({
   const api = await getApi();
   const username = profile.username;
   const path = `/u/${username}`;
+  // A page past the last one (shared link, fewer items since) goes to the last page.
+  const locale = await getLocale();
+  const inRange = (p: { page: number; pageCount: number } | null) => {
+    if (p && p.page > p.pageCount) {
+      redirect({ href: hrefWith(path, { tab, page: p.pageCount }), locale });
+    }
+  };
   const pagination = (p: { page: number; pageCount: number }) => (
     <Pagination
       page={p.page}
@@ -79,6 +86,7 @@ async function TabContent({
     case "diary": {
       if (profile.diaryHidden) return privateDiary;
       const diary = await api.profile.diary({ username, page });
+      inRange(diary);
       if (!diary || diary.total === 0) return <EmptyState>{t("profile.diaryEmpty")}</EmptyState>;
       return (
         <div className="space-y-6">
@@ -101,6 +109,7 @@ async function TabContent({
     case "likes": {
       if (profile.diaryHidden) return privateDiary;
       const likes = await api.profile.likes({ username, page });
+      inRange(likes);
       if (!likes || likes.total === 0) return <EmptyState>{t("profile.likesEmpty")}</EmptyState>;
       return (
         <>
@@ -126,6 +135,7 @@ async function TabContent({
     case "to-listen": {
       if (profile.diaryHidden) return privateDiary;
       const queue = await api.profile.toListen({ username, page });
+      inRange(queue);
       if (!queue || queue.total === 0) {
         return <EmptyState>{t("profile.toListenEmpty")}</EmptyState>;
       }
@@ -144,6 +154,7 @@ async function TabContent({
     }
     case "reviews": {
       const reviews = await api.profile.reviews({ username, page });
+      inRange(reviews);
       if (!reviews || reviews.total === 0) {
         return <EmptyState>{t("profile.reviewsEmpty")}</EmptyState>;
       }

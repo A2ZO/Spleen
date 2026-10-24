@@ -5,8 +5,7 @@
     "description": "Rate, review and list your albums, EPs and tracks. Keep a listening diary and share your taste."
   },
   "common": {
-    "skipToContent": "Skip to content",
-    "mockupNotice": "Mockup: all data is fictional and nothing is saved."
+    "skipToContent": "Skip to content"
   },
   "nav": {
     "label": "Main navigation",
@@ -28,11 +27,6 @@
     "label": "Language",
     "fr": "Français",
     "en": "English"
-  },
-  "footer": {
-    "tagline": "Listened to by the light of a bedside lamp.",
-    "sources": "Music data: MusicBrainz and Cover Art Archive.",
-    "legal": "Legal notice, terms and privacy: coming soon."
   },
   "releaseType": {
     "album": "Album",

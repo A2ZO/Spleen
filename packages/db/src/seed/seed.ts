@@ -3,6 +3,7 @@ import { sql } from "drizzle-orm";
 import type { Db } from "../client";
 import { recomputeItemState, setWantToListen } from "../listening-state";
 import * as s from "../schema";
+import { seedCrate } from "./crate";
 import {
   artists,
   diaryEntries,
@@ -320,5 +321,7 @@ export async function seed(db: Db): Promise<void> {
         ),
       )
       .onConflictDoNothing();
+
+    await seedCrate(tx, [...genreIdByName.values()]);
   });
 }

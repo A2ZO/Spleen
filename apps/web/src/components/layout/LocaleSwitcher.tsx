@@ -14,8 +14,12 @@ export function LocaleSwitcher() {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
+  // Keeps the query (profile tab, page, calendar month): read at click time, so no
+  // `useSearchParams` (and no Suspense boundary) is needed.
   const switchTo = (locale: Locale) =>
-    startTransition(() => router.replace(pathname, { locale, scroll: false }));
+    startTransition(() =>
+      router.replace(`${pathname}${window.location.search}`, { locale, scroll: false }),
+    );
 
   return (
     <div
