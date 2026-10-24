@@ -9,7 +9,7 @@ import { DiaryList } from "@/components/profile/DiaryList";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
 import { initRouteLocale } from "@/i18n/locale";
-import { Link } from "@/i18n/navigation";
+import { Link, redirect } from "@/i18n/navigation";
 import { shiftMonth } from "@/lib/calendar";
 import {
   firstParam,
@@ -45,8 +45,8 @@ function Empty({ children }: { children: string }) {
 
 /** Full diary: list view (paginated) or calendar view (one month). Undated listens never show. */
 export default async function DiaryPage({ params, searchParams }: Props) {
-  const { locale, username } = await params;
-  initRouteLocale(locale);
+  const { locale: rawLocale, username } = await params;
+  const locale = initRouteLocale(rawLocale);
   const profile = await getProfile(username);
   if (!profile) notFound();
   const t = await getTranslations();
@@ -65,6 +65,10 @@ export default async function DiaryPage({ params, searchParams }: Props) {
         view === "list" ? api.profile.diary({ username: profile.username, page }) : null,
         view === "calendar" ? api.profile.diaryMonth({ username: profile.username, month }) : null,
       ]);
+  // A page past the last one goes to the last page.
+  if (list && list.page > list.pageCount) {
+    redirect({ href: hrefWith(path, { page: list.pageCount }), locale });
+  }
 
   return (
     <div className="space-y-8">
