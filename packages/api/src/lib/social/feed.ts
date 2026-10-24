@@ -181,18 +181,19 @@ export async function popularFeed(
   now: Date,
 ): Promise<CursorPage<ReviewCard>> {
   const after = cursor ? decodeCursor(cursor, 3) : null;
-  const since = new Date(now.getTime() - POPULAR_WINDOW_DAYS * 24 * 60 * 60 * 1000);
+  // ISO text, not a Date: postgres.js only serialises Dates for typed columns, not raw SQL.
+  const since = new Date(now.getTime() - POPULAR_WINDOW_DAYS * 24 * 60 * 60 * 1000).toISOString();
   const result = await db.execute(sql`
     with engagement as (
       select ${likes.reviewId} as review_id, count(*)::int as likes, 0 as comments
       from ${likes}
-      where ${likes.reviewId} is not null and ${likes.createdAt} >= ${since}
+      where ${likes.reviewId} is not null and ${likes.createdAt} >= ${since}::timestamptz
       group by ${likes.reviewId}
       union all
       select ${comments.reviewId}, 0, count(*)::int
       from ${comments}
       join ${reviews} on ${reviews.id} = ${comments.reviewId}
-      where ${comments.deletedAt} is null and ${comments.createdAt} >= ${since}
+      where ${comments.deletedAt} is null and ${comments.createdAt} >= ${since}::timestamptz
         and ${comments.userId} <> ${reviews.userId}
       group by ${comments.reviewId}
     ), scored as (
@@ -225,13 +226,13 @@ export async function popularFeed(
  * (listens and reviews), not followed yet, no block either way.
  */
 export async function suggestedMembers(db: Db, viewerId: string, now: Date): Promise<MemberCard[]> {
-  const since = new Date(now.getTime() - ACTIVE_WINDOW_DAYS * 24 * 60 * 60 * 1000);
+  const since = new Date(now.getTime() - ACTIVE_WINDOW_DAYS * 24 * 60 * 60 * 1000).toISOString();
   // Table names spelled out: drizzle drops the qualifiers on single-table selects, and
   // "user_id" inside these subqueries would then mean their own table's column.
   const member = sql`"profiles"."user_id"`;
   const activity = sql<number>`(
-    (select count(*) from "entries" where "entries"."user_id" = ${member} and "entries"."created_at" >= ${since})
-    + (select count(*) from "reviews" where "reviews"."user_id" = ${member} and "reviews"."created_at" >= ${since})
+    (select count(*) from "entries" where "entries"."user_id" = ${member} and "entries"."created_at" >= ${since}::timestamptz)
+    + (select count(*) from "reviews" where "reviews"."user_id" = ${member} and "reviews"."created_at" >= ${since}::timestamptz)
   )::int`;
   const followers = sql<number>`(select count(*)::int from "follows" where "follows"."followee_id" = ${member})`;
   const rows = await db

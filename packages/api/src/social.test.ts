@@ -101,13 +101,11 @@ const listen = (
 });
 
 async function review(m: Member, options: { target?: string; lang?: "fr" | "en"; at?: Date } = {}) {
-  return m
-    .call(options.at)
-    .review.create({
-      target: release(options.target ?? nocturnes),
-      body: "Un disque de pluie.",
-      lang: options.lang ?? "fr",
-    });
+  return m.call(options.at).review.create({
+    target: release(options.target ?? nocturnes),
+    body: "Un disque de pluie.",
+    lang: options.lang ?? "fr",
+  });
 }
 
 const reviewSubject = (id: string) => ({ kind: "review" as const, id });
@@ -199,12 +197,10 @@ describe("friends feed", () => {
       .listening.entry.create(listen(release(nocturnes), "2026-10-18", 8));
     await friend.call(daysAgo(2)).listening.quickLike({ target: release(leRoi), liked: true });
     const written = await review(friend, { target: smokeRings, at: daysAgo(1) });
-    await friend
-      .call()
-      .listening.entry.create({
-        ...listen(release(leRoi), "2026-10-21", 9),
-        review: { body: "Royal.", lang: "fr" },
-      });
+    await friend.call().listening.entry.create({
+      ...listen(release(leRoi), "2026-10-21", 9),
+      review: { body: "Royal.", lang: "fr" },
+    });
     await stranger.call().listening.entry.create(listen(release(nocturnes), "2026-10-21", 4));
 
     const feed = await viewer.call().feed.friends({});
@@ -220,12 +216,10 @@ describe("friends feed", () => {
   it("never shows the listens of a private diary (its reviews stay public)", async () => {
     const [viewer, secret] = [await member(), await member({ diaryPrivate: true })];
     await viewer.call().social.follow({ username: secret.username });
-    await secret
-      .call()
-      .listening.entry.create({
-        ...listen(release(nocturnes), "2026-10-20", 7),
-        review: { body: "Chut.", lang: "fr" },
-      });
+    await secret.call().listening.entry.create({
+      ...listen(release(nocturnes), "2026-10-20", 7),
+      review: { body: "Chut.", lang: "fr" },
+    });
     await secret.call().listening.quickLike({ target: release(leRoi), liked: true });
     const feed = await viewer.call().feed.friends({});
     expect(feed.items).toEqual([expect.objectContaining({ kind: "review" })]);
@@ -251,12 +245,10 @@ describe("friends feed", () => {
   it("hides ratings of records the blind viewer has not rated", async () => {
     const [viewer, friend] = [await member({ blindMode: true }), await member()];
     await viewer.call().social.follow({ username: friend.username });
-    await friend
-      .call()
-      .listening.entry.create({
-        ...listen(release(leRoi), "2026-10-20", 9),
-        review: { body: "Grand.", lang: "fr" },
-      });
+    await friend.call().listening.entry.create({
+      ...listen(release(leRoi), "2026-10-20", 9),
+      review: { body: "Grand.", lang: "fr" },
+    });
     await friend
       .call()
       .listening.entry.create(listen({ kind: "track", id: leRoiTrack }, "2026-10-19", 6));
@@ -643,12 +635,10 @@ describe("reports", () => {
     await reporter
       .call()
       .report.create({ subject: { kind: "comment", id: comment.id }, reason: "spam" });
-    await reporter
-      .call()
-      .report.create({
-        subject: { kind: "member", username: author.username },
-        reason: "harassment",
-      });
+    await reporter.call().report.create({
+      subject: { kind: "member", username: author.username },
+      reason: "harassment",
+    });
     const rows = await handle.db
       .select()
       .from(schema.reports)
