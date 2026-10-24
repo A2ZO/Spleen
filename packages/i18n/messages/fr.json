@@ -5,8 +5,7 @@
     "description": "Note, critique et range tes albums, EP et morceaux. Tiens ton journal d'écoute et partage tes goûts."
   },
   "common": {
-    "skipToContent": "Aller au contenu",
-    "mockupNotice": "Maquette : les données sont factices et rien n'est enregistré."
+    "skipToContent": "Aller au contenu"
   },
   "nav": {
     "label": "Navigation principale",
@@ -28,11 +27,6 @@
     "label": "Langue",
     "fr": "Français",
     "en": "English"
-  },
-  "footer": {
-    "tagline": "Écouté à la lueur d'une lampe de chevet.",
-    "sources": "Données musicales : MusicBrainz et Cover Art Archive.",
-    "legal": "Mentions légales, conditions et confidentialité : bientôt."
   },
   "releaseType": {
     "album": "Album",
