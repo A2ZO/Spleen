@@ -42,6 +42,8 @@ export interface ListenLink {
 export interface MemberRef {
   username: string;
   displayName: string;
+  /** Uploaded avatar, when the source loads it (initials are shown otherwise). */
+  avatarUrl?: string | null;
 }
 
 export interface ReviewCard {
@@ -53,7 +55,12 @@ export interface ReviewCard {
   lang: AudienceLang;
   createdAt: string;
   likeCount: number;
+  /** Comments not deleted. */
   commentCount: number;
+  /** Set when the review is about a single track (`release` is then the track's release). */
+  track?: { slug: string; title: string } | null;
+  /** The signed-in viewer liked it (only filled by social sources: feed, review page). */
+  viewerLiked?: boolean;
 }
 
 /** One of the member's own reviews, as edited on the review edit screen. */
@@ -192,6 +199,88 @@ export interface LikedRelease {
   likedAt: string;
 }
 
+/** One page of a cursor-paginated list; `nextCursor` is null on the last page. */
+export interface CursorPage<T> {
+  items: T[];
+  nextCursor: string | null;
+}
+
+/** A member in a followers / following list or a suggestion. */
+export interface MemberCard {
+  username: string;
+  displayName: string;
+  bio: string;
+  avatarUrl: string | null;
+  /** The signed-in viewer follows them. */
+  viewerFollows: boolean;
+  /** This is the viewer. */
+  isViewer: boolean;
+}
+
+/** Friends feed: a listen (with its review, if any), or a review written apart from a listen. */
+export type FeedItem =
+  | {
+      kind: "listen";
+      id: string;
+      at: string;
+      author: MemberRef;
+      release: ReleaseCard;
+      track: { slug: string; title: string } | null;
+      /** Null for an undated listen (quick rating or heart). */
+      listenedOn: string | null;
+      /** Hidden (null) by blind listening while the viewer has not rated the item. */
+      rating: number | null;
+      liked: boolean;
+      relisten: boolean;
+      review: ReviewCard | null;
+    }
+  | { kind: "review"; id: string; at: string; review: ReviewCard };
+
+/** A review page: the review, and what the viewer may do with it. */
+export interface ReviewDetail {
+  review: ReviewCard;
+  isOwner: boolean;
+  viewerLiked: boolean;
+  /** Signed in, not the author, no block either way. */
+  canLike: boolean;
+  /** Signed in with a profile, no block either way (authors may answer). */
+  canComment: boolean;
+}
+
+export interface CommentView {
+  id: string;
+  author: MemberRef;
+  body: string;
+  createdAt: string;
+  edited: boolean;
+  /** The viewer wrote it. */
+  canEdit: boolean;
+  /** The viewer wrote it, or owns the review / list it is on. */
+  canDelete: boolean;
+}
+
+/** Similar notifications shown as one ("Camille and 3 others liked your review"). */
+export interface NotificationGroup {
+  key: string;
+  type: "follow" | "like" | "comment";
+  latestAt: string;
+  unread: boolean;
+  /** Most recent first, at most 3. */
+  actors: MemberRef[];
+  actorCount: number;
+  review: { id: string; releaseTitle: string } | null;
+  list: { id: string; title: string } | null;
+  /** Latest comment of a comment group (shortened). */
+  commentExcerpt: string | null;
+}
+
+export interface BlockedMember {
+  username: string;
+  displayName: string;
+  avatarUrl: string | null;
+  blockedAt: string;
+}
+
 export interface ProfileDetail {
   id: string;
   username: string;
@@ -210,6 +299,12 @@ export interface ProfileDetail {
   /** Private diary seen by someone else: diary, recent activity, hearts and queue are empty. */
   diaryHidden: boolean;
   statsHidden: boolean;
+  /** The signed-in viewer follows this member. */
+  viewerFollows: boolean;
+  /** The viewer blocked this member (to offer "unblock"). */
+  viewerBlocked: boolean;
+  /** Signed in, not the owner, no block either way: follow and other interactions. */
+  canInteract: boolean;
 }
 
 export interface HomeFeed {

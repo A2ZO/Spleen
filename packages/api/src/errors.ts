@@ -27,6 +27,12 @@ export const API_ERROR_CODES = [
   "DATE_IN_FUTURE",
   "DATE_REQUIRED",
   "SHELF_MISMATCH",
+  "SELF_ACTION",
+  "ACTION_UNAVAILABLE",
+  "MEMBER_NOT_FOUND",
+  "COMMENT_NOT_FOUND",
+  "LIST_NOT_FOUND",
+  "INVALID_CURSOR",
 ] as const;
 
 export type ApiErrorCode = (typeof API_ERROR_CODES)[number];

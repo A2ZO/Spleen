@@ -292,6 +292,12 @@
     "DATE_IN_FUTURE": "Cette date n'est pas encore arrivée.",
     "DATE_REQUIRED": "Une écoute datée garde sa date.",
     "SHELF_MISMATCH": "Ton étagère a changé entre-temps : recharge la page.",
+    "SELF_ACTION": "Pas possible avec toi-même.",
+    "ACTION_UNAVAILABLE": "Action impossible.",
+    "MEMBER_NOT_FOUND": "Ce membre n'existe pas (ou plus).",
+    "COMMENT_NOT_FOUND": "Ce commentaire n'existe plus.",
+    "LIST_NOT_FOUND": "Cette liste n'existe plus.",
+    "INVALID_CURSOR": "Cette page n'existe plus : recharge la liste.",
     "unknown": "Quelque chose s'est mal passé. Réessaie."
   },
   "secondaryType": {

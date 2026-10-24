@@ -12,6 +12,7 @@ import type {
   TrackDetail,
 } from "../../types";
 import { buildListenLinks } from "../listen-links";
+import { reviewCountColumns } from "../social/reviews";
 import {
   loadReleaseCards,
   loadTrackCards,
@@ -28,7 +29,7 @@ const LISTS_ON_PAGE = 6;
 const LIST_PREVIEW_SIZE = 4;
 
 const { artists, genres, lists, listItems, profiles, releaseArtists, releaseGenres } = schema;
-const { releaseTracks, releases, reviews, likes, comments, tracks, userItemState } = schema;
+const { releaseTracks, releases, reviews, tracks, userItemState } = schema;
 
 export async function releaseIdBySlug(db: Db, slug: string) {
   const [row] = await db
@@ -55,8 +56,7 @@ async function ratingDistribution(db: Db, releaseId: string): Promise<number[]> 
 }
 
 async function releaseReviews(db: Db, release: ReleaseCard): Promise<ReviewCard[]> {
-  const likeCount = sql<number>`(select count(*)::int from ${likes} where ${likes.reviewId} = ${reviews.id})`;
-  const commentCount = sql<number>`(select count(*)::int from ${comments} where ${comments.reviewId} = ${reviews.id})`;
+  const { likeCount, commentCount } = reviewCountColumns;
   const rows = await db
     .select({
       id: reviews.id,

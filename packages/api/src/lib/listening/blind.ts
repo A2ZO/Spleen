@@ -32,7 +32,8 @@ export async function blindViewer(db: Db, user: SessionUser | null): Promise<Bli
   return row?.blindMode ? { userId: user.id } : null;
 }
 
-async function ratedIds(
+/** Ids among `ids` the member has rated. */
+export async function ratedIds(
   db: Db,
   userId: string,
   column: "releaseId" | "trackId",

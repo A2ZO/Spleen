@@ -15,6 +15,7 @@ import {
   users,
 } from "./fixtures";
 import { slugify } from "./slugify";
+import { seedSocial } from "./social";
 
 /* Fixed ID ranges for seed rows that have no fixture id (keeps the seed idempotent). */
 const TRACK_ID_BASE = 10_000;
@@ -52,17 +53,13 @@ export const suggestedMoods = [
 /** Undated listens sort as edited the evening before the demo "today" (2026-10-20). */
 const UNDATED_EDITED_AT = new Date("2026-10-19T20:00:00Z");
 
-const demoFollows: [string, string][] = [
-  ["nuitblanche", "vinylvince"],
-  ["vinylvince", "nuitblanche"],
-  ["rainydaysam", "nuitblanche"],
-];
-
 /**
  * Inserts the demo dataset (same fictional data as the mockup fixtures).
  * Idempotent: every row has a stable id or natural key and conflicts are ignored.
+ * `now` anchors the social demo (likes, comments, notifications of the last days).
  */
-export async function seed(db: Db): Promise<void> {
+export async function seed(db: Db, options: { now?: Date } = {}): Promise<void> {
+  const now = options.now ?? new Date();
   const releaseIdBySlug = new Map(releases.map((r) => [r.slug, r.id]));
   const artistIdBySlug = new Map(artists.map((a) => [a.slug, a.id]));
   const userIdByName = new Map(users.map((u) => [u.username, u.id]));
@@ -203,16 +200,6 @@ export async function seed(db: Db): Promise<void> {
     );
     if (shelfRows.length > 0) await tx.insert(s.favorites).values(shelfRows).onConflictDoNothing();
 
-    await tx
-      .insert(s.follows)
-      .values(
-        demoFollows.map(([from, to]) => ({
-          followerId: get(userIdByName, from),
-          followeeId: get(userIdByName, to),
-        })),
-      )
-      .onConflictDoNothing();
-
     // Listening
     await tx
       .insert(s.moods)
@@ -323,5 +310,6 @@ export async function seed(db: Db): Promise<void> {
       .onConflictDoNothing();
 
     await seedCrate(tx, [...genreIdByName.values()]);
+    await seedSocial(tx, now);
   });
 }

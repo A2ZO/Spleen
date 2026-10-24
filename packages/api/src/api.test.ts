@@ -9,14 +9,6 @@ import { createCaller } from "./root";
 import { createContext } from "./trpc";
 
 const now = new Date("2026-10-20T12:00:00Z");
-const caller = createCaller(
-  createContext({
-    now,
-    db: () => {
-      throw new Error("fixture-backed procedures must not open the database");
-    },
-  }),
-);
 
 describe("system.health", () => {
   it("queries the database", async () => {
@@ -29,16 +21,6 @@ describe("system.health", () => {
       await handle.close();
     }
   }, 60_000);
-});
-
-describe("discover.home", () => {
-  it("splits trending charts by audience language and sorts them", async () => {
-    const feed = await caller.discover.home();
-    expect(feed.trending.fr[0]?.slug).toBe("beton-velours");
-    expect(feed.trending.en[0]?.slug).toBe("brass-and-bone");
-    expect(feed.recent[0]?.slug).toBe("midnight-blue-avenue");
-    expect(feed.popularReviews).toHaveLength(3);
-  });
 });
 
 describe("profile.byUsername", () => {

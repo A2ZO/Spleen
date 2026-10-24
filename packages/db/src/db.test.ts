@@ -56,15 +56,20 @@ describe("seed", () => {
   it("loads the demo dataset", async () => {
     expect(await count(s.artists)).toBe(12);
     expect(await count(s.releases)).toBe(42);
-    expect(await count(s.profiles)).toBe(4);
+    expect(await count(s.profiles)).toBe(5);
     expect(await count(s.entries)).toBe(52);
     expect(await count(s.favorites)).toBe(12);
+    expect(await count(s.follows)).toBe(7);
+    expect(await count(s.likes)).toBe(11);
+    expect(await count(s.comments)).toBe(6);
+    expect(await count(s.blocks)).toBe(1);
   });
 
   it("is idempotent", async () => {
-    const before = await Promise.all([count(s.tracks), count(s.userItemState), count(s.listItems)]);
+    const tables = [s.tracks, s.userItemState, s.listItems, s.notifications] as const;
+    const before = await Promise.all(tables.map((t) => count(t)));
     await seed(handle.db);
-    const after = await Promise.all([count(s.tracks), count(s.userItemState), count(s.listItems)]);
+    const after = await Promise.all(tables.map((t) => count(t)));
     expect(after).toEqual(before);
   });
 });

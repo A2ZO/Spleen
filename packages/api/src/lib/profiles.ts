@@ -15,6 +15,8 @@ import type {
 import { loadReleaseCards, loadTrackCards, toReleaseCard } from "./catalog/cards";
 import { listRowColumns, loadListCards } from "./catalog/pages";
 import { blindReleaseItems, blindReviewCards, type BlindViewer } from "./listening/blind";
+import { isBlockedBetween } from "./social/relations";
+import { reviewCountColumns } from "./social/reviews";
 import { getShelf } from "./shelf";
 import { getMemberStats } from "./stats";
 
@@ -35,7 +37,7 @@ export const TO_LISTEN_PAGE_SIZE = 24;
 /** A month of listens on the calendar; beyond that, the list view has them all. */
 const MONTH_LIMIT = 500;
 
-const { comments, entries, entryMoods, follows, likes, lists, moods, profiles } = schema;
+const { blocks, entries, entryMoods, follows, lists, moods, profiles } = schema;
 const { reviews, userItemState } = schema;
 
 /** Who looks at the profile: their id (null when signed out) and blind listening. */
@@ -190,14 +192,30 @@ export async function getPublicProfile(
   const access = await findProfile(db, username, viewer);
   if (!access) return null;
   const { row, userId } = access;
-  const [shelf, recent, followerCount, followingCount] = await Promise.all([
-    getShelf(db, userId),
-    access.diaryHidden
-      ? []
-      : loadDiaryEntries(db, eq(entries.userId, userId), { order: "newest", limit: RECENT_SIZE }),
-    db.$count(follows, eq(follows.followeeId, userId)),
-    db.$count(follows, eq(follows.followerId, userId)),
-  ]);
+  const viewerId = viewer.id;
+  const [shelf, recent, followerCount, followingCount, viewerFollows, viewerBlocked, blocked] =
+    await Promise.all([
+      getShelf(db, userId),
+      access.diaryHidden
+        ? []
+        : loadDiaryEntries(db, eq(entries.userId, userId), {
+            order: "newest",
+            limit: RECENT_SIZE,
+          }),
+      db.$count(follows, eq(follows.followeeId, userId)),
+      db.$count(follows, eq(follows.followerId, userId)),
+      viewerId
+        ? db
+            .$count(follows, and(eq(follows.followerId, viewerId), eq(follows.followeeId, userId)))
+            .then((n) => n > 0)
+        : false,
+      viewerId
+        ? db
+            .$count(blocks, and(eq(blocks.blockerId, viewerId), eq(blocks.blockedId, userId)))
+            .then((n) => n > 0)
+        : false,
+      viewerId && !access.isOwner ? isBlockedBetween(db, viewerId, userId) : false,
+    ]);
   const shelfCards = await maskCards(
     db,
     viewer,
@@ -219,6 +237,9 @@ export async function getPublicProfile(
     isOwner: access.isOwner,
     diaryHidden: access.diaryHidden,
     statsHidden: access.statsHidden,
+    viewerFollows,
+    viewerBlocked,
+    canInteract: viewerId !== null && !access.isOwner && !blocked,
   };
 }
 
@@ -327,8 +348,6 @@ export async function getReviewsPage(
   const access = await findProfile(db, username, viewer);
   if (!access) return null;
   const where = and(eq(reviews.userId, access.userId), isNotNull(reviews.releaseId));
-  const likeCount = sql<number>`(select count(*)::int from ${likes} where ${likes.reviewId} = ${reviews.id})`;
-  const commentCount = sql<number>`(select count(*)::int from ${comments} where ${comments.reviewId} = ${reviews.id})`;
   const [rows, total] = await Promise.all([
     db
       .select({
@@ -338,8 +357,7 @@ export async function getReviewsPage(
         body: reviews.body,
         lang: reviews.lang,
         createdAt: reviews.createdAt,
-        likeCount,
-        commentCount,
+        ...reviewCountColumns,
       })
       .from(reviews)
       .where(where)
