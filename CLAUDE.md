@@ -97,7 +97,7 @@ Brevo and S3 variables (`assertProductionConfig()`, `apps/web/src/instrumentatio
 - Catalog rows are never hard-deleted (`on delete restrict`); duplicate merges re-point
   references first (milestone 9). Member data cascades when a user is deleted.
 - Demo seed: members `<username>@example.test` (`nuitblanche` full shelf, `vinylvince`,
-  `rainydaysam` empty shelf, queue only), fictional albums, real listens/reviews/moods.
+  `rainydaysam` empty shelf, `fouilleuse` 30 hearts = 2 pages, `seed/crate.ts`), fictional data.
   Fixture `ratingCounts` / `weeklyListens` are home-page mockup only.
 - Listening: read `docs/ecoute.md`. `user_item_state` is derived by `recomputeItemState()`
   in the write's transaction (also `liked_at`, the Hearts tab order).
