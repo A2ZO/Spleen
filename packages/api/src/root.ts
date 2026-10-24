@@ -8,11 +8,16 @@ import {
   listenTargetSchema,
   moodLabelSchema,
   onboardingSchema,
+  profileMonthSchema,
+  profilePageSchema,
   profileUpdateSchema,
   quickLikeSchema,
   quickRateSchema,
   reviewCreateSchema,
   reviewUpdateSchema,
+  shelfRemoveSchema,
+  shelfReorderSchema,
+  shelfSetSchema,
   slugSchema,
   usernameSchema,
   wantToListenSchema,
@@ -58,8 +63,19 @@ import {
   updateWantToListen,
 } from "./lib/listening/entries";
 import { createMood, listMoods } from "./lib/listening/moods";
-import { createReview, deleteReview, updateReview } from "./lib/listening/reviews";
-import { getPublicProfile } from "./lib/profiles";
+import { createReview, deleteReview, getMyReview, updateReview } from "./lib/listening/reviews";
+import {
+  getDiaryMonth,
+  getDiaryPage,
+  getLikesPage,
+  getProfileLists,
+  getProfileStats,
+  getPublicProfile,
+  getReviewsPage,
+  getToListenPage,
+  type ProfileViewer,
+} from "./lib/profiles";
+import { getShelf, removeShelfItem, reorderShelf, setShelfItem } from "./lib/shelf";
 import { usernameStatus } from "./lib/usernames";
 import { getHomeFeed } from "./mock/repository";
 import {
@@ -81,6 +97,7 @@ const IMPORT_RULE = { window: 60 * 60, max: 30 };
 const LISTEN_WRITE_RULE = { window: 60 * 60, max: 300 };
 const REVIEW_WRITE_RULE = { window: 60 * 60, max: 30 };
 const MOOD_CREATE_RULE = { window: 60 * 60, max: 30 };
+const SHELF_WRITE_RULE = { window: 60 * 60, max: 120 };
 
 /** Spends one write from the member's budget for `bucket`, or fails with RATE_LIMITED. */
 async function spend(
@@ -103,6 +120,17 @@ const reviewWrite = protectedProcedure.use(async ({ ctx, next }) => {
 
 /** Blind listening settings of the caller (null when signed out or not in blind mode). */
 const viewerOf = async (ctx: Context) => blindViewer(ctx.db(), await ctx.user());
+
+/** Who looks at a profile (privacy and blind listening). */
+async function profileViewer(ctx: Context): Promise<ProfileViewer> {
+  const user = await ctx.user();
+  return { id: user?.id ?? null, blind: await blindViewer(ctx.db(), user) };
+}
+
+const shelfWrite = protectedProcedure.use(async ({ ctx, next }) => {
+  await spend(ctx, "shelf-write", SHELF_WRITE_RULE);
+  return next();
+});
 
 export const appRouter = router({
   system: router({
@@ -175,12 +203,62 @@ export const appRouter = router({
     }),
   }),
   profile: router({
+    /** Header, Shelf and recent activity; each section below is its own call. */
     byUsername: publicProcedure
       .input(z.object({ username: usernameSchema }))
-      .query(async ({ input, ctx }) => {
-        const viewer = await ctx.user();
-        return getPublicProfile(ctx.db(), input.username, ctx.now, viewer?.id ?? null);
-      }),
+      .query(async ({ input, ctx }) =>
+        getPublicProfile(ctx.db(), input.username, await profileViewer(ctx)),
+      ),
+    diary: publicProcedure
+      .input(profilePageSchema)
+      .query(async ({ input, ctx }) =>
+        getDiaryPage(ctx.db(), input.username, await profileViewer(ctx), input.page),
+      ),
+    /** Calendar view: the dated listens of one month. */
+    diaryMonth: publicProcedure
+      .input(profileMonthSchema)
+      .query(async ({ input, ctx }) =>
+        getDiaryMonth(ctx.db(), input.username, await profileViewer(ctx), input.month),
+      ),
+    likes: publicProcedure
+      .input(profilePageSchema)
+      .query(async ({ input, ctx }) =>
+        getLikesPage(ctx.db(), input.username, await profileViewer(ctx), input.page),
+      ),
+    reviews: publicProcedure
+      .input(profilePageSchema)
+      .query(async ({ input, ctx }) =>
+        getReviewsPage(ctx.db(), input.username, await profileViewer(ctx), input.page),
+      ),
+    toListen: publicProcedure
+      .input(profilePageSchema)
+      .query(async ({ input, ctx }) =>
+        getToListenPage(ctx.db(), input.username, await profileViewer(ctx), input.page),
+      ),
+    lists: publicProcedure
+      .input(z.object({ username: usernameSchema }))
+      .query(async ({ input, ctx }) =>
+        getProfileLists(ctx.db(), input.username, await profileViewer(ctx)),
+      ),
+    /** Null for an unknown member or private stats; cached per member. */
+    stats: publicProcedure
+      .input(z.object({ username: usernameSchema }))
+      .query(async ({ input, ctx }) =>
+        getProfileStats(ctx.db(), input.username, await profileViewer(ctx), ctx.now),
+      ),
+  }),
+  /** The signed-in member's Shelf (4 favourite records). */
+  shelf: router({
+    mine: protectedProcedure.query(({ ctx }) => getShelf(ctx.db(), ctx.user.id)),
+    set: shelfWrite
+      .input(shelfSetSchema)
+      .mutation(({ input, ctx }) => setShelfItem(ctx.db(), ctx.user.id, input)),
+    remove: shelfWrite
+      .input(shelfRemoveSchema)
+      .mutation(({ input, ctx }) => removeShelfItem(ctx.db(), ctx.user.id, input.position)),
+    reorder: shelfWrite
+      .input(shelfReorderSchema)
+      .mutation(({ input, ctx }) => reorderShelf(ctx.db(), ctx.user.id, input.releaseIds)),
   }),
   listening: router({
     /** The member's state and listens for an item page (null when signed out). */
@@ -188,10 +266,12 @@ export const appRouter = router({
       const user = await ctx.user();
       return user ? getMyItemState(ctx.db(), user.id, input, ctx.now) : null;
     }),
-    /** Quick rating (null clears it), kept on the member's single undated listen. */
+    /** Quick rating (null clears it) on the member's undated listen; `order` drops stale ones. */
     quickRate: listenWrite
       .input(quickRateSchema)
-      .mutation(({ input, ctx }) => quickRate(ctx.db(), ctx.user.id, input.target, input.rating)),
+      .mutation(({ input, ctx }) =>
+        quickRate(ctx.db(), ctx.user.id, input.target, input.rating, input.order),
+      ),
     quickLike: listenWrite
       .input(quickLikeSchema)
       .mutation(({ input, ctx }) => quickLike(ctx.db(), ctx.user.id, input.target, input.liked)),
@@ -231,6 +311,10 @@ export const appRouter = router({
     }),
   }),
   review: router({
+    /** The caller's own review, for editing (null when missing or someone else's). */
+    mine: protectedProcedure
+      .input(z.object({ id: z.uuid() }))
+      .query(({ input, ctx }) => getMyReview(ctx.db(), ctx.user.id, input.id)),
     create: reviewWrite
       .input(reviewCreateSchema)
       .mutation(({ input, ctx }) => createReview(ctx.db(), ctx.user.id, input)),

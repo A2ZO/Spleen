@@ -49,11 +49,28 @@ export const rateLimits = pgTable("rate_limits", {
   nextAllowedAt: timestamp("next_allowed_at", { withTimezone: true }),
 });
 
-/** Per-member base stats cache; the row is deleted when the member adds or edits a listen. */
+/**
+ * Per-member listening bookkeeping. `stats_version` is bumped in the transaction of every
+ * listening write, which also locks the row: a member's listening writes run one at a time.
+ * `quick_client_id` / `quick_seq` hold the last quick rating applied from an item panel, so
+ * an older request of that panel arriving late is ignored.
+ */
+export const userListeningVersion = pgTable("user_listening_version", {
+  userId: uuid("user_id")
+    .primaryKey()
+    .references(() => user.id, { onDelete: "cascade" }),
+  statsVersion: integer("stats_version").notNull().default(0),
+  quickClientId: uuid("quick_client_id"),
+  quickSeq: integer("quick_seq"),
+});
+
+/** Per-member base stats cache, valid while `stats_version` matches the member's. */
 export const userStatsCache = pgTable("user_stats_cache", {
   userId: uuid("user_id")
     .primaryKey()
     .references(() => user.id, { onDelete: "cascade" }),
+  /** The member's `user_listening_version.stats_version` read before computing. */
+  statsVersion: integer("stats_version").notNull().default(0),
   data: jsonb("data").notNull(),
   computedAt: timestamp("computed_at", { withTimezone: true }).notNull().defaultNow(),
 });

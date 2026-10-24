@@ -1,0 +1,2 @@
+ALTER TABLE "user_item_state" ADD COLUMN "liked_at" timestamp with time zone;--> statement-breakpoint
+CREATE INDEX "user_item_state_liked_idx" ON "user_item_state" USING btree ("user_id","liked_at" DESC NULLS LAST) WHERE "user_item_state"."liked" and "user_item_state"."release_id" is not null;

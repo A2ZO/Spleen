@@ -6,10 +6,12 @@ import {
   entryUpdateSchema,
   listenTargetSchema,
   moodLabelSchema,
+  quickOrderSchema,
   ratingSchema,
   type EntryCreateInput,
   type EntryUpdateInput,
   type ListenTargetInput,
+  type QuickOrderInput,
 } from "@spleen/validators";
 
 import { errorCode } from "@/lib/api-errors";
@@ -43,9 +45,12 @@ async function run(
 export async function quickRateAction(
   target: ListenTargetInput,
   rating: number | null,
+  order: QuickOrderInput,
 ): Promise<ListenResult> {
   if (rating !== null && !ratingSchema.safeParse(rating).success) return { error: "unknown" };
-  return run(target, (api) => api.listening.quickRate({ target, rating }));
+  const parsedOrder = quickOrderSchema.safeParse(order);
+  if (!parsedOrder.success) return { error: "unknown" };
+  return run(target, (api) => api.listening.quickRate({ target, rating, order: parsedOrder.data }));
 }
 
 export async function quickLikeAction(target: ListenTargetInput, liked: boolean) {

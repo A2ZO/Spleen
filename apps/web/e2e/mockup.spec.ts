@@ -41,9 +41,20 @@ test("profile page shows the shelf", async ({ page }) => {
 
 test("profile tabs switch to the stats panel", async ({ page }) => {
   await page.goto("/fr/u/nuitblanche");
-  await page.getByRole("tab", { name: "Stats" }).click();
-  await expect(page.getByRole("tabpanel")).toContainText("Répartition des notes");
-  await expect(page.getByRole("tabpanel")).toContainText("Top artistes 2026");
+  const sections = page.getByRole("region", { name: "Sections du profil" });
+  await sections.getByRole("link", { name: "Stats" }).click();
+  await expect(page).toHaveURL(/\?tab=stats$/);
+  await expect(sections).toContainText("Répartition des notes");
+  await expect(sections).toContainText("Top artistes 2026");
+  await expect(sections).toContainText("En écoutes, réécoutes comprises.");
+});
+
+test("diary calendar shows a month", async ({ page }) => {
+  await page.goto("/fr/u/nuitblanche/diary");
+  await page.getByRole("link", { name: "Calendrier" }).click();
+  await expect(page.getByRole("table", { name: /^Écoutes de/ })).toBeVisible();
+  await page.getByRole("link", { name: /Mois précédent/ }).click();
+  await expect(page).toHaveURL(/view=calendar&month=\d{4}-\d{2}/);
 });
 
 test("empty shelf gathers dust", async ({ page }) => {

@@ -209,6 +209,37 @@ describe("undated listens (quick rating and heart)", () => {
     await expectConsistent(m.user.id, { releaseId: nocturnes });
   });
 
+  it("ignores a quick rating older than the last one applied from the same panel", async () => {
+    const m = await member();
+    const clientId = crypto.randomUUID();
+    const rate = (rating: number | null, seq: number, id = clientId) =>
+      m.call().listening.quickRate({ target: album, rating, order: { clientId: id, seq } });
+    // Clicks 4.5 then clears, but the clearing request reaches the server first.
+    await rate(null, 2);
+    await rate(9, 1);
+    expect(await stateOf(m.user.id, { releaseId: nocturnes })).toBeNull();
+    expect(await entriesOf(m.user.id)).toHaveLength(0);
+
+    await rate(10, 3);
+    await rate(8, 3); // a replayed number is stale too
+    expect(await stateOf(m.user.id, { releaseId: nocturnes })).toMatchObject({ rating: 10 });
+    // Another panel (a reload, another tab) starts its own numbering: last write wins.
+    await rate(6, 1, crypto.randomUUID());
+    expect(await stateOf(m.user.id, { releaseId: nocturnes })).toMatchObject({ rating: 6 });
+  });
+
+  it("applies concurrent quick ratings in their order", async () => {
+    const m = await member();
+    const clientId = crypto.randomUUID();
+    await Promise.all(
+      [3, 1, 4, 2].map((seq) =>
+        m.call().listening.quickRate({ target: album, rating: seq * 2, order: { clientId, seq } }),
+      ),
+    );
+    expect(await stateOf(m.user.id, { releaseId: nocturnes })).toMatchObject({ rating: 8 });
+    await expectConsistent(m.user.id, { releaseId: nocturnes });
+  });
+
   it("a heart updates the same undated listen without changing the rating", async () => {
     const m = await member();
     await m.call().listening.quickRate({ target: album, rating: 7 });
@@ -340,7 +371,8 @@ describe("undated listens (quick rating and heart)", () => {
   it("giving a date to an undated listen puts it in the diary", async () => {
     const m = await member();
     await m.call().listening.quickRate({ target: album, rating: 8 });
-    expect((await m.call().profile.byUsername({ username: m.username }))?.diary).toHaveLength(0);
+    const diary = () => m.call().profile.diary({ username: m.username, page: 1 });
+    expect((await diary())?.items).toHaveLength(0);
     const [undated] = await entriesOf(m.user.id);
     await m.call().listening.entry.update({
       id: undated!.id,
@@ -352,8 +384,7 @@ describe("undated listens (quick rating and heart)", () => {
       moodIds: [],
       trackRatings: [],
     });
-    const profile = await m.call().profile.byUsername({ username: m.username });
-    expect(profile?.diary.map((d) => d.listenedOn)).toEqual(["2026-10-20"]);
+    expect((await diary())?.items.map((d) => d.listenedOn)).toEqual(["2026-10-20"]);
   });
 });
 
@@ -575,22 +606,30 @@ describe("private diary", () => {
       .set({ diaryPrivate: true })
       .where(eq(schema.profiles.userId, m.user.id));
 
-    const seenByOthers = await api(null).profile.byUsername({ username: m.username });
-    expect(seenByOthers).toMatchObject({ diaryHidden: true, diary: [], recent: [], toListen: [] });
-    const seenByOwner = await m.call().profile.byUsername({ username: m.username });
-    expect(seenByOwner?.diaryHidden).toBe(false);
-    expect(seenByOwner?.diary).toHaveLength(1);
-    expect(seenByOwner?.toListen.map((r) => r.id)).toEqual([leRoi]);
+    const username = m.username;
+    const page = { username, page: 1 };
+    const others = api(null).profile;
+    expect(await others.byUsername({ username })).toMatchObject({ diaryHidden: true, recent: [] });
+    expect((await others.diary(page))?.items).toEqual([]);
+    expect((await others.toListen(page))?.items).toEqual([]);
+    const owner = m.call().profile;
+    expect((await owner.byUsername({ username }))?.diaryHidden).toBe(false);
+    expect((await owner.diary(page))?.items).toHaveLength(1);
+    expect((await owner.toListen(page))?.items.map((r) => r.id)).toEqual([leRoi]);
   });
 });
 
 describe("demo members", () => {
   it("read their activity from the database", async () => {
-    const profile = await api(null).profile.byUsername({ username: "nuitblanche" });
-    expect(profile?.diary[0]).toMatchObject({ listenedOn: "2026-10-18" });
-    const withMoods = profile?.diary.find((d) => d.moods.length > 0);
+    const page = { username: "nuitblanche", page: 1 };
+    const profile = api(null).profile;
+    const diary = await profile.diary(page);
+    expect(diary?.items[0]).toMatchObject({ listenedOn: "2026-10-18" });
+    const withMoods = diary?.items.find((d) => d.moods.length > 0);
     expect(withMoods?.moods.map((x) => x.slug)).toEqual(["rain", "night"]);
-    expect(profile?.reviews.length).toBeGreaterThan(0);
-    expect(profile?.toListen.map((r) => r.slug)).toEqual(["gold-leaf-sessions"]);
+    expect((await profile.reviews(page))?.total).toBeGreaterThan(0);
+    expect((await profile.toListen(page))?.items.map((r) => r.slug)).toEqual([
+      "gold-leaf-sessions",
+    ]);
   });
 });

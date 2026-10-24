@@ -118,6 +118,8 @@ export const userItemState = pgTable(
     ...targetColumns(),
     rating: rating(),
     liked: boolean("liked").notNull().default(false),
+    /** When the heart was last given (a heart removed then given again gets the new date). */
+    likedAt: timestamp("liked_at", { withTimezone: true }),
     listened: boolean("listened").notNull().default(false),
     wantToListen: boolean("want_to_listen").notNull().default(false),
     updatedAt: timestamp("updated_at", { withTimezone: true })
@@ -140,5 +142,9 @@ export const userItemState = pgTable(
     index("user_item_state_release_idx").on(t.releaseId),
     index("user_item_state_track_idx").on(t.trackId),
     index("user_item_state_artist_idx").on(t.artistId),
+    // Profile "Hearts" tab: liked releases, most recently liked first.
+    index("user_item_state_liked_idx")
+      .on(t.userId, t.likedAt.desc())
+      .where(sql`${t.liked} and ${t.releaseId} is not null`),
   ],
 );

@@ -12,9 +12,12 @@ import { Link } from "@/i18n/navigation";
 export function ReviewCard({
   review,
   showRelease = true,
+  editable = false,
 }: {
   review: Review;
   showRelease?: boolean;
+  /** The viewer wrote it: show a link to the edit screen. */
+  editable?: boolean;
 }) {
   const t = useTranslations();
   const format = useFormatter();
@@ -82,6 +85,15 @@ export function ReviewCard({
           <span className="flex items-center gap-1">
             <CommentIcon /> {t("review.comments", { count: review.commentCount })}
           </span>
+          {editable && (
+            <Link
+              href={`/review/${review.id}/edit`}
+              className="ml-auto text-link underline-offset-2 hover:underline"
+            >
+              {t("review.edit")}
+              <span className="sr-only"> ({review.release.title})</span>
+            </Link>
+          )}
         </p>
       </div>
     </Card>

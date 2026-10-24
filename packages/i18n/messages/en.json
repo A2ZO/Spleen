@@ -116,7 +116,8 @@
     "byline": "Review by {name}",
     "likes": "{count, plural, =0 {no likes} one {# like} other {# likes}}",
     "comments": "{count, plural, =0 {no comments} one {# comment} other {# comments}}",
-    "noRating": "No rating"
+    "noRating": "No rating",
+    "edit": "Edit"
   },
   "list": {
     "ranked": "Ranked",
@@ -128,7 +129,6 @@
     "following": "{count} following",
     "joined": "Here since {date}",
     "shelfTitle": "The Shelf",
-    "shelfEmptyOwn": "Your shelf is gathering dust.",
     "shelfEmpty": "{name}'s shelf is gathering dust.",
     "shelfEmptySlot": "Empty slot",
     "recentTitle": "Recently listened",
@@ -138,7 +138,8 @@
       "reviews": "Reviews",
       "lists": "Lists",
       "stats": "Stats",
-      "toListen": "To listen"
+      "toListen": "To listen",
+      "likes": "Hearts"
     },
     "diaryEmpty": "The diary is still blank.",
     "reviewsEmpty": "No reviews yet.",
@@ -153,10 +154,13 @@
     "diaryTitle": "{name}'s diary",
     "diaryBack": "Back to profile",
     "reviewed": "Review written",
-    "moods": "Moods"
+    "moods": "Moods",
+    "likesEmpty": "No hearts yet.",
+    "diaryCalendar": "Calendar view"
   },
   "stats": {
     "thisYear": "In {year}",
+    "thisYearNote": "Distinct records and tracks, dated listens.",
     "total": "All time",
     "albums": "{count, plural, one {album} other {albums}}",
     "eps": "{count, plural, one {EP} other {EPs}}",
@@ -168,7 +172,12 @@
     "activity": "Activity {year}",
     "listens": "{count, plural, one {# listen} other {# listens}}",
     "decade": "{decade}s",
-    "empty": "Not enough listens for stats yet."
+    "empty": "Not enough listens for stats yet.",
+    "tracks": "{count, plural, one {track} other {tracks}}",
+    "inListens": "In listens, relistens included.",
+    "decadesNote": "By release year, in listens, all time.",
+    "ratingsNote": "The current rating of each record.",
+    "totalNote": "Distinct records and tracks, undated listens included."
   },
   "notFound": {
     "metaTitle": "Page not found",
@@ -288,6 +297,7 @@
     "TRACK_NOT_ON_RELEASE": "This track is not on this record.",
     "DATE_IN_FUTURE": "That date hasn't come yet.",
     "DATE_REQUIRED": "A dated listen keeps its date.",
+    "SHELF_MISMATCH": "Your shelf changed in the meantime: reload the page.",
     "unknown": "Something went wrong. Try again."
   },
   "secondaryType": {
@@ -378,7 +388,7 @@
     "review": "Review (optional)",
     "reviewHint": "Your rating and your review are independent: one doesn't need the other.",
     "reviewLang": "Review language",
-    "reviewExisting": "The review written with this listen is edited from your profile.",
+    "reviewExisting": "A review is linked to this listen.",
     "tracks": "Track-by-track ratings",
     "tracksHint": "Optional. Your album rating stays yours.",
     "suggestion": "Suggested from your tracks: {stars} ★",
@@ -392,6 +402,63 @@
     "quickListen": "Quick rating, no date",
     "edit": "Edit",
     "blindHidden": "Blind listening: the average shows up once you have rated.",
-    "today": "Today"
+    "today": "Today",
+    "reviewEdit": "Edit the review"
+  },
+  "shelf": {
+    "subtitleOwn": "My 4 favourite records",
+    "subtitle": "{name}'s 4 favourite records",
+    "put": "Put on my Shelf",
+    "onShelf": "On my Shelf",
+    "pickTitle": "Where should “{title}” go?",
+    "pickHint": "Pick a slot. If it is taken, the record in it goes back in the crate.",
+    "slotHere": "It is here",
+    "slotReplace": "Replace “{title}”",
+    "slotFree": "Slot {position}, empty",
+    "remove": "Take off my Shelf",
+    "cancel": "Cancel",
+    "emptyOwn": "Your shelf is gathering dust.",
+    "emptyHint": "Pick your 4 favourite records: from a record's page or your hearts, “Put on my Shelf”.",
+    "findRecord": "Find a record",
+    "edit": "Edit my Shelf",
+    "done": "Done",
+    "editLabel": "Shelf order",
+    "free": "Empty slot",
+    "moveLeft": "Move “{title}” left",
+    "moveRight": "Move “{title}” right",
+    "removeOne": "Take “{title}” off the Shelf",
+    "removeShort": "Remove",
+    "moved": "“{title}” is now in slot {position}.",
+    "removed": "“{title}” left the Shelf."
+  },
+  "pagination": {
+    "label": "Pages",
+    "previous": "Newer",
+    "next": "Older",
+    "position": "Page {page} of {pageCount}"
+  },
+  "diary": {
+    "views": "Diary view",
+    "list": "List",
+    "calendar": "Calendar",
+    "monthNav": "Change month",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "calendarCaption": "Listens in {month}",
+    "dayListens": "{date}: {count, plural, one {# listen} other {# listens}} ({titles})",
+    "monthEmpty": "No listens this month."
+  },
+  "reviewEdit": {
+    "metaTitle": "Edit my review",
+    "kicker": "Edit my review",
+    "body": "Your review",
+    "lang": "Review language",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "delete": "Delete the review",
+    "deleteConfirm": "Delete it for good?",
+    "deleteYes": "Yes, delete",
+    "deleteNo": "No, keep it"
   }
 }

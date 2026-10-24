@@ -50,7 +50,7 @@ test("listen in one click, rate, log with a mood and find it in the diary", asyn
   await expect(dialog).toBeHidden();
 
   await page.goto(`/fr/u/${username}`);
-  const diary = page.getByRole("tabpanel");
+  const diary = page.getByRole("region", { name: "Sections du profil" });
   await expect(
     diary.getByRole("link", { name: "Nocturnes pour pluie fine" }).first(),
   ).toBeVisible();

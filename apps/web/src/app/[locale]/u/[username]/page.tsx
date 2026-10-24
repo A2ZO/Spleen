@@ -1,3 +1,4 @@
+import type { ProfileDetail } from "@spleen/api";
 import { usernameSchema } from "@spleen/validators";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -7,17 +8,24 @@ import { cache } from "react";
 import { DiaryList } from "@/components/profile/DiaryList";
 import { StatsPanel } from "@/components/profile/StatsPanel";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
+import { ShelfEditor } from "@/components/shelf/ShelfEditor";
+import { ShelfPicker } from "@/components/shelf/ShelfPicker";
 import { ListCard } from "@/components/social/ListCard";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { Avatar } from "@/components/ui/Avatar";
+import { LinkTabs } from "@/components/ui/LinkTabs";
+import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Tabs } from "@/components/ui/Tabs";
 import { VinylShelf } from "@/components/ui/VinylShelf";
 import { initRouteLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
+import { firstParam, hrefWith, pageParam, type SearchParams } from "@/lib/search-params";
 import { getApi } from "@/server/api";
 
-type Props = { params: Promise<{ locale: string; username: string }> };
+type Props = {
+  params: Promise<{ locale: string; username: string }>;
+  searchParams: Promise<SearchParams>;
+};
 
 const getProfile = cache(async (username: string) => {
   const parsed = usernameSchema.safeParse(decodeURIComponent(username));
@@ -32,21 +40,173 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: `${profile.displayName} (@${profile.username})` };
 }
 
-/** Latest diary entries on the profile; the rest is on /u/[username]/diary. */
-const DIARY_PREVIEW_SIZE = 30;
+const TABS = ["diary", "likes", "to-listen", "reviews", "lists", "stats"] as const;
+type Tab = (typeof TABS)[number];
+
+const gridClasses = "grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5";
 
 function EmptyState({ children }: { children: string }) {
   return <p className="py-6 font-serif text-lg text-fg-muted italic">{children}</p>;
 }
 
-export default async function ProfilePage({ params }: Props) {
+/** Only the active tab is loaded; each one is a link (`?tab=…&page=…`). */
+async function TabContent({
+  profile,
+  tab,
+  page,
+}: {
+  profile: ProfileDetail;
+  tab: Tab;
+  page: number;
+}) {
+  const t = await getTranslations();
+  const api = await getApi();
+  const username = profile.username;
+  const path = `/u/${username}`;
+  const pagination = (p: { page: number; pageCount: number }) => (
+    <Pagination
+      page={p.page}
+      pageCount={p.pageCount}
+      hrefFor={(n) => hrefWith(path, { tab, page: n })}
+      className="mt-8"
+    />
+  );
+  const privateDiary = (
+    <EmptyState>{t("profile.diaryPrivate", { name: profile.displayName })}</EmptyState>
+  );
+
+  switch (tab) {
+    case "diary": {
+      if (profile.diaryHidden) return privateDiary;
+      const diary = await api.profile.diary({ username, page });
+      if (!diary || diary.total === 0) return <EmptyState>{t("profile.diaryEmpty")}</EmptyState>;
+      return (
+        <div className="space-y-6">
+          <DiaryList entries={diary.items} />
+          {pagination(diary)}
+          <p className="flex flex-wrap gap-4 text-sm">
+            <Link href={`${path}/diary`} className="text-link underline-offset-2 hover:underline">
+              {t("profile.diaryAll")}
+            </Link>
+            <Link
+              href={hrefWith(`${path}/diary`, { view: "calendar" })}
+              className="text-link underline-offset-2 hover:underline"
+            >
+              {t("profile.diaryCalendar")}
+            </Link>
+          </p>
+        </div>
+      );
+    }
+    case "likes": {
+      if (profile.diaryHidden) return privateDiary;
+      const likes = await api.profile.likes({ username, page });
+      if (!likes || likes.total === 0) return <EmptyState>{t("profile.likesEmpty")}</EmptyState>;
+      return (
+        <>
+          <ul className={gridClasses}>
+            {likes.items.map(({ release }) => (
+              <li key={release.id} className="flex flex-col gap-3">
+                <ReleaseTile release={release} />
+                {profile.isOwner && (
+                  <ShelfPicker
+                    release={{ id: release.id, title: release.title }}
+                    shelf={profile.shelf}
+                    variant="ghost"
+                    className="relative z-10 px-2 py-1 text-xs"
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
+          {pagination(likes)}
+        </>
+      );
+    }
+    case "to-listen": {
+      if (profile.diaryHidden) return privateDiary;
+      const queue = await api.profile.toListen({ username, page });
+      if (!queue || queue.total === 0) {
+        return <EmptyState>{t("profile.toListenEmpty")}</EmptyState>;
+      }
+      return (
+        <>
+          <ul className={gridClasses}>
+            {queue.items.map((release) => (
+              <li key={release.id}>
+                <ReleaseTile release={release} />
+              </li>
+            ))}
+          </ul>
+          {pagination(queue)}
+        </>
+      );
+    }
+    case "reviews": {
+      const reviews = await api.profile.reviews({ username, page });
+      if (!reviews || reviews.total === 0) {
+        return <EmptyState>{t("profile.reviewsEmpty")}</EmptyState>;
+      }
+      return (
+        <>
+          <ul className="space-y-4">
+            {reviews.items.map((review) => (
+              <li key={review.id}>
+                <ReviewCard review={review} editable={profile.isOwner} />
+              </li>
+            ))}
+          </ul>
+          {pagination(reviews)}
+        </>
+      );
+    }
+    case "lists": {
+      const lists = (await api.profile.lists({ username })) ?? [];
+      if (lists.length === 0) return <EmptyState>{t("profile.listsEmpty")}</EmptyState>;
+      return (
+        <ul className="grid gap-4 sm:grid-cols-2">
+          {lists.map((list) => (
+            <li key={list.id}>
+              <ListCard list={list} />
+            </li>
+          ))}
+        </ul>
+      );
+    }
+    case "stats": {
+      if (profile.statsHidden) {
+        return <EmptyState>{t("profile.statsPrivate", { name: profile.displayName })}</EmptyState>;
+      }
+      const stats = await api.profile.stats({ username });
+      const total = stats?.base.listenedTotal;
+      if (!stats || !total || total.album + total.ep + total.single + total.track === 0) {
+        return <EmptyState>{t("stats.empty")}</EmptyState>;
+      }
+      return <StatsPanel stats={stats.base} />;
+    }
+  }
+}
+
+export default async function ProfilePage({ params, searchParams }: Props) {
   const { locale, username } = await params;
   initRouteLocale(locale);
   const profile = await getProfile(username);
   if (!profile) notFound();
+  const raw = await searchParams;
+  const tab = TABS.find((x) => x === firstParam(raw.tab)) ?? "diary";
+  const page = pageParam(raw.page);
 
   const t = await getTranslations();
   const format = await getFormatter();
+  const path = `/u/${profile.username}`;
+  const tabLabels: Record<Tab, string> = {
+    diary: t("profile.tabs.diary"),
+    likes: t("profile.tabs.likes"),
+    "to-listen": t("profile.tabs.toListen"),
+    reviews: t("profile.tabs.reviews"),
+    lists: t("profile.tabs.lists"),
+    stats: t("profile.tabs.stats"),
+  };
 
   return (
     <div className="space-y-16">
@@ -77,18 +237,29 @@ export default async function ProfilePage({ params }: Props) {
       </header>
 
       <section aria-labelledby="shelf">
-        <SectionHeading id="shelf">{t("profile.shelfTitle")}</SectionHeading>
-        <VinylShelf
-          items={profile.shelf}
-          emptyMessage={t("profile.shelfEmpty", { name: profile.displayName })}
-          className="pt-4"
-        />
+        <SectionHeading id="shelf" className="mb-2">
+          {t("profile.shelfTitle")}
+        </SectionHeading>
+        <p className="font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">
+          {profile.isOwner
+            ? t("shelf.subtitleOwn")
+            : t("shelf.subtitle", { name: profile.displayName })}
+        </p>
+        {profile.isOwner ? (
+          <ShelfEditor shelf={profile.shelf} />
+        ) : (
+          <VinylShelf
+            items={profile.shelf}
+            emptyMessage={t("profile.shelfEmpty", { name: profile.displayName })}
+            className="pt-4"
+          />
+        )}
       </section>
 
       {profile.recent.length > 0 && (
         <section aria-labelledby="recent">
           <SectionHeading id="recent">{t("profile.recentTitle")}</SectionHeading>
-          <ul className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
+          <ul className={gridClasses}>
             {profile.recent.map((entry) => (
               <li key={entry.id}>
                 <ReleaseTile release={entry.release} />
@@ -98,95 +269,23 @@ export default async function ProfilePage({ params }: Props) {
         </section>
       )}
 
-      <Tabs
-        label={t("profile.tabsLabel")}
-        items={[
-          {
-            id: "diary",
-            label: t("profile.tabs.diary"),
-            content: profile.diaryHidden ? (
-              <EmptyState>{t("profile.diaryPrivate", { name: profile.displayName })}</EmptyState>
-            ) : profile.diary.length > 0 ? (
-              <div className="space-y-6">
-                <DiaryList entries={profile.diary.slice(0, DIARY_PREVIEW_SIZE)} />
-                {profile.diary.length > DIARY_PREVIEW_SIZE && (
-                  <Link
-                    href={`/u/${profile.username}/diary`}
-                    className="inline-block text-sm text-link underline-offset-2 hover:underline"
-                  >
-                    {t("profile.diaryAll")}
-                  </Link>
-                )}
-              </div>
-            ) : (
-              <EmptyState>{t("profile.diaryEmpty")}</EmptyState>
-            ),
-          },
-          {
-            id: "to-listen",
-            label: t("profile.tabs.toListen"),
-            content: profile.diaryHidden ? (
-              <EmptyState>{t("profile.diaryPrivate", { name: profile.displayName })}</EmptyState>
-            ) : profile.toListen.length > 0 ? (
-              <ul className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
-                {profile.toListen.map((release) => (
-                  <li key={release.id}>
-                    <ReleaseTile release={release} />
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <EmptyState>{t("profile.toListenEmpty")}</EmptyState>
-            ),
-          },
-          {
-            id: "reviews",
-            label: t("profile.tabs.reviews"),
-            content:
-              profile.reviews.length > 0 ? (
-                <ul className="space-y-4">
-                  {profile.reviews.map((review) => (
-                    <li key={review.id}>
-                      <ReviewCard review={review} />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <EmptyState>{t("profile.reviewsEmpty")}</EmptyState>
-              ),
-          },
-          {
-            id: "lists",
-            label: t("profile.tabs.lists"),
-            content:
-              profile.lists.length > 0 ? (
-                <ul className="grid gap-4 sm:grid-cols-2">
-                  {profile.lists.map((list) => (
-                    <li key={list.id}>
-                      <ListCard list={list} />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <EmptyState>{t("profile.listsEmpty")}</EmptyState>
-              ),
-          },
-          {
-            id: "stats",
-            label: t("profile.tabs.stats"),
-            content: profile.statsHidden ? (
-              <EmptyState>{t("profile.statsPrivate", { name: profile.displayName })}</EmptyState>
-            ) : profile.stats.listenedTotal.album +
-                profile.stats.listenedTotal.ep +
-                profile.stats.listenedTotal.single >
-              0 ? (
-              <StatsPanel stats={profile.stats} />
-            ) : (
-              <EmptyState>{t("stats.empty")}</EmptyState>
-            ),
-          },
-        ]}
-      />
+      <section aria-labelledby="profile-sections" id="sections">
+        <h2 id="profile-sections" className="sr-only">
+          {t("profile.tabsLabel")}
+        </h2>
+        <LinkTabs
+          label={t("profile.tabsLabel")}
+          current={tab}
+          tabs={TABS.map((id) => ({
+            id,
+            label: tabLabels[id],
+            href: hrefWith(path, { tab: id === "diary" ? null : id }),
+          }))}
+        />
+        <div className="pt-5">
+          <TabContent profile={profile} tab={tab} page={page} />
+        </div>
+      </section>
     </div>
   );
 }

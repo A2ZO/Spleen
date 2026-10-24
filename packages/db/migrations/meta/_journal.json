@@ -36,6 +36,27 @@
       "when": 1792674209443,
       "tag": "0004_listening",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1792760968314,
+      "tag": "0005_profile_likes",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792760975273,
+      "tag": "0006_backfill_liked_at",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792791893369,
+      "tag": "0007_listening_version",
+      "breakpoints": true
     }
   ]
 }
