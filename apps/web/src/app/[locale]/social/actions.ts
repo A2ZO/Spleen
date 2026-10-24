@@ -1,0 +1,94 @@
+"use server";
+
+import type { ApiErrorCode, CommentView } from "@spleen/api";
+import {
+  commentCreateSchema,
+  commentUpdateSchema,
+  likeSetSchema,
+  memberSchema,
+  reportCreateSchema,
+} from "@spleen/validators";
+
+import { errorCode } from "@/lib/api-errors";
+import { getApi } from "@/server/api";
+
+/* Social Server Actions: validate the input shape and call `packages/api`. */
+
+export interface SocialResult<T = undefined> {
+  ok?: boolean;
+  data?: T;
+  error?: ApiErrorCode | "unknown";
+}
+
+type Api = Awaited<ReturnType<typeof getApi>>;
+
+async function run<T>(write: (api: Api) => Promise<T>): Promise<SocialResult<T>> {
+  try {
+    return { ok: true, data: await write(await getApi()) };
+  } catch (error) {
+    return { error: errorCode(error) };
+  }
+}
+
+export async function setFollowAction(username: string, follow: boolean): Promise<SocialResult> {
+  const parsed = memberSchema.safeParse({ username });
+  if (!parsed.success) return { error: "unknown" };
+  return run(async (api) => {
+    await (follow ? api.social.follow(parsed.data) : api.social.unfollow(parsed.data));
+    return undefined;
+  });
+}
+
+export async function setBlockAction(username: string, blocked: boolean): Promise<SocialResult> {
+  const parsed = memberSchema.safeParse({ username });
+  if (!parsed.success) return { error: "unknown" };
+  return run(async (api) => {
+    await (blocked ? api.block.add(parsed.data) : api.block.remove(parsed.data));
+    return undefined;
+  });
+}
+
+export async function setLikeAction(
+  input: unknown,
+): Promise<SocialResult<{ liked: boolean; likeCount: number }>> {
+  const parsed = likeSetSchema.safeParse(input);
+  if (!parsed.success) return { error: "unknown" };
+  return run((api) => api.like.set(parsed.data));
+}
+
+export async function createCommentAction(input: unknown): Promise<SocialResult<CommentView>> {
+  const parsed = commentCreateSchema.safeParse(input);
+  if (!parsed.success) return { error: "unknown" };
+  return run((api) => api.comment.create(parsed.data));
+}
+
+export async function updateCommentAction(input: unknown): Promise<SocialResult<CommentView>> {
+  const parsed = commentUpdateSchema.safeParse(input);
+  if (!parsed.success) return { error: "unknown" };
+  return run((api) => api.comment.update(parsed.data));
+}
+
+export async function deleteCommentAction(id: string): Promise<SocialResult> {
+  const parsed = commentUpdateSchema.shape.id.safeParse(id);
+  if (!parsed.success) return { error: "unknown" };
+  return run(async (api) => {
+    await api.comment.delete({ id: parsed.data });
+    return undefined;
+  });
+}
+
+export async function reportAction(input: unknown): Promise<SocialResult> {
+  const parsed = reportCreateSchema.safeParse(input);
+  if (!parsed.success) return { error: "unknown" };
+  return run(async (api) => {
+    await api.report.create(parsed.data);
+    return undefined;
+  });
+}
+
+export async function markAllReadAction(): Promise<SocialResult> {
+  return run(async (api) => {
+    await api.notification.markAllRead();
+    return undefined;
+  });
+}

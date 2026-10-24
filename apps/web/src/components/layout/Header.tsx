@@ -1,6 +1,7 @@
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { buttonClasses } from "@/components/ui/Button";
+import { BellIcon } from "@/components/ui/icons";
 import { Link } from "@/i18n/navigation";
 import { getApi } from "@/server/api";
 
@@ -13,8 +14,10 @@ import { UserMenu } from "./UserMenu";
 export async function Header() {
   const t = await getTranslations("nav");
   const locale = await getLocale();
-  const me = await (await getApi()).account.me();
+  const api = await getApi();
+  const me = await api.account.me();
   const profile = me?.profile;
+  const unread = profile ? await api.notification.unreadCount() : 0;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-bg/85 backdrop-blur-md">
@@ -47,6 +50,26 @@ export async function Header() {
         <div className="flex items-center gap-1 sm:gap-2">
           <LocaleSwitcher />
           <ThemeToggle />
+          {profile && (
+            <Link
+              href="/notifications"
+              className="relative rounded-md p-2 text-fg-muted hover:text-fg"
+            >
+              <BellIcon className="size-5" />
+              <span className="sr-only">
+                {t("notifications")}
+                {unread > 0 && ` (${t("unread", { count: unread })})`}
+              </span>
+              {unread > 0 && (
+                <span
+                  aria-hidden="true"
+                  className="absolute -top-0.5 -right-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-accent px-1 font-mono text-[0.65rem] leading-none text-accent-fg"
+                >
+                  {unread > 9 ? "9+" : unread}
+                </span>
+              )}
+            </Link>
+          )}
           {me ? (
             <UserMenu
               locale={locale}

@@ -41,8 +41,11 @@ export function ReviewCard({
       <div className="min-w-0 flex-1">
         {showRelease && (
           <h3 className="font-serif text-lg leading-tight">
-            <Link href={`/album/${review.release.slug}`} className="hover:text-star">
-              {review.release.title}
+            <Link
+              href={review.track ? `/track/${review.track.slug}` : `/album/${review.release.slug}`}
+              className="hover:text-star"
+            >
+              {review.track?.title ?? review.release.title}
             </Link>{" "}
             <span className="font-sans text-sm text-fg-muted">
               {review.release.artists.map((a) => a.name).join(", ")}
@@ -57,6 +60,7 @@ export function ReviewCard({
             <Avatar
               name={review.author.displayName}
               seed={review.author.username}
+              src={review.author.avatarUrl}
               className="size-6 text-xs"
             />
             <span>{t("review.byline", { name: review.author.displayName })}</span>
@@ -78,13 +82,26 @@ export function ReviewCard({
         <p lang={review.lang} className="mt-3 leading-relaxed text-pretty">
           {review.body}
         </p>
-        <p className="mt-3 flex gap-4 text-xs text-fg-muted">
-          <span className="flex items-center gap-1">
-            <HeartIcon /> {t("review.likes", { count: review.likeCount })}
-          </span>
-          <span className="flex items-center gap-1">
-            <CommentIcon /> {t("review.comments", { count: review.commentCount })}
-          </span>
+        <p className="mt-3 flex flex-wrap gap-4 text-xs text-fg-muted">
+          <Link
+            href={`/review/${review.id}`}
+            className="flex items-center gap-4 rounded-sm hover:text-fg"
+          >
+            <span className="flex items-center gap-1">
+              <HeartIcon
+                filled={review.viewerLiked}
+                className={review.viewerLiked ? "text-star" : undefined}
+              />{" "}
+              {t("review.likes", { count: review.likeCount })}
+            </span>
+            <span className="flex items-center gap-1">
+              <CommentIcon /> {t("review.comments", { count: review.commentCount })}
+            </span>
+            <span className="text-link">
+              {t("review.open")}
+              <span className="sr-only"> ({review.release.title})</span>
+            </span>
+          </Link>
           {editable && (
             <Link
               href={`/review/${review.id}/edit`}

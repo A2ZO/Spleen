@@ -16,7 +16,9 @@
     "signIn": "Se connecter",
     "accountMenu": "Mon compte",
     "settings": "Réglages",
-    "signOut": "Se déconnecter"
+    "signOut": "Se déconnecter",
+    "notifications": "Notifications",
+    "unread": "{count, plural, one {# non lue} other {# non lues}}"
   },
   "theme": {
     "toggle": "Changer de thème",
@@ -57,14 +59,9 @@
     "kicker": "Il est tard, la ville dort",
     "title": "Qu'as-tu écouté ce soir ?",
     "subtitle": "Note tes disques, tiens ton journal d'écoute, range tes albums préférés sur ton étagère. Doucement.",
-    "ctaShelf": "Voir une étagère",
-    "ctaAlbum": "Ouvrir un album",
-    "trendingTitle": "Tendances de la semaine",
-    "trendingFr": "Francophone",
-    "trendingEn": "Anglophone",
-    "trendingTabs": "Langue des tendances",
-    "recentTitle": "Sorties récentes",
-    "reviewsTitle": "Critiques populaires"
+    "ctaJoin": "Ouvrir mon carnet",
+    "ctaWelcome": "Choisir mon pseudo",
+    "ctaSearch": "Chercher un disque"
   },
   "album": {
     "by": "par",
@@ -111,7 +108,10 @@
     "likes": "{count, plural, =0 {aucun j'aime} one {# j'aime} other {# j'aime}}",
     "comments": "{count, plural, =0 {aucun commentaire} one {# commentaire} other {# commentaires}}",
     "noRating": "Sans note",
-    "edit": "Modifier"
+    "edit": "Modifier",
+    "open": "Lire et commenter",
+    "pageTitle": "Critique de {name} : {title}",
+    "ratingHidden": "Note masquée (écoute à l'aveugle)"
   },
   "list": {
     "ranked": "Classée",
@@ -265,7 +265,10 @@
     "deleteButton": "Supprimer définitivement",
     "deleting": "Suppression…",
     "timeZoneLabel": "Fuseau horaire",
-    "timeZoneHint": "Sert à dater tes écoutes « aujourd'hui »."
+    "timeZoneHint": "Sert à dater tes écoutes « aujourd'hui ».",
+    "blocksTitle": "Membres bloqués",
+    "blocksBody": "Les membres que tu as bloqués ne peuvent plus te suivre, aimer ni commenter tes critiques.",
+    "blocksLink": "Gérer mes blocages"
   },
   "errors": {
     "UNAUTHENTICATED": "Connecte-toi pour continuer.",
@@ -460,5 +463,119 @@
     "deleteConfirm": "Supprimer pour de bon ?",
     "deleteYes": "Oui, supprimer",
     "deleteNo": "Non, la garder"
+  },
+  "social": {
+    "follow": "Suivre",
+    "unfollow": "Ne plus suivre",
+    "you": "C'est toi",
+    "like": "J'aime",
+    "memberMenu": "Plus d'actions pour {name}",
+    "block": "Bloquer",
+    "unblock": "Débloquer",
+    "blockTitle": "Bloquer {name} ?",
+    "blockBody": "Vous ne vous suivrez plus. Vous ne pourrez plus aimer ni commenter vos critiques respectives, et vous disparaîtrez de vos fils et de vos notifications. Rien ne sera signalé à {name}.",
+    "unblockTitle": "Débloquer {name} ?",
+    "unblockBody": "Vous pourrez de nouveau vous suivre et échanger. Les abonnements d'avant ne reviennent pas.",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "reportTitle": {
+      "member": "Signaler ce profil",
+      "review": "Signaler cette critique",
+      "comment": "Signaler ce commentaire"
+    },
+    "reportReason": "Pourquoi ?",
+    "reasons": {
+      "spam": "Spam ou publicité",
+      "harassment": "Harcèlement",
+      "hate": "Propos haineux",
+      "spoiler": "Divulgâche sans prévenir",
+      "inappropriate": "Contenu inapproprié",
+      "other": "Autre chose"
+    },
+    "reportDetails": "Quelques mots de plus (facultatif)",
+    "reportSend": "Envoyer le signalement",
+    "reportThanks": "Merci. La modération va y jeter un œil.",
+    "followersTitle": "Abonnés de {name}",
+    "followingTitle": "Abonnements de {name}",
+    "followersTab": "{count, plural, =0 {Abonnés} one {# abonné} other {# abonnés}}",
+    "followingTab": "{count, plural, =0 {Abonnements} one {# abonnement} other {# abonnements}}",
+    "followTabsLabel": "Abonnés et abonnements",
+    "followersEmpty": "Personne ne suit encore {name}.",
+    "followingEmpty": "{name} ne suit encore personne.",
+    "backToProfile": "Retour au profil de {name}",
+    "pagingLabel": "Pages de la liste",
+    "more": "Suivants",
+    "first": "Revenir au début"
+  },
+  "feed": {
+    "title": "Ton fil",
+    "tabsLabel": "Fil d'actualité",
+    "friends": "Amis",
+    "popular": "Populaire",
+    "popularTitle": "Critiques populaires de la semaine",
+    "popularHint": "Les critiques les plus aimées et commentées des 7 derniers jours, en {lang}.",
+    "popularSwitch": "Voir celles en {lang}",
+    "langFr": "français",
+    "langEn": "anglais",
+    "popularEmpty": "Pas encore de critique populaire cette semaine. Écris la première ?",
+    "listened": "a écouté",
+    "relistened": "a réécouté",
+    "hearted": "a eu un coup de cœur pour",
+    "rated": "a noté",
+    "relisten": "Réécoute",
+    "emptyTitle": "Ton fil est encore silencieux.",
+    "emptyBody": "Suis quelques membres : leurs écoutes, critiques et coups de cœur viendront s'installer ici, du plus récent au plus ancien.",
+    "suggestionsTitle": "Des oreilles à découvrir",
+    "pagingLabel": "Pages du fil",
+    "older": "Plus ancien",
+    "newest": "Revenir aux plus récents",
+    "listenedOn": "écouté le {date}"
+  },
+  "comments": {
+    "title": "Commentaires",
+    "empty": "Pas encore de commentaire. Lance la conversation ?",
+    "label": "Ton commentaire",
+    "editLabel": "Modifier ton commentaire",
+    "remaining": "{count, plural, one {# caractère restant} other {# caractères restants}}",
+    "send": "Publier",
+    "sending": "Publication…",
+    "edit": "Modifier",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "deleteConfirm": "Supprimer ce commentaire ?",
+    "deleteYes": "Oui, supprimer",
+    "deleteNo": "Non",
+    "edited": "modifié",
+    "signIn": "Connecte-toi pour commenter.",
+    "unavailable": "Les commentaires ne sont pas disponibles ici.",
+    "pagingLabel": "Pages des commentaires",
+    "more": "Commentaires suivants",
+    "first": "Revenir aux premiers"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "unread": "{count, plural, =0 {Tout est lu} one {# non lue} other {# non lues}}",
+    "unreadLabel": "Non lue :",
+    "markAllRead": "Tout marquer comme lu",
+    "someone": "Quelqu'un",
+    "empty": "Rien de neuf pour l'instant. Le calme avant la prochaine écoute.",
+    "follow": "{others, plural, =0 {{name} te suit désormais} one {{name} et une autre personne te suivent désormais} other {{name} et # autres te suivent désormais}}",
+    "like": "{others, plural, =0 {{name} a aimé ta critique de « {title} »} one {{name} et une autre personne ont aimé ta critique de « {title} »} other {{name} et # autres ont aimé ta critique de « {title} »}}",
+    "comment": "{others, plural, =0 {{name} a commenté ta critique de « {title} »} one {{name} et une autre personne ont commenté ta critique de « {title} »} other {{name} et # autres ont commenté ta critique de « {title} »}}",
+    "likeList": "{others, plural, =0 {{name} a aimé ta liste « {title} »} one {{name} et une autre personne ont aimé ta liste « {title} »} other {{name} et # autres ont aimé ta liste « {title} »}}",
+    "commentList": "{others, plural, =0 {{name} a commenté ta liste « {title} »} one {{name} et une autre personne ont commenté ta liste « {title} »} other {{name} et # autres ont commenté ta liste « {title} »}}",
+    "excerpt": "« {text} »",
+    "pagingLabel": "Pages des notifications",
+    "older": "Plus anciennes",
+    "newest": "Revenir aux plus récentes"
+  },
+  "blocks": {
+    "title": "Membres bloqués",
+    "intro": "Ils ne peuvent ni te suivre, ni aimer, ni commenter tes critiques, et vous n'apparaissez plus dans vos fils et notifications. Rien ne leur est signalé.",
+    "empty": "Tu n'as bloqué personne.",
+    "since": "bloqué le {date}",
+    "unblock": "Débloquer",
+    "back": "Retour aux réglages"
   }
 }

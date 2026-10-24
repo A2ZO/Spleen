@@ -42,8 +42,11 @@ test("profile page shows the shelf", async ({ page }) => {
 test("profile tabs switch to the stats panel", async ({ page }) => {
   await page.goto("/fr/u/nuitblanche");
   const sections = page.getByRole("region", { name: "Sections du profil" });
-  await sections.getByRole("link", { name: "Stats" }).click();
-  await expect(page).toHaveURL(/\?tab=stats$/);
+  // Under load the click can land before hydration: retry it.
+  await expect(async () => {
+    await sections.getByRole("link", { name: "Stats" }).click();
+    await expect(page).toHaveURL(/\?tab=stats$/, { timeout: 2_000 });
+  }).toPass();
   await expect(sections).toContainText("Répartition des notes");
   await expect(sections).toContainText("Top artistes 2026");
   await expect(sections).toContainText("En écoutes, réécoutes comprises.");
