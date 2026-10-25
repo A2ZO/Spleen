@@ -37,7 +37,7 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
 pnpm install
 pnpm dev                 # http://localhost:3000 (redirects to /fr or /en)
 pnpm lint; pnpm typecheck; pnpm format         # format = Prettier write (CI: format:check)
-pnpm test                # Vitest in every package (always in-memory PGlite)
+pnpm test                # Vitest in every package (in-memory PGlite)
 pnpm --filter @spleen/design-tokens generate   # after editing tokens
 pnpm db:generate         # new SQL migration after editing packages/db/src/schema
 pnpm db:migrate          # apply migrations (direct connection on Neon)
@@ -47,8 +47,15 @@ pnpm db:seed:catalog     # import packages/api/scripts/catalog-seed.json from Mu
 $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # Playwright with the installed Chrome
 ```
 
-CI (`.github/workflows/ci.yml`): install --frozen-lockfile, format:check, lint, typecheck,
-test. No secrets in CI: tests never touch Neon.
+CI (`.github/workflows/ci.yml`): job `check` = install --frozen-lockfile, format:check, lint,
+typecheck, test (PGlite). Job `api-postgres` = the API tests again on a `postgres:18` service
+container (Neon's major version, `C.UTF-8`) via postgres.js like the app: `TEST_DATABASE_URL`
+makes `createTestDb()` (`@spleen/db/testing`) create one throwaway database per test file.
+Bump the image when Neon moves to a new major. No secrets in CI: tests never touch Neon.
+
+e2e: accounts are `e2e-<id>@example.test`; `apps/web/e2e/cleanup.ts` (global setup and
+teardown) deletes them with their data, even after a failed or interrupted run (Postgres
+only), and their usernames are never reserved. Keep each e2e test short and independent.
 
 ## Environment variables
 
@@ -179,7 +186,8 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 - New migration → `pnpm db:migrate` on the running dev server's database, or its page 500s.
 - Burst writes arrive out of order: group clicks, send an `order` (`docs/ecoute.md`).
 - Raw `sql` params: postgres.js rejects a JS `Date` (PGlite accepts it): `toISOString()` +
-  `::timestamptz`. Single-table drizzle selects drop qualifiers: subqueries spell `"t"."col"`.
+  `::timestamptz` (job `api-postgres` catches it; API tests use `createTestDb()`).
+- Single-table drizzle selects drop qualifiers: subqueries spell `"t"."col"`.
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
 

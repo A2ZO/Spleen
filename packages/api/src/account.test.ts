@@ -2,7 +2,8 @@ import { mkdtemp, readdir, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { createDb, eq, schema, seed, type DbHandle } from "@spleen/db";
+import { eq, schema, seed, type DbHandle } from "@spleen/db";
+import { createTestDb } from "@spleen/db/testing";
 import { createLocalStorage } from "@spleen/infra/storage";
 import { TRPCError } from "@trpc/server";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -17,8 +18,7 @@ const day0 = new Date("2026-10-21T12:00:00Z");
 const days = (n: number) => new Date(day0.getTime() + n * 24 * 60 * 60 * 1000);
 
 beforeAll(async () => {
-  handle = createDb("memory://");
-  await handle.migrate();
+  handle = await createTestDb();
   await seed(handle.db);
   uploadsDir = await mkdtemp(path.join(tmpdir(), "spleen-api-"));
 }, 60_000);
@@ -302,6 +302,25 @@ describe("account.delete", () => {
     expect(await handle.db.$count(schema.entries, eq(schema.entries.userId, user.id))).toBe(0);
     expect(await readdir(path.join(uploadsDir, "avatars", user.id))).toHaveLength(0);
     expect(await api(null).profile.byUsername({ username: "leaving" })).toBeNull();
+  });
+
+  it("frees the username of an e2e test account at once", async () => {
+    const tester = await newUser("e2e-mvx1abcd@example.test");
+    await api(tester).account.onboard({
+      username: "e2e_mvx1abcd",
+      displayName: "Alice Nocturne",
+      ageConfirmed: true,
+      locale: "fr",
+      theme: "dark",
+    });
+    await api(tester).account.delete({ confirmUsername: "e2e_mvx1abcd" });
+    expect(
+      await handle.db.$count(
+        schema.usernameHistory,
+        eq(schema.usernameHistory.username, "e2e_mvx1abcd"),
+      ),
+    ).toBe(0);
+    expect(await statusOf(await newUser("next@example.test"), "e2e_mvx1abcd")).toBe("available");
   });
 
   it("keeps the deleted member's usernames reserved for 30 days, anonymously", async () => {

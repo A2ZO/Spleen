@@ -5,6 +5,7 @@ import { generateDrizzleJson, generateMigration } from "drizzle-kit/api";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { createDb, migrationDatabaseUrl, type DbHandle } from "./client";
+import { deleteE2eAccounts, isE2eEmail } from "./e2e";
 import * as s from "./schema";
 import { fixtureId } from "./seed/fixtures";
 import { seed } from "./seed/seed";
@@ -200,6 +201,39 @@ describe("search", () => {
   it("tolerates typos", async () => {
     expect(await closest("nocturne pour pluie")).toBe("Nocturnes pour pluie fine");
     expect(await closest("smoke ring 1am")).toBe("Smoke Rings at 1 A.M.");
+  });
+});
+
+describe("e2e accounts", () => {
+  it("are recognised by their exact email shape only", () => {
+    expect(isE2eEmail("e2e-mvnyb1x2d@example.test")).toBe(true);
+    expect(isE2eEmail("nuitblanche@example.test")).toBe(false);
+    expect(isE2eEmail("e2e-someone@gmail.com")).toBe(false);
+  });
+
+  it("are deleted with their data and username reservations, nobody else", async () => {
+    const [e2e] = await handle.db
+      .insert(s.user)
+      .values({ name: "", email: "e2e-abc1d@example.test", emailVerified: true })
+      .returning();
+    await handle.db.insert(s.profiles).values({
+      userId: e2e!.id,
+      username: "e2e_abc1d",
+      displayName: "Alice Nocturne",
+      ageConfirmedAt: new Date(),
+    });
+    await handle.db.insert(s.follows).values({ followerId: e2e!.id, followeeId: vince });
+    await handle.db.insert(s.usernameHistory).values({ userId: null, username: "e2e_old1m" });
+    const [users, profiles] = [await count(s.user), await count(s.profiles)];
+
+    expect(await deleteE2eAccounts(handle.db)).toBe(1);
+    expect(await count(s.user)).toBe(users - 1);
+    expect(await count(s.profiles)).toBe(profiles - 1);
+    expect(await handle.db.$count(s.follows, sql`${s.follows.followerId} = ${e2e!.id}`)).toBe(0);
+    expect(
+      await handle.db.$count(s.usernameHistory, sql`${s.usernameHistory.username} like 'e2e_%'`),
+    ).toBe(0);
+    expect(await handle.db.$count(s.user, sql`${s.user.id} = ${camille}`)).toBe(1);
   });
 });
 

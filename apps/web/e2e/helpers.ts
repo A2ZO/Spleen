@@ -28,7 +28,9 @@ export async function magicLinkFor(email: string): Promise<string> {
 
 /** Signs up a new member (French UI) and returns their @username, on their profile page. */
 export async function signUp(page: Page, testInfo: TestInfo, displayName: string) {
-  const id = `${Date.now().toString(36)}${testInfo.project.name.slice(0, 1)}`;
+  // Random part: parallel tests of one project may sign up in the same millisecond.
+  const random = Math.random().toString(36).slice(2, 5);
+  const id = `${Date.now().toString(36)}${random}${testInfo.project.name.slice(0, 1)}`;
   const email = `e2e-${id}@example.test`;
   const username = `e2e_${id}`;
 

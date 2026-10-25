@@ -7,6 +7,7 @@ export {
   type DbHandle,
   type Schema,
 } from "./client";
+export { deleteE2eAccounts, isE2eEmail } from "./e2e";
 export { loadRootEnv, rootEnvFile } from "./env";
 export {
   bumpStatsVersion,
