@@ -81,7 +81,10 @@ async function toCommentViews(
   });
 }
 
-/** Comments, oldest first; those of members blocked with the viewer are left out. */
+/**
+ * Comments, oldest first; those of members blocked with the viewer are left out, except for
+ * the subject's owner, who must still see (and may delete) them.
+ */
 export async function listComments(
   db: Db,
   input: SocialSubjectInput,
@@ -96,7 +99,9 @@ export async function listComments(
     .where(
       and(
         liveCommentsOf(subject.column),
-        viewerId ? notBlockedWith(viewerId, comments.userId) : undefined,
+        viewerId && viewerId !== subject.ownerId
+          ? notBlockedWith(viewerId, comments.userId)
+          : undefined,
         after
           ? sql`(${comments.createdAt}, ${comments.id}) > (${cursorTime(after[0]!)}::timestamptz, ${cursorUuid(after[1]!)})`
           : undefined,

@@ -40,7 +40,9 @@ Côté web, `?after=<curseur>` et un lien « Revenir aux plus récents ».
 
 - **Amis** : écoutes (avec leur critique), coups de cœur et notes rapides (écoutes sans
   date), et critiques écrites hors écoute, des membres suivis, triés par moment
-  d'activité (`created_at`). La date d'écoute est affichée à part.
+  d'activité (`created_at`, ou celui de la critique quand elle est écrite plus tard). La
+  date d'écoute est affichée à part. Une critique dont l'écoute n'apparaît pas (journal
+  privé, écoute sans date dont la note et le cœur ont été retirés) apparaît seule.
 - **Journal privé** : aucune écoute d'un journal privé n'apparaît. Ses critiques restent
   publiques, comme sur le profil.
 - **Populaire** : critiques dans une langue (celle de l'interface par défaut,
@@ -71,7 +73,9 @@ compte les groupes non lus. Pas de temps réel : le compteur se met à jour au r
 
 Un blocage vaut dans les deux sens : désabonnement mutuel, notifications entre eux
 effacées, plus de suivi, like ni commentaire, chacun disparaît du fil, du Populaire, des
-notifications, des commentaires et des suggestions de l'autre. Le profil reste visible,
+notifications, des commentaires et des suggestions de l'autre (les compteurs de
+commentaires aussi). Exception : sur ses propres critiques, on voit toujours les
+commentaires d'un membre bloqué, pour pouvoir les supprimer. Le profil reste visible,
 sans bouton d'interaction ; l'API répond `ACTION_UNAVAILABLE`. La personne bloquée n'est
 jamais prévenue (son propre `viewerBlocked` reste faux).
 

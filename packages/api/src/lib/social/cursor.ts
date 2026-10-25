@@ -49,3 +49,9 @@ export function cursorTime(value: string): string {
   if (!PG_TIMESTAMPTZ.test(value)) fail("BAD_REQUEST", "INVALID_CURSOR");
   return value;
 }
+
+/** An integer part of a cursor (a score). */
+export function cursorInt(value: string): number {
+  if (!/^-?\d{1,9}$/.test(value)) fail("BAD_REQUEST", "INVALID_CURSOR");
+  return Number(value);
+}

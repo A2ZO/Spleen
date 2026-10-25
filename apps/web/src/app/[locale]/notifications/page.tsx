@@ -8,6 +8,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { Link, redirect } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
+import { loadCursorPage } from "@/lib/api-errors";
 import { firstParam, hrefWith, type SearchParams } from "@/lib/search-params";
 import { getApi } from "@/server/api";
 
@@ -35,9 +36,10 @@ export default async function NotificationsPage({ params, searchParams }: Props)
   if (!me) return redirect({ href: "/sign-in", locale });
   if (!me.profile) return redirect({ href: "/welcome", locale });
   const parsedCursor = cursorSchema.safeParse(firstParam((await searchParams).after));
-  const cursor = parsedCursor.success ? parsedCursor.data : undefined;
-  const [page, unread] = await Promise.all([
-    api.notification.list({ cursor }),
+  const [{ page, cursor }, unread] = await Promise.all([
+    loadCursorPage(parsedCursor.success ? parsedCursor.data : undefined, (c) =>
+      api.notification.list({ cursor: c }),
+    ),
     api.notification.unreadCount(),
   ]);
   const t = await getTranslations("notifications");

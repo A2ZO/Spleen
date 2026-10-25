@@ -7,6 +7,7 @@ import { cache } from "react";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { initRouteLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
+import { loadCursorPage } from "@/lib/api-errors";
 import { firstParam, hrefWith, type SearchParams } from "@/lib/search-params";
 import { getApi } from "@/server/api";
 
@@ -48,11 +49,12 @@ export async function FollowListPage({
   const profile = await getProfile(username);
   if (!profile) notFound();
   const parsedCursor = cursorSchema.safeParse(firstParam((await searchParams).after));
-  const cursor = parsedCursor.success ? parsedCursor.data : undefined;
   const api = await getApi();
-  const input = { username: profile.username, cursor };
-  const [page, me] = await Promise.all([
-    direction === "followers" ? api.social.followers(input) : api.social.following(input),
+  const [{ page, cursor }, me] = await Promise.all([
+    loadCursorPage(parsedCursor.success ? parsedCursor.data : undefined, (c) => {
+      const input = { username: profile.username, cursor: c };
+      return direction === "followers" ? api.social.followers(input) : api.social.following(input);
+    }),
     api.account.me(),
   ]);
   if (!page) notFound();

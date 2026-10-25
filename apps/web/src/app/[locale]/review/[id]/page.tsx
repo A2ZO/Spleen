@@ -13,6 +13,7 @@ import { CommentIcon, HeartIcon } from "@/components/ui/icons";
 import { Stars } from "@/components/ui/Stars";
 import { initRouteLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
+import { loadCursorPage } from "@/lib/api-errors";
 import { firstParam, hrefWith, type SearchParams } from "@/lib/search-params";
 import { getApi } from "@/server/api";
 
@@ -50,12 +51,14 @@ export default async function ReviewPage({ params, searchParams }: Props) {
   if (!detail) notFound();
   const raw = await searchParams;
   const parsedCursor = cursorSchema.safeParse(firstParam(raw.after));
-  const cursor = parsedCursor.success ? parsedCursor.data : undefined;
 
   const api = await getApi();
   const me = await api.account.me();
   const subject = { kind: "review" as const, id };
-  const comments = await api.comment.list({ subject, cursor });
+  const { page: comments, cursor } = await loadCursorPage(
+    parsedCursor.success ? parsedCursor.data : undefined,
+    (c) => api.comment.list({ subject, cursor: c }),
+  );
   const t = await getTranslations();
   const format = await getFormatter();
   const { review } = detail;

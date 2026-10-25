@@ -10,6 +10,7 @@ import { LinkTabs } from "@/components/ui/LinkTabs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { initRouteLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
+import { loadCursorPage } from "@/lib/api-errors";
 import { firstParam, hrefWith, type SearchParams } from "@/lib/search-params";
 import { getApi } from "@/server/api";
 
@@ -50,10 +51,12 @@ async function FeedPaging({
   );
 }
 
-async function FriendsFeed({ cursor }: { cursor: string | null }) {
+async function FriendsFeed({ cursor: requested }: { cursor: string | null }) {
   const t = await getTranslations("feed");
   const api = await getApi();
-  const feed = await api.feed.friends({ cursor: cursor ?? undefined });
+  const { page: feed, cursor = null } = await loadCursorPage(requested ?? undefined, (c) =>
+    api.feed.friends({ cursor: c }),
+  );
   const now = new Date();
   if (feed.items.length === 0 && !cursor) {
     const suggestions = await api.feed.suggestions();
@@ -103,7 +106,7 @@ async function FriendsFeed({ cursor }: { cursor: string | null }) {
 
 async function PopularFeed({
   lang,
-  cursor,
+  cursor: requested,
   tabParam,
 }: {
   lang: AudienceLang;
@@ -112,7 +115,10 @@ async function PopularFeed({
 }) {
   const t = await getTranslations("feed");
   const locale = await getLocale();
-  const popular = await (await getApi()).feed.popular({ lang, cursor: cursor ?? undefined });
+  const api = await getApi();
+  const { page: popular, cursor = null } = await loadCursorPage(requested ?? undefined, (c) =>
+    api.feed.popular({ lang, cursor: c }),
+  );
   const other: AudienceLang = lang === "fr" ? "en" : "fr";
   const langLabel = (l: AudienceLang) => (l === "fr" ? t("langFr") : t("langEn"));
   const href = (l: AudienceLang, after: string | null = null) =>

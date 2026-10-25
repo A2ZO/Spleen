@@ -193,29 +193,39 @@ export async function getPublicProfile(
   if (!access) return null;
   const { row, userId } = access;
   const viewerId = viewer.id;
-  const [shelf, recent, followerCount, followingCount, viewerFollows, viewerBlocked, blocked] =
-    await Promise.all([
-      getShelf(db, userId),
-      access.diaryHidden
-        ? []
-        : loadDiaryEntries(db, eq(entries.userId, userId), {
-            order: "newest",
-            limit: RECENT_SIZE,
-          }),
-      db.$count(follows, eq(follows.followeeId, userId)),
-      db.$count(follows, eq(follows.followerId, userId)),
-      viewerId
-        ? db
-            .$count(follows, and(eq(follows.followerId, viewerId), eq(follows.followeeId, userId)))
-            .then((n) => n > 0)
-        : false,
-      viewerId
-        ? db
-            .$count(blocks, and(eq(blocks.blockerId, viewerId), eq(blocks.blockedId, userId)))
-            .then((n) => n > 0)
-        : false,
-      viewerId && !access.isOwner ? isBlockedBetween(db, viewerId, userId) : false,
-    ]);
+  const [
+    shelf,
+    recent,
+    followerCount,
+    followingCount,
+    viewerFollows,
+    viewerBlocked,
+    blocked,
+    viewerIsMember,
+  ] = await Promise.all([
+    getShelf(db, userId),
+    access.diaryHidden
+      ? []
+      : loadDiaryEntries(db, eq(entries.userId, userId), {
+          order: "newest",
+          limit: RECENT_SIZE,
+        }),
+    db.$count(follows, eq(follows.followeeId, userId)),
+    db.$count(follows, eq(follows.followerId, userId)),
+    viewerId
+      ? db
+          .$count(follows, and(eq(follows.followerId, viewerId), eq(follows.followeeId, userId)))
+          .then((n) => n > 0)
+      : false,
+    viewerId
+      ? db
+          .$count(blocks, and(eq(blocks.blockerId, viewerId), eq(blocks.blockedId, userId)))
+          .then((n) => n > 0)
+      : false,
+    viewerId && !access.isOwner ? isBlockedBetween(db, viewerId, userId) : false,
+    // A session without a profile (onboarding not finished) cannot follow anyone yet.
+    viewerId ? db.$count(profiles, eq(profiles.userId, viewerId)).then((n) => n > 0) : false,
+  ]);
   const shelfCards = await maskCards(
     db,
     viewer,
@@ -239,7 +249,7 @@ export async function getPublicProfile(
     statsHidden: access.statsHidden,
     viewerFollows,
     viewerBlocked,
-    canInteract: viewerId !== null && !access.isOwner && !blocked,
+    canInteract: viewerIsMember && !access.isOwner && !blocked,
   };
 }
 
@@ -357,7 +367,7 @@ export async function getReviewsPage(
         body: reviews.body,
         lang: reviews.lang,
         createdAt: reviews.createdAt,
-        ...reviewCountColumns,
+        ...reviewCountColumns(viewer.id),
       })
       .from(reviews)
       .where(where)

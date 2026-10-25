@@ -4,7 +4,7 @@ import type { AudienceLang } from "@spleen/validators";
 import type { CursorPage, FeedItem, MemberCard, ReleaseCard, ReviewCard } from "../../types";
 import { loadReleaseCards, loadTrackCards, toReleaseCard } from "../catalog/cards";
 import { blindReleaseItems, blindReviewCards, ratedIds } from "../listening/blind";
-import { cursorTime, cursorUuid, decodeCursor, encodeCursor, pageOf } from "./cursor";
+import { cursorInt, cursorTime, cursorUuid, decodeCursor, encodeCursor, pageOf } from "./cursor";
 import { memberCards, memberRefs, notBlockedWith } from "./relations";
 import { loadReviewCards, type SocialViewer } from "./reviews";
 
@@ -40,20 +40,25 @@ export async function friendsFeed(
 ): Promise<CursorPage<FeedItem>> {
   const after = cursor ? decodeCursor(cursor, 2) : null;
   const followed = sql`select ${follows.followeeId} from ${follows} where ${follows.followerId} = ${viewer.id} and ${notBlockedWith(viewer.id, follows.followeeId)}`;
+  // A listen moves up when its review is written later. A review whose listen is not shown
+  // (private diary, or an undated listen with no rating or heart left) stands on its own.
+  const shown = sql`(${entries.listenedOn} is not null or ${entries.liked} or ${entries.rating} is not null)`;
   const result = await db.execute(sql`
     select kind, id, at::text as at from (
-      select 'listen' as kind, ${entries.id} as id, ${entries.createdAt} as at
+      select 'listen' as kind, ${entries.id} as id,
+        greatest(${entries.createdAt}, (select max("r"."created_at") from "reviews" "r" where "r"."entry_id" = ${entries.id})) as at
       from ${entries}
       join ${profiles} on ${profiles.userId} = ${entries.userId}
       where ${entries.userId} in (${followed})
         and not ${profiles.diaryPrivate}
-        and (${entries.listenedOn} is not null or ${entries.liked} or ${entries.rating} is not null)
+        and ${shown}
       union all
       select 'review', ${reviews.id}, ${reviews.createdAt}
       from ${reviews}
       join ${profiles} on ${profiles.userId} = ${reviews.userId}
       where ${reviews.userId} in (${followed})
-        and (${reviews.entryId} is null or ${profiles.diaryPrivate})
+        and (${reviews.entryId} is null or ${profiles.diaryPrivate} or not exists (
+          select 1 from ${entries} where ${entries.id} = ${reviews.entryId} and ${shown}))
     ) items
     ${after ? sql`where (at, id) < (${cursorTime(after[0]!)}::timestamptz, ${cursorUuid(after[1]!)}::uuid)` : sql``}
     order by at desc, id desc
@@ -136,11 +141,13 @@ async function loadFeedItems(
     const release = entry.releaseId ? releaseCards.get(entry.releaseId) : track?.release;
     if (!release) return [];
     const trackHidden = ratedTracks !== null && entry.trackId && !ratedTracks.has(entry.trackId);
+    const review = reviewOfEntry.get(entry.id) ?? null;
+    const at = review && review.createdAt > entry.createdAt.toISOString() ? review.createdAt : null;
     return [
       {
         kind: "listen",
         id: entry.id,
-        at: entry.createdAt.toISOString(),
+        at: at ?? entry.createdAt.toISOString(),
         author,
         release,
         track: track ? { slug: track.slug, title: track.title } : null,
@@ -148,7 +155,7 @@ async function loadFeedItems(
         rating: trackHidden ? null : entry.rating,
         liked: entry.liked,
         relisten: entry.isRelisten,
-        review: reviewOfEntry.get(entry.id) ?? null,
+        review,
       },
     ];
   });
@@ -206,7 +213,7 @@ export async function popularFeed(
       group by ${reviews.id}, ${reviews.createdAt}
     )
     select id, score, created::text as at from scored
-    ${after ? sql`where (score, created, id) < (${Number(after[0])}::int, ${cursorTime(after[1]!)}::timestamptz, ${cursorUuid(after[2]!)}::uuid)` : sql``}
+    ${after ? sql`where (score, created, id) < (${cursorInt(after[0]!)}::int, ${cursorTime(after[1]!)}::timestamptz, ${cursorUuid(after[2]!)}::uuid)` : sql``}
     order by score desc, created desc, id desc
     limit ${FEED_PAGE_SIZE + 1}
   `);

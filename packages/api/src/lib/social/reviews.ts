@@ -5,19 +5,25 @@ import { fail } from "../../trpc";
 import type { ReviewCard, ReviewDetail } from "../../types";
 import { loadReleaseCards, loadTrackCards, toReleaseCard } from "../catalog/cards";
 import { blindReviewCards, type BlindViewer } from "../listening/blind";
-import { isBlockedBetween, memberRefs } from "./relations";
+import { isBlockedBetween, memberRefs, notBlockedWith } from "./relations";
 
 const { comments, likes, lists, profiles, reviews } = schema;
 
 /**
  * Like and (not deleted) comment counts of a review, as select columns. Written with table
  * names: drizzle drops the qualifiers on single-table selects, and a bare "id" would then
- * mean the subquery's own table.
+ * mean the subquery's own table. With a viewer, comments hidden from them (members blocked
+ * either way, unless the viewer owns the review) are not counted, as in `listComments`.
  */
-export const reviewCountColumns = {
-  likeCount: sql<number>`(select count(*)::int from "likes" where "likes"."review_id" = "reviews"."id")`,
-  commentCount: sql<number>`(select count(*)::int from "comments" where "comments"."review_id" = "reviews"."id" and "comments"."deleted_at" is null)`,
-};
+export function reviewCountColumns(viewerId: string | null) {
+  const visible = viewerId
+    ? sql`and ("reviews"."user_id" = ${viewerId} or ${notBlockedWith(viewerId, sql`"comments"."user_id"`)})`
+    : sql``;
+  return {
+    likeCount: sql<number>`(select count(*)::int from "likes" where "likes"."review_id" = "reviews"."id")`,
+    commentCount: sql<number>`(select count(*)::int from "comments" where "comments"."review_id" = "reviews"."id" and "comments"."deleted_at" is null ${visible})`,
+  };
+}
 
 /**
  * Review cards in the order of `ids`, for reviews of a release or of a track (shown with the
@@ -41,7 +47,7 @@ export async function loadReviewCards(
         body: reviews.body,
         lang: reviews.lang,
         createdAt: reviews.createdAt,
-        ...reviewCountColumns,
+        ...reviewCountColumns(viewerId),
       })
       .from(reviews)
       .where(inArray(reviews.id, unique)),

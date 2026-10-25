@@ -56,7 +56,7 @@ async function ratingDistribution(db: Db, releaseId: string): Promise<number[]> 
 }
 
 async function releaseReviews(db: Db, release: ReleaseCard): Promise<ReviewCard[]> {
-  const { likeCount, commentCount } = reviewCountColumns;
+  const { likeCount, commentCount } = reviewCountColumns(null);
   const rows = await db
     .select({
       id: reviews.id,

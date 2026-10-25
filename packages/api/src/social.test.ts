@@ -2,7 +2,8 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { createDb, eq, schema, seed, sql, type DbHandle } from "@spleen/db";
+import { and, eq, schema, seed, sql, type DbHandle } from "@spleen/db";
+import { createTestDb } from "@spleen/db/testing";
 import { fixtureId } from "@spleen/db/fixtures";
 import { createLocalStorage } from "@spleen/infra/storage";
 import { COMMENT_BODY_MAX } from "@spleen/validators";
@@ -27,8 +28,7 @@ const leRoiTrack = fixtureId(10_101);
 const release = (id: string) => ({ kind: "release" as const, id });
 
 beforeAll(async () => {
-  handle = createDb("memory://");
-  await handle.migrate();
+  handle = await createTestDb();
   await seed(handle.db, { now });
 }, 60_000);
 
@@ -158,6 +158,19 @@ describe("following", () => {
       await errorCode(() => api(null).social.followers({ username: m.username, cursor: "bm9wZQ" })),
     ).toBe("INVALID_CURSOR");
   });
+
+  it("offers no interaction to a session without a profile yet", async () => {
+    const target = await member();
+    const email = "noprofile@example.test";
+    const [row] = await handle.db
+      .insert(schema.user)
+      .values({ name: "", email, emailVerified: true })
+      .returning();
+    const profile = await api({ id: row!.id, email }).profile.byUsername({
+      username: target.username,
+    });
+    expect(profile).toMatchObject({ canInteract: false, viewerFollows: false });
+  });
 });
 
 describe("acting on oneself", () => {
@@ -240,6 +253,56 @@ describe("friends feed", () => {
     expect(first.items).toHaveLength(FEED_PAGE_SIZE);
     expect(new Set(ids).size).toBe(total);
     expect(second.nextCursor).toBeNull();
+  });
+
+  async function entryOf(m: Member, releaseId: string) {
+    const [row] = await handle.db
+      .select({ id: schema.entries.id })
+      .from(schema.entries)
+      .where(and(eq(schema.entries.userId, m.user.id), eq(schema.entries.releaseId, releaseId)));
+    return row!.id;
+  }
+
+  it("moves a listen up when its review is written later", async () => {
+    const [viewer, friend] = [await member(), await member()];
+    await viewer.call().social.follow({ username: friend.username });
+    await friend
+      .call(daysAgo(20))
+      .listening.entry.create(listen(release(nocturnes), "2026-10-01", 7));
+    await friend.call(daysAgo(1)).listening.entry.create(listen(release(leRoi), "2026-10-20"));
+    const old = await entryOf(friend, nocturnes);
+    await friend.call().review.create({
+      target: release(nocturnes),
+      body: "Enfin écrit.",
+      lang: "fr",
+      entryId: old,
+    });
+    const feed = await viewer.call().feed.friends({});
+    expect(feed.items).toHaveLength(2);
+    expect(feed.items[0]).toMatchObject({
+      kind: "listen",
+      id: old,
+      review: { body: "Enfin écrit." },
+    });
+  });
+
+  it("keeps a review whose undated listen lost its rating", async () => {
+    const [viewer, friend] = [await member(), await member()];
+    await viewer.call().social.follow({ username: friend.username });
+    await friend.call().listening.quickRate({ target: release(leRoi), rating: 6 });
+    const written = await friend.call(minutesLater(1)).review.create({
+      target: release(leRoi),
+      body: "Plus de note, mais un avis.",
+      lang: "fr",
+      entryId: await entryOf(friend, leRoi),
+    });
+    await friend
+      .call(minutesLater(2))
+      .listening.quickRate({ target: release(leRoi), rating: null });
+    // The undated listen survives (it holds the review) with no rating, heart or date.
+    expect(await entryOf(friend, leRoi)).toBeDefined();
+    const feed = await viewer.call().feed.friends({});
+    expect(feed.items).toEqual([expect.objectContaining({ kind: "review", id: written.id })]);
   });
 
   it("hides ratings of records the blind viewer has not rated", async () => {
@@ -335,6 +398,15 @@ describe("popular reviews", () => {
     expect(anonymous).toEqual(expect.arrayContaining([mine.id, theirs.id]));
   });
 
+  it("refuses a forged score in its cursor", async () => {
+    const forged = Buffer.from(JSON.stringify(["x", "2026-10-24 10:00:00+00", nocturnes])).toString(
+      "base64url",
+    );
+    expect(await errorCode(() => api(null).feed.popular({ lang: "fr", cursor: forged }))).toBe(
+      "INVALID_CURSOR",
+    );
+  });
+
   it("hides ratings for a blind viewer", async () => {
     const [viewer, author, fan] = [
       await member({ blindMode: true }),
@@ -350,6 +422,22 @@ describe("popular reviews", () => {
     expect(card?.rating).toBeNull();
     expect((await viewer.call().review.byId({ id: written.id }))?.review.rating).toBeNull();
     expect((await api(null).review.byId({ id: written.id }))?.review.rating).toBe(7);
+  });
+});
+
+describe("raw SQL timestamps", () => {
+  // The Popular tab once sent its 7-day window as a JS Date: PGlite accepted it, postgres.js
+  // (Neon) threw and the tab crashed. These run on a real server in the CI "postgres" job.
+  it.runIf(process.env.TEST_DATABASE_URL)("are refused by postgres.js as a Date", async () => {
+    await expect(handle.db.execute(sql`select ${new Date()}::timestamptz`)).rejects.toThrow(/Date/);
+  });
+
+  it("travel as text in the feed queries", async () => {
+    const viewer = await member();
+    const popular = await viewer.call().feed.popular({ lang: "fr" });
+    expect(popular.items.length).toBeGreaterThan(0);
+    await viewer.call().feed.suggestions();
+    await viewer.call().feed.friends({});
   });
 });
 
@@ -587,6 +675,35 @@ describe("blocking", () => {
     expect(await blocker.call().feed.suggestions()).not.toContainEqual(
       expect.objectContaining({ username: blocked.username }),
     );
+  });
+
+  it("lets a review's owner still see and delete the comments of a member they blocked", async () => {
+    const [owner, troll] = [await member(), await member()];
+    const hosted = await review(owner);
+    const subject = reviewSubject(hosted.id);
+    await troll.call().comment.create({ subject, body: "Méchant" });
+    await owner.call().block.add({ username: troll.username });
+    const seen = await owner.call().comment.list({ subject });
+    expect(seen.items).toEqual([expect.objectContaining({ body: "Méchant", canDelete: true })]);
+    expect((await owner.call().review.byId({ id: hosted.id }))?.review.commentCount).toBe(1);
+    await owner.call().comment.delete({ id: seen.items[0]!.id });
+    expect((await api(null).comment.list({ subject })).items).toEqual([]);
+  });
+
+  it("counts only the comments the viewer can see", async () => {
+    const { blocker, blocked } = await pairWithHistory();
+    const host = await member();
+    const hosted = await review(host);
+    const subject = reviewSubject(hosted.id);
+    await blocked.call().comment.create({ subject, body: "Du bloqué" });
+    await host.call(minutesLater(1)).comment.create({ subject, body: "De l'hôte" });
+    const count = async (m: Member | null) =>
+      (await (m ? m.call() : api(null)).review.byId({ id: hosted.id }))?.review.commentCount;
+    expect(await count(blocker)).toBe(1);
+    expect(await count(host)).toBe(2);
+    expect(await count(null)).toBe(2);
+    const reviews = await blocker.call().profile.reviews({ username: host.username, page: 1 });
+    expect(reviews?.items[0]?.commentCount).toBe(1);
   });
 
   it("is never told to the blocked member, and can be undone from the settings list", async () => {
