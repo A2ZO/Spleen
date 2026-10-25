@@ -429,7 +429,12 @@ describe("raw SQL timestamps", () => {
   // The Popular tab once sent its 7-day window as a JS Date: PGlite accepted it, postgres.js
   // (Neon) threw and the tab crashed. These run on a real server in the CI "postgres" job.
   it.runIf(process.env.TEST_DATABASE_URL)("are refused by postgres.js as a Date", async () => {
-    await expect(handle.db.execute(sql`select ${new Date()}::timestamptz`)).rejects.toThrow(/Date/);
+    const error = await handle.db.execute(sql`select ${new Date()}::timestamptz`).then(
+      () => null,
+      (e: unknown) => e,
+    );
+    // Drizzle wraps it ("Failed query: …"); the driver's message is the cause.
+    expect(String((error as { cause?: unknown } | null)?.cause)).toMatch(/instance of Date/);
   });
 
   it("travel as text in the feed queries", async () => {
