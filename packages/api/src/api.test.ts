@@ -1,4 +1,5 @@
-import { createDb, seed, type DbHandle } from "@spleen/db";
+import { seed, type DbHandle } from "@spleen/db";
+import { createTestDb } from "@spleen/db/testing";
 import { loadMessages, locales } from "@spleen/i18n";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -12,9 +13,8 @@ const now = new Date("2026-10-20T12:00:00Z");
 
 describe("system.health", () => {
   it("queries the database", async () => {
-    const handle = createDb("memory://");
+    const handle = await createTestDb();
     try {
-      await handle.migrate();
       const health = createCaller(createContext({ db: () => handle.db })).system.health();
       expect(await health).toEqual({ ok: true, releases: 0 });
     } finally {
@@ -27,8 +27,7 @@ describe("profile.byUsername", () => {
   let handle: DbHandle;
   let caller: ReturnType<typeof createCaller>;
   beforeAll(async () => {
-    handle = createDb("memory://");
-    await handle.migrate();
+    handle = await createTestDb();
     await seed(handle.db);
     caller = createCaller(createContext({ now, db: () => handle.db }));
   }, 60_000);

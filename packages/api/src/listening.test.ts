@@ -1,4 +1,5 @@
-import { and, createDb, eq, recomputeItemState, schema, seed, type DbHandle } from "@spleen/db";
+import { and, eq, recomputeItemState, schema, seed, type DbHandle } from "@spleen/db";
+import { createTestDb } from "@spleen/db/testing";
 import { fixtureId } from "@spleen/db/fixtures";
 import { suggestAlbumRating, todayIn } from "@spleen/validators";
 import { TRPCError } from "@trpc/server";
@@ -18,8 +19,7 @@ const leRoiTrack = (n: number) => fixtureId(10_100 + n);
 const album = { kind: "release" as const, id: nocturnes };
 
 beforeAll(async () => {
-  handle = createDb("memory://");
-  await handle.migrate();
+  handle = await createTestDb();
   await seed(handle.db);
 }, 60_000);
 

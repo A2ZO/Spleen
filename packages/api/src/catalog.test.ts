@@ -1,6 +1,7 @@
 import { createMusicBrainzProvider, type Throttle } from "@spleen/catalog";
 import { createReplayFetch, FIXTURE_ALBUM, FIXTURE_RECORDING } from "@spleen/catalog/testing";
-import { createDb, eq, schema, seed, type DbHandle } from "@spleen/db";
+import { eq, schema, seed, type DbHandle } from "@spleen/db";
+import { createTestDb } from "@spleen/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { createCaller } from "./root";
@@ -15,8 +16,7 @@ let replay: ReturnType<typeof createReplayFetch>;
 const noThrottle: Throttle = { acquire: async () => {}, backOff: async () => {} };
 
 beforeAll(async () => {
-  handle = createDb("memory://");
-  await handle.migrate();
+  handle = await createTestDb();
   await seed(handle.db);
   const [row] = await handle.db
     .select({ id: schema.user.id, email: schema.user.email })

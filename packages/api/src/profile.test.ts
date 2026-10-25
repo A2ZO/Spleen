@@ -1,4 +1,5 @@
-import { createDb, eq, schema, seed, sql, type DbHandle } from "@spleen/db";
+import { eq, schema, seed, sql, type DbHandle } from "@spleen/db";
+import { createTestDb } from "@spleen/db/testing";
 import { fixtureId } from "@spleen/db/fixtures";
 import { TRPCError } from "@trpc/server";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -22,8 +23,7 @@ const leRoiTrack = (n: number) => fixtureId(10_100 + n);
 const release = (id: string) => ({ kind: "release" as const, id });
 
 beforeAll(async () => {
-  handle = createDb("memory://");
-  await handle.migrate();
+  handle = await createTestDb();
   await seed(handle.db);
 }, 60_000);
 
