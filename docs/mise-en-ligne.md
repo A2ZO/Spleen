@@ -214,7 +214,19 @@ Tant que `CONTACT_EMAIL` manque, emails et notifications affichent
 - [ ] **Vérifier** : `/fr/admin` s'ouvre pour ce compte, et répond 404 dans une fenêtre de
       navigation privée.
 
-## 11. Vérification finale
+## 11. Performance : cache des pages publiques (avant ou juste après l'ouverture)
+
+Aujourd'hui, le layout lit le cookie de thème côté serveur : chaque page est calculée à chaque
+requête et interroge la base (quota de calcul Neon, réveil de la base, usage chez
+l'hébergeur). Pas bloquant pour ouvrir, mais à traiter avant ou juste après la mise en ligne.
+
+- [ ] Traiter l'issue [#22](https://github.com/A2ZO/Spleen/issues/22) « Performance :
+      appliquer le thème côté navigateur pour permettre le cache des pages publiques ». À
+      décider en même temps que la CSP (nonce ou non, jalon 9 étape 7).
+- [ ] **Vérifier** : une page publique vue par un visiteur est servie depuis le cache, sans
+      flash de mauvais thème, et les e2e passent (contrôle des journaux serveur compris).
+
+## 12. Vérification finale
 
 - [ ] Les journaux de démarrage de l'hébergeur ne contiennent pas « Missing environment
       variables for production ».
