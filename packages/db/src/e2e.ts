@@ -34,3 +34,41 @@ export async function deleteE2eAccounts(db: Db): Promise<number> {
     return rowsOf(deleted).length;
   });
 }
+
+/** Neon endpoint id (`ep-…`) of a host or URL, the same for its pooled and direct addresses. */
+export function neonEndpointId(hostOrUrl: string): string | null {
+  let host = hostOrUrl.trim().toLowerCase();
+  try {
+    if (host.includes("://")) host = new URL(host).hostname;
+  } catch {
+    return null;
+  }
+  const endpoint = host.split(".")[0]?.replace(/-pooler$/, "") ?? "";
+  return endpoint.startsWith("ep-") ? endpoint : null;
+}
+
+/**
+ * Why the e2e cleanup must not touch the database at `url`, or null when it may. It deletes
+ * accounts, so it refuses production (`NODE_ENV`), Neon's `main` branch (`NEON_MAIN_HOST`,
+ * its pooled or direct host, or its endpoint id), and any Neon host while that variable is
+ * missing, since it is then impossible to tell `dev` from `main`.
+ */
+export function unsafeE2eDatabase(
+  url: string,
+  env: NodeJS.ProcessEnv = process.env,
+): string | null {
+  if (env.NODE_ENV === "production") return "NODE_ENV is production";
+  let host: string;
+  try {
+    host = new URL(url).hostname.toLowerCase();
+  } catch {
+    return "the database URL cannot be parsed";
+  }
+  if (!host.endsWith(".neon.tech")) return null;
+  const main = env.NEON_MAIN_HOST?.trim();
+  if (!main) return "Neon database and NEON_MAIN_HOST is not set";
+  const mainEndpoint = neonEndpointId(main);
+  if (!mainEndpoint) return "NEON_MAIN_HOST is not a Neon host or endpoint id";
+  if (neonEndpointId(host) === mainEndpoint) return "this is Neon's main (production) branch";
+  return null;
+}

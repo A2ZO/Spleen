@@ -5,7 +5,13 @@ import { generateDrizzleJson, generateMigration } from "drizzle-kit/api";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { createDb, migrationDatabaseUrl, type DbHandle } from "./client";
-import { deleteE2eAccounts, freesUsernamesAtOnce, isE2eEmail } from "./e2e";
+import {
+  deleteE2eAccounts,
+  freesUsernamesAtOnce,
+  isE2eEmail,
+  neonEndpointId,
+  unsafeE2eDatabase,
+} from "./e2e";
 import * as s from "./schema";
 import { fixtureId } from "./seed/fixtures";
 import { seed } from "./seed/seed";
@@ -243,6 +249,55 @@ describe("e2e accounts", () => {
       await handle.db.$count(s.usernameHistory, sql`${s.usernameHistory.username} like 'e2e_%'`),
     ).toBe(0);
     expect(await handle.db.$count(s.user, sql`${s.user.id} = ${camille}`)).toBe(1);
+  });
+});
+
+describe("e2e cleanup guard", () => {
+  const neon = (host: string) => `postgresql://u:p@${host}/neondb?sslmode=require`;
+  const dev = "ep-dev-111111.eu-central-1.aws.neon.tech";
+  const main = "ep-main-222222.eu-central-1.aws.neon.tech";
+  const mainPooled = "ep-main-222222-pooler.eu-central-1.aws.neon.tech";
+  const env = (extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv => ({
+    NODE_ENV: "test",
+    NEON_MAIN_HOST: main,
+    ...extra,
+  });
+
+  it("allows a local Postgres and Neon's dev branch", () => {
+    expect(unsafeE2eDatabase("postgres://u:p@localhost:5432/spleen", env())).toBeNull();
+    expect(unsafeE2eDatabase(neon(dev), env())).toBeNull();
+    expect(unsafeE2eDatabase(neon(dev.replace("111111", "111111-pooler")), env())).toBeNull();
+  });
+
+  it("refuses production, even on a local database", () => {
+    const local = "postgres://u:p@localhost:5432/spleen";
+    expect(unsafeE2eDatabase(local, env({ NODE_ENV: "production" }))).toMatch(/production/);
+  });
+
+  it("refuses Neon's main branch, through its direct or pooled host", () => {
+    expect(unsafeE2eDatabase(neon(main), env())).toMatch(/main/);
+    expect(unsafeE2eDatabase(neon(mainPooled), env())).toMatch(/main/);
+    // NEON_MAIN_HOST may be the pooled host or the bare endpoint id.
+    expect(unsafeE2eDatabase(neon(main), env({ NEON_MAIN_HOST: mainPooled }))).toMatch(/main/);
+    expect(unsafeE2eDatabase(neon(mainPooled), env({ NEON_MAIN_HOST: "ep-main-222222" }))).toMatch(
+      /main/,
+    );
+  });
+
+  it("refuses every Neon database while NEON_MAIN_HOST is missing or invalid", () => {
+    expect(unsafeE2eDatabase(neon(dev), env({ NEON_MAIN_HOST: undefined }))).toMatch(
+      /NEON_MAIN_HOST/,
+    );
+    expect(unsafeE2eDatabase(neon(dev), env({ NEON_MAIN_HOST: " " }))).toMatch(/NEON_MAIN_HOST/);
+    expect(unsafeE2eDatabase(neon(dev), env({ NEON_MAIN_HOST: "localhost" }))).toMatch(
+      /NEON_MAIN_HOST/,
+    );
+  });
+
+  it("reads the endpoint id from a host or a URL", () => {
+    expect(neonEndpointId(mainPooled)).toBe("ep-main-222222");
+    expect(neonEndpointId(neon(main))).toBe("ep-main-222222");
+    expect(neonEndpointId("localhost")).toBeNull();
   });
 });
 
