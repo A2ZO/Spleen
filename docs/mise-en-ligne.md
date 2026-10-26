@@ -226,7 +226,18 @@ l'hébergeur). Pas bloquant pour ouvrir, mais à traiter avant ou juste après l
 - [ ] **Vérifier** : une page publique vue par un visiteur est servie depuis le cache, sans
       flash de mauvais thème, et les e2e passent (contrôle des journaux serveur compris).
 
-## 12. Vérification finale
+## 12. Tests e2e en CI (jalon 10)
+
+Les e2e ne tournent pas en CI : à ajouter avant la mise en ligne (jalon 10), sur une base
+Postgres jetable, jamais Neon.
+
+- [ ] Job e2e dans `.github/workflows/ci.yml` : service `postgres` (même image que le job
+      `api-postgres`), `pnpm db:seed` sur cette base, puis `pnpm e2e` (contrôle des journaux
+      serveur compris). Aucun secret, aucune URL Neon dans la CI.
+- [ ] **Vérifier** : le job passe sur une PR, et échoue si on réintroduit volontairement une
+      erreur connue (par exemple un `router.refresh()` après une action).
+
+## 13. Vérification finale
 
 - [ ] Les journaux de démarrage de l'hébergeur ne contiennent pas « Missing environment
       variables for production ».
