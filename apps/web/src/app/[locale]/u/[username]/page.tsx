@@ -10,9 +10,12 @@ import { StatsPanel } from "@/components/profile/StatsPanel";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { ShelfEditor } from "@/components/shelf/ShelfEditor";
 import { ShelfPicker } from "@/components/shelf/ShelfPicker";
+import { FollowButton } from "@/components/social/FollowButton";
 import { ListCard } from "@/components/social/ListCard";
+import { MemberMenu } from "@/components/social/MemberMenu";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { Avatar } from "@/components/ui/Avatar";
+import { buttonClasses } from "@/components/ui/Button";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -209,7 +212,10 @@ export default async function ProfilePage({ params, searchParams }: Props) {
 
   const t = await getTranslations();
   const format = await getFormatter();
+  const me = await (await getApi()).account.me();
+  const signedIn = Boolean(me?.profile);
   const path = `/u/${profile.username}`;
+  const countLink = "hover:text-fg underline-offset-2 hover:underline";
   const tabLabels: Record<Tab, string> = {
     diary: t("profile.tabs.diary"),
     likes: t("profile.tabs.likes"),
@@ -233,8 +239,12 @@ export default async function ProfilePage({ params, searchParams }: Props) {
           <p className="font-mono text-sm text-fg-muted">@{profile.username}</p>
           <p className="mt-3 max-w-2xl text-pretty">{profile.bio}</p>
           <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-fg-muted">
-            <span>{t("profile.followers", { count: profile.followerCount })}</span>
-            <span>{t("profile.following", { count: profile.followingCount })}</span>
+            <Link href={`${path}/followers`} className={countLink}>
+              {t("profile.followers", { count: profile.followerCount })}
+            </Link>
+            <Link href={`${path}/following`} className={countLink}>
+              {t("profile.following", { count: profile.followingCount })}
+            </Link>
             <span>
               {t("profile.joined", {
                 date: format.dateTime(new Date(`${profile.joinedOn}T12:00:00Z`), {
@@ -245,6 +255,30 @@ export default async function ProfilePage({ params, searchParams }: Props) {
             </span>
           </p>
         </div>
+        {!profile.isOwner && (
+          <div className="flex items-start gap-2 sm:self-start">
+            {profile.canInteract && (
+              <FollowButton
+                username={profile.username}
+                name={profile.displayName}
+                following={profile.viewerFollows}
+              />
+            )}
+            {!signedIn && (
+              <Link href="/sign-in" className={buttonClasses("primary")}>
+                {t("social.follow")}
+                <span className="sr-only"> {profile.displayName}</span>
+              </Link>
+            )}
+            {signedIn && (
+              <MemberMenu
+                username={profile.username}
+                name={profile.displayName}
+                blocked={profile.viewerBlocked}
+              />
+            )}
+          </div>
+        )}
       </header>
 
       <section aria-labelledby="shelf">

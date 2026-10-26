@@ -1,5 +1,15 @@
 import { consumeRateLimit } from "@spleen/infra/rate-limit";
 import {
+  audienceLangSchema,
+  commentCreateSchema,
+  commentListSchema,
+  commentUpdateSchema,
+  cursorPageSchema,
+  cursorSchema,
+  likeSetSchema,
+  memberPageSchema,
+  memberSchema,
+  reportCreateSchema,
   catalogImportSchema,
   catalogSearchSchema,
   deleteAccountSchema,
@@ -76,8 +86,19 @@ import {
   type ProfileViewer,
 } from "./lib/profiles";
 import { getShelf, removeShelfItem, reorderShelf, setShelfItem } from "./lib/shelf";
+import { friendsFeed, popularFeed, suggestedMembers } from "./lib/social/feed";
+import { block, follow, followPage, listBlocks, unblock, unfollow } from "./lib/social/follows";
+import {
+  createComment,
+  createReport,
+  deleteComment,
+  listComments,
+  setLike,
+  updateComment,
+} from "./lib/social/interactions";
+import { listNotifications, markAllRead, unreadCount } from "./lib/social/notifications";
+import { getReviewDetail, type SocialViewer } from "./lib/social/reviews";
 import { usernameStatus } from "./lib/usernames";
-import { getHomeFeed } from "./mock/repository";
 import {
   createCallerFactory,
   fail,
@@ -98,6 +119,12 @@ const LISTEN_WRITE_RULE = { window: 60 * 60, max: 300 };
 const REVIEW_WRITE_RULE = { window: 60 * 60, max: 30 };
 const MOOD_CREATE_RULE = { window: 60 * 60, max: 30 };
 const SHELF_WRITE_RULE = { window: 60 * 60, max: 120 };
+/** Social writes, per member and per hour. */
+const FOLLOW_WRITE_RULE = { window: 60 * 60, max: 200 };
+const LIKE_WRITE_RULE = { window: 60 * 60, max: 300 };
+const COMMENT_WRITE_RULE = { window: 60 * 60, max: 60 };
+const BLOCK_WRITE_RULE = { window: 60 * 60, max: 60 };
+const REPORT_WRITE_RULE = { window: 60 * 60, max: 20 };
 
 /** Spends one write from the member's budget for `bucket`, or fails with RATE_LIMITED. */
 async function spend(
@@ -127,17 +154,115 @@ async function profileViewer(ctx: Context): Promise<ProfileViewer> {
   return { id: user?.id ?? null, blind: await blindViewer(ctx.db(), user) };
 }
 
-const shelfWrite = protectedProcedure.use(async ({ ctx, next }) => {
-  await spend(ctx, "shelf-write", SHELF_WRITE_RULE);
-  return next();
-});
+/** A signed-in procedure that spends one write from `bucket` first. */
+const limitedWrite = (bucket: string, rule: { window: number; max: number }) =>
+  protectedProcedure.use(async ({ ctx, next }) => {
+    await spend(ctx, bucket, rule);
+    return next();
+  });
+
+const shelfWrite = limitedWrite("shelf-write", SHELF_WRITE_RULE);
+const followWrite = limitedWrite("follow-write", FOLLOW_WRITE_RULE);
+const likeWrite = limitedWrite("like-write", LIKE_WRITE_RULE);
+const commentWrite = limitedWrite("comment-write", COMMENT_WRITE_RULE);
+const blockWrite = limitedWrite("block-write", BLOCK_WRITE_RULE);
+const reportWrite = limitedWrite("report-write", REPORT_WRITE_RULE);
+
+/** Who reads social content: id and blind listening (both null when signed out). */
+async function socialViewer(ctx: Context): Promise<SocialViewer> {
+  const user = await ctx.user();
+  return { id: user?.id ?? null, blind: await blindViewer(ctx.db(), user) };
+}
 
 export const appRouter = router({
   system: router({
     health: publicProcedure.query(({ ctx }) => checkHealth(ctx.db())),
   }),
-  discover: router({
-    home: publicProcedure.query(() => getHomeFeed()),
+  feed: router({
+    /** Activity of the members the caller follows, newest first. */
+    friends: protectedProcedure.input(cursorPageSchema).query(async ({ input, ctx }) => {
+      const blind = await blindViewer(ctx.db(), ctx.user);
+      return friendsFeed(ctx.db(), { id: ctx.user.id, blind }, input.cursor);
+    }),
+    /** Most liked and commented reviews of the week, in one language. */
+    popular: publicProcedure
+      .input(z.object({ lang: audienceLangSchema, cursor: cursorSchema.optional() }))
+      .query(async ({ input, ctx }) =>
+        popularFeed(ctx.db(), await socialViewer(ctx), input.lang, input.cursor, ctx.now),
+      ),
+    /** Active members to follow (shown when the friends feed is empty). */
+    suggestions: protectedProcedure.query(({ ctx }) =>
+      suggestedMembers(ctx.db(), ctx.user.id, ctx.now),
+    ),
+  }),
+  social: router({
+    follow: followWrite
+      .input(memberSchema)
+      .mutation(({ input, ctx }) => follow(ctx.db(), ctx.user.id, input.username, ctx.now)),
+    unfollow: followWrite
+      .input(memberSchema)
+      .mutation(({ input, ctx }) => unfollow(ctx.db(), ctx.user.id, input.username)),
+    followers: publicProcedure.input(memberPageSchema).query(async ({ input, ctx }) => {
+      const user = await ctx.user();
+      return followPage(ctx.db(), input.username, "followers", user?.id ?? null, input.cursor);
+    }),
+    following: publicProcedure.input(memberPageSchema).query(async ({ input, ctx }) => {
+      const user = await ctx.user();
+      return followPage(ctx.db(), input.username, "following", user?.id ?? null, input.cursor);
+    }),
+  }),
+  like: router({
+    set: likeWrite
+      .input(likeSetSchema)
+      .mutation(({ input, ctx }) =>
+        setLike(ctx.db(), ctx.user.id, input.subject, input.liked, ctx.now),
+      ),
+  }),
+  comment: router({
+    list: publicProcedure.input(commentListSchema).query(async ({ input, ctx }) => {
+      const user = await ctx.user();
+      return listComments(ctx.db(), input.subject, user?.id ?? null, input.cursor);
+    }),
+    create: commentWrite
+      .input(commentCreateSchema)
+      .mutation(({ input, ctx }) =>
+        createComment(ctx.db(), ctx.user.id, input.subject, input.body, ctx.now),
+      ),
+    update: commentWrite
+      .input(commentUpdateSchema)
+      .mutation(({ input, ctx }) =>
+        updateComment(ctx.db(), ctx.user.id, input.id, input.body, ctx.now),
+      ),
+    delete: commentWrite
+      .input(z.object({ id: z.uuid() }))
+      .mutation(({ input, ctx }) => deleteComment(ctx.db(), ctx.user.id, input.id, ctx.now)),
+  }),
+  notification: router({
+    list: protectedProcedure
+      .input(cursorPageSchema)
+      .query(({ input, ctx }) => listNotifications(ctx.db(), ctx.user.id, input.cursor)),
+    /** Unread groups, for the header badge (0 when signed out). */
+    unreadCount: publicProcedure.query(async ({ ctx }) => {
+      const user = await ctx.user();
+      return user ? unreadCount(ctx.db(), user.id) : 0;
+    }),
+    markAllRead: protectedProcedure.mutation(({ ctx }) =>
+      markAllRead(ctx.db(), ctx.user.id, ctx.now),
+    ),
+  }),
+  block: router({
+    add: blockWrite
+      .input(memberSchema)
+      .mutation(({ input, ctx }) => block(ctx.db(), ctx.user.id, input.username, ctx.now)),
+    remove: blockWrite
+      .input(memberSchema)
+      .mutation(({ input, ctx }) => unblock(ctx.db(), ctx.user.id, input.username)),
+    list: protectedProcedure.query(({ ctx }) => listBlocks(ctx.db(), ctx.user.id)),
+  }),
+  report: router({
+    create: reportWrite
+      .input(reportCreateSchema)
+      .mutation(({ input, ctx }) => createReport(ctx.db(), ctx.user.id, input, ctx.now)),
   }),
   release: router({
     /** A stub (known from a discography only) is completed when a member opens it. */
@@ -311,6 +436,12 @@ export const appRouter = router({
     }),
   }),
   review: router({
+    /** A review page (null when it does not exist). */
+    byId: publicProcedure
+      .input(z.object({ id: z.uuid() }))
+      .query(async ({ input, ctx }) =>
+        getReviewDetail(ctx.db(), input.id, await socialViewer(ctx)),
+      ),
     /** The caller's own review, for editing (null when missing or someone else's). */
     mine: protectedProcedure
       .input(z.object({ id: z.uuid() }))

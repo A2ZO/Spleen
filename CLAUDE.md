@@ -16,8 +16,7 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
   React 19, Tailwind CSS 4 (CSS-first), next-intl 4. Next docs for this version:
   `apps/web/node_modules/next/dist/docs`.
 - `packages/api`: tRPC 11 routers = all business logic, on the database (catalog, listening,
-  profiles, shelf, stats); only the home feed still reads fixtures (`src/mock/repository.ts`)
-  until 8.
+  profiles, shelf, stats, social).
 - `packages/catalog`: `CatalogProvider` + MusicBrainz implementation (no DB access), tested on
   recorded responses (`@spleen/catalog/testing`). Flow, rules, limiter: `docs/catalogue.md`.
 - `packages/db`: Drizzle schema (`src/schema/*`, one file per domain), SQL migrations
@@ -38,7 +37,7 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
 pnpm install
 pnpm dev                 # http://localhost:3000 (redirects to /fr or /en)
 pnpm lint; pnpm typecheck; pnpm format         # format = Prettier write (CI: format:check)
-pnpm test                # Vitest in every package (always in-memory PGlite)
+pnpm test                # Vitest in every package (in-memory PGlite)
 pnpm --filter @spleen/design-tokens generate   # after editing tokens
 pnpm db:generate         # new SQL migration after editing packages/db/src/schema
 pnpm db:migrate          # apply migrations (direct connection on Neon)
@@ -48,8 +47,15 @@ pnpm db:seed:catalog     # import packages/api/scripts/catalog-seed.json from Mu
 $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # Playwright with the installed Chrome
 ```
 
-CI (`.github/workflows/ci.yml`): install --frozen-lockfile, format:check, lint, typecheck,
-test. No secrets in CI: tests never touch Neon.
+CI (`.github/workflows/ci.yml`): job `check` = install --frozen-lockfile, format:check, lint,
+typecheck, test (PGlite). Job `api-postgres` = the API tests again on a `postgres:18` service
+container (Neon's major version, `C.UTF-8`) via postgres.js like the app: `TEST_DATABASE_URL`
+makes `createTestDb()` (`@spleen/db/testing`) create one throwaway database per test file.
+Bump the image when Neon moves to a new major. No secrets in CI: tests never touch Neon.
+
+e2e: accounts are `e2e-<id>@example.test`; `apps/web/e2e/cleanup.ts` (global setup and
+teardown) deletes them with their data, even after a failed or interrupted run (Postgres
+only), and their usernames are never reserved. Keep each e2e test short and independent.
 
 ## Environment variables
 
@@ -97,13 +103,13 @@ Brevo and S3 variables (`assertProductionConfig()`, `apps/web/src/instrumentatio
 - Catalog rows are never hard-deleted (`on delete restrict`); duplicate merges re-point
   references first (milestone 9). Member data cascades when a user is deleted.
 - Demo seed: members `<username>@example.test` (`nuitblanche` full shelf, `vinylvince`,
-  `rainydaysam` empty shelf, `fouilleuse` 30 hearts = 2 pages, `seed/crate.ts`), fictional data.
-  Fixture `ratingCounts` / `weeklyListens` are home-page mockup only.
+  `rainydaysam` empty shelf, `fouilleuse` 30 hearts, `seed/crate.ts`; social: `seed/social.ts`).
 - Listening: read `docs/ecoute.md`. `user_item_state` is derived by `recomputeItemState()`
   in the write's transaction (also `liked_at`, the Hearts tab order).
 - Profile & stats: read `docs/profil-stats.md`. One paged tRPC call per profile section;
   stats = SQL aggregates (rules in `api/src/lib/stats/source.ts`) cached with the member's
   stats version (bumped by every listening write): bump `CACHE_VERSION` when a rule changes.
+- Social: read `docs/social.md` (cursor pages, two-way blocks, grouped notifications).
 
 ## Conventions
 
@@ -179,6 +185,9 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 - `updated_at` is wall clock (`$onUpdate`), not `ctx.now`: tests compare orders, not times.
 - New migration → `pnpm db:migrate` on the running dev server's database, or its page 500s.
 - Burst writes arrive out of order: group clicks, send an `order` (`docs/ecoute.md`).
+- Raw `sql` params: postgres.js rejects a JS `Date` (PGlite accepts it): `toISOString()` +
+  `::timestamptz` (job `api-postgres` catches it; API tests use `createTestDb()`).
+- Single-table drizzle selects drop qualifiers: subqueries spell `"t"."col"`.
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
 
@@ -192,8 +201,7 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 
 ## Milestones
 
-- [x] 1. Foundations · 2. Database · 3. Accounts · 4. Catalog (`docs/catalogue.md`) · 5. Listening (`docs/ecoute.md`) · 6. Profile & base stats (`docs/profil-stats.md`).
-- [ ] 7. **Social** (next): follow, feed (replaces the home fixtures), likes, comments,
-      notifications, blocking, reporting. Nothing to provide (no outside service).
-- [ ] 8. Lists & discovery · 9. Admin, legal, polish · 10. Launch. **Real services are not
-      connected yet** (Google, Brevo, R2, Neon `main`, domain): follow `docs/mise-en-ligne.md`.
+- [x] 1. Foundations · 2. Database · 3. Accounts · 4. Catalog (`docs/catalogue.md`) · 5. Listening (`docs/ecoute.md`) · 6. Profile & base stats (`docs/profil-stats.md`) · 7. Social (`docs/social.md`).
+- [ ] 8. **Lists & discovery** (next): lists (like/comment API ready), trends FR/EN, rankings.
+- [ ] 9. Admin, legal, polish · 10. Launch. **Real services are not connected yet** (Google,
+      Brevo, R2, Neon `main`, domain): follow `docs/mise-en-ligne.md`.

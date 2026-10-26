@@ -27,7 +27,9 @@ export const follows = pgTable(
   },
   (t) => [
     primaryKey({ columns: [t.followerId, t.followeeId] }),
-    index("follows_followee_idx").on(t.followeeId),
+    // Followers / following pages, newest first (cursor on created_at).
+    index("follows_follower_created_idx").on(t.followerId, t.createdAt.desc()),
+    index("follows_followee_created_idx").on(t.followeeId, t.createdAt.desc()),
     check("follows_not_self", sql`${t.followerId} <> ${t.followeeId}`),
   ],
 );
@@ -52,6 +54,8 @@ export const likes = pgTable(
       .where(sql`${t.listId} is not null`),
     index("likes_review_idx").on(t.reviewId),
     index("likes_list_idx").on(t.listId),
+    // Popular tab: likes of the week.
+    index("likes_created_idx").on(t.createdAt),
   ],
 );
 
@@ -64,6 +68,8 @@ export const comments = pgTable(
     reviewId: uuid("review_id").references(() => reviews.id, { onDelete: "cascade" }),
     listId: uuid("list_id").references(() => lists.id, { onDelete: "cascade" }),
     body: text("body").notNull(),
+    /** Set when the author edits the text (shown as "edited"). */
+    editedAt: timestamp("edited_at", { withTimezone: true }),
     deletedAt: timestamp("deleted_at", { withTimezone: true }),
     ...timestamps(),
   },
@@ -71,6 +77,9 @@ export const comments = pgTable(
     check("comments_one_subject", exactlyOne(t.reviewId, t.listId)),
     index("comments_review_idx").on(t.reviewId, t.createdAt),
     index("comments_list_idx").on(t.listId, t.createdAt),
+    index("comments_user_idx").on(t.userId),
+    // Popular tab: comments of the week.
+    index("comments_created_idx").on(t.createdAt),
   ],
 );
 
@@ -87,10 +96,25 @@ export const notifications = pgTable(
     reviewId: uuid("review_id").references(() => reviews.id, { onDelete: "cascade" }),
     listId: uuid("list_id").references(() => lists.id, { onDelete: "cascade" }),
     commentId: uuid("comment_id").references(() => comments.id, { onDelete: "cascade" }),
+    /**
+     * Similar notifications share a key and show as one ("Camille and 3 others liked your
+     * review"): likes and comments per subject, follows per day (`lib/social/notifications.ts`).
+     */
+    groupKey: text("group_key").notNull(),
     readAt: timestamp("read_at", { withTimezone: true }),
     createdAt: createdAt(),
   },
-  (t) => [index("notifications_user_created_idx").on(t.userId, t.createdAt.desc())],
+  (t) => [
+    index("notifications_user_created_idx").on(t.userId, t.createdAt.desc()),
+    index("notifications_user_group_idx").on(t.userId, t.groupKey),
+    index("notifications_unread_idx")
+      .on(t.userId)
+      .where(sql`${t.readAt} is null`),
+    // One follow / like notification per actor and subject (liking again adds nothing).
+    uniqueIndex("notifications_once_uidx")
+      .on(t.userId, t.actorId, t.type, sql`coalesce(${t.reviewId}, ${t.listId}, ${t.userId})`)
+      .where(sql`${t.type} in ('follow', 'like')`),
+  ],
 );
 
 export const blocks = pgTable(
@@ -127,7 +151,8 @@ export const reports = pgTable(
   "reports",
   {
     id: id(),
-    reporterId: userRef("reporter_id").notNull(),
+    /** Null once the reporter deleted their account: the report stays for moderation. */
+    reporterId: uuid("reporter_id").references(() => user.id, { onDelete: "set null" }),
     reportedUserId: userRef("reported_user_id"),
     reviewId: uuid("review_id").references(() => reviews.id, { onDelete: "cascade" }),
     listId: uuid("list_id").references(() => lists.id, { onDelete: "cascade" }),
@@ -148,5 +173,13 @@ export const reports = pgTable(
       sql`${exactlyOne(t.reportedUserId, t.reviewId, t.listId, t.commentId, t.releaseId, t.trackId, t.artistId)} or (${t.reason} = 'catalog_addition' and num_nonnulls(${t.reportedUserId}, ${t.reviewId}, ${t.listId}, ${t.commentId}, ${t.releaseId}, ${t.trackId}, ${t.artistId}) = 0)`,
     ),
     index("reports_status_created_idx").on(t.status, t.createdAt),
+    index("reports_reporter_idx").on(t.reporterId),
+    // Reporting the same thing twice while the first report is open adds nothing.
+    uniqueIndex("reports_open_once_uidx")
+      .on(
+        t.reporterId,
+        sql`coalesce(${t.reportedUserId}, ${t.reviewId}, ${t.listId}, ${t.commentId}, ${t.releaseId}, ${t.trackId}, ${t.artistId})`,
+      )
+      .where(sql`${t.status} = 'open' and ${t.reporterId} is not null`),
   ],
 );

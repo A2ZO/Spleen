@@ -57,6 +57,13 @@
       "when": 1792791893369,
       "tag": "0007_listening_version",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1792846819445,
+      "tag": "0008_social",
+      "breakpoints": true
     }
   ]
 }

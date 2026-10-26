@@ -44,6 +44,8 @@ export const entries = pgTable(
     targetCheck("entries", t),
     ratingCheck("entries", t.rating),
     index("entries_user_listened_idx").on(t.userId, t.listenedOn.desc()),
+    // Friends feed: a member's listens by creation, cursor on (created_at, id).
+    index("entries_user_created_idx").on(t.userId, t.createdAt.desc(), t.id.desc()),
     index("entries_release_idx").on(t.releaseId),
     index("entries_track_idx").on(t.trackId),
     index("entries_artist_idx").on(t.artistId),

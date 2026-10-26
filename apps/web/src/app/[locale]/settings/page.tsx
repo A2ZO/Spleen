@@ -9,7 +9,7 @@ import { SignOutButton } from "@/components/account/SignOutButton";
 import { UsernameForm } from "@/components/account/UsernameForm";
 import { buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { redirect } from "@/i18n/navigation";
+import { Link, redirect } from "@/i18n/navigation";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { getApi } from "@/server/api";
 
@@ -74,6 +74,13 @@ export default async function SettingsPage({ params }: Props) {
         <SignOutButton href={`/${locale}`} className="mt-5">
           {t("signOut")}
         </SignOutButton>
+      </Section>
+
+      <Section id="blocks" title={t("blocksTitle")}>
+        <p className="text-fg-muted">{t("blocksBody")}</p>
+        <Link href="/settings/blocks" className={buttonClasses("outline", "mt-4")}>
+          {t("blocksLink")}
+        </Link>
       </Section>
 
       <Section id="export" title={t("exportTitle")}>

@@ -43,6 +43,8 @@ export const reviews = pgTable(
     targetCheck("reviews", t),
     ratingCheck("reviews", t.rating),
     index("reviews_user_idx").on(t.userId, t.createdAt.desc()),
+    // Popular tab: reviews split by language.
+    index("reviews_lang_created_idx").on(t.lang, t.createdAt.desc()),
     index("reviews_release_idx").on(t.releaseId),
     index("reviews_track_idx").on(t.trackId),
     index("reviews_artist_idx").on(t.artistId),

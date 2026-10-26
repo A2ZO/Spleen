@@ -16,7 +16,9 @@
     "signIn": "Sign in",
     "accountMenu": "My account",
     "settings": "Settings",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "notifications": "Notifications",
+    "unread": "{count, plural, one {# unread} other {# unread}}"
   },
   "theme": {
     "toggle": "Change theme",
@@ -57,14 +59,9 @@
     "kicker": "It's late, the city is asleep",
     "title": "What did you listen to tonight?",
     "subtitle": "Rate your records, keep a listening diary, put your favourite albums on your shelf. Gently.",
-    "ctaShelf": "See a shelf",
-    "ctaAlbum": "Open an album",
-    "trendingTitle": "Trending this week",
-    "trendingFr": "French-speaking",
-    "trendingEn": "English-speaking",
-    "trendingTabs": "Trending language",
-    "recentTitle": "New releases",
-    "reviewsTitle": "Popular reviews"
+    "ctaJoin": "Open my notebook",
+    "ctaWelcome": "Pick my username",
+    "ctaSearch": "Find a record"
   },
   "album": {
     "by": "by",
@@ -111,7 +108,10 @@
     "likes": "{count, plural, =0 {no likes} one {# like} other {# likes}}",
     "comments": "{count, plural, =0 {no comments} one {# comment} other {# comments}}",
     "noRating": "No rating",
-    "edit": "Edit"
+    "edit": "Edit",
+    "open": "Read and comment",
+    "pageTitle": "{name}'s review of {title}",
+    "ratingHidden": "Rating hidden (blind listening)"
   },
   "list": {
     "ranked": "Ranked",
@@ -265,7 +265,10 @@
     "deleteButton": "Delete permanently",
     "deleting": "Deleting…",
     "timeZoneLabel": "Time zone",
-    "timeZoneHint": "Used to date your listens \"today\"."
+    "timeZoneHint": "Used to date your listens \"today\".",
+    "blocksTitle": "Blocked members",
+    "blocksBody": "Members you blocked can no longer follow you, like or comment on your reviews.",
+    "blocksLink": "Manage blocked members"
   },
   "errors": {
     "UNAUTHENTICATED": "Sign in to continue.",
@@ -292,6 +295,12 @@
     "DATE_IN_FUTURE": "That date hasn't come yet.",
     "DATE_REQUIRED": "A dated listen keeps its date.",
     "SHELF_MISMATCH": "Your shelf changed in the meantime: reload the page.",
+    "SELF_ACTION": "You can't do that with yourself.",
+    "ACTION_UNAVAILABLE": "Action unavailable.",
+    "MEMBER_NOT_FOUND": "This member doesn't exist (anymore).",
+    "COMMENT_NOT_FOUND": "This comment no longer exists.",
+    "LIST_NOT_FOUND": "This list no longer exists.",
+    "INVALID_CURSOR": "This page no longer exists: reload the list.",
     "unknown": "Something went wrong. Try again."
   },
   "secondaryType": {
@@ -454,5 +463,119 @@
     "deleteConfirm": "Delete it for good?",
     "deleteYes": "Yes, delete",
     "deleteNo": "No, keep it"
+  },
+  "social": {
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "you": "That's you",
+    "like": "Like",
+    "memberMenu": "More actions for {name}",
+    "block": "Block",
+    "unblock": "Unblock",
+    "blockTitle": "Block {name}?",
+    "blockBody": "You will stop following each other. Neither of you will be able to like or comment on the other's reviews, and you will disappear from each other's feeds and notifications. {name} won't be told.",
+    "unblockTitle": "Unblock {name}?",
+    "unblockBody": "You will be able to follow and talk to each other again. Earlier follows don't come back.",
+    "cancel": "Cancel",
+    "close": "Close",
+    "reportTitle": {
+      "member": "Report this profile",
+      "review": "Report this review",
+      "comment": "Report this comment"
+    },
+    "reportReason": "Why?",
+    "reasons": {
+      "spam": "Spam or advertising",
+      "harassment": "Harassment",
+      "hate": "Hate speech",
+      "spoiler": "Unmarked spoiler",
+      "inappropriate": "Inappropriate content",
+      "other": "Something else"
+    },
+    "reportDetails": "A few more words (optional)",
+    "reportSend": "Send report",
+    "reportThanks": "Thank you. Moderators will take a look.",
+    "followersTitle": "{name}'s followers",
+    "followingTitle": "Followed by {name}",
+    "followersTab": "{count, plural, =0 {Followers} one {# follower} other {# followers}}",
+    "followingTab": "{count, plural, =0 {Following} other {# following}}",
+    "followTabsLabel": "Followers and following",
+    "followersEmpty": "Nobody follows {name} yet.",
+    "followingEmpty": "{name} doesn't follow anyone yet.",
+    "backToProfile": "Back to {name}'s profile",
+    "pagingLabel": "List pages",
+    "more": "Next",
+    "first": "Back to the start"
+  },
+  "feed": {
+    "title": "Your feed",
+    "tabsLabel": "Feed",
+    "friends": "Friends",
+    "popular": "Popular",
+    "popularTitle": "Popular reviews this week",
+    "popularHint": "The most liked and commented reviews of the last 7 days, in {lang}.",
+    "popularSwitch": "See the ones in {lang}",
+    "langFr": "French",
+    "langEn": "English",
+    "popularEmpty": "No popular review this week yet. Write the first one?",
+    "listened": "listened to",
+    "relistened": "listened again to",
+    "hearted": "fell for",
+    "rated": "rated",
+    "relisten": "Relisten",
+    "emptyTitle": "Your feed is still quiet.",
+    "emptyBody": "Follow a few members: their listens, reviews and hearts will settle in here, newest first.",
+    "suggestionsTitle": "Ears worth following",
+    "pagingLabel": "Feed pages",
+    "older": "Older",
+    "newest": "Back to the newest",
+    "listenedOn": "listened on {date}"
+  },
+  "comments": {
+    "title": "Comments",
+    "empty": "No comment yet. Start the conversation?",
+    "label": "Your comment",
+    "editLabel": "Edit your comment",
+    "remaining": "{count, plural, one {# character left} other {# characters left}}",
+    "send": "Post",
+    "sending": "Posting…",
+    "edit": "Edit",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteConfirm": "Delete this comment?",
+    "deleteYes": "Yes, delete",
+    "deleteNo": "No",
+    "edited": "edited",
+    "signIn": "Sign in to comment.",
+    "unavailable": "Comments are not available here.",
+    "pagingLabel": "Comment pages",
+    "more": "Next comments",
+    "first": "Back to the first ones"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "unread": "{count, plural, =0 {All read} one {# unread} other {# unread}}",
+    "unreadLabel": "Unread:",
+    "markAllRead": "Mark all as read",
+    "someone": "Someone",
+    "empty": "Nothing new for now. The calm before the next record.",
+    "follow": "{others, plural, =0 {{name} now follows you} one {{name} and one other person now follow you} other {{name} and # others now follow you}}",
+    "like": "{others, plural, =0 {{name} liked your review of “{title}”} one {{name} and one other person liked your review of “{title}”} other {{name} and # others liked your review of “{title}”}}",
+    "comment": "{others, plural, =0 {{name} commented on your review of “{title}”} one {{name} and one other person commented on your review of “{title}”} other {{name} and # others commented on your review of “{title}”}}",
+    "likeList": "{others, plural, =0 {{name} liked your list “{title}”} one {{name} and one other person liked your list “{title}”} other {{name} and # others liked your list “{title}”}}",
+    "commentList": "{others, plural, =0 {{name} commented on your list “{title}”} one {{name} and one other person commented on your list “{title}”} other {{name} and # others commented on your list “{title}”}}",
+    "excerpt": "“{text}”",
+    "pagingLabel": "Notification pages",
+    "older": "Older",
+    "newest": "Back to the newest"
+  },
+  "blocks": {
+    "title": "Blocked members",
+    "intro": "They can't follow you, like or comment on your reviews, and you no longer show up in each other's feeds and notifications. They are not told.",
+    "empty": "You haven't blocked anyone.",
+    "since": "blocked on {date}",
+    "unblock": "Unblock",
+    "back": "Back to settings"
   }
 }

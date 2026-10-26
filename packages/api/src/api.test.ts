@@ -1,4 +1,5 @@
-import { createDb, seed, type DbHandle } from "@spleen/db";
+import { seed, type DbHandle } from "@spleen/db";
+import { createTestDb } from "@spleen/db/testing";
 import { loadMessages, locales } from "@spleen/i18n";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -9,20 +10,11 @@ import { createCaller } from "./root";
 import { createContext } from "./trpc";
 
 const now = new Date("2026-10-20T12:00:00Z");
-const caller = createCaller(
-  createContext({
-    now,
-    db: () => {
-      throw new Error("fixture-backed procedures must not open the database");
-    },
-  }),
-);
 
 describe("system.health", () => {
   it("queries the database", async () => {
-    const handle = createDb("memory://");
+    const handle = await createTestDb();
     try {
-      await handle.migrate();
       const health = createCaller(createContext({ db: () => handle.db })).system.health();
       expect(await health).toEqual({ ok: true, releases: 0 });
     } finally {
@@ -31,22 +23,11 @@ describe("system.health", () => {
   }, 60_000);
 });
 
-describe("discover.home", () => {
-  it("splits trending charts by audience language and sorts them", async () => {
-    const feed = await caller.discover.home();
-    expect(feed.trending.fr[0]?.slug).toBe("beton-velours");
-    expect(feed.trending.en[0]?.slug).toBe("brass-and-bone");
-    expect(feed.recent[0]?.slug).toBe("midnight-blue-avenue");
-    expect(feed.popularReviews).toHaveLength(3);
-  });
-});
-
 describe("profile.byUsername", () => {
   let handle: DbHandle;
   let caller: ReturnType<typeof createCaller>;
   beforeAll(async () => {
-    handle = createDb("memory://");
-    await handle.migrate();
+    handle = await createTestDb();
     await seed(handle.db);
     caller = createCaller(createContext({ now, db: () => handle.db }));
   }, 60_000);

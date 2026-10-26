@@ -3,6 +3,10 @@ import { describe, expect, it } from "vitest";
 import {
   catalogImportSchema,
   catalogSearchSchema,
+  COMMENT_BODY_MAX,
+  commentBodySchema,
+  REPORT_DETAILS_MAX,
+  reportCreateSchema,
   isReservedUsername,
   onboardingSchema,
   ratingSchema,
@@ -104,5 +108,29 @@ describe("catalog search and import", () => {
     expect(catalogImportSchema.safeParse({ kind: "release_group", mbid }).success).toBe(true);
     expect(catalogImportSchema.safeParse({ kind: "release_group", mbid: "x" }).success).toBe(false);
     expect(catalogImportSchema.safeParse({ kind: "label", mbid }).success).toBe(false);
+  });
+});
+
+describe("social schemas", () => {
+  it("limits comments and report details", () => {
+    expect(commentBodySchema.safeParse("x".repeat(COMMENT_BODY_MAX)).success).toBe(true);
+    expect(commentBodySchema.safeParse("x".repeat(COMMENT_BODY_MAX + 1)).success).toBe(false);
+    expect(commentBodySchema.safeParse("   ").success).toBe(false);
+    const report = (details: string) =>
+      reportCreateSchema.safeParse({
+        subject: { kind: "member", username: "nuitblanche" },
+        reason: "spam",
+        details,
+      }).success;
+    expect(report("x".repeat(REPORT_DETAILS_MAX))).toBe(true);
+    expect(report("x".repeat(REPORT_DETAILS_MAX + 1))).toBe(false);
+  });
+
+  it("only accepts member report reasons", () => {
+    const parse = (reason: string) =>
+      reportCreateSchema.safeParse({ subject: { kind: "review", id: crypto.randomUUID() }, reason })
+        .success;
+    expect(parse("harassment")).toBe(true);
+    expect(parse("catalog_addition")).toBe(false);
   });
 });

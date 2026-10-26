@@ -39,6 +39,8 @@ Reference for milestone 3. `CLAUDE.md` keeps the summary; this file has the deta
   take it back;
 - account deletion adds a row for the current username, then `user_id` becomes NULL
   (`ON DELETE SET NULL`): every name stays reserved 30 days without any link to the person;
+  except e2e test accounts (`e2e-<id>@example.test`, `isE2eEmail()` in `@spleen/db`), whose
+  generated names are freed at once;
 - expired anonymous rows are purged whenever a username is claimed (onboarding, rename);
 - redirects from former usernames: not yet (the history is ready for them).
 
