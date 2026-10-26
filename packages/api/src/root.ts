@@ -83,7 +83,6 @@ import {
   getPublicProfile,
   getReviewsPage,
   getToListenPage,
-  type ProfileViewer,
 } from "./lib/profiles";
 import { getShelf, removeShelfItem, reorderShelf, setShelfItem } from "./lib/shelf";
 import { friendsFeed, popularFeed, suggestedMembers } from "./lib/social/feed";
@@ -97,7 +96,8 @@ import {
   updateComment,
 } from "./lib/social/interactions";
 import { listNotifications, markAllRead, unreadCount } from "./lib/social/notifications";
-import { getReviewDetail, type SocialViewer } from "./lib/social/reviews";
+import { getReviewDetail } from "./lib/social/reviews";
+import { viewerFor, type Viewer } from "./lib/viewer";
 import { usernameStatus } from "./lib/usernames";
 import {
   createCallerFactory,
@@ -146,13 +146,10 @@ const reviewWrite = protectedProcedure.use(async ({ ctx, next }) => {
 });
 
 /** Blind listening settings of the caller (null when signed out or not in blind mode). */
-const viewerOf = async (ctx: Context) => blindViewer(ctx.db(), await ctx.user());
+const blindOf = async (ctx: Context) => blindViewer(ctx.db(), await ctx.user());
 
-/** Who looks at a profile (privacy and blind listening). */
-async function profileViewer(ctx: Context): Promise<ProfileViewer> {
-  const user = await ctx.user();
-  return { id: user?.id ?? null, blind: await blindViewer(ctx.db(), user) };
-}
+/** Who reads: id and blind listening (both null when signed out). */
+const viewerOf = async (ctx: Context): Promise<Viewer> => viewerFor(ctx.db(), await ctx.user());
 
 /** A signed-in procedure that spends one write from `bucket` first. */
 const limitedWrite = (bucket: string, rule: { window: number; max: number }) =>
@@ -168,12 +165,6 @@ const commentWrite = limitedWrite("comment-write", COMMENT_WRITE_RULE);
 const blockWrite = limitedWrite("block-write", BLOCK_WRITE_RULE);
 const reportWrite = limitedWrite("report-write", REPORT_WRITE_RULE);
 
-/** Who reads social content: id and blind listening (both null when signed out). */
-async function socialViewer(ctx: Context): Promise<SocialViewer> {
-  const user = await ctx.user();
-  return { id: user?.id ?? null, blind: await blindViewer(ctx.db(), user) };
-}
-
 export const appRouter = router({
   system: router({
     health: publicProcedure.query(({ ctx }) => checkHealth(ctx.db())),
@@ -188,7 +179,7 @@ export const appRouter = router({
     popular: publicProcedure
       .input(z.object({ lang: audienceLangSchema, cursor: cursorSchema.optional() }))
       .query(async ({ input, ctx }) =>
-        popularFeed(ctx.db(), await socialViewer(ctx), input.lang, input.cursor, ctx.now),
+        popularFeed(ctx.db(), await viewerOf(ctx), input.lang, input.cursor, ctx.now),
       ),
     /** Active members to follow (shown when the friends feed is empty). */
     suggestions: protectedProcedure.query(({ ctx }) =>
@@ -277,7 +268,7 @@ export const appRouter = router({
         );
       }
       const detail = await getReleaseDetail(ctx.db(), input.slug);
-      return detail && blindReleaseDetail(ctx.db(), await viewerOf(ctx), detail);
+      return detail && blindReleaseDetail(ctx.db(), await blindOf(ctx), detail);
     }),
   }),
   artist: router({
@@ -293,20 +284,20 @@ export const appRouter = router({
         );
       }
       const detail = await getArtistDetail(ctx.db(), input.slug);
-      return detail && blindArtistDetail(ctx.db(), await viewerOf(ctx), detail);
+      return detail && blindArtistDetail(ctx.db(), await blindOf(ctx), detail);
     }),
   }),
   track: router({
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
       const detail = await getTrackDetail(ctx.db(), input.slug);
-      return detail && blindTrackDetail(ctx.db(), await viewerOf(ctx), detail);
+      return detail && blindTrackDetail(ctx.db(), await blindOf(ctx), detail);
     }),
   }),
   catalog: router({
     /** Local catalog only: instant, public. */
     search: publicProcedure.input(catalogSearchSchema).query(async ({ input, ctx }) => {
       const results = await searchCatalog(ctx.db(), input);
-      return blindSearchResults(ctx.db(), await viewerOf(ctx), results);
+      return blindSearchResults(ctx.db(), await blindOf(ctx), results);
     }),
     /** MusicBrainz search, for members, when the local catalog lacks something. */
     searchRemote: protectedProcedure.input(catalogSearchSchema).query(async ({ input, ctx }) => {
@@ -332,44 +323,44 @@ export const appRouter = router({
     byUsername: publicProcedure
       .input(z.object({ username: usernameSchema }))
       .query(async ({ input, ctx }) =>
-        getPublicProfile(ctx.db(), input.username, await profileViewer(ctx)),
+        getPublicProfile(ctx.db(), input.username, await viewerOf(ctx)),
       ),
     diary: publicProcedure
       .input(profilePageSchema)
       .query(async ({ input, ctx }) =>
-        getDiaryPage(ctx.db(), input.username, await profileViewer(ctx), input.page),
+        getDiaryPage(ctx.db(), input.username, await viewerOf(ctx), input.page),
       ),
     /** Calendar view: the dated listens of one month. */
     diaryMonth: publicProcedure
       .input(profileMonthSchema)
       .query(async ({ input, ctx }) =>
-        getDiaryMonth(ctx.db(), input.username, await profileViewer(ctx), input.month),
+        getDiaryMonth(ctx.db(), input.username, await viewerOf(ctx), input.month),
       ),
     likes: publicProcedure
       .input(profilePageSchema)
       .query(async ({ input, ctx }) =>
-        getLikesPage(ctx.db(), input.username, await profileViewer(ctx), input.page),
+        getLikesPage(ctx.db(), input.username, await viewerOf(ctx), input.page),
       ),
     reviews: publicProcedure
       .input(profilePageSchema)
       .query(async ({ input, ctx }) =>
-        getReviewsPage(ctx.db(), input.username, await profileViewer(ctx), input.page),
+        getReviewsPage(ctx.db(), input.username, await viewerOf(ctx), input.page),
       ),
     toListen: publicProcedure
       .input(profilePageSchema)
       .query(async ({ input, ctx }) =>
-        getToListenPage(ctx.db(), input.username, await profileViewer(ctx), input.page),
+        getToListenPage(ctx.db(), input.username, await viewerOf(ctx), input.page),
       ),
     lists: publicProcedure
       .input(z.object({ username: usernameSchema }))
       .query(async ({ input, ctx }) =>
-        getProfileLists(ctx.db(), input.username, await profileViewer(ctx)),
+        getProfileLists(ctx.db(), input.username, await viewerOf(ctx)),
       ),
     /** Null for an unknown member or private stats; cached per member. */
     stats: publicProcedure
       .input(z.object({ username: usernameSchema }))
       .query(async ({ input, ctx }) =>
-        getProfileStats(ctx.db(), input.username, await profileViewer(ctx), ctx.now),
+        getProfileStats(ctx.db(), input.username, await viewerOf(ctx), ctx.now),
       ),
   }),
   /** The signed-in member's Shelf (4 favourite records). */
@@ -439,9 +430,7 @@ export const appRouter = router({
     /** A review page (null when it does not exist). */
     byId: publicProcedure
       .input(z.object({ id: z.uuid() }))
-      .query(async ({ input, ctx }) =>
-        getReviewDetail(ctx.db(), input.id, await socialViewer(ctx)),
-      ),
+      .query(async ({ input, ctx }) => getReviewDetail(ctx.db(), input.id, await viewerOf(ctx))),
     /** The caller's own review, for editing (null when missing or someone else's). */
     mine: protectedProcedure
       .input(z.object({ id: z.uuid() }))

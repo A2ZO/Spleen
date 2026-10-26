@@ -9,6 +9,7 @@ export {
 } from "./client";
 export { deleteE2eAccounts, isE2eEmail } from "./e2e";
 export { loadRootEnv, rootEnvFile } from "./env";
+export { rowsOf } from "./rows";
 export {
   bumpStatsVersion,
   listenedTargets,

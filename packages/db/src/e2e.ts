@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 
 import type { Db } from "./client";
+import { rowsOf } from "./rows";
 
 /*
  * Accounts created by the Playwright suite (`apps/web/e2e/helpers.ts`): email
@@ -22,6 +23,6 @@ export async function deleteE2eAccounts(db: Db): Promise<number> {
       sql`delete from "user" where lower("email") ~ '^e2e-[a-z0-9]+@example[.]test$' returning "id"`,
     );
     await tx.execute(sql`delete from "username_history" where "username" ~ '^e2e_[a-z0-9]+$'`);
-    return (Array.isArray(deleted) ? deleted : (deleted as { rows: unknown[] }).rows).length;
+    return rowsOf(deleted).length;
   });
 }

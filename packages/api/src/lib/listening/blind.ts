@@ -1,4 +1,4 @@
-import { and, eq, inArray, isNotNull, schema, type Db } from "@spleen/db";
+import { and, eq, inArray, isNotNull, or, schema, type Db } from "@spleen/db";
 
 import type { SessionUser } from "../../trpc";
 import type {
@@ -16,7 +16,7 @@ import type {
  * until they have rated it themselves. Applied by the API, so every client gets it.
  */
 
-const { profiles, userItemState } = schema;
+const { profiles, releaseTracks, userItemState } = schema;
 
 /** A signed-in member with blind listening on (null: nothing is hidden). */
 export interface BlindViewer {
@@ -50,6 +50,43 @@ export async function ratedIds(
   return new Set(rows.map((r) => r.id!));
 }
 
+/**
+ * Release ids the member has rated among `releaseIds` and the releases `trackIds` appear on:
+ * one query, sent with the card loaders, for cards whose release a track only gives later.
+ */
+export async function ratedReleaseIds(
+  db: Db,
+  userId: string,
+  releaseIds: string[],
+  trackIds: string[] = [],
+): Promise<Set<string>> {
+  const releaseId = userItemState.releaseId;
+  const targets = [
+    ...(releaseIds.length ? [inArray(releaseId, releaseIds)] : []),
+    ...(trackIds.length
+      ? [
+          inArray(
+            releaseId,
+            db
+              .select({ id: releaseTracks.releaseId })
+              .from(releaseTracks)
+              .where(inArray(releaseTracks.trackId, trackIds)),
+          ),
+        ]
+      : []),
+  ];
+  if (targets.length === 0) return new Set();
+  const rows = await db
+    .select({ id: releaseId })
+    .from(userItemState)
+    .where(and(eq(userItemState.userId, userId), isNotNull(userItemState.rating), or(...targets)));
+  return new Set(rows.map((r) => r.id!));
+}
+
+/** Hides the ratings of a release card unless its id is in `rated`. */
+export const maskRelease = <T extends ReleaseCard>(rated: Set<string>, card: T): T =>
+  rated.has(card.id) ? card : { ...card, averageRating: null, ratingCount: 0, ratingsHidden: true };
+
 /** Returns a function hiding the ratings of the releases the viewer has not rated. */
 async function releaseMasker(db: Db, viewer: BlindViewer, cards: ReleaseCard[]) {
   const rated = await ratedIds(
@@ -58,10 +95,7 @@ async function releaseMasker(db: Db, viewer: BlindViewer, cards: ReleaseCard[]) 
     "releaseId",
     cards.map((c) => c.id),
   );
-  return <T extends ReleaseCard>(card: T): T =>
-    rated.has(card.id)
-      ? card
-      : { ...card, averageRating: null, ratingCount: 0, ratingsHidden: true };
+  return <T extends ReleaseCard>(card: T): T => maskRelease(rated, card);
 }
 
 export async function blindReleaseDetail(
@@ -171,17 +205,24 @@ export async function blindReleaseItems<T>(
   });
 }
 
+/** A review card whose release is masked: its rating is hidden along with the release's. */
+export const maskReviewCard = (rated: Set<string>, review: ReviewCard): ReviewCard => {
+  const release = maskRelease(rated, review.release);
+  return { ...review, release, rating: release.ratingsHidden ? null : review.rating };
+};
+
 /** Review cards: the review's rating is hidden too while the viewer has not rated the release. */
-export function blindReviewCards(
+export async function blindReviewCards(
   db: Db,
   viewer: BlindViewer | null,
   reviews: ReviewCard[],
 ): Promise<ReviewCard[]> {
-  return blindReleaseItems(
+  if (!viewer) return reviews;
+  const rated = await ratedIds(
     db,
-    viewer,
-    reviews,
-    (r) => r.release,
-    (r, release) => ({ ...r, release, rating: release.ratingsHidden ? null : r.rating }),
+    viewer.userId,
+    "releaseId",
+    reviews.map((r) => r.release.id),
   );
+  return reviews.map((r) => maskReviewCard(rated, r));
 }

@@ -4,7 +4,8 @@ import type { AudienceLang, SocialSubjectInput } from "@spleen/validators";
 import { fail } from "../../trpc";
 import type { ReviewCard, ReviewDetail } from "../../types";
 import { loadReleaseCards, loadTrackCards, toReleaseCard } from "../catalog/cards";
-import { blindReviewCards, type BlindViewer } from "../listening/blind";
+import { maskReviewCard, ratedReleaseIds } from "../listening/blind";
+import type { Viewer } from "../viewer";
 import { isBlockedBetween, memberRefs, notBlockedWith } from "./relations";
 
 const { comments, likes, lists, profiles, reviews } = schema;
@@ -27,12 +28,13 @@ export function reviewCountColumns(viewerId: string | null) {
 
 /**
  * Review cards in the order of `ids`, for reviews of a release or of a track (shown with the
- * track's first release). `viewerId` fills `viewerLiked`. Blind listening is the caller's.
+ * track's first release). `viewer.id` fills `viewerLiked`; ratings follow blind listening.
+ * Two rounds of queries: the reviews, then everything they point to at once.
  */
 export async function loadReviewCards(
   db: Db,
   ids: string[],
-  viewerId: string | null,
+  viewer: Viewer,
 ): Promise<ReviewCard[]> {
   const unique = [...new Set(ids)];
   if (unique.length === 0) return [];
@@ -47,61 +49,51 @@ export async function loadReviewCards(
         body: reviews.body,
         lang: reviews.lang,
         createdAt: reviews.createdAt,
-        ...reviewCountColumns(viewerId),
+        ...reviewCountColumns(viewer.id),
       })
       .from(reviews)
       .where(inArray(reviews.id, unique)),
-    viewerId
+    viewer.id
       ? db
           .select({ id: likes.reviewId })
           .from(likes)
-          .where(and(eq(likes.userId, viewerId), inArray(likes.reviewId, unique)))
+          .where(and(eq(likes.userId, viewer.id), inArray(likes.reviewId, unique)))
       : [],
   ]);
-  const [authors, trackCards] = await Promise.all([
+  const releaseIds = rows.flatMap((r) => r.releaseId ?? []);
+  const trackIds = rows.flatMap((r) => r.trackId ?? []);
+  const [authors, trackCards, releaseCards, rated] = await Promise.all([
     memberRefs(
       db,
       rows.map((r) => r.userId),
     ),
-    loadTrackCards(
-      db,
-      rows.flatMap((r) => r.trackId ?? []),
-    ),
+    loadTrackCards(db, trackIds),
+    loadReleaseCards(db, releaseIds),
+    viewer.blind ? ratedReleaseIds(db, viewer.blind.userId, releaseIds, trackIds) : null,
   ]);
   const trackById = new Map(trackCards.map((t) => [t.id, t]));
-  const releaseCards = new Map(
-    (
-      await loadReleaseCards(
-        db,
-        rows.flatMap((r) => r.releaseId ?? []),
-      )
-    ).map((c) => [c.id, toReleaseCard(c)]),
-  );
+  const releaseById = new Map(releaseCards.map((c) => [c.id, toReleaseCard(c)]));
   const likedIds = new Set(liked.map((l) => l.id));
   const byId = new Map(
     rows.flatMap((r): [string, ReviewCard][] => {
       const author = authors.get(r.userId);
       const track = r.trackId ? trackById.get(r.trackId) : undefined;
-      const release = r.releaseId ? releaseCards.get(r.releaseId) : track?.release;
+      const release = r.releaseId ? releaseById.get(r.releaseId) : track?.release;
       if (!author || !release) return [];
-      return [
-        [
-          r.id,
-          {
-            id: r.id,
-            author,
-            release,
-            track: track ? { slug: track.slug, title: track.title } : null,
-            rating: r.rating,
-            body: r.body,
-            lang: r.lang as AudienceLang,
-            createdAt: r.createdAt.toISOString(),
-            likeCount: r.likeCount,
-            commentCount: r.commentCount,
-            viewerLiked: likedIds.has(r.id),
-          },
-        ],
-      ];
+      const card: ReviewCard = {
+        id: r.id,
+        author,
+        release,
+        track: track ? { slug: track.slug, title: track.title } : null,
+        rating: r.rating,
+        body: r.body,
+        lang: r.lang as AudienceLang,
+        createdAt: r.createdAt.toISOString(),
+        likeCount: r.likeCount,
+        commentCount: r.commentCount,
+        viewerLiked: likedIds.has(r.id),
+      };
+      return [[r.id, rated ? maskReviewCard(rated, card) : card]];
     }),
   );
   return unique.flatMap((id) => byId.get(id) ?? []);
@@ -133,40 +125,29 @@ export async function resolveSubject(
   return { column: { listId: subject.id }, ownerId: row.ownerId };
 }
 
-/** Who reads a review page: their id (null when signed out) and blind listening. */
-export interface SocialViewer {
-  id: string | null;
-  blind: BlindViewer | null;
-}
-
 /** A review page (null when it does not exist). Ratings follow blind listening. */
 export async function getReviewDetail(
   db: Db,
   id: string,
-  viewer: SocialViewer,
+  viewer: Viewer,
 ): Promise<ReviewDetail | null> {
-  const [card] = await loadReviewCards(db, [id], viewer.id);
-  if (!card) return null;
-  const [masked] = await blindReviewCards(db, viewer.blind, [card]);
-  const [owner] = await db
-    .select({ userId: reviews.userId })
-    .from(reviews)
-    .where(eq(reviews.id, id));
-  const ownerId = owner!.userId;
-  const isOwner = viewer.id === ownerId;
-  let hasProfile = false;
-  let blocked = false;
-  if (viewer.id) {
-    const [profile] = await db
-      .select({ id: profiles.userId })
-      .from(profiles)
-      .where(eq(profiles.userId, viewer.id));
-    hasProfile = profile !== undefined;
-    blocked = !isOwner && (await isBlockedBetween(db, viewer.id, ownerId));
-  }
+  const [[card], [owner], hasProfile] = await Promise.all([
+    loadReviewCards(db, [id], viewer),
+    db.select({ userId: reviews.userId }).from(reviews).where(eq(reviews.id, id)),
+    viewer.id
+      ? db
+          .select({ id: profiles.userId })
+          .from(profiles)
+          .where(eq(profiles.userId, viewer.id))
+          .then((rows) => rows.length > 0)
+      : false,
+  ]);
+  if (!card || !owner) return null;
+  const isOwner = viewer.id === owner.userId;
+  const blocked = !!viewer.id && !isOwner && (await isBlockedBetween(db, viewer.id, owner.userId));
   const canComment = hasProfile && !blocked;
   return {
-    review: masked!,
+    review: card,
     isOwner,
     viewerLiked: card.viewerLiked ?? false,
     canLike: canComment && !isOwner,
