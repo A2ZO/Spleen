@@ -207,7 +207,8 @@ export async function createReport(
   now: Date,
 ): Promise<void> {
   await requireListener(db, userId);
-  let subject: { reportedUserId: string } | { reviewId: string } | { commentId: string };
+  let subject:
+    { reportedUserId: string } | { reviewId: string } | { commentId: string } | { listId: string };
   let ownerId: string;
   switch (input.subject.kind) {
     case "member": {
@@ -230,6 +231,12 @@ export async function createReport(
       const { row } = await findComment(db, input.subject.id);
       subject = { commentId: row.id };
       ownerId = row.userId;
+      break;
+    }
+    case "list": {
+      const found = await resolveSubject(db, input.subject);
+      subject = { listId: input.subject.id };
+      ownerId = found.ownerId;
       break;
     }
   }

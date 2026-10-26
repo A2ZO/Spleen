@@ -1,6 +1,7 @@
 import { audienceLangSchema, cursorSchema, type AudienceLang } from "@spleen/validators";
 import { getLocale, getTranslations } from "next-intl/server";
 
+import { ReleaseGrid, TrendsGrid } from "@/components/discovery/Charts";
 import { Turntable } from "@/components/release/Turntable";
 import { FeedItemCard } from "@/components/social/FeedItemCard";
 import { MemberRow } from "@/components/social/MemberRow";
@@ -20,6 +21,54 @@ const TABS = ["friends", "popular"] as const;
 type Tab = (typeof TABS)[number];
 
 const linkClasses = "text-link underline-offset-2 hover:underline";
+
+/** Records per discovery block on the home page (one row on a wide screen). */
+const HOME_CHART_SIZE = 6;
+
+/**
+ * The week's trends and recent releases, from real data only. A block with nothing to show
+ * is left out rather than shown empty (trends already widen to every language and 30 days).
+ */
+async function DiscoveryBlocks({ lang }: { lang: AudienceLang }) {
+  const t = await getTranslations("discover");
+  const api = await getApi();
+  const [trends, recent] = await Promise.all([
+    api.discovery.trends({ lang }),
+    api.discovery.recent({}),
+  ]);
+  const more = (
+    <Link href="/discover" className={`text-sm ${linkClasses}`}>
+      {t("more")}
+    </Link>
+  );
+  return (
+    <>
+      {trends.length > 0 && (
+        <section aria-labelledby="trends" className="scroll-mt-24">
+          <SectionHeading id="trends" action={more}>
+            {lang === "fr" ? t("trendsTitleFr") : t("trendsTitleEn")}
+          </SectionHeading>
+          <TrendsGrid items={trends.slice(0, HOME_CHART_SIZE)} />
+        </section>
+      )}
+      {recent.items.length > 0 && (
+        <section aria-labelledby="recent" className="scroll-mt-24">
+          <SectionHeading
+            id="recent"
+            action={
+              <Link href="/discover#recent" className={`text-sm ${linkClasses}`}>
+                {t("seeAll")}
+              </Link>
+            }
+          >
+            {t("recentTitle")}
+          </SectionHeading>
+          <ReleaseGrid releases={recent.items.slice(0, HOME_CHART_SIZE)} />
+        </section>
+      )}
+    </>
+  );
+}
 
 /** "Older" link (cursor) and, past the first page, back to the newest. */
 async function FeedPaging({
@@ -186,6 +235,9 @@ export default async function HomePage({ params, searchParams }: Props) {
               <ButtonLink href="/search" variant="outline">
                 {t("home.ctaSearch")}
               </ButtonLink>
+              <ButtonLink href="/discover" variant="ghost">
+                {t("discover.more")}
+              </ButtonLink>
             </div>
           </div>
           <div aria-hidden="true" className="relative mx-auto hidden w-full max-w-sm md:block">
@@ -193,6 +245,7 @@ export default async function HomePage({ params, searchParams }: Props) {
             <Turntable playing className="relative h-auto w-full drop-shadow-2xl" />
           </div>
         </section>
+        <DiscoveryBlocks lang={lang} />
         <section aria-labelledby="popular">
           <SectionHeading id="popular">{t("feed.popularTitle")}</SectionHeading>
           <PopularFeed lang={lang} cursor={cursor} tabParam={null} />
@@ -202,13 +255,14 @@ export default async function HomePage({ params, searchParams }: Props) {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <header>
         <p className="font-mono text-xs tracking-[0.25em] text-star uppercase">
           {t("home.kicker")}
         </p>
         <h1 className="mt-3 text-4xl font-semibold text-balance sm:text-5xl">{t("home.title")}</h1>
       </header>
+      <DiscoveryBlocks lang={lang} />
       <section aria-labelledby="feed">
         <h2 id="feed" className="sr-only">
           {t("feed.title")}

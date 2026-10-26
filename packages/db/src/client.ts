@@ -33,7 +33,7 @@ const migrationsFolder = path.resolve(here, "../migrations");
 /** Local PGlite data directory used when DATABASE_URL is not set: `<repo>/.data/pglite`. */
 export const defaultPgliteDir = path.resolve(here, "../../../.data/pglite");
 
-export function isPostgresUrl(url: string | undefined): boolean {
+export function isPostgresUrl(url: string | undefined): url is string {
   return !!url && /^postgres(ql)?:\/\//.test(url);
 }
 

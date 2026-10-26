@@ -6,6 +6,7 @@ import { cache } from "react";
 
 import { ArtistLinks } from "@/components/catalog/ArtistLinks";
 import { ListenOn } from "@/components/catalog/ListenOn";
+import { AddToListButton } from "@/components/lists/AddToList";
 import { ListenControls } from "@/components/release/ListenControls";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { Cover } from "@/components/ui/Cover";
@@ -108,6 +109,7 @@ export default async function TrackPage({ params }: Props) {
             moods={moods}
             tracks={[]}
           />
+          {mine && <AddToListButton target={target} title={track.title} />}
           <ListenOn links={track.listenLinks} />
         </aside>
       </header>

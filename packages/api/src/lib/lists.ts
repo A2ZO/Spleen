@@ -313,16 +313,18 @@ export async function getMyLists(
   userId: string,
   target?: ListTargetInput,
 ): Promise<MyList[]> {
-  const contains = target
-    ? sql<boolean>`bool_or(${itemColumn(target)} = ${target.id})`
-    : sql<boolean>`false`;
+  const itemId = target
+    ? sql<
+        string | null
+      >`(array_agg(${listItems.id}) filter (where ${itemColumn(target)} = ${target.id}))[1]`
+    : sql<string | null>`null`;
   const rows = await db
     .select({
       id: lists.id,
       title: lists.title,
       ranked: lists.ranked,
       itemCount: sql<number>`count(${listItems.id})::int`,
-      contains: sql<boolean>`coalesce(${contains}, false)`,
+      itemId,
     })
     .from(lists)
     .leftJoin(listItems, eq(listItems.listId, lists.id))

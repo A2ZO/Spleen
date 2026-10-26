@@ -320,11 +320,11 @@ describe("list pages", () => {
   it("tell the caller which of their lists hold an item", async () => {
     const m = await member();
     const [a, b] = [await newList(m, "A"), await newList(m, "B")];
-    await m.call().list.addItem({ listId: b.id, target: artist(luneBasse) });
+    const { itemId } = await m.call().list.addItem({ listId: b.id, target: artist(luneBasse) });
     const mine = await m.call().list.mine({ target: artist(luneBasse) });
-    expect(mine.map((l) => [l.title, l.contains, l.itemCount])).toEqual([
-      ["B", true, 1],
-      ["A", false, 0],
+    expect(mine.map((l) => [l.title, l.itemId, l.itemCount])).toEqual([
+      ["B", itemId, 1],
+      ["A", null, 0],
     ]);
     expect(a.id).not.toBe(b.id);
   });
@@ -335,6 +335,20 @@ describe("list pages", () => {
     const first = await api(null).profile.lists({ username: m.username, page: 1 });
     expect(first).toMatchObject({ page: 1, pageCount: 2, total: LISTS_PAGE_SIZE + 1 });
     expect(first!.items[0]!.title).toBe(`Liste ${LISTS_PAGE_SIZE}`);
+  });
+});
+
+describe("list reports", () => {
+  it("let members report someone else's list, not their own", async () => {
+    const [owner, reader] = [await member(), await member()];
+    const { id } = await newList(owner);
+    await reader.call().report.create({ subject: { kind: "list", id }, reason: "spam" });
+    expect(await handle.db.$count(schema.reports, sql`list_id = ${id}`)).toBe(1);
+    expect(
+      await errorCode(() =>
+        owner.call().report.create({ subject: { kind: "list", id }, reason: "spam" }),
+      ),
+    ).toBe("SELF_ACTION");
   });
 });
 

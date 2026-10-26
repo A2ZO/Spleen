@@ -21,7 +21,7 @@ API : `packages/api/src/lib/social/` — `relations.ts` (blocages, cartes de mem
 | `comment.list` / `create` / `update` / `delete` | commentaires (50 par page, plus anciens d'abord) | 60     |
 | `notification.list` / `unreadCount` / `markAllRead` | notifications groupées (20)               | —          |
 | `block.add` / `remove` / `list`             | blocages                                          | 60         |
-| `report.create`                             | signaler une critique, un commentaire, un profil  | 20         |
+| `report.create`                             | signaler une critique, un commentaire, une liste, un profil | 20 |
 
 Erreurs : `SELF_ACTION` (soi-même), `ACTION_UNAVAILABLE` (blocage, réponse neutre),
 `MEMBER_NOT_FOUND`, `COMMENT_NOT_FOUND`, `LIST_NOT_FOUND`, `INVALID_CURSOR`.
@@ -60,8 +60,7 @@ Côté web, `?after=<curseur>` et un lien « Revenir aux plus récents ».
 
 ## Likes et commentaires
 
-Sujet = `{ kind: "review" | "list", id }` : les listes (jalon 8) sont déjà prises en charge
-par l'API, sans interface. Pas de like sur sa propre critique ou liste. Commentaires :
+Sujet = `{ kind: "review" | "list", id }` (listes : `docs/decouverte.md`). Pas de like sur sa propre critique ou liste. Commentaires :
 1 000 caractères max, modifiés par leur auteur seul (`edited_at` → « modifié »), supprimés
 (suppression douce, `deleted_at`) par leur auteur ou par l'auteur de la critique / liste.
 

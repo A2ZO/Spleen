@@ -34,6 +34,11 @@ export async function Header() {
                 {t("home")}
               </Link>
             </li>
+            <li className="hidden sm:block">
+              <Link href="/discover" className="rounded-md px-3 py-2 text-fg-muted hover:text-fg">
+                {t("discover")}
+              </Link>
+            </li>
             {profile && (
               <li className="hidden sm:block">
                 <Link

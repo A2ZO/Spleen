@@ -6,12 +6,12 @@ import { Card } from "@/components/ui/Card";
 import { Cover } from "@/components/ui/Cover";
 import { Link } from "@/i18n/navigation";
 
-/** List preview: fanned covers, title, owner. Lists get their own page in milestone 8. */
+/** List preview: fanned covers, title (link to the list), owner. */
 export function ListCard({ list }: { list: List }) {
   const t = useTranslations();
 
   return (
-    <Card className="flex flex-col gap-3">
+    <Card className="relative flex flex-col gap-3">
       <div aria-hidden="true" className="flex">
         {list.preview.map((release, index) => (
           <div
@@ -30,10 +30,19 @@ export function ListCard({ list }: { list: List }) {
         ))}
       </div>
       <div>
-        <h3 className="font-serif text-lg leading-tight">{list.title}</h3>
-        <p className="mt-1 text-sm text-fg-muted">{list.description}</p>
+        <h3 className="font-serif text-lg leading-tight">
+          <Link
+            href={`/list/${list.id}`}
+            className="after:absolute after:inset-0 hover:text-star focus-visible:outline-none"
+          >
+            {list.title}
+          </Link>
+        </h3>
+        {list.description && (
+          <p className="mt-1 line-clamp-2 text-sm text-fg-muted">{list.description}</p>
+        )}
         <p className="mt-2 flex flex-wrap items-center gap-2 text-xs text-fg-muted">
-          <Link href={`/u/${list.owner.username}`} className="hover:text-fg">
+          <Link href={`/u/${list.owner.username}`} className="relative z-10 hover:text-fg">
             {t("list.byline", { name: list.owner.displayName })}
           </Link>
           <span aria-hidden="true">·</span>

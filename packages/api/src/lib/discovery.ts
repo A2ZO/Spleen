@@ -2,7 +2,14 @@ import { MAIN_SECONDARY_TYPES } from "@spleen/catalog";
 import { rowsOf, schema, sql, type Db, type SQL } from "@spleen/db";
 import type { AudienceLang, ReleaseType, TopRatedInput } from "@spleen/validators";
 
-import type { GenreOption, Page, ReleaseCard, TopRatedItem, TrendItem } from "../types";
+import type {
+  GenreOption,
+  Page,
+  ReleaseCard,
+  TopRatedItem,
+  TopRatedPage,
+  TrendItem,
+} from "../types";
 import { loadReleaseCards, toReleaseCard } from "./catalog/cards";
 import { maskRelease, ratedIds } from "./listening/blind";
 import type { Viewer } from "./viewer";
@@ -217,7 +224,7 @@ export async function topRated(
   db: Db,
   viewer: Viewer,
   input: TopRatedInput,
-): Promise<Page<TopRatedItem>> {
+): Promise<TopRatedPage> {
   const m = DISCOVERY_MIN_RATINGS;
   const from = input.decade ?? input.year;
   const to = input.decade !== undefined ? input.decade + 9 : input.year;
@@ -266,6 +273,7 @@ export async function topRated(
     page: input.page,
     pageCount: Math.max(1, Math.ceil(total / TOP_RATED_PAGE_SIZE)),
     total,
+    minRatings: m,
   };
 }
 

@@ -79,6 +79,12 @@ export function UserMenu({
                 {t("myShelf")}
               </Link>
             </li>
+            {/* The header's links are hidden on phones: Discover is reachable here. */}
+            <li className="sm:hidden">
+              <Link href="/discover" className={item}>
+                {t("discover")}
+              </Link>
+            </li>
             {username && (
               <li>
                 <Link href="/settings" className={item}>

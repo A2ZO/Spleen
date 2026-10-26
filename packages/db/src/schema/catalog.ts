@@ -63,7 +63,7 @@ export const releases = pgTable(
     releaseDate: date("release_date"),
     releaseDatePrecision: datePrecision("release_date_precision"),
     coverUrl: text("cover_url"),
-    /** Main language of the release, drives FR / EN trending charts. */
+    /** Main language of the release (trends follow the members' language, not this one). */
     language: varchar("language", { length: 8 }),
     /** MusicBrainz release-group id. */
     mbid: uuid("mbid").unique(),

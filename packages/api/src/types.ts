@@ -104,6 +104,11 @@ export interface TopRatedItem {
   score: number | null;
 }
 
+export interface TopRatedPage extends Page<TopRatedItem> {
+  /** Ratings a record needs to enter the chart. */
+  minRatings: number;
+}
+
 export interface GenreOption {
   slug: string;
   name: string;
@@ -143,8 +148,8 @@ export interface MyList {
   title: string;
   ranked: boolean;
   itemCount: number;
-  /** The target asked about is already in it (false without a target). */
-  contains: boolean;
+  /** The target asked about, when it is in the list (its item id); null otherwise. */
+  itemId: string | null;
 }
 
 export interface ReleaseDetail extends ReleaseCard {

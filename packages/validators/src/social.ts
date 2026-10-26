@@ -36,7 +36,7 @@ export const memberPageSchema = z.object({
 });
 export const cursorPageSchema = z.object({ cursor: cursorSchema.optional() });
 
-/** Reasons a member can pick when reporting a review, a comment or a profile. */
+/** Reasons a member can pick when reporting a review, a comment, a list or a profile. */
 export const memberReportReasons = [
   "spam",
   "harassment",
@@ -51,6 +51,7 @@ export const reportCreateSchema = z.object({
   subject: z.discriminatedUnion("kind", [
     z.object({ kind: z.literal("review"), id: z.uuid() }),
     z.object({ kind: z.literal("comment"), id: z.uuid() }),
+    z.object({ kind: z.literal("list"), id: z.uuid() }),
     z.object({ kind: z.literal("member"), username: usernameSchema }),
   ]),
   reason: z.enum(memberReportReasons),
