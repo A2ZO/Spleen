@@ -300,6 +300,9 @@
     "MEMBER_NOT_FOUND": "Ce membre n'existe pas (ou plus).",
     "COMMENT_NOT_FOUND": "Ce commentaire n'existe plus.",
     "LIST_NOT_FOUND": "Cette liste n'existe plus.",
+    "LIST_FULL": "Cette liste est pleine (250 éléments au plus).",
+    "LIST_ITEM_EXISTS": "Il est déjà dans cette liste.",
+    "LIST_MISMATCH": "Ta liste a changé entre-temps : recharge la page.",
     "INVALID_CURSOR": "Cette page n'existe plus : recharge la liste.",
     "unknown": "Quelque chose s'est mal passé. Réessaie."
   },

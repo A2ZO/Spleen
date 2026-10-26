@@ -63,7 +63,7 @@ export const lists = pgTable(
     ranked: boolean("ranked").notNull().default(false),
     ...timestamps(),
   },
-  (t) => [index("lists_user_idx").on(t.userId)],
+  (t) => [index("lists_user_idx").on(t.userId, t.updatedAt.desc())],
 );
 
 /** List items can mix albums, tracks and artists. */
@@ -81,6 +81,10 @@ export const listItems = pgTable(
   (t) => [
     targetCheck("list_items", t),
     index("list_items_list_position_idx").on(t.listId, t.position),
+    // An item is in a list at most once (NULLs are distinct: one per target kind).
+    unique("list_items_list_release_unique").on(t.listId, t.releaseId),
+    unique("list_items_list_track_unique").on(t.listId, t.trackId),
+    unique("list_items_list_artist_unique").on(t.listId, t.artistId),
     index("list_items_release_idx").on(t.releaseId),
     index("list_items_track_idx").on(t.trackId),
     index("list_items_artist_idx").on(t.artistId),

@@ -300,6 +300,9 @@
     "MEMBER_NOT_FOUND": "This member doesn't exist (anymore).",
     "COMMENT_NOT_FOUND": "This comment no longer exists.",
     "LIST_NOT_FOUND": "This list no longer exists.",
+    "LIST_FULL": "This list is full (250 items at most).",
+    "LIST_ITEM_EXISTS": "It is already in this list.",
+    "LIST_MISMATCH": "Your list changed in the meantime: reload the page.",
     "INVALID_CURSOR": "This page no longer exists: reload the list.",
     "unknown": "Something went wrong. Try again."
   },

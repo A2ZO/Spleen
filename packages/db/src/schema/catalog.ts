@@ -35,6 +35,8 @@ export const artists = pgTable(
     mbid: uuid("mbid").unique(),
     /** Set once the discography has been imported (its releases may still be stubs). */
     discographyImportedAt: timestamp("discography_imported_at", { withTimezone: true }),
+    /** Last time the nightly job re-read the discography for new releases. */
+    discographyRefreshedAt: timestamp("discography_refreshed_at", { withTimezone: true }),
     ...timestamps(),
   },
   (t) => [

@@ -84,6 +84,44 @@ export interface ListCard {
   preview: ReleaseCard[];
 }
 
+/** One entry of a list: a release (album, EP, single), a track or an artist. */
+export type ListItem = { id: string; position: number } & (
+  | { kind: "release"; release: ReleaseCard }
+  | { kind: "track"; track: TrackCard }
+  | { kind: "artist"; artist: ArtistCard }
+);
+
+/** A list page: the list, one page of its items and what the viewer may do. */
+export interface ListDetail {
+  id: string;
+  title: string;
+  description: string;
+  ranked: boolean;
+  owner: MemberRef;
+  createdAt: string;
+  updatedAt: string;
+  items: Page<ListItem>;
+  likeCount: number;
+  /** Comments not deleted, without those hidden from the viewer by a block. */
+  commentCount: number;
+  viewerLiked: boolean;
+  isOwner: boolean;
+  /** Signed in with a profile, not the owner, no block either way. */
+  canLike: boolean;
+  /** Signed in with a profile, no block either way (owners may answer). */
+  canComment: boolean;
+}
+
+/** One of the caller's lists, in the "Add to a list" dialog. */
+export interface MyList {
+  id: string;
+  title: string;
+  ranked: boolean;
+  itemCount: number;
+  /** The target asked about is already in it (false without a target). */
+  contains: boolean;
+}
+
 export interface ReleaseDetail extends ReleaseCard {
   /** ISO date padded from `releaseDatePrecision` ("1959" → "1959-01-01"). */
   releaseDate: string | null;

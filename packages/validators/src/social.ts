@@ -10,7 +10,7 @@ export const commentBodySchema = z.string().trim().min(1).max(COMMENT_BODY_MAX);
 /** Opaque pagination cursor returned by the API ("next page starts after this"). */
 export const cursorSchema = z.string().min(1).max(200);
 
-/** Something members like and comment on: a review, or a list (lists UI in milestone 8). */
+/** Something members like and comment on: a review or a list. */
 export const socialSubjectSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("review"), id: z.uuid() }),
   z.object({ kind: z.literal("list"), id: z.uuid() }),

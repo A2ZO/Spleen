@@ -62,14 +62,16 @@ describe("migrations", () => {
 describe("seed", () => {
   it("loads the demo dataset", async () => {
     expect(await count(s.artists)).toBe(12);
-    expect(await count(s.releases)).toBe(42);
-    expect(await count(s.profiles)).toBe(5);
-    expect(await count(s.entries)).toBe(52);
+    expect(await count(s.releases)).toBe(45);
+    expect(await count(s.profiles)).toBe(10);
+    expect(await count(s.entries)).toBe(73);
     expect(await count(s.favorites)).toBe(12);
     expect(await count(s.follows)).toBe(7);
-    expect(await count(s.likes)).toBe(11);
-    expect(await count(s.comments)).toBe(6);
+    expect(await count(s.likes)).toBe(19);
+    expect(await count(s.comments)).toBe(11);
     expect(await count(s.blocks)).toBe(1);
+    expect(await count(s.lists)).toBe(6);
+    expect(await count(s.listItems)).toBe(25);
   });
 
   it("is idempotent", async () => {
