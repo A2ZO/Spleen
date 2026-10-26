@@ -1,5 +1,5 @@
 import { isMainRelease } from "@spleen/catalog";
-import { and, asc, desc, eq, inArray, isNotNull, schema, sql, type Db } from "@spleen/db";
+import { and, asc, desc, eq, inArray, isNotNull, isNull, schema, sql, type Db } from "@spleen/db";
 import type { AudienceLang } from "@spleen/validators";
 
 import type {
@@ -83,6 +83,7 @@ async function releaseReviews(
     .where(
       and(
         eq(reviews.releaseId, release.id),
+        isNull(reviews.hiddenAt),
         viewerId ? notBlockedWith(viewerId, reviews.userId) : undefined,
       ),
     )
@@ -171,6 +172,7 @@ async function releaseLists(
     .where(
       and(
         eq(listItems.releaseId, releaseId),
+        isNull(lists.hiddenAt),
         viewerId ? notBlockedWith(viewerId, lists.userId) : undefined,
       ),
     )

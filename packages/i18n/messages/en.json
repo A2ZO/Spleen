@@ -19,7 +19,8 @@
     "signOut": "Sign out",
     "notifications": "Notifications",
     "unread": "{count, plural, one {# unread} other {# unread}}",
-    "discover": "Discover"
+    "discover": "Discover",
+    "admin": "Moderation"
   },
   "theme": {
     "toggle": "Change theme",
@@ -244,6 +245,16 @@
       "cta": "Sign in to Spleen",
       "fallback": "If the button does not work, paste this link into your browser:",
       "ignore": "Did not ask for this? Just ignore this email."
+    },
+    "suspension": {
+      "subject": "Your Spleen account is suspended",
+      "preview": "The moderators suspended your account. Here is why.",
+      "greeting": "Good evening,",
+      "body": "Spleen's moderators suspended your account. You can no longer publish anything, and your reviews, lists and comments are hidden (they are not deleted).",
+      "reasonLabel": "Reason:",
+      "rights": "You can still sign in to read this reason, export your data or delete your account.",
+      "contest": "To contest this decision, write to us at {email} and explain why: someone else will review your case.",
+      "signature": "Spleen's moderators"
     }
   },
   "auth": {
@@ -358,7 +369,14 @@
     "LIST_ITEM_EXISTS": "It is already in this list.",
     "LIST_MISMATCH": "Your list changed in the meantime: reload the page.",
     "INVALID_CURSOR": "This page no longer exists: reload the list.",
-    "unknown": "Something went wrong. Try again."
+    "unknown": "Something went wrong. Try again.",
+    "ACCOUNT_SUSPENDED": "Your account is suspended.",
+    "NOT_FOUND": "This page does not exist.",
+    "REPORT_NOT_FOUND": "This report no longer exists.",
+    "MODERATION_ACTION_INVALID": "This action does not apply to this report.",
+    "ALREADY_SUSPENDED": "This account is already suspended.",
+    "NOT_SUSPENDED": "This account is not suspended.",
+    "CANNOT_MODERATE_ADMIN": "Admin accounts cannot be suspended from the site."
   },
   "secondaryType": {
     "compilation": "Compilation",
@@ -626,7 +644,18 @@
     "excerpt": "“{text}”",
     "pagingLabel": "Notification pages",
     "older": "Older",
-    "newest": "Back to the newest"
+    "newest": "Back to the newest",
+    "moderation": {
+      "dismiss": "A report about {subject, select, review {your review} list {your list} comment {your comment} member {your account} other {your content}} was dismissed.",
+      "resolve": "A report was handled.",
+      "hide": "The moderators hid {subject, select, review {your review} list {your list} comment {your comment} member {your account} other {your content}}.",
+      "restore": "The moderators restored {subject, select, review {your review} list {your list} comment {your comment} member {your account} other {your content}}.",
+      "delete": "The moderators deleted {subject, select, review {your review} list {your list} comment {your comment} member {your account} other {your content}}.",
+      "suspend": "The moderators suspended your account.",
+      "unsuspend": "Your account's suspension is lifted.",
+      "reason": "Reason: {reason}",
+      "contest": "To contest it, write to <email></email>."
+    }
   },
   "blocks": {
     "title": "Blocked members",
@@ -675,5 +704,116 @@
     "reviewsTitle": "Popular reviews",
     "more": "Discover more",
     "seeAll": "See all"
+  },
+  "suspended": {
+    "title": "Your account is suspended",
+    "since": "Since {date}.",
+    "reasonTitle": "Why",
+    "effects": "You can no longer publish anything. Your reviews, lists and comments are hidden: nobody sees them, but they are not deleted.",
+    "contestTitle": "Contest the decision",
+    "contestBody": "Write to us at <email></email> and explain why. Someone else will review your case.",
+    "dataTitle": "Your data stays yours",
+    "dataBody": "You can download all your data, or delete your account for good.",
+    "export": "Download my data",
+    "signOut": "Sign me out",
+    "deleteTitle": "Delete my account"
+  },
+  "admin": {
+    "title": "Moderation",
+    "subtitle": "Every decision keeps its reason and its author. The member concerned receives the reason.",
+    "tabs": {
+      "label": "Moderation sections",
+      "reports": "Reports",
+      "history": "History",
+      "suspended": "Suspended accounts"
+    },
+    "statusFilter": "Filter by status",
+    "kindFilter": "Filter by type",
+    "status": {
+      "open": "To handle",
+      "resolved": "Handled",
+      "dismissed": "Dismissed",
+      "all": "All"
+    },
+    "kind": {
+      "all": "All",
+      "member": "Member",
+      "review": "Review",
+      "list": "List",
+      "comment": "Comment",
+      "catalog": "Catalog"
+    },
+    "count": "{count, plural, =0 {No reports} one {# report} other {# reports}}",
+    "empty": "Nothing to handle. The room is quiet tonight.",
+    "reasons": {
+      "spam": "Spam or advertising",
+      "harassment": "Harassment",
+      "hate": "Hate speech",
+      "spoiler": "Spoiler",
+      "inappropriate": "Inappropriate content",
+      "catalog_error": "Catalog error",
+      "catalog_addition": "Catalog addition",
+      "other": "Other"
+    },
+    "hiddenBadge": "Hidden",
+    "suspendedBadge": "Suspended",
+    "adminBadge": "admin",
+    "subjectLabel": "Content",
+    "untitled": "(untitled)",
+    "contentGone": "Content deleted",
+    "memberLabel": "Reported member",
+    "authorLabel": "Author",
+    "reporterLabel": "Reported by",
+    "reporterGone": "Account since deleted",
+    "detailsLabel": "Details",
+    "othersLabel": "Other reports",
+    "others": "{count, plural, one {# other open report on this content} other {# other open reports on this content}}",
+    "resolutionLabel": "Decision",
+    "resolution": "{status, select, dismissed {Dismissed} other {Handled}} by {name} on {date}.",
+    "moderatorGone": "a deleted account",
+    "decisionLabel": "Decision",
+    "decision": {
+      "dismiss": "Dismiss",
+      "resolve": "Mark as handled",
+      "hide": "Hide the content",
+      "delete": "Delete the content",
+      "suspend": "Suspend the account"
+    },
+    "decisionSubmit": {
+      "dismiss": "Dismiss the report",
+      "resolve": "Mark as handled",
+      "hide": "Hide",
+      "delete": "Delete for good",
+      "suspend": "Suspend the account"
+    },
+    "reasonLabel": "Reason for the decision",
+    "reasonHint": "Kept in the history and sent to the member concerned (except dismissals and catalog reports).",
+    "done": "Done.",
+    "doneEmailFailed": "Done, but the email did not leave: the in-site notification remains.",
+    "action": {
+      "dismiss": "Dismissed",
+      "resolve": "Handled",
+      "hide": "Hidden",
+      "restore": "Restored",
+      "delete": "Deleted",
+      "suspend": "Suspension",
+      "unsuspend": "Suspension lifted"
+    },
+    "anonymizedBadge": "Anonymised",
+    "historyHint": "A year after each decision, only its action, reason and category remain: links to people and the excerpt are erased.",
+    "historyEmpty": "No decisions yet.",
+    "historyBy": "By {moderator} · about {member}",
+    "restoreTitle": "Restore this content",
+    "restoreReasonLabel": "Why restore it?",
+    "restoreSubmit": "Restore",
+    "suspendedEmpty": "No suspended accounts.",
+    "suspendedSince": "Suspended on {date}",
+    "unsuspendTitle": "Lift the suspension",
+    "unsuspendReasonLabel": "Why lift the suspension?",
+    "unsuspendSubmit": "Lift the suspension",
+    "suspendTitle": "Suspend an account",
+    "suspendHint": "Without a report: keep it for obvious cases. Their content is hidden, not deleted, and an email gives them the reason.",
+    "usernameLabel": "Username",
+    "suspendSubmit": "Suspend"
   }
 }

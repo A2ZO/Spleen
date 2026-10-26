@@ -41,6 +41,11 @@ import {
   slugSchema,
   usernameSchema,
   wantToListenSchema,
+  memberModerationSchema,
+  moderationHistorySchema,
+  reportDecisionSchema,
+  reportQueueSchema,
+  restoreContentSchema,
 } from "@spleen/validators";
 import { z } from "zod";
 
@@ -71,7 +76,6 @@ import {
   blindReleaseDetail,
   blindSearchResults,
   blindTrackDetail,
-  blindViewer,
 } from "./lib/listening/blind";
 import {
   createEntry,
@@ -116,11 +120,23 @@ import {
   setLike,
   updateComment,
 } from "./lib/social/interactions";
+import {
+  decideReport,
+  mySuspension,
+  restoreContent,
+  suspendMember,
+  unsuspendMember,
+} from "./lib/moderation/decisions";
+import { CONTACT_PLACEHOLDER } from "./lib/moderation/emails";
+import { listModerationHistory } from "./lib/moderation/history";
+import { listReports, listSuspended } from "./lib/moderation/queue";
 import { listNotifications, markAllRead, unreadCount } from "./lib/social/notifications";
 import { getReviewDetail } from "./lib/social/reviews";
-import { viewerFor, type Viewer } from "./lib/viewer";
+import type { Viewer } from "./lib/viewer";
 import { usernameStatus } from "./lib/usernames";
 import {
+  accountProcedure,
+  adminProcedure,
   createCallerFactory,
   fail,
   protectedProcedure,
@@ -169,10 +185,16 @@ const reviewWrite = protectedProcedure.use(async ({ ctx, next }) => {
 });
 
 /** Blind listening settings of the caller (null when signed out or not in blind mode). */
-const blindOf = async (ctx: Context) => blindViewer(ctx.db(), await ctx.user());
+/** Who reads (an active member or a visitor) and their blind listening, from `ctx.account()`. */
+const viewerOf = async (ctx: Pick<Context, "account">): Promise<Viewer> => {
+  const account = await ctx.account();
+  if (!account || account.suspendedAt) return { id: null, blind: null };
+  const id = account.user.id;
+  return { id, blind: account.blindMode ? { userId: id } : null };
+};
+const blindOf = async (ctx: Pick<Context, "account">) => (await viewerOf(ctx)).blind;
 
 /** Who reads: id and blind listening (both null when signed out). */
-const viewerOf = async (ctx: Context): Promise<Viewer> => viewerFor(ctx.db(), await ctx.user());
 
 /** A signed-in procedure that spends one write from `bucket` first. */
 const limitedWrite = (bucket: string, rule: { window: number; max: number }) =>
@@ -196,7 +218,7 @@ export const appRouter = router({
   feed: router({
     /** Activity of the members the caller follows, newest first. */
     friends: protectedProcedure.input(cursorPageSchema).query(async ({ input, ctx }) => {
-      const blind = await blindViewer(ctx.db(), ctx.user);
+      const { blind } = await viewerOf(ctx);
       return friendsFeed(ctx.db(), { id: ctx.user.id, blind }, input.cursor);
     }),
     /** Most liked and commented reviews of the week, in one language. */
@@ -274,7 +296,14 @@ export const appRouter = router({
   notification: router({
     list: protectedProcedure
       .input(cursorPageSchema)
-      .query(({ input, ctx }) => listNotifications(ctx.db(), ctx.user.id, input.cursor)),
+      .query(({ input, ctx }) =>
+        listNotifications(
+          ctx.db(),
+          ctx.user.id,
+          input.cursor,
+          ctx.contactEmail ?? CONTACT_PLACEHOLDER,
+        ),
+      ),
     /** Unread groups, for the header badge (0 when signed out). */
     unreadCount: publicProcedure.query(async ({ ctx }) => {
       const user = await ctx.user();
@@ -527,7 +556,16 @@ export const appRouter = router({
     /** Null when signed out; `profile` is null until onboarding is done. */
     me: publicProcedure.query(async ({ ctx }) => {
       const user = await ctx.user();
-      return user ? getMe(ctx.db(), user, ctx.now) : null;
+      if (!user) return null;
+      return getMe(ctx.db(), user, ctx.now, (await ctx.account())?.role === "admin");
+    }),
+    /**
+     * The caller's suspension and its reason: null when signed out or not suspended. Only the
+     * signed-in member sees it (the sign-in page never tells whether an address is suspended).
+     */
+    suspension: publicProcedure.query(async ({ ctx }) => {
+      const account = await ctx.account();
+      return account ? mySuspension(ctx.db(), account, ctx.contactEmail) : null;
     }),
     usernameStatus: protectedProcedure
       .input(z.object({ username: z.string().max(64) }))
@@ -559,12 +597,34 @@ export const appRouter = router({
     removeAvatar: protectedProcedure.mutation(({ ctx }) =>
       removeAvatar(ctx.db(), ctx.storage(), ctx.user),
     ),
-    export: protectedProcedure.query(({ ctx }) => exportAccount(ctx.db(), ctx.user, ctx.now)),
-    delete: protectedProcedure
+    // Data rights stay open to a suspended account.
+    export: accountProcedure.query(({ ctx }) => exportAccount(ctx.db(), ctx.user, ctx.now)),
+    delete: accountProcedure
       .input(deleteAccountSchema)
       .mutation(({ input, ctx }) =>
         deleteAccount(ctx.db(), ctx.storage(), ctx.user, input.confirmUsername, ctx.now),
       ),
+  }),
+  admin: router({
+    reports: adminProcedure
+      .input(reportQueueSchema)
+      .query(({ input, ctx }) => listReports(ctx.db(), input)),
+    decide: adminProcedure
+      .input(reportDecisionSchema)
+      .mutation(({ input, ctx }) => decideReport(ctx.db(), ctx, ctx.admin.id, input, ctx.now)),
+    suspended: adminProcedure.query(({ ctx }) => listSuspended(ctx.db())),
+    suspend: adminProcedure
+      .input(memberModerationSchema)
+      .mutation(({ input, ctx }) => suspendMember(ctx.db(), ctx, ctx.admin.id, input, ctx.now)),
+    unsuspend: adminProcedure
+      .input(memberModerationSchema)
+      .mutation(({ input, ctx }) => unsuspendMember(ctx.db(), ctx.admin.id, input, ctx.now)),
+    restore: adminProcedure
+      .input(restoreContentSchema)
+      .mutation(({ input, ctx }) => restoreContent(ctx.db(), ctx.admin.id, input, ctx.now)),
+    history: adminProcedure
+      .input(moderationHistorySchema)
+      .query(({ input, ctx }) => listModerationHistory(ctx.db(), input.page)),
   }),
 });
 

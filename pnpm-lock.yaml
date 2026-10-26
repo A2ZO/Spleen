@@ -269,6 +269,12 @@ importers:
       '@spleen/db':
         specifier: workspace:*
         version: link:../db
+      '@spleen/design-tokens':
+        specifier: workspace:*
+        version: link:../design-tokens
+      '@spleen/i18n':
+        specifier: workspace:*
+        version: link:../i18n
       '@spleen/infra':
         specifier: workspace:*
         version: link:../infra
@@ -285,9 +291,6 @@ importers:
       '@spleen/config':
         specifier: workspace:*
         version: link:../config
-      '@spleen/i18n':
-        specifier: workspace:*
-        version: link:../i18n
       '@types/node':
         specifier: 24.19.2
         version: 24.19.2

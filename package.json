@@ -19,8 +19,11 @@
     "db:migrate": "pnpm --filter @spleen/db migrate",
     "db:seed": "pnpm --filter @spleen/db seed",
     "db:reset": "pnpm --filter @spleen/db reset",
+    "admin:grant": "pnpm --filter @spleen/db admin grant",
+    "admin:revoke": "pnpm --filter @spleen/db admin revoke",
     "db:seed:catalog": "pnpm --filter @spleen/api seed:catalog",
-    "catalog:refresh": "pnpm --filter @spleen/api refresh:catalog"
+    "catalog:refresh": "pnpm --filter @spleen/api refresh:catalog",
+    "moderation:anonymize": "pnpm --filter @spleen/api anonymize:moderation"
   },
   "devDependencies": {
     "@spleen/config": "workspace:*",

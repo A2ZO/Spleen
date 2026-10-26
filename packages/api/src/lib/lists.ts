@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, schema, sql, type Db, type DbOrTx } from "@spleen/db";
+import { and, asc, desc, eq, isNull, schema, sql, type Db, type DbOrTx } from "@spleen/db";
 import {
   LIST_ITEMS_MAX,
   type ListCreateInput,
@@ -222,7 +222,7 @@ async function loadListItems(
 }
 
 /**
- * A list page (null when it does not exist). Blocks either way leave the list readable but
+ * A list page (null when it does not exist or is hidden by moderation). Blocks either way leave the list readable but
  * remove the like and comment buttons, and hide the blocked members' comments from the
  * count (except on the viewer's own list, where they can still delete them).
  */
@@ -247,13 +247,13 @@ export async function getListDetail(
       updatedAt: lists.updatedAt,
       total: sql<number>`(select count(*)::int from "list_items" where "list_items"."list_id" = "lists"."id")`,
       likeCount: sql<number>`(select count(*)::int from "likes" where "likes"."list_id" = "lists"."id")`,
-      commentCount: sql<number>`(select count(*)::int from "comments" where "comments"."list_id" = "lists"."id" and "comments"."deleted_at" is null ${hiddenComments})`,
+      commentCount: sql<number>`(select count(*)::int from "comments" where "comments"."list_id" = "lists"."id" and "comments"."deleted_at" is null and "comments"."hidden_at" is null ${hiddenComments})`,
       viewerLiked: viewer.id
         ? sql<boolean>`exists (select 1 from "likes" where "likes"."list_id" = "lists"."id" and "likes"."user_id" = ${viewer.id})`
         : sql<boolean>`false`,
     })
     .from(lists)
-    .where(eq(lists.id, id));
+    .where(and(eq(lists.id, id), isNull(lists.hiddenAt)));
   if (!list) return null;
   const isOwner = viewer.id === list.userId;
   const offset = (page - 1) * LIST_PAGE_SIZE;
@@ -328,7 +328,7 @@ export async function getMyLists(
     })
     .from(lists)
     .leftJoin(listItems, eq(listItems.listId, lists.id))
-    .where(eq(lists.userId, userId))
+    .where(and(eq(lists.userId, userId), isNull(lists.hiddenAt)))
     .groupBy(lists.id)
     .orderBy(desc(lists.updatedAt));
   return rows;

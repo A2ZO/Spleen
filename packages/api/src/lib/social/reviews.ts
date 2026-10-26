@@ -22,14 +22,15 @@ export function reviewCountColumns(viewerId: string | null) {
     : sql``;
   return {
     likeCount: sql<number>`(select count(*)::int from "likes" where "likes"."review_id" = "reviews"."id")`,
-    commentCount: sql<number>`(select count(*)::int from "comments" where "comments"."review_id" = "reviews"."id" and "comments"."deleted_at" is null ${visible})`,
+    commentCount: sql<number>`(select count(*)::int from "comments" where "comments"."review_id" = "reviews"."id" and "comments"."deleted_at" is null and "comments"."hidden_at" is null ${visible})`,
   };
 }
 
 /**
  * Review cards in the order of `ids`, for reviews of a release or of a track (shown with the
  * track's first release). `viewer.id` fills `viewerLiked`; ratings follow blind listening.
- * Two rounds of queries: the reviews, then everything they point to at once.
+ * Two rounds of queries: the reviews, then everything they point to at once. Hidden reviews
+ * and those of suspended members are left out.
  */
 export async function loadReviewCards(
   db: Db,
@@ -52,7 +53,7 @@ export async function loadReviewCards(
         ...reviewCountColumns(viewer.id),
       })
       .from(reviews)
-      .where(inArray(reviews.id, unique)),
+      .where(and(inArray(reviews.id, unique), isNull(reviews.hiddenAt))),
     viewer.id
       ? db
           .select({ id: likes.reviewId })
@@ -113,14 +114,14 @@ export async function resolveSubject(
     const [row] = await db
       .select({ ownerId: reviews.userId })
       .from(reviews)
-      .where(eq(reviews.id, subject.id));
+      .where(and(eq(reviews.id, subject.id), isNull(reviews.hiddenAt)));
     if (!row) fail("NOT_FOUND", "REVIEW_NOT_FOUND");
     return { column: { reviewId: subject.id }, ownerId: row.ownerId };
   }
   const [row] = await db
     .select({ ownerId: lists.userId })
     .from(lists)
-    .where(eq(lists.id, subject.id));
+    .where(and(eq(lists.id, subject.id), isNull(lists.hiddenAt)));
   if (!row) fail("NOT_FOUND", "LIST_NOT_FOUND");
   return { column: { listId: subject.id }, ownerId: row.ownerId };
 }
@@ -155,12 +156,13 @@ export async function getReviewDetail(
   };
 }
 
-/** Not deleted comments of a subject (SQL condition). */
+/** Not deleted (nor hidden) comments of a subject (SQL condition). */
 export function liveCommentsOf(column: ResolvedSubject["column"]) {
   return and(
     "reviewId" in column
       ? eq(comments.reviewId, column.reviewId)
       : eq(comments.listId, column.listId),
     isNull(comments.deletedAt),
+    isNull(comments.hiddenAt),
   );
 }

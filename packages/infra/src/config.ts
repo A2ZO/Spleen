@@ -27,6 +27,10 @@ export const s3Configured = (env: Env = process.env) =>
 export const googleConfigured = (env: Env = process.env) =>
   set(env, "GOOGLE_CLIENT_ID") && set(env, "GOOGLE_CLIENT_SECRET");
 
+/** Where members write to contest a moderation decision (legal pages, suspension notices). */
+export const contactEmail = (env: Env = process.env): string | null =>
+  env.CONTACT_EMAIL?.trim() || null;
+
 /** Names (never values) of the variables production needs but lacks. */
 export function missingProductionVariables(env: Env = process.env): string[] {
   const required = [
@@ -34,6 +38,7 @@ export function missingProductionVariables(env: Env = process.env): string[] {
     "BETTER_AUTH_URL",
     "BREVO_API_KEY",
     "EMAIL_FROM",
+    "CONTACT_EMAIL",
     ...S3_VARIABLES,
   ];
   return required.filter((name) => !set(env, name));

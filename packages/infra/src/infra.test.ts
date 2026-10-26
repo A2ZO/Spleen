@@ -27,6 +27,7 @@ describe("config", () => {
     BETTER_AUTH_URL: "https://spleen.example",
     BREVO_API_KEY: "x",
     EMAIL_FROM: "Spleen <bonjour@spleen.example>",
+    CONTACT_EMAIL: "bonjour@spleen.example",
     S3_ENDPOINT: "https://r2.example",
     S3_BUCKET: "spleen",
     S3_ACCESS_KEY_ID: "x",

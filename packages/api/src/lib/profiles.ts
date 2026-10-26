@@ -1,4 +1,17 @@
-import { and, asc, desc, eq, gte, inArray, isNotNull, lt, schema, sql, type Db } from "@spleen/db";
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  gte,
+  inArray,
+  isNotNull,
+  isNull,
+  lt,
+  schema,
+  sql,
+  type Db,
+} from "@spleen/db";
 import type { AudienceLang } from "@spleen/validators";
 
 import type {
@@ -58,7 +71,13 @@ async function findProfile(
   const [row] = await db
     .select()
     .from(profiles)
-    .where(sql`lower(${profiles.username}) = ${username.toLowerCase()}`)
+    // A suspended member's profile is gone for everyone (their data stays, hidden).
+    .where(
+      and(
+        sql`lower(${profiles.username}) = ${username.toLowerCase()}`,
+        isNull(profiles.suspendedAt),
+      ),
+    )
     .limit(1);
   if (!row) return null;
   const isOwner = viewer.id === row.userId;
@@ -101,7 +120,7 @@ async function loadDiaryEntries(
   where: ReturnType<typeof and>,
   options: { order: "newest" | "oldest"; limit: number; offset?: number },
 ): Promise<DiaryEntry[]> {
-  const hasReview = sql<boolean>`exists (select 1 from ${reviews} where ${reviews.entryId} = ${entries.id})`;
+  const hasReview = sql<boolean>`exists (select 1 from ${reviews} where ${reviews.entryId} = ${entries.id} and ${reviews.hiddenAt} is null)`;
   const dir = options.order === "newest" ? desc : asc;
   const rows = await db
     .select({
@@ -353,7 +372,11 @@ export async function getReviewsPage(
 ): Promise<Page<ReviewCard> | null> {
   const access = await findProfile(db, username, viewer);
   if (!access) return null;
-  const where = and(eq(reviews.userId, access.userId), isNotNull(reviews.releaseId));
+  const where = and(
+    eq(reviews.userId, access.userId),
+    isNotNull(reviews.releaseId),
+    isNull(reviews.hiddenAt),
+  );
   const [rows, total] = await Promise.all([
     db
       .select({
@@ -445,7 +468,7 @@ export async function getProfileLists(
 ): Promise<Page<ListCard> | null> {
   const access = await findProfile(db, username, viewer);
   if (!access) return null;
-  const where = eq(lists.userId, access.userId);
+  const where = and(eq(lists.userId, access.userId), isNull(lists.hiddenAt));
   const [rows, total] = await Promise.all([
     db
       .select(listRowColumns)

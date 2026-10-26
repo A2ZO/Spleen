@@ -330,7 +330,7 @@ export interface CommentView {
 /** Similar notifications shown as one ("Camille and 3 others liked your review"). */
 export interface NotificationGroup {
   key: string;
-  type: "follow" | "like" | "comment";
+  type: "follow" | "like" | "comment" | "moderation";
   latestAt: string;
   unread: boolean;
   /** Most recent first, at most 3. */
@@ -340,6 +340,18 @@ export interface NotificationGroup {
   list: { id: string; title: string } | null;
   /** Latest comment of a comment group (shortened). */
   commentExcerpt: string | null;
+  /** A moderation decision about the recipient or their content, with its reason. */
+  moderation: ModerationNotice | null;
+}
+
+export interface ModerationNotice {
+  action: ModerationActionKind;
+  subject: ModerationSubject;
+  reason: string;
+  /** What was judged, as it was (shortened). */
+  excerpt: string;
+  /** Where to contest the decision (placeholder until configured). */
+  contactEmail: string;
 }
 
 export interface BlockedMember {
@@ -471,6 +483,8 @@ export interface Me {
   userId: string;
   email: string;
   profile: MyProfile | null;
+  /** Admins see the moderation link (every admin page checks the role on the server). */
+  isAdmin: boolean;
 }
 
 /** Data export (JSON download). Versioned so the format can evolve. */
@@ -478,4 +492,87 @@ export interface AccountExport {
   format: "spleen-export/1";
   exportedAt: string;
   [section: string]: unknown;
+}
+
+export type ModerationActionKind =
+  "dismiss" | "resolve" | "hide" | "restore" | "delete" | "suspend" | "unsuspend";
+export type ModerationSubject = "member" | "review" | "list" | "comment" | "catalog";
+
+/** Who a report or a decision is about, as admins see it (suspended members included). */
+export interface ModeratedMember {
+  username: string;
+  displayName: string;
+  suspended: boolean;
+  admin: boolean;
+}
+
+/** What a report points to, for the moderation queue. */
+export interface ReportSubjectView {
+  kind: ModerationSubject;
+  /** Path of the page without the locale (null for a catalog addition or deleted content). */
+  href: string | null;
+  /** Title, name or text excerpt. */
+  label: string;
+  /** Author of the content, or the reported member. */
+  member: ModeratedMember | null;
+  hidden: boolean;
+}
+
+export type ReportReason =
+  | "spam"
+  | "harassment"
+  | "hate"
+  | "spoiler"
+  | "inappropriate"
+  | "catalog_error"
+  | "catalog_addition"
+  | "other";
+
+export interface ReportView {
+  id: string;
+  reason: ReportReason;
+  details: string;
+  status: "open" | "resolved" | "dismissed";
+  createdAt: string;
+  /** Null once the reporter deleted their account. */
+  reporter: MemberRef | null;
+  subject: ReportSubjectView;
+  /** Other open reports on the same subject. */
+  sameSubjectOpen: number;
+  resolution: { by: MemberRef | null; at: string; note: string | null } | null;
+  /** Decisions available now (none once the report is closed). */
+  decisions: ("dismiss" | "resolve" | "hide" | "delete" | "suspend")[];
+}
+
+export interface ModerationActionView {
+  id: string;
+  action: ModerationActionKind;
+  subject: ModerationSubject;
+  reason: string;
+  reportReason: ReportReason | null;
+  moderator: MemberRef | null;
+  target: MemberRef | null;
+  excerpt: string;
+  createdAt: string;
+  /** Older than a year: links to people and the excerpt are gone. */
+  anonymized: boolean;
+  /** Content hidden by this decision that is still hidden, so it can be shown again. */
+  restorable: { kind: "review" | "list" | "comment"; id: string } | null;
+}
+
+export interface SuspendedMemberView {
+  username: string;
+  displayName: string;
+  suspendedAt: string;
+  reason: string;
+}
+
+/** What a suspended member sees once signed in. */
+export interface MySuspension {
+  /** To confirm an account deletion, which stays possible. */
+  username: string;
+  suspendedAt: string;
+  reason: string;
+  /** Where to contest the decision (placeholder until configured). */
+  contactEmail: string;
 }

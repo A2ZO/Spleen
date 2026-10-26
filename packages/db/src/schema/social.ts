@@ -13,7 +13,7 @@ import {
 
 import { createdAt, exactlyOne, id, timestamps } from "./_shared";
 import { user } from "./auth";
-import { lists, reviews } from "./content";
+import { hiddenColumns, lists, reviews } from "./content";
 import { targetColumns } from "./target";
 
 const userRef = (name: string) => uuid(name).references(() => user.id, { onDelete: "cascade" });
@@ -71,10 +71,12 @@ export const comments = pgTable(
     /** Set when the author edits the text (shown as "edited"). */
     editedAt: timestamp("edited_at", { withTimezone: true }),
     deletedAt: timestamp("deleted_at", { withTimezone: true }),
+    ...hiddenColumns(),
     ...timestamps(),
   },
   (t) => [
     check("comments_one_subject", exactlyOne(t.reviewId, t.listId)),
+    check("comments_hidden_pair", sql`(${t.hiddenAt} is null) = (${t.hiddenBy} is null)`),
     index("comments_review_idx").on(t.reviewId, t.createdAt),
     index("comments_list_idx").on(t.listId, t.createdAt),
     index("comments_user_idx").on(t.userId),
@@ -83,7 +85,12 @@ export const comments = pgTable(
   ],
 );
 
-export const notificationType = pgEnum("notification_type", ["follow", "like", "comment"]);
+export const notificationType = pgEnum("notification_type", [
+  "follow",
+  "like",
+  "comment",
+  "moderation",
+]);
 
 export const notifications = pgTable(
   "notifications",
@@ -96,6 +103,10 @@ export const notifications = pgTable(
     reviewId: uuid("review_id").references(() => reviews.id, { onDelete: "cascade" }),
     listId: uuid("list_id").references(() => lists.id, { onDelete: "cascade" }),
     commentId: uuid("comment_id").references(() => comments.id, { onDelete: "cascade" }),
+    /** A moderation decision about the recipient or their content (its reason is shown). */
+    moderationActionId: uuid("moderation_action_id").references(() => moderationActions.id, {
+      onDelete: "cascade",
+    }),
     /**
      * Similar notifications share a key and show as one ("Camille and 3 others liked your
      * review"): likes and comments per subject, follows per day (`lib/social/notifications.ts`).
@@ -181,5 +192,57 @@ export const reports = pgTable(
         sql`coalesce(${t.reportedUserId}, ${t.reviewId}, ${t.listId}, ${t.commentId}, ${t.releaseId}, ${t.trackId}, ${t.artistId})`,
       )
       .where(sql`${t.status} = 'open' and ${t.reporterId} is not null`),
+  ],
+);
+
+export const moderationActionKind = pgEnum("moderation_action_kind", [
+  "dismiss",
+  "resolve",
+  "hide",
+  "restore",
+  "delete",
+  "suspend",
+  "unsuspend",
+]);
+export const moderationSubject = pgEnum("moderation_subject", [
+  "member",
+  "review",
+  "list",
+  "comment",
+  "catalog",
+]);
+
+/**
+ * Moderation history: every decision with its reason and its author. Kept when the content,
+ * the member or the moderator is deleted (links set to null, `excerpt` keeps what was
+ * judged). A year after the decision it is anonymised (`anonymized_at`): the action, its
+ * reason and the report category stay, every link to a person and the excerpt go.
+ */
+export const moderationActions = pgTable(
+  "moderation_actions",
+  {
+    id: id(),
+    action: moderationActionKind("action").notNull(),
+    subject: moderationSubject("subject").notNull(),
+    reason: text("reason").notNull(),
+    /** Category of the report that led to the decision, if any. */
+    reportReason: reportReason("report_reason"),
+    moderatorId: uuid("moderator_id").references(() => user.id, { onDelete: "set null" }),
+    /** The member sanctioned or whose content was judged. */
+    targetUserId: uuid("target_user_id").references(() => user.id, { onDelete: "set null" }),
+    reviewId: uuid("review_id").references(() => reviews.id, { onDelete: "set null" }),
+    listId: uuid("list_id").references(() => lists.id, { onDelete: "set null" }),
+    commentId: uuid("comment_id").references(() => comments.id, { onDelete: "set null" }),
+    reportId: uuid("report_id").references(() => reports.id, { onDelete: "set null" }),
+    excerpt: text("excerpt").notNull().default(""),
+    anonymizedAt: timestamp("anonymized_at", { withTimezone: true }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    index("moderation_actions_created_idx").on(t.createdAt.desc()),
+    index("moderation_actions_target_idx").on(t.targetUserId),
+    index("moderation_actions_anonymize_idx")
+      .on(t.createdAt)
+      .where(sql`${t.anonymizedAt} is null`),
   ],
 );

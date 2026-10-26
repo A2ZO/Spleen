@@ -4,6 +4,7 @@ import { sql } from "drizzle-orm";
 import { generateDrizzleJson, generateMigration } from "drizzle-kit/api";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { setAdminRole } from "./admin";
 import { createDb, migrationDatabaseUrl, type DbHandle } from "./client";
 import {
   deleteE2eAccounts,
@@ -63,19 +64,28 @@ describe("seed", () => {
   it("loads the demo dataset", async () => {
     expect(await count(s.artists)).toBe(12);
     expect(await count(s.releases)).toBe(45);
-    expect(await count(s.profiles)).toBe(10);
+    expect(await count(s.profiles)).toBe(11);
     expect(await count(s.entries)).toBe(73);
     expect(await count(s.favorites)).toBe(12);
     expect(await count(s.follows)).toBe(7);
     expect(await count(s.likes)).toBe(19);
-    expect(await count(s.comments)).toBe(11);
+    expect(await count(s.comments)).toBe(12);
     expect(await count(s.blocks)).toBe(1);
     expect(await count(s.lists)).toBe(6);
     expect(await count(s.listItems)).toBe(25);
+    expect(await count(s.reports)).toBe(7);
+    expect(await count(s.moderationActions)).toBe(1);
   });
 
   it("is idempotent", async () => {
-    const tables = [s.tracks, s.userItemState, s.listItems, s.notifications] as const;
+    const tables = [
+      s.tracks,
+      s.userItemState,
+      s.listItems,
+      s.notifications,
+      s.reports,
+      s.moderationActions,
+    ] as const;
     const before = await Promise.all(tables.map((t) => count(t)));
     await seed(handle.db);
     const after = await Promise.all(tables.map((t) => count(t)));
@@ -347,5 +357,37 @@ describe("migrationDatabaseUrl", () => {
   it("falls back to PGlite without DATABASE_URL", () => {
     expect(migrationDatabaseUrl({ DATABASE_URL_UNPOOLED: direct })).toBeUndefined();
     expect(migrationDatabaseUrl({ DATABASE_URL: "memory://" })).toBe("memory://");
+  });
+});
+
+describe("admin role (command line only)", () => {
+  const roleOf = async (userId: string) =>
+    (
+      await handle.db
+        .select({ role: s.profiles.role })
+        .from(s.profiles)
+        .where(sql`${s.profiles.userId} = ${userId}`)
+    )[0]?.role;
+
+  it("grants and revokes the role by email, case-insensitive", async () => {
+    const vince = fixtureId(302);
+    expect(await setAdminRole(handle.db, " VinylVince@Example.test ", true)).toBe("granted");
+    expect(await roleOf(vince)).toBe("admin");
+    expect(await setAdminRole(handle.db, "vinylvince@example.test", true)).toBe("unchanged");
+    expect(await setAdminRole(handle.db, "vinylvince@example.test", false)).toBe("revoked");
+    expect(await roleOf(vince)).toBe("member");
+  });
+
+  it("refuses an unknown email and an account without a profile", async () => {
+    expect(await setAdminRole(handle.db, "nobody@example.test", true)).toBe("no-account");
+    const id = fixtureId(44_999);
+    await handle.db
+      .insert(s.user)
+      .values({ id, name: "Sans profil", email: "sans-profil@example.test", emailVerified: true });
+    expect(await setAdminRole(handle.db, "sans-profil@example.test", true)).toBe("no-profile");
+  });
+
+  it("seeds a demo admin", async () => {
+    expect(await roleOf(fixtureId(44_000))).toBe("admin");
   });
 });

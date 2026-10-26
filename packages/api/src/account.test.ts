@@ -81,6 +81,7 @@ describe("account.me", () => {
       userId: user.id,
       email: "fresh@example.test",
       profile: null,
+      isAdmin: false,
     });
   });
 

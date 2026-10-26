@@ -1,4 +1,4 @@
-import { and, asc, eq, schema, sql, type Db } from "@spleen/db";
+import { and, asc, eq, isNull, schema, sql, type Db } from "@spleen/db";
 import type { ReportCreateInput, SocialSubjectInput } from "@spleen/validators";
 
 import { fail } from "../../trpc";
@@ -158,7 +158,7 @@ async function findComment(db: Db, id: string) {
   const [row] = await db
     .select()
     .from(comments)
-    .where(and(eq(comments.id, id), sql`${comments.deletedAt} is null`));
+    .where(and(eq(comments.id, id), isNull(comments.deletedAt), isNull(comments.hiddenAt)));
   if (!row) fail("NOT_FOUND", "COMMENT_NOT_FOUND");
   const subject = await resolveSubject(
     db,

@@ -16,6 +16,7 @@ import {
   users,
 } from "./fixtures";
 import { seedLists } from "./lists";
+import { seedModeration } from "./moderation";
 import { slugify } from "./slugify";
 import { seedSocial } from "./social";
 
@@ -315,5 +316,7 @@ export async function seed(db: Db, options: { now?: Date } = {}): Promise<void> 
     await seedSocial(tx, now);
     await seedDiscovery(tx, now);
     await seedLists(tx, now);
+    // After the lists: a report points to one of them.
+    await seedModeration(tx, now);
   });
 }

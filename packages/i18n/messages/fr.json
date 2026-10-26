@@ -19,7 +19,8 @@
     "signOut": "Se déconnecter",
     "notifications": "Notifications",
     "unread": "{count, plural, one {# non lue} other {# non lues}}",
-    "discover": "Découvrir"
+    "discover": "Découvrir",
+    "admin": "Modération"
   },
   "theme": {
     "toggle": "Changer de thème",
@@ -244,6 +245,16 @@
       "cta": "Entrer dans Spleen",
       "fallback": "Si le bouton ne marche pas, copie ce lien dans ton navigateur :",
       "ignore": "Tu n'as rien demandé ? Ignore simplement cet email."
+    },
+    "suspension": {
+      "subject": "Ton compte Spleen est suspendu",
+      "preview": "La modération a suspendu ton compte. Voici pourquoi.",
+      "greeting": "Bonsoir,",
+      "body": "La modération de Spleen a suspendu ton compte. Tu ne peux plus rien publier, et tes critiques, listes et commentaires sont masqués (ils ne sont pas supprimés).",
+      "reasonLabel": "Motif :",
+      "rights": "Tu peux toujours te connecter pour lire ce motif, exporter tes données ou supprimer ton compte.",
+      "contest": "Pour contester cette décision, écris-nous à {email} en expliquant pourquoi : une autre personne relira ton dossier.",
+      "signature": "La modération de Spleen"
     }
   },
   "auth": {
@@ -358,7 +369,14 @@
     "LIST_ITEM_EXISTS": "Il est déjà dans cette liste.",
     "LIST_MISMATCH": "Ta liste a changé entre-temps : recharge la page.",
     "INVALID_CURSOR": "Cette page n'existe plus : recharge la liste.",
-    "unknown": "Quelque chose s'est mal passé. Réessaie."
+    "unknown": "Quelque chose s'est mal passé. Réessaie.",
+    "ACCOUNT_SUSPENDED": "Ton compte est suspendu.",
+    "NOT_FOUND": "Cette page n'existe pas.",
+    "REPORT_NOT_FOUND": "Ce signalement n'existe plus.",
+    "MODERATION_ACTION_INVALID": "Cette action ne s'applique pas à ce signalement.",
+    "ALREADY_SUSPENDED": "Ce compte est déjà suspendu.",
+    "NOT_SUSPENDED": "Ce compte n'est pas suspendu.",
+    "CANNOT_MODERATE_ADMIN": "On ne suspend pas un compte admin depuis le site."
   },
   "secondaryType": {
     "compilation": "Compilation",
@@ -626,7 +644,18 @@
     "excerpt": "« {text} »",
     "pagingLabel": "Pages des notifications",
     "older": "Plus anciennes",
-    "newest": "Revenir aux plus récentes"
+    "newest": "Revenir aux plus récentes",
+    "moderation": {
+      "dismiss": "Un signalement sur {subject, select, review {ta critique} list {ta liste} comment {ton commentaire} member {ton compte} other {ton contenu}} a été rejeté.",
+      "resolve": "Un signalement a été traité.",
+      "hide": "La modération a masqué {subject, select, review {ta critique} list {ta liste} comment {ton commentaire} member {ton compte} other {ton contenu}}.",
+      "restore": "La modération a rétabli {subject, select, review {ta critique} list {ta liste} comment {ton commentaire} member {ton compte} other {ton contenu}}.",
+      "delete": "La modération a supprimé {subject, select, review {ta critique} list {ta liste} comment {ton commentaire} member {ton compte} other {ton contenu}}.",
+      "suspend": "La modération a suspendu ton compte.",
+      "unsuspend": "La suspension de ton compte est levée.",
+      "reason": "Motif : {reason}",
+      "contest": "Pour contester, écris à <email></email>."
+    }
   },
   "blocks": {
     "title": "Membres bloqués",
@@ -675,5 +704,116 @@
     "reviewsTitle": "Critiques populaires",
     "more": "Découvrir plus",
     "seeAll": "Tout voir"
+  },
+  "suspended": {
+    "title": "Ton compte est suspendu",
+    "since": "Depuis le {date}.",
+    "reasonTitle": "Pourquoi",
+    "effects": "Tu ne peux plus rien publier. Tes critiques, listes et commentaires sont masqués : personne ne les voit, mais ils ne sont pas supprimés.",
+    "contestTitle": "Contester la décision",
+    "contestBody": "Écris-nous à <email></email> en expliquant pourquoi. Une autre personne relira ton dossier.",
+    "dataTitle": "Tes données restent à toi",
+    "dataBody": "Tu peux télécharger toutes tes données, ou supprimer ton compte pour de bon.",
+    "export": "Télécharger mes données",
+    "signOut": "Me déconnecter",
+    "deleteTitle": "Supprimer mon compte"
+  },
+  "admin": {
+    "title": "Modération",
+    "subtitle": "Chaque décision garde son motif et son auteur. La personne concernée reçoit le motif.",
+    "tabs": {
+      "label": "Sections de la modération",
+      "reports": "Signalements",
+      "history": "Historique",
+      "suspended": "Comptes suspendus"
+    },
+    "statusFilter": "Filtrer par statut",
+    "kindFilter": "Filtrer par type",
+    "status": {
+      "open": "À traiter",
+      "resolved": "Traités",
+      "dismissed": "Rejetés",
+      "all": "Tous"
+    },
+    "kind": {
+      "all": "Tout",
+      "member": "Membre",
+      "review": "Critique",
+      "list": "Liste",
+      "comment": "Commentaire",
+      "catalog": "Catalogue"
+    },
+    "count": "{count, plural, =0 {Aucun signalement} one {# signalement} other {# signalements}}",
+    "empty": "Rien à traiter. La salle est calme ce soir.",
+    "reasons": {
+      "spam": "Spam ou publicité",
+      "harassment": "Harcèlement",
+      "hate": "Propos haineux",
+      "spoiler": "Divulgâche",
+      "inappropriate": "Contenu inapproprié",
+      "catalog_error": "Erreur de catalogue",
+      "catalog_addition": "Ajout au catalogue",
+      "other": "Autre"
+    },
+    "hiddenBadge": "Masqué",
+    "suspendedBadge": "Suspendu",
+    "adminBadge": "admin",
+    "subjectLabel": "Contenu",
+    "untitled": "(sans titre)",
+    "contentGone": "Contenu supprimé",
+    "memberLabel": "Membre signalé",
+    "authorLabel": "Auteur",
+    "reporterLabel": "Signalé par",
+    "reporterGone": "Compte supprimé depuis",
+    "detailsLabel": "Précisions",
+    "othersLabel": "Autres signalements",
+    "others": "{count, plural, one {# autre signalement ouvert sur ce contenu} other {# autres signalements ouverts sur ce contenu}}",
+    "resolutionLabel": "Décision",
+    "resolution": "{status, select, dismissed {Rejeté} other {Traité}} par {name} le {date}.",
+    "moderatorGone": "un compte supprimé",
+    "decisionLabel": "Décision",
+    "decision": {
+      "dismiss": "Rejeter",
+      "resolve": "Marquer comme traité",
+      "hide": "Masquer le contenu",
+      "delete": "Supprimer le contenu",
+      "suspend": "Suspendre le compte"
+    },
+    "decisionSubmit": {
+      "dismiss": "Rejeter le signalement",
+      "resolve": "Marquer comme traité",
+      "hide": "Masquer",
+      "delete": "Supprimer définitivement",
+      "suspend": "Suspendre le compte"
+    },
+    "reasonLabel": "Motif de la décision",
+    "reasonHint": "Il est conservé dans l'historique et envoyé à la personne concernée (sauf rejet et catalogue).",
+    "done": "C'est fait.",
+    "doneEmailFailed": "C'est fait, mais l'email n'est pas parti : la notification reste dans le site.",
+    "action": {
+      "dismiss": "Rejet",
+      "resolve": "Traité",
+      "hide": "Masqué",
+      "restore": "Rétabli",
+      "delete": "Supprimé",
+      "suspend": "Suspension",
+      "unsuspend": "Suspension levée"
+    },
+    "anonymizedBadge": "Anonymisé",
+    "historyHint": "Un an après chaque décision, on n'en garde que l'action, le motif et la catégorie : les liens vers les personnes et l'extrait sont effacés.",
+    "historyEmpty": "Aucune décision pour l'instant.",
+    "historyBy": "Par {moderator} · concerne {member}",
+    "restoreTitle": "Rétablir ce contenu",
+    "restoreReasonLabel": "Pourquoi le rétablir ?",
+    "restoreSubmit": "Rétablir",
+    "suspendedEmpty": "Aucun compte suspendu.",
+    "suspendedSince": "Suspendu le {date}",
+    "unsuspendTitle": "Lever la suspension",
+    "unsuspendReasonLabel": "Pourquoi lever la suspension ?",
+    "unsuspendSubmit": "Lever la suspension",
+    "suspendTitle": "Suspendre un compte",
+    "suspendHint": "Sans signalement : à réserver aux cas évidents. Ses contenus sont masqués, pas supprimés, et un email lui donne le motif.",
+    "usernameLabel": "Pseudo",
+    "suspendSubmit": "Suspendre"
   }
 }

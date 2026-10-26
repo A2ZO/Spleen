@@ -9,6 +9,7 @@
     "GOOGLE_CLIENT_SECRET",
     "BREVO_API_KEY",
     "EMAIL_FROM",
+    "CONTACT_EMAIL",
     "S3_ENDPOINT",
     "S3_REGION",
     "S3_BUCKET",
