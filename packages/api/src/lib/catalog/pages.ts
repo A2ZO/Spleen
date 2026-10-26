@@ -12,6 +12,7 @@ import type {
   TrackDetail,
 } from "../../types";
 import { buildListenLinks } from "../listen-links";
+import { countsPublicly } from "../ratings";
 import { notBlockedWith } from "../social/relations";
 import { reviewCountColumns } from "../social/reviews";
 import {
@@ -45,11 +46,18 @@ export async function releaseIdBySlug(db: Db, slug: string) {
   return row ?? null;
 }
 
+/** Ratings 1..10 of the release (suspended members left out, as in `ratingSummaries`). */
 async function ratingDistribution(db: Db, releaseId: string): Promise<number[]> {
   const rows = await db
     .select({ rating: userItemState.rating, count: sql<number>`count(*)::int` })
     .from(userItemState)
-    .where(and(eq(userItemState.releaseId, releaseId), isNotNull(userItemState.rating)))
+    .where(
+      and(
+        eq(userItemState.releaseId, releaseId),
+        isNotNull(userItemState.rating),
+        countsPublicly(userItemState.userId),
+      ),
+    )
     .groupBy(userItemState.rating);
   const distribution = Array.from({ length: 10 }, () => 0);
   for (const { rating, count } of rows) distribution[rating! - 1] = count;

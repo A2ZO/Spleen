@@ -46,7 +46,8 @@ artiste. Server Actions : `apps/web/src/app/[locale]/list/actions.ts`.
 - Une écoute compte à son **enregistrement** : écoutes datées par `created_at`, écoutes
   sans date (notes rapides, coups de cœur) par `updated_at`. Une écoute d'un vieux disque
   notée aujourd'hui compte cette semaine.
-- Au moins 2 membres par disque (un seul membre serait exposé) ; journaux privés exclus.
+- Au moins 2 membres par disque (un seul membre serait exposé) ; journaux privés et
+  comptes suspendus exclus.
   Disques seulement (les écoutes de morceaux ne comptent pas).
 - **Repli** : moins de 5 disques dans la langue → complété avec toutes les langues sur la
   semaine, puis avec toutes les langues sur 30 jours. Chaque élément porte sa `source`
@@ -71,7 +72,8 @@ artiste. Server Actions : `apps/web/src/app/[locale]/list/actions.ts`.
 
 ## Les mieux notés
 
-- Notes actuelles des membres (`user_item_state`), comme la moyenne d'une fiche.
+- Notes actuelles des membres (`user_item_state`), comme la moyenne d'une fiche ; celles des
+  comptes suspendus sont exclues (moyenne du site comprise).
 - Au moins `DISCOVERY_MIN_RATINGS` notes (3 au lancement, à relever quand la communauté
   grandit, dans `lib/discovery.ts`).
 - Score = moyenne bayésienne `(v × R + m × C) / (v + m)` : `v` notes du disque, `R` sa

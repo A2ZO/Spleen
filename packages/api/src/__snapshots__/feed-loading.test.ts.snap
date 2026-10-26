@@ -3737,6 +3737,7 @@ exports[`feed loading > returns the same pages as before 1`] = `
   "review nuit blind=false": {
     "canComment": true,
     "canLike": true,
+    "hidden": null,
     "isOwner": false,
     "review": {
       "author": {
@@ -3775,6 +3776,7 @@ exports[`feed loading > returns the same pages as before 1`] = `
   "review nuit blind=true": {
     "canComment": true,
     "canLike": true,
+    "hidden": null,
     "isOwner": false,
     "review": {
       "author": {

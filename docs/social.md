@@ -119,7 +119,14 @@ s'applique qu'aux sujets qui s'y prêtent (`MODERATION_ACTION_INVALID`) ; un adm
 jamais suspendu depuis le site (`CANNOT_MODERATE_ADMIN`).
 
 - **Masquer** : `hidden_at` + `hidden_by = 'moderation'` sur la critique, la liste ou le
-  commentaire ; invisible pour tous (auteur compris), jamais supprimé, rétablissable.
+  commentaire ; jamais supprimé, rétablissable. Invisible pour tous **sauf son auteur**, qui
+  le voit avec un bandeau « Masqué par la modération », le motif (dernière décision `hide`
+  sur ce contenu, `lib/moderation/holds.ts` ; absent après anonymisation) et l'adresse pour
+  contester : page de la critique ou de la liste (`hidden` dans `ReviewDetail` /
+  `ListDetail`), son propre profil (étiquette « Masqué »), fil de commentaires
+  (`CommentView.hidden`). Plus de j'aime ni de commentaire, auteur compris ; un commentaire
+  masqué ne se modifie plus mais son auteur peut le supprimer. Les filtres passent par
+  `visibleTo(table, lecteur)` (`lib/social/reviews.ts`) : « non masqué, ou à moi ».
 - **Supprimer** : comme le ferait l'auteur (critique : `deleteReview` ; liste supprimée ;
   commentaire marqué supprimé). L'historique garde l'extrait.
 - **Suspendre** : `profiles.suspended_at` + motif ; sessions supprimées ; critiques, listes
@@ -134,8 +141,11 @@ jamais suspendu depuis le site (`CANNOT_MODERATE_ADMIN`).
 page de connexion répond comme pour tout le monde, et le motif ne s'affiche qu'une fois
 l'identité prouvée, sur l'écran « Compte suspendu » qui remplace toutes les pages. Profil,
 critiques, listes, commentaires, écoutes du fil et cartes de membre disparaissent pour les
-autres (`findProfile`, `memberRefs`, `memberCards`, filtres `hidden_at is null`). Ses notes
-restent dans les moyennes.
+autres (`findProfile`, `memberRefs`, `memberCards`, filtres `hidden_at is null`). Ses notes et
+écoutes sortent de tous les chiffres publics (moyennes, répartition, tendances, mieux notés)
+par un filtre calculé à la volée (`countsPublicly`, `lib/ratings.ts`) : rien à invalider, et
+elles reviennent quand la suspension est levée. Son propre état (`user_item_state`) n'est pas
+touché.
 
 **Conservation.** Un an après la décision (`MODERATION_RETENTION_DAYS`),
 `anonymizeModerationHistory` garde l'action, le motif et la catégorie, efface les liens vers

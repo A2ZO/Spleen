@@ -4,10 +4,12 @@ import type { ReportCreateInput, SocialSubjectInput } from "@spleen/validators";
 import { fail } from "../../trpc";
 import type { CommentView, CursorPage } from "../../types";
 import { requireListener } from "../listening/targets";
+import { CONTACT_PLACEHOLDER } from "../moderation/emails";
+import { hideReasons } from "../moderation/holds";
 import { cursorTime, cursorUuid, decodeCursor, encodeCursor, pageOf } from "./cursor";
 import { notify, unnotify } from "./notifications";
 import { memberRefs, notBlockedWith, requireMember, requireNotBlocked } from "./relations";
-import { liveCommentsOf, resolveSubject, type ResolvedSubject } from "./reviews";
+import { liveCommentsOf, resolveSubject, visibleTo, type ResolvedSubject } from "./reviews";
 
 /*
  * Likes, comments and reports on reviews (and lists, whose pages come in milestone 8).
@@ -56,49 +58,68 @@ export async function setLike(
   return { liked, likeCount: await db.$count(likes, where) };
 }
 
+/** Comment views; a hidden one (only ever its author's) carries the reason of the decision. */
 async function toCommentViews(
   db: Db,
   rows: (typeof comments.$inferSelect)[],
   ownerId: string,
   viewerId: string | null,
+  contactEmail: string | null = null,
 ): Promise<CommentView[]> {
-  const authors = await memberRefs(
-    db,
-    rows.map((r) => r.userId),
-  );
+  const [authors, reasons] = await Promise.all([
+    memberRefs(
+      db,
+      rows.map((r) => r.userId),
+    ),
+    hideReasons(
+      db,
+      "commentId",
+      rows.flatMap((r) => (r.hiddenAt ? r.id : [])),
+    ),
+  ]);
   return rows.flatMap((r) => {
     const author = authors.get(r.userId);
     if (!author) return [];
+    const hidden = r.hiddenAt !== null;
     return {
       id: r.id,
       author,
       body: r.body,
       createdAt: r.createdAt.toISOString(),
       edited: r.editedAt !== null,
-      canEdit: r.userId === viewerId,
+      canEdit: r.userId === viewerId && !hidden,
       canDelete: viewerId !== null && (r.userId === viewerId || ownerId === viewerId),
+      hidden: hidden
+        ? {
+            reason: reasons.get(r.id) ?? null,
+            contactEmail: contactEmail ?? CONTACT_PLACEHOLDER,
+          }
+        : null,
     };
   });
 }
 
 /**
  * Comments, oldest first; those of members blocked with the viewer are left out, except for
- * the subject's owner, who must still see (and may delete) them.
+ * the subject's owner, who must still see (and may delete) them. Comments hidden by moderation
+ * are left out too, except for their author (with the reason); the owner of a hidden review or
+ * list still reads its comments.
  */
 export async function listComments(
   db: Db,
   input: SocialSubjectInput,
   viewerId: string | null,
   cursor: string | undefined,
+  contactEmail: string | null = null,
 ): Promise<CursorPage<CommentView>> {
-  const subject = await resolveSubject(db, input);
+  const subject = await resolveSubject(db, input, viewerId);
   const after = cursor ? decodeCursor(cursor, 2) : null;
   const rows = await db
     .select({ comment: comments, at: sql<string>`${comments.createdAt}::text` })
     .from(comments)
     .where(
       and(
-        liveCommentsOf(subject.column),
+        liveCommentsOf(subject.column, viewerId),
         viewerId && viewerId !== subject.ownerId
           ? notBlockedWith(viewerId, comments.userId)
           : undefined,
@@ -116,6 +137,7 @@ export async function listComments(
       page.items.map((r) => r.comment),
       subject.ownerId,
       viewerId,
+      contactEmail,
     ),
     nextCursor: page.nextCursor,
   };
@@ -153,16 +175,20 @@ export async function createComment(
   return view!;
 }
 
-/** A comment that is not deleted, with the owner of what it is on. */
-async function findComment(db: Db, id: string) {
+/**
+ * A comment that is not deleted, with the owner of what it is on. Hidden comments, and those on
+ * hidden content, are not found, except for their own author with `ownHidden` (deletion).
+ */
+async function findComment(db: Db, id: string, ownHidden: string | null = null) {
   const [row] = await db
     .select()
     .from(comments)
-    .where(and(eq(comments.id, id), isNull(comments.deletedAt), isNull(comments.hiddenAt)));
+    .where(and(eq(comments.id, id), isNull(comments.deletedAt), visibleTo(comments, ownHidden)));
   if (!row) fail("NOT_FOUND", "COMMENT_NOT_FOUND");
   const subject = await resolveSubject(
     db,
     row.reviewId ? { kind: "review", id: row.reviewId } : { kind: "list", id: row.listId! },
+    ownHidden,
   );
   return { row, ownerId: subject.ownerId };
 }
@@ -186,9 +212,9 @@ export async function updateComment(
   return view!;
 }
 
-/** The author, or the owner of the review / list, deletes a comment. */
+/** The author, or the owner of the review / list, deletes a comment (even a hidden one). */
 export async function deleteComment(db: Db, userId: string, id: string, now: Date): Promise<void> {
-  const { row, ownerId } = await findComment(db, id);
+  const { row, ownerId } = await findComment(db, id, userId);
   if (row.userId !== userId && ownerId !== userId) fail("NOT_FOUND", "COMMENT_NOT_FOUND");
   await db.transaction(async (tx) => {
     await tx.update(comments).set({ deletedAt: now }).where(eq(comments.id, id));

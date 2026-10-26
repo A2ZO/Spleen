@@ -16,7 +16,7 @@ Sources : `docs/prompt-claude-code-spleen.md` (règles), `docs/cahier-des-charge
 | 1 | Rôle admin (`pnpm admin:grant` / `admin:revoke`), contrôles serveur, tests | fait | `7a91f5e` |
 | 2 | Modération : file, décisions, historique, suspension, notifications, conservation | fait | `7a91f5e`, `907a46b` |
 | — | Issue « Performance : thème côté navigateur… » | fait | issue [#22](https://github.com/A2ZO/Spleen/issues/22), `b59ee28` |
-| 2 bis | Réponses 1 et 2 ci-dessous (bandeau auteur, notes des suspendus) | **à faire** | — |
+| 2 bis | Réponses 1 et 2 ci-dessous (bandeau auteur, notes des suspendus) | fait | voir `git log` |
 | 3 | Fusion de doublons + bouton « Signaler une erreur / proposer un ajout » (réponse 3) | **à faire** | — |
 | 4 | Pages légales FR/EN | à faire | — |
 | 5 | Référencement et partage (sitemap, robots, canonical/hreflang, métadonnées, OG) | à faire | — |
@@ -38,6 +38,14 @@ contrôle des journaux serveur propre.
   (`next/cache`) dans les actions. Deux e2e quittaient la page trop tôt. Garde-fou :
   `apps/web/e2e/server-log.ts` fait échouer les e2e si le serveur journalise l'une des deux
   erreurs.
+- **Étape 2 bis.** Voir `docs/social.md` § « Modération » (Masquer, Compte suspendu) et
+  `docs/decouverte.md`. Contenu masqué : `visibleTo()` + `lib/moderation/holds.ts`,
+  composant `ModerationBanner`, clés i18n `moderationHold.*`. Notes des suspendus :
+  `countsPublicly()` (`lib/ratings.ts`) dans `ratingSummaries`, `ratingDistribution`,
+  tendances et mieux notés. Tests : `moderation.test.ts` (« hidden content… »),
+  `discovery.test.ts` (« suspended members »). Pas de contenu masqué dans le seed (il
+  changerait les compteurs des snapshots) : pour voir le bandeau, masquer une critique
+  depuis `/fr/admin`.
 - **Étapes 1–2.** Voir `docs/social.md` § « Modération (jalon 9) » (rôle, procédures,
   décisions, suspension, conservation, seed). Migration `0010_moderation.sql` (colonnes
   `hidden_at` / `hidden_by` sur critiques, listes, commentaires ; table

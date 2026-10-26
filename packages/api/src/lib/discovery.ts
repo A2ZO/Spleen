@@ -12,12 +12,14 @@ import type {
 } from "../types";
 import { loadReleaseCards, toReleaseCard } from "./catalog/cards";
 import { maskRelease, ratedIds } from "./listening/blind";
+import { countsPublicly } from "./ratings";
 import type { Viewer } from "./viewer";
 
 /*
  * Discovery: weekly trends by audience language, recent releases and top rated charts.
  * Every chart is an anonymous aggregate (no member is shown), so blocks do not filter it;
- * private diaries never count in trends; ratings follow the viewer's blind listening.
+ * private diaries never count in trends, suspended members in no chart; ratings follow the
+ * viewer's blind listening.
  * Rules and their reasons: docs/decouverte.md.
  */
 
@@ -93,6 +95,7 @@ async function trendRows(
     join profiles p on p.user_id = e.user_id
     where e.release_id is not null
       and not p.diary_private
+      and p.suspended_at is null
       and ${lang ? sql`p.locale = ${lang}` : sql`true`}
       and (
         (e.listened_on is not null and ${activeSince(sql`e.created_at`)})
@@ -234,13 +237,14 @@ export async function topRated(
     ${from !== undefined ? sql`and extract(year from r.release_date)::int between ${from} and ${to}` : sql``}`;
   const result = await db.execute(sql`
     with site as (
-      select coalesce(avg(rating), 0)::float8 as c
-      from user_item_state where release_id is not null and rating is not null
+      select coalesce(avg(u.rating), 0)::float8 as c
+      from user_item_state u
+      where u.release_id is not null and u.rating is not null and ${countsPublicly(sql`u.user_id`)}
     ),
     rated as (
       select s.release_id as id, count(*)::int as v, avg(s.rating)::float8 as r
       from user_item_state s
-      where s.release_id is not null and s.rating is not null
+      where s.release_id is not null and s.rating is not null and ${countsPublicly(sql`s.user_id`)}
       group by s.release_id
       having count(*) >= ${m}
     )

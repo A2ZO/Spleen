@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/Button";
 import { FormMessage, TextArea } from "@/components/ui/Field";
 import { Link } from "@/i18n/navigation";
 
+import { ModerationBanner } from "./ModerationBanner";
 import { ReportButton } from "./ReportDialog";
 
 type ErrorCode = ApiErrorCode | "unknown";
@@ -138,6 +139,9 @@ export function CommentItem({
             {comment.body}
           </p>
         )}
+        {comment.hidden && (
+          <ModerationBanner hold={comment.hidden} subject="comment" className="mt-2" />
+        )}
         {error && <FormMessage tone="error">{te(error)}</FormMessage>}
         {!editing && (
           <div className="mt-1 flex flex-wrap items-center gap-3 text-xs">
@@ -181,7 +185,7 @@ export function CommentItem({
                   {t("delete")}
                 </button>
               ))}
-            {canReport && !comment.canEdit && (
+            {canReport && !comment.canEdit && !comment.hidden && (
               <ReportButton subject={{ kind: "comment", id: comment.id }} />
             )}
           </div>

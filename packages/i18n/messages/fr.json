@@ -657,6 +657,13 @@
       "contest": "Pour contester, écris à <email></email>."
     }
   },
+  "moderationHold": {
+    "title": "Masqué par la modération",
+    "body": "Il n'y a plus que toi pour voir {subject, select, review {cette critique} list {cette liste} other {ce commentaire}}, et plus personne ne peut y réagir.",
+    "reason": "Motif : {reason}",
+    "contest": "Pour contester, écris à <email></email>.",
+    "badge": "Masqué"
+  },
   "blocks": {
     "title": "Membres bloqués",
     "intro": "Ils ne peuvent ni te suivre, ni aimer, ni commenter tes critiques, et vous n'apparaissez plus dans vos fils et notifications. Rien ne leur est signalé.",

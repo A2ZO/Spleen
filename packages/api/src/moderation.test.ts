@@ -357,6 +357,123 @@ describe("decisions", () => {
   });
 });
 
+describe("hidden content, seen by its author alone", () => {
+  it("shows a hidden review to its author with the reason, never to anyone else", async () => {
+    const [author, reporter, other] = [await member(), await member(), await member()];
+    const written = await writeReview(author, "Une critique masquée.");
+    const reply = await other
+      .call()
+      .comment.create({ subject: { kind: "review", id: written.id }, body: "Bien vu." });
+    const reportId = await reportOf(reporter, { kind: "review", id: written.id });
+    await admin().admin.decide({ reportId, decision: "hide", reason: "Propos haineux" });
+
+    const mine = await author.call().review.byId({ id: written.id });
+    expect(mine).toMatchObject({
+      review: { id: written.id, hidden: true },
+      isOwner: true,
+      canLike: false,
+      canComment: false,
+      hidden: { reason: "Propos haineux", contactEmail: CONTACT },
+    });
+    // Its thread stays readable for the author, closed to everyone.
+    const thread = await author
+      .call()
+      .comment.list({ subject: { kind: "review", id: written.id } });
+    expect(thread.items.map((c) => c.id)).toEqual([reply.id]);
+    const profile = await author.call().profile.reviews({ username: author.username, page: 1 });
+    expect(profile!.items).toMatchObject([{ id: written.id, hidden: true }]);
+
+    for (const reader of [api(null), other.call(), reporter.call()]) {
+      expect(await reader.review.byId({ id: written.id })).toBeNull();
+      expect((await reader.profile.reviews({ username: author.username, page: 1 }))!.items).toEqual(
+        [],
+      );
+      expect(
+        await errorCode(() => reader.comment.list({ subject: { kind: "review", id: written.id } })),
+      ).toBe("REVIEW_NOT_FOUND");
+    }
+    // Neither likes nor comments, the author's included.
+    expect(
+      await errorCode(() =>
+        author.call().comment.create({ subject: { kind: "review", id: written.id }, body: "Re" }),
+      ),
+    ).toBe("REVIEW_NOT_FOUND");
+    expect(
+      await errorCode(() =>
+        other.call().like.set({ subject: { kind: "review", id: written.id }, liked: true }),
+      ),
+    ).toBe("REVIEW_NOT_FOUND");
+  });
+
+  it("shows a hidden list to its owner, and nobody else", async () => {
+    const [owner, reporter] = [await member(), await member()];
+    const list = await owner
+      .call()
+      .list.create({ title: "Liste douteuse", description: "", ranked: false });
+    const reportId = await reportOf(reporter, { kind: "list", id: list.id });
+    await admin().admin.decide({ reportId, decision: "hide", reason: "Titre injurieux" });
+
+    expect(await owner.call().list.byId({ id: list.id, page: 1 })).toMatchObject({
+      isOwner: true,
+      canComment: false,
+      hidden: { reason: "Titre injurieux", contactEmail: CONTACT },
+    });
+    expect(
+      (await owner.call().profile.lists({ username: owner.username, page: 1 }))!.items,
+    ).toMatchObject([{ id: list.id, hidden: true }]);
+    expect(await reporter.call().list.byId({ id: list.id, page: 1 })).toBeNull();
+    expect((await api(null).profile.lists({ username: owner.username, page: 1 }))!.items).toEqual(
+      [],
+    );
+    expect(
+      await errorCode(() =>
+        owner.call().comment.create({ subject: { kind: "list", id: list.id }, body: "Hé" }),
+      ),
+    ).toBe("LIST_NOT_FOUND");
+  });
+
+  it("shows a hidden comment to its author, who may delete it but not edit it", async () => {
+    const [owner, author, reporter] = [await member(), await member(), await member()];
+    const written = await writeReview(owner);
+    const subject = { kind: "review" as const, id: written.id };
+    const comment = await author.call().comment.create({ subject, body: "Un lien louche" });
+    const reportId = await reportOf(reporter, { kind: "comment", id: comment.id });
+    await admin().admin.decide({ reportId, decision: "hide", reason: "Lien malveillant" });
+
+    const [seen] = (await author.call().comment.list({ subject })).items;
+    expect(seen).toMatchObject({
+      id: comment.id,
+      canEdit: false,
+      canDelete: true,
+      hidden: { reason: "Lien malveillant", contactEmail: CONTACT },
+    });
+    for (const reader of [api(null), owner.call(), reporter.call()]) {
+      expect((await reader.comment.list({ subject })).items).toEqual([]);
+    }
+    expect(
+      await errorCode(() => author.call().comment.update({ id: comment.id, body: "Corrigé" })),
+    ).toBe("COMMENT_NOT_FOUND");
+    expect(await errorCode(() => owner.call().comment.delete({ id: comment.id }))).toBe(
+      "COMMENT_NOT_FOUND",
+    );
+    await author.call().comment.delete({ id: comment.id });
+    expect((await author.call().comment.list({ subject })).items).toEqual([]);
+  });
+
+  it("shows no reason once the history is anonymised, and a placeholder without contact", async () => {
+    const [author, reporter] = [await member(), await member()];
+    const written = await writeReview(author);
+    const reportId = await reportOf(reporter, { kind: "review", id: written.id });
+    await admin().admin.decide({ reportId, decision: "hide", reason: "Spoiler" });
+    await handle.db
+      .update(schema.moderationActions)
+      .set({ reviewId: null })
+      .where(eq(schema.moderationActions.reviewId, written.id));
+    const detail = await api(author.user, now, null).review.byId({ id: written.id });
+    expect(detail!.hidden).toEqual({ reason: null, contactEmail: CONTACT_PLACEHOLDER });
+  });
+});
+
 describe("suspension", () => {
   async function suspended() {
     const [author, reporter, friend] = [await member(), await member(), await member()];

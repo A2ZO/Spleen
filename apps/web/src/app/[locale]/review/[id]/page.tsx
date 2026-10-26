@@ -6,6 +6,7 @@ import { cache } from "react";
 
 import { CommentForm, CommentItem } from "@/components/social/Comments";
 import { LikeButton } from "@/components/social/LikeButton";
+import { ModerationBanner } from "@/components/social/ModerationBanner";
 import { ReportButton } from "@/components/social/ReportDialog";
 import { Avatar } from "@/components/ui/Avatar";
 import { Cover } from "@/components/ui/Cover";
@@ -69,6 +70,7 @@ export default async function ReviewPage({ params, searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl space-y-10">
+      {detail.hidden && <ModerationBanner hold={detail.hidden} subject="review" />}
       <article className="space-y-6">
         <header className="flex items-center gap-4">
           <Link href={itemHref} className="w-20 shrink-0 sm:w-24" tabIndex={-1}>
@@ -187,7 +189,7 @@ export default async function ReviewPage({ params, searchParams }: Props) {
         )}
         {detail.canComment ? (
           <CommentForm subject={subject} />
-        ) : me?.profile ? (
+        ) : detail.hidden ? null : me?.profile ? (
           <p className="text-sm text-fg-muted">{t("comments.unavailable")}</p>
         ) : (
           <p className="text-sm text-fg-muted">

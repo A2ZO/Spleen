@@ -657,6 +657,13 @@
       "contest": "To contest it, write to <email></email>."
     }
   },
+  "moderationHold": {
+    "title": "Hidden by the moderators",
+    "body": "Only you can still see this {subject, select, review {review} list {list} other {comment}}, and nobody can react to it any more.",
+    "reason": "Reason: {reason}",
+    "contest": "To contest it, write to <email></email>.",
+    "badge": "Hidden"
+  },
   "blocks": {
     "title": "Blocked members",
     "intro": "They can't follow you, like or comment on your reviews, and you no longer show up in each other's feeds and notifications. They are not told.",

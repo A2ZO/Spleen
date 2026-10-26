@@ -7,6 +7,7 @@ import { cache } from "react";
 import { ListItemRow } from "@/components/lists/ListItemRow";
 import { CommentForm, CommentItem } from "@/components/social/Comments";
 import { LikeButton } from "@/components/social/LikeButton";
+import { ModerationBanner } from "@/components/social/ModerationBanner";
 import { ReportButton } from "@/components/social/ReportDialog";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
@@ -69,6 +70,7 @@ export default async function ListPage({ params, searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl space-y-12">
+      {list.hidden && <ModerationBanner hold={list.hidden} subject="list" />}
       <article className="space-y-8">
         <header className="space-y-4">
           <p className="flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.2em] text-star uppercase">
@@ -182,7 +184,7 @@ export default async function ListPage({ params, searchParams }: Props) {
         )}
         {list.canComment ? (
           <CommentForm subject={subject} />
-        ) : signedIn ? (
+        ) : list.hidden ? null : signedIn ? (
           <p className="text-sm text-fg-muted">{t("comments.unavailable")}</p>
         ) : (
           <p className="text-sm text-fg-muted">

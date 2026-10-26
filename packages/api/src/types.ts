@@ -61,6 +61,17 @@ export interface ReviewCard {
   track?: { slug: string; title: string } | null;
   /** The signed-in viewer liked it (only filled by social sources: feed, review page). */
   viewerLiked?: boolean;
+  /** Hidden by moderation: only its author still sees it (own profile, review page). */
+  hidden?: boolean;
+}
+
+/**
+ * Shown to the author alone on their content hidden by moderation: the reason of the decision
+ * (null once the history was anonymised) and where to contest it.
+ */
+export interface ModerationHold {
+  reason: string | null;
+  contactEmail: string;
 }
 
 /** One of the member's own reviews, as edited on the review edit screen. */
@@ -82,6 +93,8 @@ export interface ListCard {
   owner: MemberRef;
   itemCount: number;
   preview: ReleaseCard[];
+  /** Hidden by moderation: only its owner still sees it (own profile). */
+  hidden?: boolean;
 }
 
 /** A record of the week's trends. */
@@ -140,6 +153,8 @@ export interface ListDetail {
   canLike: boolean;
   /** Signed in with a profile, no block either way (owners may answer). */
   canComment: boolean;
+  /** Hidden by moderation (only the owner gets here): no likes nor comments. */
+  hidden: ModerationHold | null;
 }
 
 /** One of the caller's lists, in the "Add to a list" dialog. */
@@ -313,6 +328,8 @@ export interface ReviewDetail {
   canLike: boolean;
   /** Signed in with a profile, no block either way (authors may answer). */
   canComment: boolean;
+  /** Hidden by moderation (only the author gets here): no likes nor comments. */
+  hidden: ModerationHold | null;
 }
 
 export interface CommentView {
@@ -325,6 +342,8 @@ export interface CommentView {
   canEdit: boolean;
   /** The viewer wrote it, or owns the review / list it is on. */
   canDelete: boolean;
+  /** Hidden by moderation: only its author sees it, and may no longer edit it. */
+  hidden: ModerationHold | null;
 }
 
 /** Similar notifications shown as one ("Camille and 3 others liked your review"). */

@@ -277,7 +277,13 @@ export const appRouter = router({
   comment: router({
     list: publicProcedure.input(commentListSchema).query(async ({ input, ctx }) => {
       const user = await ctx.user();
-      return listComments(ctx.db(), input.subject, user?.id ?? null, input.cursor);
+      return listComments(
+        ctx.db(),
+        input.subject,
+        user?.id ?? null,
+        input.cursor,
+        ctx.contactEmail,
+      );
     }),
     create: commentWrite
       .input(commentCreateSchema)
@@ -441,7 +447,7 @@ export const appRouter = router({
     byId: publicProcedure
       .input(listPageSchema)
       .query(async ({ input, ctx }) =>
-        getListDetail(ctx.db(), input.id, await viewerOf(ctx), input.page),
+        getListDetail(ctx.db(), input.id, await viewerOf(ctx), input.page, ctx.contactEmail),
       ),
     /** The caller's lists, for the "Add to a list" dialog. */
     mine: protectedProcedure
@@ -537,7 +543,9 @@ export const appRouter = router({
     /** A review page (null when it does not exist). */
     byId: publicProcedure
       .input(z.object({ id: z.uuid() }))
-      .query(async ({ input, ctx }) => getReviewDetail(ctx.db(), input.id, await viewerOf(ctx))),
+      .query(async ({ input, ctx }) =>
+        getReviewDetail(ctx.db(), input.id, await viewerOf(ctx), ctx.contactEmail),
+      ),
     /** The caller's own review, for editing (null when missing or someone else's). */
     mine: protectedProcedure
       .input(z.object({ id: z.uuid() }))

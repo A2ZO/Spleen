@@ -1,6 +1,7 @@
 import { and, asc, inArray, isNotNull, schema, sql, type Db } from "@spleen/db";
 
 import type { ArtistCard, ArtistRef, ReleaseCard, TrackCard } from "../../types";
+import { countsPublicly } from "../ratings";
 
 /*
  * Batch loaders for the cards shown everywhere (search, artist pages, lists…): one query per
@@ -20,7 +21,10 @@ const byIdOrder = <T extends { id: string }>(ids: string[], rows: T[]): T[] => {
   return ids.flatMap((id) => map.get(id) ?? []);
 };
 
-/** Community average (1..10) and number of ratings, from each member's latest state. */
+/**
+ * Community average (1..10) and number of ratings, from each member's latest state (suspended
+ * members left out).
+ */
 export async function ratingSummaries(
   db: Db,
   column: "releaseId" | "trackId",
@@ -35,7 +39,13 @@ export async function ratingSummaries(
       count: sql<number>`count(${userItemState.rating})::int`,
     })
     .from(userItemState)
-    .where(and(inArray(target, ids), isNotNull(userItemState.rating)))
+    .where(
+      and(
+        inArray(target, ids),
+        isNotNull(userItemState.rating),
+        countsPublicly(userItemState.userId),
+      ),
+    )
     .groupBy(target);
   return new Map(
     rows.map((r) => [r.id!, { average: Number(Number(r.average).toFixed(2)), count: r.count }]),
