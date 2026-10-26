@@ -10,8 +10,16 @@ import { rowsOf } from "./rows";
  */
 const E2E_EMAIL = /^e2e-[a-z0-9]+@example\.test$/;
 
-/** Whether `email` belongs to an e2e test account (its usernames are never reserved). */
+/** Whether `email` belongs to an e2e test account. */
 export const isE2eEmail = (email: string) => E2E_EMAIL.test(email.toLowerCase());
+
+/**
+ * Whether a deleted account's usernames are freed at once instead of staying reserved: e2e
+ * accounts, in development and tests only (`NODE_ENV`). Never in production, whatever the
+ * email looks like.
+ */
+export const freesUsernamesAtOnce = (email: string, env: NodeJS.ProcessEnv = process.env) =>
+  (env.NODE_ENV === "development" || env.NODE_ENV === "test") && isE2eEmail(email);
 
 /**
  * Deletes every e2e account with its data (cascade), then the username reservations e2e

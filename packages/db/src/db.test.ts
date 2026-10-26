@@ -5,7 +5,7 @@ import { generateDrizzleJson, generateMigration } from "drizzle-kit/api";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { createDb, migrationDatabaseUrl, type DbHandle } from "./client";
-import { deleteE2eAccounts, isE2eEmail } from "./e2e";
+import { deleteE2eAccounts, freesUsernamesAtOnce, isE2eEmail } from "./e2e";
 import * as s from "./schema";
 import { fixtureId } from "./seed/fixtures";
 import { seed } from "./seed/seed";
@@ -209,6 +209,15 @@ describe("e2e accounts", () => {
     expect(isE2eEmail("e2e-mvnyb1x2d@example.test")).toBe(true);
     expect(isE2eEmail("nuitblanche@example.test")).toBe(false);
     expect(isE2eEmail("e2e-someone@gmail.com")).toBe(false);
+  });
+
+  it("free their usernames at once in development and tests only", () => {
+    const email = "e2e-mvnyb1x2d@example.test";
+    expect(freesUsernamesAtOnce(email, { NODE_ENV: "development" })).toBe(true);
+    expect(freesUsernamesAtOnce(email, { NODE_ENV: "test" })).toBe(true);
+    expect(freesUsernamesAtOnce(email, { NODE_ENV: "production" })).toBe(false);
+    expect(freesUsernamesAtOnce(email, {})).toBe(false);
+    expect(freesUsernamesAtOnce("nuitblanche@example.test", { NODE_ENV: "test" })).toBe(false);
   });
 
   it("are deleted with their data and username reservations, nobody else", async () => {
