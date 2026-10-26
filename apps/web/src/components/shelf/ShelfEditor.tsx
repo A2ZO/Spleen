@@ -2,7 +2,6 @@
 
 import type { ApiErrorCode, ReleaseCard } from "@spleen/api";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
 import {
@@ -21,7 +20,6 @@ import { VinylShelf } from "@/components/ui/VinylShelf";
 export function ShelfEditor({ shelf }: { shelf: (ReleaseCard | null)[] }) {
   const t = useTranslations("shelf");
   const te = useTranslations("errors");
-  const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [saved, setSaved] = useState<(ReleaseCard | null)[] | null>(null);
   const [pending, startTransition] = useTransition();
@@ -37,7 +35,6 @@ export function ShelfEditor({ shelf }: { shelf: (ReleaseCard | null)[] }) {
         setSaved(result.shelf);
         setError(null);
         setStatus(done);
-        router.refresh();
       } else setError(result.error ?? "unknown");
     });
 

@@ -7,7 +7,6 @@ import { useState, useTransition } from "react";
 import { setFollowAction } from "@/app/[locale]/social/actions";
 import { Button } from "@/components/ui/Button";
 import { FormMessage } from "@/components/ui/Field";
-import { useRouter } from "@/i18n/navigation";
 
 /** Follow / unfollow a member; the counts on the page refresh afterwards. */
 export function FollowButton({
@@ -24,7 +23,6 @@ export function FollowButton({
 }) {
   const t = useTranslations("social");
   const te = useTranslations("errors");
-  const router = useRouter();
   const [state, setState] = useState(following);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<ApiErrorCode | "unknown" | null>(null);
@@ -35,8 +33,7 @@ export function FollowButton({
       setState(next);
       setError(null);
       const result = await setFollowAction(username, next);
-      if (result.ok) router.refresh();
-      else {
+      if (!result.ok) {
         setState(!next);
         setError(result.error ?? "unknown");
       }

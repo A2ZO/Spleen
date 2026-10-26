@@ -65,3 +65,9 @@ supprime avec leurs données, même après un passage raté ou interrompu (Postg
 et leurs pseudos ne sont pas réservés (développement et tests seulement). Il refuse de
 s'exécuter en production (`NODE_ENV`), sur la branche Neon `production` (`NEON_MAIN_HOST`, hôte
 poolé ou direct), et sur tout hôte Neon tant que `NEON_MAIN_HOST` manque.
+
+Journal du serveur : `apps/web/e2e/server-log.ts` fait échouer le passage si le serveur de
+développement a journalisé, pendant les tests, une erreur invisible depuis le navigateur
+(« The destination stream errored », « Unexpected end of JSON input »). Il n'affiche que des
+comptes. Pour trouver le test fautif : `--workers=1`, les lignes `[WebServer]` suivent alors
+le test qui les provoque.

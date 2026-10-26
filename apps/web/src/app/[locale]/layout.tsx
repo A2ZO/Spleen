@@ -14,9 +14,10 @@ import { parseTheme, THEME_COOKIE } from "@/lib/theme";
 
 import { fraunces, inter, plexMono } from "../fonts";
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+// No `generateStaticParams` here: reading the theme cookie makes every page dynamic anyway,
+// and in `next dev` it makes each first render rewrite `prerender-manifest.json` in place,
+// so two routes compiling at once could read it half-written ("Unexpected end of JSON
+// input", then a 500). Enforced by the ESLint config (`@spleen/config/eslint/next`).
 
 export async function generateMetadata({
   params,

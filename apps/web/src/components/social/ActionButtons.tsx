@@ -7,9 +7,8 @@ import { useState, useTransition } from "react";
 import { markAllReadAction, setBlockAction } from "@/app/[locale]/social/actions";
 import { Button } from "@/components/ui/Button";
 import { FormMessage } from "@/components/ui/Field";
-import { useRouter } from "@/i18n/navigation";
 
-/** A button running one action, then refreshing the page (or showing the error). */
+/** A button running one action (which refreshes the page), or showing its error. */
 function ActionButton({
   run,
   label,
@@ -20,7 +19,6 @@ function ActionButton({
   variant?: "outline" | "ghost";
 }) {
   const te = useTranslations("errors");
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<ApiErrorCode | "unknown" | null>(null);
   return (
@@ -31,8 +29,7 @@ function ActionButton({
         onClick={() =>
           startTransition(async () => {
             const result = await run();
-            if (result.ok) router.refresh();
-            else setError(result.error ?? "unknown");
+            if (!result.ok) setError(result.error ?? "unknown");
           })
         }
       >

@@ -9,6 +9,8 @@ import {
   reportCreateSchema,
 } from "@spleen/validators";
 
+import { refresh } from "next/cache";
+
 import { errorCode } from "@/lib/api-errors";
 import { getApi } from "@/server/api";
 
@@ -22,9 +24,18 @@ export interface SocialResult<T = undefined> {
 
 type Api = Awaited<ReturnType<typeof getApi>>;
 
-async function run<T>(write: (api: Api) => Promise<T>): Promise<SocialResult<T>> {
+/**
+ * Runs a write. With `refreshPage`, the page is re-rendered in the same response (`refresh()`)
+ * instead of a client `router.refresh()`, a second request the router could cancel mid-render.
+ */
+async function run<T>(
+  write: (api: Api) => Promise<T>,
+  { refreshPage = false } = {},
+): Promise<SocialResult<T>> {
   try {
-    return { ok: true, data: await write(await getApi()) };
+    const data = await write(await getApi());
+    if (refreshPage) refresh();
+    return { ok: true, data };
   } catch (error) {
     return { error: errorCode(error) };
   }
@@ -33,19 +44,25 @@ async function run<T>(write: (api: Api) => Promise<T>): Promise<SocialResult<T>>
 export async function setFollowAction(username: string, follow: boolean): Promise<SocialResult> {
   const parsed = memberSchema.safeParse({ username });
   if (!parsed.success) return { error: "unknown" };
-  return run(async (api) => {
-    await (follow ? api.social.follow(parsed.data) : api.social.unfollow(parsed.data));
-    return undefined;
-  });
+  return run(
+    async (api) => {
+      await (follow ? api.social.follow(parsed.data) : api.social.unfollow(parsed.data));
+      return undefined;
+    },
+    { refreshPage: true },
+  );
 }
 
 export async function setBlockAction(username: string, blocked: boolean): Promise<SocialResult> {
   const parsed = memberSchema.safeParse({ username });
   if (!parsed.success) return { error: "unknown" };
-  return run(async (api) => {
-    await (blocked ? api.block.add(parsed.data) : api.block.remove(parsed.data));
-    return undefined;
-  });
+  return run(
+    async (api) => {
+      await (blocked ? api.block.add(parsed.data) : api.block.remove(parsed.data));
+      return undefined;
+    },
+    { refreshPage: true },
+  );
 }
 
 export async function setLikeAction(
@@ -53,28 +70,31 @@ export async function setLikeAction(
 ): Promise<SocialResult<{ liked: boolean; likeCount: number }>> {
   const parsed = likeSetSchema.safeParse(input);
   if (!parsed.success) return { error: "unknown" };
-  return run((api) => api.like.set(parsed.data));
+  return run((api) => api.like.set(parsed.data), { refreshPage: true });
 }
 
 export async function createCommentAction(input: unknown): Promise<SocialResult<CommentView>> {
   const parsed = commentCreateSchema.safeParse(input);
   if (!parsed.success) return { error: "unknown" };
-  return run((api) => api.comment.create(parsed.data));
+  return run((api) => api.comment.create(parsed.data), { refreshPage: true });
 }
 
 export async function updateCommentAction(input: unknown): Promise<SocialResult<CommentView>> {
   const parsed = commentUpdateSchema.safeParse(input);
   if (!parsed.success) return { error: "unknown" };
-  return run((api) => api.comment.update(parsed.data));
+  return run((api) => api.comment.update(parsed.data), { refreshPage: true });
 }
 
 export async function deleteCommentAction(id: string): Promise<SocialResult> {
   const parsed = commentUpdateSchema.shape.id.safeParse(id);
   if (!parsed.success) return { error: "unknown" };
-  return run(async (api) => {
-    await api.comment.delete({ id: parsed.data });
-    return undefined;
-  });
+  return run(
+    async (api) => {
+      await api.comment.delete({ id: parsed.data });
+      return undefined;
+    },
+    { refreshPage: true },
+  );
 }
 
 export async function reportAction(input: unknown): Promise<SocialResult> {
@@ -87,8 +107,11 @@ export async function reportAction(input: unknown): Promise<SocialResult> {
 }
 
 export async function markAllReadAction(): Promise<SocialResult> {
-  return run(async (api) => {
-    await api.notification.markAllRead();
-    return undefined;
-  });
+  return run(
+    async (api) => {
+      await api.notification.markAllRead();
+      return undefined;
+    },
+    { refreshPage: true },
+  );
 }

@@ -9,6 +9,8 @@ import {
   listUpdateSchema,
   myListsSchema,
 } from "@spleen/validators";
+import { refresh } from "next/cache";
+
 import { errorCode } from "@/lib/api-errors";
 import { getApi } from "@/server/api";
 
@@ -22,9 +24,19 @@ export interface ListResult<T = void> {
 
 type Api = Awaited<ReturnType<typeof getApi>>;
 
-async function run<T>(write: (api: Api) => Promise<T>): Promise<ListResult<T>> {
+/**
+ * Runs a write. With `refreshPage`, the page is re-rendered in the same response (`refresh()`):
+ * a client `router.refresh()` after the action meant a second request, which the router
+ * sometimes cancelled mid-render ("The destination stream errored" in the server log).
+ */
+async function run<T>(
+  write: (api: Api) => Promise<T>,
+  { refreshPage = false } = {},
+): Promise<ListResult<T>> {
   try {
-    return { ok: true, data: await write(await getApi()) };
+    const data = await write(await getApi());
+    if (refreshPage) refresh();
+    return { ok: true, data };
   } catch (error) {
     return { error: errorCode(error) };
   }
@@ -39,7 +51,7 @@ export async function createListAction(input: unknown): Promise<ListResult<{ id:
 export async function updateListAction(input: unknown): Promise<ListResult> {
   const parsed = listUpdateSchema.safeParse(input);
   if (!parsed.success) return { error: "unknown" };
-  return run((api) => api.list.update(parsed.data));
+  return run((api) => api.list.update(parsed.data), { refreshPage: true });
 }
 
 export async function deleteListAction(id: string): Promise<ListResult> {
@@ -57,13 +69,13 @@ export async function addListItemAction(input: unknown): Promise<ListResult<{ it
 export async function removeListItemAction(input: unknown): Promise<ListResult> {
   const parsed = listItemRemoveSchema.safeParse(input);
   if (!parsed.success) return { error: "unknown" };
-  return run((api) => api.list.removeItem(parsed.data));
+  return run((api) => api.list.removeItem(parsed.data), { refreshPage: true });
 }
 
 export async function reorderListAction(input: unknown): Promise<ListResult> {
   const parsed = listReorderSchema.safeParse(input);
   if (!parsed.success) return { error: "unknown" };
-  return run((api) => api.list.reorder(parsed.data));
+  return run((api) => api.list.reorder(parsed.data), { refreshPage: true });
 }
 
 /** The caller's lists for the "Add to a list" dialog, each saying if it holds the target. */

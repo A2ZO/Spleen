@@ -83,6 +83,8 @@ test("blocking ends the follow and hides the interactions, without telling", asy
   await alice.getByRole("button", { name: "Bloquer" }).click();
   await alice.getByRole("dialog").getByRole("button", { name: "Bloquer" }).click();
   await expect(alice.getByRole("dialog")).toBeHidden();
+  // The profile refreshes (Bob no longer follows anyone): leaving earlier aborts that render.
+  await expect(alice.getByText("0 abonnement", { exact: true })).toBeVisible();
   await alice.goto("/fr/settings/blocks");
   await expect(alice.getByText(`@${bobName}`)).toBeVisible();
 

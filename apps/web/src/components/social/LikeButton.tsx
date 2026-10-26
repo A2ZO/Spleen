@@ -8,7 +8,6 @@ import { useState, useTransition } from "react";
 import { setLikeAction } from "@/app/[locale]/social/actions";
 import { FormMessage } from "@/components/ui/Field";
 import { HeartIcon } from "@/components/ui/icons";
-import { useRouter } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 
 /** "I like" on a review (or a list): optimistic, the server's count wins. */
@@ -23,7 +22,6 @@ export function LikeButton({
 }) {
   const t = useTranslations();
   const te = useTranslations("errors");
-  const router = useRouter();
   const [state, setState] = useState({ liked, count });
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<ApiErrorCode | "unknown" | null>(null);
@@ -37,7 +35,6 @@ export function LikeButton({
       const result = await setLikeAction({ subject, liked: next });
       if (result.data) {
         setState({ liked: result.data.liked, count: result.data.likeCount });
-        router.refresh();
       } else {
         setState(previous);
         setError(result.error ?? "unknown");

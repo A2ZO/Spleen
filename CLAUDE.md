@@ -59,7 +59,7 @@ CI, e2e cleanup guard, env vars and database details: `docs/environnement.md`.
   and Vitest call `loadRootEnv()`.
 - `DATABASE_URL` = Neon pooled (app), `DATABASE_URL_UNPOOLED` = direct (migrations, seed);
   unset → PGlite in `.data/pglite`. Neon branch `dev` = local; branch `production` = live site (never in a file).
-- e2e accounts are `e2e-<id>@example.test`, deleted by `apps/web/e2e/cleanup.ts`, which
+- e2e accounts are `e2e-<id>@example.test`, deleted by `apps/web/e2e/cleanup.ts` (global setup/teardown), which
   refuses production and Neon's `production` branch (`NEON_MAIN_HOST`). Keep each e2e test short.
 - Never edit generated migrations (a test fails on schema/snapshot drift);
   `0000_search_extensions.sql` is hand-written.
@@ -151,6 +151,12 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
   `::timestamptz` (job `api-postgres` catches it; API tests use `createTestDb()`). Read
   `db.execute()` results with `rowsOf()` (an array on postgres.js, `{ rows }` on PGlite).
 - Single-table drizzle selects drop qualifiers: subqueries spell `"t"."col"`.
+- After a Server Action, refresh with `refresh()` (`next/cache`) inside the action, never a
+  client `router.refresh()`: that second request was cancelled mid-render ("The destination
+  stream errored"). e2e must not leave a page before its navigation ends (checked by
+  `e2e/server-log.ts`).
+- No `generateStaticParams` under `app/` (lint rule): pages are dynamic anyway, and in dev it
+  made concurrent first renders read a half-written `prerender-manifest.json`.
 - A state update inside `startTransition` is deferred: optimistic UI (a checkbox ticked at
   once) must be set before the transition starts.
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one

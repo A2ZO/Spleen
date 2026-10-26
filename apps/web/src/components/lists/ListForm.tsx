@@ -38,7 +38,6 @@ export function ListForm({
         if (result.ok) {
           setError(null);
           setSaved(true);
-          router.refresh();
         } else setError(result.error ?? "unknown");
         return;
       }

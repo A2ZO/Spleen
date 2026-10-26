@@ -109,6 +109,29 @@ describe("email", () => {
     expect(lines.join("")).toContain("Text");
   });
 
+  it("never shows a half-written email to a reader polling the outbox", async () => {
+    const outboxDir = path.join(tmp, "outbox-polled");
+    const mailer = createDevMailer({ outboxDir, log: () => {} });
+    const big = { ...email, text: "x".repeat(4_000_000) };
+    let sending = true;
+    const sent = Promise.all([1, 2, 3].map(() => mailer.send(big))).finally(() => {
+      sending = false;
+    });
+    let reads = 0;
+    // Same filter and parse as the e2e helper `magicLinkFor`.
+    while (sending || reads === 0) {
+      const files = (await readdir(outboxDir).catch(() => [])).filter((f) => f.endsWith(".json"));
+      for (const file of files) {
+        const text = await readFile(path.join(outboxDir, file), "utf8");
+        expect(() => JSON.parse(text)).not.toThrow();
+        reads++;
+      }
+      await new Promise((resolve) => setImmediate(resolve));
+    }
+    await sent;
+    expect((await readdir(outboxDir)).filter((f) => f.endsWith(".tmp"))).toEqual([]);
+  });
+
   it("never falls back to the dev mailer in production", () => {
     expect(() => createMailer({ NODE_ENV: "production" })).toThrow(/BREVO_API_KEY/);
   });

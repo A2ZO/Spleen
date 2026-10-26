@@ -55,9 +55,13 @@ test("profile tabs switch to the stats panel", async ({ page }) => {
 test("diary calendar shows a month", async ({ page }) => {
   await page.goto("/fr/u/nuitblanche/diary");
   await page.getByRole("link", { name: "Calendrier" }).click();
-  await expect(page.getByRole("table", { name: /^Écoutes de/ })).toBeVisible();
+  const caption = page.getByRole("table", { name: /^Écoutes de/ }).locator("caption");
+  const shown = await caption.textContent();
   await page.getByRole("link", { name: /Mois précédent/ }).click();
   await expect(page).toHaveURL(/view=calendar&month=\d{4}-\d{2}/);
+  // Wait for the new month: ending on the URL alone closed the page mid-render.
+  await expect(caption).toHaveText(/^Écoutes de/);
+  await expect(caption).not.toHaveText(shown ?? "");
 });
 
 test("hearts are paged, and a page past the last one goes to the last page", async ({ page }) => {

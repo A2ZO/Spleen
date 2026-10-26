@@ -7,7 +7,6 @@ import { useEffect, useRef, useState } from "react";
 import { removeListItemAction, reorderListAction } from "@/app/[locale]/list/actions";
 import { Button } from "@/components/ui/Button";
 import { FormMessage } from "@/components/ui/Field";
-import { useRouter } from "@/i18n/navigation";
 
 import { ListItemRow, listItemView } from "./ListItemRow";
 
@@ -29,7 +28,6 @@ export function ListItemsEditor({
 }) {
   const t = useTranslations("list");
   const te = useTranslations("errors");
-  const router = useRouter();
   const [items, setItems] = useState(initial);
   const [status, setStatus] = useState("");
   const [error, setError] = useState<ErrorCode | null>(null);
@@ -41,7 +39,10 @@ export function ListItemsEditor({
   }, [initial]);
   const buttons = useRef(new Map<string, HTMLButtonElement | null>());
 
-  /** Sends `write` after the previous save; on failure, shows the server's order again. */
+  /**
+   * Sends `write` after the previous save (the action re-renders the page in its response);
+   * on failure, shows the server's order again.
+   */
   const save = (write: () => Promise<{ ok?: boolean; error?: ErrorCode }>) => {
     queue.current = queue.current.then(async () => {
       const result = await write();
@@ -51,7 +52,6 @@ export function ListItemsEditor({
         setError(result.error ?? "unknown");
         setItems(serverItems.current);
       }
-      router.refresh();
     });
   };
 

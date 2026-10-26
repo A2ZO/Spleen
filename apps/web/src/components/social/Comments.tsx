@@ -13,7 +13,7 @@ import {
 import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { FormMessage, TextArea } from "@/components/ui/Field";
-import { Link, useRouter } from "@/i18n/navigation";
+import { Link } from "@/i18n/navigation";
 
 import { ReportButton } from "./ReportDialog";
 
@@ -23,7 +23,6 @@ type ErrorCode = ApiErrorCode | "unknown";
 export function CommentForm({ subject }: { subject: SocialSubjectInput }) {
   const t = useTranslations("comments");
   const te = useTranslations("errors");
-  const router = useRouter();
   const [body, setBody] = useState("");
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<ErrorCode | null>(null);
@@ -35,7 +34,6 @@ export function CommentForm({ subject }: { subject: SocialSubjectInput }) {
       if (result.ok) {
         setBody("");
         setError(null);
-        router.refresh();
       } else setError(result.error ?? "unknown");
     });
   };
@@ -71,7 +69,6 @@ export function CommentItem({
   const t = useTranslations("comments");
   const te = useTranslations("errors");
   const format = useFormatter();
-  const router = useRouter();
   const [editing, setEditing] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [body, setBody] = useState(comment.body);
@@ -83,7 +80,6 @@ export function CommentItem({
       setEditing(false);
       setConfirmDelete(false);
       setError(null);
-      router.refresh();
     } else setError(result.error ?? "unknown");
   };
 
