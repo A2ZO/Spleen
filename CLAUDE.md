@@ -45,6 +45,7 @@ pnpm db:migrate          # apply migrations (direct connection on Neon)
 pnpm db:seed             # migrate + insert demo data (idempotent) — never in production
 pnpm db:reset            # wipe the LOCAL PGlite database, migrate, seed (refuses Postgres)
 pnpm db:seed:catalog     # import packages/api/scripts/catalog-seed.json from MusicBrainz
+pnpm catalog:refresh     # re-read discographies for recent releases (nightly in Actions)
 $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # Playwright with the installed Chrome
 ```
 
@@ -150,6 +151,8 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
   `::timestamptz` (job `api-postgres` catches it; API tests use `createTestDb()`). Read
   `db.execute()` results with `rowsOf()` (an array on postgres.js, `{ rows }` on PGlite).
 - Single-table drizzle selects drop qualifiers: subqueries spell `"t"."col"`.
+- A state update inside `startTransition` is deferred: optimistic UI (a checkbox ticked at
+  once) must be set before the transition starts.
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
 
@@ -163,7 +166,7 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 ## Milestones
 
 - [x] 1. Foundations · 2. Database · 3. Accounts · 4. Catalog · 5. Listening · 6. Profile &
-      base stats · 7. Social.
-- [ ] 8. **Lists & discovery** (next): lists (like/comment API ready), trends FR/EN, rankings.
-- [ ] 9. Admin, legal, polish · 10. Launch. **Real services are not connected yet** (Google,
+      base stats · 7. Social · 8. Lists & discovery (`docs/decouverte.md`).
+- [ ] 9. **Admin, legal, polish** (next): moderation queue (reports, lists included), duplicate
+      merges, legal pages, PWA, Open Graph · 10. Launch. **Real services are not connected yet** (Google,
       Brevo, R2, Neon `main`, domain): follow `docs/mise-en-ligne.md`.
