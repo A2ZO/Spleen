@@ -53,6 +53,10 @@ Côté web, `?after=<curseur>` et un lien « Revenir aux plus récents ».
   lecteur n'a pas noté le disque (ou le morceau pour une écoute de morceau).
 - Fil Amis vide : message d'accueil et `feed.suggestions` (activité des 30 derniers jours,
   hors membres suivis et bloqués).
+- **Chargement** : la requête de page renvoie aussi la dernière critique de chaque écoute ;
+  les cartes (`loadReviewCards`, `loadListens`) coûtent ensuite deux allers-retours en
+  parallèle (les lignes, puis tout ce qu'elles référencent, masquage aveugle compris).
+  Plafonds et identité du résultat : `packages/api/src/feed-loading.test.ts`.
 
 ## Likes et commentaires
 

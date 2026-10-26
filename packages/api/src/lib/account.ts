@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { eq, inArray, isE2eEmail, or, schema, type Db } from "@spleen/db";
+import { eq, freesUsernamesAtOnce, inArray, or, schema, type Db } from "@spleen/db";
 import type { Storage } from "@spleen/infra/storage";
 import {
   AVATAR_MAX_BYTES,
@@ -299,7 +299,7 @@ export async function exportAccount(db: Db, user: SessionUser, now: Date): Promi
 /**
  * Deletes the account and, by cascade, all member data. The current and former usernames
  * stay reserved for 30 days through `username_history` rows whose `user_id` becomes NULL,
- * except for e2e test accounts (`isE2eEmail`), whose generated names nobody will claim.
+ * except for e2e test accounts in development and tests (`freesUsernamesAtOnce`).
  */
 export async function deleteAccount(
   db: Db,
@@ -316,7 +316,7 @@ export async function deleteAccount(
     fail("BAD_REQUEST", "CONFIRMATION_MISMATCH");
   }
   await db.transaction(async (tx) => {
-    if (profile && !isE2eEmail(user.email)) {
+    if (profile && !freesUsernamesAtOnce(user.email)) {
       await tx
         .insert(schema.usernameHistory)
         .values({ userId: user.id, username: profile.username, changedAt: now });

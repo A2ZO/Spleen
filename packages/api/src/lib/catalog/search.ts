@@ -1,5 +1,5 @@
 import { MAIN_SECONDARY_TYPES, type CatalogProvider } from "@spleen/catalog";
-import { inArray, schema, sql, type Db } from "@spleen/db";
+import { inArray, rowsOf, schema, sql, type Db } from "@spleen/db";
 import type { CatalogSearchInput } from "@spleen/validators";
 
 import type { CatalogSearchResults, RemoteHit } from "../../types";
@@ -43,9 +43,6 @@ function matches(column: unknown, q: string) {
   };
 }
 
-const rowsOf = (result: unknown) =>
-  (Array.isArray(result) ? result : (result as { rows: unknown[] }).rows) as { id: string }[];
-
 async function searchReleaseIds(db: Db, q: string, limit: number) {
   const { releases, releaseArtists, artists } = schema;
   const title = matches(releases.title, q);
@@ -70,7 +67,7 @@ async function searchReleaseIds(db: Db, q: string, limit: number) {
       ${releases.releaseDate} asc nulls last
     limit ${limit}
   `);
-  return rowsOf(result).map((r) => r.id);
+  return rowsOf<{ id: string }>(result).map((r) => r.id);
 }
 
 async function searchArtistIds(db: Db, q: string, limit: number) {
@@ -82,7 +79,7 @@ async function searchArtistIds(db: Db, q: string, limit: number) {
     order by ${name.score} desc, ${artists.name}
     limit ${limit}
   `);
-  return rowsOf(result).map((r) => r.id);
+  return rowsOf<{ id: string }>(result).map((r) => r.id);
 }
 
 async function searchTrackIds(db: Db, q: string, limit: number) {
@@ -99,7 +96,7 @@ async function searchTrackIds(db: Db, q: string, limit: number) {
     order by ${title.score} + 0.5 * coalesce(max(${artist.score}), 0) desc, ${tracks.title}
     limit ${limit}
   `);
-  return rowsOf(result).map((r) => r.id);
+  return rowsOf<{ id: string }>(result).map((r) => r.id);
 }
 
 export async function searchCatalog(

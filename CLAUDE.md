@@ -55,7 +55,7 @@ Bump the image when Neon moves to a new major. No secrets in CI: tests never tou
 
 e2e: accounts are `e2e-<id>@example.test`; `apps/web/e2e/cleanup.ts` (global setup and
 teardown) deletes them with their data, even after a failed or interrupted run (Postgres
-only), and their usernames are never reserved. Keep each e2e test short and independent.
+only), and their usernames are not reserved (development and tests only). Keep each e2e test short and independent.
 
 ## Environment variables
 
@@ -186,7 +186,8 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 - New migration → `pnpm db:migrate` on the running dev server's database, or its page 500s.
 - Burst writes arrive out of order: group clicks, send an `order` (`docs/ecoute.md`).
 - Raw `sql` params: postgres.js rejects a JS `Date` (PGlite accepts it): `toISOString()` +
-  `::timestamptz` (job `api-postgres` catches it; API tests use `createTestDb()`).
+  `::timestamptz` (job `api-postgres` catches it; API tests use `createTestDb()`). Read
+  `db.execute()` results with `rowsOf()` (an array on postgres.js, `{ rows }` on PGlite).
 - Single-table drizzle selects drop qualifiers: subqueries spell `"t"."col"`.
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.

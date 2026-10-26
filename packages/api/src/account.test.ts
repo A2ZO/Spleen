@@ -6,7 +6,7 @@ import { eq, schema, seed, type DbHandle } from "@spleen/db";
 import { createTestDb } from "@spleen/db/testing";
 import { createLocalStorage } from "@spleen/infra/storage";
 import { TRPCError } from "@trpc/server";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { sniffImageType } from "./lib/account";
 import { createCaller } from "./root";
@@ -321,6 +321,24 @@ describe("account.delete", () => {
       ),
     ).toBe(0);
     expect(await statusOf(await newUser("next@example.test"), "e2e_mvx1abcd")).toBe("available");
+  });
+
+  it("keeps an e2e account's username reserved in production", async () => {
+    const tester = await newUser("e2e-prod1abc@example.test");
+    await api(tester).account.onboard({
+      username: "e2e_prod1abc",
+      displayName: "Alice Nocturne",
+      ageConfirmed: true,
+      locale: "fr",
+      theme: "dark",
+    });
+    vi.stubEnv("NODE_ENV", "production");
+    try {
+      await api(tester).account.delete({ confirmUsername: "e2e_prod1abc" });
+    } finally {
+      vi.unstubAllEnvs();
+    }
+    expect(await statusOf(await newUser("next2@example.test"), "e2e_prod1abc")).toBe("reserved");
   });
 
   it("keeps the deleted member's usernames reserved for 30 days, anonymously", async () => {

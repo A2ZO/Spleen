@@ -1,12 +1,13 @@
-import { and, desc, inArray, ne, schema, sql, type Db } from "@spleen/db";
+import { and, desc, inArray, ne, rowsOf, schema, sql, type Db } from "@spleen/db";
 import type { AudienceLang } from "@spleen/validators";
 
-import type { CursorPage, FeedItem, MemberCard, ReleaseCard, ReviewCard } from "../../types";
+import type { CursorPage, FeedItem, MemberCard, ReviewCard } from "../../types";
 import { loadReleaseCards, loadTrackCards, toReleaseCard } from "../catalog/cards";
-import { blindReleaseItems, blindReviewCards, ratedIds } from "../listening/blind";
+import { maskRelease, ratedIds, ratedReleaseIds } from "../listening/blind";
+import type { Viewer } from "../viewer";
 import { cursorInt, cursorTime, cursorUuid, decodeCursor, encodeCursor, pageOf } from "./cursor";
 import { memberCards, memberRefs, notBlockedWith } from "./relations";
-import { loadReviewCards, type SocialViewer } from "./reviews";
+import { loadReviewCards } from "./reviews";
 
 /*
  * The home feed. "Friends": listens (with their review), hearts, quick ratings and reviews
@@ -24,18 +25,17 @@ export const POPULAR_WINDOW_DAYS = 7;
 const SUGGESTIONS_SIZE = 5;
 const ACTIVE_WINDOW_DAYS = 30;
 
-const rowsOf = <T>(result: unknown) =>
-  (Array.isArray(result) ? result : (result as { rows: unknown[] }).rows) as T[];
-
 interface FeedRow {
   kind: "listen" | "review";
   id: string;
   at: string;
+  /** A listen's latest review. */
+  reviewId: string | null;
 }
 
 export async function friendsFeed(
   db: Db,
-  viewer: SocialViewer & { id: string },
+  viewer: Viewer & { id: string },
   cursor: string | undefined,
 ): Promise<CursorPage<FeedItem>> {
   const after = cursor ? decodeCursor(cursor, 2) : null;
@@ -44,16 +44,17 @@ export async function friendsFeed(
   // (private diary, or an undated listen with no rating or heart left) stands on its own.
   const shown = sql`(${entries.listenedOn} is not null or ${entries.liked} or ${entries.rating} is not null)`;
   const result = await db.execute(sql`
-    select kind, id, at::text as at from (
+    select kind, id, at::text as at, review_id as "reviewId" from (
       select 'listen' as kind, ${entries.id} as id,
-        greatest(${entries.createdAt}, (select max("r"."created_at") from "reviews" "r" where "r"."entry_id" = ${entries.id})) as at
+        greatest(${entries.createdAt}, (select max("r"."created_at") from "reviews" "r" where "r"."entry_id" = ${entries.id})) as at,
+        (select "r"."id" from "reviews" "r" where "r"."entry_id" = ${entries.id} order by "r"."created_at" desc limit 1) as review_id
       from ${entries}
       join ${profiles} on ${profiles.userId} = ${entries.userId}
       where ${entries.userId} in (${followed})
         and not ${profiles.diaryPrivate}
         and ${shown}
       union all
-      select 'review', ${reviews.id}, ${reviews.createdAt}
+      select 'review', ${reviews.id}, ${reviews.createdAt}, null
       from ${reviews}
       join ${profiles} on ${profiles.userId} = ${reviews.userId}
       where ${reviews.userId} in (${followed})
@@ -70,107 +71,94 @@ export async function friendsFeed(
   return { items: await loadFeedItems(db, viewer, page.items), nextCursor: page.nextCursor };
 }
 
+/**
+ * The listens of a feed page, with what they show, and the reviews' cards: two rounds of
+ * queries (the rows, then everything they point to), entries and reviews side by side.
+ */
 async function loadFeedItems(
   db: Db,
-  viewer: SocialViewer & { id: string },
+  viewer: Viewer & { id: string },
   rows: FeedRow[],
 ): Promise<FeedItem[]> {
-  const entryIds = rows.filter((r) => r.kind === "listen").map((r) => r.id);
-  const entryRows = entryIds.length
-    ? await db.select().from(entries).where(inArray(entries.id, entryIds))
-    : [];
-  const entryReviews = entryIds.length
-    ? await db
-        .select({ id: reviews.id, entryId: reviews.entryId })
-        .from(reviews)
-        .where(inArray(reviews.entryId, entryIds))
-        .orderBy(desc(reviews.createdAt))
-    : [];
-  const reviewIds = [
-    ...rows.filter((r) => r.kind === "review").map((r) => r.id),
-    ...entryReviews.map((r) => r.id),
-  ];
-  const [authors, trackCards, reviewCards] = await Promise.all([
-    memberRefs(
+  const [listens, reviewCards] = await Promise.all([
+    loadListens(
       db,
-      entryRows.map((e) => e.userId),
+      viewer,
+      rows.flatMap((r) => (r.kind === "listen" ? [r.id] : [])),
     ),
-    loadTrackCards(
+    loadReviewCards(
       db,
-      entryRows.flatMap((e) => e.trackId ?? []),
-    ),
-    loadReviewCards(db, reviewIds, viewer.id).then((cards) =>
-      blindReviewCards(db, viewer.blind, cards),
+      rows.map((r) => (r.kind === "review" ? r.id : r.reviewId)).filter((id) => id !== null),
+      viewer,
     ),
   ]);
-  const releaseCards = new Map(
-    (
-      await loadReleaseCards(
-        db,
-        entryRows.flatMap((e) => e.releaseId ?? []),
-      )
-    ).map((c) => [c.id, toReleaseCard(c)]),
-  );
-  const trackById = new Map(trackCards.map((t) => [t.id, t]));
   const reviewById = new Map(reviewCards.map((r) => [r.id, r]));
-  const reviewOfEntry = new Map<string, ReviewCard>();
-  for (const { id, entryId } of entryReviews) {
-    const card = reviewById.get(id);
-    if (card && entryId && !reviewOfEntry.has(entryId)) reviewOfEntry.set(entryId, card);
-  }
-  // Blind listening: track listens hide their rating until the viewer rated the track.
-  const ratedTracks = viewer.blind
-    ? await ratedIds(
-        db,
-        viewer.id,
-        "trackId",
-        entryRows.flatMap((e) => e.trackId ?? []),
-      )
-    : null;
-  const entryById = new Map(entryRows.map((e) => [e.id, e]));
-
-  const items = rows.flatMap((row): FeedItem[] => {
+  return rows.flatMap((row): FeedItem[] => {
     if (row.kind === "review") {
       const review = reviewById.get(row.id);
       return review ? [{ kind: "review", id: row.id, at: review.createdAt, review }] : [];
     }
-    const entry = entryById.get(row.id);
-    const author = entry && authors.get(entry.userId);
-    if (!entry || !author) return [];
-    const track = entry.trackId ? trackById.get(entry.trackId) : undefined;
-    const release = entry.releaseId ? releaseCards.get(entry.releaseId) : track?.release;
-    if (!release) return [];
-    const trackHidden = ratedTracks !== null && entry.trackId && !ratedTracks.has(entry.trackId);
-    const review = reviewOfEntry.get(entry.id) ?? null;
-    const at = review && review.createdAt > entry.createdAt.toISOString() ? review.createdAt : null;
-    return [
-      {
-        kind: "listen",
-        id: entry.id,
-        at: at ?? entry.createdAt.toISOString(),
-        author,
-        release,
-        track: track ? { slug: track.slug, title: track.title } : null,
-        listenedOn: entry.listenedOn,
-        rating: trackHidden ? null : entry.rating,
-        liked: entry.liked,
-        relisten: entry.isRelisten,
-        review,
-      },
-    ];
+    const listen = listens.get(row.id);
+    if (!listen) return [];
+    const review = (row.reviewId && reviewById.get(row.reviewId)) || null;
+    // A listen moves up when its review is written later (as in the feed query).
+    const at = review && review.createdAt > listen.at ? review.createdAt : listen.at;
+    return [{ ...listen, at, review }];
   });
-  const masked = await blindReleaseItems(
-    db,
-    viewer.blind,
-    items,
-    (item): ReleaseCard | null => (item.kind === "listen" ? item.release : null),
-    (item, release) => (item.kind === "listen" ? { ...item, release } : item),
-  );
-  // A release listen keeps its rating hidden as long as the release's ratings are.
-  return masked.map((item) =>
-    item.kind === "listen" && !item.track && item.release.ratingsHidden
-      ? { ...item, rating: null }
-      : item,
+}
+
+/** Feed listens by entry id, without their review. Ratings follow blind listening. */
+async function loadListens(
+  db: Db,
+  viewer: Viewer & { id: string },
+  entryIds: string[],
+): Promise<Map<string, Extract<FeedItem, { kind: "listen" }>>> {
+  if (entryIds.length === 0) return new Map();
+  const entryRows = await db.select().from(entries).where(inArray(entries.id, entryIds));
+  const releaseIds = entryRows.flatMap((e) => e.releaseId ?? []);
+  const trackIds = entryRows.flatMap((e) => e.trackId ?? []);
+  const [authors, trackCards, releaseCards, ratedReleases, ratedTracks] = await Promise.all([
+    memberRefs(
+      db,
+      entryRows.map((e) => e.userId),
+    ),
+    loadTrackCards(db, trackIds),
+    loadReleaseCards(db, releaseIds),
+    viewer.blind ? ratedReleaseIds(db, viewer.id, releaseIds, trackIds) : null,
+    // Blind listening: track listens hide their rating until the viewer rated the track.
+    viewer.blind ? ratedIds(db, viewer.id, "trackId", trackIds) : null,
+  ]);
+  const trackById = new Map(trackCards.map((t) => [t.id, t]));
+  const releaseById = new Map(releaseCards.map((c) => [c.id, toReleaseCard(c)]));
+  return new Map(
+    entryRows.flatMap((entry): [string, Extract<FeedItem, { kind: "listen" }>][] => {
+      const author = authors.get(entry.userId);
+      const track = entry.trackId ? trackById.get(entry.trackId) : undefined;
+      const card = entry.releaseId ? releaseById.get(entry.releaseId) : track?.release;
+      if (!author || !card) return [];
+      const release = ratedReleases ? maskRelease(ratedReleases, card) : card;
+      const trackHidden = ratedTracks !== null && entry.trackId && !ratedTracks.has(entry.trackId);
+      // A release listen keeps its rating hidden as long as the release's ratings are.
+      const ratingHidden = trackHidden || (!track && release.ratingsHidden);
+      return [
+        [
+          entry.id,
+          {
+            kind: "listen",
+            id: entry.id,
+            at: entry.createdAt.toISOString(),
+            author,
+            release,
+            track: track ? { slug: track.slug, title: track.title } : null,
+            listenedOn: entry.listenedOn,
+            rating: ratingHidden ? null : entry.rating,
+            liked: entry.liked,
+            relisten: entry.isRelisten,
+            review: null,
+          },
+        ],
+      ];
+    }),
   );
 }
 
@@ -182,7 +170,7 @@ interface PopularRow {
 
 export async function popularFeed(
   db: Db,
-  viewer: SocialViewer,
+  viewer: Viewer,
   lang: AudienceLang,
   cursor: string | undefined,
   now: Date,
@@ -220,12 +208,12 @@ export async function popularFeed(
   const page = pageOf(rowsOf<PopularRow>(result), FEED_PAGE_SIZE, (last) =>
     encodeCursor([last.score, last.at, last.id]),
   );
-  const cards = await loadReviewCards(
+  const items = await loadReviewCards(
     db,
     page.items.map((r) => r.id),
-    viewer.id,
+    viewer,
   );
-  return { items: await blindReviewCards(db, viewer.blind, cards), nextCursor: page.nextCursor };
+  return { items, nextCursor: page.nextCursor };
 }
 
 /**

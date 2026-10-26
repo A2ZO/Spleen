@@ -14,11 +14,12 @@ import type {
 } from "../types";
 import { loadReleaseCards, loadTrackCards, toReleaseCard } from "./catalog/cards";
 import { listRowColumns, loadListCards } from "./catalog/pages";
-import { blindReleaseItems, blindReviewCards, type BlindViewer } from "./listening/blind";
+import { blindReleaseItems, blindReviewCards } from "./listening/blind";
 import { isBlockedBetween } from "./social/relations";
 import { reviewCountColumns } from "./social/reviews";
 import { getShelf } from "./shelf";
 import { getMemberStats } from "./stats";
+import type { Viewer } from "./viewer";
 
 /*
  * Public profile, read from the database. The header (`getPublicProfile`) and each section
@@ -40,12 +41,6 @@ const MONTH_LIMIT = 500;
 const { blocks, entries, entryMoods, follows, lists, moods, profiles } = schema;
 const { reviews, userItemState } = schema;
 
-/** Who looks at the profile: their id (null when signed out) and blind listening. */
-export interface ProfileViewer {
-  id: string | null;
-  blind: BlindViewer | null;
-}
-
 interface ProfileAccess {
   row: typeof profiles.$inferSelect;
   userId: string;
@@ -57,7 +52,7 @@ interface ProfileAccess {
 async function findProfile(
   db: Db,
   username: string,
-  viewer: ProfileViewer,
+  viewer: Viewer,
 ): Promise<ProfileAccess | null> {
   const [row] = await db
     .select()
@@ -81,7 +76,7 @@ function toPage<T>(items: T[], page: number, size: number, total: number): Page<
 
 const emptyPage = <T>(page: number): Page<T> => ({ items: [], page, pageCount: 1, total: 0 });
 
-const maskDiary = (db: Db, viewer: ProfileViewer, items: DiaryEntry[]) =>
+const maskDiary = (db: Db, viewer: Viewer, items: DiaryEntry[]) =>
   blindReleaseItems(
     db,
     viewer.blind,
@@ -90,7 +85,7 @@ const maskDiary = (db: Db, viewer: ProfileViewer, items: DiaryEntry[]) =>
     (e, release) => ({ ...e, release }),
   );
 
-const maskCards = (db: Db, viewer: ProfileViewer, cards: ReleaseCard[]) =>
+const maskCards = (db: Db, viewer: Viewer, cards: ReleaseCard[]) =>
   blindReleaseItems(
     db,
     viewer.blind,
@@ -187,7 +182,7 @@ async function loadDiaryEntries(
 export async function getPublicProfile(
   db: Db,
   username: string,
-  viewer: ProfileViewer,
+  viewer: Viewer,
 ): Promise<ProfileDetail | null> {
   const access = await findProfile(db, username, viewer);
   if (!access) return null;
@@ -257,7 +252,7 @@ export async function getPublicProfile(
 export async function getDiaryPage(
   db: Db,
   username: string,
-  viewer: ProfileViewer,
+  viewer: Viewer,
   page: number,
 ): Promise<Page<DiaryEntry> | null> {
   const access = await findProfile(db, username, viewer);
@@ -285,7 +280,7 @@ function nextMonthStart(month: string): string {
 export async function getDiaryMonth(
   db: Db,
   username: string,
-  viewer: ProfileViewer,
+  viewer: Viewer,
   month: string,
 ): Promise<DiaryEntry[] | null> {
   const access = await findProfile(db, username, viewer);
@@ -304,7 +299,7 @@ export async function getDiaryMonth(
 export async function getLikesPage(
   db: Db,
   username: string,
-  viewer: ProfileViewer,
+  viewer: Viewer,
   page: number,
 ): Promise<Page<LikedRelease> | null> {
   const access = await findProfile(db, username, viewer);
@@ -352,7 +347,7 @@ export async function getLikesPage(
 export async function getReviewsPage(
   db: Db,
   username: string,
-  viewer: ProfileViewer,
+  viewer: Viewer,
   page: number,
 ): Promise<Page<ReviewCard> | null> {
   const access = await findProfile(db, username, viewer);
@@ -407,7 +402,7 @@ export async function getReviewsPage(
 export async function getToListenPage(
   db: Db,
   username: string,
-  viewer: ProfileViewer,
+  viewer: Viewer,
   page: number,
 ): Promise<Page<ReleaseCard> | null> {
   const access = await findProfile(db, username, viewer);
@@ -444,7 +439,7 @@ export async function getToListenPage(
 export async function getProfileLists(
   db: Db,
   username: string,
-  viewer: ProfileViewer,
+  viewer: Viewer,
 ): Promise<ListCard[] | null> {
   const access = await findProfile(db, username, viewer);
   if (!access) return null;
@@ -464,7 +459,7 @@ export async function getProfileLists(
 export async function getProfileStats(
   db: Db,
   username: string,
-  viewer: ProfileViewer,
+  viewer: Viewer,
   now: Date,
 ): Promise<MemberStats | null> {
   const access = await findProfile(db, username, viewer);
