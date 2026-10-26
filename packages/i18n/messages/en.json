@@ -78,7 +78,6 @@
     "reviewsEmpty": "Nobody has written about this record yet. The first review is waiting for you.",
     "listsTitle": "In lists",
     "listenOn": "Listen on",
-    "report": "Report an error or suggest an addition",
     "coverAlt": "Cover of {title}",
     "actions": {
       "title": "Your listen",
@@ -373,6 +372,9 @@
     "ACCOUNT_SUSPENDED": "Your account is suspended.",
     "NOT_FOUND": "This page does not exist.",
     "REPORT_NOT_FOUND": "This report no longer exists.",
+    "DUPLICATE_NOT_FOUND": "This address matches no page of the same kind.",
+    "MERGE_SAME": "Pick two different pages.",
+    "MERGE_ALREADY_MERGED": "One of these pages was already merged.",
     "MODERATION_ACTION_INVALID": "This action does not apply to this report.",
     "ALREADY_SUSPENDED": "This account is already suspended.",
     "NOT_SUSPENDED": "This account is not suspended.",
@@ -657,6 +659,25 @@
       "contest": "To contest it, write to <email></email>."
     }
   },
+  "catalogReport": {
+    "button": "Report an error or suggest an addition",
+    "title": "Report an error or suggest an addition",
+    "typeLegend": "What is it about?",
+    "types": {
+      "error": "Some information is wrong",
+      "cover": "The cover is wrong",
+      "duplicate": "It duplicates another page",
+      "addition": "Something is missing",
+      "other": "Something else"
+    },
+    "duplicateLabel": "Address of the other page",
+    "duplicateHint": "Paste the address of the page, or its end ({example}).",
+    "details": "A few more words (optional)",
+    "send": "Send",
+    "thanks": "Thank you. The moderators will have a look.",
+    "cancel": "Cancel",
+    "close": "Close"
+  },
   "moderationHold": {
     "title": "Hidden by the moderators",
     "body": "Only you can still see this {subject, select, review {review} list {list} other {comment}}, and nobody can react to it any more.",
@@ -732,7 +753,8 @@
       "label": "Moderation sections",
       "reports": "Reports",
       "history": "History",
-      "suspended": "Suspended accounts"
+      "suspended": "Suspended accounts",
+      "merge": "Duplicate merges"
     },
     "statusFilter": "Filter by status",
     "kindFilter": "Filter by type",
@@ -760,6 +782,8 @@
       "inappropriate": "Inappropriate content",
       "catalog_error": "Catalog error",
       "catalog_addition": "Catalog addition",
+      "catalog_cover": "Wrong cover",
+      "catalog_duplicate": "Duplicate",
       "other": "Other"
     },
     "hiddenBadge": "Hidden",
@@ -794,6 +818,32 @@
       "suspend": "Suspend the account"
     },
     "reasonLabel": "Reason for the decision",
+    "duplicateLabel": "Duplicate of",
+    "mergeLink": "Merge both pages",
+    "merge": {
+      "title": "Merge two pages",
+      "intro": "Everything that points to the duplicate (listens, ratings, reviews, lists, Shelves, open reports) moves to the page kept, which also takes what it lacks (credits, tracks, genres, cover, date). The duplicate is never deleted: its address redirects to the page kept. A merge cannot be undone.",
+      "kindLegend": "Kind of page",
+      "kinds": {
+        "release": "Album, EP or single",
+        "track": "Track",
+        "artist": "Artist"
+      },
+      "keepLabel": "Page kept",
+      "duplicateLabel": "Duplicate",
+      "pageHint": "Address of the page, or its end (/album/kind-of-blue).",
+      "check": "Check",
+      "swap": "Swap both pages",
+      "keepTitle": "Kept",
+      "duplicateTitle": "Duplicate, redirected afterwards",
+      "counts": "{listens, plural, =0 {no listens} one {# listen} other {# listens}} · {reviews, plural, =0 {no reviews} one {# review} other {# reviews}} · {listItems, plural, =0 {in no lists} one {in # list} other {in # lists}}",
+      "fromReport": "This report will be marked as handled.",
+      "reasonLabel": "Reason for the merge",
+      "reasonHint": "Kept in the moderation history.",
+      "submit": "Merge",
+      "done": "Merged.",
+      "openKept": "Open the page kept"
+    },
     "reasonHint": "Kept in the history and sent to the member concerned (except dismissals and catalog reports).",
     "done": "Done.",
     "doneEmailFailed": "Done, but the email did not leave: the in-site notification remains.",

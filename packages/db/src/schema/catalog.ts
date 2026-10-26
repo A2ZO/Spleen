@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+  check,
   date,
   index,
   integer,
@@ -11,11 +12,22 @@ import {
   timestamp,
   uuid,
   varchar,
+  type AnyPgColumn,
 } from "drizzle-orm/pg-core";
 
 import { id, searchable, timestamps } from "./_shared";
 
 /* MusicBrainz mapping: release-group = release (album / EP / single), recording = track. */
+
+/**
+ * Duplicate merges: a merged row is never deleted, it points to the row kept (its old URL
+ * redirects there, imports follow the link). Always one step: merging into a row re-points
+ * the rows merged into it.
+ */
+const mergedInto = (target: () => AnyPgColumn) =>
+  uuid("merged_into_id").references(target, { onDelete: "restrict" });
+const notMergedIntoItself = (table: string, t: { id: AnyPgColumn; mergedIntoId: AnyPgColumn }) =>
+  check(`${table}_not_merged_into_itself`, sql`${t.mergedIntoId} <> ${t.id}`);
 
 export const releaseType = pgEnum("release_type", ["album", "ep", "single"]);
 export const datePrecision = pgEnum("date_precision", ["year", "month", "day"]);
@@ -37,9 +49,11 @@ export const artists = pgTable(
     discographyImportedAt: timestamp("discography_imported_at", { withTimezone: true }),
     /** Last time the nightly job re-read the discography for new releases. */
     discographyRefreshedAt: timestamp("discography_refreshed_at", { withTimezone: true }),
+    mergedIntoId: mergedInto((): AnyPgColumn => artists.id),
     ...timestamps(),
   },
   (t) => [
+    notMergedIntoItself("artists", t),
     index("artists_name_trgm_idx").using("gin", sql`${searchable(t.name)} gin_trgm_ops`),
     index("artists_name_fts_idx").using(
       "gin",
@@ -74,9 +88,11 @@ export const releases = pgTable(
      * artist's discography only), completed when its page is opened by a member.
      */
     tracklistImportedAt: timestamp("tracklist_imported_at", { withTimezone: true }),
+    mergedIntoId: mergedInto((): AnyPgColumn => releases.id),
     ...timestamps(),
   },
   (t) => [
+    notMergedIntoItself("releases", t),
     index("releases_title_trgm_idx").using("gin", sql`${searchable(t.title)} gin_trgm_ops`),
     index("releases_title_fts_idx").using(
       "gin",
@@ -95,9 +111,13 @@ export const tracks = pgTable(
     durationMs: integer("duration_ms"),
     /** MusicBrainz recording id. */
     mbid: uuid("mbid").unique(),
+    mergedIntoId: mergedInto((): AnyPgColumn => tracks.id),
     ...timestamps(),
   },
-  (t) => [index("tracks_title_trgm_idx").using("gin", sql`${searchable(t.title)} gin_trgm_ops`)],
+  (t) => [
+    notMergedIntoItself("tracks", t),
+    index("tracks_title_trgm_idx").using("gin", sql`${searchable(t.title)} gin_trgm_ops`),
+  ],
 );
 
 export const releaseArtists = pgTable(

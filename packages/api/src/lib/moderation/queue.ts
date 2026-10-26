@@ -145,9 +145,9 @@ export async function describeSubjects(
   const reviewIds = ids((r) => r.reviewId);
   const listIds = ids((r) => r.listId);
   const commentIds = ids((r) => r.commentId);
-  const releaseIds = ids((r) => r.releaseId);
-  const trackIds = ids((r) => r.trackId);
-  const artistIds = ids((r) => r.artistId);
+  const releaseIds = [...ids((r) => r.releaseId), ...ids((r) => r.duplicateReleaseId)];
+  const trackIds = [...ids((r) => r.trackId), ...ids((r) => r.duplicateTrackId)];
+  const artistIds = [...ids((r) => r.artistId), ...ids((r) => r.duplicateArtistId)];
   const [reviewRows, listRows, commentRows, releaseRows, trackRows, artistRows] = await Promise.all(
     [
       reviewIds.length
@@ -229,6 +229,7 @@ export async function describeSubjects(
     const withMember = (memberId: string | null) => ({
       memberId,
       member: memberId ? toModerated(members.get(memberId)) : null,
+      duplicate: null,
     });
     switch (kind) {
       case "member": {
@@ -281,21 +282,36 @@ export async function describeSubjects(
         const release = report.releaseId ? releaseById.get(report.releaseId) : undefined;
         const track = report.trackId ? trackById.get(report.trackId) : undefined;
         const artist = report.artistId ? artistById.get(report.artistId) : undefined;
-        const href = release
-          ? `/album/${release.slug}`
+        const page = release
+          ? { kind: "release" as const, path: "album", row: release }
           : track
-            ? `/track/${track.slug}`
+            ? { kind: "track" as const, path: "track", row: track }
             : artist
-              ? `/artist/${artist.slug}`
+              ? { kind: "artist" as const, path: "artist", row: artist }
               : null;
+        const other = report.duplicateReleaseId
+          ? releaseById.get(report.duplicateReleaseId)
+          : report.duplicateTrackId
+            ? trackById.get(report.duplicateTrackId)
+            : report.duplicateArtistId
+              ? artistById.get(report.duplicateArtistId)
+              : undefined;
         return {
           kind,
           contentId: null,
           memberId: null,
           member: null,
-          href,
-          label: (release ?? track ?? artist)?.title ?? excerpt(report.details),
+          href: page ? `/${page.path}/${page.row.slug}` : null,
+          label: page?.row.title ?? excerpt(report.details),
           hidden: false,
+          duplicate:
+            page && other
+              ? {
+                  href: `/${page.path}/${other.slug}`,
+                  label: other.title,
+                  merge: { kind: page.kind, keep: other.slug, duplicate: page.row.slug },
+                }
+              : null,
         };
       }
     }

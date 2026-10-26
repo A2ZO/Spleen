@@ -43,6 +43,9 @@ export const API_ERROR_CODES = [
   "ALREADY_SUSPENDED",
   "NOT_SUSPENDED",
   "CANNOT_MODERATE_ADMIN",
+  "DUPLICATE_NOT_FOUND",
+  "MERGE_SAME",
+  "MERGE_ALREADY_MERGED",
 ] as const;
 
 export type ApiErrorCode = (typeof API_ERROR_CODES)[number];

@@ -78,7 +78,6 @@
     "reviewsEmpty": "Personne n'a encore écrit sur ce disque. La première critique t'attend.",
     "listsTitle": "Dans les listes",
     "listenOn": "Écouter sur",
-    "report": "Signaler une erreur ou proposer un ajout",
     "coverAlt": "Pochette de {title}",
     "actions": {
       "title": "Ton écoute",
@@ -374,6 +373,9 @@
     "NOT_FOUND": "Cette page n'existe pas.",
     "REPORT_NOT_FOUND": "Ce signalement n'existe plus.",
     "MODERATION_ACTION_INVALID": "Cette action ne s'applique pas à ce signalement.",
+    "DUPLICATE_NOT_FOUND": "Cette adresse ne correspond à aucune fiche du même type.",
+    "MERGE_SAME": "Choisis deux fiches différentes.",
+    "MERGE_ALREADY_MERGED": "L'une de ces fiches a déjà été fusionnée.",
     "ALREADY_SUSPENDED": "Ce compte est déjà suspendu.",
     "NOT_SUSPENDED": "Ce compte n'est pas suspendu.",
     "CANNOT_MODERATE_ADMIN": "On ne suspend pas un compte admin depuis le site."
@@ -657,6 +659,25 @@
       "contest": "Pour contester, écris à <email></email>."
     }
   },
+  "catalogReport": {
+    "button": "Signaler une erreur ou proposer un ajout",
+    "title": "Signaler une erreur ou proposer un ajout",
+    "typeLegend": "De quoi s'agit-il ?",
+    "types": {
+      "error": "Une information est erronée",
+      "cover": "La pochette est incorrecte",
+      "duplicate": "C'est un doublon d'une autre fiche",
+      "addition": "Il manque quelque chose",
+      "other": "Autre chose"
+    },
+    "duplicateLabel": "Adresse de l'autre fiche",
+    "duplicateHint": "Colle l'adresse de la page, ou sa fin ({example}).",
+    "details": "Quelques mots de plus (facultatif)",
+    "send": "Envoyer",
+    "thanks": "Merci. La modération va y jeter un œil.",
+    "cancel": "Annuler",
+    "close": "Fermer"
+  },
   "moderationHold": {
     "title": "Masqué par la modération",
     "body": "Il n'y a plus que toi pour voir {subject, select, review {cette critique} list {cette liste} other {ce commentaire}}, et plus personne ne peut y réagir.",
@@ -732,7 +753,8 @@
       "label": "Sections de la modération",
       "reports": "Signalements",
       "history": "Historique",
-      "suspended": "Comptes suspendus"
+      "suspended": "Comptes suspendus",
+      "merge": "Fusion de doublons"
     },
     "statusFilter": "Filtrer par statut",
     "kindFilter": "Filtrer par type",
@@ -760,6 +782,8 @@
       "inappropriate": "Contenu inapproprié",
       "catalog_error": "Erreur de catalogue",
       "catalog_addition": "Ajout au catalogue",
+      "catalog_cover": "Pochette incorrecte",
+      "catalog_duplicate": "Doublon",
       "other": "Autre"
     },
     "hiddenBadge": "Masqué",
@@ -794,6 +818,32 @@
       "suspend": "Suspendre le compte"
     },
     "reasonLabel": "Motif de la décision",
+    "duplicateLabel": "Doublon de",
+    "mergeLink": "Fusionner les deux fiches",
+    "merge": {
+      "title": "Fusionner deux fiches",
+      "intro": "Tout ce qui pointe vers le doublon (écoutes, notes, critiques, listes, Étagères, signalements ouverts) passe sur la fiche gardée, qui reprend aussi ce qui lui manque (crédits, pistes, genres, pochette, date). Le doublon n'est jamais supprimé : son adresse redirige vers la fiche gardée. Une fusion ne se défait pas.",
+      "kindLegend": "Type de fiche",
+      "kinds": {
+        "release": "Album, EP ou single",
+        "track": "Morceau",
+        "artist": "Artiste"
+      },
+      "keepLabel": "Fiche gardée",
+      "duplicateLabel": "Doublon",
+      "pageHint": "Adresse de la page, ou sa fin (/album/kind-of-blue).",
+      "check": "Vérifier",
+      "swap": "Inverser les deux fiches",
+      "keepTitle": "Gardée",
+      "duplicateTitle": "Doublon, redirigé ensuite",
+      "counts": "{listens, plural, =0 {aucune écoute} one {# écoute} other {# écoutes}} · {reviews, plural, =0 {aucune critique} one {# critique} other {# critiques}} · {listItems, plural, =0 {dans aucune liste} one {dans # liste} other {dans # listes}}",
+      "fromReport": "Ce signalement sera marqué comme traité.",
+      "reasonLabel": "Motif de la fusion",
+      "reasonHint": "Il est conservé dans l'historique de modération.",
+      "submit": "Fusionner",
+      "done": "Fusion faite.",
+      "openKept": "Voir la fiche gardée"
+    },
     "reasonHint": "Il est conservé dans l'historique et envoyé à la personne concernée (sauf rejet et catalogue).",
     "done": "C'est fait.",
     "doneEmailFailed": "C'est fait, mais l'email n'est pas parti : la notification reste dans le site.",

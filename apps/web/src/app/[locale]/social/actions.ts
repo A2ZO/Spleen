@@ -2,6 +2,7 @@
 
 import type { ApiErrorCode, CommentView } from "@spleen/api";
 import {
+  catalogReportSchema,
   commentCreateSchema,
   commentUpdateSchema,
   likeSetSchema,
@@ -102,6 +103,16 @@ export async function reportAction(input: unknown): Promise<SocialResult> {
   if (!parsed.success) return { error: "unknown" };
   return run(async (api) => {
     await api.report.create(parsed.data);
+    return undefined;
+  });
+}
+
+/** "Report an error / suggest an addition" on an album, track or artist page. */
+export async function catalogReportAction(input: unknown): Promise<SocialResult> {
+  const parsed = catalogReportSchema.safeParse(input);
+  if (!parsed.success) return { error: "unknown" };
+  return run(async (api) => {
+    await api.report.catalog(parsed.data);
     return undefined;
   });
 }

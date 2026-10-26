@@ -1,12 +1,14 @@
 "use client";
 
 import type { ReportView } from "@spleen/api";
+import type { CatalogKind } from "@spleen/validators";
 import { MODERATION_REASON_MAX, MODERATION_REASON_MIN } from "@spleen/validators";
 import { useTranslations } from "next-intl";
 import { useId, useState, useTransition, type FormEvent, type ReactNode } from "react";
 
 import {
   decideReportAction,
+  mergeCatalogAction,
   restoreContentAction,
   suspendMemberAction,
   unsuspendMemberAction,
@@ -166,6 +168,23 @@ export function RestoreForm({
       reasonLabel={t("restoreReasonLabel")}
       submitLabel={t("restoreSubmit")}
       send={(reason) => restoreContentAction({ subject, reason })}
+    />
+  );
+}
+
+/** Confirms a duplicate merge checked on the merge page. */
+export function MergeForm({
+  merge,
+}: {
+  merge: { kind: CatalogKind; keep: string; duplicate: string; reportId?: string };
+}) {
+  const t = useTranslations("admin.merge");
+  return (
+    <ReasonForm
+      reasonLabel={t("reasonLabel")}
+      submitLabel={t("submit")}
+      danger
+      send={(reason) => mergeCatalogAction({ ...merge, reason })}
     />
   );
 }

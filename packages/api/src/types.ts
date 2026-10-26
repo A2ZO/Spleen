@@ -535,6 +535,15 @@ export interface ReportSubjectView {
   /** Author of the content, or the reported member. */
   member: ModeratedMember | null;
   hidden: boolean;
+  /**
+   * Duplicate report: the other page, and the merge it suggests (the reported page as the
+   * duplicate, the other one kept; the admin may swap them).
+   */
+  duplicate: {
+    href: string;
+    label: string;
+    merge: { kind: "release" | "track" | "artist"; keep: string; duplicate: string };
+  } | null;
 }
 
 export type ReportReason =
@@ -545,6 +554,8 @@ export type ReportReason =
   | "inappropriate"
   | "catalog_error"
   | "catalog_addition"
+  | "catalog_cover"
+  | "catalog_duplicate"
   | "other";
 
 export interface ReportView {
@@ -594,4 +605,22 @@ export interface MySuspension {
   reason: string;
   /** Where to contest the decision (placeholder until configured). */
   contactEmail: string;
+}
+
+/** One side of a duplicate merge, with what it carries. */
+export interface MergeCandidate {
+  slug: string;
+  title: string;
+  /** Path of the page without the locale. */
+  href: string;
+  listens: number;
+  reviews: number;
+  listItems: number;
+}
+
+/** A merge checked before it runs: `duplicate` will point to `keep`. */
+export interface CatalogMergePreview {
+  kind: "release" | "track" | "artist";
+  keep: MergeCandidate;
+  duplicate: MergeCandidate;
 }

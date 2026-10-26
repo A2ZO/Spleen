@@ -2,11 +2,14 @@
 
 import type { ApiErrorCode } from "@spleen/api";
 import {
+  catalogMergeSchema,
   memberModerationSchema,
   reportDecisionSchema,
   restoreContentSchema,
 } from "@spleen/validators";
 import { refresh } from "next/cache";
+import { redirect } from "next/navigation";
+import { getLocale } from "next-intl/server";
 
 import { errorCode } from "@/lib/api-errors";
 import { getApi } from "@/server/api";
@@ -57,4 +60,18 @@ export async function restoreContentAction(input: unknown): Promise<ModerationRe
   const parsed = restoreContentSchema.safeParse(input);
   if (!parsed.success) return { error: "unknown" };
   return run((api) => api.admin.restore(parsed.data));
+}
+
+/** Merges two catalog pages, then shows the merge page with a link to the page kept. */
+export async function mergeCatalogAction(input: unknown): Promise<ModerationResult> {
+  const parsed = catalogMergeSchema.safeParse(input);
+  if (!parsed.success) return { error: "unknown" };
+  let kept: { kind: string; slug: string };
+  try {
+    kept = await (await getApi()).admin.merge(parsed.data);
+  } catch (error) {
+    return { error: errorCode(error) };
+  }
+  // Outside the try: `redirect` works by throwing.
+  redirect(`/${await getLocale()}/admin/merge?merged=${kept.kind}&slug=${kept.slug}`);
 }

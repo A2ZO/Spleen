@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { pageNumberSchema, usernameSchema } from "./profile";
+import { catalogKinds } from "./social";
 
 /** Every decision states its reason: it is kept in the history and sent to the member. */
 export const MODERATION_REASON_MIN = 3;
@@ -57,5 +58,21 @@ export const restoreContentSchema = z.object({
   reason: moderationReasonSchema,
 });
 export type RestoreContentInput = z.infer<typeof restoreContentSchema>;
+
+/**
+ * Merging two catalog pages of the same kind: `duplicate` points to `keep` from then on.
+ * Pages are named by slug; `reportId`, a duplicate report the merge closes.
+ */
+export const catalogMergeTargetSchema = z.object({
+  kind: z.enum(catalogKinds),
+  keep: z.string().trim().min(1).max(500),
+  duplicate: z.string().trim().min(1).max(500),
+});
+export type CatalogMergeTargetInput = z.infer<typeof catalogMergeTargetSchema>;
+export const catalogMergeSchema = catalogMergeTargetSchema.extend({
+  reason: moderationReasonSchema,
+  reportId: z.uuid().optional(),
+});
+export type CatalogMergeInput = z.infer<typeof catalogMergeSchema>;
 
 export const moderationHistorySchema = z.object({ page: pageNumberSchema.default(1) });

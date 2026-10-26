@@ -3,6 +3,7 @@ import { reportKinds, reportQueueSchema, reportStatuses } from "@spleen/validato
 import { getFormatter, getTranslations } from "next-intl/server";
 
 import { DecisionForm } from "@/components/admin/ModerationForms";
+import { ButtonLink } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
@@ -132,6 +133,19 @@ async function ReportCard({ report }: { report: ReportView }) {
             <dd className="whitespace-pre-line">{report.details}</dd>
           </>
         )}
+        {subject.duplicate && (
+          <>
+            <dt className="text-fg-muted">{t("duplicateLabel")}</dt>
+            <dd className="min-w-0 break-words">
+              <Link
+                href={subject.duplicate.href}
+                className="text-link underline-offset-2 hover:underline"
+              >
+                {subject.duplicate.label || t("untitled")}
+              </Link>
+            </dd>
+          </>
+        )}
         {report.sameSubjectOpen > 0 && (
           <>
             <dt className="text-fg-muted">{t("othersLabel")}</dt>
@@ -154,6 +168,14 @@ async function ReportCard({ report }: { report: ReportView }) {
           </>
         )}
       </dl>
+      {report.status === "open" && subject.duplicate && (
+        <ButtonLink
+          variant="outline"
+          href={hrefWith("/admin/merge", { ...subject.duplicate.merge, report: report.id })}
+        >
+          {t("mergeLink")}
+        </ButtonLink>
+      )}
       {report.decisions.length > 0 && (
         <DecisionForm reportId={report.id} decisions={report.decisions} />
       )}

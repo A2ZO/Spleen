@@ -147,10 +147,39 @@ async function tracked<T>(
 
 type ArtistCache = Map<string, { id: string; slug: string; name: string }>;
 
+/**
+ * A row merged into another one stands for the row kept (one step: merges never chain), so an
+ * import never brings a duplicate back.
+ */
+async function followMerge(
+  db: Db,
+  table: typeof artists | typeof releases | typeof tracks,
+  row: { id: string; slug: string; mergedIntoId: string | null },
+): Promise<{ id: string; slug: string }> {
+  if (!row.mergedIntoId) return row;
+  const [kept] = await db
+    .select({ id: table.id, slug: table.slug })
+    .from(table as typeof releases)
+    .where(eq(table.id, row.mergedIntoId));
+  return kept!;
+}
+
 /** Inserts or refreshes an artist by provider id; keeps its slug once chosen. */
 async function upsertArtist(db: Db, artist: ProviderArtist, cache: ArtistCache, now: Date) {
   const cached = cache.get(artist.mbid);
   if (cached) return cached;
+  const [known] = await db
+    .select({ mergedIntoId: artists.mergedIntoId })
+    .from(artists)
+    .where(eq(artists.mbid, artist.mbid));
+  if (known?.mergedIntoId) {
+    const [kept] = await db
+      .select({ id: artists.id, slug: artists.slug, name: artists.name })
+      .from(artists)
+      .where(eq(artists.id, known.mergedIntoId));
+    cache.set(artist.mbid, kept!);
+    return kept!;
+  }
   const fields = {
     name: artist.name,
     sortName: artist.sortName,
@@ -265,6 +294,14 @@ async function upsertTrack(
   now: Date,
 ) {
   const credited = await creditedArtists(db, recording.artists, cache, now);
+  const [merged] = await db
+    .select({ id: tracks.id, slug: tracks.slug, mergedIntoId: tracks.mergedIntoId })
+    .from(tracks)
+    .where(eq(tracks.mbid, recording.mbid));
+  if (merged?.mergedIntoId) {
+    const kept = await followMerge(db, tracks, merged);
+    return { id: kept.id, slug: kept.slug };
+  }
   const fields = { title: recording.title, durationMs: recording.lengthMs };
   let [track] = await db
     .update(tracks)
@@ -366,6 +403,7 @@ export async function importReleaseGroup(
   options: ImportOptions = {},
 ): Promise<string> {
   const existing = await findBy(db, releases, mbid);
+  if (existing?.mergedIntoId) return (await followMerge(db, releases, existing)).slug;
   if (existing?.tracklistImportedAt) return existing.slug;
 
   return tracked(db, "release_group", mbid, options, async () => {
@@ -494,6 +532,7 @@ export async function importArtist(
   options: ImportOptions = {},
 ): Promise<string> {
   const existing = await findBy(db, artists, mbid);
+  if (existing?.mergedIntoId) return (await followMerge(db, artists, existing)).slug;
   if (existing?.discographyImportedAt) return existing.slug;
 
   return tracked(db, "artist", mbid, options, async () => {
@@ -550,7 +589,7 @@ export async function importRecording(
   options: ImportOptions = {},
 ): Promise<string> {
   const existing = await findBy(db, tracks, mbid);
-  if (existing) return existing.slug;
+  if (existing) return (await followMerge(db, tracks, existing)).slug;
 
   return tracked(db, "recording", mbid, options, async () => {
     const recording = await provider.getRecording(mbid);
@@ -566,7 +605,7 @@ export async function importRecording(
     if (best) await importReleaseGroup(db, provider, best.releaseGroup.mbid, options);
     // The reference tracklist may use another recording of the song: keep this one too.
     const imported = await findBy(db, tracks, mbid);
-    if (imported) return imported.slug;
+    if (imported) return (await followMerge(db, tracks, imported)).slug;
     const track = await upsertTrack(db, recording, null, new Map(), options.now ?? new Date());
     return track.slug;
   });

@@ -1,16 +1,17 @@
 import type { ReleaseCard } from "@spleen/api";
 import { slugSchema } from "@spleen/validators";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
 import { CatalogNotice } from "@/components/catalog/CatalogNotice";
+import { CatalogReportButton } from "@/components/catalog/CatalogReportButton";
 import { ListenOn } from "@/components/catalog/ListenOn";
 import { AddToListButton } from "@/components/lists/AddToList";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { initRouteLocale } from "@/i18n/locale";
+import { missingCatalogPage } from "@/lib/catalog-redirect";
 import { artistKind } from "@/lib/catalog-labels";
 import { getApi } from "@/server/api";
 
@@ -56,7 +57,7 @@ export default async function ArtistPage({ params }: Props) {
   const { locale, slug } = await params;
   initRouteLocale(locale);
   const artist = await getArtist(slug);
-  if (!artist) notFound();
+  if (!artist) return missingCatalogPage("artist", slug, locale);
 
   const t = await getTranslations();
   const { albums, eps, singles, other } = artist.discography;
@@ -97,6 +98,7 @@ export default async function ArtistPage({ params }: Props) {
             <AddToListButton target={{ kind: "artist", id: artist.id }} title={artist.name} />
           )}
           <ListenOn links={artist.listenLinks} />
+          {me?.profile && <CatalogReportButton target={{ kind: "artist", id: artist.id }} />}
         </aside>
       </header>
 

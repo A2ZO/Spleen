@@ -164,7 +164,8 @@ export async function recentReleases(
 ): Promise<Page<ReleaseCard>> {
   const types: ReleaseType[] = type ? [type] : ["album", "ep"];
   const where = sql`
-    r.release_date between ${dayOf(new Date(now.getTime() - RECENT_DAYS * DAY_MS))}::date
+    r.merged_into_id is null
+    and r.release_date between ${dayOf(new Date(now.getTime() - RECENT_DAYS * DAY_MS))}::date
       and ${dayOf(now)}::date
     and r.release_date_precision in ('day', 'month')
     and r.type in (${sql.join(

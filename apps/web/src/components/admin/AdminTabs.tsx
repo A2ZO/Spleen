@@ -9,6 +9,7 @@ const TABS = [
   { href: "/admin", key: "reports" },
   { href: "/admin/history", key: "history" },
   { href: "/admin/suspended", key: "suspended" },
+  { href: "/admin/merge", key: "merge" },
 ] as const;
 
 /** Sections of the moderation area (the current one follows the path). */

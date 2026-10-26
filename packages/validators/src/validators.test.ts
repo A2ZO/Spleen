@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  catalogReportSchema,
+  catalogSlugFrom,
   catalogImportSchema,
   catalogSearchSchema,
   COMMENT_BODY_MAX,
@@ -132,5 +134,27 @@ describe("social schemas", () => {
         .success;
     expect(parse("harassment")).toBe(true);
     expect(parse("catalog_addition")).toBe(false);
+  });
+});
+
+describe("catalog reports", () => {
+  it("read the other page from an address, a path or a slug, of the same kind only", () => {
+    expect(catalogSlugFrom("https://spleen.example/fr/album/kind-of-blue?x=1", "release")).toBe(
+      "kind-of-blue",
+    );
+    expect(catalogSlugFrom("/en/album/kind-of-blue/", "release")).toBe("kind-of-blue");
+    expect(catalogSlugFrom(" kind-of-blue ", "release")).toBe("kind-of-blue");
+    expect(catalogSlugFrom("/fr/artist/miles-davis", "release")).toBeNull();
+    expect(catalogSlugFrom("/fr/artist/miles-davis", "artist")).toBe("miles-davis");
+    expect(catalogSlugFrom("Kind of Blue", "release")).toBeNull();
+  });
+
+  it("need the other page for a duplicate", () => {
+    const target = { kind: "release", id: "00000000-0000-4000-8000-000000000001" };
+    expect(catalogReportSchema.safeParse({ target, type: "duplicate" }).success).toBe(false);
+    expect(
+      catalogReportSchema.safeParse({ target, type: "duplicate", duplicate: "x" }).success,
+    ).toBe(true);
+    expect(catalogReportSchema.safeParse({ target, type: "cover" }).success).toBe(true);
   });
 });

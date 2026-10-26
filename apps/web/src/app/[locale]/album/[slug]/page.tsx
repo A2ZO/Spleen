@@ -1,11 +1,11 @@
 import type { Track } from "@spleen/api";
 import { ratingToStars, slugSchema } from "@spleen/validators";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
 import { ArtistLinks } from "@/components/catalog/ArtistLinks";
+import { CatalogReportButton } from "@/components/catalog/CatalogReportButton";
 import { CatalogNotice } from "@/components/catalog/CatalogNotice";
 import { ListenOn } from "@/components/catalog/ListenOn";
 import { SecondaryTypes } from "@/components/catalog/SecondaryTypes";
@@ -16,12 +16,12 @@ import { ListCard } from "@/components/social/ListCard";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { Badge } from "@/components/ui/Badge";
 import { Cover } from "@/components/ui/Cover";
-import { FlagIcon } from "@/components/ui/icons";
 import { RatingHistogram } from "@/components/ui/RatingHistogram";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Stars } from "@/components/ui/Stars";
 import { initRouteLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
+import { missingCatalogPage } from "@/lib/catalog-redirect";
 import { formatDuration, formatReleaseDate } from "@/lib/release-date";
 import { getApi } from "@/server/api";
 
@@ -51,7 +51,7 @@ export default async function AlbumPage({ params }: Props) {
   const { locale, slug } = await params;
   initRouteLocale(locale);
   const release = await getRelease(slug);
-  if (!release) notFound();
+  if (!release) return missingCatalogPage("release", slug, locale);
 
   const t = await getTranslations();
   const format = await getFormatter();
@@ -184,12 +184,7 @@ export default async function AlbumPage({ params }: Props) {
             </div>
           )}
           <ListenOn links={release.listenLinks} />
-          <button
-            type="button"
-            className="flex items-center gap-2 text-xs text-fg-muted hover:text-fg"
-          >
-            <FlagIcon /> {t("album.report")}
-          </button>
+          {signedIn && <CatalogReportButton target={target} />}
         </aside>
       </header>
 

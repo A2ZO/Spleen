@@ -26,7 +26,7 @@ const { comments, lists, moderationActions, notifications, profiles, reports, re
 type HideableKind = "review" | "list" | "comment";
 const TABLES = { review: reviews, list: lists, comment: comments } as const;
 
-interface Decision {
+export interface Decision {
   action: ModerationActionKind;
   subject: ModerationSubject;
   reason: string;
@@ -41,7 +41,7 @@ interface Decision {
 }
 
 /** Records a decision, and its notification for the member concerned. */
-async function record(tx: DbOrTx, decision: Decision, now: Date): Promise<string> {
+export async function record(tx: DbOrTx, decision: Decision, now: Date): Promise<string> {
   const content = decision.content;
   const [row] = await tx
     .insert(moderationActions)

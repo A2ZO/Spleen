@@ -20,6 +20,10 @@ import {
   memberPageSchema,
   memberSchema,
   reportCreateSchema,
+  catalogReportSchema,
+  catalogMergeSchema,
+  catalogMergeTargetSchema,
+  catalogKinds,
   catalogImportSchema,
   catalogSearchSchema,
   deleteAccountSchema,
@@ -60,6 +64,8 @@ import {
   updateProfile,
 } from "./lib/account";
 import { importArtist, importEntity, importReleaseGroup } from "./lib/catalog/import";
+import { mergeCatalog, mergedSlug, previewMerge } from "./lib/catalog/merge";
+import { createCatalogReport } from "./lib/catalog/reports";
 import {
   artistIdBySlug,
   getArtistDetail,
@@ -332,6 +338,10 @@ export const appRouter = router({
     create: reportWrite
       .input(reportCreateSchema)
       .mutation(({ input, ctx }) => createReport(ctx.db(), ctx.user.id, input, ctx.now)),
+    /** "Report an error / suggest an addition" on an album, track or artist page. */
+    catalog: reportWrite
+      .input(catalogReportSchema)
+      .mutation(({ input, ctx }) => createCatalogReport(ctx.db(), ctx.user.id, input, ctx.now)),
   }),
   release: router({
     /** A stub (known from a discography only) is completed when a member opens it. */
@@ -373,6 +383,10 @@ export const appRouter = router({
     }),
   }),
   catalog: router({
+    /** Where a page merged into another one now lives (its slug), for a permanent redirect. */
+    mergedInto: publicProcedure
+      .input(z.object({ kind: z.enum(catalogKinds), slug: slugSchema }))
+      .query(({ input, ctx }) => mergedSlug(ctx.db(), input.kind, input.slug)),
     /** Local catalog only: instant, public. */
     search: publicProcedure.input(catalogSearchSchema).query(async ({ input, ctx }) => {
       const results = await searchCatalog(ctx.db(), input);
@@ -633,6 +647,13 @@ export const appRouter = router({
     history: adminProcedure
       .input(moderationHistorySchema)
       .query(({ input, ctx }) => listModerationHistory(ctx.db(), input.page)),
+    /** Two catalog pages to merge, checked, with what each one carries. */
+    mergePreview: adminProcedure
+      .input(catalogMergeTargetSchema)
+      .query(({ input, ctx }) => previewMerge(ctx.db(), input)),
+    merge: adminProcedure
+      .input(catalogMergeSchema)
+      .mutation(({ input, ctx }) => mergeCatalog(ctx.db(), ctx.admin.id, input, ctx.now)),
   }),
 });
 

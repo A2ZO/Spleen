@@ -41,7 +41,7 @@ export async function releaseIdBySlug(db: Db, slug: string) {
       tracklistImportedAt: releases.tracklistImportedAt,
     })
     .from(releases)
-    .where(eq(releases.slug, slug))
+    .where(and(eq(releases.slug, slug), isNull(releases.mergedIntoId)))
     .limit(1);
   return row ?? null;
 }
@@ -253,7 +253,7 @@ export async function artistIdBySlug(db: Db, slug: string) {
       discographyImportedAt: artists.discographyImportedAt,
     })
     .from(artists)
-    .where(eq(artists.slug, slug))
+    .where(and(eq(artists.slug, slug), isNull(artists.mergedIntoId)))
     .limit(1);
   return row ?? null;
 }
@@ -299,7 +299,7 @@ export async function getTrackDetail(db: Db, slug: string): Promise<TrackDetail 
   const [row] = await db
     .select({ id: tracks.id })
     .from(tracks)
-    .where(eq(tracks.slug, slug))
+    .where(and(eq(tracks.slug, slug), isNull(tracks.mergedIntoId)))
     .limit(1);
   if (!row) return null;
   const [[card], releaseMap, ratings] = await Promise.all([
