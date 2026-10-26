@@ -399,6 +399,93 @@ async function mapLimit<T, R>(items: T[], limit: number, fn: (item: T) => Promis
   return results;
 }
 
+/** Release groups of a discography that are not in the catalog yet, with their covers. */
+async function newDiscographyGroups(
+  db: Db,
+  provider: CatalogProvider,
+  groups: ReleaseGroupSummary[],
+) {
+  const known = new Set(
+    groups.length === 0
+      ? []
+      : (
+          await db
+            .select({ mbid: releases.mbid })
+            .from(releases)
+            .where(
+              inArray(
+                releases.mbid,
+                groups.map((g) => g.mbid),
+              ),
+            )
+        ).map((r) => r.mbid),
+  );
+  const stubs = groups.filter((g) => !known.has(g.mbid));
+  // Covers for studio releases only (the ones shown first on the artist page).
+  const coverTargets = new Set(
+    stubs
+      .filter((g) => isMainRelease(g.secondaryTypes))
+      .slice(0, MAX_DISCOGRAPHY_COVERS)
+      .map((g) => g.mbid),
+  );
+  const covers = new Map(
+    await mapLimit([...coverTargets], COVER_CONCURRENCY, async (id) => {
+      return [id, await provider.getCoverUrl(id)] as const;
+    }),
+  );
+  return { stubs, covers };
+}
+
+/** Adds release groups as stubs (no tracklist yet), credited to their artists. */
+async function insertStubs(
+  tdb: Db,
+  stubs: ReleaseGroupSummary[],
+  covers: Map<string, string | null>,
+  cache: ArtistCache,
+  now: Date,
+): Promise<number> {
+  if (stubs.length === 0) return 0;
+  // Batched: one slug lookup and two inserts for the whole discography.
+  const isTaken = await batchSlugCheck(
+    tdb,
+    releases,
+    stubs.flatMap((g) => releaseSlugCandidates(g)),
+  );
+  const values = [];
+  for (const group of stubs) {
+    values.push({
+      ...releaseFields(group),
+      slug: await freeSlug(
+        isTaken,
+        releaseSlugCandidates(group),
+        `release-${group.mbid.slice(0, 8)}`,
+      ),
+      mbid: group.mbid,
+      coverUrl: covers.get(group.mbid) ?? null,
+    });
+  }
+  const inserted = await tdb
+    .insert(releases)
+    .values(values)
+    .onConflictDoNothing({ target: releases.mbid })
+    .returning({ id: releases.id, mbid: releases.mbid });
+  const groupByMbid = new Map(stubs.map((g) => [g.mbid, g]));
+  const links = [];
+  for (const { id, mbid: groupMbid } of inserted) {
+    const credited = await creditedArtists(tdb, groupByMbid.get(groupMbid!)!.artists, cache, now);
+    links.push(
+      ...credited.map((a) => ({
+        releaseId: id,
+        artistId: a.id,
+        position: a.position,
+        creditName: a.creditName,
+      })),
+    );
+  }
+  if (links.length > 0) await tdb.insert(releaseArtists).values(links).onConflictDoNothing();
+  return inserted.length;
+}
+
 /** Artist and its discography; releases not known yet are added as stubs. Returns the slug. */
 export async function importArtist(
   db: Db,
@@ -413,86 +500,44 @@ export async function importArtist(
     const now = options.now ?? new Date();
     const artist = await provider.getArtist(mbid);
     const groups = await provider.getArtistReleaseGroups(mbid);
-    const known = new Set(
-      groups.length === 0
-        ? []
-        : (
-            await db
-              .select({ mbid: releases.mbid })
-              .from(releases)
-              .where(
-                inArray(
-                  releases.mbid,
-                  groups.map((g) => g.mbid),
-                ),
-              )
-          ).map((r) => r.mbid),
-    );
-    const stubs = groups.filter((g) => !known.has(g.mbid));
-    // Covers for studio releases only (the ones shown first on the artist page).
-    const coverTargets = new Set(
-      stubs
-        .filter((g) => isMainRelease(g.secondaryTypes))
-        .slice(0, MAX_DISCOGRAPHY_COVERS)
-        .map((g) => g.mbid),
-    );
-    const covers = new Map(
-      await mapLimit([...coverTargets], COVER_CONCURRENCY, async (id) => {
-        return [id, await provider.getCoverUrl(id)] as const;
-      }),
-    );
+    const { stubs, covers } = await newDiscographyGroups(db, provider, groups);
 
     return db.transaction(async (tx) => {
       const tdb = tx as unknown as Db;
       const cache: ArtistCache = new Map();
       const own = await upsertArtist(tdb, artist, cache, now);
-      await tdb.update(artists).set({ discographyImportedAt: now }).where(eq(artists.id, own.id));
-      if (stubs.length === 0) return own.slug;
-
-      // Batched: one slug lookup and two inserts for the whole discography.
-      const isTaken = await batchSlugCheck(
-        tdb,
-        releases,
-        stubs.flatMap((g) => releaseSlugCandidates(g)),
-      );
-      const values = [];
-      for (const group of stubs) {
-        values.push({
-          ...releaseFields(group),
-          slug: await freeSlug(
-            isTaken,
-            releaseSlugCandidates(group),
-            `release-${group.mbid.slice(0, 8)}`,
-          ),
-          mbid: group.mbid,
-          coverUrl: covers.get(group.mbid) ?? null,
-        });
-      }
-      const inserted = await tdb
-        .insert(releases)
-        .values(values)
-        .onConflictDoNothing({ target: releases.mbid })
-        .returning({ id: releases.id, mbid: releases.mbid });
-      const groupByMbid = new Map(stubs.map((g) => [g.mbid, g]));
-      const links = [];
-      for (const { id, mbid: groupMbid } of inserted) {
-        const credited = await creditedArtists(
-          tdb,
-          groupByMbid.get(groupMbid!)!.artists,
-          cache,
-          now,
-        );
-        links.push(
-          ...credited.map((a) => ({
-            releaseId: id,
-            artistId: a.id,
-            position: a.position,
-            creditName: a.creditName,
-          })),
-        );
-      }
-      if (links.length > 0) await tdb.insert(releaseArtists).values(links).onConflictDoNothing();
+      await tdb
+        .update(artists)
+        .set({ discographyImportedAt: now, discographyRefreshedAt: now })
+        .where(eq(artists.id, own.id));
+      await insertStubs(tdb, stubs, covers, cache, now);
       return own.slug;
+    });
+  });
+}
+
+/**
+ * Re-reads the discography of an artist already in the catalog and adds the releases that
+ * appeared since (new albums for "Recent releases"). Returns how many were added.
+ */
+export async function refreshArtistDiscography(
+  db: Db,
+  provider: CatalogProvider,
+  artist: { id: string; mbid: string },
+  options: ImportOptions = {},
+): Promise<number> {
+  return tracked(db, "artist", artist.mbid, options, async () => {
+    const now = options.now ?? new Date();
+    const groups = await provider.getArtistReleaseGroups(artist.mbid);
+    const { stubs, covers } = await newDiscographyGroups(db, provider, groups);
+    return db.transaction(async (tx) => {
+      const tdb = tx as unknown as Db;
+      const added = await insertStubs(tdb, stubs, covers, new Map(), now);
+      await tdb
+        .update(artists)
+        .set({ discographyImportedAt: now, discographyRefreshedAt: now })
+        .where(eq(artists.id, artist.id));
+      return added;
     });
   });
 }

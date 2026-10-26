@@ -84,6 +84,31 @@ export interface ListCard {
   preview: ReleaseCard[];
 }
 
+/** A record of the week's trends. */
+export interface TrendItem {
+  release: ReleaseCard;
+  /** Distinct members who listened to it in the window. */
+  listeners: number;
+  /**
+   * "lang": members of the requested interface language, this week; "all": every member this
+   * week, and "month": every member in the last 30 days (fallbacks for a short chart).
+   */
+  source: "lang" | "all" | "month";
+}
+
+/** A place in a top rated chart. */
+export interface TopRatedItem {
+  rank: number;
+  release: ReleaseCard;
+  /** Bayesian score on the 1..10 scale; null when blind listening hides it. */
+  score: number | null;
+}
+
+export interface GenreOption {
+  slug: string;
+  name: string;
+}
+
 /** One entry of a list: a release (album, EP, single), a track or an artist. */
 export type ListItem = { id: string; position: number } & (
   | { kind: "release"; release: ReleaseCard }

@@ -108,13 +108,35 @@ On repart d'un mot de passe neuf avant la production.
 - [ ] Console Neon › Branches › `main` › Roles › le rôle de l'application › Reset password.
 - [ ] Mettre à jour `DATABASE_URL` et `DATABASE_URL_UNPOOLED` dans l'hébergeur avec les
       nouvelles URL (§ 3).
+- [ ] Mettre à jour aussi le secret GitHub `DATABASE_URL_UNPOOLED` de l'environnement
+      `production` (§ 9).
 - [ ] Si le rôle est partagé avec la branche `dev` : mettre à jour aussi le `.env` local,
       soi-même (Claude ne lit ni n'écrit `.env`).
 - [ ] **Vérifier** : `GET https://<domaine>/api/health` répond `200` après redéploiement, et
       l'ancienne URL est refusée (par exemple `psql "<ancienne URL>"` → échec
       d'authentification).
 
-## 9. Vérification finale
+## 9. GitHub Actions : sorties récentes (rafraîchissement nocturne)
+
+Le workflow `.github/workflows/catalog-refresh.yml` relit chaque nuit (03 h 17 UTC) sur
+MusicBrainz la discographie d'au plus 150 artistes (écoutés sur 30 jours ou présents sur une
+Étagère), à 1 requête par seconde via le limiteur de la base. Tant que le secret ci-dessous
+manque, il s'arrête aussitôt sans rien faire. Il ne tourne que depuis `main`.
+
+- [ ] GitHub › dépôt › Settings › Environments › New environment : `production`.
+- [ ] Dans cet environnement, Deployment branches and tags : « Selected branches and tags »,
+      règle `main` (seule `main` lit le secret).
+- [ ] Environment secrets › Add secret : `DATABASE_URL_UNPOOLED` = URL **directe** de la
+      branche Neon `main` (sans `-pooler`, § 3), après la réinitialisation du § 8.
+- [ ] Environment variables › Add variable : `MUSICBRAINZ_USER_AGENT` =
+      `Spleen/1.0 ( contact@<domaine> )` (vraie adresse de contact).
+- [ ] Ajouter `NEON_MAIN_HOST` (hôte de la branche `main`, pas un secret) dans le `.env`
+      local : le nettoyage e2e refuse alors cette base, et accepte `dev`.
+- [ ] **Vérifier** : onglet Actions › « Catalog refresh » › Run workflow (sur `main`). Le
+      journal affiche `catalog refresh: N artist(s) to re-read (postgres)` puis
+      `done, … release(s) added`. Le lendemain, une exécution planifiée apparaît.
+
+## 10. Vérification finale
 
 - [ ] Les journaux de démarrage de l'hébergeur ne contiennent pas « Missing environment
       variables for production ».

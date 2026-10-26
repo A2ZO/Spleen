@@ -7,6 +7,9 @@ import {
   cursorPageSchema,
   cursorSchema,
   likeSetSchema,
+  recentReleasesSchema,
+  topRatedSchema,
+  trendsSchema,
   listCreateSchema,
   listItemAddSchema,
   listItemRemoveSchema,
@@ -61,6 +64,7 @@ import {
 } from "./lib/catalog/pages";
 import { tryCatalog, withCatalogErrors } from "./lib/catalog/provider";
 import { searchCatalog, searchRemote } from "./lib/catalog/search";
+import { genreOptions, recentReleases, topRated, weeklyTrends } from "./lib/discovery";
 import { checkHealth } from "./lib/health";
 import {
   blindArtistDetail,
@@ -205,6 +209,25 @@ export const appRouter = router({
     suggestions: protectedProcedure.query(({ ctx }) =>
       suggestedMembers(ctx.db(), ctx.user.id, ctx.now),
     ),
+  }),
+  discovery: router({
+    /** The week's trends with members of one interface language (completed when short). */
+    trends: publicProcedure
+      .input(trendsSchema)
+      .query(async ({ input, ctx }) =>
+        weeklyTrends(ctx.db(), input.lang, await viewerOf(ctx), ctx.now),
+      ),
+    /** Albums and EPs (or one type) out in the last 90 days, newest first. */
+    recent: publicProcedure
+      .input(recentReleasesSchema)
+      .query(async ({ input, ctx }) =>
+        recentReleases(ctx.db(), await viewerOf(ctx), ctx.now, input.type, input.page),
+      ),
+    /** Top rated by Bayesian score, by genre and year or decade. */
+    topRated: publicProcedure
+      .input(topRatedSchema)
+      .query(async ({ input, ctx }) => topRated(ctx.db(), await viewerOf(ctx), input)),
+    genres: publicProcedure.query(({ ctx }) => genreOptions(ctx.db())),
   }),
   social: router({
     follow: followWrite
