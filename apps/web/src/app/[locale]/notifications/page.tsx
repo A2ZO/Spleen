@@ -1,4 +1,4 @@
-import type { NotificationGroup } from "@spleen/api";
+import type { ModerationNotice, NotificationGroup } from "@spleen/api";
 import { cursorSchema } from "@spleen/validators";
 import type { Metadata } from "next";
 import { getFormatter, getTranslations } from "next-intl/server";
@@ -70,54 +70,64 @@ export default async function NotificationsPage({ params, searchParams }: Props)
         <p className="py-6 font-serif text-lg text-fg-muted italic">{t("empty")}</p>
       ) : (
         <ul className="divide-y divide-border/50">
-          {page.items.map((group) => (
-            <li key={group.key}>
-              <Link
-                href={hrefOf(group)}
-                className={cn(
-                  "flex gap-3 rounded-sm px-2 py-3 hover:bg-surface",
-                  group.unread && "bg-surface/60",
-                )}
-              >
-                <span className="flex shrink-0 -space-x-3">
-                  {group.actors.map((actor) => (
-                    <Avatar
-                      key={actor.username}
-                      name={actor.displayName}
-                      seed={actor.username}
-                      src={actor.avatarUrl}
-                      className="size-9 text-xs"
-                    />
-                  ))}
-                </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block text-pretty">
-                    {group.unread && (
-                      <>
-                        <span
-                          aria-hidden="true"
-                          className="mr-2 inline-block size-2 rounded-full bg-star align-middle"
-                        />
-                        <span className="sr-only">{t("unreadLabel")} </span>
-                      </>
-                    )}
-                    {text(group)}
-                  </span>
-                  {group.commentExcerpt && (
-                    <span className="mt-1 block truncate text-sm text-fg-muted italic">
-                      {t("excerpt", { text: group.commentExcerpt })}
-                    </span>
+          {page.items.map((group) =>
+            group.moderation ? (
+              <li key={group.key}>
+                <ModerationItem
+                  notice={group.moderation}
+                  unread={group.unread}
+                  at={group.latestAt}
+                />
+              </li>
+            ) : (
+              <li key={group.key}>
+                <Link
+                  href={hrefOf(group)}
+                  className={cn(
+                    "flex gap-3 rounded-sm px-2 py-3 hover:bg-surface",
+                    group.unread && "bg-surface/60",
                   )}
-                  <time
-                    dateTime={group.latestAt}
-                    className="mt-1 block font-mono text-xs text-fg-muted"
-                  >
-                    {format.relativeTime(new Date(group.latestAt), now)}
-                  </time>
-                </span>
-              </Link>
-            </li>
-          ))}
+                >
+                  <span className="flex shrink-0 -space-x-3">
+                    {group.actors.map((actor) => (
+                      <Avatar
+                        key={actor.username}
+                        name={actor.displayName}
+                        seed={actor.username}
+                        src={actor.avatarUrl}
+                        className="size-9 text-xs"
+                      />
+                    ))}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-pretty">
+                      {group.unread && (
+                        <>
+                          <span
+                            aria-hidden="true"
+                            className="mr-2 inline-block size-2 rounded-full bg-star align-middle"
+                          />
+                          <span className="sr-only">{t("unreadLabel")} </span>
+                        </>
+                      )}
+                      {text(group)}
+                    </span>
+                    {group.commentExcerpt && (
+                      <span className="mt-1 block truncate text-sm text-fg-muted italic">
+                        {t("excerpt", { text: group.commentExcerpt })}
+                      </span>
+                    )}
+                    <time
+                      dateTime={group.latestAt}
+                      className="mt-1 block font-mono text-xs text-fg-muted"
+                    >
+                      {format.relativeTime(new Date(group.latestAt), now)}
+                    </time>
+                  </span>
+                </Link>
+              </li>
+            ),
+          )}
         </ul>
       )}
       {(cursor || page.nextCursor) && (
@@ -140,6 +150,62 @@ export default async function NotificationsPage({ params, searchParams }: Props)
           )}
         </nav>
       )}
+    </div>
+  );
+}
+
+/** A moderation decision: what was decided, why, and how to contest it (no link: the content
+ * is often hidden or gone). */
+async function ModerationItem({
+  notice,
+  unread,
+  at,
+}: {
+  notice: ModerationNotice;
+  unread: boolean;
+  at: string;
+}) {
+  const t = await getTranslations("notifications.moderation");
+  const tn = await getTranslations("notifications");
+  const format = await getFormatter();
+  const mailto = notice.contactEmail.includes("@") ? `mailto:${notice.contactEmail}` : null;
+  return (
+    <div className={cn("space-y-1 rounded-sm px-2 py-3", unread && "bg-surface/60")}>
+      <p className="text-pretty">
+        {unread && (
+          <>
+            <span
+              aria-hidden="true"
+              className="mr-2 inline-block size-2 rounded-full bg-star align-middle"
+            />
+            <span className="sr-only">{tn("unreadLabel")} </span>
+          </>
+        )}
+        {t(`${notice.action}`, { subject: notice.subject })}
+      </p>
+      {notice.excerpt && (
+        <p className="truncate text-sm text-fg-muted italic">
+          {tn("excerpt", { text: notice.excerpt })}
+        </p>
+      )}
+      <p className="text-sm">{t("reason", { reason: notice.reason })}</p>
+      {notice.action !== "restore" && notice.action !== "unsuspend" && (
+        <p className="text-sm text-fg-muted">
+          {t.rich("contest", {
+            email: () =>
+              mailto ? (
+                <a href={mailto} className="text-link underline underline-offset-2">
+                  {notice.contactEmail}
+                </a>
+              ) : (
+                <span>{notice.contactEmail}</span>
+              ),
+          })}
+        </p>
+      )}
+      <time dateTime={at} className="block font-mono text-xs text-fg-muted">
+        {format.relativeTime(new Date(at), new Date())}
+      </time>
     </div>
   );
 }

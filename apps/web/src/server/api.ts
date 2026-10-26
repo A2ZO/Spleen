@@ -1,12 +1,14 @@
 import "server-only";
 
 import { createCaller, createContext } from "@spleen/api";
+import { contactEmail } from "@spleen/infra/config";
 import { headers } from "next/headers";
 import { cache } from "react";
 
 import { sessionUserFrom } from "./auth";
 import { getCatalog } from "./catalog";
 import { getDb } from "./db";
+import { getMailer } from "./mailer";
 import { getStorage } from "./storage";
 
 /** tRPC context for a request: the session comes from its cookies (web) or Cookie header (Expo). */
@@ -16,6 +18,8 @@ export function contextFor(requestHeaders: Headers) {
     user: () => sessionUserFrom(requestHeaders),
     storage: getStorage,
     catalog: getCatalog,
+    mailer: getMailer,
+    contactEmail: contactEmail(),
   });
 }
 

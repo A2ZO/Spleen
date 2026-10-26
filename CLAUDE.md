@@ -46,6 +46,8 @@ pnpm db:seed             # migrate + insert demo data (idempotent) — never in 
 pnpm db:reset            # wipe the LOCAL PGlite database, migrate, seed (refuses Postgres)
 pnpm db:seed:catalog     # import packages/api/scripts/catalog-seed.json from MusicBrainz
 pnpm catalog:refresh     # re-read discographies for recent releases (nightly in Actions)
+pnpm admin:grant <email> # admin role (also admin:revoke); never from the site
+pnpm moderation:anonymize # moderation retention, one year (nightly in Actions)
 $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # Playwright with the installed Chrome
 ```
 
@@ -67,11 +69,12 @@ CI, e2e cleanup guard, env vars and database details: `docs/environnement.md`.
   (`targetColumns()` / `targetCheck()`). Catalog rows are never hard-deleted (`restrict`);
   member data cascades when a user is deleted.
 - Demo seed: `<username>@example.test` (`nuitblanche` full shelf, `vinylvince`, `rainydaysam`
-  empty, `fouilleuse` 30 hearts; `seed/crate.ts`, `seed/social.ts`, `seed/lists.ts`).
+  empty, `fouilleuse` 30 hearts, `lacontrebasse` admin; `seed/crate.ts`, `seed/social.ts`,
+  `seed/lists.ts`, `seed/moderation.ts`).
 
 Domain docs (read before touching the domain): listening `docs/ecoute.md`
 (`recomputeItemState()`), profile & stats `docs/profil-stats.md` (bump `CACHE_VERSION` when
-a stats rule changes), social `docs/social.md`, lists & discovery `docs/decouverte.md`.
+a stats rule changes), social & moderation `docs/social.md`, lists & discovery `docs/decouverte.md`.
 
 ## Conventions
 
@@ -104,6 +107,13 @@ Read `docs/accounts.md` before touching auth: sign-in, session → tRPC (`contex
 (`username_history`), avatars, and the **Expo flow** (session cookie sent in the `Cookie`
 header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 `nuitblanche@example.test`.
+
+`ctx.account()` reads role, suspension and blind mode once per request. `ctx.user()` is null
+for a **suspended** account (a visitor everywhere); `accountProcedure` (suspension, export,
+deletion) still accepts it; `adminProcedure` answers `NOT_FOUND` to non-admins. Hidden
+content (`hidden_at`) and suspended members are filtered in the shared loaders
+(`memberRefs`, `memberCards`, `loadReviewCards`, `findProfile`): keep new queries on them.
+Moderation rules: `docs/social.md`.
 
 ## Decisions and why
 

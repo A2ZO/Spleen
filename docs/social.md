@@ -87,10 +87,71 @@ jamais prévenue (son propre `viewerBlocked` reste faux).
 Motifs : `spam`, `harassment`, `hate`, `spoiler`, `inappropriate`, `other`, plus 500
 caractères facultatifs. Un seul signalement ouvert par auteur et par sujet. Quand un
 membre supprime son compte, ses signalements restent (`reporter_id` → null) pour la
-modération (file au jalon 9).
+modération (ci-dessous).
+
+## Modération (jalon 9)
+
+API : `packages/api/src/lib/moderation/` — `queue.ts` (file, sujets), `decisions.ts`
+(décisions, suspension), `history.ts` (historique, conservation), `emails.ts`. Web :
+`/[locale]/admin` (signalements), `/admin/history`, `/admin/suspended` ; Server Actions
+`apps/web/src/app/[locale]/admin/actions.ts`.
+
+**Rôle admin.** Dans `profiles.role`, donné ou retiré uniquement en ligne de commande :
+`pnpm admin:grant <email>` / `pnpm admin:revoke <email>` (`setAdminRole`, sur la base de
+l'environnement ; le compte doit avoir choisi son pseudo). Aucune route ne le modifie.
+`adminProcedure` relit le rôle à chaque appel et répond `NOT_FOUND` à tout autre compte ; le
+layout `/admin` affiche la 404. Démo : `lacontrebasse@example.test`.
+
+| Procédure                       | Rôle                                                                     |
+| ------------------------------- | ------------------------------------------------------------------------ |
+| `admin.reports`                 | file filtrée par statut (`open` par défaut) et type ; plus anciens d'abord |
+| `admin.decide`                  | décision sur un signalement ouvert : `dismiss`, `resolve`, `hide`, `delete`, `suspend` |
+| `admin.suspend` / `unsuspend`   | suspendre un membre sans signalement / lever une suspension              |
+| `admin.restore`                 | rétablir un contenu masqué par une décision                              |
+| `admin.history` / `suspended`   | historique (30 par page), comptes suspendus                              |
+| `account.suspension`            | motif de sa suspension, pour le membre connecté seulement (null sinon)   |
+
+**Décisions.** Chacune tient en une transaction : une ligne `moderation_actions` (action,
+motif obligatoire, auteur, membre concerné, contenu, signalement, catégorie, extrait), la
+fermeture de **tous** les signalements ouverts sur le même sujet, l'effet, et une
+notification `moderation` avec le motif (sauf rejet et catalogue). Une décision ne
+s'applique qu'aux sujets qui s'y prêtent (`MODERATION_ACTION_INVALID`) ; un admin n'est
+jamais suspendu depuis le site (`CANNOT_MODERATE_ADMIN`).
+
+- **Masquer** : `hidden_at` + `hidden_by = 'moderation'` sur la critique, la liste ou le
+  commentaire ; invisible pour tous (auteur compris), jamais supprimé, rétablissable.
+- **Supprimer** : comme le ferait l'auteur (critique : `deleteReview` ; liste supprimée ;
+  commentaire marqué supprimé). L'historique garde l'extrait.
+- **Suspendre** : `profiles.suspended_at` + motif ; sessions supprimées ; critiques, listes
+  et commentaires masqués avec `hidden_by = 'suspension'` ; email avec le motif et l'adresse
+  de contestation (`CONTACT_EMAIL`, sinon `[À COMPLÉTER]`). Un email raté ne défait rien.
+- **Lever la suspension** : rend visible ce que la suspension avait masqué, pas ce qu'une
+  décision propre avait masqué.
+
+**Compte suspendu.** `ctx.user()` vaut null : partout, c'est un visiteur (écritures →
+`ACCOUNT_SUSPENDED`). Seuls `account.suspension`, `account.export` et `account.delete`
+(`accountProcedure`) restent ouverts. Il peut se connecter (lien magique ou Google) : la
+page de connexion répond comme pour tout le monde, et le motif ne s'affiche qu'une fois
+l'identité prouvée, sur l'écran « Compte suspendu » qui remplace toutes les pages. Profil,
+critiques, listes, commentaires, écoutes du fil et cartes de membre disparaissent pour les
+autres (`findProfile`, `memberRefs`, `memberCards`, filtres `hidden_at is null`). Ses notes
+restent dans les moyennes.
+
+**Conservation.** Un an après la décision (`MODERATION_RETENTION_DAYS`),
+`anonymizeModerationHistory` garde l'action, le motif et la catégorie, efface les liens vers
+les personnes, l'extrait et la notification, et supprime les signalements clos. Les
+signalements ouverts ne sont jamais touchés. Tâche `moderation-retention` du workflow
+nocturne, ou `pnpm moderation:anonymize` (idempotent).
+
+**Signalements de catalogue.** `catalog_error` / `catalog_addition` : traités (`resolve`)
+ou rejetés avec une note, sans notification. Le bouton « Signaler une erreur / proposer un
+ajout » des fiches reste à faire.
 
 ## Données de démo
 
 `packages/db/src/seed/social.ts` : abonnements, likes, commentaires et notifications
 datés par rapport au moment du seed (le Populaire compte 7 jours : `pnpm db:reset` ou un
 nouveau seed rafraîchit la démo), et `bruitdefond`, bloqué par Camille.
+`packages/db/src/seed/moderation.ts` : l'admin `lacontrebasse`, un commentaire de spam,
+six signalements ouverts (membre, commentaire, liste, critique, erreur et ajout de
+catalogue) et un signalement rejeté avec sa décision.

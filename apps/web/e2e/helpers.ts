@@ -1,6 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
+import { createDb, isPostgresUrl, loadRootEnv, setAdminRole } from "@spleen/db";
 import { expect, type Page, type TestInfo } from "@playwright/test";
 
 // Without BREVO_API_KEY, the dev server writes emails to <repo>/.data/outbox (see @spleen/infra).
@@ -48,6 +49,34 @@ export async function signUp(page: Page, testInfo: TestInfo, displayName: string
   await page.getByRole("button", { name: "Ouvrir mon étagère" }).click();
   await expect(page).toHaveURL(new RegExp(`/fr/u/${username}$`));
   return username;
+}
+
+/** Email of an account made by `signUp`, from its @username. */
+export const emailOf = (username: string) => `${username.replace("e2e_", "e2e-")}@example.test`;
+
+/** Signs in an existing account (demo or e2e) with a magic link; lands on the home page. */
+export async function signIn(page: Page, email: string) {
+  await page.goto("/fr/sign-in");
+  await page.getByLabel("Ton email").fill(email);
+  await page.getByRole("button", { name: "Recevoir mon lien" }).click();
+  await expect(page.getByRole("heading", { name: "Regarde ta boîte mail" })).toBeVisible();
+  await page.goto(await magicLinkFor(email));
+}
+
+/**
+ * Gives an e2e account the admin role, with the function behind `pnpm admin:grant` (the site
+ * itself never grants it). Postgres only: a PGlite database belongs to the dev server.
+ */
+export async function grantAdmin(username: string): Promise<boolean> {
+  loadRootEnv();
+  const url = process.env.DATABASE_URL;
+  if (!isPostgresUrl(url)) return false;
+  const handle = createDb(url);
+  try {
+    return (await setAdminRole(handle.db, emailOf(username), true)) === "granted";
+  } finally {
+    await handle.close();
+  }
 }
 
 /** Deletes the signed-in member's account from the settings page. */

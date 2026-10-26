@@ -6,11 +6,13 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
+import { SuspendedNotice } from "@/components/account/SuspendedNotice";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { initRouteLocale } from "@/i18n/locale";
 import { routing } from "@/i18n/routing";
 import { parseTheme, THEME_COOKIE } from "@/lib/theme";
+import { getApi } from "@/server/api";
 
 import { fraunces, inter, plexMono } from "../fonts";
 
@@ -47,6 +49,8 @@ export default async function LocaleLayout({
   const locale = initRouteLocale((await params).locale);
   const t = await getTranslations({ locale, namespace: "common" });
   const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
+  // A suspended member who signed in sees why on every page, and nothing else.
+  const suspension = await (await getApi()).account.suspension();
 
   return (
     <html
@@ -62,9 +66,9 @@ export default async function LocaleLayout({
           >
             {t("skipToContent")}
           </a>
-          <Header />
+          <Header minimal={suspension !== null} />
           <main id="main" className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-12">
-            {children}
+            {suspension ? <SuspendedNotice suspension={suspension} locale={locale} /> : children}
           </main>
           <Footer />
         </NextIntlClientProvider>

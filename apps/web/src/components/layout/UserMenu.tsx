@@ -9,18 +9,21 @@ import { Link } from "@/i18n/navigation";
 
 const item = "block w-full rounded-sm px-3 py-2 text-left text-sm text-fg hover:bg-surface-raised";
 
-/** Avatar button opening a small menu: shelf, settings, sign out. Closes on Escape or outside click. */
+/** Avatar button opening a small menu: shelf, settings, moderation (admins), sign out. Closes on Escape or outside click. */
 export function UserMenu({
   locale,
   username,
   displayName,
   avatarUrl,
+  isAdmin = false,
 }: {
   locale: string;
   /** Null until onboarding is done. */
   username: string | null;
   displayName: string;
   avatarUrl: string | null;
+  /** Shows the moderation link (the admin pages check the role on the server anyway). */
+  isAdmin?: boolean;
 }) {
   const t = useTranslations("nav");
   const [open, setOpen] = useState(false);
@@ -89,6 +92,13 @@ export function UserMenu({
               <li>
                 <Link href="/settings" className={item}>
                   {t("settings")}
+                </Link>
+              </li>
+            )}
+            {isAdmin && (
+              <li>
+                <Link href="/admin" className={item}>
+                  {t("admin")}
                 </Link>
               </li>
             )}

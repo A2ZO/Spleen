@@ -171,12 +171,18 @@ pour `spleen-prod` si ses URL ont été exposées un jour.
       l'ancienne URL est refusée (par exemple `psql "<ancienne URL>"` → échec
       d'authentification).
 
-## 9. GitHub Actions : sorties récentes (rafraîchissement nocturne)
+## 9. GitHub Actions : tâches nocturnes
 
-Le workflow `.github/workflows/catalog-refresh.yml` relit chaque nuit (03 h 17 UTC) sur
-MusicBrainz la discographie d'au plus 150 artistes (écoutés sur 30 jours ou présents sur une
-Étagère), à 1 requête par seconde via le limiteur de la base. Tant que le secret ci-dessous
-manque, il s'arrête aussitôt sans rien faire. Il ne tourne que depuis `main`.
+Le workflow « Nightly » (`.github/workflows/catalog-refresh.yml`) tourne chaque nuit
+(03 h 17 UTC), en deux tâches indépendantes :
+
+- `refresh` relit sur MusicBrainz la discographie d'au plus 150 artistes (écoutés sur 30
+  jours ou présents sur une Étagère), à 1 requête par seconde via le limiteur de la base ;
+- `moderation-retention` anonymise les décisions de modération vieilles d'un an et supprime
+  les signalements clos depuis un an (`pnpm moderation:anonymize`, voir `docs/social.md`).
+
+Tant que le secret ci-dessous manque, les deux s'arrêtent aussitôt sans rien faire. Le
+workflow ne tourne que depuis `main`.
 
 - [ ] GitHub › dépôt › Settings › Environments › New environment : `production`.
 - [ ] Dans cet environnement, Deployment branches and tags : « Selected branches and tags »,
@@ -187,11 +193,28 @@ manque, il s'arrête aussitôt sans rien faire. Il ne tourne que depuis `main`.
       `Spleen/1.0 ( contact@<domaine> )` (vraie adresse de contact).
 - [ ] Ajouter `NEON_MAIN_HOST` (hôte de la branche `production`, pas un secret) dans le `.env`
       local : le nettoyage e2e refuse alors cette base, et accepte `dev`.
-- [ ] **Vérifier** : onglet Actions › « Catalog refresh » › Run workflow (sur `main`). Le
-      journal affiche `catalog refresh: N artist(s) to re-read (postgres)` puis
-      `done, … release(s) added`. Le lendemain, une exécution planifiée apparaît.
+- [ ] **Vérifier** : onglet Actions › « Nightly » › Run workflow (sur `main`). Le journal de
+      `refresh` affiche `catalog refresh: N artist(s) to re-read (postgres)` puis
+      `done, … release(s) added` ; celui de `moderation-retention` affiche
+      `moderation retention (postgres): 0 decision(s) anonymised, …`. Le lendemain, une
+      exécution planifiée apparaît.
 
-## 10. Vérification finale
+## 10. Modération : adresse de contact et premier admin
+
+Une personne suspendue reçoit le motif par email, avec l'adresse où contester la décision.
+Tant que `CONTACT_EMAIL` manque, emails et notifications affichent
+`[À COMPLÉTER : adresse de contact]`, et la production refuse de démarrer.
+
+- [ ] `CONTACT_EMAIL` = [À COMPLÉTER : adresse de contact, par exemple `bonjour@<domaine>`]
+      dans l'hébergeur. Une boîte réellement lue : les contestations y arrivent.
+- [ ] Premier compte admin : se connecter sur le site de production, choisir son pseudo,
+      puis **en local**, avec `DATABASE_URL_UNPOOLED` de la production dans la session
+      PowerShell (jamais dans un fichier) : `pnpm admin:grant <ton email>`. Le rôle ne se
+      donne jamais depuis le site. Retirer la variable de la session ensuite.
+- [ ] **Vérifier** : `/fr/admin` s'ouvre pour ce compte, et répond 404 dans une fenêtre de
+      navigation privée.
+
+## 11. Vérification finale
 
 - [ ] Les journaux de démarrage de l'hébergeur ne contiennent pas « Missing environment
       variables for production ».
