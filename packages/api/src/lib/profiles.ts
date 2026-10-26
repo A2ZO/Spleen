@@ -35,6 +35,7 @@ export const DIARY_PAGE_SIZE = 30;
 export const LIKES_PAGE_SIZE = 24;
 export const REVIEWS_PAGE_SIZE = 20;
 export const TO_LISTEN_PAGE_SIZE = 24;
+export const LISTS_PAGE_SIZE = 20;
 /** A month of listens on the calendar; beyond that, the list view has them all. */
 const MONTH_LIMIT = 500;
 
@@ -435,24 +436,32 @@ export async function getToListenPage(
   return toPage(await maskCards(db, viewer, items), page, TO_LISTEN_PAGE_SIZE, total);
 }
 
-/** The member's lists, most recently updated first (paging comes with lists, milestone 8). */
+/** The member's lists, most recently updated first. */
 export async function getProfileLists(
   db: Db,
   username: string,
   viewer: Viewer,
-): Promise<ListCard[] | null> {
+  page: number,
+): Promise<Page<ListCard> | null> {
   const access = await findProfile(db, username, viewer);
   if (!access) return null;
-  const rows = await db
-    .select(listRowColumns)
-    .from(lists)
-    .innerJoin(profiles, eq(profiles.userId, lists.userId))
-    .where(eq(lists.userId, access.userId))
-    .orderBy(desc(lists.updatedAt));
+  const where = eq(lists.userId, access.userId);
+  const [rows, total] = await Promise.all([
+    db
+      .select(listRowColumns)
+      .from(lists)
+      .innerJoin(profiles, eq(profiles.userId, lists.userId))
+      .where(where)
+      .orderBy(desc(lists.updatedAt), desc(lists.id))
+      .limit(LISTS_PAGE_SIZE)
+      .offset((page - 1) * LISTS_PAGE_SIZE),
+    db.$count(lists, where),
+  ]);
   const cards = await loadListCards(db, rows);
-  return Promise.all(
+  const masked = await Promise.all(
     cards.map(async (list) => ({ ...list, preview: await maskCards(db, viewer, list.preview) })),
   );
+  return toPage(masked, page, LISTS_PAGE_SIZE, total);
 }
 
 /** Stats on a profile: null for an unknown member or when they made them private. */

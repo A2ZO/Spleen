@@ -46,6 +46,11 @@ export const entries = pgTable(
     index("entries_user_listened_idx").on(t.userId, t.listenedOn.desc()),
     // Friends feed: a member's listens by creation, cursor on (created_at, id).
     index("entries_user_created_idx").on(t.userId, t.createdAt.desc(), t.id.desc()),
+    // Weekly trends: listens logged in a window (undated ones by their last change).
+    index("entries_created_idx").on(t.createdAt),
+    index("entries_undated_updated_idx")
+      .on(t.updatedAt)
+      .where(sql`${t.listenedOn} is null`),
     index("entries_release_idx").on(t.releaseId),
     index("entries_track_idx").on(t.trackId),
     index("entries_artist_idx").on(t.artistId),

@@ -9,6 +9,7 @@ import { ArtistLinks } from "@/components/catalog/ArtistLinks";
 import { CatalogNotice } from "@/components/catalog/CatalogNotice";
 import { ListenOn } from "@/components/catalog/ListenOn";
 import { SecondaryTypes } from "@/components/catalog/SecondaryTypes";
+import { AddToListButton } from "@/components/lists/AddToList";
 import { ListenControls } from "@/components/release/ListenControls";
 import { ShelfPicker } from "@/components/shelf/ShelfPicker";
 import { ListCard } from "@/components/social/ListCard";
@@ -177,7 +178,10 @@ export default async function AlbumPage({ params }: Props) {
             tracks={logTracks}
           />
           {shelf && (
-            <ShelfPicker release={{ id: release.id, title: release.title }} shelf={shelf} />
+            <div className="flex flex-wrap gap-3">
+              <ShelfPicker release={{ id: release.id, title: release.title }} shelf={shelf} />
+              <AddToListButton target={target} title={release.title} />
+            </div>
           )}
           <ListenOn links={release.listenLinks} />
           <button

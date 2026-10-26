@@ -12,6 +12,7 @@ import type {
   TrackDetail,
 } from "../../types";
 import { buildListenLinks } from "../listen-links";
+import { notBlockedWith } from "../social/relations";
 import { reviewCountColumns } from "../social/reviews";
 import {
   loadReleaseCards,
@@ -55,8 +56,16 @@ async function ratingDistribution(db: Db, releaseId: string): Promise<number[]> 
   return distribution;
 }
 
-async function releaseReviews(db: Db, release: ReleaseCard): Promise<ReviewCard[]> {
-  const { likeCount, commentCount } = reviewCountColumns(null);
+/**
+ * Most liked reviews of the release. With a viewer, reviews by members blocked either way
+ * are left out and comment counts skip the comments hidden from them.
+ */
+async function releaseReviews(
+  db: Db,
+  release: ReleaseCard,
+  viewerId: string | null,
+): Promise<ReviewCard[]> {
+  const { likeCount, commentCount } = reviewCountColumns(viewerId);
   const rows = await db
     .select({
       id: reviews.id,
@@ -71,7 +80,12 @@ async function releaseReviews(db: Db, release: ReleaseCard): Promise<ReviewCard[
     })
     .from(reviews)
     .innerJoin(profiles, eq(profiles.userId, reviews.userId))
-    .where(eq(reviews.releaseId, release.id))
+    .where(
+      and(
+        eq(reviews.releaseId, release.id),
+        viewerId ? notBlockedWith(viewerId, reviews.userId) : undefined,
+      ),
+    )
     .orderBy(desc(likeCount), desc(reviews.createdAt))
     .limit(REVIEWS_ON_PAGE);
   return rows.map((r) => ({
@@ -143,20 +157,34 @@ export const listRowColumns = {
   displayName: profiles.displayName,
 };
 
-/** Lists containing the release, with a preview of their first releases. */
-async function releaseLists(db: Db, releaseId: string): Promise<ListCard[]> {
+/** Lists containing the release (none by members blocked either way with the viewer). */
+async function releaseLists(
+  db: Db,
+  releaseId: string,
+  viewerId: string | null,
+): Promise<ListCard[]> {
   const rows = await db
     .selectDistinct(listRowColumns)
     .from(listItems)
     .innerJoin(lists, eq(lists.id, listItems.listId))
     .innerJoin(profiles, eq(profiles.userId, lists.userId))
-    .where(eq(listItems.releaseId, releaseId))
+    .where(
+      and(
+        eq(listItems.releaseId, releaseId),
+        viewerId ? notBlockedWith(viewerId, lists.userId) : undefined,
+      ),
+    )
     .orderBy(desc(lists.updatedAt))
     .limit(LISTS_ON_PAGE);
   return loadListCards(db, rows);
 }
 
-export async function getReleaseDetail(db: Db, slug: string): Promise<ReleaseDetail | null> {
+/** `viewerId` shapes the community parts (blocks, comment counts); null when signed out. */
+export async function getReleaseDetail(
+  db: Db,
+  slug: string,
+  viewerId: string | null,
+): Promise<ReleaseDetail | null> {
   const [row] = await db.select().from(releases).where(eq(releases.slug, slug)).limit(1);
   if (!row) return null;
   const [card] = await loadReleaseCards(db, [row.id]);
@@ -183,8 +211,8 @@ export async function getReleaseDetail(db: Db, slug: string): Promise<ReleaseDet
       .where(eq(releaseTracks.releaseId, row.id))
       .orderBy(asc(releaseTracks.disc), asc(releaseTracks.position)),
     ratingDistribution(db, row.id),
-    releaseReviews(db, release),
-    releaseLists(db, row.id),
+    releaseReviews(db, release, viewerId),
+    releaseLists(db, row.id, viewerId),
   ]);
   const trackList: Track[] = trackRows;
 

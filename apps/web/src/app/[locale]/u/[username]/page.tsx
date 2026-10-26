@@ -15,7 +15,7 @@ import { ListCard } from "@/components/social/ListCard";
 import { MemberMenu } from "@/components/social/MemberMenu";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { Avatar } from "@/components/ui/Avatar";
-import { buttonClasses } from "@/components/ui/Button";
+import { ButtonLink, buttonClasses } from "@/components/ui/Button";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -175,16 +175,35 @@ async function TabContent({
       );
     }
     case "lists": {
-      const lists = (await api.profile.lists({ username })) ?? [];
-      if (lists.length === 0) return <EmptyState>{t("profile.listsEmpty")}</EmptyState>;
+      const lists = await api.profile.lists({ username, page });
+      inRange(lists);
+      const create = profile.isOwner && (
+        <div className="mb-5 flex justify-end">
+          <ButtonLink href="/list/new" variant="outline">
+            {t("list.create")}
+          </ButtonLink>
+        </div>
+      );
+      if (!lists || lists.total === 0) {
+        return (
+          <>
+            {create}
+            <EmptyState>{t(profile.isOwner ? "list.emptyOwn" : "profile.listsEmpty")}</EmptyState>
+          </>
+        );
+      }
       return (
-        <ul className="grid gap-4 sm:grid-cols-2">
-          {lists.map((list) => (
-            <li key={list.id}>
-              <ListCard list={list} />
-            </li>
-          ))}
-        </ul>
+        <>
+          {create}
+          <ul className="grid gap-4 sm:grid-cols-2">
+            {lists.items.map((list) => (
+              <li key={list.id}>
+                <ListCard list={list} />
+              </li>
+            ))}
+          </ul>
+          {pagination(lists)}
+        </>
       );
     }
     case "stats": {

@@ -98,7 +98,7 @@ Source : [Neon pricing](https://neon.com/pricing).
 | Calcul                    | 100 CU-heures par mois                |
 | Stockage                  | 1 Go par projet, 20 Go au total       |
 | Egress                    | 5 Go par mois                         |
-| Branches                  | 10 (Spleen en utilise 2 : `dev`, `main`) |
+| Branches                  | 10 (Spleen en utilise 2 : `dev`, `production`) |
 | Historique de restauration | 6 heures                             |
 
 La base se met en veille après 5 minutes sans requête, et ce n'est pas désactivable.

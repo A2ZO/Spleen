@@ -32,6 +32,9 @@ export const API_ERROR_CODES = [
   "MEMBER_NOT_FOUND",
   "COMMENT_NOT_FOUND",
   "LIST_NOT_FOUND",
+  "LIST_FULL",
+  "LIST_ITEM_EXISTS",
+  "LIST_MISMATCH",
   "INVALID_CURSOR",
 ] as const;
 

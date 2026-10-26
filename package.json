@@ -19,7 +19,8 @@
     "db:migrate": "pnpm --filter @spleen/db migrate",
     "db:seed": "pnpm --filter @spleen/db seed",
     "db:reset": "pnpm --filter @spleen/db reset",
-    "db:seed:catalog": "pnpm --filter @spleen/api seed:catalog"
+    "db:seed:catalog": "pnpm --filter @spleen/api seed:catalog",
+    "catalog:refresh": "pnpm --filter @spleen/api refresh:catalog"
   },
   "devDependencies": {
     "@spleen/config": "workspace:*",

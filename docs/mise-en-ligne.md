@@ -13,6 +13,59 @@ Règles :
 - Le détail de chaque variable est dans `.env.example`.
 - Coche une case seulement après avoir fait la vérification indiquée.
 
+## 0. Avant la mise en ligne : repartir propre
+
+Jusqu'au jalon 8, le `.env` local pointait par erreur sur la branche Neon `production`
+(endpoint `ep-winter-firefly…`) : elle contient des données de développement (seed de
+démo, comptes e2e, catalogue importé, limiteur). Le `BETTER_AUTH_SECRET` de développement
+et le mot de passe du rôle Neon ont aussi circulé (fichiers locaux, essais).
+
+**Méthode retenue : un projet Neon séparé pour la production.** C'est la plus sûre :
+
+- aucun lien avec les données de développement (une branche Neon créée depuis `dev`, ou
+  « Reset from parent », recopierait le seed) ;
+- des identifiants neufs, jamais présents dans un `.env` ;
+- une erreur de manipulation sur le projet de développement (`db:reset`, seed, import,
+  e2e) ne peut pas atteindre la production ;
+- les quotas gratuits (calcul, stockage) sont comptés par projet : le développement ne
+  consomme plus ceux du site.
+
+L'autre méthode (vider la branche `production` : `drop schema public cascade`, schéma
+`drizzle` compris, puis rejouer les migrations) garde les mêmes identifiants et le même
+historique de restauration contenant les données de test : elle n'est à retenir que si
+l'offre gratuite refuse un deuxième projet.
+
+- [ ] Console Neon › New project : nom `spleen-prod`, région **AWS Europe Central 1
+      (Frankfurt)**, même version majeure de Postgres que le projet actuel (celle de la CI,
+      `postgres:18`). Vérifier sur la page de tarifs que l'offre gratuite accepte ce
+      deuxième projet.
+- [ ] Dans `spleen-prod` › Branches : renommer la branche par défaut en `production`.
+- [ ] Copier ses URL (poolée et directe) **uniquement** dans l'hébergeur (§ 3) et dans le
+      secret GitHub de l'environnement `production` (§ 9). Jamais dans `.env`.
+- [ ] Dans le `.env` local, remplacer `NEON_MAIN_HOST` par l'hôte de la branche
+      `production` de `spleen-prod` : le nettoyage e2e refusera la nouvelle base.
+- [ ] Ancien projet : il ne sert plus qu'au développement. Sa branche `production`
+      (`ep-winter-firefly…`, données de test) peut rester telle quelle (Neon interdit de
+      supprimer la branche par défaut) ; ne plus jamais y brancher le site.
+- [ ] Mettre à jour `docs/services.md` et `docs/environnement.md` (deux projets Neon).
+- [ ] Premier déploiement : il lance `pnpm db:migrate` sur la base vide (§ 3). Puis, une
+      fois, `pnpm db:seed:catalog` vers la production (catalogue réel MusicBrainz, pas des
+      données de démo), lancé depuis un terminal où `DATABASE_URL` et
+      `DATABASE_URL_UNPOOLED` sont posées pour cette seule session
+      (`$env:DATABASE_URL="…"`, puis `Remove-Item Env:DATABASE_URL, Env:DATABASE_URL_UNPOOLED`).
+      **Jamais** `db:seed` ni `db:reset`.
+- [ ] **Vérifier** dans la console de `spleen-prod` › SQL Editor : `select count(*) from
+      "user";` renvoie `0` avant la première inscription, et `select count(*) from
+      profiles where username in ('nuitblanche', 'vinylvince', 'fouilleuse');` renvoie `0`.
+
+**Secrets qui ont circulé**
+
+- [ ] `BETTER_AUTH_SECRET` : générer une valeur neuve pour la production
+      (`openssl rand -base64 32`, § 2), et une autre pour le `.env` local (toutes les
+      sessions de développement seront fermées).
+- [ ] Mot de passe Neon : réinitialiser le rôle de l'ancien projet (§ 8), puisque ses URL
+      ont circulé ; le projet `spleen-prod` part avec des identifiants neufs.
+
 ## 1. Nom de domaine
 
 À faire en premier : Google, Brevo et R2 dépendent du domaine.
@@ -34,13 +87,13 @@ Règles :
 ## 3. Neon : base de production
 
 - [ ] Réinitialiser le mot de passe du rôle Neon (voir § 8) **avant** de copier les URL.
-- [ ] Console Neon › branche `main` › Connect : copier l'URL **avec pooling** (hôte en
+- [ ] Console Neon › branche `production` › Connect : copier l'URL **avec pooling** (hôte en
       `-pooler`) dans `DATABASE_URL`, et l'URL **directe** dans `DATABASE_URL_UNPOOLED`, dans
       les réglages de l'hébergeur (environnement Production uniquement).
 - [ ] Le déploiement lance `pnpm db:migrate`, **jamais** `pnpm db:seed` ni `pnpm db:reset`.
 - [ ] Région de la branche : Europe (Francfort).
 - [ ] **Vérifier** : `GET https://<domaine>/api/health` répond `200` avec `{"ok":true,…}`, et
-      la base `main` ne contient aucun membre de démo (`nuitblanche`, `vinylvince`,
+      la branche `production` ne contient aucun membre de démo (`nuitblanche`, `vinylvince`,
       `rainydaysam`, `fouilleuse`).
 
 ## 4. Brevo : emails des liens magiques
@@ -103,18 +156,42 @@ Règles :
 ## 8. Réinitialisation du mot de passe Neon
 
 L'ancien mot de passe du rôle Neon a circulé en développement (fichiers locaux, essais).
-On repart d'un mot de passe neuf avant la production.
+On repart d'un mot de passe neuf. Avec le projet `spleen-prod` (§ 0), la production a déjà
+des identifiants neufs : ce paragraphe vaut alors pour l'ancien projet (développement), et
+pour `spleen-prod` si ses URL ont été exposées un jour.
 
-- [ ] Console Neon › Branches › `main` › Roles › le rôle de l'application › Reset password.
+- [ ] Console Neon › projet concerné › Branches › Roles › le rôle de l'application › Reset password.
 - [ ] Mettre à jour `DATABASE_URL` et `DATABASE_URL_UNPOOLED` dans l'hébergeur avec les
       nouvelles URL (§ 3).
+- [ ] Mettre à jour aussi le secret GitHub `DATABASE_URL_UNPOOLED` de l'environnement
+      `production` (§ 9).
 - [ ] Si le rôle est partagé avec la branche `dev` : mettre à jour aussi le `.env` local,
       soi-même (Claude ne lit ni n'écrit `.env`).
 - [ ] **Vérifier** : `GET https://<domaine>/api/health` répond `200` après redéploiement, et
       l'ancienne URL est refusée (par exemple `psql "<ancienne URL>"` → échec
       d'authentification).
 
-## 9. Vérification finale
+## 9. GitHub Actions : sorties récentes (rafraîchissement nocturne)
+
+Le workflow `.github/workflows/catalog-refresh.yml` relit chaque nuit (03 h 17 UTC) sur
+MusicBrainz la discographie d'au plus 150 artistes (écoutés sur 30 jours ou présents sur une
+Étagère), à 1 requête par seconde via le limiteur de la base. Tant que le secret ci-dessous
+manque, il s'arrête aussitôt sans rien faire. Il ne tourne que depuis `main`.
+
+- [ ] GitHub › dépôt › Settings › Environments › New environment : `production`.
+- [ ] Dans cet environnement, Deployment branches and tags : « Selected branches and tags »,
+      règle `main` (seule `main` lit le secret).
+- [ ] Environment secrets › Add secret : `DATABASE_URL_UNPOOLED` = URL **directe** de la
+      branche Neon `production` (sans `-pooler`, § 3), après la réinitialisation du § 8.
+- [ ] Environment variables › Add variable : `MUSICBRAINZ_USER_AGENT` =
+      `Spleen/1.0 ( contact@<domaine> )` (vraie adresse de contact).
+- [ ] Ajouter `NEON_MAIN_HOST` (hôte de la branche `production`, pas un secret) dans le `.env`
+      local : le nettoyage e2e refuse alors cette base, et accepte `dev`.
+- [ ] **Vérifier** : onglet Actions › « Catalog refresh » › Run workflow (sur `main`). Le
+      journal affiche `catalog refresh: N artist(s) to re-read (postgres)` puis
+      `done, … release(s) added`. Le lendemain, une exécution planifiée apparaît.
+
+## 10. Vérification finale
 
 - [ ] Les journaux de démarrage de l'hébergeur ne contiennent pas « Missing environment
       variables for production ».

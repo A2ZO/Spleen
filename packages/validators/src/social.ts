@@ -10,7 +10,7 @@ export const commentBodySchema = z.string().trim().min(1).max(COMMENT_BODY_MAX);
 /** Opaque pagination cursor returned by the API ("next page starts after this"). */
 export const cursorSchema = z.string().min(1).max(200);
 
-/** Something members like and comment on: a review, or a list (lists UI in milestone 8). */
+/** Something members like and comment on: a review or a list. */
 export const socialSubjectSchema = z.discriminatedUnion("kind", [
   z.object({ kind: z.literal("review"), id: z.uuid() }),
   z.object({ kind: z.literal("list"), id: z.uuid() }),
@@ -36,7 +36,7 @@ export const memberPageSchema = z.object({
 });
 export const cursorPageSchema = z.object({ cursor: cursorSchema.optional() });
 
-/** Reasons a member can pick when reporting a review, a comment or a profile. */
+/** Reasons a member can pick when reporting a review, a comment, a list or a profile. */
 export const memberReportReasons = [
   "spam",
   "harassment",
@@ -51,6 +51,7 @@ export const reportCreateSchema = z.object({
   subject: z.discriminatedUnion("kind", [
     z.object({ kind: z.literal("review"), id: z.uuid() }),
     z.object({ kind: z.literal("comment"), id: z.uuid() }),
+    z.object({ kind: z.literal("list"), id: z.uuid() }),
     z.object({ kind: z.literal("member"), username: usernameSchema }),
   ]),
   reason: z.enum(memberReportReasons),

@@ -7,6 +7,7 @@ import { cache } from "react";
 
 import { CatalogNotice } from "@/components/catalog/CatalogNotice";
 import { ListenOn } from "@/components/catalog/ListenOn";
+import { AddToListButton } from "@/components/lists/AddToList";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { initRouteLocale } from "@/i18n/locale";
@@ -60,7 +61,8 @@ export default async function ArtistPage({ params }: Props) {
   const t = await getTranslations();
   const { albums, eps, singles, other } = artist.discography;
   const empty = albums.length + eps.length + singles.length + other.length === 0;
-  const signedIn = artist.discographyPending ? !!(await (await getApi()).account.me()) : false;
+  const me = await (await getApi()).account.me();
+  const signedIn = !!me;
   const country = artist.country
     ? new Intl.DisplayNames([await getLocale()], { type: "region" }).of(artist.country)
     : null;
@@ -90,7 +92,10 @@ export default async function ArtistPage({ params }: Props) {
             </div>
           )}
         </div>
-        <aside>
+        <aside className="space-y-6">
+          {me?.profile && (
+            <AddToListButton target={{ kind: "artist", id: artist.id }} title={artist.name} />
+          )}
           <ListenOn links={artist.listenLinks} />
         </aside>
       </header>

@@ -7,6 +7,16 @@ import {
   cursorPageSchema,
   cursorSchema,
   likeSetSchema,
+  recentReleasesSchema,
+  topRatedSchema,
+  trendsSchema,
+  listCreateSchema,
+  listItemAddSchema,
+  listItemRemoveSchema,
+  listPageSchema,
+  listReorderSchema,
+  listUpdateSchema,
+  myListsSchema,
   memberPageSchema,
   memberSchema,
   reportCreateSchema,
@@ -54,6 +64,7 @@ import {
 } from "./lib/catalog/pages";
 import { tryCatalog, withCatalogErrors } from "./lib/catalog/provider";
 import { searchCatalog, searchRemote } from "./lib/catalog/search";
+import { genreOptions, recentReleases, topRated, weeklyTrends } from "./lib/discovery";
 import { checkHealth } from "./lib/health";
 import {
   blindArtistDetail,
@@ -73,6 +84,16 @@ import {
   updateWantToListen,
 } from "./lib/listening/entries";
 import { createMood, listMoods } from "./lib/listening/moods";
+import {
+  addListItem,
+  createList,
+  deleteList,
+  getListDetail,
+  getMyLists,
+  removeListItem,
+  reorderList,
+  updateList,
+} from "./lib/lists";
 import { createReview, deleteReview, getMyReview, updateReview } from "./lib/listening/reviews";
 import {
   getDiaryMonth,
@@ -125,6 +146,8 @@ const LIKE_WRITE_RULE = { window: 60 * 60, max: 300 };
 const COMMENT_WRITE_RULE = { window: 60 * 60, max: 60 };
 const BLOCK_WRITE_RULE = { window: 60 * 60, max: 60 };
 const REPORT_WRITE_RULE = { window: 60 * 60, max: 20 };
+/** List writes (create, edit, add, remove, reorder): one bucket, per member and per hour. */
+const LIST_WRITE_RULE = { window: 60 * 60, max: 120 };
 
 /** Spends one write from the member's budget for `bucket`, or fails with RATE_LIMITED. */
 async function spend(
@@ -164,6 +187,7 @@ const likeWrite = limitedWrite("like-write", LIKE_WRITE_RULE);
 const commentWrite = limitedWrite("comment-write", COMMENT_WRITE_RULE);
 const blockWrite = limitedWrite("block-write", BLOCK_WRITE_RULE);
 const reportWrite = limitedWrite("report-write", REPORT_WRITE_RULE);
+const listWrite = limitedWrite("list-write", LIST_WRITE_RULE);
 
 export const appRouter = router({
   system: router({
@@ -185,6 +209,25 @@ export const appRouter = router({
     suggestions: protectedProcedure.query(({ ctx }) =>
       suggestedMembers(ctx.db(), ctx.user.id, ctx.now),
     ),
+  }),
+  discovery: router({
+    /** The week's trends with members of one interface language (completed when short). */
+    trends: publicProcedure
+      .input(trendsSchema)
+      .query(async ({ input, ctx }) =>
+        weeklyTrends(ctx.db(), input.lang, await viewerOf(ctx), ctx.now),
+      ),
+    /** Albums and EPs (or one type) out in the last 90 days, newest first. */
+    recent: publicProcedure
+      .input(recentReleasesSchema)
+      .query(async ({ input, ctx }) =>
+        recentReleases(ctx.db(), await viewerOf(ctx), ctx.now, input.type, input.page),
+      ),
+    /** Top rated by Bayesian score, by genre and year or decade. */
+    topRated: publicProcedure
+      .input(topRatedSchema)
+      .query(async ({ input, ctx }) => topRated(ctx.db(), await viewerOf(ctx), input)),
+    genres: publicProcedure.query(({ ctx }) => genreOptions(ctx.db())),
   }),
   social: router({
     follow: followWrite
@@ -267,8 +310,9 @@ export const appRouter = router({
           importReleaseGroup(ctx.db(), ctx.catalog(), mbid, { requestedById: user.id }),
         );
       }
-      const detail = await getReleaseDetail(ctx.db(), input.slug);
-      return detail && blindReleaseDetail(ctx.db(), await blindOf(ctx), detail);
+      const viewer = await viewerOf(ctx);
+      const detail = await getReleaseDetail(ctx.db(), input.slug, viewer.id);
+      return detail && blindReleaseDetail(ctx.db(), viewer.blind, detail);
     }),
   }),
   artist: router({
@@ -352,15 +396,49 @@ export const appRouter = router({
         getToListenPage(ctx.db(), input.username, await viewerOf(ctx), input.page),
       ),
     lists: publicProcedure
-      .input(z.object({ username: usernameSchema }))
+      .input(profilePageSchema)
       .query(async ({ input, ctx }) =>
-        getProfileLists(ctx.db(), input.username, await viewerOf(ctx)),
+        getProfileLists(ctx.db(), input.username, await viewerOf(ctx), input.page),
       ),
     /** Null for an unknown member or private stats; cached per member. */
     stats: publicProcedure
       .input(z.object({ username: usernameSchema }))
       .query(async ({ input, ctx }) =>
         getProfileStats(ctx.db(), input.username, await viewerOf(ctx), ctx.now),
+      ),
+  }),
+  list: router({
+    /** A list page (null when it does not exist), one page of items at a time. */
+    byId: publicProcedure
+      .input(listPageSchema)
+      .query(async ({ input, ctx }) =>
+        getListDetail(ctx.db(), input.id, await viewerOf(ctx), input.page),
+      ),
+    /** The caller's lists, for the "Add to a list" dialog. */
+    mine: protectedProcedure
+      .input(myListsSchema)
+      .query(({ input, ctx }) => getMyLists(ctx.db(), ctx.user.id, input.target)),
+    create: listWrite
+      .input(listCreateSchema)
+      .mutation(({ input, ctx }) => createList(ctx.db(), ctx.user.id, input)),
+    update: listWrite
+      .input(listUpdateSchema)
+      .mutation(({ input, ctx }) => updateList(ctx.db(), ctx.user.id, input)),
+    delete: listWrite
+      .input(z.object({ id: z.uuid() }))
+      .mutation(({ input, ctx }) => deleteList(ctx.db(), ctx.user.id, input.id)),
+    addItem: listWrite
+      .input(listItemAddSchema)
+      .mutation(({ input, ctx }) => addListItem(ctx.db(), ctx.user.id, input.listId, input.target)),
+    removeItem: listWrite
+      .input(listItemRemoveSchema)
+      .mutation(({ input, ctx }) =>
+        removeListItem(ctx.db(), ctx.user.id, input.listId, input.itemId),
+      ),
+    reorder: listWrite
+      .input(listReorderSchema)
+      .mutation(({ input, ctx }) =>
+        reorderList(ctx.db(), ctx.user.id, input.listId, input.itemIds),
       ),
   }),
   /** The signed-in member's Shelf (4 favourite records). */

@@ -84,6 +84,74 @@ export interface ListCard {
   preview: ReleaseCard[];
 }
 
+/** A record of the week's trends. */
+export interface TrendItem {
+  release: ReleaseCard;
+  /** Distinct members who listened to it in the window. */
+  listeners: number;
+  /**
+   * "lang": members of the requested interface language, this week; "all": every member this
+   * week, and "month": every member in the last 30 days (fallbacks for a short chart).
+   */
+  source: "lang" | "all" | "month";
+}
+
+/** A place in a top rated chart. */
+export interface TopRatedItem {
+  rank: number;
+  release: ReleaseCard;
+  /** Bayesian score on the 1..10 scale; null when blind listening hides it. */
+  score: number | null;
+}
+
+export interface TopRatedPage extends Page<TopRatedItem> {
+  /** Ratings a record needs to enter the chart. */
+  minRatings: number;
+}
+
+export interface GenreOption {
+  slug: string;
+  name: string;
+}
+
+/** One entry of a list: a release (album, EP, single), a track or an artist. */
+export type ListItem = { id: string; position: number } & (
+  | { kind: "release"; release: ReleaseCard }
+  | { kind: "track"; track: TrackCard }
+  | { kind: "artist"; artist: ArtistCard }
+);
+
+/** A list page: the list, one page of its items and what the viewer may do. */
+export interface ListDetail {
+  id: string;
+  title: string;
+  description: string;
+  ranked: boolean;
+  owner: MemberRef;
+  createdAt: string;
+  updatedAt: string;
+  items: Page<ListItem>;
+  likeCount: number;
+  /** Comments not deleted, without those hidden from the viewer by a block. */
+  commentCount: number;
+  viewerLiked: boolean;
+  isOwner: boolean;
+  /** Signed in with a profile, not the owner, no block either way. */
+  canLike: boolean;
+  /** Signed in with a profile, no block either way (owners may answer). */
+  canComment: boolean;
+}
+
+/** One of the caller's lists, in the "Add to a list" dialog. */
+export interface MyList {
+  id: string;
+  title: string;
+  ranked: boolean;
+  itemCount: number;
+  /** The target asked about, when it is in the list (its item id); null otherwise. */
+  itemId: string | null;
+}
+
 export interface ReleaseDetail extends ReleaseCard {
   /** ISO date padded from `releaseDatePrecision` ("1959" → "1959-01-01"). */
   releaseDate: string | null;

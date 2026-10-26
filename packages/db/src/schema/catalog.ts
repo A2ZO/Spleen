@@ -35,6 +35,8 @@ export const artists = pgTable(
     mbid: uuid("mbid").unique(),
     /** Set once the discography has been imported (its releases may still be stubs). */
     discographyImportedAt: timestamp("discography_imported_at", { withTimezone: true }),
+    /** Last time the nightly job re-read the discography for new releases. */
+    discographyRefreshedAt: timestamp("discography_refreshed_at", { withTimezone: true }),
     ...timestamps(),
   },
   (t) => [
@@ -61,7 +63,7 @@ export const releases = pgTable(
     releaseDate: date("release_date"),
     releaseDatePrecision: datePrecision("release_date_precision"),
     coverUrl: text("cover_url"),
-    /** Main language of the release, drives FR / EN trending charts. */
+    /** Main language of the release (trends follow the members' language, not this one). */
     language: varchar("language", { length: 8 }),
     /** MusicBrainz release-group id. */
     mbid: uuid("mbid").unique(),

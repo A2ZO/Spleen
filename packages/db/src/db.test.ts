@@ -5,7 +5,13 @@ import { generateDrizzleJson, generateMigration } from "drizzle-kit/api";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
 import { createDb, migrationDatabaseUrl, type DbHandle } from "./client";
-import { deleteE2eAccounts, freesUsernamesAtOnce, isE2eEmail } from "./e2e";
+import {
+  deleteE2eAccounts,
+  freesUsernamesAtOnce,
+  isE2eEmail,
+  neonEndpointId,
+  unsafeE2eDatabase,
+} from "./e2e";
 import * as s from "./schema";
 import { fixtureId } from "./seed/fixtures";
 import { seed } from "./seed/seed";
@@ -56,14 +62,16 @@ describe("migrations", () => {
 describe("seed", () => {
   it("loads the demo dataset", async () => {
     expect(await count(s.artists)).toBe(12);
-    expect(await count(s.releases)).toBe(42);
-    expect(await count(s.profiles)).toBe(5);
-    expect(await count(s.entries)).toBe(52);
+    expect(await count(s.releases)).toBe(45);
+    expect(await count(s.profiles)).toBe(10);
+    expect(await count(s.entries)).toBe(73);
     expect(await count(s.favorites)).toBe(12);
     expect(await count(s.follows)).toBe(7);
-    expect(await count(s.likes)).toBe(11);
-    expect(await count(s.comments)).toBe(6);
+    expect(await count(s.likes)).toBe(19);
+    expect(await count(s.comments)).toBe(11);
     expect(await count(s.blocks)).toBe(1);
+    expect(await count(s.lists)).toBe(6);
+    expect(await count(s.listItems)).toBe(25);
   });
 
   it("is idempotent", async () => {
@@ -243,6 +251,57 @@ describe("e2e accounts", () => {
       await handle.db.$count(s.usernameHistory, sql`${s.usernameHistory.username} like 'e2e_%'`),
     ).toBe(0);
     expect(await handle.db.$count(s.user, sql`${s.user.id} = ${camille}`)).toBe(1);
+  });
+});
+
+describe("e2e cleanup guard", () => {
+  const neon = (host: string) => `postgresql://u:p@${host}/neondb?sslmode=require`;
+  const dev = "ep-dev-111111.eu-central-1.aws.neon.tech";
+  const production = "ep-prod-222222.eu-central-1.aws.neon.tech";
+  const productionPooled = "ep-prod-222222-pooler.eu-central-1.aws.neon.tech";
+  const env = (extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv => ({
+    NODE_ENV: "test",
+    NEON_MAIN_HOST: production,
+    ...extra,
+  });
+
+  it("allows a local Postgres and Neon's dev branch", () => {
+    expect(unsafeE2eDatabase("postgres://u:p@localhost:5432/spleen", env())).toBeNull();
+    expect(unsafeE2eDatabase(neon(dev), env())).toBeNull();
+    expect(unsafeE2eDatabase(neon(dev.replace("111111", "111111-pooler")), env())).toBeNull();
+  });
+
+  it("refuses production, even on a local database", () => {
+    const local = "postgres://u:p@localhost:5432/spleen";
+    expect(unsafeE2eDatabase(local, env({ NODE_ENV: "production" }))).toMatch(/production/);
+  });
+
+  it("refuses Neon's production branch, through its direct or pooled host", () => {
+    expect(unsafeE2eDatabase(neon(production), env())).toMatch(/production/);
+    expect(unsafeE2eDatabase(neon(productionPooled), env())).toMatch(/production/);
+    // NEON_MAIN_HOST may be the pooled host or the bare endpoint id.
+    expect(unsafeE2eDatabase(neon(production), env({ NEON_MAIN_HOST: productionPooled }))).toMatch(
+      /production/,
+    );
+    expect(
+      unsafeE2eDatabase(neon(productionPooled), env({ NEON_MAIN_HOST: "ep-prod-222222" })),
+    ).toMatch(/production/);
+  });
+
+  it("refuses every Neon database while NEON_MAIN_HOST is missing or invalid", () => {
+    expect(unsafeE2eDatabase(neon(dev), env({ NEON_MAIN_HOST: undefined }))).toMatch(
+      /NEON_MAIN_HOST/,
+    );
+    expect(unsafeE2eDatabase(neon(dev), env({ NEON_MAIN_HOST: " " }))).toMatch(/NEON_MAIN_HOST/);
+    expect(unsafeE2eDatabase(neon(dev), env({ NEON_MAIN_HOST: "localhost" }))).toMatch(
+      /NEON_MAIN_HOST/,
+    );
+  });
+
+  it("reads the endpoint id from a host or a URL", () => {
+    expect(neonEndpointId(productionPooled)).toBe("ep-prod-222222");
+    expect(neonEndpointId(neon(production))).toBe("ep-prod-222222");
+    expect(neonEndpointId("localhost")).toBeNull();
   });
 });
 

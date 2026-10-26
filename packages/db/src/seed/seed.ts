@@ -4,6 +4,7 @@ import type { Db } from "../client";
 import { recomputeItemState, setWantToListen } from "../listening-state";
 import * as s from "../schema";
 import { seedCrate } from "./crate";
+import { seedDiscovery } from "./discovery";
 import {
   artists,
   diaryEntries,
@@ -14,6 +15,7 @@ import {
   toListen,
   users,
 } from "./fixtures";
+import { seedLists } from "./lists";
 import { slugify } from "./slugify";
 import { seedSocial } from "./social";
 
@@ -311,5 +313,7 @@ export async function seed(db: Db, options: { now?: Date } = {}): Promise<void> 
 
     await seedCrate(tx, [...genreIdByName.values()]);
     await seedSocial(tx, now);
+    await seedDiscovery(tx, now);
+    await seedLists(tx, now);
   });
 }
