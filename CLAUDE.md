@@ -58,9 +58,9 @@ CI, e2e cleanup guard, env vars and database details: `docs/environnement.md`.
   declared in `turbo.json`, or they silently vanish. Next scripts use dotenv-cli; db scripts
   and Vitest call `loadRootEnv()`.
 - `DATABASE_URL` = Neon pooled (app), `DATABASE_URL_UNPOOLED` = direct (migrations, seed);
-  unset → PGlite in `.data/pglite`. Neon `dev` = local; `main` = production (never in a file).
+  unset → PGlite in `.data/pglite`. Neon branch `dev` = local; branch `production` = live site (never in a file).
 - e2e accounts are `e2e-<id>@example.test`, deleted by `apps/web/e2e/cleanup.ts`, which
-  refuses production and Neon `main` (`NEON_MAIN_HOST`). Keep each e2e test short.
+  refuses production and Neon's `production` branch (`NEON_MAIN_HOST`). Keep each e2e test short.
 - Never edit generated migrations (a test fails on schema/snapshot drift);
   `0000_search_extensions.sql` is hand-written.
 - "Target" = `release_id` / `track_id` / `artist_id` real FKs + CHECK exactly one
@@ -169,4 +169,4 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
       base stats · 7. Social · 8. Lists & discovery (`docs/decouverte.md`).
 - [ ] 9. **Admin, legal, polish** (next): moderation queue (reports, lists included), duplicate
       merges, legal pages, PWA, Open Graph · 10. Launch. **Real services are not connected yet** (Google,
-      Brevo, R2, Neon `main`, domain): follow `docs/mise-en-ligne.md`.
+      Brevo, R2, Neon `production`, domain): follow `docs/mise-en-ligne.md`.

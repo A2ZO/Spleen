@@ -257,11 +257,11 @@ describe("e2e accounts", () => {
 describe("e2e cleanup guard", () => {
   const neon = (host: string) => `postgresql://u:p@${host}/neondb?sslmode=require`;
   const dev = "ep-dev-111111.eu-central-1.aws.neon.tech";
-  const main = "ep-main-222222.eu-central-1.aws.neon.tech";
-  const mainPooled = "ep-main-222222-pooler.eu-central-1.aws.neon.tech";
+  const production = "ep-prod-222222.eu-central-1.aws.neon.tech";
+  const productionPooled = "ep-prod-222222-pooler.eu-central-1.aws.neon.tech";
   const env = (extra: NodeJS.ProcessEnv = {}): NodeJS.ProcessEnv => ({
     NODE_ENV: "test",
-    NEON_MAIN_HOST: main,
+    NEON_MAIN_HOST: production,
     ...extra,
   });
 
@@ -276,14 +276,16 @@ describe("e2e cleanup guard", () => {
     expect(unsafeE2eDatabase(local, env({ NODE_ENV: "production" }))).toMatch(/production/);
   });
 
-  it("refuses Neon's main branch, through its direct or pooled host", () => {
-    expect(unsafeE2eDatabase(neon(main), env())).toMatch(/main/);
-    expect(unsafeE2eDatabase(neon(mainPooled), env())).toMatch(/main/);
+  it("refuses Neon's production branch, through its direct or pooled host", () => {
+    expect(unsafeE2eDatabase(neon(production), env())).toMatch(/production/);
+    expect(unsafeE2eDatabase(neon(productionPooled), env())).toMatch(/production/);
     // NEON_MAIN_HOST may be the pooled host or the bare endpoint id.
-    expect(unsafeE2eDatabase(neon(main), env({ NEON_MAIN_HOST: mainPooled }))).toMatch(/main/);
-    expect(unsafeE2eDatabase(neon(mainPooled), env({ NEON_MAIN_HOST: "ep-main-222222" }))).toMatch(
-      /main/,
+    expect(unsafeE2eDatabase(neon(production), env({ NEON_MAIN_HOST: productionPooled }))).toMatch(
+      /production/,
     );
+    expect(
+      unsafeE2eDatabase(neon(productionPooled), env({ NEON_MAIN_HOST: "ep-prod-222222" })),
+    ).toMatch(/production/);
   });
 
   it("refuses every Neon database while NEON_MAIN_HOST is missing or invalid", () => {
@@ -297,8 +299,8 @@ describe("e2e cleanup guard", () => {
   });
 
   it("reads the endpoint id from a host or a URL", () => {
-    expect(neonEndpointId(mainPooled)).toBe("ep-main-222222");
-    expect(neonEndpointId(neon(main))).toBe("ep-main-222222");
+    expect(neonEndpointId(productionPooled)).toBe("ep-prod-222222");
+    expect(neonEndpointId(neon(production))).toBe("ep-prod-222222");
     expect(neonEndpointId("localhost")).toBeNull();
   });
 });

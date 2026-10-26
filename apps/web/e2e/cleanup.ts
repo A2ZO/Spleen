@@ -10,7 +10,7 @@ import {
  * Global setup and teardown: deletes the accounts the suite creates (`e2e-…@example.test`)
  * and their data, including those left by a failed or interrupted run. Postgres only: a
  * local PGlite database belongs to the running dev server process. Refuses production and
- * Neon's `main` branch (`unsafeE2eDatabase`): the whole run stops before any test.
+ * Neon's `production` branch (`unsafeE2eDatabase`): the whole run stops before any test.
  */
 export default async function cleanup() {
   loadRootEnv();
