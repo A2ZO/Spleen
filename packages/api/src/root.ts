@@ -77,6 +77,7 @@ import { tryCatalog, withCatalogErrors } from "./lib/catalog/provider";
 import { searchCatalog, searchRemote } from "./lib/catalog/search";
 import { genreOptions, recentReleases, topRated, weeklyTrends } from "./lib/discovery";
 import { checkHealth } from "./lib/health";
+import { ogCard, seoPage, sitemapEntries, sitemapFiles } from "./lib/seo";
 import {
   blindArtistDetail,
   blindReleaseDetail,
@@ -217,11 +218,38 @@ const blockWrite = limitedWrite("block-write", BLOCK_WRITE_RULE);
 const reportWrite = limitedWrite("report-write", REPORT_WRITE_RULE);
 const listWrite = limitedWrite("list-write", LIST_WRITE_RULE);
 
+/** A page for search and sharing: a slug, a username or a uuid depending on the kind. */
+const seoPageSchema = z.object({
+  kind: z.enum(["release", "artist", "list", "profile", "review"]),
+  key: z.string().trim().min(1).max(200),
+});
+
 export const appRouter = router({
   system: router({
     health: publicProcedure.query(({ ctx }) => checkHealth(ctx.db())),
     /** Where to write to the site (legal pages, contesting a decision); a placeholder until set. */
     contact: publicProcedure.query(({ ctx }) => ctx.contactEmail ?? CONTACT_PLACEHOLDER),
+  }),
+  /**
+   * Search engines and link previews, the same for everyone: the web calls them without a
+   * session, so cached sitemaps and images never depend on who asked.
+   */
+  seo: router({
+    sitemapFiles: publicProcedure.query(({ ctx }) => sitemapFiles(ctx.db())),
+    sitemap: publicProcedure
+      .input(
+        z.object({
+          kind: z.enum(["releases", "artists", "lists", "profiles"]),
+          page: z.number().int().min(1).max(10_000),
+        }),
+      )
+      .query(({ input, ctx }) => sitemapEntries(ctx.db(), input.kind, input.page)),
+    page: publicProcedure
+      .input(seoPageSchema)
+      .query(({ input, ctx }) => seoPage(ctx.db(), input.kind, input.key)),
+    og: publicProcedure
+      .input(seoPageSchema)
+      .query(({ input, ctx }) => ogCard(ctx.db(), input.kind, input.key)),
   }),
   feed: router({
     /** Activity of the members the caller follows, newest first. */

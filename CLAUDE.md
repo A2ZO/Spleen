@@ -79,7 +79,8 @@ CI, e2e cleanup guard, env vars and database details: `docs/environnement.md`.
 
 Domain docs (read before touching the domain): listening `docs/ecoute.md`
 (`recomputeItemState()`), profile & stats `docs/profil-stats.md` (bump `CACHE_VERSION` when
-a stats rule changes), social & moderation `docs/social.md`, lists & discovery `docs/decouverte.md`.
+a stats rule changes), social & moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sharing
+`docs/referencement.md` (indexing rule, sitemaps, robots, OG images).
 
 ## Conventions
 

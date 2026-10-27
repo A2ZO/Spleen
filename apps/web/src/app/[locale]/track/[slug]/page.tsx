@@ -12,7 +12,8 @@ import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { Cover } from "@/components/ui/Cover";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Stars } from "@/components/ui/Stars";
-import { initRouteLocale } from "@/i18n/locale";
+import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { seoMetadata } from "@/lib/seo";
 import { missingCatalogPage } from "@/lib/catalog-redirect";
 import { formatDuration } from "@/lib/release-date";
 import { getApi } from "@/server/api";
@@ -26,10 +27,19 @@ const getTrack = cache(async (slug: string) => {
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale: rawLocale, slug } = await params;
+  const locale = metadataLocale(rawLocale);
   const track = await getTrack(slug);
   if (!track) return {};
-  return { title: `${track.title} – ${track.artists.map((a) => a.name).join(", ")}` };
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const artists = track.artists.map((a) => a.name).join(", ");
+  const title = `${track.title} – ${artists}`;
+  const description = t("track", { title: track.title, artists });
+  return {
+    title,
+    description,
+    ...(await seoMetadata(locale, `/track/${slug}`, { title, description })),
+  };
 }
 
 export default async function TrackPage({ params }: Props) {

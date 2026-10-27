@@ -10,9 +10,10 @@ import { ListenOn } from "@/components/catalog/ListenOn";
 import { AddToListButton } from "@/components/lists/AddToList";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { initRouteLocale } from "@/i18n/locale";
+import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { missingCatalogPage } from "@/lib/catalog-redirect";
 import { artistKind } from "@/lib/catalog-labels";
+import { seoMetadata } from "@/lib/seo";
 import { getApi } from "@/server/api";
 
 type Props = { params: Promise<{ locale: string; slug: string }> };
@@ -24,9 +25,21 @@ const getArtist = cache(async (slug: string) => {
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale: rawLocale, slug } = await params;
+  const locale = metadataLocale(rawLocale);
   const artist = await getArtist(slug);
-  return artist ? { title: artist.name } : {};
+  if (!artist) return {};
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const description = t("artist", { name: artist.name });
+  return {
+    title: artist.name,
+    description,
+    ...(await seoMetadata(locale, `/artist/${slug}`, {
+      subject: { kind: "artist", key: slug },
+      title: artist.name,
+      description,
+    })),
+  };
 }
 
 function Discography({

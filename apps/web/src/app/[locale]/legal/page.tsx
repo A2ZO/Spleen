@@ -3,13 +3,15 @@ import { getTranslations } from "next-intl/server";
 
 import { LegalPage } from "@/components/legal/LegalPage";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { seoMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ locale: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = metadataLocale((await params).locale);
   const t = await getTranslations({ locale, namespace: "legal" });
-  return { title: t("notice.title") };
+  const title = t("notice.title");
+  return { title, ...(await seoMetadata(locale, "/legal", { title })) };
 }
 
 export default async function LegalNoticePage({ params }: Props) {

@@ -987,5 +987,14 @@
         }
       }
     }
+  },
+  "seo": {
+    "album": "{title} de {artists} : notes, critiques et listes des membres de Spleen.",
+    "artist": "Discographie de {name} : albums, EP et singles notés et critiqués sur Spleen.",
+    "track": "{title} de {artists} : notes et critiques sur Spleen.",
+    "review": "Critique de « {title} » par {name} sur Spleen.",
+    "list": "Liste de {name} sur Spleen : {count, plural, one {# élément} other {# éléments}}.",
+    "profile": "Le carnet d'écoute de {name} sur Spleen : journal, critiques et listes.",
+    "diary": "Le journal d'écoute de {name} sur Spleen."
   }
 }

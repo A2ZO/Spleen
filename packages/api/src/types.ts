@@ -624,3 +624,36 @@ export interface CatalogMergePreview {
   keep: MergeCandidate;
   duplicate: MergeCandidate;
 }
+
+/** One URL of a sitemap file: a path without the locale, and its last change. */
+export interface SitemapEntry {
+  path: string;
+  lastModified: string;
+}
+
+/** Search and sharing facts about a page (`seo.page`). */
+export interface SeoPage {
+  /** Worth indexing (same rule as the sitemap); otherwise the page says noindex. */
+  indexable: boolean;
+  /** Version of its Open Graph image, part of the image URL; null when it has none. */
+  og: string | null;
+}
+
+/** What an Open Graph image shows (`seo.og`), for a page anyone may see. */
+export interface OgCard {
+  kind: "release" | "review" | "list" | "profile";
+  version: string;
+  title: string;
+  /** Artists (release, review), owner (list) or @username (profile). */
+  subtitle: string;
+  /** Cover URLs (release, review: one; list: up to four), or the avatar (profile). */
+  covers: string[];
+  year?: string | null;
+  author?: string;
+  /** 1..10, reviews only. */
+  rating?: number | null;
+  /** Review text or profile bio, shortened. */
+  excerpt?: string;
+  /** Items in a list. */
+  items?: number;
+}

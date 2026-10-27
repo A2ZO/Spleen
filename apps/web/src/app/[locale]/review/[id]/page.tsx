@@ -12,7 +12,8 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Cover } from "@/components/ui/Cover";
 import { CommentIcon, HeartIcon } from "@/components/ui/icons";
 import { Stars } from "@/components/ui/Stars";
-import { initRouteLocale } from "@/i18n/locale";
+import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { seoMetadata } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
 import { loadCursorPage } from "@/lib/api-errors";
 import { firstParam, hrefWith, type SearchParams } from "@/lib/search-params";
@@ -29,16 +30,30 @@ const getReview = cache(async (id: string) => {
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { locale: rawLocale, id } = await params;
+  const locale = metadataLocale(rawLocale);
   const detail = await getReview(id);
   if (!detail) return {};
-  const t = await getTranslations("review");
+  const t = await getTranslations({ locale });
   const { review } = detail;
+  const about = review.track?.title ?? review.release.title;
+  const title = t("review.pageTitle", { name: review.author.displayName, title: about });
+  const excerpt = review.body.replace(/\s+/g, " ").trim();
+  const description =
+    excerpt.length > 0
+      ? excerpt.length > 160
+        ? `${excerpt.slice(0, 159).trimEnd()}…`
+        : excerpt
+      : t("seo.review", { title: about, name: review.author.displayName });
   return {
-    title: t("pageTitle", {
-      name: review.author.displayName,
-      title: review.track?.title ?? review.release.title,
-    }),
+    title,
+    description,
+    // A hidden review reaches this page for its author only: `seo.page` says noindex.
+    ...(await seoMetadata(locale, `/review/${id}`, {
+      subject: { kind: "review", key: id },
+      title,
+      description,
+    })),
   };
 }
 

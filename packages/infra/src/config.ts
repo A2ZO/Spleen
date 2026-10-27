@@ -31,6 +31,13 @@ export const googleConfigured = (env: Env = process.env) =>
 export const contactEmail = (env: Env = process.env): string | null =>
   env.CONTACT_EMAIL?.trim() || null;
 
+/**
+ * Public address of the site, without a trailing slash (canonical links, sitemaps, Open Graph
+ * images). The same as Better Auth's; local fallback in development.
+ */
+export const siteUrl = (env: Env = process.env): string =>
+  (env.BETTER_AUTH_URL?.trim() || "http://localhost:3000").replace(/\/+$/, "");
+
 /** Names (never values) of the variables production needs but lacks. */
 export function missingProductionVariables(env: Env = process.env): string[] {
   const required = [

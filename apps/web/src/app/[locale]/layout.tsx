@@ -13,6 +13,7 @@ import { initRouteLocale } from "@/i18n/locale";
 import { routing } from "@/i18n/routing";
 import { parseTheme, THEME_COOKIE } from "@/lib/theme";
 import { getApi } from "@/server/api";
+import { siteUrl } from "@spleen/infra/config";
 
 import { fraunces, inter, plexMono } from "../fonts";
 
@@ -29,8 +30,10 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: "metadata" });
+  const title = `${t("title")} · ${t("tagline")}`;
   return {
-    title: { default: `${t("title")} · ${t("tagline")}`, template: `%s · ${t("title")}` },
+    metadataBase: new URL(siteUrl()),
+    title: { default: title, template: `%s · ${t("title")}` },
     description: t("description"),
   };
 }

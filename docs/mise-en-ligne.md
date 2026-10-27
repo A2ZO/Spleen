@@ -279,6 +279,15 @@ Postgres jetable, jamais Neon.
       avatar → export → suppression d'un compte de test.
 - [ ] Fermer l'issue GitHub « Brancher les services réels avant la mise en ligne ».
 
+## 13 bis. Référencement
+
+- [ ] Google Search Console et Bing Webmaster Tools : ajouter le domaine, soumettre
+      `https://<domaine>/sitemap.xml`. **Vérifier** : le sitemap est lu sans erreur.
+- [ ] **Vérifier** un aperçu de lien (par exemple en collant l'adresse d'un disque dans une
+      messagerie) : l'image Open Graph s'affiche.
+- [ ] Une fois par an : revoir la liste des robots d'IA de `robots.ts` dans les docs
+      officielles (`docs/referencement.md`).
+
 ## 14. Monétisation (avant la première pub ou le premier abonnement)
 
 Pas nécessaire pour un site gratuit et sans pub : à faire avant de gagner le premier euro.

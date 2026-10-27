@@ -987,5 +987,14 @@
         }
       }
     }
+  },
+  "seo": {
+    "album": "{title} by {artists}: ratings, reviews and lists from Spleen members.",
+    "artist": "{name}'s discography: albums, EPs and singles rated and reviewed on Spleen.",
+    "track": "{title} by {artists}: ratings and reviews on Spleen.",
+    "review": "{name}'s review of “{title}” on Spleen.",
+    "list": "A list by {name} on Spleen: {count, plural, one {# item} other {# items}}.",
+    "profile": "{name}'s listening diary on Spleen: diary, reviews and lists.",
+    "diary": "{name}'s listening diary on Spleen."
   }
 }
