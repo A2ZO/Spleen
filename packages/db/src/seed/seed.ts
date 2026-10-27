@@ -322,15 +322,19 @@ export async function seed(db: Db, options: { now?: Date } = {}): Promise<void> 
     // After the lists: a report points to one of them.
     await seedModeration(tx, now);
 
-    // Demo profiles created before the terms box existed keep NULL (inserts above do nothing on
-    // conflict): fill them, demo accounts only (`<username>@example.test`, never `e2e-*`).
+    // Inserts above do nothing on conflict: existing demo profiles (created before the terms box,
+    // or on an older TERMS_VERSION) accept the current terms here, so demo sign-ins never land on
+    // the acceptance screen. Demo accounts only (`<username>@example.test`, never `e2e-*`).
     await tx.execute(sql`
       update profiles p
-      set terms_accepted_at = coalesce(p.terms_accepted_at, p.age_confirmed_at, p.created_at),
+      set terms_accepted_at = case
+            when p.terms_version is null then coalesce(p.age_confirmed_at, p.created_at)
+            else now()
+          end,
           terms_version = ${TERMS_VERSION}
       from "user" u
       where u.id = p.user_id
-        and p.terms_version is null
+        and p.terms_version is distinct from ${TERMS_VERSION}
         and u.email like '%@example.test'
         and u.email not like 'e2e-%'
     `);

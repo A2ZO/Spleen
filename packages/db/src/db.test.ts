@@ -17,6 +17,7 @@ import * as s from "./schema";
 import { fixtureId } from "./seed/fixtures";
 import { seed } from "./seed/seed";
 import { slugify } from "./seed/slugify";
+import { TERMS_VERSION } from "@spleen/validators";
 
 let handle: DbHandle;
 const camille = fixtureId(301);
@@ -90,6 +91,19 @@ describe("seed", () => {
     await seed(handle.db);
     const after = await Promise.all(tables.map((t) => count(t)));
     expect(after).toEqual(before);
+  });
+
+  it("moves demo profiles to the current terms, whatever they accepted before", async () => {
+    await handle.db.update(s.profiles).set({ termsVersion: null, termsAcceptedAt: null });
+    await handle.db
+      .update(s.profiles)
+      .set({ termsVersion: "1999-01-01" })
+      .where(sql`${s.profiles.userId} = ${camille}`);
+    await seed(handle.db);
+    const versions = await handle.db
+      .selectDistinct({ version: s.profiles.termsVersion })
+      .from(s.profiles);
+    expect(versions).toEqual([{ version: TERMS_VERSION }]);
   });
 });
 
