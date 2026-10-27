@@ -23,12 +23,15 @@ type Decision = ReportView["decisions"][number];
 function ReasonForm({
   submitLabel,
   reasonLabel,
+  reasonHint,
   send,
   children,
   danger = false,
 }: {
   submitLabel: string;
   reasonLabel: string;
+  /** Replaces the default hint (the reason is sent to the member concerned). */
+  reasonHint?: string;
   send: (reason: string) => Promise<ModerationResult>;
   children?: ReactNode;
   danger?: boolean;
@@ -55,7 +58,7 @@ function ReasonForm({
       {children}
       <TextArea
         label={reasonLabel}
-        hint={t("reasonHint")}
+        hint={reasonHint ?? t("reasonHint")}
         value={reason}
         onChange={(event) => setReason(event.target.value)}
         maxLength={MODERATION_REASON_MAX}
@@ -182,6 +185,7 @@ export function MergeForm({
   return (
     <ReasonForm
       reasonLabel={t("reasonLabel")}
+      reasonHint={t("reasonHint")}
       submitLabel={t("submit")}
       danger
       send={(reason) => mergeCatalogAction({ ...merge, reason })}
