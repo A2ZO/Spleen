@@ -6,6 +6,7 @@
 - Original brief, milestone list and process rules: `docs/prompt-claude-code-spleen.md`.
 - The user works on Windows / PowerShell and speaks French: answer and recap in French.
 - Maintenance: `docs/services.md` (service limits, costs, budget alerts) and `/maintenance`.
+- Stack, limits in number of members, scaling steps: `docs/stack-et-limites.md`.
 - Ask before costly or irreversible decisions; present a plan before each milestone.
 
 ## Monorepo
@@ -186,3 +187,6 @@ Moderation rules: `docs/social.md`.
 - [ ] 9. **Admin, legal, polish** (next): moderation queue (reports, lists included), duplicate
       merges, legal pages, PWA, Open Graph · 10. Launch. **Real services are not connected yet** (Google,
       Brevo, R2, Neon `production`, domain): follow `docs/mise-en-ligne.md`.
+- [ ] 11. Upcoming releases from followed artists — spec in docs/cahier-des-charges.md (section
+      « Sorties à venir de tes artistes »); may run before milestone 10, depends only on 4, 7
+      and 8.

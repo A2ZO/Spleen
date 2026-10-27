@@ -245,3 +245,11 @@ Postgres jetable, jamais Neon.
 - [ ] Parcours complet en production : inscription par lien magique → choix du pseudo →
       avatar → export → suppression d'un compte de test.
 - [ ] Fermer l'issue GitHub « Brancher les services réels avant la mise en ligne ».
+
+## 14. Monétisation (avant la première pub ou le premier abonnement)
+
+Pas nécessaire pour un site gratuit et sans pub : à faire avant de gagner le premier euro.
+
+- [ ] Licence des genres MusicBrainz (CC BY-NC-SA, non commerciale) : licence commerciale
+      MetaBrainz ou autre source de genres, avant la première pub ou le premier abonnement —
+      voir `docs/stack-et-limites.md` § 5.2.
