@@ -4,8 +4,10 @@ name: Nightly
 # they do nothing until it is set (docs/mise-en-ligne.md § 9).
 # - refresh: re-reads on MusicBrainz the discographies members care about, so new albums
 #   reach "Recent releases" (docs/decouverte.md).
-# - moderation-retention: anonymises moderation decisions a year old and deletes the closed
-#   reports (docs/social.md, privacy policy).
+# - retention: applies the durations written in the privacy policy (packages/i18n,
+#   legal.privacy): anonymises moderation decisions a year old and deletes the closed reports
+#   (docs/social.md); deletes expired sessions, expired sign-in links and anti-abuse counters
+#   24 hours after their window, except the MusicBrainz gate (packages/api/src/lib/retention.ts).
 
 on:
   schedule:
@@ -56,7 +58,7 @@ jobs:
           DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
           MUSICBRAINZ_USER_AGENT: ${{ vars.MUSICBRAINZ_USER_AGENT }}
 
-  moderation-retention:
+  retention:
     runs-on: ubuntu-latest
     environment: production
     timeout-minutes: 10
@@ -84,8 +86,8 @@ jobs:
       - if: steps.config.outputs.ready == 'true'
         run: pnpm install --frozen-lockfile
       - if: steps.config.outputs.ready == 'true'
-        name: Anonymise moderation decisions older than a year
-        run: pnpm moderation:anonymize
+        name: Apply the retention rules (moderation, sessions, sign-in links, counters)
+        run: pnpm retention
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
           DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}

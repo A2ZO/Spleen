@@ -1,10 +1,18 @@
 import { sql, type Db } from "@spleen/db";
 
 export interface RateLimitRule {
-  /** Window length in seconds. */
+  /** Window length in seconds, at most `RATE_LIMIT_MAX_WINDOW_SECONDS`. */
   window: number;
   max: number;
 }
+
+/**
+ * Longest window a rule may have. The nightly purge relies on it: a counter whose window
+ * started more than this plus a day ago is over and can go (`purgeRateLimits`).
+ */
+export const RATE_LIMIT_MAX_WINDOW_SECONDS = 60 * 60;
+/** How long a finished window's counter (an account id or an IP address) is kept. */
+export const RATE_LIMIT_RETENTION_HOURS = 24;
 
 /**
  * Fixed-window counter in the `rate_limits` table, checked and incremented in one atomic
@@ -15,6 +23,9 @@ export async function consumeRateLimit(
   key: string,
   rule: RateLimitRule,
 ): Promise<{ allowed: boolean; retryAfter: number | null }> {
+  if (rule.window > RATE_LIMIT_MAX_WINDOW_SECONDS) {
+    throw new Error(`Rate limit window over ${RATE_LIMIT_MAX_WINDOW_SECONDS} s: ${key}`);
+  }
   const window = sql`make_interval(secs => ${rule.window})`;
   const result = await db.execute(sql`
     insert into rate_limits (key, window_start, count) values (${key}, now(), 1)
@@ -65,6 +76,28 @@ export async function deferSlots(db: Db, key: string, seconds: number): Promise<
     on conflict (key) do update set
       next_allowed_at = greatest(coalesce(rate_limits.next_allowed_at, now()), ${until})
   `);
+}
+
+/**
+ * Deletes the counters whose window ended more than `RATE_LIMIT_RETENTION_HOURS` ago, except
+ * the global gates in `keep` (their state is a reservation time, not a counter). Returns how
+ * many rows went.
+ */
+export async function purgeRateLimits(db: Db, now: Date, keep: string[]): Promise<number> {
+  const before = new Date(
+    now.getTime() - (RATE_LIMIT_MAX_WINDOW_SECONDS + RATE_LIMIT_RETENTION_HOURS * 3600) * 1000,
+  );
+  const kept = keep.length
+    ? sql`and key not in (${sql.join(
+        keep.map((k) => sql`${k}`),
+        sql`, `,
+      )})`
+    : sql``;
+  const result = await db.execute(sql`
+    delete from rate_limits where window_start < ${before.toISOString()}::timestamptz ${kept}
+    returning key
+  `);
+  return rowsOf(result).length;
 }
 
 function rowsOf(result: unknown): unknown[] {

@@ -92,7 +92,7 @@ export async function listModerationHistory(
  * Retention: one year after the decision, the history keeps the action, its reason and the
  * report category only. Links to people (moderator, member, content, report), the excerpt and
  * the member's notification go; closed reports (reporter, details) are deleted. Open reports
- * are never touched. Idempotent; run nightly (`pnpm moderation:anonymize`).
+ * are never touched. Idempotent; run nightly with the other retention rules (`pnpm retention`).
  */
 export async function anonymizeModerationHistory(
   db: Db,
