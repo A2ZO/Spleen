@@ -1,7 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-import { createDb, isPostgresUrl, loadRootEnv, setAdminRole } from "@spleen/db";
+import { createDb, isPostgresUrl, loadRootEnv, schema, setAdminRole } from "@spleen/db";
 import { expect, type Page, type TestInfo } from "@playwright/test";
 
 // Without BREVO_API_KEY, the dev server writes emails to <repo>/.data/outbox (see @spleen/infra).
@@ -85,4 +85,35 @@ export async function deleteAccount(page: Page, username: string) {
   await page.getByLabel(`Tape ton pseudo (${username}) pour confirmer`).fill(username);
   await page.getByRole("button", { name: "Supprimer définitivement" }).click();
   await expect(page).toHaveURL(/\/fr$/);
+}
+
+/**
+ * Throwaway albums for one test: slug `e2e-<id>-<n>`, no MusicBrainz id, so the global
+ * teardown deletes them (reports first, merged ones before the others) and nothing else.
+ * Null on a PGlite database (it belongs to the dev server process).
+ */
+export async function throwawayReleases(
+  testInfo: TestInfo,
+  count: number,
+): Promise<{ slug: string; title: string }[] | null> {
+  loadRootEnv();
+  const url = process.env.DATABASE_URL;
+  if (!isPostgresUrl(url)) return null;
+  const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}${testInfo.project.name.slice(0, 1)}`;
+  const handle = createDb(url);
+  try {
+    return await handle.db
+      .insert(schema.releases)
+      .values(
+        Array.from({ length: count }, (_, i) => ({
+          slug: `e2e-${id}-${i + 1}`,
+          title: `Disque jetable ${id} ${i + 1}`,
+          type: "album" as const,
+          tracklistImportedAt: new Date(),
+        })),
+      )
+      .returning({ slug: schema.releases.slug, title: schema.releases.title });
+  } finally {
+    await handle.close();
+  }
 }

@@ -1,6 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
-import { deleteAccount, emailOf, grantAdmin, signIn, signUp } from "./helpers";
+import { deleteAccount, emailOf, grantAdmin, signIn, signUp, throwawayReleases } from "./helpers";
 
 test.use({ locale: "fr-FR" });
 
@@ -109,4 +109,66 @@ test("a duplicate report needs the address of another page of the same kind", as
   ).toBeVisible();
   await dialog.getByRole("button", { name: "Annuler" }).click();
   await deleteAccount(page, username);
+});
+
+/** Opens the catalog report dialog of the current page (retried until hydrated). */
+async function openCatalogReport(page: Page) {
+  await expect(async () => {
+    await page.getByRole("button", { name: "Signaler une erreur ou proposer un ajout" }).click();
+    await expect(page.getByRole("dialog")).toBeVisible({ timeout: 2_000 });
+  }).toPass();
+  return page.getByRole("dialog");
+}
+
+// The accounts of the next two tests are left to the global teardown: it deletes their
+// reports before the accounts (a report outlives its author), then the throwaway albums.
+
+test("a member reports a wrong cover and gets a thank-you", async ({ page }, testInfo) => {
+  const releases = await throwawayReleases(testInfo, 1);
+  test.skip(!releases, "needs the Postgres database of the dev server");
+  const [album] = releases!;
+  await signUp(page, testInfo, "Œil de lynx");
+  await page.goto(`/fr/album/${album!.slug}`);
+  const dialog = await openCatalogReport(page);
+  await dialog.getByLabel("La pochette est incorrecte").check();
+  await dialog.getByLabel("Quelques mots de plus (facultatif)").fill("Ce n'est pas la bonne.");
+  await dialog.getByRole("button", { name: "Envoyer" }).click();
+  await expect(dialog.getByText("Merci. La modération va y jeter un œil.")).toBeVisible();
+});
+
+test("an admin merges a reported duplicate from the queue; the old page redirects", async ({
+  browser,
+}, testInfo) => {
+  const releases = await throwawayReleases(testInfo, 2);
+  test.skip(!releases, "needs the Postgres database of the dev server");
+  const [kept, duplicate] = releases!;
+  const member = await (await browser.newContext({ locale: "fr-FR" })).newPage();
+  const admin = await (await browser.newContext({ locale: "fr-FR" })).newPage();
+  await signUp(member, testInfo, "Discophile");
+  const moderator = await signUp(admin, testInfo, "Archiviste");
+  test.skip(!(await grantAdmin(moderator)), "needs the Postgres database of the dev server");
+
+  await member.goto(`/fr/album/${duplicate!.slug}`);
+  const dialog = await openCatalogReport(member);
+  await dialog.getByLabel("C'est un doublon d'une autre fiche").check();
+  await dialog.getByLabel("Adresse de l'autre fiche").fill(`/fr/album/${kept!.slug}`);
+  await dialog.getByRole("button", { name: "Envoyer" }).click();
+  await expect(dialog.getByText("Merci. La modération va y jeter un œil.")).toBeVisible();
+
+  await admin.goto("/fr/admin?kind=catalog");
+  const card = admin.getByRole("article").filter({ hasText: duplicate!.title });
+  await expect(card.getByText(kept!.title)).toBeVisible();
+  await card.getByRole("link", { name: "Fusionner les deux fiches" }).click();
+  await expect(admin).toHaveURL(/\/fr\/admin\/merge\?/);
+  await expect(admin.getByRole("heading", { name: kept!.title })).toBeVisible();
+  await expect(admin.getByRole("heading", { name: duplicate!.title })).toBeVisible();
+  await admin.getByLabel("Motif de la fusion").fill("Même disque importé deux fois");
+  await admin.getByRole("button", { name: "Fusionner", exact: true }).click();
+  await expect(admin.getByText("Fusion faite.")).toBeVisible();
+
+  await member.goto(`/fr/album/${duplicate!.slug}`);
+  await expect(member).toHaveURL(new RegExp(`/fr/album/${kept!.slug}$`));
+  await expect(member.getByRole("heading", { level: 1, name: kept!.title })).toBeVisible();
+  await admin.goto("/fr/admin?kind=catalog");
+  await expect(admin.getByRole("article").filter({ hasText: duplicate!.title })).toHaveCount(0);
 });

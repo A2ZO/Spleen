@@ -21,16 +21,40 @@ export const isE2eEmail = (email: string) => E2E_EMAIL.test(email.toLowerCase())
 export const freesUsernamesAtOnce = (email: string, env: NodeJS.ProcessEnv = process.env) =>
   (env.NODE_ENV === "development" || env.NODE_ENV === "test") && isE2eEmail(email);
 
+const e2eUsers = sql`select "id" from "user" where lower("email") ~ '^e2e-[a-z0-9]+@example[.]test$'`;
+
 /**
- * Deletes every e2e account with its data (cascade), then the username reservations e2e
- * accounts left behind. Returns how many accounts were deleted.
+ * Throwaway catalog rows of the e2e suite: releases whose slug starts with `e2e-` and that
+ * have no MusicBrainz id. The seed and imports never make such a release, so demo and
+ * imported records are never touched.
+ */
+const e2eReleases = sql`select "id" from "releases" where "slug" ~ '^e2e-[a-z0-9-]+$' and "mbid" is null`;
+
+/**
+ * Deletes every e2e account with its data, in an order that leaves nothing behind:
+ * - the moderation decisions they took or received, and their reports (a report outlives its
+ *   author's account, `reporter_id` set null, so it goes first);
+ * - the accounts (their member data cascades), then the username reservations they left;
+ * - the throwaway releases: reports on them, then those merged into another, then the others.
+ * Returns how many accounts were deleted.
  */
 export async function deleteE2eAccounts(db: Db): Promise<number> {
   return db.transaction(async (tx) => {
+    await tx.execute(sql`
+      delete from "moderation_actions"
+      where "moderator_id" in (${e2eUsers}) or "target_user_id" in (${e2eUsers})`);
+    await tx.execute(sql`
+      delete from "reports"
+      where "reporter_id" in (${e2eUsers})
+        or "release_id" in (${e2eReleases}) or "duplicate_release_id" in (${e2eReleases})`);
     const deleted = await tx.execute(
       sql`delete from "user" where lower("email") ~ '^e2e-[a-z0-9]+@example[.]test$' returning "id"`,
     );
     await tx.execute(sql`delete from "username_history" where "username" ~ '^e2e_[a-z0-9]+$'`);
+    await tx.execute(
+      sql`delete from "releases" where "id" in (${e2eReleases}) and "merged_into_id" is not null`,
+    );
+    await tx.execute(sql`delete from "releases" where "id" in (${e2eReleases})`);
     return rowsOf(deleted).length;
   });
 }

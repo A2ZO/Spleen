@@ -262,6 +262,58 @@ describe("e2e accounts", () => {
     ).toBe(0);
     expect(await handle.db.$count(s.user, sql`${s.user.id} = ${camille}`)).toBe(1);
   });
+
+  it("take their reports, decisions and throwaway releases along, merged ones first", async () => {
+    const [e2e] = await handle.db
+      .insert(s.user)
+      .values({ name: "", email: "e2e-rep1d@example.test", emailVerified: true })
+      .returning();
+    const [kept, merged, imported] = await handle.db
+      .insert(s.releases)
+      .values([
+        { slug: "e2e-rep1d-a", title: "Disque jetable", type: "album" },
+        { slug: "e2e-rep1d-b", title: "Disque jetable", type: "album" },
+        // Looks like a throwaway slug but comes from MusicBrainz: never deleted.
+        { slug: "e2e-rep1d-c", title: "Importé", type: "album", mbid: crypto.randomUUID() },
+      ])
+      .returning();
+    await handle.db
+      .update(s.releases)
+      .set({ mergedIntoId: kept!.id })
+      .where(sql`${s.releases.id} = ${merged!.id}`);
+    const [report] = await handle.db
+      .insert(s.reports)
+      .values([
+        {
+          reporterId: e2e!.id,
+          releaseId: merged!.id,
+          duplicateReleaseId: kept!.id,
+          reason: "catalog_duplicate",
+        },
+        // Left by an e2e account already deleted: still found through the release.
+        { reporterId: null, releaseId: kept!.id, reason: "catalog_cover" },
+        // A member's report on a demo record stays.
+        { reporterId: vince, reviewId: null, releaseId: imported!.id, reason: "catalog_error" },
+      ])
+      .returning();
+    await handle.db.insert(s.moderationActions).values({
+      action: "resolve",
+      subject: "catalog",
+      reason: "Doublon",
+      moderatorId: e2e!.id,
+      reportId: report!.id,
+    });
+    const [reports, actions] = [await count(s.reports), await count(s.moderationActions)];
+
+    await deleteE2eAccounts(handle.db);
+    expect(await count(s.reports)).toBe(reports - 2);
+    expect(await count(s.moderationActions)).toBe(actions - 1);
+    const left = await handle.db
+      .select({ slug: s.releases.slug })
+      .from(s.releases)
+      .where(sql`${s.releases.slug} like 'e2e-%'`);
+    expect(left).toEqual([{ slug: "e2e-rep1d-c" }]);
+  });
 });
 
 describe("e2e cleanup guard", () => {
