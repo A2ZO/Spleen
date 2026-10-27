@@ -1,11 +1,9 @@
-"use client";
-
 import { coverSwatches } from "@spleen/design-tokens";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/cn";
 import { hashString } from "@/lib/hash";
+
+import { CoverImage } from "./CoverImage";
 
 export interface CoverProps {
   slug: string;
@@ -34,17 +32,6 @@ export function Cover({
   sizes,
   showText = true,
 }: CoverProps) {
-  // Archive.org storage nodes sometimes answer 500. The generated sleeve is always underneath
-  // (it carries the accessible name) and the real image sits on top: a failed image, even one
-  // that failed before hydration (no handler yet, or no JavaScript at all), shows the sleeve.
-  const [failedUrl, setFailedUrl] = useState<string | null>(null);
-  const image = useRef<HTMLImageElement>(null);
-  useEffect(() => {
-    // Already failed when React took over: no `error` event is coming.
-    const el = image.current;
-    if (el?.complete && el.naturalWidth === 0) setFailedUrl(el.currentSrc);
-  }, [coverUrl]);
-
   return (
     <div
       className={cn(
@@ -59,21 +46,7 @@ export function Cover({
         alt={alt}
         showText={showText}
       />
-      {coverUrl && failedUrl === null && (
-        // Covers come from Cover Art Archive in ready-made sizes: no image optimisation
-        // (no host-specific service, no quota), the browser follows the redirect itself.
-        // Empty alt: a broken image with a text alternative would show its icon and text.
-        <Image
-          ref={image}
-          src={coverUrl}
-          alt=""
-          fill
-          unoptimized
-          sizes={sizes ?? "200px"}
-          className="object-cover text-transparent"
-          onError={(e) => setFailedUrl(e.currentTarget.currentSrc)}
-        />
-      )}
+      {coverUrl && <CoverImage src={coverUrl} sizes={sizes ?? "200px"} />}
       {/* Sleeve sheen and worn edge. */}
       <div
         aria-hidden="true"
