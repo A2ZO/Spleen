@@ -24,131 +24,78 @@ Sources : `docs/prompt-claude-code-spleen.md` (règles), `docs/cahier-des-charge
 | 7 | Finitions : 404/500 Baudelaire, axe, journaux e2e propres, CSP à nonce + en-têtes, case des conditions | fait | `ea01c08`, voir `git log` |
 | fin | Seed à jour, vérification visuelle Chrome bureau + mobile, `/fin-de-jalon` | à faire | — |
 
-État vérifié au commit `153f3d9` (code de connexion) : lint, typecheck, format, tests unitaires et
-86 e2e verts, contrôle des journaux serveur propre. Étape 7 (sans la CSP) vérifiée ensuite :
-`pnpm check` et 102 e2e verts, journaux propres, poussée sur la PR #23.
+État vérifié au commit `0e734af` : `pnpm check` et suite e2e complète verte (bureau + mobile), contrôle des
+journaux serveur propre, aucune violation CSP ; poussé, CI de la PR #23 verte (`check`,
+`api-postgres`).
 
-## À faire ensuite (reprise)
+## À faire ensuite (reprise) : étape « fin »
 
-### Où en est l'étape 7 (commit `ea01c08`, wip)
+Prompt prévu : « Lis CLAUDE.md puis docs/jalon-09-en-cours.md, et fais l'étape fin ». Modèle
+conseillé par l'utilisateur : **opusplan**. Présenter le plan avant de commencer.
 
-- Fait, non vérifié en entier : `app/[locale]/error.tsx` (page 500, citation de Baudelaire
-  « Quand le ciel bas et lourd… », digest affiché) et `app/global-error.tsx` (hors fournisseur
-  next-intl, messages chargés à la demande) ; clés i18n `errorPage.*` ; rendu vérifié sur mobile.
-  La page 404 existait déjà.
-- Fait : `/sitemap.xml` forcé dynamique (`export const dynamic = "force-dynamic"`) : le build le
-  prérendait, l'index aurait été figé au contenu du build.
-- Fait : audit axe (`@axe-core/playwright` 4.14.0, publié le 15/10/2026, `apps/web/e2e/a11y.spec.ts`)
-  sur accueil, recherche, album, profil, liste, découverte, pages légales, admin ; deux défauts
-  `serious` corrigés : nom accessible du sélecteur de langue (`LocaleSwitcher`, le texte visible
-  « FR » doit être dans le nom) et liens de pochette sans nom (`aria-hidden` sur les liens en double
-  à `tabIndex={-1}` : `ReviewCard`, `FeedItemCard`, `review/[id]`, `review/[id]/edit`). L'audit passe
-  (bureau et mobile).
-- **Corrigé** : « 1 × render cancelled mid-stream » au contrôle des journaux. Cause : `SearchBox`
-  sautait son premier effet avec un drapeau `useRef`, que le Strict Mode (dev) déjoue en rejouant
-  l'effet : un `router.replace` inutile partait 250 ms après l'arrivée sur `/fr/search?q=…`, et le
-  test a11y de cette page se terminait pendant ce rendu. Invisible en série (`--workers=1`), il
-  fallait la charge parallèle. Correctif : ne naviguer que si le champ diffère du `q` de l'URL
-  (`docs/pieges.md`). Méthode : un rapporteur Playwright jetable qui note l'heure de chaque test,
-  recoupée avec l'horodatage du journal (`.next/dev/logs/next-development.log`, relatif au
-  démarrage du serveur). Deux suites complètes propres ensuite (102 verts).
-- **Consigne** : `accounts.spec.ts` (mobile, inscription par lien magique) a échoué une fois
-  sous charge, vert ensuite. **S'il échoue encore une fois, on cherche la cause au lieu de
-  relancer.**
-- **Fait (décision du 27/10)** : CSP à nonce sur toutes les pages (`lib/security.ts`,
-  `proxy.ts`, composé avec next-intl), en-têtes HSTS (sans `includeSubDomains`), `nosniff`,
-  `Referrer-Policy`, `Permissions-Policy` sur toutes les réponses (`next.config.ts`).
-  Écart avec le point de départ proposé : `img-src` a aussi besoin de `https://archive.org`
-  (Cover Art Archive y redirige avant le miroir ; trouvé par la fixture). Fixture commune
-  `e2e/fixtures.ts` (toutes les specs l'importent) : une violation CSP dans la console d'une
-  page, y compris des contextes ouverts par le test, fait échouer le test ; `security.spec.ts`
-  vérifie le nonce, les en-têtes, le départ Google (faux Google intercepté, Google n'est pas
-  configuré en local) et que la fixture attrape un script injecté. Service worker, images de
-  partage, avatar : couverts par `pwa`, `seo`, `accounts`. Conditions de l'hybride notées dans
-  l'issue #22, avec un **point à trancher** (une empreinte fait ignorer `'unsafe-inline'`).
-  Chiffres dans `docs/stack-et-limites.md` § 3.
-- **Fait** : une seule case « J'ai 15 ans ou plus et j'accepte les conditions d'utilisation »
-  (lien `/terms`), phrase sur la confidentialité sous le bouton (lien `/privacy`), migration
-  `0012_terms_acceptance.sql` (`terms_accepted_at`, `terms_version`), `TERMS_VERSION`
-  (`packages/validators`), règle unique `account.onboard` (tests API, e2e par le code).
-  `docs/accounts.md`, `docs/mise-en-ligne.md` § 7 ([À FAIRE RELIRE]).
-- Suite : seed, vérification Chrome bureau + mobile, `/fin-de-jalon` (modèle conseillé :
-  opusplan).
+1. **Seed** : vérifier qu'il couvre le jalon (admin de démo `lacontrebasse`, signalements et
+   décisions de `seed/moderation.ts`, conditions acceptées : `termsAcceptedAt` / `termsVersion`
+   ajoutés aux profils de démo à l'étape 7). Le seed est idempotent (`onConflictDoNothing`) : les
+   profils déjà présents sur la base `dev` gardent `terms_version` à `NULL` ; `pnpm db:reset` ne
+   vaut que pour PGlite. À décider avec l'utilisateur s'il faut remplir ces deux colonnes sur la
+   base `dev` (pas de migration de données prévue).
+2. **Vérification visuelle Chrome**, bureau et mobile, quelques captures ciblées : file de
+   modération et fusion (`/fr/admin`, avec `lacontrebasse@example.test`), pages légales, 404 et
+   500, page hors ligne, formulaire de bienvenue (case des conditions), une fiche album (pochettes
+   sous CSP), une image de partage. Console sans violation CSP.
+3. **`/fin-de-jalon`** (`.claude/skills/fin-de-jalon/SKILL.md`) : cocher le jalon 9 dans
+   `CLAUDE.md`, reporter ce document dans `CLAUDE.md` et les docs de domaine, puis le supprimer ;
+   réutiliser la PR brouillon [#23](https://github.com/A2ZO/Spleen/pull/23).
 
-### Décision CSP + issue #22 : mesures faites, à présenter à l'utilisateur (rien n'est codé)
+Questions ouvertes pour l'utilisateur :
 
-Mesures (build de production local, `next start` sur le port 3001, Ryzen 7 7800X3D, 30 requêtes par
-page, CPU lu avec `Get-Process`, visiteur sans session) :
+- **Issue #22, point à trancher** (noté dans l'issue) : une empreinte dans `script-src` fait
+  ignorer `'unsafe-inline'` ; l'empreinte du script de thème bloquerait donc les scripts en
+  ligne de Next sur les pages en cache. Choix : (a) `'unsafe-inline'` seul sur ces pages ;
+  (b) thème en fichier `/theme.js` ; (c) vérifier si Next peut s'en passer. Pas dans ce jalon.
+- Redemander l'accord aux membres dont `terms_version` diffère de `TERMS_VERSION` : non
+  construit (la donnée est là). Jalon à choisir.
 
-| Page | Sans CSP | CSP à nonce (prototype jetable, retiré) |
-| --- | --- | --- |
-| `/fr` | 34 ms | 16 ms |
-| `/fr/album/kind-of-blue` | 11 ms | 14 ms |
-| `/fr/u/nuitblanche` | 26 ms | 22 ms |
-| `/fr/discover` | 25 ms | 18 ms |
-| `/fr/review/…507` | 16 ms | 15 ms |
-| `/fr/list/…43002` | 16 ms | 16 ms |
-| `/fr/legal` | 8 ms | 8 ms |
+Consignes en cours :
 
-- Le nonce ne coûte pas de CPU mesurable (écart = bruit) : les pages sont déjà toutes dynamiques à
-  cause du cookie de thème. Son vrai coût : il interdit de mettre les pages publiques en cache
-  (issue #22). Un fichier prérendu coûte 0,6 ms par requête au serveur, 0 s'il vient du CDN.
-- Le prototype a confirmé que Next pose le nonce sur ses scripts (16 sur 16).
-- Chaque page contient des scripts en ligne propres à la page (`self.__next_f.push`, 3 à 8 par
-  page) : une CSP à **empreintes** ne peut pas les couvrir. Le SRI de Next 16.4 est **expérimental**
-  et ne couvre que les fichiers JavaScript externes (doc officielle :
-  `apps/web/node_modules/next/dist/docs/01-app/02-guides/content-security-policy.md`, § Subresource
-  Integrity) : sans nonce, `script-src` doit garder `'unsafe-inline'`.
-- Calcul pour Vercel Hobby (formule de `docs/stack-et-limites.md` § 3, 4 h = 14,4 millions de ms,
-  100 pages par membre, autant de robots) : CPU mesuré ≈ 17 ms sur ce poste, × 2 à 3 sur un serveur
-  ≈ 35 à 50 ms. Options à présenter : (1) nonce partout, pages toutes dynamiques : ≈ 1 400 membres
-  à 50 ms ; (2) issue #22 + CSP statique avec `'unsafe-inline'` pour les scripts, pages publiques en
-  cache pour visiteurs et robots : seules les pages des membres connectés coûtent, ≈ 2 600 membres
-  (estimation, 90 % de réussite du cache) ; (3) hybride : nonce pour les membres connectés
-  (pages dynamiques de toute façon), CSP statique pour les pages publiques en cache ;
-  (4) empreintes / SRI : non viable (scripts en ligne). Recommandation prévue : CSP à nonce dès
-  maintenant (coût nul tant que #22 n'est pas faite), puis l'hybride (3) avec #22.
-- La CSP devra autoriser `worker-src 'self'`, `manifest-src 'self'`, `img-src` avec
-  `coverartarchive.org` et `*.archive.org` et l'URL publique R2 ; `style-src` a besoin de
-  `'unsafe-inline'` ou d'un nonce (styles en ligne de `/offline.html` et attributs `style`).
-- **Le build de production laissé dans `apps/web/.next` fait recharger le serveur de dev en
-  boucle** : il a été déplacé dans le dossier temporaire. Ne jamais lancer `next build` dans
-  `apps/web` pendant que `pnpm dev` sert l'application (ou déplacer `.next` ensuite et relancer).
-  Pour mesurer, `next start` exige les variables de production : valeurs factices passées en ligne
-  de commande pour ce seul processus (`BREVO_API_KEY`, `EMAIL_FROM`, `CONTACT_EMAIL`, `S3_*`).
-
-### Consignes de l'utilisateur pas encore faites (mot pour mot)
-
-Dernier prompt (avant la pause) :
-
-> Ensuite, passe à l'étape 7 (finitions). Avant d'écrire la CSP, apporte-moi la décision CSP + issue #22, avec des mesures. Une CSP à nonce oblige à calculer chaque page à chaque visite, alors que l'issue #22 veut des pages publiques en cache, et le calcul serveur est notre premier mur (docs/stack-et-limites.md § 3). Présente-moi :
-> - les options (CSP à nonce, CSP à empreintes si Next 16.4 le permet vraiment d'après sa doc officielle, CSP sans nonce plus permissive, ou autre) ;
-> - pour chacune : ce qu'elle protège, si les pages publiques peuvent être mises en cache, le CPU mesuré par page, et l'effet sur le nombre de membres que tient Vercel Hobby, calculé avec la formule de stack-et-limites.md ;
-> - ta recommandation.
-> Pendant que j'y réfléchis, fais le reste de l'étape 7 : pages 404, 500 et erreur globale, audit axe, corrections serious et critical. Arrête-toi au récap avant /fin-de-jalon.
-
-Même prompt, sur le code à 6 chiffres : **fait et commité** (`153f3d9`), avec ses garde-fous (mêmes
-contrôles que le lien, testés par les deux chemins ; 3 essais par code, 10 échecs par adresse et
-par heure ; annulations croisées ; code hors objet, en deux groupes, texte et HTML FR/EN ;
-`disabledPaths` vérifié ; politique « liens et codes de connexion » ; Google → `window.open` noté ;
-e2e sur build de production noté au jalon 10). **Constat à remonter** : il n'existe aucune case
-« j'accepte les conditions » à la création du compte (seulement « 15 ans ou plus ») ; à trancher.
-
-Consignes d'**économie de tokens** : aucune n'apparaît dans les messages de la session qui a écrit
-ce document ; à redemander à l'utilisateur si elles existent.
+- `accounts.spec.ts` (mobile, inscription par lien magique) a échoué une fois sous charge, vert
+  ensuite. **S'il échoue encore une fois, on cherche la cause au lieu de relancer.**
+- Économie de tokens : section « Token economy » de `CLAUDE.md` (vérification complète par le
+  sous-agent `verificateur`, une fois par étape).
 
 ### Pour reprendre sans la conversation
 
-- Branche `feat/09-admin-legal`, PR brouillon [#23](https://github.com/A2ZO/Spleen/pull/23) vers `main`,
-  à réutiliser par `/fin-de-jalon`. Commits `153f3d9` et `ea01c08` à pousser une fois la suite verte.
-- Après une modification de `packages/auth` ou des messages i18n, **redémarrer** le serveur de dev
-  (instance Better Auth et messages gardés en mémoire). Arrêter un `next` resté vivant :
-  `netstat -ano | grep ":3000 " | grep LISTENING` puis `taskkill //PID <pid> //T //F`.
+- Branche `feat/09-admin-legal`, PR brouillon #23 vers `main`. Tout est poussé.
+- Après une modification de `packages/auth`, des messages i18n ou de `next.config.ts`,
+  **redémarrer** le serveur de dev. Arrêter un `next` resté vivant :
+  `netstat -ano | grep ":3000 " | grep LISTENING` puis `taskkill //PID <pid> //T //F`. Un
+  serveur qui répond 500 sur `/fr` fait échouer Playwright sans message (`EADDRINUSE`) :
+  l'arrêter et relancer `pnpm dev`.
+- Nouvelle migration → `pnpm db:migrate` sur la base du serveur de dev (0012 déjà appliquée sur
+  `dev`).
 - Écrire les scripts de modification avec l'outil Write (pas de heredoc ni de `node -e` contenant
-  des antislashs, des `$'` ou des `$$` : ils ont corrompu des fichiers plusieurs fois).
-- Le récap attendu à la fin de l'étape 7 : la décision CSP + #22 (ci-dessus) et ce qui a été fait.
+  des antislashs, des `$'` ou des `$$`).
+- Ne jamais lancer `next build` dans `apps/web` pendant que `pnpm dev` tourne (le `.next` de
+  production fait recharger le serveur de dev en boucle). Pour mesurer, `next start` exige les
+  variables de production : valeurs factices en ligne de commande pour ce seul processus.
 
 ## Ce qui est fait (résumé)
+
+- **Étape 7.** Page 500 (`app/[locale]/error.tsx`, Baudelaire « Quand le ciel bas et lourd… »,
+  digest affiché) et `app/global-error.tsx` (hors fournisseur next-intl), clés `errorPage.*` ;
+  `/sitemap.xml` forcé dynamique. Audit axe (`@axe-core/playwright` 4.14.0, `e2e/a11y.spec.ts`) :
+  nom accessible du sélecteur de langue, `aria-hidden` sur les liens de pochette en double.
+  Journaux e2e : `SearchBox` envoyait un `router.replace` inutile après le chargement (Strict
+  Mode, `docs/pieges.md`). **CSP à nonce** sur toutes les pages (`lib/security.ts`,
+  `proxy.ts` composé avec next-intl) + HSTS (sans `includeSubDomains`), `nosniff`,
+  `Referrer-Policy`, `Permissions-Policy` (`next.config.ts`) ; `img-src` avec
+  `https://archive.org` en plus de `*.archive.org`. Fixture `e2e/fixtures.ts` importée par toutes
+  les specs : une violation CSP en console fait échouer le test ; `security.spec.ts`. Mesures et
+  seuils (≈ 1 400 membres nonce partout, ≈ 2 600 hybride) : `docs/stack-et-limites.md` § 3 ;
+  conditions de l'hybride : commentaire de l'issue #22. **Case unique** « J'ai 15 ans ou plus et
+  j'accepte les conditions d'utilisation » + phrase vers la politique de confidentialité ;
+  migration `0012_terms_acceptance.sql`, `TERMS_VERSION` (`packages/validators`), règle
+  `account.onboard` : `docs/accounts.md`, `docs/mise-en-ligne.md` § 7 et § 11.
 
 - **Étape 0.** Deux causes. (a) `generateStaticParams` dans le layout `[locale]` : en dev,
   Next réécrit `prerender-manifest.json` au premier rendu de chaque route ; deux routes
@@ -255,6 +202,19 @@ jalon. Notée dans `docs/mise-en-ligne.md` § 11.
      prérempli ; la fusion ferme le signalement avec une décision `resolve` dans
      l'historique.
 
+### Réponses du 27/10 (étape 7) — faites
+
+1. **CSP** : option 1 maintenant (nonce partout), option 3 (hybride) avec l'issue #22. Point de
+   départ de l'utilisateur vérifié contre ce que le site charge ; filet e2e sur les violations ;
+   départ Google, service worker, images de partage, avatar vérifiés. Conditions de l'hybride
+   dans l'issue #22 (session → jamais de cache ; connexion, code, réglages, admin → toujours
+   nonce, jamais en cache ; script de thème par empreinte, voir le point à trancher).
+2. **Conditions** : une case obligatoire « J'ai 15 ans ou plus et j'accepte les conditions
+   d'utilisation » avec le lien ; phrase vers la politique de confidentialité sous le bouton,
+   sans case ; date et version enregistrées ; même règle pour le lien et le code, testée ;
+   [À FAIRE RELIRE] dans la doc.
+3. **`accounts.spec.ts` mobile** : s'il échoue encore une fois, chercher la cause.
+
 ## Étapes restantes (plan validé, détails)
 
 - **3. Fusion** (album, artiste ou morceau) : page admin pour choisir la fiche gardée et le
@@ -294,6 +254,18 @@ jalon. Notée dans `docs/mise-en-ligne.md` § 11.
   reporter ce document), `/fin-de-jalon`.
 
 ## Appris en route (absent de CLAUDE.md)
+
+- **Trouver le test qui fait journaliser le serveur** : en série (`--workers=1`) le défaut peut
+  disparaître. Un rapporteur Playwright jetable (heure de début et de fin de chaque test) recoupé
+  avec l'horodatage de `.next/dev/logs/next-development.log` (relatif au démarrage du serveur ;
+  ancre = date de modification du fichier et dernière ligne) donne les tests en cours à chaque
+  erreur. Le tri sur plusieurs passes désigne le fautif.
+- **CSP** : `*.archive.org` ne couvre pas `archive.org`. Une empreinte ou un nonce dans
+  `script-src` fait ignorer `'unsafe-inline'`. Une navigation de page entière
+  (`window.location.href`, départ Google) n'est pas soumise à la CSP. next-intl recopie les
+  en-têtes de la requête : poser la CSP sur une `new NextRequest(request, { headers })`.
+- **Lint** : la règle des hooks React prend le paramètre `use` d'une fixture Playwright pour le
+  hook `use` (dans un try/finally) : le nommer autrement (`run`).
 
 - **Outils de cette machine** :
   - les heredocs Bash et `node -e '…'` cassent dès qu'un texte contient une apostrophe
