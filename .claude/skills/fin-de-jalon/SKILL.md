@@ -32,22 +32,9 @@ Hard rules for both phases:
 
 ### 2. Everything green, locally
 
-Run from the repo root, fix, re-run until all pass:
-
-```
-pnpm format            # then check nothing unexpected changed
-pnpm format:check
-pnpm lint
-pnpm typecheck
-pnpm test
-```
-
-Then e2e. Next 16 allows one dev server: reuse the one on port 3000 if it runs, else start
-`pnpm dev` in the background. Run Playwright from `apps/web` so the channel reaches it:
-
-```
-cd apps/web; $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm exec playwright test
-```
+Delegate to the `verificateur` subagent (`pnpm check`, then `pnpm e2e:quiet`; reuse the
+dev server on port 3000 if it runs). It answers « tout passe » or the list of failures; fix
+the code and re-run only what failed, then ask it once more for the final full pass.
 
 - Fix the code, not the tests, unless the test itself is wrong (say so in the recap).
 - Never skip, `.only` or weaken a test to get green. If something cannot be fixed, stop and
@@ -62,7 +49,7 @@ Keep it under 200 lines; only what every session needs. Update:
 - **Milestones**: tick the milestone with a one-line summary; describe the next one and
   what the user must provide for it.
 - **Decisions and why**: new structural choices (library, version pin, architecture).
-- **Pitfalls already met (and the fix)**: problems that cost time this milestone.
+- **Pitfalls**: problems that cost time this milestone go in `docs/pieges.md`, not CLAUDE.md.
 - Commands / environment variables / structure if they changed. Remove what became false.
 - Do not copy what the code or `docs/` already say: point to the file path in backticks.
 
