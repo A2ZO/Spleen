@@ -1012,5 +1012,15 @@
     "offlineHeading": "The turntable is spinning empty",
     "offlineBody": "No connection right now. Spleen will be back as soon as the network is.",
     "offlineRetry": "Try again"
+  },
+  "errorPage": {
+    "metaTitle": "Something went wrong",
+    "quoteLine1": "When the low, heavy sky weighs like a lid",
+    "quoteLine2": "On the groaning spirit, prey to long ennui…",
+    "attribution": "Charles Baudelaire, “Spleen”, Les Fleurs du mal (1857)",
+    "body": "Something jammed on our side. It isn't you: try again in a moment.",
+    "retry": "Try again",
+    "back": "Back to home",
+    "reference": "Error reference: {digest}"
   }
 }

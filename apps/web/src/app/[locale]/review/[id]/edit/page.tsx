@@ -34,7 +34,12 @@ export default async function ReviewEditPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-2xl space-y-8">
       <header className="flex items-center gap-4">
-        <Link href={`/album/${release.slug}`} className="w-20 shrink-0" tabIndex={-1}>
+        <Link
+          href={`/album/${release.slug}`}
+          className="w-20 shrink-0"
+          tabIndex={-1}
+          aria-hidden="true"
+        >
           <Cover
             slug={release.slug}
             title={release.title}

@@ -33,7 +33,6 @@ export function LocaleSwitcher() {
           type="button"
           lang={locale}
           aria-pressed={locale === current}
-          aria-label={t(locale)}
           onClick={() => locale !== current && switchTo(locale)}
           className={cn(
             "rounded-[3px] px-2 py-1 font-mono text-xs uppercase transition-colors",
@@ -41,6 +40,8 @@ export function LocaleSwitcher() {
           )}
         >
           {locale}
+          {/* The visible code stays in the accessible name (voice control: "FR"), plus the language. */}
+          <span className="sr-only"> {t(locale)}</span>
         </button>
       ))}
     </div>

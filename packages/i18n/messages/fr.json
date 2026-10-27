@@ -1012,5 +1012,15 @@
     "offlineHeading": "La platine tourne à vide",
     "offlineBody": "Pas de connexion pour l'instant. Spleen reviendra dès que le réseau sera de retour.",
     "offlineRetry": "Réessayer"
+  },
+  "errorPage": {
+    "metaTitle": "Une erreur s'est produite",
+    "quoteLine1": "Quand le ciel bas et lourd pèse comme un couvercle",
+    "quoteLine2": "Sur l'esprit gémissant en proie aux longs ennuis…",
+    "attribution": "Charles Baudelaire, « Spleen », Les Fleurs du mal (1857)",
+    "body": "Quelque chose s'est grippé de notre côté. Ce n'est pas toi : réessaie dans un instant.",
+    "retry": "Réessayer",
+    "back": "Retourner à l'accueil",
+    "reference": "Référence de l'erreur : {digest}"
   }
 }

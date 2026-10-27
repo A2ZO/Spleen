@@ -30,6 +30,8 @@ export function ReviewCard({
           href={`/album/${review.release.slug}`}
           className="w-16 shrink-0 sm:w-20"
           tabIndex={-1}
+          // Same destination as the title link next to it: out of the tab order and of screen readers.
+          aria-hidden="true"
         >
           <Cover
             slug={review.release.slug}

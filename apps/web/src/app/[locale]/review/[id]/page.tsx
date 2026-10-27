@@ -88,7 +88,7 @@ export default async function ReviewPage({ params, searchParams }: Props) {
       {detail.hidden && <ModerationBanner hold={detail.hidden} subject="review" />}
       <article className="space-y-6">
         <header className="flex items-center gap-4">
-          <Link href={itemHref} className="w-20 shrink-0 sm:w-24" tabIndex={-1}>
+          <Link href={itemHref} className="w-20 shrink-0 sm:w-24" tabIndex={-1} aria-hidden="true">
             <Cover
               slug={release.slug}
               title={release.title}
