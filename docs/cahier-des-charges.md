@@ -1,6 +1,8 @@
 # Spleen — Cahier des charges
 
-Oct 19, 2026 · @Azzo
+Version 2 du 27 octobre 2026 (v1 : 19 octobre 2026) · @Azzo
+
+La v2 ajoute ce que le développement a changé pendant les jalons 1 à 9 (section « Ce qui a changé depuis la v1 »), la fonction « Sorties à venir de tes artistes » (jalon 11) et la question de la licence des genres. La stack réelle, ses limites en nombre de membres et les chemins de montée en charge sont dans `docs/stack-et-limites.md`.
 
 ## Résumé et vision
 
@@ -13,6 +15,41 @@ Spleen est un carnet d'écoute social : on note, critique et range en listes des
 - **Contexte** : projet public, porté par une seule personne, budget très serré.
 
 Cible (hypothèse à valider) : 18-35 ans qui écoutent des albums en entier, utilisent déjà Letterboxd ou Goodreads et partagent leurs goûts sur Instagram, TikTok ou X.
+
+## Ce qui a changé depuis la v1 (jalons 1 à 9)
+
+La v1 décrivait l'intention. Voici ce que le développement a ajouté ou tranché, souvent après une question posée pendant un jalon. Le détail est dans la doc de chaque domaine (colonne de droite).
+
+**Ajouts qui n'étaient pas prévus**
+
+| Domaine | Ajout ou décision | Doc |
+| --- | --- | --- |
+| Catalogue | Imports MusicBrainz réservés aux membres connectés ; 60 recherches et 30 imports par heure et par membre ; un seul limiteur pour tout le site (1 requête toutes les 1,1 s, état gardé dans Postgres) | `docs/catalogue.md` |
+| Catalogue | Discographies importées en fiches incomplètes, complétées à la première visite d'un membre ; règle de choix de l'édition de référence pour la liste des titres ; mixtapes comptées comme disques principaux ; pré-remplissage de 158 albums et 9 artistes | `docs/catalogue.md` |
+| Catalogue | Pochettes affichées sans optimisation d'image : aucun quota consommé chez l'hébergeur | `docs/catalogue.md` |
+| Comptes | Pseudo modifiable une fois par 30 jours ; ancien pseudo et pseudo d'un compte supprimé réservés 30 jours | `docs/accounts.md` |
+| Comptes | Avatars recadrés et réduits dans le navigateur (512 px), sans traitement d'image côté serveur | `docs/accounts.md` |
+| Écoute | Écoute « sans date » : la note rapide et le cœur donnés depuis une fiche vivent dans une écoute non datée, au plus une par disque. Elle n'apparaît ni dans le journal ni dans le calendrier | `docs/ecoute.md` |
+| Écoute | Note actuelle = celle de l'écoute modifiée le plus récemment ; clics rapides remis dans l'ordre ; « aujourd'hui » = fuseau horaire du membre | `docs/ecoute.md` |
+| Écoute | 20 humeurs proposées (FR/EN) plus les humeurs personnelles ; 8 formats | `docs/ecoute.md` |
+| Profil | L'Étagère accepte tous les types (« Mes 4 disques favoris ») ; onglet **Coups de cœur** | `docs/profil-stats.md` |
+| Stats | Quatre compteurs (albums, EP, singles, morceaux journalisés seuls) ; tops comptés en écoutes, réécoutes comprises ; cache versionné par membre ; les écoutes sans date comptent seulement dans les totaux | `docs/profil-stats.md` |
+| Social | Onglet Populaire = likes + 2 × commentaires sur 7 jours, par langue ; suggestions de membres quand le fil est vide ; notifications regroupées ; blocage dans les deux sens, jamais annoncé | `docs/social.md` |
+| Découverte | Tendances selon la **langue d'interface des membres** (membres distincts, 2 au moins, repli s'il y a peu de données) ; mieux notés en moyenne bayésienne ; sorties récentes alimentées par une tâche de nuit ; page `/discover` | `docs/decouverte.md` |
+| Modération | Rôle admin donné uniquement en ligne de commande ; décisions motivées et historisées ; suspension avec email, motif montré seulement après preuve d'identité, adresse pour contester ; contenu masqué visible par son seul auteur ; notes des comptes suspendus exclues des chiffres publics ; historique anonymisé après 1 an | `docs/social.md` |
+| Modération | Fusion de doublons du catalogue avec redirection permanente de l'ancienne adresse ; signalement de catalogue à 5 types (erreur, pochette, doublon, ajout manquant, autre) | `docs/social.md` |
+| Qualité | Tests aussi sur un vrai Postgres 18 en CI ; nettoyage automatique des comptes de test e2e, qui refuse de toucher la base de production ; contrôle des journaux du serveur ; Dependabot ; compétences `/fin-de-jalon` et `/maintenance` | `docs/environnement.md` |
+
+**Choix techniques tranchés en route**
+
+- Emails : **Brevo** (entreprise française, 300 emails par jour gratuits).
+- Base : deux branches Neon (`dev`, `production`) pendant le développement, puis **un projet Neon séparé, `spleen-prod`**, pour la production. Développement hors ligne et tests sur PGlite.
+- Hébergement : la taille d'un Worker Cloudflare n'est plus un obstacle (64 Mio sur les deux offres, `docs/services.md`).
+- Performance : toutes les pages sont aujourd'hui calculées à chaque visite, à cause du cookie de thème. L'issue #22 (cache des pages publiques) est le plus gros levier avant l'ouverture (`docs/stack-et-limites.md`).
+
+**Ce qui reste du MVP** : pages légales, référencement et images de partage, PWA, finitions et accessibilité (fin du jalon 9) ; branchement des vrais services, e2e en CI et mise en ligne (jalon 10, `docs/mise-en-ligne.md`).
+
+**Ajouté le 27 octobre** : les sorties à venir des artistes suivis (jalon 11, section dédiée plus bas) et la licence des genres MusicBrainz, à régler avant toute monétisation (section Modèle économique).
 
 ## Analyse concurrentielle
 
@@ -45,6 +82,7 @@ Positionnement : « le carnet d'écoute qui a une âme » — fiable comme un ou
 | Prête-moi un disque | Recommander un album à un ami ; il répond par une note ; historique des « disques prêtés » | Social plus intime qu'un fil d'actualité | V2 |
 | Import CSV | Récupérer ses notes depuis un autre site ou Last.fm | Facilite l'arrivée des déçus de Musicboard ; optionnel, jamais obligatoire | V2 |
 | Appli installable (PWA) | Le site s'installe sur l'écran d'accueil du téléphone, sans store | Une « appli » dès le lancement, sans payer Apple | MVP |
+| Sorties à venir de tes artistes | Suivre un artiste, voir ses prochains disques, être prévenu le jour de la sortie | Une raison de revenir même sans rien à noter ; coût presque nul grâce à ListenBrainz | Jalon 11 |
 
 À éviter : copier tel quel le profil « 5 favoris + 5 en rotation » de Record Club, et tout classement public des « meilleurs critiques », qui nourrit l'élitisme reproché à RYM.
 
@@ -52,7 +90,11 @@ Positionnement : « le carnet d'écoute qui a une âme » — fiable comme un ou
 
 Le site gratuit d'abord, la monétisation ensuite, et l'appli seulement quand Spleen+ rapporte de quoi payer le compte Apple.
 
-&#91;embedded content: roadmap · 5 phases, 2 conditions de passage\]
+1. **Phase 0, fondations** (jalons 1 et 2) : faite.
+2. **Phase 1, MVP du site, gratuit et sans pub** (jalons 3 à 11) : jalons 3 à 8 faits, jalon 9 en cours, puis jalon 11 (sorties à venir) et jalon 10 (mise en ligne). **Condition de passage** : bêta stable, micro-entreprise créée, hébergement commercial, licence des genres réglée.
+3. **Phase 2, monétisation** : Spleen+ (1 €/mois ou 10 €/an via Stripe), stats avancées, thèmes de profil, cartes partageables, Toi vs moi, Club du dimanche, Prête-moi un disque, import CSV, pubs discrètes. **Condition de passage** : Spleen+ rapporte de quoi payer le compte Apple (99 $/an).
+4. **Phase 3, appli Spleen** : Expo sur la même API, Se connecter avec Apple, notifications push, achats intégrés Apple et Google.
+5. **Phase 4, plus tard** : Apple Music, import Last.fm ; Spotify et Deezer si leurs règles s'assouplissent.
 
 Une phase ne démarre que lorsque sa condition de passage est remplie ; seule la phase 1 est un objectif immédiat, et c'est elle que vise le prompt Claude Code.
 
@@ -85,6 +127,57 @@ Le MVP couvre le cœur Letterboxd — noter, critiquer, tenir son journal, suivr
 7. **Découverte** : tendances de la semaine (FR et EN), sorties récentes, mieux notés par genre, année et décennie (avec un nombre minimum de notes), critiques populaires.
 8. **Administration** : file de modération des signalements, fusion des doublons du catalogue, suspension de compte.
 9. **Transverse** : responsive mobile d'abord, appli installable (PWA), accessibilité clavier et lecteur d'écran, pages publiques rendues côté serveur pour le référencement, aperçus soignés quand on partage un lien.
+10. **Sorties à venir de tes artistes** (ajouté le 27 octobre, jalon 11) : voir la section suivante.
+
+## Sorties à venir de tes artistes (jalon 11)
+
+Suivre un artiste et voir en un coup d'œil ce qu'il va sortir : la semaine prochaine, dans trois mois, ou « annoncé, date à préciser ». Le jour de la sortie, Spleen prévient. C'est une raison de revenir même quand on n'a rien à noter, et ça ne coûte presque rien : une requête par nuit.
+
+**Parcours**
+
+1. Sur la fiche d'un artiste, je clique sur **Suivre**. La page des sorties à venir me propose aussi de suivre en un clic les artistes que j'écoute le plus (tirés de mes stats).
+2. La page **Sorties à venir** (`/upcoming`, membres connectés) regroupe les prochains disques de mes artistes : *Cette semaine*, *Ce mois-ci*, *Plus tard*, *Annoncé, date à préciser*. Filtre album / EP / single.
+3. Sur l'accueil, un bloc **« Bientôt dans tes oreilles »** montre mes 5 prochaines sorties.
+4. Sur la fiche d'un artiste, une section **« À venir »**, visible par tous, liste ses disques annoncés.
+5. Sur `/discover`, un bloc **« Les plus attendus »** classe les sorties à venir selon le nombre de membres qui suivent l'artiste ou ont mis le disque dans « À écouter ».
+6. Le jour de la sortie, une **notification** : « Sortie aujourd'hui : *Titre* de *Artiste* », regroupée s'il y en a plusieurs (« 3 sorties aujourd'hui chez tes artistes »).
+7. Depuis une sortie à venir, je peux l'ajouter à **« À écouter »**. Après la date, la fiche redevient normale et le disque rejoint les sorties récentes.
+
+**Règles (décisions par défaut, à valider au début du jalon)**
+
+| Sujet | Règle proposée | Pourquoi |
+| --- | --- | --- |
+| Qui peut suivre | Membres connectés ; 500 artistes au plus ; 200 suivis par heure | Bloquer les robots, comme les autres écritures |
+| Visibilité | Ma liste d'artistes suivis est **privée** au lancement (visible dans mes réglages) | Rien de plus à modérer ; on pourra l'afficher sur le profil plus tard |
+| Ce qui est « à venir » | Disque principal (album, EP, single ; ni live ni compilation) d'un artiste suivi, dont la date de sortie est après aujourd'hui dans **mon** fuseau horaire | Même logique que les sorties récentes (`docs/decouverte.md`) |
+| Précision de la date | Jour ou mois : classé par date. Année seule : « Annoncé, date à préciser » | MusicBrainz ne connaît souvent que l'année au début |
+| Horizon | 12 mois au plus | Au-delà, les dates bougent trop |
+| Avant la sortie | Pas de « J'ai écouté », ni de note, ni de critique ; « À écouter » autorisé | Éviter les notes sur des fuites ou des disques pas encore sortis |
+| Date modifiée | On affiche la dernière date connue, avec un badge « date modifiée » si elle a changé depuis l'annonce | Les reports sont fréquents |
+| Notifications | Le jour J au matin (fuseau du membre), regroupées par jour ; réglage pour les couper ; jamais pour un compte suspendu | Une notification utile, pas du bruit |
+| Doublons fusionnés | La fusion d'artistes transfère les suivis vers la fiche gardée | Comme le reste des données |
+| Suppression du compte | Les suivis disparaissent avec le compte | Comme le reste des données |
+
+**D'où viennent les données**
+
+1. **ListenBrainz, une requête par nuit.** [`GET /1/explore/fresh-releases/`](https://listenbrainz.readthedocs.io/en/latest/users/api/misc.html) avec `release_date` = aujourd'hui, `days=90` (le maximum), `past=false`, `future=true` renvoie les sorties annoncées dans MusicBrainz pour les 90 prochains jours, avec l'identifiant MusicBrainz des artistes et du disque. ListenBrainz appartient à la même fondation que MusicBrainz. On garde les sorties d'un artiste suivi par au moins un membre et on crée les fiches incomplètes correspondantes, comme pour les discographies. Respecter les en-têtes `X-RateLimit-*` de ListenBrainz.
+2. **La relecture de nuit des discographies** (`catalog:refresh`, déjà en place) s'étend aux artistes suivis, les plus suivis d'abord, chacun au plus une fois par semaine. Elle capte les annonces à plus de 90 jours et les changements de date. Son plafond actuel (150 artistes par nuit) est à revoir avec le budget de la tâche (`docs/stack-et-limites.md` § 3).
+3. **Les membres** : une sortie absente se signale avec le bouton « Signaler une erreur / proposer un ajout » (type « ajout manquant »).
+
+Limite assumée : ces données viennent des bénévoles de MusicBrainz. Les grosses sorties sont souvent annoncées tôt ; un petit artiste n'apparaît parfois que le jour J. La page le dit simplement : « Une sortie manque ? Signale-la. »
+
+**Modèle de données (proposition, à confirmer par Claude Code)**
+
+- `artist_follows` : membre, artiste, date ; clé primaire (membre, artiste), index par artiste.
+- `releases.announced_at` : première fois que le disque a été vu « à venir » ; `releases.release_date_changed_at` pour le badge « date modifiée ».
+- Notification de type `release`, avec une colonne `release_id`.
+- `profiles.notify_releases`, activé par défaut.
+
+**Écrans** : bouton Suivre sur la fiche artiste, page `/upcoming`, bloc d'accueil, section « À venir » de la fiche artiste, bloc « Les plus attendus » de `/discover`, réglages (notifications de sorties, liste de mes artistes suivis avec « Ne plus suivre »).
+
+**Coût** : presque nul. Une requête ListenBrainz par nuit, plus un lot plafonné de requêtes MusicBrainz dans la tâche de nuit qui existe déjà.
+
+**Plus tard** : abonnement calendrier `.ics` (une adresse secrète par membre, à ajouter dans Google Agenda ou Calendrier Apple ; candidat pour Spleen+) ; notifications push dans l'appli ; récapitulatif hebdomadaire par email, en option, parce qu'il consomme le quota Brevo.
 
 ## Stats : gratuites et Spleen+
 
@@ -119,6 +212,13 @@ Lancement gratuit et sans pub ; ensuite, pubs discrètes pour les comptes gratui
 - Option « Mécène » à prix libre plus élevé, avec son nom dans une page de remerciements : modèle du Patron de Letterboxd.
 
 Règle d'or : ne jamais faire payer le cœur du produit (noter, critiquer, journal, listes, suivre).
+
+**Prérequis découvert le 27 octobre : la licence des genres.** Les données de base de MusicBrainz (artistes, disques, titres, dates) sont dans le domaine public (CC0). Mais les genres, tags et notes de MusicBrainz sont des [données « supplémentaires » sous licence CC BY-NC-SA 3.0](https://musicbrainz.org/doc/About/Data_License), qui interdit l'usage commercial. Spleen affiche des genres sur les fiches et s'en sert pour les stats et les « mieux notés par genre ». Avant la première pub ou le premier abonnement, il faut donc :
+
+- soit une licence commerciale auprès de MetaBrainz (passer par un compte de soutien, le palier dépend des revenus : `docs/services.md` et `docs/stack-et-limites.md` § 5.2) ;
+- soit une autre source de genres, par exemple Wikidata (domaine public) ou des genres choisis par les membres.
+
+Le ticket est à ouvrir dans `docs/mise-en-ligne.md` (rubrique monétisation) ; d'ici là, le site gratuit et sans pub reste dans les clous.
 
 **Ce qui reste vraiment d'un abonnement payé par carte sur le site** (Stripe : [1,5 % + 0,25 € par paiement avec une carte européenne standard](<https://support.stripe.com/questions/pricing-updates-for-businesses-based-in-the-european-economic-area-(eea)>))
 
@@ -165,9 +265,12 @@ Aucune connexion aux services de streaming au lancement : Spotify et Deezer sont
 
 Un monorepo TypeScript où toute la logique vit dans des paquets partagés : le site Next.js d'aujourd'hui et l'appli Expo de demain appellent la même API, avec les mêmes validations, textes et couleurs.
 
-&#91;embedded content: architecture · monorepo, API partagée, 3 services externes\]
+- `apps/web` (Next.js) appelle l'API tRPC de `packages/api`, qui contient toute la logique ; `packages/db` (Drizzle), `packages/validators` (Zod), les textes et les couleurs sont partagés.
+- Services externes : PostgreSQL (Neon), MusicBrainz + Cover Art Archive pour le catalogue, Brevo pour les emails, Cloudflare R2 pour les avatars. ListenBrainz s'ajoute au jalon 11.
+- Une tâche de nuit (GitHub Actions) relit les discographies et anonymise l'ancien historique de modération.
+- Phase 3 : `apps/mobile` (Expo) se branche sur la même API sans rien réécrire.
 
-En pointillés, ce qui arrive en phase 3 : l'appli Expo se branche sur la même API sans rien réécrire.
+Versions exactes, limites de chaque service et paliers de montée en charge : `docs/stack-et-limites.md`.
 
 | Brique | Choix | Pourquoi |
 | --- | --- | --- |
@@ -198,7 +301,8 @@ En pointillés, ce qui arrive en phase 3 : l'appli Expo se branche sur la même 
 
 - [Vercel Hobby interdit tout usage commercial](https://deploywise.dev/blog/vercel-free-tier-limits-2026) : pubs et abonnement imposent de changer d'offre ou d'hébergeur, d'où un code portable.
 - [Neon Free](https://neon.com/pricing) : 100 heures de calcul par mois et [1 Go de stockage par projet depuis octobre 2026](https://releases.sh/collections/serverless-postgres/digest/2026-09-28) ; la base s'endort après 5 minutes d'inactivité, d'où un premier chargement plus lent.
-- [Cloudflare Workers](https://opennext.js.org/cloudflare) limite un worker à 3 Mio en gratuit et 10 Mio en payant ; un vrai site Next.js dépasse souvent la limite gratuite, [d'où l'offre à 5 $/mois](https://makerkit.dev/docs/md/next-supabase-turbo/going-to-production/cloudflare). Tester ce déploiement tôt.
+- [Cloudflare Workers](https://opennext.js.org/cloudflare) : la taille d'un worker (64 Mio sur les deux offres, revérifié le 22 octobre dans `docs/services.md`) n'est plus un obstacle, mais les 10 ms de calcul par requête de l'offre gratuite sont trop courts pour Next.js, d'où l'offre à 5 $/mois. Tester ce déploiement tôt.
+- **Mise à jour du 27 octobre** : avec un peu de trafic, Neon Free sera le premier mur (le site s'arrête quand les 100 heures de calcul sont épuisées). Prévoir Neon Launch à l'ouverture publique (environ 13 à 25 $/mois). Calculs et seuils : `docs/stack-et-limites.md`.
 - Les VPS bon marché ont beaucoup augmenté en 2026 ([Hetzner notamment](https://kimmo.suominen.com/stuff/cpc-2026-08.txt)) et demandent de l'administration : pas prioritaire.
 
 ## Données et base
@@ -280,7 +384,8 @@ Le lancement du site ne coûte que le nom de domaine ; la facture commence avec 
 | --- | --- | --- | --- |
 | Nom de domaine | Environ 10 à 20 € par an selon l'extension | Idem | Idem |
 | Hébergement du site | 0 € (Vercel Hobby) | Environ 5 $/mois (Cloudflare) ou 20 $/mois (Vercel Pro) | Idem |
-| Base de données | 0 € (Neon Free) | 0 € tant que ça tient, puis paiement à l'usage | Idem |
+| Base de données | 0 € en bêta (Neon Free) ; environ 13 à 25 $/mois dès l'ouverture publique (Neon Launch, estimation dans `docs/stack-et-limites.md`) | Idem, puis selon l'usage | Idem |
+| Licence des genres | — | Selon l'accord avec MetaBrainz, ou 0 € avec une autre source | Idem |
 | Images et emails | 0 € (offres gratuites) | Idem | Idem |
 | Compte Apple Developer | — | — | 99 $ par an |
 | Compte Google Play | — | — | 25 $ une seule fois |
@@ -302,14 +407,19 @@ Le plus gros risque n'est pas technique : c'est un site vide au lancement et un 
 | Facture qui explose (robots, aspiration de données) | Plafonds de dépense chez l'hébergeur, limitation de débit, cache |
 | Communauté toxique | Outils de modération dès le premier jour, règles claires |
 | Les règles des API changent | Le catalogue passe par une couche « fournisseur » remplaçable |
+| Quota Neon Free épuisé : site arrêté jusqu'au mois suivant | Passer à Neon Launch à l'ouverture publique ; alerte à 70 % du quota (`docs/stack-et-limites.md`) |
+| Genres sous licence non commerciale | Licence MetaBrainz ou autre source de genres avant la monétisation |
+| Import trop lent si beaucoup de membres cherchent des disques inconnus en même temps | Pré-remplissage plus large, puis exports complets ou copie locale de MusicBrainz (`docs/stack-et-limites.md` § 5) |
 
 **Questions ouvertes**
 
 - [ ] Quel nom de domaine ? Vérifier aussi que « Spleen » n'est pas déjà déposé comme marque dans la musique (base INPI).
-- [ ] Liste initiale des humeurs et des formats.
+- [x] Liste initiale des humeurs et des formats : 20 humeurs et 8 formats (`docs/ecoute.md`).
 - [ ] Bêta : sur invitation seulement, ou liste d'attente publique ?
 - [ ] Qui aide à modérer quand la communauté grandit ?
+- [ ] Genres : licence commerciale MetaBrainz ou autre source ? (avant la monétisation)
+- [ ] Sorties à venir : valider les règles par défaut (liste des suivis privée, pas de note avant la sortie, notification le matin du jour J).
 
 ## Sources
 
-Toutes les sources sont liées dans le texte, au fil des sections. Vérifications faites le 19 octobre 2026.
+Toutes les sources sont liées dans le texte, au fil des sections. Vérifications faites le 19 octobre 2026 ; limites des services revérifiées le 22 octobre (`docs/services.md`) ; licence MusicBrainz et API ListenBrainz vérifiées le 27 octobre.
