@@ -20,7 +20,7 @@ booléens comme « commence par postgres:// », « contient -pooler »).
 | `DATABASE_URL`                              | URL Neon **poolée** (`-pooler`)     | l'appli (`getDb()`)               |
 | `DATABASE_URL_UNPOOLED`                     | URL Neon **directe**                | migrations, seed, drizzle-kit     |
 | `DATABASE_URL` absente                      | → PGlite dans `.data/pglite`        | repli local hors ligne            |
-| `NEON_MAIN_HOST`                            | hôte (ou `ep-…`) de la branche production | garde-fou du nettoyage e2e        |
+| `NEON_MAIN_HOST`                            | hôte (ou `ep-…`) de la base du site en ligne | garde-fou du nettoyage e2e        |
 | `BETTER_AUTH_SECRET` / `BETTER_AUTH_URL`    | 32+ caractères / URL publique       | Better Auth                       |
 | `GOOGLE_CLIENT_ID` / `_SECRET`              | client OAuth Google (Web)           | bouton Google (caché si absent)   |
 | `BREVO_API_KEY` / `EMAIL_FROM`              | clé Brevo v3 / expéditeur vérifié   | liens magiques (dev : terminal)   |
@@ -63,8 +63,10 @@ pour les sorties récentes, sur la base de production ; voir `docs/decouverte.md
 Comptes `e2e-<id>@example.test`. `apps/web/e2e/cleanup.ts` (setup et teardown globaux) les
 supprime avec leurs données, même après un passage raté ou interrompu (Postgres seulement),
 et leurs pseudos ne sont pas réservés (développement et tests seulement). Il refuse de
-s'exécuter en production (`NODE_ENV`), sur la branche Neon `production` (`NEON_MAIN_HOST`, hôte
-poolé ou direct), et sur tout hôte Neon tant que `NEON_MAIN_HOST` manque.
+s'exécuter en production (`NODE_ENV`), sur la base désignée par `NEON_MAIN_HOST` (hôte poolé ou
+direct : la branche `production` du projet Neon séparé `spleen-prod`, ou en attendant celle du
+projet de développement, voir `docs/mise-en-ligne.md` § 0), et sur tout hôte Neon tant que
+`NEON_MAIN_HOST` manque.
 
 Journal du serveur : `apps/web/e2e/server-log.ts` fait échouer le passage si le serveur de
 développement a journalisé, pendant les tests, une erreur invisible depuis le navigateur

@@ -887,11 +887,11 @@
       "sections": {
         "publisher": {
           "title": "Publisher",
-          "body": "<p>Spleen is published by [À COMPLÉTER : nom et prénom], [À COMPLÉTER : statut, par exemple micro-entrepreneur], based at [À COMPLÉTER : adresse postale].</p><p>SIRET: [À COMPLÉTER : numéro SIRET].</p><p>Publication director: [À COMPLÉTER : nom].</p><p>Contact: <contact></contact></p>"
+          "body": "<p>Spleen is published on a non-professional basis. As allowed by article 1-1 II of the French law on confidence in the digital economy (LCEN), its publisher has given their identity to the host and does not publish it here. [À FAIRE RELIRE]</p><p>Contact: <contact></contact></p>"
         },
         "hosting": {
-          "title": "Hosting",
-          "body": "<ul><li>Website: [À COMPLÉTER : hébergeur du site, raison sociale, adresse et téléphone, choisi au jalon 10].</li><li>Database: Neon, Europe region (Frankfurt); [À COMPLÉTER : raison sociale et adresse de Neon].</li><li>Profile pictures: Cloudflare R2, European Union jurisdiction; [À COMPLÉTER : raison sociale et adresse de Cloudflare].</li><li>Emails: Brevo; [À COMPLÉTER : raison sociale et adresse de Brevo].</li></ul>"
+          "title": "Host",
+          "body": "<p>Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, United States. Phone: [À COMPLÉTER : téléphone de Vercel]. The site is served from the Frankfurt region (Germany). [À FAIRE RELIRE]</p>"
         },
         "credits": {
           "title": "Credits and music data",
@@ -937,7 +937,7 @@
         },
         "changes": {
           "title": "Changes to these terms",
-          "body": "<p>These terms may change. Before an important change takes effect, you will be told on the site. Governing law: [À VÉRIFIER : droit français, tribunaux compétents].</p><p>A question? Write to <contact></contact>.</p>"
+          "body": "<p>These terms may change. Before an important change takes effect, you will be told on the site.</p><p>They are governed by French law. If you are a consumer living in another country, you keep the protection of the mandatory rules of your country of residence. [À FAIRE RELIRE]</p><p>A question? Write to <contact></contact>.</p>"
         }
       }
     },
@@ -947,7 +947,7 @@
       "sections": {
         "controller": {
           "title": "Data controller",
-          "body": "<p>[À COMPLÉTER : nom et prénom], [À COMPLÉTER : adresse postale]. Contact: <contact></contact></p>"
+          "body": "<p>[À COMPLÉTER : nom et prénom], who publishes Spleen on a non-professional basis. Contact: <contact></contact> [À FAIRE RELIRE]</p>"
         },
         "data": {
           "title": "Data collected",
@@ -963,7 +963,7 @@
         },
         "retention": {
           "title": "How long",
-          "body": "<ul><li>Your account data is kept as long as your account exists, then erased at once when you delete it. [À VÉRIFIER : durée de conservation des sauvegardes de la base.]</li><li>Usernames: when you change yours, the old one stays reserved for 30 days. When you delete your account, your usernames stay reserved for 30 days in anonymous form, with no link to you, then become free again.</li><li>Sign-in link: valid for 15 minutes.</li><li>Sessions: they expire after 7 days without a visit. [À VÉRIFIER : effacement des sessions expirées.]</li><li>Abuse counters: [À VÉRIFIER : durée de conservation, aucun effacement automatique pour l'instant.]</li><li>Reports and moderation decisions: one year after the decision, they are anonymised (the action and reason stay, links to people and the excerpt are erased) and handled reports are deleted.</li></ul>"
+          "body": "<ul><li>Your account data is kept as long as your account exists, and erased at once when you delete it. It also leaves the database backups within 7 days at most.</li><li>Usernames: when you change yours, the old one stays reserved for 30 days. When you delete your account, your usernames stay reserved for 30 days in anonymous form, with no link to you, then become free again.</li><li>Sign-in link: valid for 15 minutes, erased within 24 hours after it expires.</li><li>Sessions (date, IP address, browser): they expire after 7 days without a visit and are erased within the next 24 hours.</li><li>Abuse counters (account id or IP address): erased by the first nightly run once 24 hours have passed since their counting period (an hour at most) ended.</li><li>Reports and moderation decisions: one year after the decision, they are anonymised (the action and reason stay, links to people and the excerpt are erased) and handled reports are deleted.</li></ul>"
         },
         "rights": {
           "title": "Your rights",
@@ -971,7 +971,7 @@
         },
         "processors": {
           "title": "Service providers and transfers",
-          "body": "<ul><li>Database: Neon, servers in the European Union (Frankfurt).</li><li>Profile pictures: Cloudflare R2, European Union jurisdiction.</li><li>Sign-in and moderation emails: Brevo. [À VÉRIFIER : localisation des serveurs de Brevo.]</li><li>Website hosting: [À COMPLÉTER : hébergeur choisi au jalon 10, lieu de traitement et garanties en cas de transfert hors de l'Union européenne.]</li><li>Sign-in with Google: only if you choose it.</li></ul><p>Cover art is loaded by your browser directly from the Cover Art Archive (Internet Archive), which therefore sees your IP address, as with any image from another site.</p>"
+          "body": "<ul><li>Website hosting: Vercel Inc. The site runs in its Frankfurt region (Germany). Vercel is a US company: [À VÉRIFIER : mécanisme de transfert prévu par son accord de traitement des données (DPA), par exemple clauses contractuelles types ou Data Privacy Framework].</li><li>Database: Neon, servers in the European Union (Frankfurt).</li><li>Profile pictures: Cloudflare R2, European Union jurisdiction.</li><li>Sign-in and moderation emails: Brevo, servers in the European Union only (France, Germany, Belgium).</li><li>Sign-in with Google: only if you choose it.</li></ul><p>Cover art is loaded by your browser directly from the Cover Art Archive (Internet Archive), which therefore sees your IP address, as with any image from another site.</p>"
         },
         "cookies": {
           "title": "Cookies",

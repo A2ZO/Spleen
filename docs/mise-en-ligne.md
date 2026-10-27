@@ -86,15 +86,20 @@ l'offre gratuite refuse un deuxième projet.
 
 ## 3. Neon : base de production
 
-- [ ] Réinitialiser le mot de passe du rôle Neon (voir § 8) **avant** de copier les URL.
-- [ ] Console Neon › branche `production` › Connect : copier l'URL **avec pooling** (hôte en
-      `-pooler`) dans `DATABASE_URL`, et l'URL **directe** dans `DATABASE_URL_UNPOOLED`, dans
-      les réglages de l'hébergeur (environnement Production uniquement).
+La base du site est la branche `production` du projet Neon séparé **`spleen-prod`** (§ 0),
+jamais celle du projet de développement.
+
+- [ ] Le projet `spleen-prod` part avec des identifiants neufs ; le § 8 concerne l'ancien
+      projet, dont les URL ont circulé.
+- [ ] Console Neon › projet `spleen-prod` › branche `production` › Connect : copier l'URL
+      **avec pooling** (hôte en `-pooler`) dans `DATABASE_URL`, et l'URL **directe** dans
+      `DATABASE_URL_UNPOOLED`, dans les réglages de l'hébergeur (environnement Production
+      uniquement).
 - [ ] Le déploiement lance `pnpm db:migrate`, **jamais** `pnpm db:seed` ni `pnpm db:reset`.
 - [ ] Région de la branche : Europe (Francfort).
 - [ ] **Vérifier** : `GET https://<domaine>/api/health` répond `200` avec `{"ok":true,…}`, et
-      la branche `production` ne contient aucun membre de démo (`nuitblanche`, `vinylvince`,
-      `rainydaysam`, `fouilleuse`).
+      la branche `production` de `spleen-prod` ne contient aucun membre de démo
+      (`nuitblanche`, `vinylvince`, `rainydaysam`, `fouilleuse`).
 
 ## 4. Brevo : emails des liens magiques
 
@@ -150,19 +155,26 @@ Les pages existent depuis le jalon 9 : `/legal` (mentions légales et crédits, 
 `apps/web/src/components/legal/LegalPage.tsx`. L'adresse de contact vient de `CONTACT_EMAIL`
 (§ 10).
 
-- [ ] Remplacer chaque `[À COMPLÉTER]` (éditeur : nom, statut, adresse, SIRET, directeur de
-      la publication ; raisons sociales et adresses de l'hébergeur, de Neon, Cloudflare et
-      Brevo) et chaque `[À VÉRIFIER]` (droit applicable, localisation des serveurs Brevo,
-      durée des sauvegardes Neon, effacement des sessions expirées et des compteurs
-      anti-abus) dans `fr.json` **et** `en.json`. Vérifier : `grep -c "À COMPLÉTER\|À VÉRIFIER"
+Mentions de la bêta : site édité à titre non professionnel (article 1-1 II de la LCEN),
+hébergeur et email de contact seulement ; le passage aux mentions complètes est au § 14.
+
+- [ ] Remplacer chaque `[À COMPLÉTER]` (téléphone de Vercel dans les mentions ; ton nom comme
+      responsable du traitement dans la politique, sans adresse postale) et le
+      `[À VÉRIFIER]` restant (mécanisme de transfert de Vercel, à lire dans son DPA), dans
+      `fr.json` **et** `en.json`. Vérifier : `grep -c "À COMPLÉTER\|À VÉRIFIER"
       packages/i18n/messages/*.json` répond 0.
-- [ ] Effacement des sessions expirées et des vieux compteurs `rate_limits` : aujourd'hui
-      rien ne les purge. Ajouter une purge à la tâche de nuit, ou écrire la durée réelle dans
-      la politique.
-- [ ] La politique de confidentialité mentionne l'hébergeur réellement choisi et, s'il traite
-      des données hors de l'Union européenne, les garanties (clauses types, DPF).
+- [ ] Si l'hébergeur change (par exemple Cloudflare au moment de la monétisation) : mettre à
+      jour les mentions (hébergeur), la politique (prestataires, lieu de traitement,
+      garanties de transfert) et `LEGAL_UPDATED`.
+- [ ] Les durées de la politique (sessions, liens de connexion, compteurs anti-abus,
+      modération) sont appliquées par la tâche de nuit `retention` (§ 9) : la vérifier avant
+      l'ouverture.
+- [ ] Vérifier que mon identité est enregistrée chez l'hébergeur (condition de l'anonymat :
+      les mentions de la bêta ne publient ni nom ni adresse, article 1-1 II de la LCEN).
+      [À FAIRE RELIRE]
 - [ ] Relecture conseillée (modèles de la CNIL ou juriste) ; **obligatoire avant d'encaisser
-      de l'argent** (pubs ou Spleen+).
+      de l'argent** (pubs ou Spleen+). Les passages marqués `[À FAIRE RELIRE]` dans
+      `packages/i18n` sont à faire relire en priorité.
 - [ ] **Vérifier** : les pages s'ouvrent depuis le pied de page, et leurs adresses sont
       celles déclarées dans l'écran de consentement Google (§ 5).
 
@@ -191,8 +203,11 @@ Le workflow « Nightly » (`.github/workflows/catalog-refresh.yml`) tourne chaqu
 
 - `refresh` relit sur MusicBrainz la discographie d'au plus 150 artistes (écoutés sur 30
   jours ou présents sur une Étagère), à 1 requête par seconde via le limiteur de la base ;
-- `moderation-retention` anonymise les décisions de modération vieilles d'un an et supprime
-  les signalements clos depuis un an (`pnpm moderation:anonymize`, voir `docs/social.md`).
+- `retention` applique les durées annoncées dans la politique de confidentialité
+  (`pnpm retention`, `packages/api/src/lib/retention.ts`) : décisions de modération
+  anonymisées et signalements clos supprimés un an après (`docs/social.md`), sessions
+  expirées, liens de connexion expirés, et compteurs anti-abus 24 h après la fin de leur
+  fenêtre (sauf le limiteur MusicBrainz).
 
 Tant que le secret ci-dessous manque, les deux s'arrêtent aussitôt sans rien faire. Le
 workflow ne tourne que depuis `main`.
@@ -201,15 +216,16 @@ workflow ne tourne que depuis `main`.
 - [ ] Dans cet environnement, Deployment branches and tags : « Selected branches and tags »,
       règle `main` (seule `main` lit le secret).
 - [ ] Environment secrets › Add secret : `DATABASE_URL_UNPOOLED` = URL **directe** de la
-      branche Neon `production` (sans `-pooler`, § 3), après la réinitialisation du § 8.
+      branche `production` du projet `spleen-prod` (sans `-pooler`, § 3).
 - [ ] Environment variables › Add variable : `MUSICBRAINZ_USER_AGENT` =
       `Spleen/1.0 ( contact@<domaine> )` (vraie adresse de contact).
-- [ ] Ajouter `NEON_MAIN_HOST` (hôte de la branche `production`, pas un secret) dans le `.env`
-      local : le nettoyage e2e refuse alors cette base, et accepte `dev`.
+- [ ] `NEON_MAIN_HOST` dans le `.env` local = hôte de la branche `production` de
+      `spleen-prod` (pas un secret, § 0) : le nettoyage e2e refuse alors cette base, et
+      accepte `dev`.
 - [ ] **Vérifier** : onglet Actions › « Nightly » › Run workflow (sur `main`). Le journal de
       `refresh` affiche `catalog refresh: N artist(s) to re-read (postgres)` puis
-      `done, … release(s) added` ; celui de `moderation-retention` affiche
-      `moderation retention (postgres): 0 decision(s) anonymised, …`. Le lendemain, une
+      `done, … release(s) added` ; celui de `retention` affiche
+      `retention (postgres): 0 decision(s) anonymised, …`. Le lendemain, une
       exécution planifiée apparaît.
 
 ## 10. Modération : adresse de contact et premier admin
@@ -252,6 +268,10 @@ Postgres jetable, jamais Neon.
 
 ## 13. Vérification finale
 
+- [ ] Projet Vercel : Root Directory = `apps/web` (là où est `vercel.json`). **Vérifier**
+      dans le résumé du déploiement (onglet Resources / Deployment Summary) que les fonctions
+      tournent à Francfort (`fra1`), pas à Washington (`iad1`, région par défaut) : la base
+      est à Francfort et la politique de confidentialité l'annonce.
 - [ ] Les journaux de démarrage de l'hébergeur ne contiennent pas « Missing environment
       variables for production ».
 - [ ] `MUSICBRAINZ_USER_AGENT` contient une vraie adresse de contact (jalon 4).
@@ -263,6 +283,10 @@ Postgres jetable, jamais Neon.
 
 Pas nécessaire pour un site gratuit et sans pub : à faire avant de gagner le premier euro.
 
+- [ ] Passer aux mentions légales complètes (nom, adresse, téléphone, SIRET, directeur de
+      publication) avant le premier euro : les mentions de la bêta (« édité à titre non
+      professionnel ») ne valent que tant que Spleen ne rapporte rien (ni pub, ni abonnement,
+      ni lien affilié, ni don). [À FAIRE RELIRE]
 - [ ] Licence des genres MusicBrainz (CC BY-NC-SA, non commerciale) : licence commerciale
       MetaBrainz ou autre source de genres, avant la première pub ou le premier abonnement —
       voir `docs/stack-et-limites.md` § 5.2.

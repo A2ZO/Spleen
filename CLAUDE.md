@@ -48,7 +48,7 @@ pnpm db:reset            # wipe the LOCAL PGlite database, migrate, seed (refuse
 pnpm db:seed:catalog     # import packages/api/scripts/catalog-seed.json from MusicBrainz
 pnpm catalog:refresh     # re-read discographies for recent releases (nightly in Actions)
 pnpm admin:grant <email> # admin role (also admin:revoke); never from the site
-pnpm moderation:anonymize # moderation retention, one year (nightly in Actions)
+pnpm retention          # privacy retention rules (nightly in Actions, src/lib/retention.ts)
 $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # Playwright with the installed Chrome
 ```
 
@@ -61,9 +61,13 @@ CI, e2e cleanup guard, env vars and database details: `docs/environnement.md`.
   declared in `turbo.json`, or they silently vanish. Next scripts use dotenv-cli; db scripts
   and Vitest call `loadRootEnv()`.
 - `DATABASE_URL` = Neon pooled (app), `DATABASE_URL_UNPOOLED` = direct (migrations, seed);
-  unset → PGlite in `.data/pglite`. Neon branch `dev` = local; branch `production` = live site (never in a file).
+  unset → PGlite in `.data/pglite`. Neon: the current project is for development only (branch
+  `dev` = local; its `production` branch holds test data and never serves the site); the live
+  site gets a **separate Neon project, `spleen-prod`** (`docs/mise-en-ligne.md` § 0), whose
+  URLs never go in a file.
 - e2e accounts are `e2e-<id>@example.test`, deleted by `apps/web/e2e/cleanup.ts` (global setup/teardown), which
-  refuses production and Neon's `production` branch (`NEON_MAIN_HOST`). Keep each e2e test short.
+  refuses production and the Neon branch named by `NEON_MAIN_HOST` (`spleen-prod`'s `production`
+  branch once it exists). Keep each e2e test short.
 - Never edit generated migrations (a test fails on schema/snapshot drift);
   `0000_search_extensions.sql` is hand-written.
 - "Target" = `release_id` / `track_id` / `artist_id` real FKs + CHECK exactly one
@@ -186,7 +190,7 @@ Moderation rules: `docs/social.md`.
       base stats · 7. Social · 8. Lists & discovery (`docs/decouverte.md`).
 - [ ] 9. **Admin, legal, polish** (next): moderation queue (reports, lists included), duplicate
       merges, legal pages, PWA, Open Graph · 10. Launch. **Real services are not connected yet** (Google,
-      Brevo, R2, Neon `production`, domain): follow `docs/mise-en-ligne.md`.
+      Brevo, R2, Neon project `spleen-prod`, domain): follow `docs/mise-en-ligne.md`.
 - [ ] 11. Upcoming releases from followed artists — spec in docs/cahier-des-charges.md (section
       « Sorties à venir de tes artistes »); may run before milestone 10, depends only on 4, 7
       and 8.

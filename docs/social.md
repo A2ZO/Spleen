@@ -150,8 +150,9 @@ touché.
 **Conservation.** Un an après la décision (`MODERATION_RETENTION_DAYS`),
 `anonymizeModerationHistory` garde l'action, le motif et la catégorie, efface les liens vers
 les personnes, l'extrait et la notification, et supprime les signalements clos. Les
-signalements ouverts ne sont jamais touchés. Tâche `moderation-retention` du workflow
-nocturne, ou `pnpm moderation:anonymize` (idempotent).
+signalements ouverts ne sont jamais touchés. Tâche `retention` du workflow nocturne, ou
+`pnpm retention` (idempotent), avec les autres règles de conservation
+(`packages/api/src/lib/retention.ts`).
 
 **Signalements de catalogue.** Bouton « Signaler une erreur ou proposer un ajout » des fiches
 album, artiste et morceau (membres) → `report.catalog` (`lib/catalog/reports.ts`). Types :

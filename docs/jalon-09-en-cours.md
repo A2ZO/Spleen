@@ -62,8 +62,8 @@ contrôle des journaux serveur propre.
 1. **Conservation** : 1 an après la décision, puis anonymisation (on garde l'action et le
    motif, on retire les liens vers les personnes). L'anonymisation tourne dans le workflow
    GitHub nocturne existant, avec un script lançable aussi en local et un test.
-   → Fait : `anonymizeModerationHistory`, `pnpm moderation:anonymize`, job
-   `moderation-retention` du workflow « Nightly » (`catalog-refresh.yml`).
+   → Fait : `anonymizeModerationHistory`, aujourd'hui dans `pnpm retention`, job `retention`
+   du workflow « Nightly » (`catalog-refresh.yml`).
 2. **Personne suspendue** :
    - ne jamais afficher le motif sur la page de connexion : n'importe qui peut y taper
      l'email d'un autre. Le motif s'affiche uniquement après la preuve d'identité (clic sur le
@@ -206,6 +206,6 @@ pnpm db:seed                                   # migration 0010 + seed de modér
 pnpm lint; pnpm typecheck; pnpm format:check; pnpm test
 $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # échoue si le journal serveur a une erreur connue
 pnpm admin:grant lacontrebasse@example.test    # « nothing to do » : l'admin de démo existe
-pnpm moderation:anonymize                      # « 0 decision(s) anonymised »
+pnpm retention                                 # « 0 decision(s) anonymised, … »
 pnpm dev                                       # /fr/admin avec lacontrebasse@example.test
 ```

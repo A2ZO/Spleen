@@ -887,11 +887,11 @@
       "sections": {
         "publisher": {
           "title": "Éditeur du site",
-          "body": "<p>Spleen est édité par [À COMPLÉTER : nom et prénom], [À COMPLÉTER : statut, par exemple micro-entrepreneur], domicilié à [À COMPLÉTER : adresse postale].</p><p>SIRET : [À COMPLÉTER : numéro SIRET].</p><p>Directeur ou directrice de la publication : [À COMPLÉTER : nom].</p><p>Contact : <contact></contact></p>"
+          "body": "<p>Spleen est un site édité à titre non professionnel. Son éditeur a communiqué son identité à l'hébergeur, conformément à l'article 1-1 II de la loi pour la confiance dans l'économie numérique (LCEN), et ne la publie donc pas ici. [À FAIRE RELIRE]</p><p>Contact : <contact></contact></p>"
         },
         "hosting": {
-          "title": "Hébergement",
-          "body": "<ul><li>Site : [À COMPLÉTER : hébergeur du site, raison sociale, adresse et téléphone, choisi au jalon 10].</li><li>Base de données : Neon, région Europe (Francfort) ; [À COMPLÉTER : raison sociale et adresse de Neon].</li><li>Photos de profil : Cloudflare R2, juridiction Union européenne ; [À COMPLÉTER : raison sociale et adresse de Cloudflare].</li><li>Emails : Brevo ; [À COMPLÉTER : raison sociale et adresse de Brevo].</li></ul>"
+          "title": "Hébergeur",
+          "body": "<p>Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis. Téléphone : [À COMPLÉTER : téléphone de Vercel]. Le site est servi depuis la région de Francfort (Allemagne). [À FAIRE RELIRE]</p>"
         },
         "credits": {
           "title": "Crédits et données musicales",
@@ -937,7 +937,7 @@
         },
         "changes": {
           "title": "Évolution de ces conditions",
-          "body": "<p>Ces conditions peuvent changer. En cas de changement important, tu seras prévenu sur le site avant son entrée en vigueur. Droit applicable : [À VÉRIFIER : droit français, tribunaux compétents].</p><p>Une question ? Écris à <contact></contact>.</p>"
+          "body": "<p>Ces conditions peuvent changer. En cas de changement important, tu seras prévenu sur le site avant son entrée en vigueur.</p><p>Elles sont soumises au droit français. Si tu es un consommateur résidant dans un autre pays, tu gardes la protection des règles impératives de ton pays de résidence. [À FAIRE RELIRE]</p><p>Une question ? Écris à <contact></contact>.</p>"
         }
       }
     },
@@ -947,7 +947,7 @@
       "sections": {
         "controller": {
           "title": "Responsable du traitement",
-          "body": "<p>[À COMPLÉTER : nom et prénom], [À COMPLÉTER : adresse postale]. Contact : <contact></contact></p>"
+          "body": "<p>[À COMPLÉTER : nom et prénom], qui édite Spleen à titre non professionnel. Contact : <contact></contact> [À FAIRE RELIRE]</p>"
         },
         "data": {
           "title": "Les données collectées",
@@ -963,7 +963,7 @@
         },
         "retention": {
           "title": "Combien de temps",
-          "body": "<ul><li>Les données de ton compte sont gardées tant que ton compte existe, puis effacées immédiatement quand tu le supprimes. [À VÉRIFIER : durée de conservation des sauvegardes de la base.]</li><li>Pseudos : quand tu changes de pseudo, l'ancien reste réservé 30 jours. Quand tu supprimes ton compte, tes pseudos restent réservés 30 jours sous forme anonyme, sans aucun lien avec toi, puis ils redeviennent libres.</li><li>Lien de connexion : valable 15 minutes.</li><li>Sessions : elles expirent après 7 jours sans visite. [À VÉRIFIER : effacement des sessions expirées.]</li><li>Compteurs anti-abus : [À VÉRIFIER : durée de conservation, aucun effacement automatique pour l'instant.]</li><li>Signalements et décisions de modération : un an après la décision, ils sont anonymisés (l'action et le motif restent, les liens vers les personnes et l'extrait sont effacés) et les signalements traités sont supprimés.</li></ul>"
+          "body": "<ul><li>Les données de ton compte sont gardées tant que ton compte existe, et effacées immédiatement quand tu le supprimes. Elles disparaissent aussi des sauvegardes de la base au bout de 7 jours au plus.</li><li>Pseudos : quand tu changes de pseudo, l'ancien reste réservé 30 jours. Quand tu supprimes ton compte, tes pseudos restent réservés 30 jours sous forme anonyme, sans aucun lien avec toi, puis ils redeviennent libres.</li><li>Lien de connexion : valable 15 minutes, effacé dans les 24 heures qui suivent son expiration.</li><li>Sessions (date, adresse IP, navigateur) : elles expirent après 7 jours sans visite et sont effacées dans les 24 heures qui suivent.</li><li>Compteurs anti-abus (identifiant ou adresse IP) : effacés par la tâche de nuit qui suit les 24 heures après la fin de leur période de comptage (une heure au plus).</li><li>Signalements et décisions de modération : un an après la décision, ils sont anonymisés (l'action et le motif restent, les liens vers les personnes et l'extrait sont effacés) et les signalements traités sont supprimés.</li></ul>"
         },
         "rights": {
           "title": "Tes droits",
@@ -971,7 +971,7 @@
         },
         "processors": {
           "title": "Prestataires et transferts",
-          "body": "<ul><li>Base de données : Neon, serveurs dans l'Union européenne (Francfort).</li><li>Photos de profil : Cloudflare R2, juridiction Union européenne.</li><li>Emails de connexion et de modération : Brevo. [À VÉRIFIER : localisation des serveurs de Brevo.]</li><li>Hébergement du site : [À COMPLÉTER : hébergeur choisi au jalon 10, lieu de traitement et garanties en cas de transfert hors de l'Union européenne.]</li><li>Connexion avec Google : seulement si tu la choisis.</li></ul><p>Les pochettes sont chargées par ton navigateur directement depuis le Cover Art Archive (Internet Archive), qui voit donc ton adresse IP, comme pour n'importe quelle image d'un autre site.</p>"
+          "body": "<ul><li>Hébergement du site : Vercel Inc. Le site tourne dans sa région de Francfort (Allemagne). Vercel est une société américaine : [À VÉRIFIER : mécanisme de transfert prévu par son accord de traitement des données (DPA), par exemple clauses contractuelles types ou Data Privacy Framework].</li><li>Base de données : Neon, serveurs dans l'Union européenne (Francfort).</li><li>Photos de profil : Cloudflare R2, juridiction Union européenne.</li><li>Emails de connexion et de modération : Brevo, serveurs uniquement dans l'Union européenne (France, Allemagne, Belgique).</li><li>Connexion avec Google : seulement si tu la choisis.</li></ul><p>Les pochettes sont chargées par ton navigateur directement depuis le Cover Art Archive (Internet Archive), qui voit donc ton adresse IP, comme pour n'importe quelle image d'un autre site.</p>"
         },
         "cookies": {
           "title": "Cookies",
