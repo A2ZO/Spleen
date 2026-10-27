@@ -153,9 +153,27 @@ les personnes, l'extrait et la notification, et supprime les signalements clos. 
 signalements ouverts ne sont jamais touchés. Tâche `moderation-retention` du workflow
 nocturne, ou `pnpm moderation:anonymize` (idempotent).
 
-**Signalements de catalogue.** `catalog_error` / `catalog_addition` : traités (`resolve`)
-ou rejetés avec une note, sans notification. Le bouton « Signaler une erreur / proposer un
-ajout » des fiches reste à faire.
+**Signalements de catalogue.** Bouton « Signaler une erreur ou proposer un ajout » des fiches
+album, artiste et morceau (membres) → `report.catalog` (`lib/catalog/reports.ts`). Types :
+information erronée (`catalog_error`), pochette (`catalog_cover`), doublon
+(`catalog_duplicate`, avec l'autre fiche du même type dans `duplicate_*`, adresse ou slug lu
+par `catalogSlugFrom`), ajout manquant (`catalog_addition`), autre (`other`). Traités
+(`resolve`) ou rejetés avec une note, sans notification. Un doublon ouvert affiche
+« Fusionner les deux fiches » dans la file.
+
+**Fusion de doublons** (`lib/catalog/merge.ts`, page `/admin/merge`, `admin.mergePreview` /
+`admin.merge`). Une transaction : écoutes, notes de pistes, critiques, éléments de listes,
+Étagères et signalements ouverts passent du doublon à la fiche gardée ; un conflit (un membre,
+une liste, une Étagère, une écoute d'album avec les deux) n'en garde qu'une ligne (écoute sans
+date : la plus récemment modifiée) ; les états `user_item_state` sont recalculés
+(`recomputeItemState`, « À écouter » gardé si l'une l'avait) et les stats des membres
+invalidées. La fiche gardée reprend ce qui lui manque (crédits, pistes, genres, pochette,
+date) ; les liens de catalogue du doublon sont retirés. Le doublon n'est jamais supprimé :
+`merged_into_id` (toujours un seul saut), son adresse redirige en permanence (308,
+`lib/catalog-redirect.ts`, via `catalog.mergedInto`), la recherche et les sorties récentes
+l'ignorent, l'import MusicBrainz suit le lien. Décision `resolve` (sujet `catalog`) dans
+l'historique, extrait « doublon → gardée ». **Ne se défait pas : jamais de fusion d'essai sur
+Neon `dev`.**
 
 ## Données de démo
 
