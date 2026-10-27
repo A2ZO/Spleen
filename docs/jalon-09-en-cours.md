@@ -21,11 +21,110 @@ Sources : `docs/prompt-claude-code-spleen.md` (règles), `docs/cahier-des-charge
 | 4 | Pages légales FR/EN | fait | voir `git log` |
 | 5 | Référencement et partage (sitemap, robots, canonical/hreflang, métadonnées, OG) | fait | voir `git log` |
 | 6 | PWA (manifeste, icônes, page hors ligne) + code de connexion dans l'email | fait | voir `git log` |
-| 7 | Finitions : 404/500 Baudelaire, en-têtes de sécurité (CSP **mesurée d'abord**), axe | à faire | — |
+| 7 | Finitions : 404/500 Baudelaire, en-têtes de sécurité (CSP **mesurée d'abord**), axe | **en cours** (voir « À faire ensuite ») | `ea01c08` (wip, non vérifié) |
 | fin | Seed à jour, vérification visuelle Chrome bureau + mobile, `/fin-de-jalon` | à faire | — |
 
-État vérifié au dernier commit : lint, typecheck, format, tests unitaires et 86 e2e verts, CI verte,
-contrôle des journaux serveur propre.
+État vérifié au commit `153f3d9` (code de connexion) : lint, typecheck, format, tests unitaires et
+86 e2e verts, contrôle des journaux serveur propre. **Pas poussé depuis `153f3d9`**, CI non lancée
+sur la suite. Le commit `ea01c08` (wip) n'est **pas vérifié** : voir « À faire ensuite ».
+
+## À faire ensuite (reprise)
+
+### Où en est l'étape 7 (commit `ea01c08`, wip)
+
+- Fait, non vérifié en entier : `app/[locale]/error.tsx` (page 500, citation de Baudelaire
+  « Quand le ciel bas et lourd… », digest affiché) et `app/global-error.tsx` (hors fournisseur
+  next-intl, messages chargés à la demande) ; clés i18n `errorPage.*` ; rendu vérifié sur mobile.
+  La page 404 existait déjà.
+- Fait : `/sitemap.xml` forcé dynamique (`export const dynamic = "force-dynamic"`) : le build le
+  prérendait, l'index aurait été figé au contenu du build.
+- Fait : audit axe (`@axe-core/playwright` 4.14.0, publié le 15/10/2026, `apps/web/e2e/a11y.spec.ts`)
+  sur accueil, recherche, album, profil, liste, découverte, pages légales, admin ; deux défauts
+  `serious` corrigés : nom accessible du sélecteur de langue (`LocaleSwitcher`, le texte visible
+  « FR » doit être dans le nom) et liens de pochette sans nom (`aria-hidden` sur les liens en double
+  à `tabIndex={-1}` : `ReviewCard`, `FeedItemCard`, `review/[id]`, `review/[id]/edit`). L'audit passe
+  (bureau et mobile).
+- **Point ouvert** : la suite e2e complète donne 102 tests verts mais **échoue au contrôle des
+  journaux** : « 1 × render cancelled mid-stream ». Les nouveaux tests (a11y, accounts, pwa, seo,
+  legal) lancés seuls avec `--workers=1` sont propres : le fautif est ailleurs. Prochaine chose à
+  faire : `$env:PLAYWRIGHT_CHANNEL="chrome"; pnpm --filter @spleen/web exec dotenv -e ../../.env -- playwright test --workers=1`
+  et regarder quel test précède la ligne `[WebServer]`. Suspect : `mockup.spec.ts` (clique le
+  bouton « English » du sélecteur de langue, dont le nom accessible a changé : « en English »).
+- Ensuite : mettre à jour `docs/jalon-09-en-cours.md`, lint, typecheck, test, e2e, pousser, attendre
+  la CI de la PR #23.
+
+### Décision CSP + issue #22 : mesures faites, à présenter à l'utilisateur (rien n'est codé)
+
+Mesures (build de production local, `next start` sur le port 3001, Ryzen 7 7800X3D, 30 requêtes par
+page, CPU lu avec `Get-Process`, visiteur sans session) :
+
+| Page | Sans CSP | CSP à nonce (prototype jetable, retiré) |
+| --- | --- | --- |
+| `/fr` | 34 ms | 16 ms |
+| `/fr/album/kind-of-blue` | 11 ms | 14 ms |
+| `/fr/u/nuitblanche` | 26 ms | 22 ms |
+| `/fr/discover` | 25 ms | 18 ms |
+| `/fr/review/…507` | 16 ms | 15 ms |
+| `/fr/list/…43002` | 16 ms | 16 ms |
+| `/fr/legal` | 8 ms | 8 ms |
+
+- Le nonce ne coûte pas de CPU mesurable (écart = bruit) : les pages sont déjà toutes dynamiques à
+  cause du cookie de thème. Son vrai coût : il interdit de mettre les pages publiques en cache
+  (issue #22). Un fichier prérendu coûte 0,6 ms par requête au serveur, 0 s'il vient du CDN.
+- Le prototype a confirmé que Next pose le nonce sur ses scripts (16 sur 16).
+- Chaque page contient des scripts en ligne propres à la page (`self.__next_f.push`, 3 à 8 par
+  page) : une CSP à **empreintes** ne peut pas les couvrir. Le SRI de Next 16.4 est **expérimental**
+  et ne couvre que les fichiers JavaScript externes (doc officielle :
+  `apps/web/node_modules/next/dist/docs/01-app/02-guides/content-security-policy.md`, § Subresource
+  Integrity) : sans nonce, `script-src` doit garder `'unsafe-inline'`.
+- Calcul pour Vercel Hobby (formule de `docs/stack-et-limites.md` § 3, 4 h = 14,4 millions de ms,
+  100 pages par membre, autant de robots) : CPU mesuré ≈ 17 ms sur ce poste, × 2 à 3 sur un serveur
+  ≈ 35 à 50 ms. Options à présenter : (1) nonce partout, pages toutes dynamiques : ≈ 1 400 membres
+  à 50 ms ; (2) issue #22 + CSP statique avec `'unsafe-inline'` pour les scripts, pages publiques en
+  cache pour visiteurs et robots : seules les pages des membres connectés coûtent, ≈ 2 600 membres
+  (estimation, 90 % de réussite du cache) ; (3) hybride : nonce pour les membres connectés
+  (pages dynamiques de toute façon), CSP statique pour les pages publiques en cache ;
+  (4) empreintes / SRI : non viable (scripts en ligne). Recommandation prévue : CSP à nonce dès
+  maintenant (coût nul tant que #22 n'est pas faite), puis l'hybride (3) avec #22.
+- La CSP devra autoriser `worker-src 'self'`, `manifest-src 'self'`, `img-src` avec
+  `coverartarchive.org` et `*.archive.org` et l'URL publique R2 ; `style-src` a besoin de
+  `'unsafe-inline'` ou d'un nonce (styles en ligne de `/offline.html` et attributs `style`).
+- **Le build de production laissé dans `apps/web/.next` fait recharger le serveur de dev en
+  boucle** : il a été déplacé dans le dossier temporaire. Ne jamais lancer `next build` dans
+  `apps/web` pendant que `pnpm dev` sert l'application (ou déplacer `.next` ensuite et relancer).
+  Pour mesurer, `next start` exige les variables de production : valeurs factices passées en ligne
+  de commande pour ce seul processus (`BREVO_API_KEY`, `EMAIL_FROM`, `CONTACT_EMAIL`, `S3_*`).
+
+### Consignes de l'utilisateur pas encore faites (mot pour mot)
+
+Dernier prompt (avant la pause) :
+
+> Ensuite, passe à l'étape 7 (finitions). Avant d'écrire la CSP, apporte-moi la décision CSP + issue #22, avec des mesures. Une CSP à nonce oblige à calculer chaque page à chaque visite, alors que l'issue #22 veut des pages publiques en cache, et le calcul serveur est notre premier mur (docs/stack-et-limites.md § 3). Présente-moi :
+> - les options (CSP à nonce, CSP à empreintes si Next 16.4 le permet vraiment d'après sa doc officielle, CSP sans nonce plus permissive, ou autre) ;
+> - pour chacune : ce qu'elle protège, si les pages publiques peuvent être mises en cache, le CPU mesuré par page, et l'effet sur le nombre de membres que tient Vercel Hobby, calculé avec la formule de stack-et-limites.md ;
+> - ta recommandation.
+> Pendant que j'y réfléchis, fais le reste de l'étape 7 : pages 404, 500 et erreur globale, audit axe, corrections serious et critical. Arrête-toi au récap avant /fin-de-jalon.
+
+Même prompt, sur le code à 6 chiffres : **fait et commité** (`153f3d9`), avec ses garde-fous (mêmes
+contrôles que le lien, testés par les deux chemins ; 3 essais par code, 10 échecs par adresse et
+par heure ; annulations croisées ; code hors objet, en deux groupes, texte et HTML FR/EN ;
+`disabledPaths` vérifié ; politique « liens et codes de connexion » ; Google → `window.open` noté ;
+e2e sur build de production noté au jalon 10). **Constat à remonter** : il n'existe aucune case
+« j'accepte les conditions » à la création du compte (seulement « 15 ans ou plus ») ; à trancher.
+
+Consignes d'**économie de tokens** : aucune n'apparaît dans les messages de la session qui a écrit
+ce document ; à redemander à l'utilisateur si elles existent.
+
+### Pour reprendre sans la conversation
+
+- Branche `feat/09-admin-legal`, PR brouillon [#23](https://github.com/A2ZO/Spleen/pull/23) vers `main`,
+  à réutiliser par `/fin-de-jalon`. Commits `153f3d9` et `ea01c08` à pousser une fois la suite verte.
+- Après une modification de `packages/auth` ou des messages i18n, **redémarrer** le serveur de dev
+  (instance Better Auth et messages gardés en mémoire). Arrêter un `next` resté vivant :
+  `netstat -ano | grep ":3000 " | grep LISTENING` puis `taskkill //PID <pid> //T //F`.
+- Écrire les scripts de modification avec l'outil Write (pas de heredoc ni de `node -e` contenant
+  des antislashs, des `$'` ou des `$$` : ils ont corrompu des fichiers plusieurs fois).
+- Le récap attendu à la fin de l'étape 7 : la décision CSP + #22 (ci-dessus) et ce qui a été fait.
 
 ## Ce qui est fait (résumé)
 
