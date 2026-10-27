@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SearchIcon } from "@/components/ui/icons";
 import { usePathname, useRouter } from "@/i18n/navigation";
@@ -17,13 +17,11 @@ export function SearchBox({ q, type }: { q: string; type: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const [value, setValue] = useState(q);
-  const first = useRef(true);
 
   useEffect(() => {
-    if (first.current) {
-      first.current = false;
-      return;
-    }
+    // Only when the field differs from the URL: a "first run" flag fails under Strict Mode,
+    // which replays effects, and the needless replace was cancelled mid-render.
+    if (value.trim() === q.trim()) return;
     const timer = setTimeout(() => {
       const params = new URLSearchParams();
       if (value.trim()) params.set("q", value.trim());
@@ -32,7 +30,7 @@ export function SearchBox({ q, type }: { q: string; type: string }) {
       router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
     }, DEBOUNCE_MS);
     return () => clearTimeout(timer);
-  }, [value, type, pathname, router]);
+  }, [value, q, type, pathname, router]);
 
   return (
     <form role="search" className="relative" onSubmit={(event) => event.preventDefault()}>

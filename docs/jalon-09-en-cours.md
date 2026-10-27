@@ -21,12 +21,12 @@ Sources : `docs/prompt-claude-code-spleen.md` (règles), `docs/cahier-des-charge
 | 4 | Pages légales FR/EN | fait | voir `git log` |
 | 5 | Référencement et partage (sitemap, robots, canonical/hreflang, métadonnées, OG) | fait | voir `git log` |
 | 6 | PWA (manifeste, icônes, page hors ligne) + code de connexion dans l'email | fait | voir `git log` |
-| 7 | Finitions : 404/500 Baudelaire, en-têtes de sécurité (CSP **mesurée d'abord**), axe | **en cours** (voir « À faire ensuite ») | `ea01c08` (wip, non vérifié) |
+| 7 | Finitions : 404/500 Baudelaire, axe, journaux e2e propres ; en-têtes de sécurité et CSP **en attente de la décision** | **en cours** (voir « À faire ensuite ») | `ea01c08`, voir `git log` |
 | fin | Seed à jour, vérification visuelle Chrome bureau + mobile, `/fin-de-jalon` | à faire | — |
 
 État vérifié au commit `153f3d9` (code de connexion) : lint, typecheck, format, tests unitaires et
-86 e2e verts, contrôle des journaux serveur propre. **Pas poussé depuis `153f3d9`**, CI non lancée
-sur la suite. Le commit `ea01c08` (wip) n'est **pas vérifié** : voir « À faire ensuite ».
+86 e2e verts, contrôle des journaux serveur propre. Étape 7 (sans la CSP) vérifiée ensuite :
+`pnpm check` et 102 e2e verts, journaux propres, poussée sur la PR #23.
 
 ## À faire ensuite (reprise)
 
@@ -44,14 +44,16 @@ sur la suite. Le commit `ea01c08` (wip) n'est **pas vérifié** : voir « À fai
   « FR » doit être dans le nom) et liens de pochette sans nom (`aria-hidden` sur les liens en double
   à `tabIndex={-1}` : `ReviewCard`, `FeedItemCard`, `review/[id]`, `review/[id]/edit`). L'audit passe
   (bureau et mobile).
-- **Point ouvert** : la suite e2e complète donne 102 tests verts mais **échoue au contrôle des
-  journaux** : « 1 × render cancelled mid-stream ». Les nouveaux tests (a11y, accounts, pwa, seo,
-  legal) lancés seuls avec `--workers=1` sont propres : le fautif est ailleurs. Prochaine chose à
-  faire : `$env:PLAYWRIGHT_CHANNEL="chrome"; pnpm --filter @spleen/web exec dotenv -e ../../.env -- playwright test --workers=1`
-  et regarder quel test précède la ligne `[WebServer]`. Suspect : `mockup.spec.ts` (clique le
-  bouton « English » du sélecteur de langue, dont le nom accessible a changé : « en English »).
-- Ensuite : mettre à jour `docs/jalon-09-en-cours.md`, lint, typecheck, test, e2e, pousser, attendre
-  la CI de la PR #23.
+- **Corrigé** : « 1 × render cancelled mid-stream » au contrôle des journaux. Cause : `SearchBox`
+  sautait son premier effet avec un drapeau `useRef`, que le Strict Mode (dev) déjoue en rejouant
+  l'effet : un `router.replace` inutile partait 250 ms après l'arrivée sur `/fr/search?q=…`, et le
+  test a11y de cette page se terminait pendant ce rendu. Invisible en série (`--workers=1`), il
+  fallait la charge parallèle. Correctif : ne naviguer que si le champ diffère du `q` de l'URL
+  (`docs/pieges.md`). Méthode : un rapporteur Playwright jetable qui note l'heure de chaque test,
+  recoupée avec l'horodatage du journal (`.next/dev/logs/next-development.log`, relatif au
+  démarrage du serveur). Deux suites complètes propres ensuite (102 verts).
+- Vu une fois sous charge : `accounts.spec.ts` (mobile, inscription par lien magique) en échec
+  isolé, vert aux passes suivantes. À surveiller.
 
 ### Décision CSP + issue #22 : mesures faites, à présenter à l'utilisateur (rien n'est codé)
 

@@ -25,6 +25,9 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   keys: map dynamic values through typed helpers (`apps/web/src/lib/catalog-labels.ts`).
 - Strict Mode replays effects in dev: a `<dialog>` closed in an effect cleanup fires `close`
   and unmounts itself. e2e after `reload()`: SSR HTML shows before hydration, retry clicks.
+  A "skip the first run" `useRef` flag fails too (the replay runs the effect): `SearchBox`
+  sent a needless `router.replace` after load, cancelled mid-render when a test ended. Compare
+  with the state the effect syncs to (the field against the URL's `q`) instead.
 - `updated_at` is wall clock (`$onUpdate`), not `ctx.now`: tests compare orders, not times.
 - New migration → `pnpm db:migrate` on the running dev server's database, or its page 500s.
 - Burst writes arrive out of order: group clicks, send an `order` (`docs/ecoute.md`).
