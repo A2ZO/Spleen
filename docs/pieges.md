@@ -45,3 +45,33 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   once) must be set before the transition starts.
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
+- e2e after a full load (`window.location.assign`, as the sign-in code does): `toHaveURL` passes
+  before hydration, and hydration resets a controlled field typed into too early (empty
+  field, no error). Retry the typing with `toPass` (`onboard()` in `e2e/helpers.ts`).
+- Archive.org storage nodes answer 500 now and then (CAA redirects to them): `Cover` falls back
+  to the generated sleeve; e2e stubs `coverartarchive.org` (Playwright does not route the
+  target of a redirect).
+- CSP: `*.archive.org` does not cover `archive.org` itself (both are listed). A nonce or hash
+  in `script-src` makes `'unsafe-inline'` ignored. A whole-page navigation
+  (`window.location.href`, the Google sign-in) is not bound by the policy. next-intl copies
+  the request headers: set the CSP on a `new NextRequest(request, { headers })`.
+- Never run `next build` in `apps/web` while `pnpm dev` runs: the production `.next` makes the
+  dev server reload in a loop (same with a build id read at config time: `/sw.js` reads it at
+  run time). To measure, `next start` needs the production variables: dummy values on the
+  command line for that one process.
+- e2e: two projects (desktop, mobile) signing in to the same demo account steal each other's
+  magic link: one `e2e-<id>` account per test, made admin with `grantAdmin()` (`helpers.ts`,
+  Postgres only). To find the test that makes the server log an error, run `--workers=1`: the
+  `[WebServer]` lines land right after the guilty test. A browser-side check of cancelled RSC
+  requests is useless (the router cancels some normally): only the server log is reliable.
+- Never test a catalog merge on Neon `dev`: it cannot be undone (`docs/social.md`).
+- API tests: `ctx.account()` is memoised per context: count round trips with one context per
+  request (`api(user)` each time). `hrefWith` skips `null`, not `undefined`.
+- Lint: the React hooks rule takes a Playwright fixture parameter named `use` for the hook
+  `use`: name it `run`.
+- Screenshots with Playwright: the "1 Issue" badge of Next came from the `caret-color` style the
+  capture tool injects, not from the site.
+- Windows shell: heredocs and `node -e` break on French apostrophes (write the script with the
+  editor, then run it); the shell may stay in `apps/web/.next/dev/logs` and make `pnpm dev`
+  fail with `EBUSY … rmdir` (`cd` to the root first); a `== 'true'` written to a YAML through
+  the shell loses its quotes (re-read the file).

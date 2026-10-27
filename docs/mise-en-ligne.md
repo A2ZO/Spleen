@@ -322,6 +322,8 @@ Pas nécessaire pour un site gratuit et sans pub : à faire avant de gagner le p
 - [ ] Tester un build OpenNext avec une image de partage et le sitemap avant de passer sur
       Cloudflare Workers (la doc d'OpenNext ne parle pas de `next/og` ; son dépôt le teste en
       e2e).
+- [ ] Publier une nouvelle `TERMS_VERSION` avant la première pub ou le premier abonnement :
+      l'accord sera redemandé à tous les membres.
 - [ ] Licence des genres MusicBrainz (CC BY-NC-SA, non commerciale) : licence commerciale
       MetaBrainz ou autre source de genres, avant la première pub ou le premier abonnement —
       voir `docs/stack-et-limites.md` § 5.2.

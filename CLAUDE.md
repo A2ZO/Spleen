@@ -174,6 +174,9 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - No `generateStaticParams` under `app/` (half-written prerender manifest in dev) → `docs/pieges.md`
 - State updates inside `startTransition` are deferred: set optimistic UI before it → `docs/pieges.md`
 - MusicBrainz often answers 503; never import on PGlite and Neon at once → `docs/catalogue.md`, `docs/pieges.md`
+- CSP nonce on every page: list `archive.org` and `*.archive.org`; a nonce ignores `'unsafe-inline'` → `docs/pieges.md`
+- e2e: one account per test (`grantAdmin`); no `next build` while `pnpm dev` runs → `docs/pieges.md`
+- Controlled fields typed into before hydration lose their text (issue #24; e2e retries) → `docs/pieges.md`
 
 ## Git
 
@@ -185,10 +188,13 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 ## Milestones
 
 - [x] 1. Foundations · 2. Database · 3. Accounts · 4. Catalog · 5. Listening · 6. Profile &
-      base stats · 7. Social · 8. Lists & discovery (`docs/decouverte.md`).
-- [ ] 9. **Admin, legal, polish** (next): moderation queue (reports, lists included), duplicate
-      merges, legal pages, PWA, Open Graph · 10. Launch. **Real services are not connected yet** (Google,
-      Brevo, R2, Neon project `spleen-prod`, domain): follow `docs/mise-en-ligne.md`.
+      base stats · 7. Social · 8. Lists & discovery · 9. Admin, legal, polish (moderation and
+      merges `docs/social.md`, SEO `docs/referencement.md`, CSP `lib/security.ts`, PWA).
+- [ ] 10. **Launch** (next): publish a new `TERMS_VERSION` before the first real members
+      (everyone accepts again, after the legal review); e2e in CI; issue #22 (cache of public
+      pages, option a). **Real services are not connected yet** (Google, Brevo, R2, Neon project
+      `spleen-prod`, domain): follow `docs/mise-en-ligne.md`.
 - [ ] 11. Upcoming releases from followed artists — spec in docs/cahier-des-charges.md (section
       « Sorties à venir de tes artistes »); may run before milestone 10, depends only on 4, 7
       and 8.
+- [ ] 12. Polish: text typed before hydration is lost (issue #24).
