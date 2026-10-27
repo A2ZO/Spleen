@@ -2,7 +2,6 @@
 name: fin-d-etape
 description: Close a step inside a milestone — one full verification via the verificateur subagent, update docs/<jalon>-en-cours.md, commit and push the milestone branch, French recap with a resume prompt, then stop so the user can /clear.
 disable-model-invocation: true
-effort: low
 ---
 
 # Fin d'étape

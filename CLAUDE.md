@@ -150,9 +150,30 @@ Moderation rules: `docs/social.md`.
 - Recaps: 20 lines at most.
 - One step per session: end it with `/fin-d-etape`.
 
-## Pitfalls
+## Pitfalls already met (and the fix)
 
-Moved to `docs/pieges.md` (read it when something behaves oddly; add new ones there).
+One line each; details and fixes in `docs/pieges.md` (add new ones there).
+
+- `node --env-file` in Next scripts crashes (use dotenv-cli) → `docs/pieges.md`
+- `new URL(…, import.meta.url)` in bundled code exposes files (use `path.resolve`) → `docs/pieges.md`
+- Quotes/spaces in a `.env` URL break parsing; never log raw DB errors → `docs/pieges.md`
+- Neon pooler = PgBouncer: no `SET`/`LISTEN`/`PREPARE`; migrations use the direct URL → `docs/pieges.md`
+- One Next dev server per app; a stray `next` on port 3000 on Windows → `docs/pieges.md`
+- pnpm `minimumReleaseAge` blocks fresh packages: pin older, revert exclusions → `docs/pieges.md`
+- Two drizzle-orm copies break types: import from `@spleen/db` → `docs/pieges.md`
+- Client components import `@spleen/api/errors`, never `@spleen/api`; Prettier on drizzle meta → `docs/pieges.md`
+- Shell quirks: backticks in `node -e`, BOM from `Set-Content`, CRLF from Python → `docs/pieges.md`
+- next-intl reads `Accept-Language`: e2e sets `locale`; typed message keys → `docs/pieges.md`
+- Strict Mode replays effects: `<dialog>` closed in cleanup unmounts itself; retry clicks after `reload()` → `docs/pieges.md`
+- `updated_at` is wall clock: tests compare orders, not times → `docs/pieges.md`
+- New migration → `pnpm db:migrate` on the dev server's database or pages 500 → `docs/pieges.md`
+- Burst writes arrive out of order: group clicks, send an `order` (`docs/ecoute.md`) → `docs/pieges.md`
+- Raw `sql` params reject JS `Date`; read `db.execute()` with `rowsOf()` → `docs/pieges.md`
+- Single-table drizzle selects drop qualifiers in subqueries → `docs/pieges.md`
+- Refresh with `refresh()` inside Server Actions, never client `router.refresh()` → `docs/pieges.md`
+- No `generateStaticParams` under `app/` (half-written prerender manifest in dev) → `docs/pieges.md`
+- State updates inside `startTransition` are deferred: set optimistic UI before it → `docs/pieges.md`
+- MusicBrainz often answers 503; never import on PGlite and Neon at once → `docs/catalogue.md`, `docs/pieges.md`
 
 ## Git
 
