@@ -34,15 +34,16 @@ export function Cover({
   sizes,
   showText = true,
 }: CoverProps) {
-  // Archive.org storage nodes sometimes answer 500: fall back to the generated sleeve.
+  // Archive.org storage nodes sometimes answer 500. The generated sleeve is always underneath
+  // (it carries the accessible name) and the real image sits on top: a failed image, even one
+  // that failed before hydration (no handler yet, or no JavaScript at all), shows the sleeve.
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
   const image = useRef<HTMLImageElement>(null);
   useEffect(() => {
-    // The error can fire before hydration, when no handler is attached yet.
+    // Already failed when React took over: no `error` event is coming.
     const el = image.current;
     if (el?.complete && el.naturalWidth === 0) setFailedUrl(el.currentSrc);
   }, [coverUrl]);
-  const showImage = coverUrl && failedUrl === null;
 
   return (
     <div
@@ -51,26 +52,26 @@ export function Cover({
         className,
       )}
     >
-      {showImage ? (
+      <GeneratedCover
+        slug={slug}
+        title={title}
+        artistName={artistName}
+        alt={alt}
+        showText={showText}
+      />
+      {coverUrl && failedUrl === null && (
         // Covers come from Cover Art Archive in ready-made sizes: no image optimisation
         // (no host-specific service, no quota), the browser follows the redirect itself.
+        // Empty alt: a broken image with a text alternative would show its icon and text.
         <Image
           ref={image}
           src={coverUrl}
-          alt={alt}
+          alt=""
           fill
           unoptimized
           sizes={sizes ?? "200px"}
-          className="object-cover"
+          className="object-cover text-transparent"
           onError={(e) => setFailedUrl(e.currentTarget.currentSrc)}
-        />
-      ) : (
-        <GeneratedCover
-          slug={slug}
-          title={title}
-          artistName={artistName}
-          alt={alt}
-          showText={showText}
         />
       )}
       {/* Sleeve sheen and worn edge. */}

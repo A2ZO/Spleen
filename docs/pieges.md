@@ -48,9 +48,14 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
 - e2e after a full load (`window.location.assign`, as the sign-in code does): `toHaveURL` passes
   before hydration, and hydration resets a controlled field typed into too early (empty
   field, no error). Retry the typing with `toPass` (`onboard()` in `e2e/helpers.ts`).
-- Archive.org storage nodes answer 500 now and then (CAA redirects to them): `Cover` falls back
-  to the generated sleeve; e2e stubs `coverartarchive.org` (Playwright does not route the
-  target of a redirect).
+- Archive.org storage nodes answer 500 now and then, node by node (CAA redirects to them): the
+  same cover can load in one browser and fail with `curl`. An `onError` handler alone is not a
+  fallback: the image can fail before hydration (no handler yet) or without JavaScript, and
+  leaves an empty square or a broken-image icon. `Cover` always renders the generated sleeve
+  (it carries the accessible name) with the real image on top (`alt=""`, so a broken one
+  draws nothing), and drops a failed image on mount (`complete && naturalWidth === 0`). e2e
+  (`covers.spec.ts`) stubs `coverartarchive.org` (Playwright does not route the target of a
+  redirect) and covers the failure with JavaScript off and with late scripts.
 - CSP: `*.archive.org` does not cover `archive.org` itself (both are listed). A nonce or hash
   in `script-src` makes `'unsafe-inline'` ignored. A whole-page navigation
   (`window.location.href`, the Google sign-in) is not bound by the policy. next-intl copies
