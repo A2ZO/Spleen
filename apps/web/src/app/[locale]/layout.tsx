@@ -9,6 +9,7 @@ import type { ReactNode } from "react";
 import { SuspendedNotice } from "@/components/account/SuspendedNotice";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { HydrationMarker } from "@/components/layout/HydrationMarker";
 import { ServiceWorker } from "@/components/layout/ServiceWorker";
 import { initRouteLocale } from "@/i18n/locale";
 import { COVER_ERROR_SCRIPT } from "@/lib/cover-errors";
@@ -82,6 +83,7 @@ export default async function LocaleLayout({
           </main>
           <Footer />
           <ServiceWorker enabled={!serviceWorkerDisabled()} />
+          <HydrationMarker />
         </NextIntlClientProvider>
       </body>
     </html>

@@ -47,7 +47,9 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
 - e2e after a full load (`window.location.assign`, as the sign-in code does): `toHaveURL` passes
   before hydration, and hydration resets a controlled field typed into too early (empty
-  field, no error). Retry the typing with `toPass` (`onboard()` in `e2e/helpers.ts`).
+  field, no error; issue #24). Wait for `html[data-hydrated]` (set by `HydrationMarker`) with
+  `waitForHydration()`, then type once (`onboard()` in `e2e/helpers.ts`); no retry loop, so a
+  real error fails with its message.
 - Archive.org storage nodes answer 500 now and then, node by node (CAA redirects to them): the
   same cover can load in one browser and fail with `curl`. An `onError` handler alone is not a
   fallback: the image can fail before hydration (no handler yet) or without JavaScript, and

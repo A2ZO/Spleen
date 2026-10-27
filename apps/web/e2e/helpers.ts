@@ -56,17 +56,27 @@ export async function signUp(page: Page, testInfo: TestInfo, displayName: string
   return username;
 }
 
+/** Waits until React has hydrated the page (`HydrationMarker`): typing before that is lost. */
+export async function waitForHydration(page: Page) {
+  await expect(page.locator("html[data-hydrated]")).toBeAttached();
+}
+
+const USERNAME_HINT = "3 à 30 caractères : lettres minuscules, chiffres, points et tirets bas.";
+
 export const TERMS_BOX = "J'ai 15 ans ou plus et j'accepte les conditions d'utilisation";
 
 /** Fills the first-visit form (any sign-in path ends there) and lands on the new profile. */
 export async function onboard(page: Page, username: string, displayName: string) {
   await expect(page).toHaveURL(/\/fr\/welcome$/);
   // After a full load (the code path) the URL matches before hydration, which resets a
-  // controlled field typed into too early: type again until the availability check answers.
-  await expect(async () => {
-    await page.getByLabel("Pseudo").fill(username);
-    await expect(page.getByText("Ce pseudo est libre.")).toBeVisible({ timeout: 2000 });
-  }).toPass({ timeout: 15_000 });
+  // controlled field typed into too early (issue #24): type once React has taken over.
+  await waitForHydration(page);
+  const field = page.getByLabel("Pseudo");
+  await field.fill(username);
+  // The hint gives way to the check's answer; anything but "free" fails with its own words.
+  const message = page.locator(`[id="${await field.getAttribute("id")}-msg"]`);
+  await expect(message).not.toHaveText(USERNAME_HINT);
+  expect(await message.innerText(), "username check").toBe("Ce pseudo est libre.");
   await page.getByLabel("Nom affiché").fill(displayName);
   await page.getByLabel(TERMS_BOX).check();
   await page.getByRole("button", { name: "Ouvrir mon étagère" }).click();
