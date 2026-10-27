@@ -61,8 +61,12 @@ export const TERMS_BOX = "J'ai 15 ans ou plus et j'accepte les conditions d'util
 /** Fills the first-visit form (any sign-in path ends there) and lands on the new profile. */
 export async function onboard(page: Page, username: string, displayName: string) {
   await expect(page).toHaveURL(/\/fr\/welcome$/);
-  await page.getByLabel("Pseudo").fill(username);
-  await expect(page.getByText("Ce pseudo est libre.")).toBeVisible();
+  // After a full load (the code path) the URL matches before hydration, which resets a
+  // controlled field typed into too early: type again until the availability check answers.
+  await expect(async () => {
+    await page.getByLabel("Pseudo").fill(username);
+    await expect(page.getByText("Ce pseudo est libre.")).toBeVisible({ timeout: 2000 });
+  }).toPass({ timeout: 15_000 });
   await page.getByLabel("Nom affiché").fill(displayName);
   await page.getByLabel(TERMS_BOX).check();
   await page.getByRole("button", { name: "Ouvrir mon étagère" }).click();
