@@ -7,7 +7,8 @@ test("pages carry a fresh nonce policy, files the static security headers", asyn
   for (let i = 0; i < 2; i++) {
     const page = await request.get("/fr");
     const csp = page.headers()["content-security-policy"] ?? "";
-    expect(csp).toMatch(/script-src 'self' 'nonce-[^']+' 'strict-dynamic'/);
+    // The nonce for Next's scripts, a hash for the inline cover script of the root layout.
+    expect(csp).toMatch(/script-src 'self' 'nonce-[^']+' 'sha256-[^']+' 'strict-dynamic'/);
     expect(csp).toContain("frame-ancestors 'none'");
     expect(csp).toContain("https://*.archive.org");
     const nonce = csp.match(/'nonce-([^']+)'/)![1];

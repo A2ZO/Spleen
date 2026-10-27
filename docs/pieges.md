@@ -51,11 +51,14 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
 - Archive.org storage nodes answer 500 now and then, node by node (CAA redirects to them): the
   same cover can load in one browser and fail with `curl`. An `onError` handler alone is not a
   fallback: the image can fail before hydration (no handler yet) or without JavaScript, and
-  leaves an empty square or a broken-image icon. `Cover` always renders the generated sleeve
-  (it carries the accessible name) with the real image on top (`alt=""`, so a broken one
-  draws nothing), and drops a failed image on mount (`complete && naturalWidth === 0`). e2e
+  leaves an empty square or a broken-image icon. And `onError` on next/image makes it reset
+  `img.src` at hydration (`image-component.js`), restarting every download. `Cover` (server)
+  shows the plain surface under the real image (`alt=""`, so a broken one draws nothing);
+  `CoverImage` (client) swaps in the generated sleeve on failure, from a native listener plus
+  the set kept by the inline `<head>` script (`lib/cover-errors.ts`, allowed by its CSP hash).
+  Never test `complete && naturalWidth === 0`: a lazy image out of view can look failed. e2e
   (`covers.spec.ts`) stubs `coverartarchive.org` (Playwright does not route the target of a
-  redirect) and covers the failure with JavaScript off and with late scripts.
+  redirect) and covers the failure with JavaScript off, with late scripts and after hydration.
 - CSP: `*.archive.org` does not cover `archive.org` itself (both are listed). A nonce or hash
   in `script-src` makes `'unsafe-inline'` ignored. A whole-page navigation
   (`window.location.href`, the Google sign-in) is not bound by the policy. next-intl copies

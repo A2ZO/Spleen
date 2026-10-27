@@ -5,6 +5,10 @@
  * issue #22.
  */
 
+import { createHash } from "node:crypto";
+
+import { COVER_ERROR_SCRIPT } from "./cover-errors";
+
 /**
  * Cover Art Archive redirects to archive.org, which redirects to a mirror (`ia….archive.org`):
  * `*.archive.org` does not match the bare domain, both are needed.
@@ -20,6 +24,9 @@ function origin(url: string | undefined): string | null {
   }
 }
 
+/** The inline script of the root layout, allowed by its hash (no nonce, cacheable pages). */
+const COVER_ERROR_SCRIPT_HASH = `'sha256-${createHash("sha256").update(COVER_ERROR_SCRIPT).digest("base64")}'`;
+
 export function newNonce(): string {
   return Buffer.from(crypto.randomUUID()).toString("base64");
 }
@@ -34,6 +41,7 @@ export function contentSecurityPolicy(nonce: string): string {
     "script-src": [
       "'self'",
       `'nonce-${nonce}'`,
+      COVER_ERROR_SCRIPT_HASH,
       "'strict-dynamic'",
       ...(dev ? ["'unsafe-eval'"] : []),
     ],

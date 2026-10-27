@@ -11,6 +11,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { ServiceWorker } from "@/components/layout/ServiceWorker";
 import { initRouteLocale } from "@/i18n/locale";
+import { COVER_ERROR_SCRIPT } from "@/lib/cover-errors";
 import { routing } from "@/i18n/routing";
 import { parseTheme, THEME_COOKIE } from "@/lib/theme";
 import { getApi } from "@/server/api";
@@ -64,6 +65,9 @@ export default async function LocaleLayout({
       data-theme={theme}
       className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: COVER_ERROR_SCRIPT }} />
+      </head>
       <body>
         <NextIntlClientProvider>
           <a

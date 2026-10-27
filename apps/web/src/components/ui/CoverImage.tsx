@@ -1,5 +1,6 @@
 "use client";
 
+import "@/lib/cover-errors";
 import Image from "next/image";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 
@@ -20,8 +21,14 @@ export function CoverImage({
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const image = useRef<HTMLImageElement>(null);
   useEffect(() => {
+    // No `onError` on next/image: it would reset `img.src` at hydration, restarting every
+    // download. Failures before this effect are in the set kept by `COVER_ERROR_SCRIPT`.
     const el = image.current;
-    if (el?.complete && el.naturalWidth === 0) setFailedSrc(src);
+    if (!el) return;
+    const fail = () => setFailedSrc(src);
+    el.addEventListener("error", fail);
+    if (window.__spleenFailedCovers?.has(el)) fail();
+    return () => el.removeEventListener("error", fail);
   }, [src]);
 
   if (failedSrc === src) return fallback;
@@ -38,7 +45,7 @@ export function CoverImage({
       unoptimized
       sizes={sizes}
       className="object-cover text-transparent"
-      onError={() => setFailedSrc(src)}
+      data-cover=""
     />
   );
 }
