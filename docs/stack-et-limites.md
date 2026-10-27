@@ -109,12 +109,26 @@ image, soit 2 à 3 pages. Ce qui change aux seuils :
   et sera recalculée. Un Cover Art Archive lent multiplie donc les rendus d'une même image.
 - Pages et images restent à mesurer sur l'hébergeur réel après la mise en ligne (§ 6).
 
+### Mesure : CSP à nonce et cache des pages publiques (jalon 9)
+
+Build de production local, `next start`, 30 requêtes par page, visiteur sans session, même
+Ryzen 7 7800X3D. Le nonce ne coûte pas de CPU mesurable (de 8 à 34 ms par page avec ou sans,
+écart dans le bruit, ≈ 17 ms en moyenne, soit 35 à 50 ms estimés sur un serveur). Son coût
+est ailleurs : une page à nonce est calculée à chaque visite et ne peut pas venir du cache.
+
+- **Nonce partout** (choisi au jalon 9) : toutes les pages sont calculées, humains et robots.
+  Avec 50 ms par page : **≈ 1 400 membres actifs** sur Vercel Hobby (le seuil du tableau).
+- **Hybride** (avec l'issue #22) : pages publiques en cache pour les visiteurs et les robots,
+  nonce pour les membres connectés. Seules leurs pages coûtent : **≈ 2 600 membres actifs**
+  (estimation, 90 % de réussite du cache ; un fichier en cache coûte 0,6 ms au serveur, 0
+  depuis le CDN).
+
 ### Tableau des seuils
 
 | Service | Limite gratuite | Ce qui la consomme | Casse vers… (estimation) | Ce qui se passe | Sortie |
 | --- | --- | --- | --- | --- | --- |
 | **Neon Free** | 100 CU-heures par mois ; compute de 0,25 CU minimum | Les heures où la base est éveillée, pas le nombre de membres | Dès que le site a des visites régulières plus de ~13 h par jour : 0,25 CU × 13 h × 30 j ≈ 100 CU-h. Quelques dizaines de membres répartis sur la journée, ou des robots, suffisent | Base suspendue jusqu'au mois suivant : **le site tombe** | Neon Launch : ≈ 13 $/mois éveillée 16 h/jour, ≈ 19 $/mois 24 h/24 à 0,25 CU (0,106 $ par CU-heure) |
-| **Vercel Hobby** | 4 h de CPU actif et 1 million d'exécutions par mois | Chaque page vue (humains + robots) | 4 h = 14,4 millions de ms ÷ 50 ms = 288 000 pages ; avec autant de robots, **~1 400 membres actifs** | Fonction suspendue jusqu'à 30 jours : le site tombe | Workers Paid 5 $/mois (30 millions de ms de CPU ≈ 600 000 pages), ou Vercel Pro 20 $/mois |
+| **Vercel Hobby** | 4 h de CPU actif et 1 million d'exécutions par mois | Chaque page vue (humains + robots) | 4 h = 14,4 millions de ms ÷ 50 ms = 288 000 pages ; avec autant de robots, **~1 400 membres actifs** (CSP à nonce partout) ; **~2 600** avec l'hybride de l'issue #22 | Fonction suspendue jusqu'à 30 jours : le site tombe | Workers Paid 5 $/mois (30 millions de ms de CPU ≈ 600 000 pages), ou Vercel Pro 20 $/mois |
 | **Vercel Hobby (règle)** | Usage non commercial uniquement | Pubs, Spleen+, liens affiliés, dons | **Le jour de la monétisation**, quel que soit le nombre de membres | Hors des conditions d'utilisation | Même sortie que ci-dessus |
 | **Brevo Free** | 300 emails par jour | Connexions par lien magique, emails de suspension | Un jour à plus de ~300 inscriptions ou reconnexions (lancement, post viral). Au quotidien, plusieurs milliers de membres actifs tiennent grâce aux sessions longues | Plus de connexion par email ce jour-là ; Google marche toujours | Brevo Starter (dès 9 $/mois, 5 000 emails, tarif à revérifier) ou Amazon SES ; mettre Google en avant |
 | **Cloudflare R2** | 10 Go, 1 million d'écritures, 10 millions de lectures par mois | Avatars (≈ 100 Ko, 512 px) | ~100 000 avatars stockés ; lectures absorbées par le cache Cloudflare devant `files.<domaine>` | Facturation à l'usage, quelques centimes | Rien à faire avant longtemps |

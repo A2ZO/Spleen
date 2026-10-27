@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 // Runs on the demo seed only (no MusicBrainz call): fictional artists and albums.
 test.use({ locale: "fr-FR" });

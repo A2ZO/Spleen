@@ -176,6 +176,11 @@ hébergeur et email de contact seulement ; le passage aux mentions complètes es
 - [ ] Relecture conseillée (modèles de la CNIL ou juriste) ; **obligatoire avant d'encaisser
       de l'argent** (pubs ou Spleen+). Les passages marqués `[À FAIRE RELIRE]` dans
       `packages/i18n` sont à faire relire en priorité.
+- [ ] Faire relire avec les conditions la case d'inscription « J'ai 15 ans ou plus et
+      j'accepte les conditions d'utilisation » et la phrase sur la confidentialité sous le
+      bouton (`welcome.termsLabel`, `welcome.privacyNotice`). Après toute modification des
+      conditions : changer `TERMS_VERSION` (`packages/validators/src/profile.ts`) et
+      `LEGAL_UPDATED`. [À FAIRE RELIRE]
 - [ ] **Vérifier** : les pages s'ouvrent depuis le pied de page, et leurs adresses sont
       celles déclarées dans l'écran de consentement Google (§ 5).
 
@@ -251,8 +256,12 @@ requête et interroge la base (quota de calcul Neon, réveil de la base, usage c
 l'hébergeur). Pas bloquant pour ouvrir, mais à traiter avant ou juste après la mise en ligne.
 
 - [ ] Traiter l'issue [#22](https://github.com/A2ZO/Spleen/issues/22) « Performance :
-      appliquer le thème côté navigateur pour permettre le cache des pages publiques ». À
-      décider en même temps que la CSP (nonce ou non, jalon 9 étape 7).
+      appliquer le thème côté navigateur pour permettre le cache des pages publiques », avec
+      la CSP hybride décidée au jalon 9 (conditions dans l'issue). Aujourd'hui : CSP à nonce
+      sur toutes les pages (`apps/web/src/lib/security.ts`, `src/proxy.ts`).
+- [ ] HSTS est envoyé sans `includeSubDomains` ni `preload` : les ajouter une fois le domaine
+      et tous ses sous-domaines en HTTPS (`files.<domaine>` compris), puis vérifier sur
+      `securityheaders.com`.
 - [ ] **Vérifier** : une page publique vue par un visiteur est servie depuis le cache, sans
       flash de mauvais thème, et les e2e passent (contrôle des journaux serveur compris).
 

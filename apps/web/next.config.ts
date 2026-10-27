@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
+import { STATIC_SECURITY_HEADERS } from "./src/lib/security";
+
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 // `<repo>/.env` is loaded by the package scripts (`dotenv -e ../../.env -- next …`) before
@@ -27,6 +29,8 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "coverartarchive.org", pathname: "/release-group/**" },
     ],
   },
+  // The Content Security Policy is set per request in `src/proxy.ts` (nonce).
+  headers: async () => [{ source: "/:path*", headers: STATIC_SECURITY_HEADERS }],
 };
 
 export default withNextIntl(nextConfig);

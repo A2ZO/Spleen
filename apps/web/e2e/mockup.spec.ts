@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test.describe("with a French browser", () => {
   test.use({ locale: "fr-FR" });
