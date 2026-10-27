@@ -1,5 +1,8 @@
+"use client";
+
 import { coverSwatches } from "@spleen/design-tokens";
 import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 
 import { cn } from "@/lib/cn";
 import { hashString } from "@/lib/hash";
@@ -31,6 +34,16 @@ export function Cover({
   sizes,
   showText = true,
 }: CoverProps) {
+  // Archive.org storage nodes sometimes answer 500: fall back to the generated sleeve.
+  const [failedUrl, setFailedUrl] = useState<string | null>(null);
+  const image = useRef<HTMLImageElement>(null);
+  useEffect(() => {
+    // The error can fire before hydration, when no handler is attached yet.
+    const el = image.current;
+    if (el?.complete && el.naturalWidth === 0) setFailedUrl(el.currentSrc);
+  }, [coverUrl]);
+  const showImage = coverUrl && failedUrl === null;
+
   return (
     <div
       className={cn(
@@ -38,16 +51,18 @@ export function Cover({
         className,
       )}
     >
-      {coverUrl ? (
+      {showImage ? (
         // Covers come from Cover Art Archive in ready-made sizes: no image optimisation
         // (no host-specific service, no quota), the browser follows the redirect itself.
         <Image
+          ref={image}
           src={coverUrl}
           alt={alt}
           fill
           unoptimized
           sizes={sizes ?? "200px"}
           className="object-cover"
+          onError={(e) => setFailedUrl(e.currentTarget.currentSrc)}
         />
       ) : (
         <GeneratedCover
