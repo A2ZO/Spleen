@@ -36,17 +36,17 @@ test("a cover that fails after hydration gives way to the generated sleeve", asy
 test.describe("without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
 
-  test("a cover that fails shows the generated sleeve, no broken image", async ({ page }) => {
+  test("a cover that fails leaves the plain background, no broken image", async ({ page }) => {
     await page.route("https://coverartarchive.org/**", (route) => route.fulfill({ status: 500 }));
     await page.goto(ALBUM);
     const cover = page.locator("main img").first();
     await expect(cover).toHaveAttribute("alt", "");
     await expect.poll(() => cover.evaluate((img: HTMLImageElement) => img.complete)).toBe(true);
     expect(await cover.evaluate((img: HTMLImageElement) => img.naturalWidth)).toBe(0);
-    // The sleeve underneath is what the visitor sees, with its title printed on it.
+    // The sleeve keeps its name; no generated artwork is drawn without JavaScript.
     const sleeve = page.getByRole("img", { name: TITLE });
     await expect(sleeve).toBeVisible();
-    await expect(sleeve.getByText(TITLE)).toBeVisible();
+    await expect(sleeve.getByText(TITLE)).toHaveCount(0);
   });
 });
 

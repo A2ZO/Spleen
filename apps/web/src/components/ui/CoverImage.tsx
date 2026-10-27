@@ -1,13 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 /**
- * The real cover over the generated sleeve, removed when it fails to load (archive.org storage
- * nodes sometimes answer 500). The failure belongs to one URL: a new `src` gets its own try.
+ * The real cover, replaced by `fallback` (the generated sleeve, rendered on the server) when it
+ * fails to load: archive.org storage nodes sometimes answer 500. The failure belongs to one
+ * URL: a new `src` gets its own try.
  */
-export function CoverImage({ src, sizes }: { src: string; sizes: string }) {
+export function CoverImage({
+  src,
+  sizes,
+  fallback,
+}: {
+  src: string;
+  sizes: string;
+  fallback: ReactNode;
+}) {
   const [failedSrc, setFailedSrc] = useState<string | null>(null);
   const image = useRef<HTMLImageElement>(null);
   useEffect(() => {
@@ -15,7 +24,7 @@ export function CoverImage({ src, sizes }: { src: string; sizes: string }) {
     if (el?.complete && el.naturalWidth === 0) setFailedSrc(src);
   }, [src]);
 
-  if (failedSrc === src) return null;
+  if (failedSrc === src) return fallback;
   return (
     // Covers come from Cover Art Archive in ready-made sizes: no image optimisation
     // (no host-specific service, no quota), the browser follows the redirect itself.
