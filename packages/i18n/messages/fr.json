@@ -996,5 +996,13 @@
     "list": "Liste de {name} sur Spleen : {count, plural, one {# élément} other {# éléments}}.",
     "profile": "Le carnet d'écoute de {name} sur Spleen : journal, critiques et listes.",
     "diary": "Le journal d'écoute de {name} sur Spleen."
+  },
+  "pwa": {
+    "name": "Spleen",
+    "description": "Ton carnet d'écoute : note, critique et range tes disques.",
+    "offlineTitle": "Hors ligne",
+    "offlineHeading": "La platine tourne à vide",
+    "offlineBody": "Pas de connexion pour l'instant. Spleen reviendra dès que le réseau sera de retour.",
+    "offlineRetry": "Réessayer"
   }
 }

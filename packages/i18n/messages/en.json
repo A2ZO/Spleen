@@ -996,5 +996,13 @@
     "list": "A list by {name} on Spleen: {count, plural, one {# item} other {# items}}.",
     "profile": "{name}'s listening diary on Spleen: diary, reviews and lists.",
     "diary": "{name}'s listening diary on Spleen."
+  },
+  "pwa": {
+    "name": "Spleen",
+    "description": "Your listening diary: rate, review and shelve your records.",
+    "offlineTitle": "Offline",
+    "offlineHeading": "The turntable is spinning empty",
+    "offlineBody": "No connection right now. Spleen will be back as soon as the network is.",
+    "offlineRetry": "Try again"
   }
 }

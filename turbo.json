@@ -17,7 +17,8 @@
     "S3_SECRET_ACCESS_KEY",
     "S3_PUBLIC_URL",
     "MUSICBRAINZ_USER_AGENT",
-    "NEON_MAIN_HOST"
+    "NEON_MAIN_HOST",
+    "SERVICE_WORKER_DISABLED"
   ],
   "tasks": {
     "build": {

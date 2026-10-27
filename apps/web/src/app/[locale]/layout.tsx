@@ -9,11 +9,12 @@ import type { ReactNode } from "react";
 import { SuspendedNotice } from "@/components/account/SuspendedNotice";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { ServiceWorker } from "@/components/layout/ServiceWorker";
 import { initRouteLocale } from "@/i18n/locale";
 import { routing } from "@/i18n/routing";
 import { parseTheme, THEME_COOKIE } from "@/lib/theme";
 import { getApi } from "@/server/api";
-import { siteUrl } from "@spleen/infra/config";
+import { serviceWorkerDisabled, siteUrl } from "@spleen/infra/config";
 
 import { fraunces, inter, plexMono } from "../fonts";
 
@@ -35,6 +36,8 @@ export async function generateMetadata({
     metadataBase: new URL(siteUrl()),
     title: { default: title, template: `%s · ${t("title")}` },
     description: t("description"),
+    // Installed on an iPhone: its own name, the Apple icon (app/apple-icon.png), a dark status bar.
+    appleWebApp: { capable: true, title: t("title"), statusBarStyle: "black" },
   };
 }
 
@@ -74,6 +77,7 @@ export default async function LocaleLayout({
             {suspension ? <SuspendedNotice suspension={suspension} locale={locale} /> : children}
           </main>
           <Footer />
+          <ServiceWorker enabled={!serviceWorkerDisabled()} />
         </NextIntlClientProvider>
       </body>
     </html>

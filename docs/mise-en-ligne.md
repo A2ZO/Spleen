@@ -269,6 +269,12 @@ Postgres jetable, jamais Neon.
 
 ## 13. Vérification finale
 
+- [ ] Après le déploiement, installer la PWA sur un iPhone et un Android et s'y connecter par
+      email et par Google (le test sur un vrai téléphone demande HTTPS). Sur iPhone, l'appli
+      installée a ses propres cookies : voir la décision sur la connexion par code
+      (jalon 9, étape 6).
+- [ ] **Vérifier** que `https://<domaine>/sw.js` répond avec `Cache-Control: no-cache` et
+      que l'hébergeur ne le met pas en cache (en-têtes de la réponse).
 - [ ] Projet Vercel : Root Directory = `apps/web` (là où est `vercel.json`). **Vérifier**
       dans le résumé du déploiement (onglet Resources / Deployment Summary) que les fonctions
       tournent à Francfort (`fra1`), pas à Washington (`iad1`, région par défaut) : la base

@@ -9,7 +9,8 @@
     "start": "dotenv -e ../../.env --no-expand -- next start",
     "lint": "eslint .",
     "typecheck": "tsc",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "@spleen/api": "workspace:*",

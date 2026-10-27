@@ -38,6 +38,10 @@ export const contactEmail = (env: Env = process.env): string | null =>
 export const siteUrl = (env: Env = process.env): string =>
   (env.BETTER_AUTH_URL?.trim() || "http://localhost:3000").replace(/\/+$/, "");
 
+/** Emergency switch: the service worker removes itself (docs/environnement.md). */
+export const serviceWorkerDisabled = (env: Env = process.env): boolean =>
+  env.SERVICE_WORKER_DISABLED?.trim() === "1";
+
 /** Names (never values) of the variables production needs but lacks. */
 export function missingProductionVariables(env: Env = process.env): string[] {
   const required = [

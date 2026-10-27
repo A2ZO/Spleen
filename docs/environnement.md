@@ -21,6 +21,7 @@ booléens comme « commence par postgres:// », « contient -pooler »).
 | `DATABASE_URL_UNPOOLED`                     | URL Neon **directe**                | migrations, seed, drizzle-kit     |
 | `DATABASE_URL` absente                      | → PGlite dans `.data/pglite`        | repli local hors ligne            |
 | `NEON_MAIN_HOST`                            | hôte (ou `ep-…`) de la base du site en ligne | garde-fou du nettoyage e2e        |
+| `SERVICE_WORKER_DISABLED`                   | `1` en cas d'urgence seulement               | retire le service worker (ci-dessous) |
 | `BETTER_AUTH_SECRET` / `BETTER_AUTH_URL`    | 32+ caractères / URL publique       | Better Auth                       |
 | `GOOGLE_CLIENT_ID` / `_SECRET`              | client OAuth Google (Web)           | bouton Google (caché si absent)   |
 | `BREVO_API_KEY` / `EMAIL_FROM`              | clé Brevo v3 / expéditeur vérifié   | liens magiques (dev : terminal)   |
@@ -29,6 +30,32 @@ booléens comme « commence par postgres:// », « contient -pooler »).
 
 La production refuse de démarrer sans les variables d'auth, Brevo et S3
 (`assertProductionConfig()`, `apps/web/src/instrumentation.ts`).
+
+## Service worker (PWA)
+
+`/sw.js` est un route handler (`apps/web/src/app/sw.js/route.ts`), servi avec
+`Cache-Control: no-cache` : le navigateur revérifie le script à chaque visite. Il ne met en
+cache que la page hors ligne (`/offline.html?lang=fr|en`), les fichiers statiques versionnés
+(`/_next/static`, en production seulement) et les icônes ; jamais une page, jamais `/api`
+(donc jamais `/api/auth`, le lien magique va toujours au serveur). Le nom du cache porte le
+numéro de build (`SPLEEN_BUILD_ID` dans `next.config.ts` : le commit sur Vercel, sinon l'heure
+du build, `dev` en développement) ; les anciens caches sont supprimés à l'activation. Une
+nouvelle version attend que tous les onglets Spleen soient fermés et prend la main au lancement
+suivant : pas de `skipWaiting`, pas de rechargement forcé.
+
+**Désactiver en urgence** (un service worker raté qui casse le site chez les gens) :
+
+1. Dans les réglages de l'hébergeur, poser `SERVICE_WORKER_DISABLED=1` (environnement
+   Production) et redéployer.
+2. `/sw.js` sert alors un script qui vide tous les caches et se désinscrit, et le site cesse
+   d'enregistrer le service worker (composant `ServiceWorker`, qui désinscrit au contraire).
+   Comme `/sw.js` n'est jamais mis en cache, chaque navigateur le récupère à sa prochaine
+   visite.
+3. **Vérifier** : `curl -s https://<domaine>/sw.js` contient `unregister` ; dans Chrome,
+   DevTools › Application › Service workers ne liste plus rien après une visite.
+4. Corriger, retirer la variable, redéployer : le service worker revient.
+
+En local : DevTools › Application › Service workers › Unregister, ou « Clear site data ».
 
 ## Base de données
 

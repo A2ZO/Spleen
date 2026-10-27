@@ -20,11 +20,11 @@ Sources : `docs/prompt-claude-code-spleen.md` (règles), `docs/cahier-des-charge
 | 3 | Fusion de doublons + bouton « Signaler une erreur / proposer un ajout » (réponse 3) | fait | voir `git log` |
 | 4 | Pages légales FR/EN | fait | voir `git log` |
 | 5 | Référencement et partage (sitemap, robots, canonical/hreflang, métadonnées, OG) | fait | voir `git log` |
-| 6 | PWA (manifeste, icônes, page hors ligne) | à faire | — |
+| 6 | PWA (manifeste, icônes, page hors ligne) | fait (connexion sur iPhone : proposition en attente) | voir `git log` |
 | 7 | Finitions : 404/500 Baudelaire, en-têtes de sécurité (CSP **mesurée d'abord**), axe | à faire | — |
 | fin | Seed à jour, vérification visuelle Chrome bureau + mobile, `/fin-de-jalon` | à faire | — |
 
-État vérifié au dernier commit : lint, typecheck, format, tests unitaires (201 API) et 70 e2e verts, CI verte,
+État vérifié au dernier commit : lint, typecheck, format, tests unitaires et 84 e2e verts, CI verte,
 contrôle des journaux serveur propre.
 
 ## Ce qui est fait (résumé)
@@ -39,6 +39,7 @@ contrôle des journaux serveur propre.
   `apps/web/e2e/server-log.ts` fait échouer les e2e si le serveur journalise l'une des deux
   erreurs.
 - **Avant l'étape 5.** CLAUDE.md et les docs alignés sur `spleen-prod` ; mentions légales de la bêta (LCEN art. 1-1 II), Brevo, sauvegardes Neon, droit applicable, Vercel à Francfort (`apps/web/vercel.json`, `fra1`) ; purge de nuit (`pnpm retention`, job `retention`, `lib/retention.ts`) des sessions, liens de connexion et compteurs. Captures mobiles avec Playwright (Pixel 7) : l'indicateur « 1 Issue » de Next venait du style `caret-color` injecté par l'outil de capture, pas du site.
+- **Étape 6.** `app/manifest.ts` (standalone, encre de nuit, icônes 192 / 512 / maskable), icônes générées depuis `icon.svg` par `pnpm --filter @spleen/web icons` (`scripts/generate-icons.mjs`, avec `next/og`, sans `sharp`), `app/apple-icon.png`, `appleWebApp` (barre d'état sombre) ; `app/sw.js/route.ts` (service worker), `app/offline.html/route.ts` (page hors ligne autonome, FR/EN), `components/layout/ServiceWorker.tsx`, interrupteur `SERVICE_WORKER_DISABLED` (`docs/environnement.md`). e2e `pwa.spec.ts`. **Connexion sur iPhone** (cookies séparés de Safari, WWDC23) : proposition d'un code à 6 chiffres dans le même email, en attente de décision.
 - **Étape 5.** Voir `docs/referencement.md`. API `lib/seo.ts` (`seo.sitemapFiles`, `seo.sitemap`, `seo.page`, `seo.og`), web `lib/seo.ts` (`seoMetadata`), `lib/sitemap.ts`, routes `sitemap.xml`, `sitemaps/[file]`, `og/[kind]/[key]`, `robots.ts` ; `getPublicApi()` sans session. Tests `seo.test.ts`, e2e `seo.spec.ts`.
 - **Étape 4.** Pages `/legal` (mentions et crédits, ancre `#credits`), `/terms`, `/privacy`, FR/EN, composant `components/legal/LegalPage.tsx` (sections et date `LEGAL_UPDATED`), textes dans `packages/i18n` (`legal.*`, balises riches `<p>`, `<ul>`, `<contact>`, liens), adresse de contact par `system.contact`. Liens dans le pied de page. Crédits : MusicBrainz (CC0 pour le cœur, genres sous CC BY-NC-SA 3.0 avec lien vers la licence) et Cover Art Archive. Informations personnelles en `[À COMPLÉTER]`, points non vérifiables en `[À VÉRIFIER]` : liste dans `docs/mise-en-ligne.md` § 7. e2e `legal.spec.ts`. Constat : rien ne purge les sessions expirées ni les vieux compteurs `rate_limits` (noté § 7).
 - **Étape 3.** Migration `0011_catalog_merges.sql` (`merged_into_id` sur releases/tracks/artists, raisons `catalog_cover` / `catalog_duplicate`, colonnes `duplicate_*` des signalements ; CHECK comparé en `::text` car la valeur d'enum ajoutée ne peut pas servir dans la même transaction). API : `lib/catalog/merge.ts` (`mergeCatalog`, `previewMerge`, `mergedSlug`), `lib/catalog/reports.ts` (`report.catalog`), procédures `admin.merge`, `admin.mergePreview`, `catalog.mergedInto` ; l'import suit `merged_into_id` ; recherche et sorties récentes ignorent les fiches fusionnées. Web : `CatalogReportButton` sur album/artiste/morceau, `/admin/merge` (onglet « Fusion de doublons »), lien « Fusionner » sur un signalement doublon, redirection permanente `lib/catalog-redirect.ts` (308, équivalent 301 pour les moteurs). Tests : `merge.test.ts` (un par type, rollback par déclencheur, import, signalements), validators, 2 e2e. **Ne jamais tester une fusion sur Neon `dev` : elle ne se défait pas.** Règles : `docs/social.md` § « Fusion de doublons ». Vérifié dans Chrome (bureau et mobile) : aperçu de fusion et dialogue de signalement, sans envoi. **Vérifié sur un vrai Postgres** : job `api-postgres` vert sur la PR [#23](https://github.com/A2ZO/Spleen/pull/23) (brouillon, à réutiliser par `/fin-de-jalon`), et e2e de fusion réelle depuis la file sur la base `dev` (disques jetables `e2e-…` sans MBID créés par `throwawayReleases()`, supprimés au teardown : décisions et signalements des comptes e2e, signalements des disques jetables, fiche fusionnée, fiche gardée — `deleteE2eAccounts`). Les deux e2e « signalement » et « fusion » laissent leurs comptes au teardown (un signalement survit à son auteur).
@@ -164,7 +165,9 @@ jalon. Notée dans `docs/mise-en-ligne.md` § 11.
   redirige ; plus l'URL publique R2 ; HSTS, `frame-ancestors 'none'`, `nosniff`,
   `Referrer-Policy`, `Permissions-Policy`) — **mesurer puis faire choisir** (décision 4) ;
   audit axe (`@axe-core/playwright`, version vérifiée sur npm) sur accueil, recherche, album,
-  profil, liste, découverte, admin ; corriger `serious` et `critical`.
+  profil, liste, découverte, admin ; corriger `serious` et `critical`. **La CSP devra autoriser
+  `worker-src 'self'` et `manifest-src 'self'`** (service worker et manifeste de l'étape 6),
+  et `/sw.js`, `/offline.html` (styles en ligne : `style-src` ou un hash) ne doivent pas casser.
 - **Fin** : seed (admin de démo et signalements déjà là), un test par règle, vérification
   visuelle dans Chrome bureau et mobile, mise à jour de `CLAUDE.md` (cocher le jalon 9,
   reporter ce document), `/fin-de-jalon`.
