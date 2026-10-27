@@ -14,7 +14,7 @@ peut pas finir dans un cache public.
 | Artiste `/artist/[slug]` | pas fusionné, au moins un disque complet | `artists-N.xml` |
 | Liste `/list/[id]` | pas masquée, propriétaire non suspendu, au moins un élément | `lists-N.xml` |
 | Profil `/u/[username]` | non suspendu, avec une activité publique (critique visible, liste non vide, écoute d'un journal public) ; sans `?tab=` | `profiles-N.xml` |
-| Critique `/review/[id]` | pas masquée, auteur non suspendu | non (atteinte depuis son disque) |
+| Critique `/review/[id]` | 200 caractères de texte au moins (`REVIEW_INDEX_MIN_LENGTH`, espaces non comptés), pas masquée, auteur non suspendu ; plus courte : `noindex` (page pauvre), mais toujours partageable | `reviews-N.xml` |
 | Journal `/u/[username]/diary` | journal public | non |
 | Morceau, accueil (sans paramètre), découverte, pages légales | toujours | accueil, découverte et pages légales dans `static.xml` |
 | Recherche, réglages, connexion, bienvenue, notifications, édition, abonnés, admin | jamais (`noindex`) | non |
@@ -65,5 +65,8 @@ profils.
 - Pochettes et avatars : 3 s au plus et 3 Mo au plus, JPEG ou PNG (Cover Art Archive redirige
   vers archive.org, parfois lent). Sinon, une pochette de repli dessinée, et un cache de
   5 minutes seulement, pour qu'une demande suivante montre la vraie pochette.
-- Police par défaut de `next/og` ; Fraunces demanderait d'ajouter son fichier de police au
-  dépôt.
+- Polices : Fraunces SemiBold (titres) et Inter Regular (reste), instances statiques TTF
+  réduites au latin, 101 Ko en tout (`apps/web/assets/fonts/`, licences OFL). Les polices
+  fournies remplacent celle par défaut de `next/og` : d'où Inter. Fichiers déclarés à
+  `outputFileTracingIncludes` (`next.config.ts`) pour partir au déploiement.
+- Coût : 16 à 62 ms de CPU par image sur un poste rapide (`docs/stack-et-limites.md` § 3).

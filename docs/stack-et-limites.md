@@ -83,6 +83,32 @@ Pour comprendre les limites, il faut savoir ce que coûte une visite :
 Formule pour recalculer l'hébergement :
 `membres max ≈ CPU inclus (en ms) ÷ (CPU par page × pages par membre × (1 + part des robots))`.
 
+### Mesure : une image de partage (jalon 9)
+
+Temps CPU de `next/og` pour une image 1200 × 630 avec Fraunces et Inter, mesuré le 27 octobre
+2026 avec `process.cpuUsage()` sur 30 rendus, en Node.js de production, sur un Ryzen 7 7800X3D
+(processeur de bureau rapide). Le téléchargement de la pochette (≈ 2 s chez Cover Art Archive)
+n'est pas compté : une attente réseau ne consomme pas de CPU actif.
+
+| Image | CPU médian | Premier rendu (à froid) |
+| --- | --- | --- |
+| Disque ou critique avec pochette | 47 ms | 173 ms |
+| Sans pochette (repli dessiné) | 16 ms | 15 ms |
+| Liste à 4 pochettes | 62 ms | 46 ms |
+
+Sur un serveur mutualisé, compter **2 à 3 fois plus** (estimation) : de 100 à 150 ms par
+image, soit 2 à 3 pages. Ce qui change aux seuils :
+
+- Chaque version d'image n'est calculée qu'**une fois par cache** : l'URL change avec le
+  contenu et la réponse est gardée un an (`docs/referencement.md`). Ce sont les robots
+  d'aperçu (messageries, réseaux sociaux) qui la demandent, pas chaque visiteur.
+- Même avec 1 000 partages par mois de contenus nouveaux, cela ferait au plus
+  1 000 × 150 ms = 150 000 ms, **≈ 1 % des 4 h** de Vercel Hobby (14,4 millions de ms). Les
+  seuils du tableau ci-dessous ne bougent donc pas.
+- À surveiller : une image dont la pochette a dépassé son délai n'est gardée que 5 minutes,
+  et sera recalculée. Un Cover Art Archive lent multiplie donc les rendus d'une même image.
+- Pages et images restent à mesurer sur l'hébergeur réel après la mise en ligne (§ 6).
+
 ### Tableau des seuils
 
 | Service | Limite gratuite | Ce qui la consomme | Casse vers… (estimation) | Ce qui se passe | Sortie |

@@ -19,6 +19,8 @@ const nextConfig: NextConfig = {
   ],
   // PGlite (local fallback database) loads its WebAssembly files at runtime: keep it unbundled.
   serverExternalPackages: ["@electric-sql/pglite"],
+  // Read with fs by the Open Graph image route: listed so deployments ship it.
+  outputFileTracingIncludes: { "/og/**": ["./assets/fonts/**"] },
   // Covers are served unoptimised (see Cover); only Cover Art Archive may be used.
   images: {
     remotePatterns: [

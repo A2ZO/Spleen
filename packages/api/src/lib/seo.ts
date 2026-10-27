@@ -10,17 +10,19 @@ import type { OgCard, SeoPage, SitemapEntry } from "../types";
  * - lists: not hidden, owner not suspended, at least one item;
  * - profiles: not suspended, with some public activity (a visible review, a non-empty visible
  *   list, or a listen in a public diary);
- * - reviews: not hidden, author not suspended (never in the sitemap: they are reached from
- *   their record).
+ * - reviews: real ones, at least REVIEW_INDEX_MIN_LENGTH characters of text, not hidden, author
+ *   not suspended (a one-liner is a thin page: noindex and out of the sitemap).
  * Open Graph images exist for releases, profiles (public diary only), reviews and lists that
  * anyone may see; their version changes when what the image shows changes.
  */
 
-export type SitemapKind = "releases" | "artists" | "lists" | "profiles";
+export type SitemapKind = "releases" | "artists" | "lists" | "profiles" | "reviews";
 export type SeoKind = "release" | "artist" | "list" | "profile" | "review";
 
 /** URLs per sitemap file and per locale (well under the 50 000 limit, both locales included). */
 export const SITEMAP_CHUNK = 5_000;
+/** Characters of text (trimmed) from which a review is a page worth indexing. */
+export const REVIEW_INDEX_MIN_LENGTH = 200;
 
 const completeRelease = (r: string) =>
   sql.raw(
@@ -75,6 +77,14 @@ const SOURCES: Record<
       case when p.diary_private then null
         else (select max(e.created_at) from entries e where e.user_id = p.user_id) end)`,
     order: sql`p.user_id`,
+  },
+  reviews: {
+    from: sql`reviews rv`,
+    where: sql`rv.hidden_at is null and ${notSuspended("rv.user_id")}
+      and char_length(btrim(rv.body)) >= ${REVIEW_INDEX_MIN_LENGTH}`,
+    path: sql`'/review/' || rv.id`,
+    lastModified: sql`rv.updated_at`,
+    order: sql`rv.id`,
   },
 };
 
@@ -154,12 +164,12 @@ export async function seoPage(db: Db, kind: SeoKind, key: string): Promise<SeoPa
       return row ? { indexable: row.indexable, og: row.private ? null : version(row.at) } : null;
     }
     case "review": {
-      const [row] = rowsOf<{ at: string }>(
+      const [row] = rowsOf<{ indexable: boolean; at: string }>(
         await db.execute(sql`
-          select rv.updated_at as at from reviews rv
+          select ${SOURCES.reviews.where} as indexable, rv.updated_at as at from reviews rv
           where rv.id = ${key}::uuid and rv.hidden_at is null and ${notSuspended("rv.user_id")}`),
       );
-      return row ? { indexable: true, og: version(row.at) } : null;
+      return row ? { indexable: row.indexable, og: version(row.at) } : null;
     }
   }
 }

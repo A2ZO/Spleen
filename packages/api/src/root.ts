@@ -239,7 +239,7 @@ export const appRouter = router({
     sitemap: publicProcedure
       .input(
         z.object({
-          kind: z.enum(["releases", "artists", "lists", "profiles"]),
+          kind: z.enum(["releases", "artists", "lists", "profiles", "reviews"]),
           page: z.number().int().min(1).max(10_000),
         }),
       )

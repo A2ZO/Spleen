@@ -4,6 +4,7 @@ import { eq, schema, type DbHandle } from "@spleen/db";
 import { createTestDb } from "@spleen/db/testing";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
+import { REVIEW_INDEX_MIN_LENGTH } from "./lib/seo";
 import { createCaller } from "./root";
 import { createContext, type SessionUser } from "./trpc";
 
@@ -59,7 +60,7 @@ async function member(fields: Partial<typeof schema.profiles.$inferInsert> = {})
   return { id: row!.id, username };
 }
 
-const paths = async (kind: "releases" | "artists" | "lists" | "profiles") =>
+const paths = async (kind: "releases" | "artists" | "lists" | "profiles" | "reviews") =>
   (await api().seo.sitemap({ kind, page: 1 })).map((e) => e.path);
 
 describe("indexing", () => {
@@ -209,7 +210,37 @@ describe("indexing", () => {
       artists: 1,
       lists: 1,
       profiles: 1,
+      reviews: 1,
     });
     expect(await api().seo.sitemap({ kind: "releases", page: 2 })).toEqual([]);
+  });
+
+  it(`indexes real reviews only: ${REVIEW_INDEX_MIN_LENGTH} characters of text or more`, async () => {
+    const author = await member();
+    const record = await release();
+    const long = "Un disque de pluie fine, à écouter tard. ".repeat(5).trim();
+    expect(long.length).toBeGreaterThanOrEqual(REVIEW_INDEX_MIN_LENGTH);
+    const [real, short, padded] = await db()
+      .insert(schema.reviews)
+      .values([
+        { userId: author.id, releaseId: record.id, body: long, lang: "fr" },
+        { userId: author.id, releaseId: record.id, body: "Superbe !", lang: "fr" },
+        // Spaces do not count.
+        { userId: author.id, releaseId: record.id, body: `Bof.${" ".repeat(300)}`, lang: "fr" },
+      ])
+      .returning();
+    const listed = await paths("reviews");
+    expect(listed).toContain(`/review/${real!.id}`);
+    for (const review of [short!, padded!]) {
+      expect(listed).not.toContain(`/review/${review.id}`);
+      // Thin, not hidden: the page stays shareable but says noindex.
+      expect(await api().seo.page({ kind: "review", key: review.id })).toMatchObject({
+        indexable: false,
+        og: expect.any(String),
+      });
+    }
+    expect(await api().seo.page({ kind: "review", key: real!.id })).toMatchObject({
+      indexable: true,
+    });
   });
 });

@@ -10,7 +10,7 @@ import { routing } from "@/i18n/routing";
  * locale with its hreflang alternates. Only indexable pages (API `seo.sitemap`).
  */
 
-export const SITEMAP_KINDS = ["releases", "artists", "lists", "profiles"] as const;
+export const SITEMAP_KINDS = ["releases", "artists", "lists", "profiles", "reviews"] as const;
 export type SitemapKind = (typeof SITEMAP_KINDS)[number];
 
 /** Public pages that are always indexable. */

@@ -158,8 +158,9 @@ Les pages existent depuis le jalon 9 : `/legal` (mentions légales et crédits, 
 Mentions de la bêta : site édité à titre non professionnel (article 1-1 II de la LCEN),
 hébergeur et email de contact seulement ; le passage aux mentions complètes est au § 14.
 
-- [ ] Remplacer chaque `[À COMPLÉTER]` (téléphone de Vercel dans les mentions ; ton nom comme
-      responsable du traitement dans la politique, sans adresse postale) et le
+- [ ] Remplacer chaque `[À COMPLÉTER]` (ton nom comme responsable du traitement dans la
+      politique, sans adresse postale ; les mentions de la bêta ne demandent que le nom et
+      l'adresse de l'hébergeur, article 1-1 II de la LCEN) et le
       `[À VÉRIFIER]` restant (mécanisme de transfert de Vercel, à lire dans son DPA), dans
       `fr.json` **et** `en.json`. Vérifier : `grep -c "À COMPLÉTER\|À VÉRIFIER"
       packages/i18n/messages/*.json` répond 0.
@@ -293,9 +294,13 @@ Postgres jetable, jamais Neon.
 Pas nécessaire pour un site gratuit et sans pub : à faire avant de gagner le premier euro.
 
 - [ ] Passer aux mentions légales complètes (nom, adresse, téléphone, SIRET, directeur de
-      publication) avant le premier euro : les mentions de la bêta (« édité à titre non
+      publication ; et pour l'hébergeur nom, adresse **et téléphone**, article 1-1 I 4° de la
+      LCEN) avant le premier euro : les mentions de la bêta (« édité à titre non
       professionnel ») ne valent que tant que Spleen ne rapporte rien (ni pub, ni abonnement,
       ni lien affilié, ni don). [À FAIRE RELIRE]
+- [ ] Tester un build OpenNext avec une image de partage et le sitemap avant de passer sur
+      Cloudflare Workers (la doc d'OpenNext ne parle pas de `next/og` ; son dépôt le teste en
+      e2e).
 - [ ] Licence des genres MusicBrainz (CC BY-NC-SA, non commerciale) : licence commerciale
       MetaBrainz ou autre source de genres, avant la première pub ou le premier abonnement —
       voir `docs/stack-et-limites.md` § 5.2.

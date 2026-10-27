@@ -1,6 +1,9 @@
 import type { OgCard } from "@spleen/api";
 import { palette } from "@spleen/design-tokens";
 import { siteUrl } from "@spleen/infra/config";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+
 import { ImageResponse } from "next/og";
 import type { ReactElement } from "react";
 
@@ -16,6 +19,16 @@ import { getPublicApi } from "@/server/api";
  */
 
 const SIZE = { width: 1200, height: 630 };
+
+/**
+ * Fraunces SemiBold for titles, Inter Regular for the rest: static TTF instances, subset to
+ * Latin (assets/fonts/README.md, OFL licences there). Read once; a missing file must not crash
+ * the server (unhandled rejection): next/og then draws its own default font.
+ */
+const fontFile = (name: string) =>
+  readFile(join(process.cwd(), "assets/fonts", name)).catch(() => null);
+const fontFiles = Promise.all([fontFile("Fraunces-SemiBold.ttf"), fontFile("Inter-Regular.ttf")]);
+
 const COVER_TIMEOUT_MS = 3_000;
 const COVER_MAX_BYTES = 3 * 1024 * 1024;
 const KINDS = ["release", "review", "list", "profile"] as const;
@@ -165,13 +178,20 @@ async function render(card: OgCard): Promise<{ element: ReactElement; complete: 
         padding: 72,
         background: palette.ink,
         color: palette.cream,
-        fontFamily: "sans-serif",
+        fontFamily: "Inter",
       }}
     >
       {picture}
       <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 20 }}>
         <div style={{ fontSize: 26, letterSpacing: 6, color: palette.brass }}>SPLEEN</div>
-        <div style={{ fontSize: card.title.length > 40 ? 52 : 64, lineHeight: 1.1 }}>
+        <div
+          style={{
+            fontFamily: "Fraunces",
+            fontWeight: 600,
+            fontSize: card.title.length > 40 ? 52 : 64,
+            lineHeight: 1.1,
+          }}
+        >
           {clamp(card.title, 80)}
         </div>
         <div style={{ fontSize: 32, opacity: 0.75 }}>
@@ -202,9 +222,18 @@ export async function GET(
   const card = await getPublicApi().seo.og({ kind, key: decodeURIComponent(key) });
   if (!card) return new Response("Not found", { status: 404 });
   const current = new URL(request.url).searchParams.get("v") === card.version;
-  const { element, complete } = await render(card);
+  const [{ element, complete }, [fraunces, inter]] = await Promise.all([render(card), fontFiles]);
+  const fonts = [
+    ...(fraunces
+      ? [{ name: "Fraunces", data: fraunces, weight: 600 as const, style: "normal" as const }]
+      : []),
+    ...(inter
+      ? [{ name: "Inter", data: inter, weight: 400 as const, style: "normal" as const }]
+      : []),
+  ];
   return new ImageResponse(element, {
     ...SIZE,
+    ...(fonts.length > 0 ? { fonts } : {}),
     headers: {
       // A version's URL never changes what it shows: cached for a year. Any other URL, or an
       // image drawn without a cover that did not answer in time, is short-lived, so a later
