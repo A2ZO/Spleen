@@ -291,9 +291,10 @@
     "available": "Ce pseudo est libre.",
     "displayNameLabel": "Nom affiché",
     "displayNameHint": "Tu pourras le changer quand tu veux.",
-    "ageLabel": "J'ai 15 ans ou plus",
-    "ageHint": "C'est l'âge minimum pour utiliser Spleen.",
+    "termsLabel": "J'ai 15 ans ou plus et j'accepte les <terms>conditions d'utilisation</terms>",
+    "termsHint": "15 ans, c'est l'âge minimum pour utiliser Spleen.",
     "submit": "Ouvrir mon étagère",
+    "privacyNotice": "Ce que Spleen fait de tes données est expliqué dans la <privacy>politique de confidentialité</privacy>.",
     "saving": "Un instant…"
   },
   "settings": {

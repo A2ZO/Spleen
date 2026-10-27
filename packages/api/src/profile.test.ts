@@ -48,7 +48,7 @@ async function member(options: { timeZone?: string; blindMode?: boolean } = {}) 
   await api(user).account.onboard({
     username,
     displayName: username,
-    ageConfirmed: true,
+    termsAccepted: true,
     locale: "fr",
     theme: "dark",
     timeZone: options.timeZone ?? "Europe/Paris",

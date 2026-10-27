@@ -77,7 +77,7 @@ describe("onboardingSchema", () => {
   const valid = {
     username: "Camille",
     displayName: " Camille ",
-    ageConfirmed: true,
+    termsAccepted: true,
     locale: "fr",
     theme: "dark",
   };
@@ -90,7 +90,7 @@ describe("onboardingSchema", () => {
   });
 
   it("requires the age confirmation", () => {
-    expect(onboardingSchema.safeParse({ ...valid, ageConfirmed: false }).success).toBe(false);
+    expect(onboardingSchema.safeParse({ ...valid, termsAccepted: false }).success).toBe(false);
   });
 });
 

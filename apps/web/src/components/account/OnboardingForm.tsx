@@ -1,15 +1,26 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useActionState, useSyncExternalStore } from "react";
+import { useActionState, useSyncExternalStore, type ReactNode } from "react";
 
 import { checkUsername, onboardAction, type OnboardingState } from "@/app/[locale]/welcome/actions";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, FormMessage, TextField } from "@/components/ui/Field";
+import { Link } from "@/i18n/navigation";
 
 import { UsernameField } from "./UsernameField";
 
 const noSubscription = () => () => {};
+
+/** Opens in a new tab: the form being filled in stays as it is. */
+const legalLink = (href: string) =>
+  function LegalLink(chunks: ReactNode) {
+    return (
+      <Link href={href} target="_blank" className="text-link underline underline-offset-2">
+        {chunks}
+      </Link>
+    );
+  };
 
 export function OnboardingForm({
   locale,
@@ -46,11 +57,19 @@ export function OnboardingForm({
         defaultValue={defaultDisplayName}
         hint={t("displayNameHint")}
       />
-      <Checkbox name="ageConfirmed" required label={t("ageLabel")} hint={t("ageHint")} />
+      <Checkbox
+        name="termsAccepted"
+        required
+        label={t.rich("termsLabel", { terms: legalLink("/terms") })}
+        hint={t("termsHint")}
+      />
       {state.error && !usernameError && <FormMessage tone="error">{te(state.error)}</FormMessage>}
       <Button type="submit" className="w-full" disabled={pending}>
         {pending ? t("saving") : t("submit")}
       </Button>
+      <p className="text-sm text-fg-muted">
+        {t.rich("privacyNotice", { privacy: legalLink("/privacy") })}
+      </p>
     </form>
   );
 }

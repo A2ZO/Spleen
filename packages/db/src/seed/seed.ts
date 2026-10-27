@@ -1,4 +1,5 @@
 import { sql } from "drizzle-orm";
+import { TERMS_VERSION } from "@spleen/validators";
 
 import type { Db } from "../client";
 import { recomputeItemState, setWantToListen } from "../listening-state";
@@ -189,6 +190,8 @@ export async function seed(db: Db, options: { now?: Date } = {}): Promise<void> 
           displayName: u.displayName,
           bio: u.bio,
           ageConfirmedAt: new Date(`${u.joinedOn}T12:00:00Z`),
+          termsAcceptedAt: new Date(`${u.joinedOn}T12:00:00Z`),
+          termsVersion: TERMS_VERSION,
           createdAt: new Date(`${u.joinedOn}T12:00:00Z`),
         })),
       )

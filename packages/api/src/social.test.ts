@@ -59,7 +59,7 @@ async function member(options: { diaryPrivate?: boolean; blindMode?: boolean } =
   await api(user).account.onboard({
     username,
     displayName: `Member ${memberCount}`,
-    ageConfirmed: true,
+    termsAccepted: true,
     locale: "fr",
     theme: "dark",
     timeZone: "Europe/Paris",

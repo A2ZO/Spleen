@@ -21,7 +21,7 @@ Sources : `docs/prompt-claude-code-spleen.md` (règles), `docs/cahier-des-charge
 | 4 | Pages légales FR/EN | fait | voir `git log` |
 | 5 | Référencement et partage (sitemap, robots, canonical/hreflang, métadonnées, OG) | fait | voir `git log` |
 | 6 | PWA (manifeste, icônes, page hors ligne) + code de connexion dans l'email | fait | voir `git log` |
-| 7 | Finitions : 404/500 Baudelaire, axe, journaux e2e propres ; en-têtes de sécurité et CSP **en attente de la décision** | **en cours** (voir « À faire ensuite ») | `ea01c08`, voir `git log` |
+| 7 | Finitions : 404/500 Baudelaire, axe, journaux e2e propres, CSP à nonce + en-têtes, case des conditions | fait | `ea01c08`, voir `git log` |
 | fin | Seed à jour, vérification visuelle Chrome bureau + mobile, `/fin-de-jalon` | à faire | — |
 
 État vérifié au commit `153f3d9` (code de connexion) : lint, typecheck, format, tests unitaires et
@@ -52,8 +52,28 @@ Sources : `docs/prompt-claude-code-spleen.md` (règles), `docs/cahier-des-charge
   (`docs/pieges.md`). Méthode : un rapporteur Playwright jetable qui note l'heure de chaque test,
   recoupée avec l'horodatage du journal (`.next/dev/logs/next-development.log`, relatif au
   démarrage du serveur). Deux suites complètes propres ensuite (102 verts).
-- Vu une fois sous charge : `accounts.spec.ts` (mobile, inscription par lien magique) en échec
-  isolé, vert aux passes suivantes. À surveiller.
+- **Consigne** : `accounts.spec.ts` (mobile, inscription par lien magique) a échoué une fois
+  sous charge, vert ensuite. **S'il échoue encore une fois, on cherche la cause au lieu de
+  relancer.**
+- **Fait (décision du 27/10)** : CSP à nonce sur toutes les pages (`lib/security.ts`,
+  `proxy.ts`, composé avec next-intl), en-têtes HSTS (sans `includeSubDomains`), `nosniff`,
+  `Referrer-Policy`, `Permissions-Policy` sur toutes les réponses (`next.config.ts`).
+  Écart avec le point de départ proposé : `img-src` a aussi besoin de `https://archive.org`
+  (Cover Art Archive y redirige avant le miroir ; trouvé par la fixture). Fixture commune
+  `e2e/fixtures.ts` (toutes les specs l'importent) : une violation CSP dans la console d'une
+  page, y compris des contextes ouverts par le test, fait échouer le test ; `security.spec.ts`
+  vérifie le nonce, les en-têtes, le départ Google (faux Google intercepté, Google n'est pas
+  configuré en local) et que la fixture attrape un script injecté. Service worker, images de
+  partage, avatar : couverts par `pwa`, `seo`, `accounts`. Conditions de l'hybride notées dans
+  l'issue #22, avec un **point à trancher** (une empreinte fait ignorer `'unsafe-inline'`).
+  Chiffres dans `docs/stack-et-limites.md` § 3.
+- **Fait** : une seule case « J'ai 15 ans ou plus et j'accepte les conditions d'utilisation »
+  (lien `/terms`), phrase sur la confidentialité sous le bouton (lien `/privacy`), migration
+  `0012_terms_acceptance.sql` (`terms_accepted_at`, `terms_version`), `TERMS_VERSION`
+  (`packages/validators`), règle unique `account.onboard` (tests API, e2e par le code).
+  `docs/accounts.md`, `docs/mise-en-ligne.md` § 7 ([À FAIRE RELIRE]).
+- Suite : seed, vérification Chrome bureau + mobile, `/fin-de-jalon` (modèle conseillé :
+  opusplan).
 
 ### Décision CSP + issue #22 : mesures faites, à présenter à l'utilisateur (rien n'est codé)
 

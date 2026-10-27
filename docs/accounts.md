@@ -37,7 +37,15 @@ Reference for milestone 3. `CLAUDE.md` keeps the summary; this file has the deta
 ## Screens
 
 - After sign-in, everyone lands on `/[locale]/welcome`: onboarding (@username, display name,
-  "15 or older" checkbox stored as `ageConfirmedAt`), or a redirect to `/u/<username>`.
+  one required box "15 or older and I accept the terms of use", linked to `/terms`), or a
+  redirect to `/u/<username>`. Under the button, a sentence links to `/privacy` (information,
+  no box). Magic link, code and Google all create a session without a profile, so
+  `account.onboard` is the single rule (`termsAccepted: true`, tested). It stores
+  `ageConfirmedAt`, `termsAcceptedAt` and `termsVersion` = `TERMS_VERSION`
+  (`packages/validators`, set by the server, never by the client): proof of consent. When the
+  terms change, bump `TERMS_VERSION` (and `LEGAL_UPDATED`); asking members whose
+  `termsVersion` differs again is still to build. [À FAIRE RELIRE] wording of the box and of the
+  privacy sentence (`welcome.termsLabel`, `welcome.privacyNotice`).
 - `/[locale]/settings`: profile, language, theme, privacy, blind listening, avatar, @username,
   export (`/api/account/export`) and deletion (typing one's @username to confirm).
 

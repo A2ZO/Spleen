@@ -4,6 +4,7 @@ import { eq, freesUsernamesAtOnce, inArray, or, schema, type Db } from "@spleen/
 import type { Storage } from "@spleen/infra/storage";
 import {
   AVATAR_MAX_BYTES,
+  TERMS_VERSION,
   usernameSchema,
   type OnboardingInput,
   type ProfileUpdateInput,
@@ -85,6 +86,8 @@ export async function onboard(
         theme: input.theme,
         ...(input.timeZone ? { timeZone: input.timeZone } : {}),
         ageConfirmedAt: now,
+        termsAcceptedAt: now,
+        termsVersion: TERMS_VERSION,
       });
       await tx
         .update(schema.user)

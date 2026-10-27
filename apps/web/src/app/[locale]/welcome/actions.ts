@@ -11,7 +11,7 @@ import { getApi } from "@/server/api";
 
 export interface OnboardingState {
   error?: ApiErrorCode | "unknown";
-  field?: "username" | "displayName" | "ageConfirmed";
+  field?: "username" | "displayName" | "termsAccepted";
 }
 
 export async function checkUsername(username: string): Promise<UsernameStatus> {
@@ -25,7 +25,7 @@ export async function onboardAction(
   const parsed = onboardingSchema.safeParse({
     username: formData.get("username"),
     displayName: formData.get("displayName"),
-    ageConfirmed: formData.get("ageConfirmed") === "on",
+    termsAccepted: formData.get("termsAccepted") === "on",
     locale: formData.get("locale"),
     theme: formData.get("theme"),
     timeZone: formData.get("timeZone") || undefined,

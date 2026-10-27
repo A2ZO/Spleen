@@ -1,4 +1,5 @@
 import type { DbOrTx } from "../listening-state";
+import { TERMS_VERSION } from "@spleen/validators";
 import * as s from "../schema";
 import { fixtureId } from "./fixtures";
 
@@ -100,6 +101,8 @@ export async function seedSocial(tx: DbOrTx, now: Date): Promise<void> {
       displayName: "Bruit de fond",
       bio: "Je partage des liens. Beaucoup de liens.",
       ageConfirmedAt: joinedAt,
+      termsAcceptedAt: joinedAt,
+      termsVersion: TERMS_VERSION,
       createdAt: joinedAt,
     })
     .onConflictDoNothing();

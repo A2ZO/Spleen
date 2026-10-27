@@ -1,4 +1,5 @@
 import type { DbOrTx } from "../listening-state";
+import { TERMS_VERSION } from "@spleen/validators";
 import * as s from "../schema";
 import { fixtureId, releases } from "./fixtures";
 
@@ -44,6 +45,8 @@ export async function seedModeration(tx: DbOrTx, now: Date): Promise<void> {
       bio: "Je tiens le rythme au fond de la salle. Modération de Spleen.",
       role: "admin",
       ageConfirmedAt: joinedAt,
+      termsAcceptedAt: joinedAt,
+      termsVersion: TERMS_VERSION,
       createdAt: joinedAt,
     })
     .onConflictDoNothing();

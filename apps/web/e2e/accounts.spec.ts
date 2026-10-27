@@ -1,6 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
-import { deleteAccount, signUp, signInCodeFor } from "./helpers";
+import { deleteAccount, onboard, signInCodeFor, signUp, TERMS_BOX } from "./helpers";
 
 test.use({ locale: "fr-FR" });
 
@@ -41,8 +41,9 @@ test("protected pages send visitors to the sign-in page", async ({ page }) => {
 test("the code under the link signs in too (the installed app on an iPhone)", async ({
   page,
 }, testInfo) => {
-  // Left to the global teardown (an e2e account): it never reaches onboarding.
-  const email = `e2e-${Date.now().toString(36)}c${testInfo.project.name.slice(0, 1)}@example.test`;
+  // Left to the global teardown (an e2e account).
+  const id = `${Date.now().toString(36)}c${testInfo.project.name.slice(0, 1)}`;
+  const email = `e2e-${id}@example.test`;
   await page.goto("/fr/sign-in");
   await page.getByLabel("Ton email").fill(email);
   await page.getByRole("button", { name: "Recevoir mon lien" }).click();
@@ -52,6 +53,15 @@ test("the code under the link signs in too (the installed app on an iPhone)", as
   await expect(page.getByText("Ce code ne marche pas.")).toBeVisible();
   await page.getByLabel("Ou tape le code reçu").fill(await signInCodeFor(email));
   await page.getByRole("button", { name: "Entrer avec ce code" }).click();
+  // Same first-visit form as the link: one required box (age and terms), the privacy policy
+  // linked under the button.
   await expect(page).toHaveURL(/\/fr\/welcome$/);
-  await expect(page.getByLabel("J'ai 15 ans ou plus")).toBeVisible();
+  await expect(page.getByLabel(TERMS_BOX)).toHaveAttribute("required", "");
+  await expect(
+    page.getByRole("main").getByRole("link", { name: "conditions d'utilisation" }),
+  ).toHaveAttribute("href", "/fr/terms");
+  await expect(
+    page.getByRole("main").getByRole("link", { name: "politique de confidentialité" }),
+  ).toHaveAttribute("href", "/fr/privacy");
+  await onboard(page, `e2e_${id}`, "Codette");
 });

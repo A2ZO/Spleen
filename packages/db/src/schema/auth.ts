@@ -110,6 +110,12 @@ export const profiles = pgTable(
     suspensionReason: text("suspension_reason"),
     /** Set when the member confirms being 15 or older at sign-up. */
     ageConfirmedAt: timestamp("age_confirmed_at", { withTimezone: true }),
+    /**
+     * Terms of use accepted (same box as the age), with their version (`TERMS_VERSION`):
+     * proof of consent, and the version to compare when the terms change.
+     */
+    termsAcceptedAt: timestamp("terms_accepted_at", { withTimezone: true }),
+    termsVersion: text("terms_version"),
     ...timestamps(),
   },
   (t) => [uniqueIndex("profiles_username_lower_uidx").on(sql`lower(${t.username})`)],

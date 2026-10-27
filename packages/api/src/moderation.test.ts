@@ -61,7 +61,7 @@ async function member() {
   await api(user).account.onboard({
     username,
     displayName: `Member ${memberCount}`,
-    ageConfirmed: true,
+    termsAccepted: true,
     locale: "fr",
     theme: "dark",
     timeZone: "Europe/Paris",

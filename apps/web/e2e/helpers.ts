@@ -2,7 +2,7 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { createDb, isPostgresUrl, loadRootEnv, schema, setAdminRole } from "@spleen/db";
-import { expect, type Page, type TestInfo } from "@playwright/test";
+import { expect, type Page, type TestInfo } from "./fixtures";
 
 // Without BREVO_API_KEY, the dev server writes emails to <repo>/.data/outbox (see @spleen/infra).
 const outbox = path.resolve(import.meta.dirname, "../../../.data/outbox");
@@ -52,14 +52,21 @@ export async function signUp(page: Page, testInfo: TestInfo, displayName: string
   await expect(page.getByRole("heading", { name: "Regarde ta boîte mail" })).toBeVisible();
 
   await page.goto(await magicLinkFor(email));
+  await onboard(page, username, displayName);
+  return username;
+}
+
+export const TERMS_BOX = "J'ai 15 ans ou plus et j'accepte les conditions d'utilisation";
+
+/** Fills the first-visit form (any sign-in path ends there) and lands on the new profile. */
+export async function onboard(page: Page, username: string, displayName: string) {
   await expect(page).toHaveURL(/\/fr\/welcome$/);
   await page.getByLabel("Pseudo").fill(username);
   await expect(page.getByText("Ce pseudo est libre.")).toBeVisible();
   await page.getByLabel("Nom affiché").fill(displayName);
-  await page.getByLabel("J'ai 15 ans ou plus").check();
+  await page.getByLabel(TERMS_BOX).check();
   await page.getByRole("button", { name: "Ouvrir mon étagère" }).click();
   await expect(page).toHaveURL(new RegExp(`/fr/u/${username}$`));
-  return username;
 }
 
 /** Email of an account made by `signUp`, from its @username. */
