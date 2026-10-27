@@ -62,9 +62,11 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   (`covers.spec.ts`) stubs `coverartarchive.org` (Playwright does not route the target of a
   redirect) and covers the failure with JavaScript off, with late scripts and after hydration.
 - CSP: `*.archive.org` does not cover `archive.org` itself (both are listed). A nonce or hash
-  in `script-src` makes `'unsafe-inline'` ignored. A whole-page navigation
-  (`window.location.href`, the Google sign-in) is not bound by the policy. next-intl copies
-  the request headers: set the CSP on a `new NextRequest(request, { headers })`.
+  in `script-src` makes `'unsafe-inline'` ignored: the static policy of cached pages (issue #22)
+  carries no hash at all (cover script, future theme script), `'unsafe-inline'` covers them.
+  A whole-page navigation (`window.location.href`, the Google sign-in) is not bound by the
+  policy. next-intl copies the request headers: set the CSP on a
+  `new NextRequest(request, { headers })`.
 - Never run `next build` in `apps/web` while `pnpm dev` runs: the production `.next` makes the
   dev server reload in a loop (same with a build id read at config time: `/sw.js` reads it at
   run time). To measure, `next start` needs the production variables: dummy values on the

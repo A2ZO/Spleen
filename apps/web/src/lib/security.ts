@@ -24,7 +24,10 @@ function origin(url: string | undefined): string | null {
   }
 }
 
-/** The inline script of the root layout, allowed by its hash (no nonce, cacheable pages). */
+/**
+ * The inline script of the root layout, allowed by its hash. Never in the static policy of
+ * cached pages (issue #22): any hash there makes the browser ignore `'unsafe-inline'`.
+ */
 const COVER_ERROR_SCRIPT_HASH = `'sha256-${createHash("sha256").update(COVER_ERROR_SCRIPT).digest("base64")}'`;
 
 export function newNonce(): string {
