@@ -1,8 +1,8 @@
 # Politique de confidentialité — brouillon
 
-> Brouillon de travail. La page publique (FR/EN) sera créée au jalon 9 à partir de ce texte.
-> Les passages `[À COMPLÉTER]` attendent tes informations ; une relecture (modèles de la CNIL
-> ou juriste) est conseillée avant l'ouverture publique.
+> **Remplacé au jalon 9 par la page publique `/privacy`.** Le texte de référence est
+> désormais dans `packages/i18n/messages/fr.json` et `en.json` (clés `legal.privacy.*`) :
+> modifier là-bas, plus ici. Ce brouillon est gardé pour l'historique.
 
 ## Responsable du traitement
 

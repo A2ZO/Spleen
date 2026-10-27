@@ -872,5 +872,120 @@
     "suspendHint": "Without a report: keep it for obvious cases. Their content is hidden, not deleted, and an email gives them the reason.",
     "usernameLabel": "Username",
     "suspendSubmit": "Suspend"
+  },
+  "legal": {
+    "updated": "Last updated: {date}",
+    "footerLabel": "Legal information",
+    "links": {
+      "notice": "Legal notice",
+      "terms": "Terms of use",
+      "privacy": "Privacy",
+      "credits": "Credits"
+    },
+    "notice": {
+      "title": "Legal notice",
+      "sections": {
+        "publisher": {
+          "title": "Publisher",
+          "body": "<p>Spleen is published by [À COMPLÉTER : nom et prénom], [À COMPLÉTER : statut, par exemple micro-entrepreneur], based at [À COMPLÉTER : adresse postale].</p><p>SIRET: [À COMPLÉTER : numéro SIRET].</p><p>Publication director: [À COMPLÉTER : nom].</p><p>Contact: <contact></contact></p>"
+        },
+        "hosting": {
+          "title": "Hosting",
+          "body": "<ul><li>Website: [À COMPLÉTER : hébergeur du site, raison sociale, adresse et téléphone, choisi au jalon 10].</li><li>Database: Neon, Europe region (Frankfurt); [À COMPLÉTER : raison sociale et adresse de Neon].</li><li>Profile pictures: Cloudflare R2, European Union jurisdiction; [À COMPLÉTER : raison sociale et adresse de Cloudflare].</li><li>Emails: Brevo; [À COMPLÉTER : raison sociale et adresse de Brevo].</li></ul>"
+        },
+        "credits": {
+          "title": "Credits and music data",
+          "body": "<p>Information about artists, records and tracks comes from <musicbrainz>MusicBrainz</musicbrainz>, an open music encyclopedia maintained by volunteers and the MetaBrainz Foundation. Spleen is not affiliated with them.</p><ul><li>Core data (artists, records, titles, dates) is in the public domain: <cc0>CC0</cc0> licence.</li><li>Genres belong to the MusicBrainz “supplementary” data, under the <ccbyncsa>Creative Commons BY-NC-SA 3.0</ccbyncsa> licence. It requires crediting the source, linking to the licence and sharing alike. Details: <mblicense>MusicBrainz data licence</mblicense>.</li></ul><p>Cover art comes from the <caa>Cover Art Archive</caa>, a joint project of MusicBrainz and the Internet Archive. Covers remain the property of their rights holders and are only shown to identify records.</p><p>“Listen on” links lead to streaming services that have no partnership with Spleen.</p>"
+        },
+        "property": {
+          "title": "Intellectual property",
+          "body": "<p>Spleen's name, logo and design belong to its publisher. Reviews, lists and comments belong to their authors, as described in the <terms>terms of use</terms>.</p>"
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of use",
+      "intro": "These terms apply to everyone who uses Spleen. By creating an account, you accept them.",
+      "sections": {
+        "service": {
+          "title": "The service",
+          "body": "<p>Spleen is a social listening diary: you rate and review records, keep a listening diary, make lists and follow other members. The site is free and ad-free. It may change, or pause for maintenance.</p>"
+        },
+        "account": {
+          "title": "Your account",
+          "body": "<ul><li>You must be <strong>at least 15</strong> to create an account. You confirm it when you sign up.</li><li>You sign in with a link sent by email or with Google. Keep access to your email address: it is the key to your account.</li><li>Your username is unique. You can change it once every 30 days; the old one stays reserved for 30 days so that nobody can pose as you.</li><li>You can delete your account at any time from the <settings>settings</settings>. Deletion is immediate and final.</li></ul>"
+        },
+        "content": {
+          "title": "What you publish",
+          "body": "<p>Your reviews, lists and comments are yours. By publishing them, you allow Spleen to keep and show them on the site and in its future apps, free of charge and non-exclusively, as long as they are online. This permission ends when you delete them or your account.</p><p>You are responsible for what you publish: you must have the right to publish it, and it must follow the rules below.</p>"
+        },
+        "rules": {
+          "title": "Community rules",
+          "body": "<p>Not allowed on Spleen:</p><ul><li>harassment, threats, hateful or discriminatory speech;</li><li>spam, advertising and misleading links;</li><li>spoilers without a warning;</li><li>illegal, violent or sexually explicit content;</li><li>posing as someone else;</li><li>bots and mass copying of the site.</li></ul>"
+        },
+        "moderation": {
+          "title": "Reports and moderation",
+          "body": "<p>Anyone can report a profile, a review, a list or a comment. The moderators may then dismiss the report, hide the content (it stays visible to its author alone, with the reason), delete it or suspend the account.</p><p>Every decision has a reason, sent to you when it concerns you. A suspended account can no longer publish anything; its content is hidden, but it can still download its data or delete the account.</p><p>To contest a decision, write to <contact></contact> explaining why: someone else will review your case.</p>"
+        },
+        "catalog": {
+          "title": "The catalog",
+          "body": "<p>The catalog comes from MusicBrainz (see the <credits>credits</credits>). It may contain errors or duplicates: use the “Report an error or suggest an addition” button on the page concerned. Two duplicate pages may be merged; the old address then leads to the page kept.</p>"
+        },
+        "liability": {
+          "title": "Liability",
+          "body": "<p>Spleen is provided as is, with no guarantee of permanent availability. Content published by members is their authors' responsibility; Spleen promptly removes manifestly illegal content once it is reported.</p>"
+        },
+        "changes": {
+          "title": "Changes to these terms",
+          "body": "<p>These terms may change. Before an important change takes effect, you will be told on the site. Governing law: [À VÉRIFIER : droit français, tribunaux compétents].</p><p>A question? Write to <contact></contact>.</p>"
+        }
+      }
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "Spleen collects as little data as possible, never sells it, shows no targeted ads and does not track you across sites.",
+      "sections": {
+        "controller": {
+          "title": "Data controller",
+          "body": "<p>[À COMPLÉTER : nom et prénom], [À COMPLÉTER : adresse postale]. Contact: <contact></contact></p>"
+        },
+        "data": {
+          "title": "Data collected",
+          "body": "<ul><li><strong>Your account</strong>: email address, username, display name, bio, profile picture, language, theme, time zone, settings (private diary, private stats, blind listening) and the date you confirmed you are 15 or older.</li><li><strong>If you sign in with Google</strong>: the basic information of your Google account (email address, name, picture).</li><li><strong>Your activity</strong>: listens (dates, ratings, hearts, relistens, formats, moods), track ratings, reviews, lists, Shelf, follows, likes, comments, blocks, reports and notifications.</li><li><strong>Your sessions</strong>: date, IP address and browser of each sign-in, to keep your account safe.</li><li><strong>Abuse counters</strong>: your account id or IP address, with a number of requests over a short period.</li><li><strong>Moderation</strong>: decisions concerning you, with their reason and an excerpt of the content judged.</li></ul>"
+        },
+        "purposes": {
+          "title": "Why",
+          "body": "<ul><li>To run the service you use (performance of the terms of use).</li><li>To protect accounts and the site from abuse (legitimate interest).</li><li>To moderate the community and meet legal obligations (legitimate interest and legal obligation).</li></ul><p>No targeted advertising, no resale, no commercial profiling.</p>"
+        },
+        "visibility": {
+          "title": "What others see",
+          "body": "<p>Your profile, reviews, lists, comments, follows and followers are public. So are your diary and stats, unless you make them private in the <settings>settings</settings>. Your ratings count anonymously in record averages. Your email address and your blocks are never visible.</p>"
+        },
+        "retention": {
+          "title": "How long",
+          "body": "<ul><li>Your account data is kept as long as your account exists, then erased at once when you delete it. [À VÉRIFIER : durée de conservation des sauvegardes de la base.]</li><li>Usernames: when you change yours, the old one stays reserved for 30 days. When you delete your account, your usernames stay reserved for 30 days in anonymous form, with no link to you, then become free again.</li><li>Sign-in link: valid for 15 minutes.</li><li>Sessions: they expire after 7 days without a visit. [À VÉRIFIER : effacement des sessions expirées.]</li><li>Abuse counters: [À VÉRIFIER : durée de conservation, aucun effacement automatique pour l'instant.]</li><li>Reports and moderation decisions: one year after the decision, they are anonymised (the action and reason stay, links to people and the excerpt are erased) and handled reports are deleted.</li></ul>"
+        },
+        "rights": {
+          "title": "Your rights",
+          "body": "<p>You have the right to access, rectify, erase and port your data, and to restrict or object to its processing. From the <settings>settings</settings>, you can download all your data (JSON format) and delete your account. For anything else, write to <contact></contact>.</p><p>You may also lodge a complaint with the <cnil>CNIL</cnil>, the French data protection authority.</p>"
+        },
+        "processors": {
+          "title": "Service providers and transfers",
+          "body": "<ul><li>Database: Neon, servers in the European Union (Frankfurt).</li><li>Profile pictures: Cloudflare R2, European Union jurisdiction.</li><li>Sign-in and moderation emails: Brevo. [À VÉRIFIER : localisation des serveurs de Brevo.]</li><li>Website hosting: [À COMPLÉTER : hébergeur choisi au jalon 10, lieu de traitement et garanties en cas de transfert hors de l'Union européenne.]</li><li>Sign-in with Google: only if you choose it.</li></ul><p>Cover art is loaded by your browser directly from the Cover Art Archive (Internet Archive), which therefore sees your IP address, as with any image from another site.</p>"
+        },
+        "cookies": {
+          "title": "Cookies",
+          "body": "<p>Spleen only uses necessary cookies, with no audience measurement or advertising, hence no cookie banner:</p><ul><li>the sign-in session, when you are signed in;</li><li><strong>spleen-theme</strong>: your light or dark theme;</li><li><strong>NEXT_LOCALE</strong>: your language, for the length of your visit.</li></ul>"
+        },
+        "minors": {
+          "title": "Minimum age",
+          "body": "<p>Spleen is for people aged 15 and over, the age from which one can consent alone to the processing of one's data in France.</p>"
+        },
+        "changes": {
+          "title": "Changes",
+          "body": "<p>This policy may change with the service. The date of the last update is shown at the top of the page; an important change will be announced on the site.</p>"
+        }
+      }
+    }
   }
 }

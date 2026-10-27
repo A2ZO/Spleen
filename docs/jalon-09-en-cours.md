@@ -18,13 +18,13 @@ Sources : `docs/prompt-claude-code-spleen.md` (règles), `docs/cahier-des-charge
 | — | Issue « Performance : thème côté navigateur… » | fait | issue [#22](https://github.com/A2ZO/Spleen/issues/22), `b59ee28` |
 | 2 bis | Réponses 1 et 2 ci-dessous (bandeau auteur, notes des suspendus) | fait | voir `git log` |
 | 3 | Fusion de doublons + bouton « Signaler une erreur / proposer un ajout » (réponse 3) | fait | voir `git log` |
-| 4 | Pages légales FR/EN | à faire | — |
+| 4 | Pages légales FR/EN | fait | voir `git log` |
 | 5 | Référencement et partage (sitemap, robots, canonical/hreflang, métadonnées, OG) | à faire | — |
 | 6 | PWA (manifeste, icônes, page hors ligne) | à faire | — |
 | 7 | Finitions : 404/500 Baudelaire, en-têtes de sécurité (CSP **mesurée d'abord**), axe | à faire | — |
 | fin | Seed à jour, vérification visuelle Chrome bureau + mobile, `/fin-de-jalon` | à faire | — |
 
-État vérifié au dernier commit : lint, typecheck, format, tests unitaires (200 API) et 66 e2e verts, CI verte,
+État vérifié au dernier commit : lint, typecheck, format, tests unitaires (201 API) et 70 e2e verts, CI verte,
 contrôle des journaux serveur propre.
 
 ## Ce qui est fait (résumé)
@@ -38,6 +38,7 @@ contrôle des journaux serveur propre.
   (`next/cache`) dans les actions. Deux e2e quittaient la page trop tôt. Garde-fou :
   `apps/web/e2e/server-log.ts` fait échouer les e2e si le serveur journalise l'une des deux
   erreurs.
+- **Étape 4.** Pages `/legal` (mentions et crédits, ancre `#credits`), `/terms`, `/privacy`, FR/EN, composant `components/legal/LegalPage.tsx` (sections et date `LEGAL_UPDATED`), textes dans `packages/i18n` (`legal.*`, balises riches `<p>`, `<ul>`, `<contact>`, liens), adresse de contact par `system.contact`. Liens dans le pied de page. Crédits : MusicBrainz (CC0 pour le cœur, genres sous CC BY-NC-SA 3.0 avec lien vers la licence) et Cover Art Archive. Informations personnelles en `[À COMPLÉTER]`, points non vérifiables en `[À VÉRIFIER]` : liste dans `docs/mise-en-ligne.md` § 7. e2e `legal.spec.ts`. Constat : rien ne purge les sessions expirées ni les vieux compteurs `rate_limits` (noté § 7).
 - **Étape 3.** Migration `0011_catalog_merges.sql` (`merged_into_id` sur releases/tracks/artists, raisons `catalog_cover` / `catalog_duplicate`, colonnes `duplicate_*` des signalements ; CHECK comparé en `::text` car la valeur d'enum ajoutée ne peut pas servir dans la même transaction). API : `lib/catalog/merge.ts` (`mergeCatalog`, `previewMerge`, `mergedSlug`), `lib/catalog/reports.ts` (`report.catalog`), procédures `admin.merge`, `admin.mergePreview`, `catalog.mergedInto` ; l'import suit `merged_into_id` ; recherche et sorties récentes ignorent les fiches fusionnées. Web : `CatalogReportButton` sur album/artiste/morceau, `/admin/merge` (onglet « Fusion de doublons »), lien « Fusionner » sur un signalement doublon, redirection permanente `lib/catalog-redirect.ts` (308, équivalent 301 pour les moteurs). Tests : `merge.test.ts` (un par type, rollback par déclencheur, import, signalements), validators, 2 e2e. **Ne jamais tester une fusion sur Neon `dev` : elle ne se défait pas.** Règles : `docs/social.md` § « Fusion de doublons ». Vérifié dans Chrome (bureau et mobile) : aperçu de fusion et dialogue de signalement, sans envoi. **Vérifié sur un vrai Postgres** : job `api-postgres` vert sur la PR [#23](https://github.com/A2ZO/Spleen/pull/23) (brouillon, à réutiliser par `/fin-de-jalon`), et e2e de fusion réelle depuis la file sur la base `dev` (disques jetables `e2e-…` sans MBID créés par `throwawayReleases()`, supprimés au teardown : décisions et signalements des comptes e2e, signalements des disques jetables, fiche fusionnée, fiche gardée — `deleteE2eAccounts`). Les deux e2e « signalement » et « fusion » laissent leurs comptes au teardown (un signalement survit à son auteur).
 - **Étape 2 bis.** Voir `docs/social.md` § « Modération » (Masquer, Compte suspendu) et
   `docs/decouverte.md`. Contenu masqué : `visibleTo()` + `lib/moderation/holds.ts`,

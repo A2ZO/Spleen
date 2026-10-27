@@ -144,12 +144,25 @@ l'offre gratuite refuse un deuxième projet.
 
 ## 7. Pages légales finalisées (jalon 9)
 
-- [ ] Mentions légales, conditions d'utilisation et politique de confidentialité publiées en
-      FR et en EN, sans aucun `[À COMPLÉTER]` ni `[À VÉRIFIER]` restant (partir de
-      `docs/legal/`).
-- [ ] La politique de confidentialité mentionne Neon, Brevo, Cloudflare R2, l'hébergeur, la
-      réservation anonyme des pseudos pendant 30 jours, l'export et la suppression du compte.
-- [ ] Relecture conseillée (modèles de la CNIL ou juriste).
+Les pages existent depuis le jalon 9 : `/legal` (mentions légales et crédits, ancre
+`#credits`), `/terms`, `/privacy`, en FR et en EN. Leur texte est dans `packages/i18n`
+(clés `legal.*`, les deux fichiers) ; la date de mise à jour est `LEGAL_UPDATED` dans
+`apps/web/src/components/legal/LegalPage.tsx`. L'adresse de contact vient de `CONTACT_EMAIL`
+(§ 10).
+
+- [ ] Remplacer chaque `[À COMPLÉTER]` (éditeur : nom, statut, adresse, SIRET, directeur de
+      la publication ; raisons sociales et adresses de l'hébergeur, de Neon, Cloudflare et
+      Brevo) et chaque `[À VÉRIFIER]` (droit applicable, localisation des serveurs Brevo,
+      durée des sauvegardes Neon, effacement des sessions expirées et des compteurs
+      anti-abus) dans `fr.json` **et** `en.json`. Vérifier : `grep -c "À COMPLÉTER\|À VÉRIFIER"
+      packages/i18n/messages/*.json` répond 0.
+- [ ] Effacement des sessions expirées et des vieux compteurs `rate_limits` : aujourd'hui
+      rien ne les purge. Ajouter une purge à la tâche de nuit, ou écrire la durée réelle dans
+      la politique.
+- [ ] La politique de confidentialité mentionne l'hébergeur réellement choisi et, s'il traite
+      des données hors de l'Union européenne, les garanties (clauses types, DPF).
+- [ ] Relecture conseillée (modèles de la CNIL ou juriste) ; **obligatoire avant d'encaisser
+      de l'argent** (pubs ou Spleen+).
 - [ ] **Vérifier** : les pages s'ouvrent depuis le pied de page, et leurs adresses sont
       celles déclarées dans l'écran de consentement Google (§ 5).
 

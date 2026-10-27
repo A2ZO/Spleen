@@ -220,6 +220,8 @@ const listWrite = limitedWrite("list-write", LIST_WRITE_RULE);
 export const appRouter = router({
   system: router({
     health: publicProcedure.query(({ ctx }) => checkHealth(ctx.db())),
+    /** Where to write to the site (legal pages, contesting a decision); a placeholder until set. */
+    contact: publicProcedure.query(({ ctx }) => ctx.contactEmail ?? CONTACT_PLACEHOLDER),
   }),
   feed: router({
     /** Activity of the members the caller follows, newest first. */
