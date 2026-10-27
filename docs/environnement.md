@@ -38,8 +38,8 @@ La production refuse de démarrer sans les variables d'auth, Brevo et S3
 cache que la page hors ligne (`/offline.html?lang=fr|en`), les fichiers statiques versionnés
 (`/_next/static`, en production seulement) et les icônes ; jamais une page, jamais `/api`
 (donc jamais `/api/auth`, le lien magique va toujours au serveur). Le nom du cache porte le
-numéro de build (`SPLEEN_BUILD_ID` dans `next.config.ts` : le commit sur Vercel, sinon l'heure
-du build, `dev` en développement) ; les anciens caches sont supprimés à l'activation. Une
+numéro de build, lu à l'exécution par la route (le commit sur Vercel, sinon le `BUILD_ID` de
+`next build`, sinon l'heure de démarrage du serveur ; `dev` en développement) ; les anciens caches sont supprimés à l'activation. Une
 nouvelle version attend que tous les onglets Spleen soient fermés et prend la main au lancement
 suivant : pas de `skipWaiting`, pas de rechargement forcé.
 
@@ -86,6 +86,14 @@ par fichier de test. Monter l'image quand Neon change de version majeure. Aucun 
 pour les sorties récentes, sur la base de production ; voir `docs/decouverte.md`.
 
 ## e2e
+
+Ne pas lancer les e2e pendant que le serveur de développement recompile (juste après une
+modification de `next.config.ts`, d'un paquet partagé ou un redémarrage) : attendre qu'une page
+s'ouvre normalement. Des tests de recherche ont échoué ainsi au jalon 9. Signe d'un problème
+plus grave : une page qui se recharge en boucle (« [Fast Refresh] rebuilding » sans fin dans la
+console) ; au jalon 9, une valeur de `env` dans `next.config.ts` qui changeait d'une évaluation à
+l'autre en était la cause (jamais de `Date.now()` dans `env`). Le serveur de dev garde aussi
+l'instance Better Auth en mémoire : après une modification de `packages/auth`, le redémarrer.
 
 Comptes `e2e-<id>@example.test`. `apps/web/e2e/cleanup.ts` (setup et teardown globaux) les
 supprime avec leurs données, même après un passage raté ou interrompu (Postgres seulement),

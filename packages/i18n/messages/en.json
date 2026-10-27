@@ -243,7 +243,9 @@
       "body": "Here is your link to sign in to Spleen. It is valid for 15 minutes and works only once.",
       "cta": "Sign in to Spleen",
       "fallback": "If the button does not work, paste this link into your browser:",
-      "ignore": "Did not ask for this? Just ignore this email."
+      "ignore": "Did not ask for this? Just ignore this email.",
+      "codeIntro": "Using the Spleen app installed on your phone? Type this code:",
+      "codeNote": "It is valid for 15 minutes. The link and the code open the same sign-in: using one cancels the other."
     },
     "suspension": {
       "subject": "Your Spleen account is suspended",
@@ -272,7 +274,13 @@
     "otherEmail": "Use another address",
     "linkExpired": "This link has expired or was already used. Ask for a new one.",
     "error": "That did not work. Try again in a moment.",
-    "rateLimited": "Too many requests at once. Wait a few minutes."
+    "rateLimited": "Too many requests at once. Wait a few minutes.",
+    "codeLabel": "Or type the code you received",
+    "codeHint": "Six digits, under the link in the email.",
+    "codeSubmit": "Sign in with this code",
+    "codeChecking": "Checking…",
+    "codeInvalid": "This code does not work. Check it, or ask for a new link.",
+    "codeTooMany": "Too many tries for this address. Ask for a new link, or try again in an hour."
   },
   "welcome": {
     "metaTitle": "Welcome",
@@ -963,7 +971,7 @@
         },
         "retention": {
           "title": "How long",
-          "body": "<ul><li>Your account data is kept as long as your account exists, and erased at once when you delete it. It also leaves the database backups within 7 days at most.</li><li>Usernames: when you change yours, the old one stays reserved for 30 days. When you delete your account, your usernames stay reserved for 30 days in anonymous form, with no link to you, then become free again.</li><li>Sign-in link: valid for 15 minutes, erased within 24 hours after it expires.</li><li>Sessions (date, IP address, browser): they expire after 7 days without a visit and are erased within the next 24 hours.</li><li>Abuse counters (account id or IP address): erased by the first nightly run once 24 hours have passed since their counting period (an hour at most) ended.</li><li>Reports and moderation decisions: one year after the decision, they are anonymised (the action and reason stay, links to people and the excerpt are erased) and handled reports are deleted.</li></ul>"
+          "body": "<ul><li>Your account data is kept as long as your account exists, and erased at once when you delete it. It also leaves the database backups within 7 days at most.</li><li>Usernames: when you change yours, the old one stays reserved for 30 days. When you delete your account, your usernames stay reserved for 30 days in anonymous form, with no link to you, then become free again.</li><li>Sign-in links and codes: valid for 15 minutes, erased within 24 hours after they expire.</li><li>Sessions (date, IP address, browser): they expire after 7 days without a visit and are erased within the next 24 hours.</li><li>Abuse counters (account id or IP address): erased by the first nightly run once 24 hours have passed since their counting period (an hour at most) ended.</li><li>Reports and moderation decisions: one year after the decision, they are anonymised (the action and reason stay, links to people and the excerpt are erased) and handled reports are deleted.</li></ul>"
         },
         "rights": {
           "title": "Your rights",

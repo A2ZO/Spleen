@@ -243,7 +243,9 @@
       "body": "Voici ton lien pour te connecter à Spleen. Il reste valable 15 minutes et ne sert qu'une fois.",
       "cta": "Entrer dans Spleen",
       "fallback": "Si le bouton ne marche pas, copie ce lien dans ton navigateur :",
-      "ignore": "Tu n'as rien demandé ? Ignore simplement cet email."
+      "ignore": "Tu n'as rien demandé ? Ignore simplement cet email.",
+      "codeIntro": "Dans l'appli Spleen installée sur ton téléphone ? Tape ce code :",
+      "codeNote": "Il reste valable 15 minutes. Le lien et le code ouvrent la même connexion : en utiliser un annule l'autre."
     },
     "suspension": {
       "subject": "Ton compte Spleen est suspendu",
@@ -272,7 +274,13 @@
     "otherEmail": "Utiliser une autre adresse",
     "linkExpired": "Ce lien a expiré ou a déjà servi. Demande-en un nouveau.",
     "error": "Ça n'a pas marché. Réessaie dans un instant.",
-    "rateLimited": "Trop de demandes d'un coup. Patiente quelques minutes."
+    "rateLimited": "Trop de demandes d'un coup. Patiente quelques minutes.",
+    "codeLabel": "Ou tape le code reçu",
+    "codeHint": "Six chiffres, sous le lien dans l'email.",
+    "codeSubmit": "Entrer avec ce code",
+    "codeChecking": "Vérification…",
+    "codeInvalid": "Ce code ne marche pas. Vérifie-le, ou demande un nouveau lien.",
+    "codeTooMany": "Trop d'essais pour cette adresse. Demande un nouveau lien, ou réessaie dans une heure."
   },
   "welcome": {
     "metaTitle": "Bienvenue",
@@ -963,7 +971,7 @@
         },
         "retention": {
           "title": "Combien de temps",
-          "body": "<ul><li>Les données de ton compte sont gardées tant que ton compte existe, et effacées immédiatement quand tu le supprimes. Elles disparaissent aussi des sauvegardes de la base au bout de 7 jours au plus.</li><li>Pseudos : quand tu changes de pseudo, l'ancien reste réservé 30 jours. Quand tu supprimes ton compte, tes pseudos restent réservés 30 jours sous forme anonyme, sans aucun lien avec toi, puis ils redeviennent libres.</li><li>Lien de connexion : valable 15 minutes, effacé dans les 24 heures qui suivent son expiration.</li><li>Sessions (date, adresse IP, navigateur) : elles expirent après 7 jours sans visite et sont effacées dans les 24 heures qui suivent.</li><li>Compteurs anti-abus (identifiant ou adresse IP) : effacés par la tâche de nuit qui suit les 24 heures après la fin de leur période de comptage (une heure au plus).</li><li>Signalements et décisions de modération : un an après la décision, ils sont anonymisés (l'action et le motif restent, les liens vers les personnes et l'extrait sont effacés) et les signalements traités sont supprimés.</li></ul>"
+          "body": "<ul><li>Les données de ton compte sont gardées tant que ton compte existe, et effacées immédiatement quand tu le supprimes. Elles disparaissent aussi des sauvegardes de la base au bout de 7 jours au plus.</li><li>Pseudos : quand tu changes de pseudo, l'ancien reste réservé 30 jours. Quand tu supprimes ton compte, tes pseudos restent réservés 30 jours sous forme anonyme, sans aucun lien avec toi, puis ils redeviennent libres.</li><li>Liens et codes de connexion : valables 15 minutes, effacés dans les 24 heures qui suivent leur expiration.</li><li>Sessions (date, adresse IP, navigateur) : elles expirent après 7 jours sans visite et sont effacées dans les 24 heures qui suivent.</li><li>Compteurs anti-abus (identifiant ou adresse IP) : effacés par la tâche de nuit qui suit les 24 heures après la fin de leur période de comptage (une heure au plus).</li><li>Signalements et décisions de modération : un an après la décision, ils sont anonymisés (l'action et le motif restent, les liens vers les personnes et l'extrait sont effacés) et les signalements traités sont supprimés.</li></ul>"
         },
         "rights": {
           "title": "Tes droits",

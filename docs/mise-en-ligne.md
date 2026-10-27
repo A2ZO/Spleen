@@ -264,6 +264,10 @@ Postgres jetable, jamais Neon.
 - [ ] Job e2e dans `.github/workflows/ci.yml` : service `postgres` (même image que le job
       `api-postgres`), `pnpm db:seed` sur cette base, puis `pnpm e2e` (contrôle des journaux
       serveur compris). Aucun secret, aucune URL Neon dans la CI.
+- [ ] En CI, les e2e tournent sur un **build de production** (`next build` puis `next start`),
+      pas sur le serveur de développement : pas de recompilation pendant les tests, et le code
+      testé est celui qui sera déployé (service worker compris, qui ne met en cache
+      `/_next/static` qu'en production).
 - [ ] **Vérifier** : le job passe sur une PR, et échoue si on réintroduit volontairement une
       erreur connue (par exemple un `router.refresh()` après une action).
 
@@ -273,6 +277,8 @@ Postgres jetable, jamais Neon.
       email et par Google (le test sur un vrai téléphone demande HTTPS). Sur iPhone, l'appli
       installée a ses propres cookies : voir la décision sur la connexion par code
       (jalon 9, étape 6).
+- [ ] Sur iPhone, dans la PWA installée : connexion Google ; si elle échoue (elle s'ouvre dans
+      Safari et l'appli reste déconnectée), passer par `window.open` dans `SignInForm`.
 - [ ] **Vérifier** que `https://<domaine>/sw.js` répond avec `Cache-Control: no-cache` et
       que l'hébergeur ne le met pas en cache (en-têtes de la réponse).
 - [ ] Projet Vercel : Root Directory = `apps/web` (là où est `vercel.json`). **Vérifier**

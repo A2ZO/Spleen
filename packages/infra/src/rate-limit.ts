@@ -43,6 +43,19 @@ export async function consumeRateLimit(
 }
 
 /**
+ * How many times `key` was counted in its current window (0 when the window is over), without
+ * counting this call: to refuse before an attempt, and count only the failed ones.
+ */
+export async function rateLimitCount(db: Db, key: string, rule: RateLimitRule): Promise<number> {
+  const result = await db.execute(sql`
+    select count from rate_limits
+    where key = ${key} and window_start > now() - make_interval(secs => ${rule.window})
+  `);
+  const row = rowsOf(result)[0] as { count: number } | undefined;
+  return row ? Number(row.count) : 0;
+}
+
+/**
  * Global request gate (e.g. MusicBrainz, 1 request/s for the whole site): reserves the next
  * free slot in `rate_limits.next_allowed_at` in one atomic statement and returns how long the
  * caller must wait before sending its request. Works across serverless instances and through

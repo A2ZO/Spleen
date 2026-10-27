@@ -7,8 +7,11 @@ import { expect, type Page, type TestInfo } from "@playwright/test";
 // Without BREVO_API_KEY, the dev server writes emails to <repo>/.data/outbox (see @spleen/infra).
 const outbox = path.resolve(import.meta.dirname, "../../../.data/outbox");
 
-/** Waits for the magic link sent to `email` and returns it. */
-export async function magicLinkFor(email: string): Promise<string> {
+/** Waits for the latest sign-in email sent to `email` and returns what `pick` finds in it. */
+async function fromSignInEmail(
+  email: string,
+  pick: (text: string) => string | undefined,
+): Promise<string> {
   const safe = email.replace(/[^a-z0-9@._-]/gi, "_");
   for (let attempt = 0; attempt < 50; attempt++) {
     const files = (await readdir(outbox).catch(() => [])).filter((f) =>
@@ -19,13 +22,21 @@ export async function magicLinkFor(email: string): Promise<string> {
       const mail = JSON.parse(await readFile(path.join(outbox, latest), "utf8")) as {
         text: string;
       };
-      const link = /https?:\/\/\S+/.exec(mail.text)?.[0];
-      if (link) return link;
+      const found = pick(mail.text);
+      if (found) return found;
     }
     await new Promise((resolve) => setTimeout(resolve, 200));
   }
-  throw new Error(`no magic link for ${email} in ${outbox}`);
+  throw new Error(`no sign-in email for ${email} in ${outbox}`);
 }
+
+/** Waits for the magic link sent to `email` and returns it. */
+export const magicLinkFor = (email: string) =>
+  fromSignInEmail(email, (text) => /https?:\/\/\S+/.exec(text)?.[0]);
+
+/** Waits for the sign-in code sent with the link to `email`, as written ("123 456"). */
+export const signInCodeFor = (email: string) =>
+  fromSignInEmail(email, (text) => /\b\d{3} \d{3}\b/.exec(text)?.[0]);
 
 /** Signs up a new member (French UI) and returns their @username, on their profile page. */
 export async function signUp(page: Page, testInfo: TestInfo, displayName: string) {

@@ -9,7 +9,7 @@ import { anonymizeModerationHistory } from "./moderation/history";
  * matches a duration written in the privacy policy (packages/i18n, `legal.privacy`):
  * - moderation decisions anonymised and closed reports deleted one year after the decision;
  * - expired sessions (date, IP address, browser) deleted;
- * - expired verification tokens (sign-in links) deleted;
+ * - expired verification tokens (sign-in links and codes) deleted;
  * - anti-abuse counters (an account id or an IP address) deleted 24 hours after their
  *   window ended, except the site-wide MusicBrainz gate.
  */

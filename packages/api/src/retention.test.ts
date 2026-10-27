@@ -44,18 +44,20 @@ describe("retention", () => {
     expect(left).toEqual([{ token: "live" }]);
   });
 
-  it("deletes expired sign-in links, keeps those still valid", async () => {
+  it("deletes expired sign-in links and codes, keeps those still valid", async () => {
     await db()
       .insert(schema.verification)
       .values([
-        { identifier: "old-link", value: "hashed", expiresAt: hoursAgo(1) },
-        { identifier: "new-link", value: "hashed", expiresAt: hoursAgo(-0.25) },
+        { identifier: "magic-link:old", value: "{}", expiresAt: hoursAgo(1) },
+        // Sign-in codes live in the same table (Better Auth email OTP).
+        { identifier: "sign-in-otp-old@example.test", value: "hashed:0", expiresAt: hoursAgo(1) },
+        { identifier: "magic-link:new", value: "{}", expiresAt: hoursAgo(-0.25) },
       ]);
-    expect((await runRetention(db(), now)).verifications).toBe(1);
+    expect((await runRetention(db(), now)).verifications).toBe(2);
     const left = await db()
       .select({ identifier: schema.verification.identifier })
       .from(schema.verification);
-    expect(left).toEqual([{ identifier: "new-link" }]);
+    expect(left).toEqual([{ identifier: "magic-link:new" }]);
   });
 
   it("deletes anti-abuse counters 24 hours after their window, never the MusicBrainz gate", async () => {

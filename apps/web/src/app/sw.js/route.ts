@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { serviceWorkerDisabled } from "@spleen/infra/config";
 
 /*
@@ -10,7 +13,24 @@ import { serviceWorkerDisabled } from "@spleen/infra/config";
  * (docs/environnement.md) serves a worker that empties the caches and unregisters itself.
  */
 
-const BUILD = process.env.SPLEEN_BUILD_ID ?? "dev";
+/**
+ * Build number in the cache name, read at run time: the commit on Vercel, else the BUILD_ID
+ * written by `next build`, else the server's start time; "dev" in development. (Not through
+ * next.config `env`: inlined in the client bundle, a value differing between evaluations made
+ * the dev server reload every page in a loop.)
+ */
+function buildNumber(): string {
+  if (process.env.NODE_ENV !== "production") return "dev";
+  const commit = process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 12);
+  if (commit) return commit;
+  try {
+    return readFileSync(join(process.cwd(), ".next", "BUILD_ID"), "utf8").trim();
+  } catch {
+    return `started-${Date.now().toString(36)}`;
+  }
+}
+
+const BUILD = buildNumber();
 
 const worker = (build: string) => `"use strict";
 const BUILD = ${JSON.stringify(build)};

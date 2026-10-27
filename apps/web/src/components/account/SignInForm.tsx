@@ -9,6 +9,7 @@ import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/cn";
 
 type Status = "idle" | "sending" | "sent" | "error" | "rateLimited";
+type CodeStatus = "idle" | "checking" | "invalid" | "tooMany";
 
 export function SignInForm({
   locale,
@@ -26,6 +27,8 @@ export function SignInForm({
   const t = useTranslations("auth");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
+  const [code, setCode] = useState("");
+  const [codeStatus, setCodeStatus] = useState<CodeStatus>("idle");
   // After signing in, /welcome sends members to onboarding or to their shelf.
   const callbackURL = `/${locale}/welcome`;
 
@@ -41,13 +44,55 @@ export function SignInForm({
     setStatus(error ? (error.status === 429 ? "rateLimited" : "error") : "sent");
   }
 
+  // The code from the same email: for the app installed on an iPhone, whose cookies are not
+  // Safari's (the link would sign in Safari, not the app). Same sign-in, same landing page.
+  async function onCode(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setCodeStatus("checking");
+    const { error } = await authClient.signIn.emailOtp({ email, otp: code.replace(/\D/g, "") });
+    if (error) {
+      setCodeStatus(error.status === 429 || error.status === 403 ? "tooMany" : "invalid");
+      return;
+    }
+    // A full load, as after the link: the whole layout (header included) reads the new session.
+    window.location.assign(new URL(callbackURL, window.location.origin).href);
+  }
+
   if (status === "sent") {
     return (
-      <div className={cn("space-y-4", className)} role="status">
-        <h2 className="text-2xl font-semibold">{t("sentTitle")}</h2>
-        <p className="text-fg-muted">{t("sentBody", { email })}</p>
-        {devHint && <p className="font-mono text-xs text-star">{t("devHint")}</p>}
-        <Button variant="ghost" onClick={() => setStatus("idle")}>
+      <div className={cn("space-y-6", className)}>
+        <div className="space-y-4" role="status">
+          <h2 className="text-2xl font-semibold">{t("sentTitle")}</h2>
+          <p className="text-fg-muted">{t("sentBody", { email })}</p>
+          {devHint && <p className="font-mono text-xs text-star">{t("devHint")}</p>}
+        </div>
+        <form onSubmit={onCode} className="space-y-4">
+          <TextField
+            label={t("codeLabel")}
+            hint={t("codeHint")}
+            name="code"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            pattern="[0-9 ]{6,7}"
+            maxLength={7}
+            required
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+          />
+          {codeStatus === "invalid" && <FormMessage tone="error">{t("codeInvalid")}</FormMessage>}
+          {codeStatus === "tooMany" && <FormMessage tone="error">{t("codeTooMany")}</FormMessage>}
+          <Button type="submit" className="w-full" disabled={codeStatus === "checking"}>
+            {codeStatus === "checking" ? t("codeChecking") : t("codeSubmit")}
+          </Button>
+        </form>
+        <Button
+          variant="ghost"
+          onClick={() => {
+            setStatus("idle");
+            setCode("");
+            setCodeStatus("idle");
+          }}
+        >
           {t("otherEmail")}
         </Button>
       </div>

@@ -1,11 +1,12 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { expo } from "@better-auth/expo";
-import { schema, type Db } from "@spleen/db";
+import { schema, sql, type Db } from "@spleen/db";
 import { googleConfigured, isProduction } from "@spleen/infra/config";
 import { createMailer, type Mailer } from "@spleen/infra/email";
-import { consumeRateLimit } from "@spleen/infra/rate-limit";
+import { consumeRateLimit, rateLimitCount } from "@spleen/infra/rate-limit";
 import { betterAuth } from "better-auth";
-import { magicLink } from "better-auth/plugins";
+import { APIError, createAuthMiddleware } from "better-auth/api";
+import { emailOTP, magicLink } from "better-auth/plugins";
 
 import { magicLinkEmail, toLocale } from "./emails";
 
@@ -13,6 +14,33 @@ import { magicLinkEmail, toLocale } from "./emails";
 export const APP_SCHEME = "spleen";
 
 export const MAGIC_LINK_TTL_SECONDS = 15 * 60;
+
+/**
+ * Failed sign-in codes allowed per email address and per hour, all codes and all IP addresses
+ * together (each code also dies after 3 wrong tries): someone with many IP addresses cannot
+ * try thousands of codes on one account.
+ */
+export const SIGN_IN_CODE_FAILURES = { window: 60 * 60, max: 10 };
+
+/**
+ * Email OTP routes that would send a second email, or do something Spleen does not offer
+ * (passwords, email changes): Better Auth answers 404 to them. The code is only ever created
+ * with the magic link, in the same email (`sendMagicLink` below), and used on
+ * `/sign-in/email-otp`.
+ */
+export const DISABLED_AUTH_PATHS = [
+  "/email-otp/send-verification-otp",
+  "/email-otp/check-verification-otp",
+  "/email-otp/verify-email",
+  "/email-otp/request-password-reset",
+  "/forget-password/email-otp",
+  "/email-otp/reset-password",
+  "/email-otp/request-email-change",
+  "/email-otp/change-email",
+];
+
+/** Better Auth's verification identifier of an email's sign-in code. */
+const codeIdentifier = (email: string) => `sign-in-otp-${email.toLowerCase()}`;
 
 export interface AuthOptions {
   db: Db;
@@ -29,7 +57,19 @@ export function createAuth({ db, mailer, env = process.env, rateLimit }: AuthOpt
     (mailer ?? (defaultMailer ??= createMailer(env))).send(email);
   const development = !isProduction(env);
 
-  return betterAuth({
+  /** Deletes the sign-in code of an email (a new link was asked for, or the link was used). */
+  const dropCode = (email: string) =>
+    db
+      .delete(schema.verification)
+      .where(sql`${schema.verification.identifier} = ${codeIdentifier(email)}`);
+  /** Deletes the pending magic links of an email (the code was used instead). */
+  const dropLinks = (email: string) =>
+    db.execute(sql`
+      delete from "verification"
+      where "identifier" like 'magic-link:%' and lower("value"::json->>'email') = ${email.toLowerCase()}`);
+  const failuresKey = (email: string) => `auth-code-failures:${email.toLowerCase()}`;
+
+  const auth = betterAuth({
     secret: env.BETTER_AUTH_SECRET,
     baseURL: env.BETTER_AUTH_URL,
     database: drizzleAdapter(db, {
@@ -66,20 +106,66 @@ export function createAuth({ db, mailer, env = process.env, rateLimit }: AuthOpt
       customRules: {
         "/sign-in/magic-link": { window: 10 * 60, max: 5 },
         "/magic-link/verify": { window: 60, max: 10 },
+        "/sign-in/email-otp": { window: 10 * 60, max: 10 },
       },
       customStorage: { consume: (key, rule) => consumeRateLimit(db, `auth:${key}`, rule) },
+    },
+    disabledPaths: DISABLED_AUTH_PATHS,
+    hooks: {
+      // Too many failed codes for this address within the hour: refused before checking.
+      before: createAuthMiddleware(async (ctx) => {
+        if (ctx.path !== "/sign-in/email-otp") return;
+        const email = String((ctx.body as { email?: unknown } | undefined)?.email ?? "");
+        if (!email) return;
+        if (
+          (await rateLimitCount(db, failuresKey(email), SIGN_IN_CODE_FAILURES)) >=
+          SIGN_IN_CODE_FAILURES.max
+        ) {
+          throw new APIError("TOO_MANY_REQUESTS", { message: "TOO_MANY_CODE_FAILURES" });
+        }
+      }),
+      // A sign-in with the link cancels the code, and the code cancels the link; a wrong code
+      // counts against its address.
+      after: createAuthMiddleware(async (ctx) => {
+        const signedIn = ctx.context.newSession?.user.email;
+        if (ctx.path === "/magic-link/verify" && signedIn) await dropCode(signedIn);
+        if (ctx.path !== "/sign-in/email-otp") return;
+        if (signedIn) {
+          await dropLinks(signedIn);
+          return;
+        }
+        const email = String((ctx.body as { email?: unknown } | undefined)?.email ?? "");
+        if (email) await consumeRateLimit(db, failuresKey(email), SIGN_IN_CODE_FAILURES);
+      }),
     },
     plugins: [
       magicLink({
         expiresIn: MAGIC_LINK_TTL_SECONDS,
         storeToken: "hashed",
+        // The same email carries a 6-digit code for the installed app on an iPhone, which
+        // has its own cookies (the link opens in Safari). A new link cancels the old code.
         sendMagicLink: async ({ email, url, metadata }) => {
-          await send(await magicLinkEmail(email, url, toLocale(metadata?.locale)));
+          await dropCode(email);
+          const code = await auth.api.createVerificationOTP({
+            body: { email: email.toLowerCase(), type: "sign-in" },
+          });
+          await send(await magicLinkEmail(email, url, toLocale(metadata?.locale), code));
+        },
+      }),
+      emailOTP({
+        otpLength: 6,
+        expiresIn: MAGIC_LINK_TTL_SECONDS,
+        allowedAttempts: 3,
+        storeOTP: "hashed",
+        // Never called: the route that would send it is disabled (DISABLED_AUTH_PATHS).
+        sendVerificationOTP: async () => {
+          throw new Error("Sign-in codes are only sent inside the magic-link email.");
         },
       }),
       expo(),
     ],
   });
+  return auth;
 }
 
 export type Auth = ReturnType<typeof createAuth>;

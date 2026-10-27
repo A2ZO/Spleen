@@ -5,13 +5,7 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
 // `<repo>/.env` is loaded by the package scripts (`dotenv -e ../../.env -- next …`) before
 // Next starts: Next itself only reads env files from apps/web.
-// Build number in the service worker's cache name: the commit on Vercel, else the build time.
-const buildId =
-  process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 12) ??
-  (process.env.NODE_ENV === "production" ? Date.now().toString(36) : "dev");
-
 const nextConfig: NextConfig = {
-  env: { SPLEEN_BUILD_ID: buildId },
   // Internal packages ship TypeScript sources; Next compiles them.
   transpilePackages: [
     "@spleen/api",
