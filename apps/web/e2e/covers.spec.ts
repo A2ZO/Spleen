@@ -1,4 +1,5 @@
 import { expect, test } from "./fixtures";
+import { waitForHydration } from "./helpers";
 
 test.use({ locale: "fr-FR" });
 
@@ -26,11 +27,29 @@ test("the cover loads from Cover Art Archive, under the policy", async ({ page }
     .toBeGreaterThan(0);
 });
 
-test("a cover that fails after hydration gives way to the generated sleeve", async ({ page }) => {
+test("a cover that fails during the page load gives way to the generated sleeve", async ({
+  page,
+}) => {
   await page.route("https://coverartarchive.org/**", (route) => route.fulfill({ status: 500 }));
   await page.goto(ALBUM);
   await expect(page.locator("main img")).toHaveCount(0);
-  await expect(page.getByRole("img", { name: TITLE })).toBeVisible();
+  await expect(page.getByRole("img", { name: TITLE }).getByText(TITLE)).toBeVisible();
+});
+
+test("a cover that fails after hydration gives way to the generated sleeve", async ({ page }) => {
+  // The answer is held until React has taken over: the failure reaches the mounted listener.
+  let release = () => {};
+  const hydrated = new Promise<void>((resolve) => (release = resolve));
+  await page.route("https://coverartarchive.org/**", async (route) => {
+    await hydrated;
+    await route.fulfill({ status: 500 });
+  });
+  await page.goto(ALBUM, { waitUntil: "domcontentloaded" });
+  await waitForHydration(page);
+  await expect(page.locator("main img")).toHaveCount(1);
+  release();
+  await expect(page.locator("main img")).toHaveCount(0);
+  await expect(page.getByRole("img", { name: TITLE }).getByText(TITLE)).toBeVisible();
 });
 
 test.describe("without JavaScript", () => {
@@ -60,6 +79,6 @@ test("a cover that failed before hydration is removed once React takes over", as
   await page.goto(ALBUM, { waitUntil: "domcontentloaded" });
   const cover = page.locator("main img");
   await expect(cover).toHaveCount(1);
-  await expect(page.getByRole("img", { name: TITLE })).toBeVisible();
   await expect(cover).toHaveCount(0, { timeout: 15_000 });
+  await expect(page.getByRole("img", { name: TITLE }).getByText(TITLE)).toBeVisible();
 });
