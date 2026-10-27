@@ -321,5 +321,18 @@ export async function seed(db: Db, options: { now?: Date } = {}): Promise<void> 
     await seedLists(tx, now);
     // After the lists: a report points to one of them.
     await seedModeration(tx, now);
+
+    // Demo profiles created before the terms box existed keep NULL (inserts above do nothing on
+    // conflict): fill them, demo accounts only (`<username>@example.test`, never `e2e-*`).
+    await tx.execute(sql`
+      update profiles p
+      set terms_accepted_at = coalesce(p.terms_accepted_at, p.age_confirmed_at, p.created_at),
+          terms_version = ${TERMS_VERSION}
+      from "user" u
+      where u.id = p.user_id
+        and p.terms_version is null
+        and u.email like '%@example.test'
+        and u.email not like 'e2e-%'
+    `);
   });
 }
