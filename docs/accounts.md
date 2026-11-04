@@ -31,6 +31,10 @@ Reference for milestone 3. `CLAUDE.md` keeps the summary; this file has the deta
 
 - `contextFor(headers)` (`apps/web/src/server/api.ts`) builds the tRPC context; the user is
   resolved lazily and memoised. `protectedProcedure` (`packages/api/src/trpc.ts`) requires it.
+- Per request, `ctx.account()` reads the whole profile row once; `account.me` and
+  `listening.myState` reuse it, and `me` itself is memoised (`ctx.memo`). Every mutation clears
+  the memo (`ctx.forget()`), so a read after a write sees fresh data. No Better Auth
+  `cookieCache`: a suspension or a revoked session applies on the very next request.
 - Errors carry a stable code in `TRPCError.message` (`@spleen/api/errors`, safe to import in
   client components). The UI translates them under `errors.*`; a test checks both languages.
 

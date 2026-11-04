@@ -537,7 +537,9 @@ export const appRouter = router({
     /** The member's state and listens for an item page (null when signed out). */
     myState: publicProcedure.input(listenTargetSchema).query(async ({ input, ctx }) => {
       const user = await ctx.user();
-      return user ? getMyItemState(ctx.db(), user.id, input, ctx.now) : null;
+      if (!user) return null;
+      const profile = (await ctx.account())?.profile;
+      return getMyItemState(ctx.db(), user.id, input, ctx.now, profile);
     }),
     /** Quick rating (null clears it) on the member's undated listen; `order` drops stale ones. */
     quickRate: listenWrite
@@ -606,11 +608,13 @@ export const appRouter = router({
   }),
   account: router({
     /** Null when signed out; `profile` is null until onboarding is done. */
-    me: publicProcedure.query(async ({ ctx }) => {
-      const user = await ctx.user();
-      if (!user) return null;
-      return getMe(ctx.db(), user, ctx.now, (await ctx.account())?.role === "admin");
-    }),
+    me: publicProcedure.query(({ ctx }) =>
+      // Once per request: the header and the page both ask for it.
+      ctx.memo("me", async () => {
+        const session = await ctx.session();
+        return session ? getMe(ctx.db(), session, ctx.account, ctx.now) : null;
+      }),
+    ),
     /**
      * The caller's suspension and its reason: null when signed out or not suspended. Only the
      * signed-in member sees it (the sign-in page never tells whether an address is suspended).

@@ -91,6 +91,33 @@ describe("account.me", () => {
   });
 });
 
+describe("per-request memo", () => {
+  it("reads the caller's account once per request, and again after a mutation", async () => {
+    const user = await member("memoised");
+    const [release] = await handle.db.select().from(schema.releases).limit(1);
+    const select = vi.spyOn(handle.db, "select");
+    const caller = api(user);
+    const first = await caller.account.me();
+    const afterMe = select.mock.calls.length;
+    expect(await caller.account.me()).toBe(first);
+    await caller.listening.myState({ kind: "release", id: release!.id });
+    // `myState` reads its two tables; neither it nor the second `me` reads the profile again.
+    expect(select.mock.calls.length - afterMe).toBe(2);
+    await caller.account.updateProfile({
+      displayName: "Mémo",
+      bio: "",
+      locale: "fr",
+      theme: "dark",
+      statsPrivate: false,
+      diaryPrivate: false,
+      blindMode: false,
+      timeZone: "Europe/Paris",
+    });
+    expect((await caller.account.me())?.profile?.displayName).toBe("Mémo");
+    select.mockRestore();
+  });
+});
+
 describe("account.onboard", () => {
   const input = {
     displayName: "Camille",

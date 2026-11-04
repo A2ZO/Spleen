@@ -363,8 +363,10 @@ export async function getMyItemState(
   userId: string,
   input: ListenTargetInput,
   now: Date,
+  /** The caller's profile when already read (`ctx.account()`): saves reading it again. */
+  listener?: { timeZone: string } | null,
 ): Promise<MyItemState> {
-  const { timeZone } = await requireListener(db, userId);
+  const { timeZone } = listener ?? (await requireListener(db, userId));
   const listenTarget = toTarget(input);
 
   const [[state], rows] = await Promise.all([

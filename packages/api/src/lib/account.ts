@@ -10,7 +10,7 @@ import {
   type ProfileUpdateInput,
 } from "@spleen/validators";
 
-import { fail, type SessionUser } from "../trpc";
+import { fail, type Account, type SessionUser } from "../trpc";
 import type { AccountExport, Me, MyProfile } from "../types";
 import {
   nextRenameAt,
@@ -44,26 +44,38 @@ async function requireProfile(db: Db, userId: string) {
   return row;
 }
 
-export async function getMe(db: Db, user: SessionUser, now: Date, isAdmin = false): Promise<Me> {
-  const row = await findProfile(db, user.id);
-  let profile: MyProfile | null = null;
-  if (row) {
-    const renameAt = await nextRenameAt(db, user.id, now);
-    profile = {
-      username: row.username,
-      displayName: row.displayName,
-      bio: row.bio,
-      avatarUrl: row.avatarUrl,
-      locale: row.locale === "en" ? "en" : "fr",
-      theme: row.theme,
-      statsPrivate: row.statsPrivate,
-      diaryPrivate: row.diaryPrivate,
-      blindMode: row.blindMode,
-      timeZone: row.timeZone,
-      usernameChangeAvailableAt: renameAt?.toISOString() ?? null,
-    };
-  }
-  return { userId: user.id, email: user.email, profile, isAdmin };
+/**
+ * The caller's account card, built from the profile row `ctx.account()` already read. The
+ * rename date is read in parallel with that row (it only needs the session).
+ */
+export async function getMe(
+  db: Db,
+  session: SessionUser,
+  account: () => Promise<Account | null>,
+  now: Date,
+): Promise<Me | null> {
+  const [found, renameAt] = await Promise.all([account(), nextRenameAt(db, session.id, now)]);
+  if (!found || found.suspendedAt) return null;
+  const row = found.profile;
+  const profile: MyProfile | null = row && {
+    username: row.username,
+    displayName: row.displayName,
+    bio: row.bio,
+    avatarUrl: row.avatarUrl,
+    locale: row.locale === "en" ? "en" : "fr",
+    theme: row.theme,
+    statsPrivate: row.statsPrivate,
+    diaryPrivate: row.diaryPrivate,
+    blindMode: row.blindMode,
+    timeZone: row.timeZone,
+    usernameChangeAvailableAt: renameAt?.toISOString() ?? null,
+  };
+  return {
+    userId: found.user.id,
+    email: found.user.email,
+    profile,
+    isAdmin: found.role === "admin",
+  };
 }
 
 export async function onboard(
