@@ -376,7 +376,11 @@ export const appRouter = router({
   release: router({
     /** A stub (known from a discography only) is completed when a member opens it. */
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
-      const found = await releaseIdBySlug(ctx.db(), input.slug);
+      // The session is read while the release row is.
+      const [found, viewer] = await Promise.all([
+        releaseIdBySlug(ctx.db(), input.slug),
+        viewerOf(ctx),
+      ]);
       if (!found) return null;
       const user = found.mbid && !found.tracklistImportedAt ? await ctx.user() : null;
       if (user && found.mbid) {
@@ -385,15 +389,19 @@ export const appRouter = router({
           importReleaseGroup(ctx.db(), ctx.catalog(), mbid, { requestedById: user.id }),
         );
       }
-      const viewer = await viewerOf(ctx);
-      const detail = await getReleaseDetail(ctx.db(), input.slug, viewer.id);
+      // After an import the row changed: read it again.
+      const known = user ? undefined : found;
+      const detail = await getReleaseDetail(ctx.db(), input.slug, viewer.id, known);
       return detail && blindReleaseDetail(ctx.db(), viewer.blind, detail);
     }),
   }),
   artist: router({
     /** The discography is imported when a member first opens the page. */
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
-      const found = await artistIdBySlug(ctx.db(), input.slug);
+      const [found, blind] = await Promise.all([
+        artistIdBySlug(ctx.db(), input.slug),
+        blindOf(ctx),
+      ]);
       if (!found) return null;
       const user = found.mbid && !found.discographyImportedAt ? await ctx.user() : null;
       if (user && found.mbid) {
@@ -402,8 +410,8 @@ export const appRouter = router({
           importArtist(ctx.db(), ctx.catalog(), mbid, { requestedById: user.id }),
         );
       }
-      const detail = await getArtistDetail(ctx.db(), input.slug);
-      return detail && blindArtistDetail(ctx.db(), await blindOf(ctx), detail);
+      const detail = await getArtistDetail(ctx.db(), input.slug, user ? undefined : found);
+      return detail && blindArtistDetail(ctx.db(), blind, detail);
     }),
   }),
   track: router({

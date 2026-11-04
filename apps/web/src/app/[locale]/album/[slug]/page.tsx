@@ -48,6 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     ...(await seoMetadata(locale, `/album/${slug}`, {
       subject: { kind: "release", key: slug },
+      page: release.seo,
       title,
       description,
     })),
@@ -64,20 +65,25 @@ function byDisc(tracks: Track[]): [number, Track[]][] {
 export default async function AlbumPage({ params }: Props) {
   const { locale, slug } = await params;
   initRouteLocale(locale);
+  const api = await getApi();
+  // What does not depend on the release starts with it (one wave less).
+  const early = Promise.all([
+    api.listening.moods.list(),
+    api.account.me().then((me) => (me ? api.shelf.mine() : null)),
+  ]);
+  early.catch(() => {}); // awaited below; not awaited when the release is missing
   const release = await getRelease(slug);
   if (!release) return missingCatalogPage("release", slug, locale);
 
-  const t = await getTranslations();
-  const format = await getFormatter();
-  const average = release.averageRating;
-  const api = await getApi();
   const target = { kind: "release" as const, id: release.id };
-  const [mine, moods] = await Promise.all([
+  const [t, format, mine, [moods, shelf]] = await Promise.all([
+    getTranslations(),
+    getFormatter(),
     api.listening.myState(target),
-    api.listening.moods.list(),
+    early,
   ]);
+  const average = release.averageRating;
   const signedIn = mine !== null;
-  const shelf = signedIn ? await api.shelf.mine() : null;
   const discs = byDisc(release.tracks);
   // A track appearing on several discs is rated once.
   const logTracks = [

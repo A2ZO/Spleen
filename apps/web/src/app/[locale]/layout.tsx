@@ -55,10 +55,13 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const locale = initRouteLocale((await params).locale);
-  const t = await getTranslations({ locale, namespace: "common" });
-  const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
   // A suspended member who signed in sees why on every page, and nothing else.
-  const suspension = await (await getApi()).account.suspension();
+  const [t, jar, suspension] = await Promise.all([
+    getTranslations({ locale, namespace: "common" }),
+    cookies(),
+    getApi().then((api) => api.account.suspension()),
+  ]);
+  const theme = parseTheme(jar.get(THEME_COOKIE)?.value);
 
   return (
     <html

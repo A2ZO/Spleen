@@ -29,6 +29,7 @@ import { loadReleaseCards, loadTrackCards, toReleaseCard } from "./catalog/cards
 import { listRowColumns, loadListCards } from "./catalog/pages";
 import { blindReleaseItems, blindReviewCards } from "./listening/blind";
 import { isBlockedBetween } from "./social/relations";
+import { seoPage } from "./seo";
 import { reviewCountColumns } from "./social/reviews";
 import { getShelf } from "./shelf";
 import { getMemberStats } from "./stats";
@@ -217,6 +218,7 @@ export async function getPublicProfile(
     viewerBlocked,
     blocked,
     viewerIsMember,
+    seo,
   ] = await Promise.all([
     getShelf(db, userId),
     access.diaryHidden
@@ -240,12 +242,17 @@ export async function getPublicProfile(
     viewerId && !access.isOwner ? isBlockedBetween(db, viewerId, userId) : false,
     // A session without a profile (onboarding not finished) cannot follow anyone yet.
     viewerId ? db.$count(profiles, eq(profiles.userId, viewerId)).then((n) => n > 0) : false,
+    // Search metadata, so `generateMetadata` needs no query of its own.
+    seoPage(db, "profile", row.username),
   ]);
-  const shelfCards = await maskCards(
-    db,
-    viewer,
-    shelf.flatMap((c) => c ?? []),
-  );
+  const [shelfCards, maskedRecent] = await Promise.all([
+    maskCards(
+      db,
+      viewer,
+      shelf.flatMap((c) => c ?? []),
+    ),
+    maskDiary(db, viewer, recent),
+  ]);
   const masked = new Map(shelfCards.map((c) => [c.id, c]));
 
   return {
@@ -258,13 +265,14 @@ export async function getPublicProfile(
     followerCount,
     followingCount,
     shelf: shelf.map((c) => (c ? (masked.get(c.id) ?? c) : null)),
-    recent: await maskDiary(db, viewer, recent),
+    recent: maskedRecent,
     isOwner: access.isOwner,
     diaryHidden: access.diaryHidden,
     statsHidden: access.statsHidden,
     viewerFollows,
     viewerBlocked,
     canInteract: viewerIsMember && !access.isOwner && !blocked,
+    seo,
   };
 }
 

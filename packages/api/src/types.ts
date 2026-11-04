@@ -168,6 +168,8 @@ export interface MyList {
 }
 
 export interface ReleaseDetail extends ReleaseCard {
+  /** Search metadata of the page (`seo.page`), read with it. */
+  seo: SeoPage | null;
   /** ISO date padded from `releaseDatePrecision` ("1959" → "1959-01-01"). */
   releaseDate: string | null;
   releaseDatePrecision: "year" | "month" | "day" | null;
@@ -404,6 +406,8 @@ export interface ProfileDetail {
   viewerBlocked: boolean;
   /** Signed in, not the owner, no block either way: follow and other interactions. */
   canInteract: boolean;
+  /** Search metadata of the page (`seo.page`), read with it. */
+  seo: SeoPage | null;
 }
 
 export interface HomeFeed {
@@ -422,6 +426,8 @@ export interface ArtistCard {
 }
 
 export interface ArtistDetail extends ArtistCard {
+  /** Search metadata of the page (`seo.page`), read with it. */
+  seo: SeoPage | null;
   /** "person", "group"… */
   type: string | null;
   /** The discography has not been imported yet (only releases already known are listed). */

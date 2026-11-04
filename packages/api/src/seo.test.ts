@@ -162,6 +162,25 @@ describe("indexing", () => {
     expect(await api().seo.page({ kind: "profile", key: suspended.username })).toBeNull();
   });
 
+  it("gives album, artist and profile pages the same metadata as seo.page, signed in or not", async () => {
+    const record = await release();
+    const band = await artist([record.id]);
+    const owner = await member();
+    const viewer = await member();
+    const signedIn: SessionUser = { id: viewer.id, email: `${viewer.username}@example.test` };
+    for (const caller of [api(), api(signedIn)]) {
+      expect((await caller.release.bySlug({ slug: record.slug }))?.seo).toEqual(
+        await api().seo.page({ kind: "release", key: record.slug }),
+      );
+      expect((await caller.artist.bySlug({ slug: band.slug }))?.seo).toEqual(
+        await api().seo.page({ kind: "artist", key: band.slug }),
+      );
+      expect((await caller.profile.byUsername({ username: owner.username }))?.seo).toEqual(
+        await api().seo.page({ kind: "profile", key: owner.username }),
+      );
+    }
+  });
+
   it("never shows a hidden review in an image, and changes the image URL with the review", async () => {
     const author = await member();
     const record = await release({

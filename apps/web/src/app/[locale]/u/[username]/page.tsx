@@ -52,6 +52,7 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
     description,
     ...(await seoMetadata(locale, `/u/${profile.username}`, {
       subject: { kind: "profile", key: profile.username },
+      page: profile.seo,
       noindex: tabbed,
       title,
       description,
@@ -62,6 +63,29 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
 const TABS = ["diary", "likes", "to-listen", "reviews", "lists", "stats"] as const;
 type Tab = (typeof TABS)[number];
 
+/*
+ * Paged tabs, memoised per request: the page starts the open tab's read with the profile's
+ * (one chain of round trips instead of two) and `TabContent` gets the same promise. Private
+ * parts come back empty from the API, so starting early never reveals anything.
+ */
+const tabReads = {
+  diary: cache(async (username: string, page: number) =>
+    (await getApi()).profile.diary({ username, page }),
+  ),
+  likes: cache(async (username: string, page: number) =>
+    (await getApi()).profile.likes({ username, page }),
+  ),
+  "to-listen": cache(async (username: string, page: number) =>
+    (await getApi()).profile.toListen({ username, page }),
+  ),
+  reviews: cache(async (username: string, page: number) =>
+    (await getApi()).profile.reviews({ username, page }),
+  ),
+  lists: cache(async (username: string, page: number) =>
+    (await getApi()).profile.lists({ username, page }),
+  ),
+};
+
 const gridClasses = "grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5";
 
 function EmptyState({ children }: { children: string }) {
@@ -71,10 +95,13 @@ function EmptyState({ children }: { children: string }) {
 /** Only the active tab is loaded; each one is a link (`?tab=…&page=…`). */
 async function TabContent({
   profile,
+  requestedUsername,
   tab,
   page,
 }: {
   profile: ProfileDetail;
+  /** The username as written in the URL: the key the page used to start the tab's read. */
+  requestedUsername: string;
   tab: Tab;
   page: number;
 }) {
@@ -82,6 +109,7 @@ async function TabContent({
   const api = await getApi();
   const username = profile.username;
   const path = `/u/${username}`;
+  const requested = requestedUsername;
   // A page past the last one (shared link, fewer items since) goes to the last page.
   const locale = await getLocale();
   const inRange = (p: { page: number; pageCount: number } | null) => {
@@ -104,7 +132,7 @@ async function TabContent({
   switch (tab) {
     case "diary": {
       if (profile.diaryHidden) return privateDiary;
-      const diary = await api.profile.diary({ username, page });
+      const diary = await tabReads.diary(requested, page);
       inRange(diary);
       if (!diary || diary.total === 0) return <EmptyState>{t("profile.diaryEmpty")}</EmptyState>;
       return (
@@ -127,7 +155,7 @@ async function TabContent({
     }
     case "likes": {
       if (profile.diaryHidden) return privateDiary;
-      const likes = await api.profile.likes({ username, page });
+      const likes = await tabReads.likes(requested, page);
       inRange(likes);
       if (!likes || likes.total === 0) return <EmptyState>{t("profile.likesEmpty")}</EmptyState>;
       return (
@@ -153,7 +181,7 @@ async function TabContent({
     }
     case "to-listen": {
       if (profile.diaryHidden) return privateDiary;
-      const queue = await api.profile.toListen({ username, page });
+      const queue = await tabReads["to-listen"](requested, page);
       inRange(queue);
       if (!queue || queue.total === 0) {
         return <EmptyState>{t("profile.toListenEmpty")}</EmptyState>;
@@ -172,7 +200,7 @@ async function TabContent({
       );
     }
     case "reviews": {
-      const reviews = await api.profile.reviews({ username, page });
+      const reviews = await tabReads.reviews(requested, page);
       inRange(reviews);
       if (!reviews || reviews.total === 0) {
         return <EmptyState>{t("profile.reviewsEmpty")}</EmptyState>;
@@ -191,7 +219,7 @@ async function TabContent({
       );
     }
     case "lists": {
-      const lists = await api.profile.lists({ username, page });
+      const lists = await tabReads.lists(requested, page);
       inRange(lists);
       const create = profile.isOwner && (
         <div className="mb-5 flex justify-end">
@@ -239,15 +267,22 @@ async function TabContent({
 export default async function ProfilePage({ params, searchParams }: Props) {
   const { locale, username } = await params;
   initRouteLocale(locale);
-  const profile = await getProfile(username);
-  if (!profile) notFound();
   const raw = await searchParams;
   const tab = TABS.find((x) => x === firstParam(raw.tab)) ?? "diary";
   const page = pageParam(raw.page);
+  const parsed = usernameSchema.safeParse(decodeURIComponent(username));
+  if (!parsed.success) notFound();
+  const requested = parsed.data;
+  // The open tab's data is read alongside the profile (stats keep their own cache).
+  if (tab !== "stats") tabReads[tab](requested, page).catch(() => {});
 
-  const t = await getTranslations();
-  const format = await getFormatter();
-  const me = await (await getApi()).account.me();
+  const [profile, t, format, me] = await Promise.all([
+    getProfile(username),
+    getTranslations(),
+    getFormatter(),
+    getApi().then((api) => api.account.me()),
+  ]);
+  if (!profile) notFound();
   const signedIn = Boolean(me?.profile);
   const path = `/u/${profile.username}`;
   const countLink = "hover:text-fg underline-offset-2 hover:underline";
@@ -363,7 +398,7 @@ export default async function ProfilePage({ params, searchParams }: Props) {
           }))}
         />
         <div className="pt-5">
-          <TabContent profile={profile} tab={tab} page={page} />
+          <TabContent profile={profile} requestedUsername={requested} tab={tab} page={page} />
         </div>
       </section>
     </div>

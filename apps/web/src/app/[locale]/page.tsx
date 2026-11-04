@@ -1,6 +1,7 @@
 import { audienceLangSchema, cursorSchema, type AudienceLang } from "@spleen/validators";
 import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
+import { cache } from "react";
 
 import { ReleaseGrid, TrendsGrid } from "@/components/discovery/Charts";
 import { Turntable } from "@/components/release/Turntable";
@@ -43,13 +44,15 @@ const HOME_CHART_SIZE = 6;
  * The week's trends and recent releases, from real data only. A block with nothing to show
  * is left out rather than shown empty (trends already widen to every language and 30 days).
  */
+/** Memoised per request: the page starts these reads while the session is being read. */
+const discoveryReads = cache(async (lang: AudienceLang) => {
+  const api = await getApi();
+  return Promise.all([api.discovery.trends({ lang }), api.discovery.recent({})]);
+});
+
 async function DiscoveryBlocks({ lang }: { lang: AudienceLang }) {
   const t = await getTranslations("discover");
-  const api = await getApi();
-  const [trends, recent] = await Promise.all([
-    api.discovery.trends({ lang }),
-    api.discovery.recent({}),
-  ]);
+  const [trends, recent] = await discoveryReads(lang);
   const more = (
     <Link href="/discover" className={`text-sm ${linkClasses}`}>
       {t("more")}
@@ -217,15 +220,15 @@ async function PopularFeed({
 export default async function HomePage({ params, searchParams }: Props) {
   const { locale } = await params;
   initRouteLocale(locale);
-  const t = await getTranslations();
-  const api = await getApi();
-  const me = await api.account.me();
-  const member = me?.profile ?? null;
   const raw = await searchParams;
   const parsedCursor = cursorSchema.safeParse(firstParam(raw.after));
   const cursor = parsedCursor.success ? parsedCursor.data : null;
   const parsedLang = audienceLangSchema.safeParse(firstParam(raw.lang));
   const lang: AudienceLang = parsedLang.success ? parsedLang.data : locale === "en" ? "en" : "fr";
+  // Shown to everyone: started before knowing who is looking.
+  discoveryReads(lang).catch(() => {});
+  const [t, me] = await Promise.all([getTranslations(), getApi().then((api) => api.account.me())]);
+  const member = me?.profile ?? null;
   // Members land on their friends; visitors only have the popular reviews.
   const tab: Tab = member ? (TABS.find((x) => x === firstParam(raw.tab)) ?? "friends") : "popular";
   const shelfHref = member ? `/u/${member.username}` : me ? "/welcome" : "/sign-in";

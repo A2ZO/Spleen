@@ -36,6 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     ...(await seoMetadata(locale, `/artist/${slug}`, {
       subject: { kind: "artist", key: slug },
+      page: artist.seo,
       title: artist.name,
       description,
     })),
@@ -69,16 +70,19 @@ function Discography({
 export default async function ArtistPage({ params }: Props) {
   const { locale, slug } = await params;
   initRouteLocale(locale);
-  const artist = await getArtist(slug);
+  const [artist, me, t, uiLocale] = await Promise.all([
+    getArtist(slug),
+    getApi().then((api) => api.account.me()),
+    getTranslations(),
+    getLocale(),
+  ]);
   if (!artist) return missingCatalogPage("artist", slug, locale);
 
-  const t = await getTranslations();
   const { albums, eps, singles, other } = artist.discography;
   const empty = albums.length + eps.length + singles.length + other.length === 0;
-  const me = await (await getApi()).account.me();
   const signedIn = !!me;
   const country = artist.country
-    ? new Intl.DisplayNames([await getLocale()], { type: "region" }).of(artist.country)
+    ? new Intl.DisplayNames([uiLocale], { type: "region" }).of(artist.country)
     : null;
   const kind = artistKind(artist.type);
 
