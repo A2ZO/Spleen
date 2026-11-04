@@ -87,3 +87,9 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   editor, then run it); the shell may stay in `apps/web/.next/dev/logs` and make `pnpm dev`
   fail with `EBUSY … rmdir` (`cd` to the root first); a `== 'true'` written to a YAML through
   the shell loses its quotes (re-read the file).
+- CI `api-postgres`: Vitest's 5 s timeout counts every round trip to a real Postgres. A test
+  that onboarded and followed 32 members one by one (~100 transactions, 0.3–0.6 s usually)
+  once took 5 s on a docs-only commit: no date or order bug, the runner stalled. Build bulk
+  fixtures with one `insert` (`quietMembers()` in `social.test.ts`) and keep one real API call.
+  Faking only the JS clock (`vi.useFakeTimers({ toFake: ["Date"] })`) breaks feed orders: the
+  database still stamps rows with its own `now()`. Fake both, or neither.

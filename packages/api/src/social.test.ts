@@ -74,6 +74,19 @@ async function member(options: { diaryPrivate?: boolean; blindMode?: boolean } =
 }
 type Member = Awaited<ReturnType<typeof member>>;
 
+/** `count` onboarded members inserted in bulk, without going through the API. */
+async function quietMembers(count: number): Promise<{ user: SessionUser; username: string }[]> {
+  const names = Array.from({ length: count }, () => `social${(memberCount += 1)}`);
+  const users = await handle.db
+    .insert(schema.user)
+    .values(names.map((name) => ({ name, email: `${name}@example.test`, emailVerified: true })))
+    .returning({ id: schema.user.id, email: schema.user.email });
+  await handle.db
+    .insert(schema.profiles)
+    .values(users.map((u, i) => ({ userId: u.id, username: names[i]!, displayName: names[i]! })));
+  return users.map((u, i) => ({ user: u, username: names[i]! }));
+}
+
 async function errorCode(fn: () => Promise<unknown>): Promise<string> {
   try {
     await fn();
@@ -130,12 +143,19 @@ describe("following", () => {
 
   it("pages followers and following with a cursor", async () => {
     const star = await member();
-    const fans: Member[] = [];
-    for (let i = 0; i < FOLLOWS_PAGE_SIZE + 2; i++) {
-      const fan = await member();
-      await fan.call(minutesLater(i)).social.follow({ username: star.username });
-      fans.push(fan);
-    }
+    const firstFan = await member();
+    await firstFan.call(minutesLater(0)).social.follow({ username: star.username });
+    // The other fans in a few bulk inserts: one onboarding and follow per fan made this test
+    // ~100 sequential transactions, which once took over 5 s on the CI Postgres.
+    const others = await quietMembers(FOLLOWS_PAGE_SIZE + 1);
+    await handle.db.insert(schema.follows).values(
+      others.map((fan, i) => ({
+        followerId: fan.user.id,
+        followeeId: star.user.id,
+        createdAt: minutesLater(i + 1),
+      })),
+    );
+    const fans = [firstFan, ...others];
     const first = await api(null).social.followers({ username: star.username });
     expect(first?.items).toHaveLength(FOLLOWS_PAGE_SIZE);
     expect(first?.items[0]?.username).toBe(fans.at(-1)!.username);
@@ -146,7 +166,7 @@ describe("following", () => {
     expect(second?.items.map((m) => m.username)).toEqual([fans[1]!.username, fans[0]!.username]);
     expect(second?.nextCursor).toBeNull();
 
-    const following = await fans[0]!.call().social.following({ username: fans[0]!.username });
+    const following = await firstFan.call().social.following({ username: firstFan.username });
     expect(following?.items).toEqual([
       expect.objectContaining({ username: star.username, viewerFollows: true }),
     ]);
