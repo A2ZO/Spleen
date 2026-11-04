@@ -250,11 +250,6 @@ describe("release merges", () => {
     expect(await api(null).release.bySlug({ slug: dup.slug })).toBeNull();
     expect(await api(null).catalog.mergedInto({ kind: "release", slug: dup.slug })).toBe(keep.slug);
     expect(await api(null).catalog.mergedInto({ kind: "release", slug: keep.slug })).toBeNull();
-    // What the page's layout checks before streaming (308, page, 404).
-    const status = (slug: string) => api(null).catalog.pageStatus({ kind: "release", slug });
-    expect(await status(dup.slug)).toEqual({ status: "merged", slug: keep.slug });
-    expect(await status(keep.slug)).toEqual({ status: "found" });
-    expect(await status("no-such-release")).toEqual({ status: "missing" });
     const page = await api(null).release.bySlug({ slug: keep.slug });
     expect(page).toMatchObject({ averageRating: 8, ratingCount: 1 });
 

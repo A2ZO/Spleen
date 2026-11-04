@@ -63,7 +63,7 @@ import {
   updateProfile,
 } from "./lib/account";
 import { importArtist, importEntity, importReleaseGroup } from "./lib/catalog/import";
-import { catalogPageStatus, mergeCatalog, mergedSlug, previewMerge } from "./lib/catalog/merge";
+import { mergeCatalog, mergedSlug, previewMerge } from "./lib/catalog/merge";
 import { createCatalogReport } from "./lib/catalog/reports";
 import {
   artistIdBySlug,
@@ -114,7 +114,6 @@ import {
   getPublicProfile,
   getReviewsPage,
   getToListenPage,
-  profileExists,
 } from "./lib/profiles";
 import { getShelf, removeShelfItem, reorderShelf, setShelfItem } from "./lib/shelf";
 import { friendsFeed, popularFeed, suggestedMembers } from "./lib/social/feed";
@@ -425,10 +424,6 @@ export const appRouter = router({
     mergedInto: publicProcedure
       .input(z.object({ kind: z.enum(catalogKinds), slug: slugSchema }))
       .query(({ input, ctx }) => mergedSlug(ctx.db(), input.kind, input.slug)),
-    /** Found, merged (slug of the page kept) or missing: one query, before a page streams. */
-    pageStatus: publicProcedure
-      .input(z.object({ kind: z.enum(catalogKinds), slug: slugSchema }))
-      .query(({ input, ctx }) => catalogPageStatus(ctx.db(), input.kind, input.slug)),
     /** Local catalog only: instant, public. */
     search: publicProcedure.input(catalogSearchSchema).query(async ({ input, ctx }) => {
       const results = await searchCatalog(ctx.db(), input);
@@ -455,10 +450,6 @@ export const appRouter = router({
   }),
   profile: router({
     /** Header, Shelf and recent activity; each section below is its own call. */
-    /** Whether the profile page exists (suspended members' do not), before it streams. */
-    exists: publicProcedure
-      .input(z.object({ username: usernameSchema }))
-      .query(({ input, ctx }) => profileExists(ctx.db(), input.username)),
     byUsername: publicProcedure
       .input(z.object({ username: usernameSchema }))
       .query(async ({ input, ctx }) =>

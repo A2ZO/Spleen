@@ -95,8 +95,9 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   fixtures with one `insert` (`quietMembers()` in `social.test.ts`) and keep one real API call.
   Faking only the JS clock (`vi.useFakeTimers({ toFake: ["Date"] })`) breaks feed orders: the
   database still stamps rows with its own `now()`. Fake both, or neither.
-- A `loading.tsx` streams the page: once the skeleton has been sent, `notFound()` and
-  `permanentRedirect()` in the page can no longer change the status (Next answers 200 with a
-  `noindex` tag, and the redirect happens in the browser). The album, artist and profile
-  segments check existence in their `layout.tsx` (`ensureCatalogPage()`, `profile.exists`), one
-  indexed query before the skeleton; a new dynamic page with a skeleton needs the same layout.
+- No `loading.tsx` and no `Suspense` fallback on pages. Once React has shown a fallback, it
+  waits at least 300 ms before revealing the content (`FALLBACK_THROTTLE_MS`), so a page ready
+  in 50 ms shows after ~330 ms (measured in step 0 of milestone 12, `scripts/measure.mjs`).
+  Streaming also breaks the page without JavaScript (the content stays in a hidden `div`, the
+  page shows "Loading…") and turns `notFound()` / `permanentRedirect()` into a 200. Feedback
+  for slow clicks comes from the navigation bar (`NavigationBar`, `useLinkStatus`) instead.

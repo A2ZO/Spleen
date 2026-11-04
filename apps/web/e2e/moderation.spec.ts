@@ -166,6 +166,10 @@ test("an admin merges a reported duplicate from the queue; the old page redirect
   await admin.getByRole("button", { name: "Fusionner", exact: true }).click();
   await expect(admin.getByText("Fusion faite.")).toBeVisible();
 
+  // A real 308 from the server (not a redirect done by the browser after a 200).
+  const moved = await member.request.get(`/fr/album/${duplicate!.slug}`, { maxRedirects: 0 });
+  expect(moved.status()).toBe(308);
+  expect(moved.headers().location).toMatch(new RegExp(`/fr/album/${kept!.slug}$`));
   await member.goto(`/fr/album/${duplicate!.slug}`);
   await expect(member).toHaveURL(new RegExp(`/fr/album/${kept!.slug}$`));
   await expect(member.getByRole("heading", { level: 1, name: kept!.title })).toBeVisible();

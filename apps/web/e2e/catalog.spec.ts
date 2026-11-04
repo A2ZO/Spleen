@@ -44,8 +44,13 @@ test("album → artist → track pages link to each other", async ({ page }) => 
   await expect(page.getByRole("link", { name: "Nocturnes pour pluie fine" })).toBeVisible();
 });
 
-test("unknown artist and track pages are 404", async ({ page }) => {
-  for (const path of ["/fr/artist/nobody-here", "/fr/track/nothing-here"]) {
+test("unknown album, artist, track and profile pages are 404", async ({ page }) => {
+  for (const path of [
+    "/fr/album/nothing-here",
+    "/fr/artist/nobody-here",
+    "/fr/track/nothing-here",
+    "/fr/u/nobody-here",
+  ]) {
     const response = await page.goto(path);
     expect(response?.status()).toBe(404);
   }

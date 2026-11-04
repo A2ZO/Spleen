@@ -5,8 +5,7 @@
     "description": "Rate, review and list your albums, EPs and tracks. Keep a listening diary and share your taste."
   },
   "common": {
-    "skipToContent": "Skip to content",
-    "loading": "Loading…"
+    "skipToContent": "Skip to content"
   },
   "nav": {
     "label": "Main navigation",
