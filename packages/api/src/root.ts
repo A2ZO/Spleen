@@ -58,6 +58,7 @@ import {
   exportAccount,
   getMe,
   onboard,
+  usernameChangeAvailableAt,
   removeAvatar,
   setAvatar,
   updateProfile,
@@ -617,10 +618,10 @@ export const appRouter = router({
     /** Null when signed out; `profile` is null until onboarding is done. */
     me: publicProcedure.query(({ ctx }) =>
       // Once per request: the header and the page both ask for it.
-      ctx.memo("me", async () => {
-        const session = await ctx.session();
-        return session ? getMe(ctx.db(), session, ctx.account, ctx.now) : null;
-      }),
+      ctx.memo("me", () => getMe(ctx.account)),
+    ),
+    usernameChangeAvailableAt: protectedProcedure.query(({ ctx }) =>
+      usernameChangeAvailableAt(ctx.db(), ctx.user.id, ctx.now),
     ),
     /**
      * The caller's suspension and its reason: null when signed out or not suspended. Only the

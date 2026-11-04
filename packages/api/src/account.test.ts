@@ -135,8 +135,8 @@ describe("account.onboard", () => {
       displayName: "Camille",
       locale: "en",
       theme: "light",
-      usernameChangeAvailableAt: null,
     });
+    expect(await api(user).account.usernameChangeAvailableAt()).toBeNull();
     const [row] = await handle.db
       .select()
       .from(schema.profiles)
@@ -185,9 +185,7 @@ describe("account.changeUsername", () => {
   it("renames at most once every 30 days and records the former username", async () => {
     const user = await member("alpha");
     await api(user).account.changeUsername({ username: "alpha_two" });
-    expect((await api(user).account.me())?.profile?.usernameChangeAvailableAt).toBe(
-      days(30).toISOString(),
-    );
+    expect(await api(user).account.usernameChangeAvailableAt()).toBe(days(30).toISOString());
     expect(
       await errorCode(() => api(user, days(29)).account.changeUsername({ username: "alpha3" })),
     ).toBe("USERNAME_COOLDOWN");

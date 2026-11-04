@@ -499,8 +499,6 @@ export interface MyProfile {
   blindMode: boolean;
   /** IANA time zone used for "today" (default listening date). */
   timeZone: string;
-  /** ISO date from which the @username can change again; null when it can now. */
-  usernameChangeAvailableAt: string | null;
 }
 
 /** Who is calling. `profile` is null until the member picks a @username (onboarding). */

@@ -45,16 +45,11 @@ async function requireProfile(db: Db, userId: string) {
 }
 
 /**
- * The caller's account card, built from the profile row `ctx.account()` already read. The
- * rename date is read in parallel with that row (it only needs the session).
+ * The caller's account card, built from the profile row `ctx.account()` already read: no query
+ * of its own (every page asks for it, through the header).
  */
-export async function getMe(
-  db: Db,
-  session: SessionUser,
-  account: () => Promise<Account | null>,
-  now: Date,
-): Promise<Me | null> {
-  const [found, renameAt] = await Promise.all([account(), nextRenameAt(db, session.id, now)]);
+export async function getMe(account: () => Promise<Account | null>): Promise<Me | null> {
+  const found = await account();
   if (!found || found.suspendedAt) return null;
   const row = found.profile;
   const profile: MyProfile | null = row && {
@@ -68,7 +63,6 @@ export async function getMe(
     diaryPrivate: row.diaryPrivate,
     blindMode: row.blindMode,
     timeZone: row.timeZone,
-    usernameChangeAvailableAt: renameAt?.toISOString() ?? null,
   };
   return {
     userId: found.user.id,
@@ -76,6 +70,15 @@ export async function getMe(
     profile,
     isAdmin: found.role === "admin",
   };
+}
+
+/** ISO date from which the @username can change again; null when it can now (settings page). */
+export async function usernameChangeAvailableAt(
+  db: Db,
+  userId: string,
+  now: Date,
+): Promise<string | null> {
+  return (await nextRenameAt(db, userId, now))?.toISOString() ?? null;
 }
 
 export async function onboard(
