@@ -197,4 +197,6 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - [ ] 11. Upcoming releases from followed artists — spec in docs/cahier-des-charges.md (section
       « Sorties à venir de tes artistes »); may run before milestone 10, depends only on 4, 7
       and 8.
-- [ ] 12. Polish: text typed before hydration is lost (issue #24).
+- [ ] 12. **Douceurs**: small features that make Spleen smoother and faster, one step per
+      feature (step 0: navigation speed, loading skeletons, link prefetch; issue #24, text typed
+      before hydration is lost).
