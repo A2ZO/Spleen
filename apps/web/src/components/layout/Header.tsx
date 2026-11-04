@@ -23,7 +23,7 @@ export async function Header({ minimal = false }: { minimal?: boolean }) {
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-bg/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:gap-4 sm:px-6">
-        <Link href="/" className="rounded-sm text-fg hover:text-star">
+        <Link prefetch="auto" href="/" className="rounded-sm text-fg hover:text-star">
           {/* Wordmark hidden on very narrow phones: the header needs the room. */}
           <Logo className="max-[400px]:[&>span]:sr-only" />
           <span className="sr-only">{t("home")}</span>
@@ -32,18 +32,27 @@ export async function Header({ minimal = false }: { minimal?: boolean }) {
           <nav aria-label={t("label")} className="hidden sm:ml-6 sm:block">
             <ul className="flex items-center gap-1 text-sm">
               <li className="hidden sm:block">
-                <Link href="/" className="rounded-md px-3 py-2 text-fg-muted hover:text-fg">
+                <Link
+                  prefetch="auto"
+                  href="/"
+                  className="rounded-md px-3 py-2 text-fg-muted hover:text-fg"
+                >
                   {t("home")}
                 </Link>
               </li>
               <li className="hidden sm:block">
-                <Link href="/discover" className="rounded-md px-3 py-2 text-fg-muted hover:text-fg">
+                <Link
+                  prefetch="auto"
+                  href="/discover"
+                  className="rounded-md px-3 py-2 text-fg-muted hover:text-fg"
+                >
                   {t("discover")}
                 </Link>
               </li>
               {profile && (
                 <li className="hidden sm:block">
                   <Link
+                    prefetch="auto"
                     href={`/u/${profile.username}`}
                     className="rounded-md px-3 py-2 text-fg-muted hover:text-fg"
                   >
