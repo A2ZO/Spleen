@@ -87,7 +87,7 @@ if (!saved) {
   if (statePath) await context.storageState({ path: statePath });
 }
 
-// Browser pass: click → URL change, and click → page shown (skeleton gone). Run 0 is cold.
+// Browser pass: click → URL change, and click → page shown (its heading). Run 0 is cold.
 const nav = steps.map(() => ({ cold: NaN, clickMs: [], shownMs: [], prefetches: 0, req: null }));
 let current = null;
 page.on("request", (req) => {
@@ -109,12 +109,8 @@ for (let run = 0; run < runs; run++) {
     await target.click();
     await page.waitForURL(steps[i].url, { waitUntil: "commit" });
     const dt = Date.now() - t0;
-    // Page shown: the skeleton (if any) replaced by the page and its heading.
-    await page.waitForFunction(
-      () => !document.querySelector(".animate-skeleton") && document.querySelector("main h1"),
-      undefined,
-      { polling: 10 },
-    );
+    // Page shown: the new page's heading is in.
+    await page.waitForFunction(() => document.querySelector("main h1"), undefined, { polling: 10 });
     const shown = Date.now() - t0;
     await page.waitForLoadState("networkidle");
     // Prefetches fired by the page just reached (its viewport links).

@@ -36,7 +36,7 @@ La production refuse de démarrer sans les variables d'auth, Brevo et S3
 
 Cinq parcours de membre connecté (accueil → album → artiste → profil → /discover → accueil),
 cliqués dans Chrome : temps jusqu'au changement d'URL (`clicMs`), jusqu'à la page affichée,
-squelette remplacé (`pageMs`), préchargements déclenchés à l'arrivée (`prefetch`), puis chaque
+titre de la page affiché (`pageMs`), préchargements déclenchés à l'arrivée (`prefetch`), puis chaque
 requête RSC rejouée seule (`serveurMs`). Les colonnes SQL (`sql`, `vagues` = allers-retours en
 série, `baseMs`) demandent le traçage :
 

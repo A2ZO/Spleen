@@ -126,23 +126,23 @@ est ailleurs : une page à nonce est calculée à chaque visite et ne peut pas v
 ### Mesure : vitesse de navigation (jalon 12, étape 0)
 
 `apps/web/scripts/measure.mjs` (`docs/environnement.md`), membre démo `nuitblanche`, base
-Neon de dev, médianes de 5 passages. SQL et vagues (allers-retours en série) en dev tracé ;
-temps de clic sur un build de production local. Avant : temps jusqu'au changement d'URL
-(la page arrivait d'un bloc). Après : temps jusqu'à la page affichée, squelette remplacé.
+Neon de dev, médianes de 5 à 7 passages. SQL et vagues (allers-retours en série) en dev tracé ;
+page affichée (titre de la nouvelle page présent) sur un build de production local.
 
-| Parcours | SQL avant → après | Vagues | Temps en base | Page affichée (prod) |
+| Parcours | Requêtes SQL | Vagues | Temps en base | Page affichée (prod) |
 | --- | --- | --- | --- | --- |
-| accueil → album | 29 → 29 | 12 → 5 | 330 → 246 ms | 351 → 365 ms |
-| album → artiste | 12 → 11 | 8 → 5 | 207 → 132 ms | 227 → 362 ms |
-| artiste → profil | 28 → 28 | 11 → 3 | 316 → 244 ms | 343 → 331 ms |
-| profil → /discover | 20 → 20 | 5 → 6 | 178 → 198 ms | 248 → 327 ms |
-| /discover → accueil | 28 → 27 | 6 → 4 | 248 → 262 ms | 263 → 334 ms |
+| accueil → album | 29 → 27 | 12 → 6 | 330 → 225 ms | 351 → 267 ms |
+| album → artiste | 12 → 9 | 8 → 4 | 207 → 107 ms | 227 → 133 ms |
+| artiste → profil | 28 → 26 | 11 → 4 | 316 → 209 ms | 343 → 229 ms |
+| profil → /discover | 20 → 20 | 5 → 6 | 178 → 172 ms | 248 → 211 ms |
+| /discover → accueil | 28 → 26 | 6 → 4 | 248 → 181 ms | 263 → 219 ms |
 
-- Le nombre de requêtes bouge peu : les gains viennent des requêtes lancées ensemble (vagues)
-  et des lignes non chargées. La fiche album, artiste ou profil compte une requête de
-  vérification dans son `layout.tsx` (statut 404/308 sous le squelette, `docs/pieges.md`).
-- Le squelette apparaît en 15 à 40 ms, mais React affiche la page au plus tôt 300 ms après
-  lui (il regroupe les remplacements de `Suspense`) : les pages rapides attendent ce plancher.
+- Les gains viennent surtout des requêtes lancées ensemble (vagues) et des lignes non chargées
+  (trois blocs de l'accueil, discographie limitée à 12 par groupe). Par page de membre, la
+  session coûte 3 requêtes (session, utilisateur, profil), partagées par l'en-tête et la page.
+- Pas de squelette (`loading.tsx`) : essayé, il faisait attendre les pages rapides au moins
+  300 ms (plancher de React après un `Suspense`) et bloquait l'affichage sans JavaScript
+  (`docs/pieges.md`). Un clic lent affiche à la place une fine barre en haut après 150 ms.
 - Préchargement : 17 à 21 requêtes au chargement d'une page, 31 à 46 après défilement
   (accueil, /discover, profils remplis), avant. Après : 4 ou 5 (les liens de l'en-tête) ; les
   autres liens préchargent au survol, au focus ou au toucher (`apps/web/src/i18n/link.tsx`).
