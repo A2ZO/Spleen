@@ -51,6 +51,8 @@ describe("profile.byUsername", () => {
 
   it("returns null for an unknown member", async () => {
     expect(await caller.profile.byUsername({ username: "nobody_here" })).toBeNull();
+    expect(await caller.profile.exists({ username: "nobody_here" })).toBe(false);
+    expect(await caller.profile.exists({ username: "RainyDaySam" })).toBe(true);
   });
 });
 

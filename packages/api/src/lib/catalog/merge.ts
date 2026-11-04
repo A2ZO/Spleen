@@ -73,6 +73,28 @@ export async function mergedSlug(db: Db, kind: CatalogKind, slug: string): Promi
   return row?.slug ?? null;
 }
 
+/**
+ * Whether a catalog page can be shown, in one indexed query: `found`, `merged` into the page
+ * kept (its slug), or `missing`. Pages call it before streaming starts (their `layout.tsx`),
+ * so a 404 or a 308 keeps its HTTP status.
+ */
+export async function catalogPageStatus(
+  db: Db,
+  kind: CatalogKind,
+  slug: string,
+): Promise<{ status: "found" } | { status: "merged"; slug: string } | { status: "missing" }> {
+  const table = ident(TABLE_NAMES[kind]);
+  const [row] = rowsOf<{ merged: boolean; kept: string | null }>(
+    await db.execute(sql`
+      select "d"."merged_into_id" is not null as merged, "k"."slug" as kept
+      from ${table} "d" left join ${table} "k" on "k"."id" = "d"."merged_into_id"
+      where "d"."slug" = ${slug}`),
+  );
+  if (!row) return { status: "missing" };
+  if (!row.merged) return { status: "found" };
+  return row.kept ? { status: "merged", slug: row.kept } : { status: "missing" };
+}
+
 /** The two pages of a merge, checked: both exist, differ, and neither was merged. */
 async function mergePair(db: DbOrTx, input: CatalogMergeTargetInput, lock = false) {
   const [keep, duplicate] = [

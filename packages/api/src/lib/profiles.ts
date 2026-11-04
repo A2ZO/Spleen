@@ -64,22 +64,26 @@ interface ProfileAccess {
   statsHidden: boolean;
 }
 
+// A suspended member's profile is gone for everyone (their data stays, hidden).
+const shownProfile = (username: string) =>
+  and(sql`lower(${profiles.username}) = ${username.toLowerCase()}`, isNull(profiles.suspendedAt));
+
+/** Whether `/u/<username>` exists, read before the page streams (its `layout.tsx`). */
+export async function profileExists(db: Db, username: string): Promise<boolean> {
+  const [row] = await db
+    .select({ id: profiles.userId })
+    .from(profiles)
+    .where(shownProfile(username))
+    .limit(1);
+  return row !== undefined;
+}
+
 async function findProfile(
   db: Db,
   username: string,
   viewer: Viewer,
 ): Promise<ProfileAccess | null> {
-  const [row] = await db
-    .select()
-    .from(profiles)
-    // A suspended member's profile is gone for everyone (their data stays, hidden).
-    .where(
-      and(
-        sql`lower(${profiles.username}) = ${username.toLowerCase()}`,
-        isNull(profiles.suspendedAt),
-      ),
-    )
-    .limit(1);
+  const [row] = await db.select().from(profiles).where(shownProfile(username)).limit(1);
   if (!row) return null;
   const isOwner = viewer.id === row.userId;
   return {

@@ -519,6 +519,7 @@ describe("suspension", () => {
 
     // Hidden, never deleted.
     expect(await api(null).profile.byUsername({ username: author.username })).toBeNull();
+    expect(await api(null).profile.exists({ username: author.username })).toBe(false);
     expect(await api(null).review.byId({ id: kept.id })).toBeNull();
     expect(await api(null).list.byId({ id: list.id })).toBeNull();
     for (const [table, id] of [

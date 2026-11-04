@@ -176,6 +176,7 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - MusicBrainz often answers 503; never import on PGlite and Neon at once → `docs/catalogue.md`, `docs/pieges.md`
 - CSP nonce on every page: list `archive.org` and `*.archive.org`; a nonce ignores `'unsafe-inline'` → `docs/pieges.md`
 - e2e: one account per test (`grantAdmin`); no `next build` while `pnpm dev` runs → `docs/pieges.md`
+- `loading.tsx` turns a page's 404/308 into 200: check existence in the segment's `layout.tsx` → `docs/pieges.md`
 - Controlled fields typed into before hydration lose their text (issue #24; e2e retries) → `docs/pieges.md`
 
 ## Git
