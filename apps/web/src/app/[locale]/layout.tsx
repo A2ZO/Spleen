@@ -10,6 +10,7 @@ import { SuspendedNotice } from "@/components/account/SuspendedNotice";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { HydrationMarker } from "@/components/layout/HydrationMarker";
+import { NavigationBar } from "@/components/layout/NavigationBar";
 import { ServiceWorker } from "@/components/layout/ServiceWorker";
 import { initRouteLocale } from "@/i18n/locale";
 import { COVER_ERROR_SCRIPT } from "@/lib/cover-errors";
@@ -80,6 +81,7 @@ export default async function LocaleLayout({
           >
             {t("skipToContent")}
           </a>
+          <NavigationBar />
           <Header minimal={suspension !== null} />
           <main id="main" className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-12">
             {suspension ? <SuspendedNotice suspension={suspension} locale={locale} /> : children}
