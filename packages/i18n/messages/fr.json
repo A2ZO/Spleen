@@ -5,7 +5,8 @@
     "description": "Note, critique et range tes albums, EP et morceaux. Tiens ton journal d'écoute et partage tes goûts."
   },
   "common": {
-    "skipToContent": "Aller au contenu"
+    "skipToContent": "Aller au contenu",
+    "loading": "Chargement…"
   },
   "nav": {
     "label": "Navigation principale",
