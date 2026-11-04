@@ -418,7 +418,9 @@
     "empty": "Aucun disque connu pour l'instant.",
     "pendingMember": "La discographie n'a pas encore pu être importée depuis MusicBrainz. Recharge la page dans un instant.",
     "pendingVisitor": "Connecte-toi pour importer toute la discographie depuis MusicBrainz.",
-    "imageAlt": "{name}"
+    "imageAlt": "{name}",
+    "seeAll": "Tout voir ({count})",
+    "seeLess": "Voir moins"
   },
   "track": {
     "kicker": "Morceau",

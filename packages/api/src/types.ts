@@ -439,6 +439,11 @@ export interface ArtistDetail extends ArtistCard {
     /** Live albums, compilations, soundtracks, remixes… (mixtapes count as main releases). */
     other: ReleaseCard[];
   };
+  /**
+   * Size of each group: a group shows its newest `DISCOGRAPHY_PREVIEW` releases unless it is the
+   * one asked for in full (`all`), so a total above its length means "see all".
+   */
+  discographyTotals: { albums: number; eps: number; singles: number; other: number };
   listenLinks: ListenLink[];
 }
 

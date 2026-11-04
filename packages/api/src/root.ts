@@ -42,6 +42,7 @@ import {
   shelfReorderSchema,
   shelfSetSchema,
   slugSchema,
+  discographyGroupSchema,
   usernameSchema,
   wantToListenSchema,
   memberModerationSchema,
@@ -397,22 +398,29 @@ export const appRouter = router({
   }),
   artist: router({
     /** The discography is imported when a member first opens the page. */
-    bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
-      const [found, blind] = await Promise.all([
-        artistIdBySlug(ctx.db(), input.slug),
-        blindOf(ctx),
-      ]);
-      if (!found) return null;
-      const user = found.mbid && !found.discographyImportedAt ? await ctx.user() : null;
-      if (user && found.mbid) {
-        const mbid = found.mbid;
-        await tryCatalog(() =>
-          importArtist(ctx.db(), ctx.catalog(), mbid, { requestedById: user.id }),
+    bySlug: publicProcedure
+      .input(z.object({ slug: slugSchema, all: discographyGroupSchema.optional() }))
+      .query(async ({ input, ctx }) => {
+        const [found, blind] = await Promise.all([
+          artistIdBySlug(ctx.db(), input.slug),
+          blindOf(ctx),
+        ]);
+        if (!found) return null;
+        const user = found.mbid && !found.discographyImportedAt ? await ctx.user() : null;
+        if (user && found.mbid) {
+          const mbid = found.mbid;
+          await tryCatalog(() =>
+            importArtist(ctx.db(), ctx.catalog(), mbid, { requestedById: user.id }),
+          );
+        }
+        const detail = await getArtistDetail(
+          ctx.db(),
+          input.slug,
+          user ? undefined : found,
+          input.all,
         );
-      }
-      const detail = await getArtistDetail(ctx.db(), input.slug, user ? undefined : found);
-      return detail && blindArtistDetail(ctx.db(), blind, detail);
-    }),
+        return detail && blindArtistDetail(ctx.db(), blind, detail);
+      }),
   }),
   track: router({
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {

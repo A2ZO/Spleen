@@ -18,6 +18,9 @@ MusicBrainz n'en est qu'une implémentation, une autre source pourra être branc
   `releases.secondary_types`. Les mixtapes (`mixtape/street`) comptent comme sorties
   principales (`isMainRelease`), les autres sont rangées à part sur la page artiste et
   passent après les sorties principales dans la recherche.
+- Page artiste : 4 groupes (albums, EP, singles, autres), les 12 plus récents de chacun
+  (`DISCOGRAPHY_PREVIEW`) ; « Tout voir » est un lien simple vers `?all=<groupe>`, rendu côté
+  serveur, donc sans JavaScript. Seules les fiches affichées chargent artistes et notes.
 - Date : `first-release-date` du release-group, avec sa précision (année / mois / jour).
 - Genres : les 5 genres les plus votés du release-group ; à défaut, ceux de l'artiste
   principal. Les genres sont partagés par slug.

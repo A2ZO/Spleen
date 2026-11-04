@@ -55,3 +55,22 @@ test("unknown album, artist, track and profile pages are 404", async ({ page }) 
     expect(response?.status()).toBe(404);
   }
 });
+
+test.describe("without JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+
+  // Demo seed: Les Fouilleurs has 30 albums, shown 12 at a time until "see all".
+  test("an artist's albums show 12, then all of them through a plain link", async ({ page }) => {
+    await page.goto("/fr/artist/les-fouilleurs");
+    const albums = page.locator("section[aria-labelledby=albums] li");
+    await expect(albums).toHaveCount(12);
+    await page
+      .getByRole("link", { name: /^Tout voir \(\d+\)$/ })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/\/fr\/artist\/les-fouilleurs\?all=albums#albums$/);
+    expect(await albums.count()).toBeGreaterThan(12);
+    await page.getByRole("link", { name: "Voir moins" }).click();
+    await expect(albums).toHaveCount(12);
+  });
+});

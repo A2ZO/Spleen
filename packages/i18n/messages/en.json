@@ -418,7 +418,9 @@
     "empty": "No known records yet.",
     "pendingMember": "The discography could not be imported from MusicBrainz yet. Reload the page in a moment.",
     "pendingVisitor": "Sign in to import the whole discography from MusicBrainz.",
-    "imageAlt": "{name}"
+    "imageAlt": "{name}",
+    "seeAll": "See all ({count})",
+    "seeLess": "See less"
   },
   "track": {
     "kicker": "Track",

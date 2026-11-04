@@ -1,5 +1,5 @@
 import type { ReleaseCard } from "@spleen/api";
-import { slugSchema } from "@spleen/validators";
+import { discographyGroupSchema, slugSchema, type DiscographyGroup } from "@spleen/validators";
 import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { cache } from "react";
@@ -10,24 +10,35 @@ import { ListenOn } from "@/components/catalog/ListenOn";
 import { AddToListButton } from "@/components/lists/AddToList";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Link } from "@/i18n/navigation";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { missingCatalogPage } from "@/lib/catalog-redirect";
 import { artistKind } from "@/lib/catalog-labels";
 import { seoMetadata } from "@/lib/seo";
 import { getApi } from "@/server/api";
 
-type Props = { params: Promise<{ locale: string; slug: string }> };
+type Props = {
+  params: Promise<{ locale: string; slug: string }>;
+  searchParams: Promise<{ all?: string | string[] }>;
+};
 
-const getArtist = cache(async (slug: string) => {
+/** `all`: the discography group listed in full (`?all=albums`), the others show 12. */
+const getArtist = cache(async (slug: string, all?: DiscographyGroup) => {
   const parsed = slugSchema.safeParse(slug);
   if (!parsed.success) return null;
-  return (await getApi()).artist.bySlug({ slug: parsed.data });
+  return (await getApi()).artist.bySlug({ slug: parsed.data, all });
 });
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+const fullGroup = async (searchParams: Props["searchParams"]) =>
+  discographyGroupSchema.safeParse((await searchParams).all).data;
+
+const linkClasses = "text-sm text-link underline-offset-2 hover:underline";
+
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
   const { locale: rawLocale, slug } = await params;
   const locale = metadataLocale(rawLocale);
-  const artist = await getArtist(slug);
+  // Same arguments as the page: one read for both (React `cache`).
+  const artist = await getArtist(slug, await fullGroup(searchParams));
   if (!artist) return {};
   const t = await getTranslations({ locale, namespace: "seo" });
   const description = t("artist", { name: artist.name });
@@ -43,19 +54,42 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+/** "See all" and "see less" are plain links (`?all=<group>`): they work without JavaScript. */
 function Discography({
-  id,
+  group,
   title,
   releases,
+  total,
+  slug,
+  expanded,
+  seeAll,
+  seeLess,
 }: {
-  id: string;
+  group: DiscographyGroup;
   title: string;
   releases: ReleaseCard[];
+  total: number;
+  slug: string;
+  expanded: boolean;
+  seeAll: string;
+  seeLess: string;
 }) {
   if (releases.length === 0) return null;
+  const action =
+    total > releases.length ? (
+      <Link href={`/artist/${slug}?all=${group}#${group}`} className={linkClasses}>
+        {seeAll}
+      </Link>
+    ) : expanded ? (
+      <Link href={`/artist/${slug}#${group}`} className={linkClasses}>
+        {seeLess}
+      </Link>
+    ) : null;
   return (
-    <section aria-labelledby={id}>
-      <SectionHeading id={id}>{title}</SectionHeading>
+    <section aria-labelledby={group} className="scroll-mt-24">
+      <SectionHeading id={group} action={action}>
+        {title}
+      </SectionHeading>
       <ul className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
         {releases.map((release) => (
           <li key={release.id}>
@@ -67,11 +101,12 @@ function Discography({
   );
 }
 
-export default async function ArtistPage({ params }: Props) {
+export default async function ArtistPage({ params, searchParams }: Props) {
   const { locale, slug } = await params;
   initRouteLocale(locale);
+  const all = await fullGroup(searchParams);
   const [artist, me, t, uiLocale] = await Promise.all([
-    getArtist(slug),
+    getArtist(slug, all),
     getApi().then((api) => api.account.me()),
     getTranslations(),
     getLocale(),
@@ -80,6 +115,18 @@ export default async function ArtistPage({ params }: Props) {
 
   const { albums, eps, singles, other } = artist.discography;
   const empty = albums.length + eps.length + singles.length + other.length === 0;
+  const group = (key: DiscographyGroup, releases: ReleaseCard[]) => (
+    <Discography
+      group={key}
+      title={t(`artist.${key}`)}
+      releases={releases}
+      total={artist.discographyTotals[key]}
+      slug={artist.slug}
+      expanded={key === all}
+      seeAll={t("artist.seeAll", { count: artist.discographyTotals[key] })}
+      seeLess={t("artist.seeLess")}
+    />
+  );
   const signedIn = !!me;
   const country = artist.country
     ? new Intl.DisplayNames([uiLocale], { type: "region" }).of(artist.country)
@@ -120,10 +167,10 @@ export default async function ArtistPage({ params }: Props) {
       </header>
 
       {empty && <p className="font-serif text-lg text-fg-muted italic">{t("artist.empty")}</p>}
-      <Discography id="albums" title={t("artist.albums")} releases={albums} />
-      <Discography id="eps" title={t("artist.eps")} releases={eps} />
-      <Discography id="singles" title={t("artist.singles")} releases={singles} />
-      <Discography id="other" title={t("artist.other")} releases={other} />
+      {group("albums", albums)}
+      {group("eps", eps)}
+      {group("singles", singles)}
+      {group("other", other)}
     </article>
   );
 }

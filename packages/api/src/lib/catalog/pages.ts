@@ -1,6 +1,6 @@
 import { isMainRelease } from "@spleen/catalog";
 import { and, asc, desc, eq, inArray, isNotNull, isNull, schema, sql, type Db } from "@spleen/db";
-import type { AudienceLang } from "@spleen/validators";
+import type { AudienceLang, DiscographyGroup } from "@spleen/validators";
 
 import type {
   ArtistDetail,
@@ -22,7 +22,6 @@ import {
   ratingSummaries,
   toReleaseCard,
   trackReleaseIds,
-  type ReleaseCardWithTypes,
 } from "./cards";
 
 /* Item pages read from the database: catalog rows plus the community data around them. */
@@ -266,30 +265,71 @@ export async function artistIdBySlug(db: Db, slug: string) {
   return row ?? null;
 }
 
+/** Releases shown per discography group before "see all". */
+export const DISCOGRAPHY_PREVIEW = 12;
+
 /** Newest first; undated releases last. */
-const byDateDesc = (a: ReleaseCardWithTypes, b: ReleaseCardWithTypes) =>
+const byDateDesc = (a: { releaseDate: string | null }, b: { releaseDate: string | null }) =>
   (b.releaseDate ?? "").localeCompare(a.releaseDate ?? "");
 
-/** `known`: the row `artistIdBySlug` already read. The search metadata comes in parallel. */
+function discographyGroup(r: { type: string; secondaryTypes: string[] }): DiscographyGroup | null {
+  if (!isMainRelease(r.secondaryTypes)) return "other";
+  if (r.type === "album") return "albums";
+  if (r.type === "ep") return "eps";
+  if (r.type === "single") return "singles";
+  return null;
+}
+
+/**
+ * `known`: the row `artistIdBySlug` already read. The search metadata comes in parallel. Each
+ * group keeps its newest `DISCOGRAPHY_PREVIEW` releases (all of them for `all`): cards, artists
+ * and ratings are loaded for those only, the rest is counted from one light query.
+ */
 export async function getArtistDetail(
   db: Db,
   slug: string,
   known?: typeof artists.$inferSelect,
+  all?: DiscographyGroup,
 ): Promise<ArtistDetail | null> {
   const row = known ?? (await db.select().from(artists).where(eq(artists.slug, slug)).limit(1))[0];
   if (!row) return null;
-  const [releaseIds, seo] = await Promise.all([
+  const [releaseRows, seo] = await Promise.all([
     db
-      .select({ id: releaseArtists.releaseId })
+      .select({
+        id: releases.id,
+        type: releases.type,
+        secondaryTypes: releases.secondaryTypes,
+        releaseDate: releases.releaseDate,
+      })
       .from(releaseArtists)
-      .where(eq(releaseArtists.artistId, row.id))
-      .then((rows) => rows.map((r) => r.id)),
+      .innerJoin(releases, eq(releases.id, releaseArtists.releaseId))
+      .where(eq(releaseArtists.artistId, row.id)),
     seoPage(db, "artist", row.slug),
   ]);
-  const cards = (await loadReleaseCards(db, releaseIds)).sort(byDateDesc);
-  const main = cards.filter((c) => isMainRelease(c.secondaryTypes));
-  const ofType = (type: ReleaseCard["type"]) =>
-    main.filter((c) => c.type === type).map(toReleaseCard);
+  const groups: Record<DiscographyGroup, string[]> = {
+    albums: [],
+    eps: [],
+    singles: [],
+    other: [],
+  };
+  for (const release of releaseRows.sort(byDateDesc)) {
+    const group = discographyGroup(release);
+    if (group) groups[group].push(release.id);
+  }
+  const shown = (group: DiscographyGroup) =>
+    group === all ? groups[group] : groups[group].slice(0, DISCOGRAPHY_PREVIEW);
+  const cards = new Map(
+    (
+      await loadReleaseCards(db, [
+        ...shown("albums"),
+        ...shown("eps"),
+        ...shown("singles"),
+        ...shown("other"),
+      ])
+    ).map((card) => [card.id, toReleaseCard(card)]),
+  );
+  const ofGroup = (group: DiscographyGroup): ReleaseCard[] =>
+    shown(group).flatMap((id) => cards.get(id) ?? []);
 
   return {
     id: row.id,
@@ -301,10 +341,16 @@ export async function getArtistDetail(
     type: row.type,
     discographyPending: !!row.mbid && !row.discographyImportedAt,
     discography: {
-      albums: ofType("album"),
-      eps: ofType("ep"),
-      singles: ofType("single"),
-      other: cards.filter((c) => !isMainRelease(c.secondaryTypes)).map(toReleaseCard),
+      albums: ofGroup("albums"),
+      eps: ofGroup("eps"),
+      singles: ofGroup("singles"),
+      other: ofGroup("other"),
+    },
+    discographyTotals: {
+      albums: groups.albums.length,
+      eps: groups.eps.length,
+      singles: groups.singles.length,
+      other: groups.other.length,
     },
     listenLinks: buildListenLinks("", [row.name]),
     seo,

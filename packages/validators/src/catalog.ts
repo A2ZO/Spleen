@@ -25,6 +25,11 @@ export const slugSchema = z
   .max(200)
   .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
 
+/** Groups of an artist's discography; `?all=<group>` on the artist page lists one in full. */
+export const discographyGroups = ["albums", "eps", "singles", "other"] as const;
+export const discographyGroupSchema = z.enum(discographyGroups);
+export type DiscographyGroup = z.infer<typeof discographyGroupSchema>;
+
 /** Community language used to split trending charts (FR / EN). */
 export const audienceLangs = ["fr", "en"] as const;
 export const audienceLangSchema = z.enum(audienceLangs);
