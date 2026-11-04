@@ -22,6 +22,7 @@ booléens comme « commence par postgres:// », « contient -pooler »).
 | `DATABASE_URL` absente                      | → PGlite dans `.data/pglite`        | repli local hors ligne            |
 | `NEON_MAIN_HOST`                            | hôte (ou `ep-…`) de la base du site en ligne | garde-fou du nettoyage e2e        |
 | `SERVICE_WORKER_DISABLED`                   | `1` en cas d'urgence seulement               | retire le service worker (ci-dessous) |
+| `SPLEEN_QUERY_TRACE`                        | `1` en dev seulement (jamais en ligne)       | traçage SQL de la mesure (ci-dessous) |
 | `BETTER_AUTH_SECRET` / `BETTER_AUTH_URL`    | 32+ caractères / URL publique       | Better Auth                       |
 | `GOOGLE_CLIENT_ID` / `_SECRET`              | client OAuth Google (Web)           | bouton Google (caché si absent)   |
 | `BREVO_API_KEY` / `EMAIL_FROM`              | clé Brevo v3 / expéditeur vérifié   | liens magiques (dev : terminal)   |
@@ -30,6 +31,27 @@ booléens comme « commence par postgres:// », « contient -pooler »).
 
 La production refuse de démarrer sans les variables d'auth, Brevo et S3
 (`assertProductionConfig()`, `apps/web/src/instrumentation.ts`).
+
+## Mesurer la navigation (`apps/web/scripts/measure.mjs`)
+
+Cinq parcours de membre connecté (accueil → album → artiste → profil → /discover → accueil),
+cliqués dans Chrome : temps jusqu'au changement d'URL (`clicMs`), jusqu'à la page affichée,
+squelette remplacé (`pageMs`), préchargements déclenchés à l'arrivée (`prefetch`), puis chaque
+requête RSC rejouée seule (`serveurMs`). Les colonnes SQL (`sql`, `vagues` = allers-retours en
+série, `baseMs`) demandent le traçage :
+
+```
+$env:SPLEEN_QUERY_TRACE="1"; pnpm dev        # terminal 1 (base démo : nuitblanche)
+cd apps/web; $env:PLAYWRIGHT_CHANNEL="chrome"; node scripts/measure.mjs   # terminal 2
+```
+
+Le traçage (`packages/db/src/trace.ts`) ne note que le début de chaque requête SQL et sa durée,
+jamais ses paramètres ; il est coupé dès que `NODE_ENV=production`, et
+`/api/trace-debug` répond alors 404. Pour un build de production local (temps réels, sans
+SQL) : se connecter une fois contre `pnpm dev` avec `$env:MEASURE_STATE="<fichier>"` (la
+session y est enregistrée), arrêter le dev, `pnpm build`, `pnpm start` (la production exige
+les variables Brevo et S3 : des valeurs factices suffisent en local, aucun email ne part), puis
+relancer le script avec le même `MEASURE_STATE`. Jamais de `next build` pendant `pnpm dev`.
 
 ## Service worker (PWA)
 

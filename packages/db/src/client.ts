@@ -13,6 +13,7 @@ import { migrate as migratePostgres } from "drizzle-orm/postgres-js/migrator";
 import postgres from "postgres";
 
 import * as schema from "./schema";
+import { queryTraceEnabled, traceQueries } from "./trace";
 
 export type Schema = typeof schema;
 export type Db = PgDatabase<PgQueryResultHKT, Schema>;
@@ -62,7 +63,7 @@ export function migrationDatabaseUrl(env: NodeJS.ProcessEnv = process.env): stri
  */
 export function createDb(url: string | undefined = process.env.DATABASE_URL): DbHandle {
   if (url && isPostgresUrl(url)) {
-    const client = postgres(url, {
+    const raw = postgres(url, {
       max: 5,
       // Close idle connections quickly (serverless) and allow for Neon waking up from sleep.
       idle_timeout: 20,
@@ -70,6 +71,8 @@ export function createDb(url: string | undefined = process.env.DATABASE_URL): Db
       // Silences "already exists, skipping" notices from idempotent migrations.
       onnotice: () => {},
     });
+    // Development measurements only (`docs/environnement.md`); never on in production.
+    const client = queryTraceEnabled() ? traceQueries(raw) : raw;
     const db = drizzlePostgres(client, { schema });
     return {
       db: db as unknown as Db,

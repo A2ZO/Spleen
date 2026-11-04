@@ -123,6 +123,31 @@ est ailleurs : une page à nonce est calculée à chaque visite et ne peut pas v
   (estimation, 90 % de réussite du cache ; un fichier en cache coûte 0,6 ms au serveur, 0
   depuis le CDN).
 
+### Mesure : vitesse de navigation (jalon 12, étape 0)
+
+`apps/web/scripts/measure.mjs` (`docs/environnement.md`), membre démo `nuitblanche`, base
+Neon de dev, médianes de 5 passages. SQL et vagues (allers-retours en série) en dev tracé ;
+temps de clic sur un build de production local. Avant : temps jusqu'au changement d'URL
+(la page arrivait d'un bloc). Après : temps jusqu'à la page affichée, squelette remplacé.
+
+| Parcours | SQL avant → après | Vagues | Temps en base | Page affichée (prod) |
+| --- | --- | --- | --- | --- |
+| accueil → album | 29 → 29 | 12 → 5 | 330 → 246 ms | 351 → 365 ms |
+| album → artiste | 12 → 11 | 8 → 5 | 207 → 132 ms | 227 → 362 ms |
+| artiste → profil | 28 → 28 | 11 → 3 | 316 → 244 ms | 343 → 331 ms |
+| profil → /discover | 20 → 20 | 5 → 6 | 178 → 198 ms | 248 → 327 ms |
+| /discover → accueil | 28 → 27 | 6 → 4 | 248 → 262 ms | 263 → 334 ms |
+
+- Le nombre de requêtes bouge peu : les gains viennent des requêtes lancées ensemble (vagues)
+  et des lignes non chargées. La fiche album, artiste ou profil compte une requête de
+  vérification dans son `layout.tsx` (statut 404/308 sous le squelette, `docs/pieges.md`).
+- Le squelette apparaît en 15 à 40 ms, mais React affiche la page au plus tôt 300 ms après
+  lui (il regroupe les remplacements de `Suspense`) : les pages rapides attendent ce plancher.
+- Préchargement : 17 à 21 requêtes au chargement d'une page, 31 à 46 après défilement
+  (accueil, /discover, profils remplis), avant. Après : 4 ou 5 (les liens de l'en-tête) ; les
+  autres liens préchargent au survol, au focus ou au toucher (`apps/web/src/i18n/link.tsx`).
+  Chaque préchargement est une requête serveur, donc une invocation dans le quota Vercel.
+
 ### Tableau des seuils
 
 | Service | Limite gratuite | Ce qui la consomme | Casse vers… (estimation) | Ce qui se passe | Sortie |
