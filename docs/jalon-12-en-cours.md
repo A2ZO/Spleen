@@ -10,10 +10,12 @@ une fois son contenu reporté dans `CLAUDE.md` et les docs de domaine.
 | Étape | Contenu | État | Commits |
 | --- | --- | --- | --- |
 | 0 | Vitesse de navigation : mesure, lectures en parallèle, préchargement, issue #24 | fait | `cd91de5` → `0b43c39` |
-| 1 | À choisir par l'utilisateur (voir plus bas) | à faire | — |
+| 1 | Recherche instantanée | à faire | — |
+| plus tard | Barre de navigation aussi pour les navigations lancées par le code (`router.push` / `replace`) | à faire | — |
 
 État vérifié au commit `0b43c39` : `pnpm check` et suite e2e complète verte (vérificateur).
-Branche poussée, pas encore de PR.
+Branche poussée ; PR brouillon [#26](https://github.com/A2ZO/Spleen/pull/26) (« Closes #24 »),
+réutilisée par `/fin-de-jalon`.
 
 ## Étape 0 : ce qui a été fait
 
@@ -57,10 +59,21 @@ Branche poussée, pas encore de PR.
 Prompt prévu : « Lis CLAUDE.md puis docs/jalon-12-en-cours.md, et fais l'étape 1 ». Présenter
 le plan avant de coder.
 
+**Recherche instantanée** (cahier des charges : « résultats instantanés sur le catalogue déjà
+connu de Spleen »).
+
+Point de départ : `components/search/SearchBox.tsx` remplace l'URL après 250 ms de pause
+(`router.replace`), et le serveur rend à nouveau toute la page `/search`
+(`app/[locale]/search/page.tsx`) avec `api.catalog.search` (`packages/api/src/lib/catalog/search.ts`,
+public). MusicBrainz reste à part (`RemoteSearch.tsx`, `catalog.searchRemote`, membres, 60/h).
+Sans JS : formulaire GET, à garder.
+
+Avant de coder : mesurer le temps entre une frappe et l'affichage des résultats
+(`measure.mjs` ou un script voisin), puis présenter le plan.
+
 Questions ouvertes pour l'utilisateur (à poser d'abord) :
 
-- **Quelle douceur pour l'étape 1 ?** Rien n'est encore choisi. Pistes notées pendant l'étape 0 :
-  barre de navigation aussi pour les `router.push` (recherche, formulaires) ; relancer
-  `measure.mjs` sur Neon de prod une fois `spleen-prod` en place (jalon 10).
-- **PR de l'étape 0** : ouvrir une PR brouillon maintenant (et fermer #24), ou attendre la fin du
-  jalon ?
+- Où : seulement la page `/search`, ou aussi des suggestions sous le champ de l'en-tête ?
+- Comment : garder le rendu serveur de la page (délai plus court, résultats partiels), ou une
+  route de lecture légère appelée depuis le client (même `catalog.search`, compatible Expo) ?
+- Limite de débit de cette recherche locale publique, si elle part à chaque frappe.
