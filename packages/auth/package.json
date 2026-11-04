@@ -12,13 +12,13 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "1.7.12",
-    "@better-auth/expo": "1.7.12",
+    "@better-auth/drizzle-adapter": "1.7.15",
+    "@better-auth/expo": "1.7.15",
     "@spleen/db": "workspace:*",
     "@spleen/design-tokens": "workspace:*",
     "@spleen/i18n": "workspace:*",
     "@spleen/infra": "workspace:*",
-    "better-auth": "1.7.12"
+    "better-auth": "1.7.15"
   },
   "devDependencies": {
     "@spleen/config": "workspace:*",
