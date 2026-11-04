@@ -1,4 +1,5 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { mkdir, rename, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { emailConfigured, isProduction } from "./config";
@@ -75,11 +76,17 @@ export function createDevMailer(
     async send(email) {
       log(`\n[dev mail] to ${email.to} — ${email.subject}\n${email.text}\n`);
       await mkdir(outboxDir, { recursive: true });
-      const file = `${Date.now()}-${email.to.replace(/[^a-z0-9@._-]/gi, "_")}.json`;
+      const file = path.join(
+        outboxDir,
+        `${Date.now()}-${email.to.replace(/[^a-z0-9@._-]/gi, "_")}.json`,
+      );
+      // Written aside then renamed: a reader polling the outbox (e2e) never sees half a file.
+      const partial = `${file}.${randomUUID()}.tmp`;
       await writeFile(
-        path.join(outboxDir, file),
+        partial,
         JSON.stringify({ ...email, sentAt: new Date().toISOString() }, null, 2),
       );
+      await rename(partial, file);
     },
   };
 }

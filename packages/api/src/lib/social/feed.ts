@@ -1,4 +1,4 @@
-import { and, desc, inArray, ne, rowsOf, schema, sql, type Db } from "@spleen/db";
+import { and, desc, inArray, isNull, ne, rowsOf, schema, sql, type Db } from "@spleen/db";
 import type { AudienceLang } from "@spleen/validators";
 
 import type { CursorPage, FeedItem, MemberCard, ReviewCard } from "../../types";
@@ -46,8 +46,8 @@ export async function friendsFeed(
   const result = await db.execute(sql`
     select kind, id, at::text as at, review_id as "reviewId" from (
       select 'listen' as kind, ${entries.id} as id,
-        greatest(${entries.createdAt}, (select max("r"."created_at") from "reviews" "r" where "r"."entry_id" = ${entries.id})) as at,
-        (select "r"."id" from "reviews" "r" where "r"."entry_id" = ${entries.id} order by "r"."created_at" desc limit 1) as review_id
+        greatest(${entries.createdAt}, (select max("r"."created_at") from "reviews" "r" where "r"."entry_id" = ${entries.id} and "r"."hidden_at" is null)) as at,
+        (select "r"."id" from "reviews" "r" where "r"."entry_id" = ${entries.id} and "r"."hidden_at" is null order by "r"."created_at" desc limit 1) as review_id
       from ${entries}
       join ${profiles} on ${profiles.userId} = ${entries.userId}
       where ${entries.userId} in (${followed})
@@ -58,6 +58,7 @@ export async function friendsFeed(
       from ${reviews}
       join ${profiles} on ${profiles.userId} = ${reviews.userId}
       where ${reviews.userId} in (${followed})
+        and ${reviews.hiddenAt} is null
         and (${reviews.entryId} is null or ${profiles.diaryPrivate} or not exists (
           select 1 from ${entries} where ${entries.id} = ${reviews.entryId} and ${shown}))
     ) items
@@ -188,7 +189,8 @@ export async function popularFeed(
       select ${comments.reviewId}, 0, count(*)::int
       from ${comments}
       join ${reviews} on ${reviews.id} = ${comments.reviewId}
-      where ${comments.deletedAt} is null and ${comments.createdAt} >= ${since}::timestamptz
+      where ${comments.deletedAt} is null and ${comments.hiddenAt} is null
+        and ${comments.createdAt} >= ${since}::timestamptz
         and ${comments.userId} <> ${reviews.userId}
       group by ${comments.reviewId}
     ), scored as (
@@ -197,6 +199,7 @@ export async function popularFeed(
       from engagement
       join ${reviews} on ${reviews.id} = engagement.review_id
       where ${reviews.lang} = ${lang}
+        and ${reviews.hiddenAt} is null
         ${viewer.id ? sql`and ${notBlockedWith(viewer.id, reviews.userId)}` : sql``}
       group by ${reviews.id}, ${reviews.createdAt}
     )
@@ -236,6 +239,7 @@ export async function suggestedMembers(db: Db, viewerId: string, now: Date): Pro
     .where(
       and(
         ne(profiles.userId, viewerId),
+        isNull(profiles.suspendedAt),
         notBlockedWith(viewerId, member),
         sql`not exists (select 1 from "follows" where "follows"."follower_id" = ${viewerId} and "follows"."followee_id" = ${member})`,
         sql`exists (select 1 from "entries" where "entries"."user_id" = ${member})`,

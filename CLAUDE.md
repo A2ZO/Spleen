@@ -6,6 +6,7 @@
 - Original brief, milestone list and process rules: `docs/prompt-claude-code-spleen.md`.
 - The user works on Windows / PowerShell and speaks French: answer and recap in French.
 - Maintenance: `docs/services.md` (service limits, costs, budget alerts) and `/maintenance`.
+- Stack, limits in number of members, scaling steps: `docs/stack-et-limites.md`.
 - Ask before costly or irreversible decisions; present a plan before each milestone.
 
 ## Monorepo
@@ -38,6 +39,8 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
 pnpm install
 pnpm dev                 # http://localhost:3000 (redirects to /fr or /en)
 pnpm lint; pnpm typecheck; pnpm format         # format = Prettier write (CI: format:check)
+pnpm check               # silent: prettier --check + lint + typecheck + test (errors only)
+pnpm e2e:quiet           # silent Playwright (dot reporter); set PLAYWRIGHT_CHANNEL first
 pnpm test                # Vitest in every package (in-memory PGlite)
 pnpm --filter @spleen/design-tokens generate   # after editing tokens
 pnpm db:generate         # new SQL migration after editing packages/db/src/schema
@@ -46,6 +49,8 @@ pnpm db:seed             # migrate + insert demo data (idempotent) — never in 
 pnpm db:reset            # wipe the LOCAL PGlite database, migrate, seed (refuses Postgres)
 pnpm db:seed:catalog     # import packages/api/scripts/catalog-seed.json from MusicBrainz
 pnpm catalog:refresh     # re-read discographies for recent releases (nightly in Actions)
+pnpm admin:grant <email> # admin role (also admin:revoke); never from the site
+pnpm retention          # privacy retention rules (nightly in Actions, src/lib/retention.ts)
 $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # Playwright with the installed Chrome
 ```
 
@@ -58,20 +63,26 @@ CI, e2e cleanup guard, env vars and database details: `docs/environnement.md`.
   declared in `turbo.json`, or they silently vanish. Next scripts use dotenv-cli; db scripts
   and Vitest call `loadRootEnv()`.
 - `DATABASE_URL` = Neon pooled (app), `DATABASE_URL_UNPOOLED` = direct (migrations, seed);
-  unset → PGlite in `.data/pglite`. Neon branch `dev` = local; branch `production` = live site (never in a file).
-- e2e accounts are `e2e-<id>@example.test`, deleted by `apps/web/e2e/cleanup.ts`, which
-  refuses production and Neon's `production` branch (`NEON_MAIN_HOST`). Keep each e2e test short.
+  unset → PGlite in `.data/pglite`. Neon: the current project is for development only (branch
+  `dev` = local; its `production` branch holds test data and never serves the site); the live
+  site gets a **separate Neon project, `spleen-prod`** (`docs/mise-en-ligne.md` § 0), whose
+  URLs never go in a file.
+- e2e accounts are `e2e-<id>@example.test`, deleted by `apps/web/e2e/cleanup.ts` (global setup/teardown), which
+  refuses production and the Neon branch named by `NEON_MAIN_HOST` (`spleen-prod`'s `production`
+  branch once it exists). Keep each e2e test short.
 - Never edit generated migrations (a test fails on schema/snapshot drift);
   `0000_search_extensions.sql` is hand-written.
 - "Target" = `release_id` / `track_id` / `artist_id` real FKs + CHECK exactly one
   (`targetColumns()` / `targetCheck()`). Catalog rows are never hard-deleted (`restrict`);
   member data cascades when a user is deleted.
 - Demo seed: `<username>@example.test` (`nuitblanche` full shelf, `vinylvince`, `rainydaysam`
-  empty, `fouilleuse` 30 hearts; `seed/crate.ts`, `seed/social.ts`, `seed/lists.ts`).
+  empty, `fouilleuse` 30 hearts, `lacontrebasse` admin; `seed/crate.ts`, `seed/social.ts`,
+  `seed/lists.ts`, `seed/moderation.ts`).
 
 Domain docs (read before touching the domain): listening `docs/ecoute.md`
 (`recomputeItemState()`), profile & stats `docs/profil-stats.md` (bump `CACHE_VERSION` when
-a stats rule changes), social `docs/social.md`, lists & discovery `docs/decouverte.md`.
+a stats rule changes), social & moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sharing
+`docs/referencement.md` (indexing rule, sitemaps, robots, OG images).
 
 ## Conventions
 
@@ -105,6 +116,13 @@ Read `docs/accounts.md` before touching auth: sign-in, session → tRPC (`contex
 header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 `nuitblanche@example.test`.
 
+`ctx.account()` reads role, suspension and blind mode once per request. `ctx.user()` is null
+for a **suspended** account (a visitor everywhere); `accountProcedure` (suspension, export,
+deletion) still accepts it; `adminProcedure` answers `NOT_FOUND` to non-admins. Hidden
+content (`hidden_at`) and suspended members are filtered in the shared loaders
+(`memberRefs`, `memberCards`, `loadReviewCards`, `findProfile`): keep new queries on them.
+Moderation rules: `docs/social.md`.
+
 ## Decisions and why
 
 - TypeScript 6.0 (typescript-eslint 8 needs < 6.1); ESLint 9 (Next's plugins lack 10).
@@ -119,42 +137,46 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
   `rate_limits` statement (`reserveSlot`); imports and stub completion for members only;
   covers from Cover Art Archive shown `unoptimized` (no image service, no quota).
 
+## Token economy
+
+- Verify with `pnpm check` and `pnpm e2e:quiet`. Re-run verbose only the failing package or spec.
+- During a step, run only the spec files you touched. Full e2e once per step, through the
+  `verificateur` subagent, never twice in a row unless you fixed something.
+- External docs and repo-wide searches go through a subagent (Explore), which brings back only
+  the answer.
+- Read large files by line range. Don't re-read a file you already have unless it changed.
+- Chrome only when the step changes the UI: a few screenshots of the relevant area, never a
+  dump of the whole page.
+- Recaps: 20 lines at most.
+- One step per session: end it with `/fin-d-etape`.
+
 ## Pitfalls already met (and the fix)
 
-- `node --env-file` in Next scripts → crash: Next forwards it via NODE_OPTIONS, which Node
-  rejects. Use dotenv-cli.
-- `new URL("…", import.meta.url)` in code bundled by Next → Turbopack copies the target as
-  a public asset (it once exposed `.env`). Use `path.resolve(dirname, …)`.
-- Quotes/spaces around a URL in `.env` broke parsing; `createDb()` throws without echoing it.
-  Never log raw DB errors that may contain the URL.
-- Neon pooler = PgBouncer transaction mode: no `SET`, `LISTEN`, session advisory locks or
-  SQL `PREPARE`. Migrations need the direct URL. Free tier sleeps after 5 min (slow 1st query).
-- Next 16 allows one dev server per app; Playwright reuses port 3000. Stopping turbo may
-  leave `next` running on Windows: `Get-NetTCPConnection -LocalPort 3000` → `Stop-Process`.
-  The dev log `apps/web/.next/dev/logs` can contain error details: never paste it as is.
-- pnpm `minimumReleaseAge` blocks packages published too recently: pin an older version
-  rather than adding exclusions (`pnpm add` may write `minimumReleaseAgeExclude` into
-  `pnpm-workspace.yaml` by itself: revert it). Native builds: `allowBuilds` there.
-- Two drizzle-orm copies (different peer sets) break types: import `sql`, `eq`… from
-  `@spleen/db`, never from `drizzle-orm` outside packages/db.
-- Client components import `@spleen/api/errors` (or types only), never `@spleen/api`.
-  drizzle-kit writes unformatted `migrations/meta/*.json`: run Prettier on them.
-- Backticks in `node -e` run; `Set-Content -Encoding utf8` adds a BOM; Python writes CRLF.
-- next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`. Typed message
-  keys: map dynamic values through typed helpers (`apps/web/src/lib/catalog-labels.ts`).
-- Strict Mode replays effects in dev: a `<dialog>` closed in an effect cleanup fires `close`
-  and unmounts itself. e2e after `reload()`: SSR HTML shows before hydration, retry clicks.
-- `updated_at` is wall clock (`$onUpdate`), not `ctx.now`: tests compare orders, not times.
-- New migration → `pnpm db:migrate` on the running dev server's database, or its page 500s.
-- Burst writes arrive out of order: group clicks, send an `order` (`docs/ecoute.md`).
-- Raw `sql` params: postgres.js rejects a JS `Date` (PGlite accepts it): `toISOString()` +
-  `::timestamptz` (job `api-postgres` catches it; API tests use `createTestDb()`). Read
-  `db.execute()` results with `rowsOf()` (an array on postgres.js, `{ rows }` on PGlite).
-- Single-table drizzle selects drop qualifiers: subqueries spell `"t"."col"`.
-- A state update inside `startTransition` is deferred: optimistic UI (a checkbox ticked at
-  once) must be set before the transition starts.
-- MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
-  keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
+One line each; details and fixes in `docs/pieges.md` (add new ones there).
+
+- `node --env-file` in Next scripts crashes (use dotenv-cli) → `docs/pieges.md`
+- `new URL(…, import.meta.url)` in bundled code exposes files (use `path.resolve`) → `docs/pieges.md`
+- Quotes/spaces in a `.env` URL break parsing; never log raw DB errors → `docs/pieges.md`
+- Neon pooler = PgBouncer: no `SET`/`LISTEN`/`PREPARE`; migrations use the direct URL → `docs/pieges.md`
+- One Next dev server per app; a stray `next` on port 3000 on Windows → `docs/pieges.md`
+- pnpm `minimumReleaseAge` blocks fresh packages: pin older, revert exclusions → `docs/pieges.md`
+- Two drizzle-orm copies break types: import from `@spleen/db` → `docs/pieges.md`
+- Client components import `@spleen/api/errors`, never `@spleen/api`; Prettier on drizzle meta → `docs/pieges.md`
+- Shell quirks: backticks in `node -e`, BOM from `Set-Content`, CRLF from Python → `docs/pieges.md`
+- next-intl reads `Accept-Language`: e2e sets `locale`; typed message keys → `docs/pieges.md`
+- Strict Mode replays effects: `<dialog>` closed in cleanup unmounts itself; retry clicks after `reload()` → `docs/pieges.md`
+- `updated_at` is wall clock: tests compare orders, not times → `docs/pieges.md`
+- New migration → `pnpm db:migrate` on the dev server's database or pages 500 → `docs/pieges.md`
+- Burst writes arrive out of order: group clicks, send an `order` (`docs/ecoute.md`) → `docs/pieges.md`
+- Raw `sql` params reject JS `Date`; read `db.execute()` with `rowsOf()` → `docs/pieges.md`
+- Single-table drizzle selects drop qualifiers in subqueries → `docs/pieges.md`
+- Refresh with `refresh()` inside Server Actions, never client `router.refresh()` → `docs/pieges.md`
+- No `generateStaticParams` under `app/` (half-written prerender manifest in dev) → `docs/pieges.md`
+- State updates inside `startTransition` are deferred: set optimistic UI before it → `docs/pieges.md`
+- MusicBrainz often answers 503; never import on PGlite and Neon at once → `docs/catalogue.md`, `docs/pieges.md`
+- CSP nonce on every page: list `archive.org` and `*.archive.org`; a nonce ignores `'unsafe-inline'` → `docs/pieges.md`
+- e2e: one account per test (`grantAdmin`); no `next build` while `pnpm dev` runs → `docs/pieges.md`
+- Controlled fields typed into before hydration lose their text (issue #24; e2e retries) → `docs/pieges.md`
 
 ## Git
 
@@ -166,7 +188,13 @@ header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
 ## Milestones
 
 - [x] 1. Foundations · 2. Database · 3. Accounts · 4. Catalog · 5. Listening · 6. Profile &
-      base stats · 7. Social · 8. Lists & discovery (`docs/decouverte.md`).
-- [ ] 9. **Admin, legal, polish** (next): moderation queue (reports, lists included), duplicate
-      merges, legal pages, PWA, Open Graph · 10. Launch. **Real services are not connected yet** (Google,
-      Brevo, R2, Neon `production`, domain): follow `docs/mise-en-ligne.md`.
+      base stats · 7. Social · 8. Lists & discovery · 9. Admin, legal, polish (moderation and
+      merges `docs/social.md`, SEO `docs/referencement.md`, CSP `lib/security.ts`, PWA).
+- [ ] 10. **Launch** (next): publish a new `TERMS_VERSION` before the first real members
+      (everyone accepts again, after the legal review); e2e in CI; issue #22 (cache of public
+      pages, option a). **Real services are not connected yet** (Google, Brevo, R2, Neon project
+      `spleen-prod`, domain): follow `docs/mise-en-ligne.md`.
+- [ ] 11. Upcoming releases from followed artists — spec in docs/cahier-des-charges.md (section
+      « Sorties à venir de tes artistes »); may run before milestone 10, depends only on 4, 7
+      and 8.
+- [ ] 12. Polish: text typed before hydration is lost (issue #24).

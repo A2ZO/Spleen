@@ -15,6 +15,7 @@ import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { seoMetadata } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
 import { firstParam, hrefWith, pageParam, type SearchParams } from "@/lib/search-params";
 import { getApi } from "@/server/api";
@@ -24,7 +25,12 @@ type Props = { params: Promise<{ locale: string }>; searchParams: Promise<Search
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const locale = metadataLocale((await params).locale);
   const t = await getTranslations({ locale, namespace: "discover" });
-  return { title: t("title"), description: t("intro") };
+  const [title, description] = [t("title"), t("intro")];
+  return {
+    title,
+    description,
+    ...(await seoMetadata(locale, "/discover", { title, description })),
+  };
 }
 
 const PATH = "/discover";

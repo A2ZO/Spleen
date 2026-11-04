@@ -9,11 +9,22 @@ Reference for milestone 3. `CLAUDE.md` keeps the summary; this file has the deta
   Endpoints live under `/api/auth/*` (`apps/web/src/app/api/auth/[...all]/route.ts`).
 - Magic link: valid 15 minutes, single use, token stored hashed. The email is localized
   through `metadata.locale` (`packages/auth/src/emails.ts`).
+- Sign-in code (milestone 9): the **same email** carries a 6-digit code under the link (never
+  in the subject or the preview), for the app installed on an iPhone, whose cookies are not
+  Safari's (Apple, WWDC23 "What's new in web apps"). Better Auth's email OTP plugin; the code
+  is created with the server-only `createVerificationOTP` inside `sendMagicLink`, and every
+  email OTP route that would send a second email is in `DISABLED_AUTH_PATHS` (Better Auth
+  answers 404). Same sign-in as the link (same user creation, session, `/welcome`, suspension
+  screen; tested through both paths). Valid 15 minutes, stored hashed, 3 tries per code, and
+  `SIGN_IN_CODE_FAILURES` (10 failed codes per address and per hour, all IP addresses
+  together) checked in a `before` hook. A new link deletes the old code; using the link deletes
+  the code and using the code deletes the pending links (`after` hook).
 - Google only when `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET` are set; `accountLinking`
   joins a Google sign-in to an existing account with the same email. Apple later is one more
   entry in `socialProviders`, with no migration (rows in `account`).
 - Rate limits: Better Auth's `customStorage.consume` → `consumeRateLimit()` in `rate_limits`
-  (`/sign-in/magic-link`: 5 per 10 min; on in production, off in development). Avatar
+  (`/sign-in/magic-link`: 5 per 10 min, `/sign-in/email-otp`: 10 per 10 min per IP; on in
+  production, off in development). Avatar
   uploads: 10 per hour per member.
 
 ## From session to API
@@ -26,7 +37,15 @@ Reference for milestone 3. `CLAUDE.md` keeps the summary; this file has the deta
 ## Screens
 
 - After sign-in, everyone lands on `/[locale]/welcome`: onboarding (@username, display name,
-  "15 or older" checkbox stored as `ageConfirmedAt`), or a redirect to `/u/<username>`.
+  one required box "15 or older and I accept the terms of use", linked to `/terms`), or a
+  redirect to `/u/<username>`. Under the button, a sentence links to `/privacy` (information,
+  no box). Magic link, code and Google all create a session without a profile, so
+  `account.onboard` is the single rule (`termsAccepted: true`, tested). It stores
+  `ageConfirmedAt`, `termsAcceptedAt` and `termsVersion` = `TERMS_VERSION`
+  (`packages/validators`, set by the server, never by the client): proof of consent. When the
+  terms change, bump `TERMS_VERSION` (and `LEGAL_UPDATED`); asking members whose
+  `termsVersion` differs again is still to build. [À FAIRE RELIRE] wording of the box and of the
+  privacy sentence (`welcome.termsLabel`, `welcome.privacyNotice`).
 - `/[locale]/settings`: profile, language, theme, privacy, blind listening, avatar, @username,
   export (`/api/account/export`) and deletion (typing one's @username to confirm).
 

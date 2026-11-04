@@ -87,10 +87,100 @@ jamais prévenue (son propre `viewerBlocked` reste faux).
 Motifs : `spam`, `harassment`, `hate`, `spoiler`, `inappropriate`, `other`, plus 500
 caractères facultatifs. Un seul signalement ouvert par auteur et par sujet. Quand un
 membre supprime son compte, ses signalements restent (`reporter_id` → null) pour la
-modération (file au jalon 9).
+modération (ci-dessous).
+
+## Modération (jalon 9)
+
+API : `packages/api/src/lib/moderation/` — `queue.ts` (file, sujets), `decisions.ts`
+(décisions, suspension), `history.ts` (historique, conservation), `emails.ts`. Web :
+`/[locale]/admin` (signalements), `/admin/history`, `/admin/suspended` ; Server Actions
+`apps/web/src/app/[locale]/admin/actions.ts`.
+
+**Rôle admin.** Dans `profiles.role`, donné ou retiré uniquement en ligne de commande :
+`pnpm admin:grant <email>` / `pnpm admin:revoke <email>` (`setAdminRole`, sur la base de
+l'environnement ; le compte doit avoir choisi son pseudo). Aucune route ne le modifie.
+`adminProcedure` relit le rôle à chaque appel et répond `NOT_FOUND` à tout autre compte ; le
+layout `/admin` affiche la 404. Démo : `lacontrebasse@example.test`.
+
+| Procédure                       | Rôle                                                                     |
+| ------------------------------- | ------------------------------------------------------------------------ |
+| `admin.reports`                 | file filtrée par statut (`open` par défaut) et type ; plus anciens d'abord |
+| `admin.decide`                  | décision sur un signalement ouvert : `dismiss`, `resolve`, `hide`, `delete`, `suspend` |
+| `admin.suspend` / `unsuspend`   | suspendre un membre sans signalement / lever une suspension              |
+| `admin.restore`                 | rétablir un contenu masqué par une décision                              |
+| `admin.history` / `suspended`   | historique (30 par page), comptes suspendus                              |
+| `account.suspension`            | motif de sa suspension, pour le membre connecté seulement (null sinon)   |
+
+**Décisions.** Chacune tient en une transaction : une ligne `moderation_actions` (action,
+motif obligatoire, auteur, membre concerné, contenu, signalement, catégorie, extrait), la
+fermeture de **tous** les signalements ouverts sur le même sujet, l'effet, et une
+notification `moderation` avec le motif (sauf rejet et catalogue). Une décision ne
+s'applique qu'aux sujets qui s'y prêtent (`MODERATION_ACTION_INVALID`) ; un admin n'est
+jamais suspendu depuis le site (`CANNOT_MODERATE_ADMIN`).
+
+- **Masquer** : `hidden_at` + `hidden_by = 'moderation'` sur la critique, la liste ou le
+  commentaire ; jamais supprimé, rétablissable. Invisible pour tous **sauf son auteur**, qui
+  le voit avec un bandeau « Masqué par la modération », le motif (dernière décision `hide`
+  sur ce contenu, `lib/moderation/holds.ts` ; absent après anonymisation) et l'adresse pour
+  contester : page de la critique ou de la liste (`hidden` dans `ReviewDetail` /
+  `ListDetail`), son propre profil (étiquette « Masqué »), fil de commentaires
+  (`CommentView.hidden`). Plus de j'aime ni de commentaire, auteur compris ; un commentaire
+  masqué ne se modifie plus mais son auteur peut le supprimer. Les filtres passent par
+  `visibleTo(table, lecteur)` (`lib/social/reviews.ts`) : « non masqué, ou à moi ».
+- **Supprimer** : comme le ferait l'auteur (critique : `deleteReview` ; liste supprimée ;
+  commentaire marqué supprimé). L'historique garde l'extrait.
+- **Suspendre** : `profiles.suspended_at` + motif ; sessions supprimées ; critiques, listes
+  et commentaires masqués avec `hidden_by = 'suspension'` ; email avec le motif et l'adresse
+  de contestation (`CONTACT_EMAIL`, sinon `[À COMPLÉTER]`). Un email raté ne défait rien.
+- **Lever la suspension** : rend visible ce que la suspension avait masqué, pas ce qu'une
+  décision propre avait masqué.
+
+**Compte suspendu.** `ctx.user()` vaut null : partout, c'est un visiteur (écritures →
+`ACCOUNT_SUSPENDED`). Seuls `account.suspension`, `account.export` et `account.delete`
+(`accountProcedure`) restent ouverts. Il peut se connecter (lien magique ou Google) : la
+page de connexion répond comme pour tout le monde, et le motif ne s'affiche qu'une fois
+l'identité prouvée, sur l'écran « Compte suspendu » qui remplace toutes les pages. Profil,
+critiques, listes, commentaires, écoutes du fil et cartes de membre disparaissent pour les
+autres (`findProfile`, `memberRefs`, `memberCards`, filtres `hidden_at is null`). Ses notes et
+écoutes sortent de tous les chiffres publics (moyennes, répartition, tendances, mieux notés)
+par un filtre calculé à la volée (`countsPublicly`, `lib/ratings.ts`) : rien à invalider, et
+elles reviennent quand la suspension est levée. Son propre état (`user_item_state`) n'est pas
+touché.
+
+**Conservation.** Un an après la décision (`MODERATION_RETENTION_DAYS`),
+`anonymizeModerationHistory` garde l'action, le motif et la catégorie, efface les liens vers
+les personnes, l'extrait et la notification, et supprime les signalements clos. Les
+signalements ouverts ne sont jamais touchés. Tâche `retention` du workflow nocturne, ou
+`pnpm retention` (idempotent), avec les autres règles de conservation
+(`packages/api/src/lib/retention.ts`).
+
+**Signalements de catalogue.** Bouton « Signaler une erreur ou proposer un ajout » des fiches
+album, artiste et morceau (membres) → `report.catalog` (`lib/catalog/reports.ts`). Types :
+information erronée (`catalog_error`), pochette (`catalog_cover`), doublon
+(`catalog_duplicate`, avec l'autre fiche du même type dans `duplicate_*`, adresse ou slug lu
+par `catalogSlugFrom`), ajout manquant (`catalog_addition`), autre (`other`). Traités
+(`resolve`) ou rejetés avec une note, sans notification. Un doublon ouvert affiche
+« Fusionner les deux fiches » dans la file.
+
+**Fusion de doublons** (`lib/catalog/merge.ts`, page `/admin/merge`, `admin.mergePreview` /
+`admin.merge`). Une transaction : écoutes, notes de pistes, critiques, éléments de listes,
+Étagères et signalements ouverts passent du doublon à la fiche gardée ; un conflit (un membre,
+une liste, une Étagère, une écoute d'album avec les deux) n'en garde qu'une ligne (écoute sans
+date : la plus récemment modifiée) ; les états `user_item_state` sont recalculés
+(`recomputeItemState`, « À écouter » gardé si l'une l'avait) et les stats des membres
+invalidées. La fiche gardée reprend ce qui lui manque (crédits, pistes, genres, pochette,
+date) ; les liens de catalogue du doublon sont retirés. Le doublon n'est jamais supprimé :
+`merged_into_id` (toujours un seul saut), son adresse redirige en permanence (308,
+`lib/catalog-redirect.ts`, via `catalog.mergedInto`), la recherche et les sorties récentes
+l'ignorent, l'import MusicBrainz suit le lien. Décision `resolve` (sujet `catalog`) dans
+l'historique, extrait « doublon → gardée ». **Ne se défait pas : jamais de fusion d'essai sur
+Neon `dev`.**
 
 ## Données de démo
 
 `packages/db/src/seed/social.ts` : abonnements, likes, commentaires et notifications
 datés par rapport au moment du seed (le Populaire compte 7 jours : `pnpm db:reset` ou un
 nouveau seed rafraîchit la démo), et `bruitdefond`, bloqué par Camille.
+`packages/db/src/seed/moderation.ts` : l'admin `lacontrebasse`, un commentaire de spam,
+six signalements ouverts (membre, commentaire, liste, critique, erreur et ajout de
+catalogue) et un signalement rejeté avec sa décision.

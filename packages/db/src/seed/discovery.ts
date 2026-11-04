@@ -1,4 +1,5 @@
 import { sql } from "drizzle-orm";
+import { TERMS_VERSION } from "@spleen/validators";
 
 import type { DbOrTx } from "../listening-state";
 import { recomputeItemState } from "../listening-state";
@@ -131,6 +132,8 @@ export async function seedDiscovery(tx: DbOrTx, now: Date): Promise<void> {
         bio: m.bio,
         locale: m.locale,
         ageConfirmedAt: joinedAt,
+        termsAcceptedAt: joinedAt,
+        termsVersion: TERMS_VERSION,
         createdAt: joinedAt,
       })),
     )

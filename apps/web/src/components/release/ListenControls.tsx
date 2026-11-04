@@ -3,7 +3,6 @@
 import type { MoodRef, MyEntry, MyItemState } from "@spleen/api";
 import type { ListenTargetInput } from "@spleen/validators";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import { useEffect, useOptimistic, useRef, useState, useTransition } from "react";
 
 import {
@@ -39,13 +38,12 @@ const RATE_DELAY_MS = 350;
 /**
  * "I listened" panel: one-click listen, quick rating and heart (kept on the member's undated
  * listen), "to listen" queue, and the full "log" form. Writes go through Server Actions that
- * return the fresh state; the page is then refreshed for the community figures.
+ * return the fresh state and re-render the page in the same response (community figures).
  * Quick ratings are grouped (`RATE_DELAY_MS`), numbered for the server (which drops older
  * ones arriving late), and only the answer to the latest one is applied.
  */
 export function ListenControls({ target, title, initial, moods, tracks }: ListenControlsProps) {
   const t = useTranslations("album.actions");
-  const router = useRouter();
   const [state, setState] = useState(initial);
   const [optimistic, setOptimistic] = useOptimistic(
     state,
@@ -87,7 +85,6 @@ export function ListenControls({ target, title, initial, moods, tracks }: Listen
     if (result.state) {
       setState(result.state);
       setError(false);
-      router.refresh();
     } else {
       setError(true);
     }

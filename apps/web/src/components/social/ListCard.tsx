@@ -48,6 +48,9 @@ export function ListCard({ list }: { list: List }) {
           <span aria-hidden="true">·</span>
           <span>{t("list.itemCount", { count: list.itemCount })}</span>
           {list.ranked && <Badge>{t("list.ranked")}</Badge>}
+          {list.hidden && (
+            <Badge className="border-star/60 text-star">{t("moderationHold.badge")}</Badge>
+          )}
         </p>
       </div>
     </Card>

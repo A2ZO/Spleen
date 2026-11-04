@@ -6,17 +6,24 @@ import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
 
+import { SuspendedNotice } from "@/components/account/SuspendedNotice";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { HydrationMarker } from "@/components/layout/HydrationMarker";
+import { ServiceWorker } from "@/components/layout/ServiceWorker";
 import { initRouteLocale } from "@/i18n/locale";
+import { COVER_ERROR_SCRIPT } from "@/lib/cover-errors";
 import { routing } from "@/i18n/routing";
 import { parseTheme, THEME_COOKIE } from "@/lib/theme";
+import { getApi } from "@/server/api";
+import { serviceWorkerDisabled, siteUrl } from "@spleen/infra/config";
 
 import { fraunces, inter, plexMono } from "../fonts";
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+// No `generateStaticParams` here: reading the theme cookie makes every page dynamic anyway,
+// and in `next dev` it makes each first render rewrite `prerender-manifest.json` in place,
+// so two routes compiling at once could read it half-written ("Unexpected end of JSON
+// input", then a 500). Enforced by the ESLint config (`@spleen/config/eslint/next`).
 
 export async function generateMetadata({
   params,
@@ -26,9 +33,13 @@ export async function generateMetadata({
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const t = await getTranslations({ locale, namespace: "metadata" });
+  const title = `${t("title")} · ${t("tagline")}`;
   return {
-    title: { default: `${t("title")} · ${t("tagline")}`, template: `%s · ${t("title")}` },
+    metadataBase: new URL(siteUrl()),
+    title: { default: title, template: `%s · ${t("title")}` },
     description: t("description"),
+    // Installed on an iPhone: its own name, the Apple icon (app/apple-icon.png), a dark status bar.
+    appleWebApp: { capable: true, title: t("title"), statusBarStyle: "black" },
   };
 }
 
@@ -46,6 +57,8 @@ export default async function LocaleLayout({
   const locale = initRouteLocale((await params).locale);
   const t = await getTranslations({ locale, namespace: "common" });
   const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
+  // A suspended member who signed in sees why on every page, and nothing else.
+  const suspension = await (await getApi()).account.suspension();
 
   return (
     <html
@@ -53,6 +66,9 @@ export default async function LocaleLayout({
       data-theme={theme}
       className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: COVER_ERROR_SCRIPT }} />
+      </head>
       <body>
         <NextIntlClientProvider>
           <a
@@ -61,11 +77,13 @@ export default async function LocaleLayout({
           >
             {t("skipToContent")}
           </a>
-          <Header />
+          <Header minimal={suspension !== null} />
           <main id="main" className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-12">
-            {children}
+            {suspension ? <SuspendedNotice suspension={suspension} locale={locale} /> : children}
           </main>
           <Footer />
+          <ServiceWorker enabled={!serviceWorkerDisabled()} />
+          <HydrationMarker />
         </NextIntlClientProvider>
       </body>
     </html>

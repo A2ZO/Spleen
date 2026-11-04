@@ -4,6 +4,7 @@ import {
   check,
   index,
   integer,
+  pgEnum,
   pgTable,
   primaryKey,
   smallint,
@@ -19,6 +20,18 @@ import { user } from "./auth";
 import { releases } from "./catalog";
 import { entries } from "./listening";
 import { targetCheck, targetColumns } from "./target";
+
+/**
+ * Why a review, a list or a comment is hidden from everyone: a moderation decision on it, or
+ * its author's suspension (lifting the suspension shows only the latter again).
+ */
+export const hiddenBy = pgEnum("hidden_by", ["moderation", "suspension"]);
+
+/** Moderation columns of a review, a list or a comment (`hidden_at` set ⇔ `hidden_by` set). */
+export const hiddenColumns = () => ({
+  hiddenAt: timestamp("hidden_at", { withTimezone: true }),
+  hiddenBy: hiddenBy("hidden_by"),
+});
 
 /** Reviews are independent from ratings: a review may have no rating and vice versa. */
 export const reviews = pgTable(
@@ -37,10 +50,12 @@ export const reviews = pgTable(
     lang: varchar("lang", { length: 8 }).notNull(),
     /** Spleen+ pinned review, prepared for later. */
     pinnedAt: timestamp("pinned_at", { withTimezone: true }),
+    ...hiddenColumns(),
     ...timestamps(),
   },
   (t) => [
     targetCheck("reviews", t),
+    check("reviews_hidden_pair", sql`(${t.hiddenAt} is null) = (${t.hiddenBy} is null)`),
     ratingCheck("reviews", t.rating),
     index("reviews_user_idx").on(t.userId, t.createdAt.desc()),
     // Popular tab: reviews split by language.
@@ -61,9 +76,13 @@ export const lists = pgTable(
     title: text("title").notNull(),
     description: text("description").notNull().default(""),
     ranked: boolean("ranked").notNull().default(false),
+    ...hiddenColumns(),
     ...timestamps(),
   },
-  (t) => [index("lists_user_idx").on(t.userId, t.updatedAt.desc())],
+  (t) => [
+    index("lists_user_idx").on(t.userId, t.updatedAt.desc()),
+    check("lists_hidden_pair", sql`(${t.hiddenAt} is null) = (${t.hiddenBy} is null)`),
+  ],
 );
 
 /** List items can mix albums, tracks and artists. */

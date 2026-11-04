@@ -1,8 +1,13 @@
-name: Catalog refresh
+name: Nightly
 
-# Re-reads on MusicBrainz the discographies members care about, so new albums reach
-# "Recent releases" (docs/decouverte.md). Runs on the production database through the
-# `production` environment's secret; does nothing until it is set (docs/mise-en-ligne.md § 9).
+# Nightly jobs on the production database, through the `production` environment's secret;
+# they do nothing until it is set (docs/mise-en-ligne.md § 9).
+# - refresh: re-reads on MusicBrainz the discographies members care about, so new albums
+#   reach "Recent releases" (docs/decouverte.md).
+# - retention: applies the durations written in the privacy policy (packages/i18n,
+#   legal.privacy): anonymises moderation decisions a year old and deletes the closed reports
+#   (docs/social.md); deletes expired sessions, expired sign-in links and anti-abuse counters
+#   24 hours after their window, except the MusicBrainz gate (packages/api/src/lib/retention.ts).
 
 on:
   schedule:
@@ -52,3 +57,37 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
           DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
           MUSICBRAINZ_USER_AGENT: ${{ vars.MUSICBRAINZ_USER_AGENT }}
+
+  retention:
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 10
+    steps:
+      - name: Check the production database is configured
+        id: config
+        env:
+          DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
+        run: |
+          if [ -z "$DATABASE_URL_UNPOOLED" ]; then
+            echo "::notice::DATABASE_URL_UNPOOLED is not set in the production environment: nothing to do."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.config.outputs.ready == 'true'
+        uses: actions/checkout@v7
+      - if: steps.config.outputs.ready == 'true'
+        uses: pnpm/action-setup@v6
+      - if: steps.config.outputs.ready == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - if: steps.config.outputs.ready == 'true'
+        run: pnpm install --frozen-lockfile
+      - if: steps.config.outputs.ready == 'true'
+        name: Apply the retention rules (moderation, sessions, sign-in links, counters)
+        run: pnpm retention
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+          DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}

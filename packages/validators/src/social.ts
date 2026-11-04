@@ -58,3 +58,48 @@ export const reportCreateSchema = z.object({
   details: z.string().trim().max(REPORT_DETAILS_MAX).default(""),
 });
 export type ReportCreateInput = z.infer<typeof reportCreateSchema>;
+
+/** Catalog pages a member can report, and what they can say about them. */
+export const catalogKinds = ["release", "track", "artist"] as const;
+export type CatalogKind = (typeof catalogKinds)[number];
+export const catalogReportTypes = ["error", "cover", "duplicate", "addition", "other"] as const;
+export type CatalogReportType = (typeof catalogReportTypes)[number];
+
+/**
+ * "Report an error / suggest an addition" on an album, track or artist page. A duplicate names
+ * the other page (its address or its slug), of the same kind.
+ */
+export const catalogReportSchema = z
+  .object({
+    target: z.object({ kind: z.enum(catalogKinds), id: z.uuid() }),
+    type: z.enum(catalogReportTypes),
+    details: z.string().trim().max(REPORT_DETAILS_MAX).default(""),
+    duplicate: z.string().trim().max(500).optional(),
+  })
+  .refine((input) => input.type !== "duplicate" || !!input.duplicate, {
+    path: ["duplicate"],
+    message: "required",
+  });
+export type CatalogReportInput = z.infer<typeof catalogReportSchema>;
+
+const CATALOG_PATHS: Record<CatalogKind, string> = {
+  release: "album",
+  track: "track",
+  artist: "artist",
+};
+
+/**
+ * Slug of a catalog page from what a member pasted: a full address
+ * (https://…/fr/album/kind-of-blue), a path (/album/kind-of-blue) or the slug itself. Null
+ * when it is not a page of this kind.
+ */
+export function catalogSlugFrom(text: string, kind: CatalogKind): string | null {
+  const trimmed = text
+    .trim()
+    .replace(/[?#].*$/, "")
+    .replace(/\/+$/, "");
+  const segments = trimmed.split("/").filter(Boolean);
+  const slug = segments.length > 1 ? segments.at(-1)! : (segments[0] ?? "");
+  if (segments.length > 1 && segments.at(-2) !== CATALOG_PATHS[kind]) return null;
+  return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) ? slug : null;
+}

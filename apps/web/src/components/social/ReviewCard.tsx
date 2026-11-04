@@ -3,6 +3,7 @@ import { ratingToStars } from "@spleen/validators";
 import { useFormatter, useTranslations } from "next-intl";
 
 import { Avatar } from "@/components/ui/Avatar";
+import { Badge } from "@/components/ui/Badge";
 import { Card } from "@/components/ui/Card";
 import { Cover } from "@/components/ui/Cover";
 import { CommentIcon, HeartIcon } from "@/components/ui/icons";
@@ -29,6 +30,8 @@ export function ReviewCard({
           href={`/album/${review.release.slug}`}
           className="w-16 shrink-0 sm:w-20"
           tabIndex={-1}
+          // Same destination as the title link next to it: out of the tab order and of screen readers.
+          aria-hidden="true"
         >
           <Cover
             slug={review.release.slug}
@@ -78,6 +81,9 @@ export function ReviewCard({
           <time dateTime={review.createdAt} className="font-mono text-xs text-fg-muted">
             {format.dateTime(new Date(review.createdAt), { dateStyle: "medium" })}
           </time>
+          {review.hidden && (
+            <Badge className="border-star/60 text-star">{t("moderationHold.badge")}</Badge>
+          )}
         </div>
         <p lang={review.lang} className="mt-3 leading-relaxed text-pretty">
           {review.body}

@@ -1,6 +1,5 @@
 import { and, eq, inArray, isNotNull, or, schema, type Db } from "@spleen/db";
 
-import type { SessionUser } from "../../trpc";
 import type {
   ArtistDetail,
   CatalogSearchResults,
@@ -16,20 +15,14 @@ import type {
  * until they have rated it themselves. Applied by the API, so every client gets it.
  */
 
-const { profiles, releaseTracks, userItemState } = schema;
+const { releaseTracks, userItemState } = schema;
 
-/** A signed-in member with blind listening on (null: nothing is hidden). */
+/**
+ * A signed-in member with blind listening on (null: nothing is hidden). Read with the account
+ * (`ctx.account()`), in the same query as the role and the suspension.
+ */
 export interface BlindViewer {
   userId: string;
-}
-
-export async function blindViewer(db: Db, user: SessionUser | null): Promise<BlindViewer | null> {
-  if (!user) return null;
-  const [row] = await db
-    .select({ blindMode: profiles.blindMode })
-    .from(profiles)
-    .where(eq(profiles.userId, user.id));
-  return row?.blindMode ? { userId: user.id } : null;
 }
 
 /** Ids among `ids` the member has rated. */

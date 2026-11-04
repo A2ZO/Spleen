@@ -27,6 +27,7 @@ describe("config", () => {
     BETTER_AUTH_URL: "https://spleen.example",
     BREVO_API_KEY: "x",
     EMAIL_FROM: "Spleen <bonjour@spleen.example>",
+    CONTACT_EMAIL: "bonjour@spleen.example",
     S3_ENDPOINT: "https://r2.example",
     S3_BUCKET: "spleen",
     S3_ACCESS_KEY_ID: "x",
@@ -107,6 +108,29 @@ describe("email", () => {
     const [file] = await readdir(outboxDir);
     expect(JSON.parse(await readFile(path.join(outboxDir, file!), "utf8"))).toMatchObject(email);
     expect(lines.join("")).toContain("Text");
+  });
+
+  it("never shows a half-written email to a reader polling the outbox", async () => {
+    const outboxDir = path.join(tmp, "outbox-polled");
+    const mailer = createDevMailer({ outboxDir, log: () => {} });
+    const big = { ...email, text: "x".repeat(4_000_000) };
+    let sending = true;
+    const sent = Promise.all([1, 2, 3].map(() => mailer.send(big))).finally(() => {
+      sending = false;
+    });
+    let reads = 0;
+    // Same filter and parse as the e2e helper `magicLinkFor`.
+    while (sending || reads === 0) {
+      const files = (await readdir(outboxDir).catch(() => [])).filter((f) => f.endsWith(".json"));
+      for (const file of files) {
+        const text = await readFile(path.join(outboxDir, file), "utf8");
+        expect(() => JSON.parse(text)).not.toThrow();
+        reads++;
+      }
+      await new Promise((resolve) => setImmediate(resolve));
+    }
+    await sent;
+    expect((await readdir(outboxDir)).filter((f) => f.endsWith(".tmp"))).toEqual([]);
   });
 
   it("never falls back to the dev mailer in production", () => {

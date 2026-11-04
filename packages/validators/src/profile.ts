@@ -73,11 +73,20 @@ export const bioSchema = z.string().trim().max(300);
 export const localeSchema = z.enum(["fr", "en"]);
 export const themeSchema = z.enum(["dark", "light"]);
 
-/** First visit after signing in: pick a @username and confirm the minimum age (15). */
+/**
+ * Version of the terms of use a new member accepts (the date of their last change). Bump it
+ * when the terms change: members whose `terms_version` differs are to be asked again.
+ */
+export const TERMS_VERSION = "2026-10-27";
+
+/**
+ * First visit after signing in: pick a @username, and one box for both the minimum age (15)
+ * and the terms of use. Magic link, code and Google all end here.
+ */
 export const onboardingSchema = z.object({
   username: usernameSchema,
   displayName: displayNameSchema,
-  ageConfirmed: z.literal(true),
+  termsAccepted: z.literal(true),
   locale: localeSchema,
   theme: themeSchema,
   /** Detected by the browser; the default zone is kept when missing or unknown. */

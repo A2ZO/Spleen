@@ -20,7 +20,8 @@ import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { VinylShelf } from "@/components/ui/VinylShelf";
-import { initRouteLocale } from "@/i18n/locale";
+import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { seoMetadata } from "@/lib/seo";
 import { Link, redirect } from "@/i18n/navigation";
 import { firstParam, hrefWith, pageParam, type SearchParams } from "@/lib/search-params";
 import { getApi } from "@/server/api";
@@ -36,11 +37,26 @@ const getProfile = cache(async (username: string) => {
   return (await getApi()).profile.byUsername({ username: parsed.data });
 });
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { username } = await params;
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+  const { locale: rawLocale, username } = await params;
+  const locale = metadataLocale(rawLocale);
   const profile = await getProfile(username);
   if (!profile) return {};
-  return { title: `${profile.displayName} (@${profile.username})` };
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const title = `${profile.displayName} (@${profile.username})`;
+  const description = profile.bio || t("profile", { name: profile.displayName });
+  // Tabs (?tab=…) are views of the same profile: one canonical page, indexed once.
+  const tabbed = Object.keys(await searchParams).length > 0;
+  return {
+    title,
+    description,
+    ...(await seoMetadata(locale, `/u/${profile.username}`, {
+      subject: { kind: "profile", key: profile.username },
+      noindex: tabbed,
+      title,
+      description,
+    })),
+  };
 }
 
 const TABS = ["diary", "likes", "to-listen", "reviews", "lists", "stats"] as const;

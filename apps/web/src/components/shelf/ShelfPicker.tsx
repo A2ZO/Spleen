@@ -2,7 +2,6 @@
 
 import type { ApiErrorCode, ReleaseCard } from "@spleen/api";
 import { useTranslations } from "next-intl";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 
 import { removeShelfAction, setShelfAction } from "@/app/[locale]/shelf/actions";
@@ -72,7 +71,6 @@ function PickerDialog({
 }) {
   const t = useTranslations("shelf");
   const te = useTranslations("errors");
-  const router = useRouter();
   const ref = useRef<HTMLDialogElement>(null);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<ApiErrorCode | "unknown" | null>(null);
@@ -88,7 +86,6 @@ function PickerDialog({
       const result = await write();
       if (result.shelf) {
         onSaved(result.shelf);
-        router.refresh();
       } else setError(result.error ?? "unknown");
     });
 

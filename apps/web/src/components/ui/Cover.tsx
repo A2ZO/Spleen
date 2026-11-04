@@ -1,8 +1,9 @@
 import { coverSwatches } from "@spleen/design-tokens";
-import Image from "next/image";
 
 import { cn } from "@/lib/cn";
 import { hashString } from "@/lib/hash";
+
+import { CoverImage } from "./CoverImage";
 
 export interface CoverProps {
   slug: string;
@@ -19,7 +20,9 @@ export interface CoverProps {
 
 /**
  * Album sleeve. Uses the real cover when there is one, otherwise a generated,
- * deterministic jazz-label style placeholder derived from the slug.
+ * deterministic jazz-label style placeholder derived from the slug. While a real cover loads
+ * (or when it fails without JavaScript) the plain surface shows: never a made-up sleeve under
+ * real artwork, never a broken-image icon. The accessible name is the sleeve's, not the image's.
  */
 export function Cover({
   slug,
@@ -31,32 +34,22 @@ export function Cover({
   sizes,
   showText = true,
 }: CoverProps) {
+  const generated = (
+    <GeneratedCover slug={slug} title={title} artistName={artistName} showText={showText} />
+  );
   return (
     <div
+      role={alt ? "img" : undefined}
+      aria-label={alt || undefined}
       className={cn(
         "@container relative aspect-square overflow-hidden rounded-sm bg-surface shadow-cover",
         className,
       )}
     >
       {coverUrl ? (
-        // Covers come from Cover Art Archive in ready-made sizes: no image optimisation
-        // (no host-specific service, no quota), the browser follows the redirect itself.
-        <Image
-          src={coverUrl}
-          alt={alt}
-          fill
-          unoptimized
-          sizes={sizes ?? "200px"}
-          className="object-cover"
-        />
+        <CoverImage src={coverUrl} sizes={sizes ?? "200px"} fallback={generated} />
       ) : (
-        <GeneratedCover
-          slug={slug}
-          title={title}
-          artistName={artistName}
-          alt={alt}
-          showText={showText}
-        />
+        generated
       )}
       {/* Sleeve sheen and worn edge. */}
       <div
@@ -73,13 +66,11 @@ function GeneratedCover({
   slug,
   title,
   artistName,
-  alt,
   showText,
 }: {
   slug: string;
   title: string;
   artistName?: string;
-  alt: string;
   showText: boolean;
 }) {
   const hash = hashString(slug);
@@ -89,8 +80,7 @@ function GeneratedCover({
 
   return (
     <div
-      role={alt ? "img" : undefined}
-      aria-label={alt || undefined}
+      aria-hidden="true"
       className="absolute inset-0"
       style={{ backgroundColor: bg, color: ink }}
     >

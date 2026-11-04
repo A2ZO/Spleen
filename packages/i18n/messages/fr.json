@@ -19,7 +19,8 @@
     "signOut": "Se déconnecter",
     "notifications": "Notifications",
     "unread": "{count, plural, one {# non lue} other {# non lues}}",
-    "discover": "Découvrir"
+    "discover": "Découvrir",
+    "admin": "Modération"
   },
   "theme": {
     "toggle": "Changer de thème",
@@ -77,7 +78,6 @@
     "reviewsEmpty": "Personne n'a encore écrit sur ce disque. La première critique t'attend.",
     "listsTitle": "Dans les listes",
     "listenOn": "Écouter sur",
-    "report": "Signaler une erreur ou proposer un ajout",
     "coverAlt": "Pochette de {title}",
     "actions": {
       "title": "Ton écoute",
@@ -243,7 +243,19 @@
       "body": "Voici ton lien pour te connecter à Spleen. Il reste valable 15 minutes et ne sert qu'une fois.",
       "cta": "Entrer dans Spleen",
       "fallback": "Si le bouton ne marche pas, copie ce lien dans ton navigateur :",
-      "ignore": "Tu n'as rien demandé ? Ignore simplement cet email."
+      "ignore": "Tu n'as rien demandé ? Ignore simplement cet email.",
+      "codeIntro": "Dans l'appli Spleen installée sur ton téléphone ? Tape ce code :",
+      "codeNote": "Il reste valable 15 minutes. Le lien et le code ouvrent la même connexion : en utiliser un annule l'autre."
+    },
+    "suspension": {
+      "subject": "Ton compte Spleen est suspendu",
+      "preview": "La modération a suspendu ton compte. Voici pourquoi.",
+      "greeting": "Bonsoir,",
+      "body": "La modération de Spleen a suspendu ton compte. Tu ne peux plus rien publier, et tes critiques, listes et commentaires sont masqués (ils ne sont pas supprimés).",
+      "reasonLabel": "Motif :",
+      "rights": "Tu peux toujours te connecter pour lire ce motif, exporter tes données ou supprimer ton compte.",
+      "contest": "Pour contester cette décision, écris-nous à {email} en expliquant pourquoi : une autre personne relira ton dossier.",
+      "signature": "La modération de Spleen"
     }
   },
   "auth": {
@@ -262,7 +274,13 @@
     "otherEmail": "Utiliser une autre adresse",
     "linkExpired": "Ce lien a expiré ou a déjà servi. Demande-en un nouveau.",
     "error": "Ça n'a pas marché. Réessaie dans un instant.",
-    "rateLimited": "Trop de demandes d'un coup. Patiente quelques minutes."
+    "rateLimited": "Trop de demandes d'un coup. Patiente quelques minutes.",
+    "codeLabel": "Ou tape le code reçu",
+    "codeHint": "Six chiffres, sous le lien dans l'email.",
+    "codeSubmit": "Entrer avec ce code",
+    "codeChecking": "Vérification…",
+    "codeInvalid": "Ce code ne marche pas. Vérifie-le, ou demande un nouveau lien.",
+    "codeTooMany": "Trop d'essais pour cette adresse. Demande un nouveau lien, ou réessaie dans une heure."
   },
   "welcome": {
     "metaTitle": "Bienvenue",
@@ -273,9 +291,10 @@
     "available": "Ce pseudo est libre.",
     "displayNameLabel": "Nom affiché",
     "displayNameHint": "Tu pourras le changer quand tu veux.",
-    "ageLabel": "J'ai 15 ans ou plus",
-    "ageHint": "C'est l'âge minimum pour utiliser Spleen.",
+    "termsLabel": "J'ai 15 ans ou plus et j'accepte les <terms>conditions d'utilisation</terms>",
+    "termsHint": "15 ans, c'est l'âge minimum pour utiliser Spleen.",
     "submit": "Ouvrir mon étagère",
+    "privacyNotice": "Ce que Spleen fait de tes données est expliqué dans la <privacy>politique de confidentialité</privacy>.",
     "saving": "Un instant…"
   },
   "settings": {
@@ -358,7 +377,17 @@
     "LIST_ITEM_EXISTS": "Il est déjà dans cette liste.",
     "LIST_MISMATCH": "Ta liste a changé entre-temps : recharge la page.",
     "INVALID_CURSOR": "Cette page n'existe plus : recharge la liste.",
-    "unknown": "Quelque chose s'est mal passé. Réessaie."
+    "unknown": "Quelque chose s'est mal passé. Réessaie.",
+    "ACCOUNT_SUSPENDED": "Ton compte est suspendu.",
+    "NOT_FOUND": "Cette page n'existe pas.",
+    "REPORT_NOT_FOUND": "Ce signalement n'existe plus.",
+    "MODERATION_ACTION_INVALID": "Cette action ne s'applique pas à ce signalement.",
+    "DUPLICATE_NOT_FOUND": "Cette adresse ne correspond à aucune fiche du même type.",
+    "MERGE_SAME": "Choisis deux fiches différentes.",
+    "MERGE_ALREADY_MERGED": "L'une de ces fiches a déjà été fusionnée.",
+    "ALREADY_SUSPENDED": "Ce compte est déjà suspendu.",
+    "NOT_SUSPENDED": "Ce compte n'est pas suspendu.",
+    "CANNOT_MODERATE_ADMIN": "On ne suspend pas un compte admin depuis le site."
   },
   "secondaryType": {
     "compilation": "Compilation",
@@ -626,7 +655,44 @@
     "excerpt": "« {text} »",
     "pagingLabel": "Pages des notifications",
     "older": "Plus anciennes",
-    "newest": "Revenir aux plus récentes"
+    "newest": "Revenir aux plus récentes",
+    "moderation": {
+      "dismiss": "Un signalement sur {subject, select, review {ta critique} list {ta liste} comment {ton commentaire} member {ton compte} other {ton contenu}} a été rejeté.",
+      "resolve": "Un signalement a été traité.",
+      "hide": "La modération a masqué {subject, select, review {ta critique} list {ta liste} comment {ton commentaire} member {ton compte} other {ton contenu}}.",
+      "restore": "La modération a rétabli {subject, select, review {ta critique} list {ta liste} comment {ton commentaire} member {ton compte} other {ton contenu}}.",
+      "delete": "La modération a supprimé {subject, select, review {ta critique} list {ta liste} comment {ton commentaire} member {ton compte} other {ton contenu}}.",
+      "suspend": "La modération a suspendu ton compte.",
+      "unsuspend": "La suspension de ton compte est levée.",
+      "reason": "Motif : {reason}",
+      "contest": "Pour contester, écris à <email></email>."
+    }
+  },
+  "catalogReport": {
+    "button": "Signaler une erreur ou proposer un ajout",
+    "title": "Signaler une erreur ou proposer un ajout",
+    "typeLegend": "De quoi s'agit-il ?",
+    "types": {
+      "error": "Une information est erronée",
+      "cover": "La pochette est incorrecte",
+      "duplicate": "C'est un doublon d'une autre fiche",
+      "addition": "Il manque quelque chose",
+      "other": "Autre chose"
+    },
+    "duplicateLabel": "Adresse de l'autre fiche",
+    "duplicateHint": "Colle l'adresse de la page, ou sa fin ({example}).",
+    "details": "Quelques mots de plus (facultatif)",
+    "send": "Envoyer",
+    "thanks": "Merci. La modération va y jeter un œil.",
+    "cancel": "Annuler",
+    "close": "Fermer"
+  },
+  "moderationHold": {
+    "title": "Masqué par la modération",
+    "body": "Il n'y a plus que toi pour voir {subject, select, review {cette critique} list {cette liste} other {ce commentaire}}, et plus personne ne peut y réagir.",
+    "reason": "Motif : {reason}",
+    "contest": "Pour contester, écris à <email></email>.",
+    "badge": "Masqué"
   },
   "blocks": {
     "title": "Membres bloqués",
@@ -675,5 +741,287 @@
     "reviewsTitle": "Critiques populaires",
     "more": "Découvrir plus",
     "seeAll": "Tout voir"
+  },
+  "suspended": {
+    "title": "Ton compte est suspendu",
+    "since": "Depuis le {date}.",
+    "reasonTitle": "Pourquoi",
+    "effects": "Tu ne peux plus rien publier. Tes critiques, listes et commentaires sont masqués : personne ne les voit, mais ils ne sont pas supprimés.",
+    "contestTitle": "Contester la décision",
+    "contestBody": "Écris-nous à <email></email> en expliquant pourquoi. Une autre personne relira ton dossier.",
+    "dataTitle": "Tes données restent à toi",
+    "dataBody": "Tu peux télécharger toutes tes données, ou supprimer ton compte pour de bon.",
+    "export": "Télécharger mes données",
+    "signOut": "Me déconnecter",
+    "deleteTitle": "Supprimer mon compte"
+  },
+  "admin": {
+    "title": "Modération",
+    "subtitle": "Chaque décision garde son motif et son auteur. La personne concernée reçoit le motif.",
+    "tabs": {
+      "label": "Sections de la modération",
+      "reports": "Signalements",
+      "history": "Historique",
+      "suspended": "Comptes suspendus",
+      "merge": "Fusion de doublons"
+    },
+    "statusFilter": "Filtrer par statut",
+    "kindFilter": "Filtrer par type",
+    "status": {
+      "open": "À traiter",
+      "resolved": "Traités",
+      "dismissed": "Rejetés",
+      "all": "Tous"
+    },
+    "kind": {
+      "all": "Tout",
+      "member": "Membre",
+      "review": "Critique",
+      "list": "Liste",
+      "comment": "Commentaire",
+      "catalog": "Catalogue"
+    },
+    "count": "{count, plural, =0 {Aucun signalement} one {# signalement} other {# signalements}}",
+    "empty": "Rien à traiter. La salle est calme ce soir.",
+    "reasons": {
+      "spam": "Spam ou publicité",
+      "harassment": "Harcèlement",
+      "hate": "Propos haineux",
+      "spoiler": "Divulgâche",
+      "inappropriate": "Contenu inapproprié",
+      "catalog_error": "Erreur de catalogue",
+      "catalog_addition": "Ajout au catalogue",
+      "catalog_cover": "Pochette incorrecte",
+      "catalog_duplicate": "Doublon",
+      "other": "Autre"
+    },
+    "hiddenBadge": "Masqué",
+    "suspendedBadge": "Suspendu",
+    "adminBadge": "admin",
+    "subjectLabel": "Contenu",
+    "untitled": "(sans titre)",
+    "contentGone": "Contenu supprimé",
+    "memberLabel": "Membre signalé",
+    "authorLabel": "Auteur",
+    "reporterLabel": "Signalé par",
+    "reporterGone": "Compte supprimé depuis",
+    "detailsLabel": "Précisions",
+    "othersLabel": "Autres signalements",
+    "others": "{count, plural, one {# autre signalement ouvert sur ce contenu} other {# autres signalements ouverts sur ce contenu}}",
+    "resolutionLabel": "Décision",
+    "resolution": "{status, select, dismissed {Rejeté} other {Traité}} par {name} le {date}.",
+    "moderatorGone": "un compte supprimé",
+    "decisionLabel": "Décision",
+    "decision": {
+      "dismiss": "Rejeter",
+      "resolve": "Marquer comme traité",
+      "hide": "Masquer le contenu",
+      "delete": "Supprimer le contenu",
+      "suspend": "Suspendre le compte"
+    },
+    "decisionSubmit": {
+      "dismiss": "Rejeter le signalement",
+      "resolve": "Marquer comme traité",
+      "hide": "Masquer",
+      "delete": "Supprimer définitivement",
+      "suspend": "Suspendre le compte"
+    },
+    "reasonLabel": "Motif de la décision",
+    "duplicateLabel": "Doublon de",
+    "mergeLink": "Fusionner les deux fiches",
+    "merge": {
+      "title": "Fusionner deux fiches",
+      "intro": "Tout ce qui pointe vers le doublon (écoutes, notes, critiques, listes, Étagères, signalements ouverts) passe sur la fiche gardée, qui reprend aussi ce qui lui manque (crédits, pistes, genres, pochette, date). Le doublon n'est jamais supprimé : son adresse redirige vers la fiche gardée. Une fusion ne se défait pas.",
+      "kindLegend": "Type de fiche",
+      "kinds": {
+        "release": "Album, EP ou single",
+        "track": "Morceau",
+        "artist": "Artiste"
+      },
+      "keepLabel": "Fiche gardée",
+      "duplicateLabel": "Doublon",
+      "pageHint": "Adresse de la page, ou sa fin (/album/kind-of-blue).",
+      "check": "Vérifier",
+      "swap": "Inverser les deux fiches",
+      "keepTitle": "Gardée",
+      "duplicateTitle": "Doublon, redirigé ensuite",
+      "counts": "{listens, plural, =0 {aucune écoute} one {# écoute} other {# écoutes}} · {reviews, plural, =0 {aucune critique} one {# critique} other {# critiques}} · {listItems, plural, =0 {dans aucune liste} one {dans # liste} other {dans # listes}}",
+      "fromReport": "Ce signalement sera marqué comme traité.",
+      "reasonLabel": "Motif de la fusion",
+      "reasonHint": "Il est conservé dans l'historique de modération.",
+      "submit": "Fusionner",
+      "done": "Fusion faite.",
+      "openKept": "Voir la fiche gardée"
+    },
+    "reasonHint": "Il est conservé dans l'historique et envoyé à la personne concernée (sauf rejet et catalogue).",
+    "done": "C'est fait.",
+    "doneEmailFailed": "C'est fait, mais l'email n'est pas parti : la notification reste dans le site.",
+    "action": {
+      "dismiss": "Rejet",
+      "resolve": "Traité",
+      "hide": "Masqué",
+      "restore": "Rétabli",
+      "delete": "Supprimé",
+      "suspend": "Suspension",
+      "unsuspend": "Suspension levée"
+    },
+    "anonymizedBadge": "Anonymisé",
+    "historyHint": "Un an après chaque décision, on n'en garde que l'action, le motif et la catégorie : les liens vers les personnes et l'extrait sont effacés.",
+    "historyEmpty": "Aucune décision pour l'instant.",
+    "historyBy": "Par {moderator} · concerne {member}",
+    "restoreTitle": "Rétablir ce contenu",
+    "restoreReasonLabel": "Pourquoi le rétablir ?",
+    "restoreSubmit": "Rétablir",
+    "suspendedEmpty": "Aucun compte suspendu.",
+    "suspendedSince": "Suspendu le {date}",
+    "unsuspendTitle": "Lever la suspension",
+    "unsuspendReasonLabel": "Pourquoi lever la suspension ?",
+    "unsuspendSubmit": "Lever la suspension",
+    "suspendTitle": "Suspendre un compte",
+    "suspendHint": "Sans signalement : à réserver aux cas évidents. Ses contenus sont masqués, pas supprimés, et un email lui donne le motif.",
+    "usernameLabel": "Pseudo",
+    "suspendSubmit": "Suspendre"
+  },
+  "legal": {
+    "updated": "Dernière mise à jour : {date}",
+    "footerLabel": "Informations légales",
+    "links": {
+      "notice": "Mentions légales",
+      "terms": "Conditions d'utilisation",
+      "privacy": "Confidentialité",
+      "credits": "Crédits"
+    },
+    "notice": {
+      "title": "Mentions légales",
+      "sections": {
+        "publisher": {
+          "title": "Éditeur du site",
+          "body": "<p>Spleen est un site édité à titre non professionnel. Son éditeur a communiqué son identité à l'hébergeur, conformément à l'article 1-1 II de la loi pour la confiance dans l'économie numérique (LCEN), et ne la publie donc pas ici. [À FAIRE RELIRE]</p><p>Contact : <contact></contact></p>"
+        },
+        "hosting": {
+          "title": "Hébergeur",
+          "body": "<p>Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis. Le site est servi depuis la région de Francfort (Allemagne). [À FAIRE RELIRE]</p>"
+        },
+        "credits": {
+          "title": "Crédits et données musicales",
+          "body": "<p>Les informations sur les artistes, les disques et les morceaux viennent de <musicbrainz>MusicBrainz</musicbrainz>, une encyclopédie musicale ouverte tenue par des bénévoles et la fondation MetaBrainz. Spleen ne leur est pas affilié.</p><ul><li>Les données de base (artistes, disques, titres, dates) sont dans le domaine public : licence <cc0>CC0</cc0>.</li><li>Les genres font partie des données « supplémentaires » de MusicBrainz, sous licence <ccbyncsa>Creative Commons BY-NC-SA 3.0</ccbyncsa>. Cette licence demande de citer la source, de mettre un lien vers la licence et de partager dans les mêmes conditions. Détail : <mblicense>licence des données de MusicBrainz</mblicense>.</li></ul><p>Les pochettes viennent du <caa>Cover Art Archive</caa>, un projet commun de MusicBrainz et de l'Internet Archive. Elles restent la propriété de leurs ayants droit et servent seulement à reconnaître les disques.</p><p>Les liens « Écouter sur » mènent vers des services de streaming qui n'ont aucun partenariat avec Spleen.</p>"
+        },
+        "property": {
+          "title": "Propriété intellectuelle",
+          "body": "<p>Le nom, le logo et le design de Spleen appartiennent à son éditeur. Les critiques, listes et commentaires appartiennent à leurs auteurs, dans les conditions décrites dans les <terms>conditions d'utilisation</terms>.</p>"
+        }
+      }
+    },
+    "terms": {
+      "title": "Conditions d'utilisation",
+      "intro": "Ces conditions s'appliquent à toute personne qui utilise Spleen. En créant un compte, tu les acceptes.",
+      "sections": {
+        "service": {
+          "title": "Le service",
+          "body": "<p>Spleen est un carnet d'écoute social : tu notes et critiques des disques, tiens ton journal d'écoute, fais des listes et suis d'autres membres. Le site est gratuit et sans publicité. Il peut évoluer, ou s'interrompre pour maintenance.</p>"
+        },
+        "account": {
+          "title": "Ton compte",
+          "body": "<ul><li>Il faut avoir <strong>15 ans au moins</strong> pour créer un compte. Tu le confirmes à l'inscription.</li><li>Tu te connectes par un lien envoyé par email ou avec Google. Garde l'accès à ton adresse email : c'est la clé de ton compte.</li><li>Ton pseudo est unique. Tu peux le changer une fois tous les 30 jours ; l'ancien reste réservé 30 jours pour que personne ne se fasse passer pour toi.</li><li>Tu peux supprimer ton compte à tout moment depuis les <settings>réglages</settings>. La suppression est immédiate et définitive.</li></ul>"
+        },
+        "content": {
+          "title": "Ce que tu publies",
+          "body": "<p>Tes critiques, listes et commentaires t'appartiennent. En les publiant, tu autorises Spleen à les conserver et à les afficher sur le site et dans ses futures applications, gratuitement et sans exclusivité, tant qu'ils sont en ligne. Cette autorisation prend fin quand tu les supprimes ou que tu supprimes ton compte.</p><p>Tu es responsable de ce que tu publies : tu dois avoir le droit de le publier, et ça doit respecter les règles ci-dessous.</p>"
+        },
+        "rules": {
+          "title": "Les règles de la communauté",
+          "body": "<p>Sont interdits sur Spleen :</p><ul><li>le harcèlement, les menaces, les propos haineux ou discriminatoires ;</li><li>le spam, la publicité et les liens trompeurs ;</li><li>les divulgâchages sans prévenir ;</li><li>les contenus illégaux, violents ou sexuellement explicites ;</li><li>se faire passer pour quelqu'un d'autre ;</li><li>les robots et la copie massive du site.</li></ul>"
+        },
+        "moderation": {
+          "title": "Signalements et modération",
+          "body": "<p>Chacun peut signaler un profil, une critique, une liste ou un commentaire. La modération peut alors rejeter le signalement, masquer le contenu (il reste visible pour son auteur seul, avec le motif), le supprimer ou suspendre le compte.</p><p>Chaque décision a un motif, qui t'est envoyé si elle te concerne. Un compte suspendu ne peut plus rien publier ; ses contenus sont masqués, mais il peut toujours télécharger ses données ou supprimer son compte.</p><p>Pour contester une décision, écris à <contact></contact> en expliquant pourquoi : une autre personne relira ton dossier.</p>"
+        },
+        "catalog": {
+          "title": "Le catalogue",
+          "body": "<p>Le catalogue vient de MusicBrainz (voir les <credits>crédits</credits>). Il peut contenir des erreurs ou des doublons : utilise le bouton « Signaler une erreur ou proposer un ajout » sur la fiche concernée. Deux fiches en double peuvent être fusionnées ; l'ancienne adresse mène alors à la fiche gardée.</p>"
+        },
+        "liability": {
+          "title": "Responsabilité",
+          "body": "<p>Spleen est fourni tel quel, sans garantie de disponibilité permanente. Les contenus publiés par les membres engagent leurs auteurs ; Spleen les retire rapidement lorsqu'un contenu manifestement illicite lui est signalé.</p>"
+        },
+        "changes": {
+          "title": "Évolution de ces conditions",
+          "body": "<p>Ces conditions peuvent changer. En cas de changement important, tu seras prévenu sur le site avant son entrée en vigueur.</p><p>Elles sont soumises au droit français. Si tu es un consommateur résidant dans un autre pays, tu gardes la protection des règles impératives de ton pays de résidence. [À FAIRE RELIRE]</p><p>Une question ? Écris à <contact></contact>.</p>"
+        }
+      }
+    },
+    "privacy": {
+      "title": "Politique de confidentialité",
+      "intro": "Spleen collecte le moins de données possible, ne les vend pas, ne fait pas de publicité ciblée et ne te suit pas d'un site à l'autre.",
+      "sections": {
+        "controller": {
+          "title": "Responsable du traitement",
+          "body": "<p>[À COMPLÉTER : nom et prénom], qui édite Spleen à titre non professionnel. Contact : <contact></contact> [À FAIRE RELIRE]</p>"
+        },
+        "data": {
+          "title": "Les données collectées",
+          "body": "<ul><li><strong>Ton compte</strong> : adresse email, pseudo, nom affiché, bio, photo de profil, langue, thème, fuseau horaire, réglages (journal privé, stats privées, écoute à l'aveugle) et date à laquelle tu as confirmé avoir 15 ans.</li><li><strong>Si tu te connectes avec Google</strong> : les informations de base de ton compte Google (adresse email, nom, photo).</li><li><strong>Ton activité</strong> : écoutes (dates, notes, cœurs, réécoutes, formats, humeurs), notes de pistes, critiques, listes, Étagère, abonnements, j'aime, commentaires, blocages, signalements et notifications.</li><li><strong>Tes sessions</strong> : date, adresse IP et navigateur de chaque connexion, pour la sécurité de ton compte.</li><li><strong>Des compteurs anti-abus</strong> : ton identifiant ou ton adresse IP, avec un nombre de requêtes sur une courte période.</li><li><strong>La modération</strong> : les décisions qui te concernent, avec leur motif et un extrait du contenu jugé.</li></ul>"
+        },
+        "purposes": {
+          "title": "Pourquoi",
+          "body": "<ul><li>Faire fonctionner le service que tu utilises (exécution des conditions d'utilisation).</li><li>Protéger les comptes et le site contre les abus (intérêt légitime).</li><li>Modérer la communauté et répondre aux obligations légales (intérêt légitime et obligation légale).</li></ul><p>Aucune publicité ciblée, aucune revente, aucun profilage commercial.</p>"
+        },
+        "visibility": {
+          "title": "Ce que les autres voient",
+          "body": "<p>Ton profil, tes critiques, tes listes, tes commentaires, tes abonnements et abonnés sont publics. Ton journal et tes stats aussi, sauf si tu les rends privés dans les <settings>réglages</settings>. Tes notes comptent anonymement dans les moyennes des disques. Ton adresse email et tes blocages ne sont jamais visibles.</p>"
+        },
+        "retention": {
+          "title": "Combien de temps",
+          "body": "<ul><li>Les données de ton compte sont gardées tant que ton compte existe, et effacées immédiatement quand tu le supprimes. Elles disparaissent aussi des sauvegardes de la base au bout de 7 jours au plus.</li><li>Pseudos : quand tu changes de pseudo, l'ancien reste réservé 30 jours. Quand tu supprimes ton compte, tes pseudos restent réservés 30 jours sous forme anonyme, sans aucun lien avec toi, puis ils redeviennent libres.</li><li>Liens et codes de connexion : valables 15 minutes, effacés dans les 24 heures qui suivent leur expiration.</li><li>Sessions (date, adresse IP, navigateur) : elles expirent après 7 jours sans visite et sont effacées dans les 24 heures qui suivent.</li><li>Compteurs anti-abus (identifiant ou adresse IP) : effacés par la tâche de nuit qui suit les 24 heures après la fin de leur période de comptage (une heure au plus).</li><li>Signalements et décisions de modération : un an après la décision, ils sont anonymisés (l'action et le motif restent, les liens vers les personnes et l'extrait sont effacés) et les signalements traités sont supprimés.</li></ul>"
+        },
+        "rights": {
+          "title": "Tes droits",
+          "body": "<p>Tu as un droit d'accès, de rectification, d'effacement, de portabilité, de limitation et d'opposition. Depuis les <settings>réglages</settings>, tu peux télécharger toutes tes données (format JSON) et supprimer ton compte. Pour le reste, écris à <contact></contact>.</p><p>Tu peux aussi adresser une réclamation à la <cnil>CNIL</cnil>.</p>"
+        },
+        "processors": {
+          "title": "Prestataires et transferts",
+          "body": "<ul><li>Hébergement du site : Vercel Inc. Le site tourne dans sa région de Francfort (Allemagne). Vercel est une société américaine : [À VÉRIFIER : mécanisme de transfert prévu par son accord de traitement des données (DPA), par exemple clauses contractuelles types ou Data Privacy Framework].</li><li>Base de données : Neon, serveurs dans l'Union européenne (Francfort).</li><li>Photos de profil : Cloudflare R2, juridiction Union européenne.</li><li>Emails de connexion et de modération : Brevo, serveurs uniquement dans l'Union européenne (France, Allemagne, Belgique).</li><li>Connexion avec Google : seulement si tu la choisis.</li></ul><p>Les pochettes sont chargées par ton navigateur directement depuis le Cover Art Archive (Internet Archive), qui voit donc ton adresse IP, comme pour n'importe quelle image d'un autre site.</p>"
+        },
+        "cookies": {
+          "title": "Cookies",
+          "body": "<p>Spleen n'utilise que des cookies nécessaires, sans mesure d'audience ni publicité, d'où l'absence de bandeau :</p><ul><li>la session de connexion, si tu es connecté ;</li><li><strong>spleen-theme</strong> : ton thème clair ou sombre ;</li><li><strong>NEXT_LOCALE</strong> : ta langue, le temps de ta visite.</li></ul>"
+        },
+        "minors": {
+          "title": "Âge minimum",
+          "body": "<p>Spleen est réservé aux personnes de 15 ans et plus, l'âge à partir duquel on peut consentir seul au traitement de ses données en France.</p>"
+        },
+        "changes": {
+          "title": "Modifications",
+          "body": "<p>Cette politique peut évoluer avec le service. La date de mise à jour est indiquée en haut de la page ; un changement important sera annoncé sur le site.</p>"
+        }
+      }
+    }
+  },
+  "seo": {
+    "album": "{title} de {artists} : notes, critiques et listes des membres de Spleen.",
+    "artist": "Discographie de {name} : albums, EP et singles notés et critiqués sur Spleen.",
+    "track": "{title} de {artists} : notes et critiques sur Spleen.",
+    "review": "Critique de « {title} » par {name} sur Spleen.",
+    "list": "Liste de {name} sur Spleen : {count, plural, one {# élément} other {# éléments}}.",
+    "profile": "Le carnet d'écoute de {name} sur Spleen : journal, critiques et listes.",
+    "diary": "Le journal d'écoute de {name} sur Spleen."
+  },
+  "pwa": {
+    "name": "Spleen",
+    "description": "Ton carnet d'écoute : note, critique et range tes disques.",
+    "offlineTitle": "Hors ligne",
+    "offlineHeading": "La platine tourne à vide",
+    "offlineBody": "Pas de connexion pour l'instant. Spleen reviendra dès que le réseau sera de retour.",
+    "offlineRetry": "Réessayer"
+  },
+  "errorPage": {
+    "metaTitle": "Une erreur s'est produite",
+    "quoteLine1": "Quand le ciel bas et lourd pèse comme un couvercle",
+    "quoteLine2": "Sur l'esprit gémissant en proie aux longs ennuis…",
+    "attribution": "Charles Baudelaire, « Spleen », Les Fleurs du mal (1857)",
+    "body": "Quelque chose s'est grippé de notre côté. Ce n'est pas toi : réessaie dans un instant.",
+    "retry": "Réessayer",
+    "back": "Retourner à l'accueil",
+    "reference": "Référence de l'erreur : {digest}"
   }
 }

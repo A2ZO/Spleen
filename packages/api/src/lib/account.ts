@@ -4,6 +4,7 @@ import { eq, freesUsernamesAtOnce, inArray, or, schema, type Db } from "@spleen/
 import type { Storage } from "@spleen/infra/storage";
 import {
   AVATAR_MAX_BYTES,
+  TERMS_VERSION,
   usernameSchema,
   type OnboardingInput,
   type ProfileUpdateInput,
@@ -43,7 +44,7 @@ async function requireProfile(db: Db, userId: string) {
   return row;
 }
 
-export async function getMe(db: Db, user: SessionUser, now: Date): Promise<Me> {
+export async function getMe(db: Db, user: SessionUser, now: Date, isAdmin = false): Promise<Me> {
   const row = await findProfile(db, user.id);
   let profile: MyProfile | null = null;
   if (row) {
@@ -62,7 +63,7 @@ export async function getMe(db: Db, user: SessionUser, now: Date): Promise<Me> {
       usernameChangeAvailableAt: renameAt?.toISOString() ?? null,
     };
   }
-  return { userId: user.id, email: user.email, profile };
+  return { userId: user.id, email: user.email, profile, isAdmin };
 }
 
 export async function onboard(
@@ -85,6 +86,8 @@ export async function onboard(
         theme: input.theme,
         ...(input.timeZone ? { timeZone: input.timeZone } : {}),
         ageConfirmedAt: now,
+        termsAcceptedAt: now,
+        termsVersion: TERMS_VERSION,
       });
       await tx
         .update(schema.user)

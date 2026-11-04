@@ -1,10 +1,10 @@
 import { ratingToStars, slugSchema } from "@spleen/validators";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
 import { ArtistLinks } from "@/components/catalog/ArtistLinks";
+import { CatalogReportButton } from "@/components/catalog/CatalogReportButton";
 import { ListenOn } from "@/components/catalog/ListenOn";
 import { AddToListButton } from "@/components/lists/AddToList";
 import { ListenControls } from "@/components/release/ListenControls";
@@ -12,7 +12,9 @@ import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { Cover } from "@/components/ui/Cover";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Stars } from "@/components/ui/Stars";
-import { initRouteLocale } from "@/i18n/locale";
+import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { seoMetadata } from "@/lib/seo";
+import { missingCatalogPage } from "@/lib/catalog-redirect";
 import { formatDuration } from "@/lib/release-date";
 import { getApi } from "@/server/api";
 
@@ -25,17 +27,26 @@ const getTrack = cache(async (slug: string) => {
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { locale: rawLocale, slug } = await params;
+  const locale = metadataLocale(rawLocale);
   const track = await getTrack(slug);
   if (!track) return {};
-  return { title: `${track.title} – ${track.artists.map((a) => a.name).join(", ")}` };
+  const t = await getTranslations({ locale, namespace: "seo" });
+  const artists = track.artists.map((a) => a.name).join(", ");
+  const title = `${track.title} – ${artists}`;
+  const description = t("track", { title: track.title, artists });
+  return {
+    title,
+    description,
+    ...(await seoMetadata(locale, `/track/${slug}`, { title, description })),
+  };
 }
 
 export default async function TrackPage({ params }: Props) {
   const { locale, slug } = await params;
   initRouteLocale(locale);
   const track = await getTrack(slug);
-  if (!track) notFound();
+  if (!track) return missingCatalogPage("track", slug, locale);
 
   const t = await getTranslations();
   const format = await getFormatter();
@@ -111,6 +122,7 @@ export default async function TrackPage({ params }: Props) {
           />
           {mine && <AddToListButton target={target} title={track.title} />}
           <ListenOn links={track.listenLinks} />
+          {mine && <CatalogReportButton target={target} />}
         </aside>
       </header>
 

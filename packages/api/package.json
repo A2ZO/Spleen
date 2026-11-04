@@ -12,11 +12,14 @@
     "typecheck": "tsc",
     "test": "vitest run",
     "seed:catalog": "tsx scripts/seed-catalog.ts",
-    "refresh:catalog": "tsx scripts/refresh-catalog.ts"
+    "refresh:catalog": "tsx scripts/refresh-catalog.ts",
+    "retention": "tsx scripts/retention.ts"
   },
   "dependencies": {
     "@spleen/catalog": "workspace:*",
     "@spleen/db": "workspace:*",
+    "@spleen/design-tokens": "workspace:*",
+    "@spleen/i18n": "workspace:*",
     "@spleen/infra": "workspace:*",
     "@spleen/validators": "workspace:*",
     "@trpc/server": "11.19.0",
@@ -24,7 +27,6 @@
   },
   "devDependencies": {
     "@spleen/config": "workspace:*",
-    "@spleen/i18n": "workspace:*",
     "@types/node": "24.19.2",
     "eslint": "9.39.5",
     "tsx": "4.23.15",

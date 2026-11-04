@@ -5,6 +5,7 @@ import path from "node:path";
 import { eq, schema, seed, type DbHandle } from "@spleen/db";
 import { createTestDb } from "@spleen/db/testing";
 import { createLocalStorage } from "@spleen/infra/storage";
+import { TERMS_VERSION } from "@spleen/validators";
 import { TRPCError } from "@trpc/server";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 
@@ -47,7 +48,7 @@ async function member(username: string): Promise<SessionUser> {
   await api(user).account.onboard({
     username,
     displayName: username,
-    ageConfirmed: true,
+    termsAccepted: true,
     locale: "fr",
     theme: "dark",
   });
@@ -81,6 +82,7 @@ describe("account.me", () => {
       userId: user.id,
       email: "fresh@example.test",
       profile: null,
+      isAdmin: false,
     });
   });
 
@@ -92,12 +94,12 @@ describe("account.me", () => {
 describe("account.onboard", () => {
   const input = {
     displayName: "Camille",
-    ageConfirmed: true as const,
+    termsAccepted: true as const,
     locale: "en" as const,
     theme: "light" as const,
   };
 
-  it("creates the profile with the age confirmation date", async () => {
+  it("creates the profile with the age and terms dates, and the terms version", async () => {
     const user = await newUser("camille@example.test");
     await api(user).account.onboard({ ...input, username: "Camille_R" });
     const me = await api(user).account.me();
@@ -113,6 +115,8 @@ describe("account.onboard", () => {
       .from(schema.profiles)
       .where(eq(schema.profiles.userId, user.id));
     expect(row?.ageConfirmedAt).toEqual(day0);
+    expect(row?.termsAcceptedAt).toEqual(day0);
+    expect(row?.termsVersion).toBe(TERMS_VERSION);
   });
 
   it("refuses a second onboarding", async () => {
@@ -133,15 +137,20 @@ describe("account.onboard", () => {
     expect(await statusOf(user, "a")).toBe("invalid");
   });
 
-  it("requires the minimum age confirmation", async () => {
+  it("requires the box for the minimum age and the terms, whatever the sign-in path", async () => {
+    // Link, code and Google all create a session without a profile: onboarding is the only
+    // way in, and this is its rule.
     const user = await newUser("young@example.test");
-    await expect(
-      api(user).account.onboard({
-        ...input,
-        username: "too_young",
-        ageConfirmed: false as unknown as true,
-      }),
-    ).rejects.toThrow();
+    for (const termsAccepted of [false, undefined]) {
+      await expect(
+        api(user).account.onboard({
+          ...input,
+          username: "too_young",
+          termsAccepted: termsAccepted as unknown as true,
+        }),
+      ).rejects.toThrow();
+    }
+    expect(await api(user).account.me()).toMatchObject({ profile: null });
   });
 });
 
@@ -309,7 +318,7 @@ describe("account.delete", () => {
     await api(tester).account.onboard({
       username: "e2e_mvx1abcd",
       displayName: "Alice Nocturne",
-      ageConfirmed: true,
+      termsAccepted: true,
       locale: "fr",
       theme: "dark",
     });
@@ -328,7 +337,7 @@ describe("account.delete", () => {
     await api(tester).account.onboard({
       username: "e2e_prod1abc",
       displayName: "Alice Nocturne",
-      ageConfirmed: true,
+      termsAccepted: true,
       locale: "fr",
       theme: "dark",
     });
@@ -361,7 +370,7 @@ describe("account.delete", () => {
         api(newcomer, days(30)).account.onboard({
           username: "delta_now",
           displayName: "New",
-          ageConfirmed: true,
+          termsAccepted: true,
           locale: "fr",
           theme: "dark",
         }),
@@ -373,7 +382,7 @@ describe("account.delete", () => {
     await api(newcomer, days(32)).account.onboard({
       username: "delta_now",
       displayName: "New",
-      ageConfirmed: true,
+      termsAccepted: true,
       locale: "fr",
       theme: "dark",
     });

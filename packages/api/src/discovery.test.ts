@@ -367,6 +367,75 @@ describe("top rated", () => {
   });
 });
 
+describe("suspended members", () => {
+  const suspend = (user: { id: string }, at: Date | null) =>
+    handle.db
+      .update(schema.profiles)
+      .set({ suspendedAt: at, suspensionReason: at ? "Spam" : null })
+      .where(eq(schema.profiles.userId, user.id));
+
+  it("leave every public figure while suspended, and come back when it is lifted", async () => {
+    const { now, ago } = era();
+    const genre = `g${short()}`;
+    const r = await release({ genre });
+    const [row] = await handle.db
+      .select({ slug: schema.releases.slug })
+      .from(schema.releases)
+      .where(eq(schema.releases.id, r));
+    const fair = [await member("fr"), await member("fr"), await member("fr")];
+    const spammer = await member("fr");
+    for (const m of fair) await listen(m, { releaseId: r }, ago(1), { rating: 6 });
+    await listen(spammer, { releaseId: r }, ago(1), { rating: 10 });
+
+    const figures = async () => {
+      const page = (await api(now).release.bySlug({ slug: row!.slug }))!;
+      const trend = (await api(now).discovery.trends({ lang: "fr" })).find(
+        (i) => i.release.id === r,
+      );
+      const [top] = (await api(now).discovery.topRated({ genre })).items;
+      return {
+        average: page.averageRating,
+        count: page.ratingCount,
+        tens: page.ratingDistribution[9],
+        listeners: trend?.listeners,
+        topAverage: top?.release.averageRating,
+      };
+    };
+    const everyone = { average: 7, count: 4, tens: 1, listeners: 4, topAverage: 7 };
+    expect(await figures()).toEqual(everyone);
+
+    await suspend(spammer, now);
+    expect(await figures()).toEqual({
+      average: 6,
+      count: 3,
+      tens: 0,
+      listeners: 3,
+      topAverage: 6,
+    });
+    // Their own state is untouched: only public figures leave them out.
+    const [state] = await handle.db
+      .select({ rating: schema.userItemState.rating })
+      .from(schema.userItemState)
+      .where(eq(schema.userItemState.userId, spammer.id));
+    expect(state!.rating).toBe(10);
+
+    await suspend(spammer, null);
+    expect(await figures()).toEqual(everyone);
+  });
+
+  it("can drop a record out of the top rated chart", async () => {
+    const { now } = era();
+    const genre = `g${short()}`;
+    const r = await release({ genre });
+    await rate(r, Array(DISCOVERY_MIN_RATINGS - 1).fill(9));
+    const spammer = await member("fr");
+    await listen(spammer, { releaseId: r }, new Date(), { undated: true, rating: 10 });
+    expect((await api(now).discovery.topRated({ genre })).items).toHaveLength(1);
+    await suspend(spammer, now);
+    expect((await api(now).discovery.topRated({ genre })).items).toEqual([]);
+  });
+});
+
 describe("discography refresh", () => {
   it("picks artists listened to in 30 days or on a Shelf, not refreshed this week", async () => {
     const { now, ago } = era();

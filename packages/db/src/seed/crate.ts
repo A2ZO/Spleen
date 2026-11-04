@@ -1,4 +1,5 @@
 import type { DbOrTx } from "../listening-state";
+import { TERMS_VERSION } from "@spleen/validators";
 import { recomputeItemState } from "../listening-state";
 import * as s from "../schema";
 import { fixtureId } from "./fixtures";
@@ -110,6 +111,8 @@ export async function seedCrate(tx: DbOrTx, genreIds: string[]): Promise<void> {
       displayName: "Margot",
       bio: "Je fouille les bacs des brocantes le dimanche. Trente coups de cœur et ça ne fait que commencer.",
       ageConfirmedAt: joinedAt,
+      termsAcceptedAt: joinedAt,
+      termsVersion: TERMS_VERSION,
       createdAt: joinedAt,
     })
     .onConflictDoNothing();

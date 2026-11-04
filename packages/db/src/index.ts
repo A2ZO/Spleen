@@ -14,6 +14,7 @@ export {
   neonEndpointId,
   unsafeE2eDatabase,
 } from "./e2e";
+export { setAdminRole, type AdminRoleResult } from "./admin";
 export { loadRootEnv, rootEnvFile } from "./env";
 export { rowsOf } from "./rows";
 export {

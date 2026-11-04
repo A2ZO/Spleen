@@ -1,4 +1,17 @@
-import { and, asc, desc, eq, gte, inArray, isNotNull, lt, schema, sql, type Db } from "@spleen/db";
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  gte,
+  inArray,
+  isNotNull,
+  isNull,
+  lt,
+  schema,
+  sql,
+  type Db,
+} from "@spleen/db";
 import type { AudienceLang } from "@spleen/validators";
 
 import type {
@@ -58,7 +71,13 @@ async function findProfile(
   const [row] = await db
     .select()
     .from(profiles)
-    .where(sql`lower(${profiles.username}) = ${username.toLowerCase()}`)
+    // A suspended member's profile is gone for everyone (their data stays, hidden).
+    .where(
+      and(
+        sql`lower(${profiles.username}) = ${username.toLowerCase()}`,
+        isNull(profiles.suspendedAt),
+      ),
+    )
     .limit(1);
   if (!row) return null;
   const isOwner = viewer.id === row.userId;
@@ -101,7 +120,7 @@ async function loadDiaryEntries(
   where: ReturnType<typeof and>,
   options: { order: "newest" | "oldest"; limit: number; offset?: number },
 ): Promise<DiaryEntry[]> {
-  const hasReview = sql<boolean>`exists (select 1 from ${reviews} where ${reviews.entryId} = ${entries.id})`;
+  const hasReview = sql<boolean>`exists (select 1 from ${reviews} where ${reviews.entryId} = ${entries.id} and ${reviews.hiddenAt} is null)`;
   const dir = options.order === "newest" ? desc : asc;
   const rows = await db
     .select({
@@ -344,7 +363,7 @@ export async function getLikesPage(
   return toPage(masked, page, LIKES_PAGE_SIZE, total);
 }
 
-/** The member's reviews of releases, newest first. */
+/** The member's reviews of releases, newest first (with their hidden ones, for the member). */
 export async function getReviewsPage(
   db: Db,
   username: string,
@@ -353,7 +372,11 @@ export async function getReviewsPage(
 ): Promise<Page<ReviewCard> | null> {
   const access = await findProfile(db, username, viewer);
   if (!access) return null;
-  const where = and(eq(reviews.userId, access.userId), isNotNull(reviews.releaseId));
+  const where = and(
+    eq(reviews.userId, access.userId),
+    isNotNull(reviews.releaseId),
+    access.isOwner ? undefined : isNull(reviews.hiddenAt),
+  );
   const [rows, total] = await Promise.all([
     db
       .select({
@@ -363,6 +386,7 @@ export async function getReviewsPage(
         body: reviews.body,
         lang: reviews.lang,
         createdAt: reviews.createdAt,
+        hiddenAt: reviews.hiddenAt,
         ...reviewCountColumns(viewer.id),
       })
       .from(reviews)
@@ -394,6 +418,7 @@ export async function getReviewsPage(
       createdAt: r.createdAt.toISOString(),
       likeCount: r.likeCount,
       commentCount: r.commentCount,
+      ...(r.hiddenAt && { hidden: true }),
     };
   });
   return toPage(await blindReviewCards(db, viewer.blind, items), page, REVIEWS_PAGE_SIZE, total);
@@ -436,7 +461,7 @@ export async function getToListenPage(
   return toPage(await maskCards(db, viewer, items), page, TO_LISTEN_PAGE_SIZE, total);
 }
 
-/** The member's lists, most recently updated first. */
+/** The member's lists, most recently updated first (with their hidden ones, for the member). */
 export async function getProfileLists(
   db: Db,
   username: string,
@@ -445,10 +470,13 @@ export async function getProfileLists(
 ): Promise<Page<ListCard> | null> {
   const access = await findProfile(db, username, viewer);
   if (!access) return null;
-  const where = eq(lists.userId, access.userId);
+  const where = and(
+    eq(lists.userId, access.userId),
+    access.isOwner ? undefined : isNull(lists.hiddenAt),
+  );
   const [rows, total] = await Promise.all([
     db
-      .select(listRowColumns)
+      .select({ ...listRowColumns, hiddenAt: lists.hiddenAt })
       .from(lists)
       .innerJoin(profiles, eq(profiles.userId, lists.userId))
       .where(where)
@@ -458,8 +486,13 @@ export async function getProfileLists(
     db.$count(lists, where),
   ]);
   const cards = await loadListCards(db, rows);
+  const hiddenIds = new Set(rows.flatMap((r) => (r.hiddenAt ? r.id : [])));
   const masked = await Promise.all(
-    cards.map(async (list) => ({ ...list, preview: await maskCards(db, viewer, list.preview) })),
+    cards.map(async (list) => ({
+      ...list,
+      preview: await maskCards(db, viewer, list.preview),
+      ...(hiddenIds.has(list.id) && { hidden: true }),
+    })),
   );
   return toPage(masked, page, LISTS_PAGE_SIZE, total);
 }

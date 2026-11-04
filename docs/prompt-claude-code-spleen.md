@@ -152,6 +152,9 @@ Chaque jalon se termine par : lint + typecheck + tests verts, commit, mise à jo
 8. **Listes et découverte** — listes, tendances FR/EN, sorties récentes, classements par genre / année / décennie.
 9. **Admin, légal, finitions** — modération, fusion de doublons, pages légales, PWA, Open Graph, limitation de débit, accessibilité.
 10. **Mise en ligne** — avant tout déploiement, suivre et cocher `docs/mise-en-ligne.md`. Puis tests Playwright des parcours clés (inscription → noter un album → le voir dans son journal et ses stats → suivre quelqu'un), déploiement sur Vercel Hobby + Neon, et une note `docs/deploiement.md` expliquant comment migrer vers Cloudflare Workers (OpenNext) le jour où le site devient commercial (vérifie la taille du worker générée).
+11. **Sorties à venir des artistes suivis** (ajouté le 27 octobre 2026) — suivre un artiste, page `/upcoming`, bloc d'accueil « Bientôt dans tes oreilles », section « À venir » de la fiche artiste, bloc « Les plus attendus » de `/discover`, notification le jour de la sortie, alimentation de nuit par ListenBrainz `fresh-releases` et par la relecture des discographies suivies. Spécification : `docs/cahier-des-charges.md`, section « Sorties à venir de tes artistes ». Ce jalon peut passer avant le 10 : il ne dépend que des jalons 4, 7 et 8.
+
+Les versions réellement installées, les limites de chaque service en nombre de membres et les chemins de montée en charge sont dans `docs/stack-et-limites.md` (prix et quotas vérifiés dans `docs/services.md`).
 
 ## À ne pas faire
 

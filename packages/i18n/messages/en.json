@@ -19,7 +19,8 @@
     "signOut": "Sign out",
     "notifications": "Notifications",
     "unread": "{count, plural, one {# unread} other {# unread}}",
-    "discover": "Discover"
+    "discover": "Discover",
+    "admin": "Moderation"
   },
   "theme": {
     "toggle": "Change theme",
@@ -77,7 +78,6 @@
     "reviewsEmpty": "Nobody has written about this record yet. The first review is waiting for you.",
     "listsTitle": "In lists",
     "listenOn": "Listen on",
-    "report": "Report an error or suggest an addition",
     "coverAlt": "Cover of {title}",
     "actions": {
       "title": "Your listen",
@@ -243,7 +243,19 @@
       "body": "Here is your link to sign in to Spleen. It is valid for 15 minutes and works only once.",
       "cta": "Sign in to Spleen",
       "fallback": "If the button does not work, paste this link into your browser:",
-      "ignore": "Did not ask for this? Just ignore this email."
+      "ignore": "Did not ask for this? Just ignore this email.",
+      "codeIntro": "Using the Spleen app installed on your phone? Type this code:",
+      "codeNote": "It is valid for 15 minutes. The link and the code open the same sign-in: using one cancels the other."
+    },
+    "suspension": {
+      "subject": "Your Spleen account is suspended",
+      "preview": "The moderators suspended your account. Here is why.",
+      "greeting": "Good evening,",
+      "body": "Spleen's moderators suspended your account. You can no longer publish anything, and your reviews, lists and comments are hidden (they are not deleted).",
+      "reasonLabel": "Reason:",
+      "rights": "You can still sign in to read this reason, export your data or delete your account.",
+      "contest": "To contest this decision, write to us at {email} and explain why: someone else will review your case.",
+      "signature": "Spleen's moderators"
     }
   },
   "auth": {
@@ -262,7 +274,13 @@
     "otherEmail": "Use another address",
     "linkExpired": "This link has expired or was already used. Ask for a new one.",
     "error": "That did not work. Try again in a moment.",
-    "rateLimited": "Too many requests at once. Wait a few minutes."
+    "rateLimited": "Too many requests at once. Wait a few minutes.",
+    "codeLabel": "Or type the code you received",
+    "codeHint": "Six digits, under the link in the email.",
+    "codeSubmit": "Sign in with this code",
+    "codeChecking": "Checking…",
+    "codeInvalid": "This code does not work. Check it, or ask for a new link.",
+    "codeTooMany": "Too many tries for this address. Ask for a new link, or try again in an hour."
   },
   "welcome": {
     "metaTitle": "Welcome",
@@ -273,9 +291,10 @@
     "available": "This username is free.",
     "displayNameLabel": "Display name",
     "displayNameHint": "You can change it whenever you like.",
-    "ageLabel": "I am 15 or older",
-    "ageHint": "This is the minimum age to use Spleen.",
+    "termsLabel": "I am 15 or older and I accept the <terms>terms of use</terms>",
+    "termsHint": "15 is the minimum age to use Spleen.",
     "submit": "Open my shelf",
+    "privacyNotice": "What Spleen does with your data is explained in the <privacy>privacy policy</privacy>.",
     "saving": "One moment…"
   },
   "settings": {
@@ -358,7 +377,17 @@
     "LIST_ITEM_EXISTS": "It is already in this list.",
     "LIST_MISMATCH": "Your list changed in the meantime: reload the page.",
     "INVALID_CURSOR": "This page no longer exists: reload the list.",
-    "unknown": "Something went wrong. Try again."
+    "unknown": "Something went wrong. Try again.",
+    "ACCOUNT_SUSPENDED": "Your account is suspended.",
+    "NOT_FOUND": "This page does not exist.",
+    "REPORT_NOT_FOUND": "This report no longer exists.",
+    "DUPLICATE_NOT_FOUND": "This address matches no page of the same kind.",
+    "MERGE_SAME": "Pick two different pages.",
+    "MERGE_ALREADY_MERGED": "One of these pages was already merged.",
+    "MODERATION_ACTION_INVALID": "This action does not apply to this report.",
+    "ALREADY_SUSPENDED": "This account is already suspended.",
+    "NOT_SUSPENDED": "This account is not suspended.",
+    "CANNOT_MODERATE_ADMIN": "Admin accounts cannot be suspended from the site."
   },
   "secondaryType": {
     "compilation": "Compilation",
@@ -626,7 +655,44 @@
     "excerpt": "“{text}”",
     "pagingLabel": "Notification pages",
     "older": "Older",
-    "newest": "Back to the newest"
+    "newest": "Back to the newest",
+    "moderation": {
+      "dismiss": "A report about {subject, select, review {your review} list {your list} comment {your comment} member {your account} other {your content}} was dismissed.",
+      "resolve": "A report was handled.",
+      "hide": "The moderators hid {subject, select, review {your review} list {your list} comment {your comment} member {your account} other {your content}}.",
+      "restore": "The moderators restored {subject, select, review {your review} list {your list} comment {your comment} member {your account} other {your content}}.",
+      "delete": "The moderators deleted {subject, select, review {your review} list {your list} comment {your comment} member {your account} other {your content}}.",
+      "suspend": "The moderators suspended your account.",
+      "unsuspend": "Your account's suspension is lifted.",
+      "reason": "Reason: {reason}",
+      "contest": "To contest it, write to <email></email>."
+    }
+  },
+  "catalogReport": {
+    "button": "Report an error or suggest an addition",
+    "title": "Report an error or suggest an addition",
+    "typeLegend": "What is it about?",
+    "types": {
+      "error": "Some information is wrong",
+      "cover": "The cover is wrong",
+      "duplicate": "It duplicates another page",
+      "addition": "Something is missing",
+      "other": "Something else"
+    },
+    "duplicateLabel": "Address of the other page",
+    "duplicateHint": "Paste the address of the page, or its end ({example}).",
+    "details": "A few more words (optional)",
+    "send": "Send",
+    "thanks": "Thank you. The moderators will have a look.",
+    "cancel": "Cancel",
+    "close": "Close"
+  },
+  "moderationHold": {
+    "title": "Hidden by the moderators",
+    "body": "Only you can still see this {subject, select, review {review} list {list} other {comment}}, and nobody can react to it any more.",
+    "reason": "Reason: {reason}",
+    "contest": "To contest it, write to <email></email>.",
+    "badge": "Hidden"
   },
   "blocks": {
     "title": "Blocked members",
@@ -675,5 +741,287 @@
     "reviewsTitle": "Popular reviews",
     "more": "Discover more",
     "seeAll": "See all"
+  },
+  "suspended": {
+    "title": "Your account is suspended",
+    "since": "Since {date}.",
+    "reasonTitle": "Why",
+    "effects": "You can no longer publish anything. Your reviews, lists and comments are hidden: nobody sees them, but they are not deleted.",
+    "contestTitle": "Contest the decision",
+    "contestBody": "Write to us at <email></email> and explain why. Someone else will review your case.",
+    "dataTitle": "Your data stays yours",
+    "dataBody": "You can download all your data, or delete your account for good.",
+    "export": "Download my data",
+    "signOut": "Sign me out",
+    "deleteTitle": "Delete my account"
+  },
+  "admin": {
+    "title": "Moderation",
+    "subtitle": "Every decision keeps its reason and its author. The member concerned receives the reason.",
+    "tabs": {
+      "label": "Moderation sections",
+      "reports": "Reports",
+      "history": "History",
+      "suspended": "Suspended accounts",
+      "merge": "Duplicate merges"
+    },
+    "statusFilter": "Filter by status",
+    "kindFilter": "Filter by type",
+    "status": {
+      "open": "To handle",
+      "resolved": "Handled",
+      "dismissed": "Dismissed",
+      "all": "All"
+    },
+    "kind": {
+      "all": "All",
+      "member": "Member",
+      "review": "Review",
+      "list": "List",
+      "comment": "Comment",
+      "catalog": "Catalog"
+    },
+    "count": "{count, plural, =0 {No reports} one {# report} other {# reports}}",
+    "empty": "Nothing to handle. The room is quiet tonight.",
+    "reasons": {
+      "spam": "Spam or advertising",
+      "harassment": "Harassment",
+      "hate": "Hate speech",
+      "spoiler": "Spoiler",
+      "inappropriate": "Inappropriate content",
+      "catalog_error": "Catalog error",
+      "catalog_addition": "Catalog addition",
+      "catalog_cover": "Wrong cover",
+      "catalog_duplicate": "Duplicate",
+      "other": "Other"
+    },
+    "hiddenBadge": "Hidden",
+    "suspendedBadge": "Suspended",
+    "adminBadge": "admin",
+    "subjectLabel": "Content",
+    "untitled": "(untitled)",
+    "contentGone": "Content deleted",
+    "memberLabel": "Reported member",
+    "authorLabel": "Author",
+    "reporterLabel": "Reported by",
+    "reporterGone": "Account since deleted",
+    "detailsLabel": "Details",
+    "othersLabel": "Other reports",
+    "others": "{count, plural, one {# other open report on this content} other {# other open reports on this content}}",
+    "resolutionLabel": "Decision",
+    "resolution": "{status, select, dismissed {Dismissed} other {Handled}} by {name} on {date}.",
+    "moderatorGone": "a deleted account",
+    "decisionLabel": "Decision",
+    "decision": {
+      "dismiss": "Dismiss",
+      "resolve": "Mark as handled",
+      "hide": "Hide the content",
+      "delete": "Delete the content",
+      "suspend": "Suspend the account"
+    },
+    "decisionSubmit": {
+      "dismiss": "Dismiss the report",
+      "resolve": "Mark as handled",
+      "hide": "Hide",
+      "delete": "Delete for good",
+      "suspend": "Suspend the account"
+    },
+    "reasonLabel": "Reason for the decision",
+    "duplicateLabel": "Duplicate of",
+    "mergeLink": "Merge both pages",
+    "merge": {
+      "title": "Merge two pages",
+      "intro": "Everything that points to the duplicate (listens, ratings, reviews, lists, Shelves, open reports) moves to the page kept, which also takes what it lacks (credits, tracks, genres, cover, date). The duplicate is never deleted: its address redirects to the page kept. A merge cannot be undone.",
+      "kindLegend": "Kind of page",
+      "kinds": {
+        "release": "Album, EP or single",
+        "track": "Track",
+        "artist": "Artist"
+      },
+      "keepLabel": "Page kept",
+      "duplicateLabel": "Duplicate",
+      "pageHint": "Address of the page, or its end (/album/kind-of-blue).",
+      "check": "Check",
+      "swap": "Swap both pages",
+      "keepTitle": "Kept",
+      "duplicateTitle": "Duplicate, redirected afterwards",
+      "counts": "{listens, plural, =0 {no listens} one {# listen} other {# listens}} · {reviews, plural, =0 {no reviews} one {# review} other {# reviews}} · {listItems, plural, =0 {in no lists} one {in # list} other {in # lists}}",
+      "fromReport": "This report will be marked as handled.",
+      "reasonLabel": "Reason for the merge",
+      "reasonHint": "Kept in the moderation history.",
+      "submit": "Merge",
+      "done": "Merged.",
+      "openKept": "Open the page kept"
+    },
+    "reasonHint": "Kept in the history and sent to the member concerned (except dismissals and catalog reports).",
+    "done": "Done.",
+    "doneEmailFailed": "Done, but the email did not leave: the in-site notification remains.",
+    "action": {
+      "dismiss": "Dismissed",
+      "resolve": "Handled",
+      "hide": "Hidden",
+      "restore": "Restored",
+      "delete": "Deleted",
+      "suspend": "Suspension",
+      "unsuspend": "Suspension lifted"
+    },
+    "anonymizedBadge": "Anonymised",
+    "historyHint": "A year after each decision, only its action, reason and category remain: links to people and the excerpt are erased.",
+    "historyEmpty": "No decisions yet.",
+    "historyBy": "By {moderator} · about {member}",
+    "restoreTitle": "Restore this content",
+    "restoreReasonLabel": "Why restore it?",
+    "restoreSubmit": "Restore",
+    "suspendedEmpty": "No suspended accounts.",
+    "suspendedSince": "Suspended on {date}",
+    "unsuspendTitle": "Lift the suspension",
+    "unsuspendReasonLabel": "Why lift the suspension?",
+    "unsuspendSubmit": "Lift the suspension",
+    "suspendTitle": "Suspend an account",
+    "suspendHint": "Without a report: keep it for obvious cases. Their content is hidden, not deleted, and an email gives them the reason.",
+    "usernameLabel": "Username",
+    "suspendSubmit": "Suspend"
+  },
+  "legal": {
+    "updated": "Last updated: {date}",
+    "footerLabel": "Legal information",
+    "links": {
+      "notice": "Legal notice",
+      "terms": "Terms of use",
+      "privacy": "Privacy",
+      "credits": "Credits"
+    },
+    "notice": {
+      "title": "Legal notice",
+      "sections": {
+        "publisher": {
+          "title": "Publisher",
+          "body": "<p>Spleen is published on a non-professional basis. As allowed by article 1-1 II of the French law on confidence in the digital economy (LCEN), its publisher has given their identity to the host and does not publish it here. [À FAIRE RELIRE]</p><p>Contact: <contact></contact></p>"
+        },
+        "hosting": {
+          "title": "Host",
+          "body": "<p>Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, United States. The site is served from the Frankfurt region (Germany). [À FAIRE RELIRE]</p>"
+        },
+        "credits": {
+          "title": "Credits and music data",
+          "body": "<p>Information about artists, records and tracks comes from <musicbrainz>MusicBrainz</musicbrainz>, an open music encyclopedia maintained by volunteers and the MetaBrainz Foundation. Spleen is not affiliated with them.</p><ul><li>Core data (artists, records, titles, dates) is in the public domain: <cc0>CC0</cc0> licence.</li><li>Genres belong to the MusicBrainz “supplementary” data, under the <ccbyncsa>Creative Commons BY-NC-SA 3.0</ccbyncsa> licence. It requires crediting the source, linking to the licence and sharing alike. Details: <mblicense>MusicBrainz data licence</mblicense>.</li></ul><p>Cover art comes from the <caa>Cover Art Archive</caa>, a joint project of MusicBrainz and the Internet Archive. Covers remain the property of their rights holders and are only shown to identify records.</p><p>“Listen on” links lead to streaming services that have no partnership with Spleen.</p>"
+        },
+        "property": {
+          "title": "Intellectual property",
+          "body": "<p>Spleen's name, logo and design belong to its publisher. Reviews, lists and comments belong to their authors, as described in the <terms>terms of use</terms>.</p>"
+        }
+      }
+    },
+    "terms": {
+      "title": "Terms of use",
+      "intro": "These terms apply to everyone who uses Spleen. By creating an account, you accept them.",
+      "sections": {
+        "service": {
+          "title": "The service",
+          "body": "<p>Spleen is a social listening diary: you rate and review records, keep a listening diary, make lists and follow other members. The site is free and ad-free. It may change, or pause for maintenance.</p>"
+        },
+        "account": {
+          "title": "Your account",
+          "body": "<ul><li>You must be <strong>at least 15</strong> to create an account. You confirm it when you sign up.</li><li>You sign in with a link sent by email or with Google. Keep access to your email address: it is the key to your account.</li><li>Your username is unique. You can change it once every 30 days; the old one stays reserved for 30 days so that nobody can pose as you.</li><li>You can delete your account at any time from the <settings>settings</settings>. Deletion is immediate and final.</li></ul>"
+        },
+        "content": {
+          "title": "What you publish",
+          "body": "<p>Your reviews, lists and comments are yours. By publishing them, you allow Spleen to keep and show them on the site and in its future apps, free of charge and non-exclusively, as long as they are online. This permission ends when you delete them or your account.</p><p>You are responsible for what you publish: you must have the right to publish it, and it must follow the rules below.</p>"
+        },
+        "rules": {
+          "title": "Community rules",
+          "body": "<p>Not allowed on Spleen:</p><ul><li>harassment, threats, hateful or discriminatory speech;</li><li>spam, advertising and misleading links;</li><li>spoilers without a warning;</li><li>illegal, violent or sexually explicit content;</li><li>posing as someone else;</li><li>bots and mass copying of the site.</li></ul>"
+        },
+        "moderation": {
+          "title": "Reports and moderation",
+          "body": "<p>Anyone can report a profile, a review, a list or a comment. The moderators may then dismiss the report, hide the content (it stays visible to its author alone, with the reason), delete it or suspend the account.</p><p>Every decision has a reason, sent to you when it concerns you. A suspended account can no longer publish anything; its content is hidden, but it can still download its data or delete the account.</p><p>To contest a decision, write to <contact></contact> explaining why: someone else will review your case.</p>"
+        },
+        "catalog": {
+          "title": "The catalog",
+          "body": "<p>The catalog comes from MusicBrainz (see the <credits>credits</credits>). It may contain errors or duplicates: use the “Report an error or suggest an addition” button on the page concerned. Two duplicate pages may be merged; the old address then leads to the page kept.</p>"
+        },
+        "liability": {
+          "title": "Liability",
+          "body": "<p>Spleen is provided as is, with no guarantee of permanent availability. Content published by members is their authors' responsibility; Spleen promptly removes manifestly illegal content once it is reported.</p>"
+        },
+        "changes": {
+          "title": "Changes to these terms",
+          "body": "<p>These terms may change. Before an important change takes effect, you will be told on the site.</p><p>They are governed by French law. If you are a consumer living in another country, you keep the protection of the mandatory rules of your country of residence. [À FAIRE RELIRE]</p><p>A question? Write to <contact></contact>.</p>"
+        }
+      }
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "intro": "Spleen collects as little data as possible, never sells it, shows no targeted ads and does not track you across sites.",
+      "sections": {
+        "controller": {
+          "title": "Data controller",
+          "body": "<p>[À COMPLÉTER : nom et prénom], who publishes Spleen on a non-professional basis. Contact: <contact></contact> [À FAIRE RELIRE]</p>"
+        },
+        "data": {
+          "title": "Data collected",
+          "body": "<ul><li><strong>Your account</strong>: email address, username, display name, bio, profile picture, language, theme, time zone, settings (private diary, private stats, blind listening) and the date you confirmed you are 15 or older.</li><li><strong>If you sign in with Google</strong>: the basic information of your Google account (email address, name, picture).</li><li><strong>Your activity</strong>: listens (dates, ratings, hearts, relistens, formats, moods), track ratings, reviews, lists, Shelf, follows, likes, comments, blocks, reports and notifications.</li><li><strong>Your sessions</strong>: date, IP address and browser of each sign-in, to keep your account safe.</li><li><strong>Abuse counters</strong>: your account id or IP address, with a number of requests over a short period.</li><li><strong>Moderation</strong>: decisions concerning you, with their reason and an excerpt of the content judged.</li></ul>"
+        },
+        "purposes": {
+          "title": "Why",
+          "body": "<ul><li>To run the service you use (performance of the terms of use).</li><li>To protect accounts and the site from abuse (legitimate interest).</li><li>To moderate the community and meet legal obligations (legitimate interest and legal obligation).</li></ul><p>No targeted advertising, no resale, no commercial profiling.</p>"
+        },
+        "visibility": {
+          "title": "What others see",
+          "body": "<p>Your profile, reviews, lists, comments, follows and followers are public. So are your diary and stats, unless you make them private in the <settings>settings</settings>. Your ratings count anonymously in record averages. Your email address and your blocks are never visible.</p>"
+        },
+        "retention": {
+          "title": "How long",
+          "body": "<ul><li>Your account data is kept as long as your account exists, and erased at once when you delete it. It also leaves the database backups within 7 days at most.</li><li>Usernames: when you change yours, the old one stays reserved for 30 days. When you delete your account, your usernames stay reserved for 30 days in anonymous form, with no link to you, then become free again.</li><li>Sign-in links and codes: valid for 15 minutes, erased within 24 hours after they expire.</li><li>Sessions (date, IP address, browser): they expire after 7 days without a visit and are erased within the next 24 hours.</li><li>Abuse counters (account id or IP address): erased by the first nightly run once 24 hours have passed since their counting period (an hour at most) ended.</li><li>Reports and moderation decisions: one year after the decision, they are anonymised (the action and reason stay, links to people and the excerpt are erased) and handled reports are deleted.</li></ul>"
+        },
+        "rights": {
+          "title": "Your rights",
+          "body": "<p>You have the right to access, rectify, erase and port your data, and to restrict or object to its processing. From the <settings>settings</settings>, you can download all your data (JSON format) and delete your account. For anything else, write to <contact></contact>.</p><p>You may also lodge a complaint with the <cnil>CNIL</cnil>, the French data protection authority.</p>"
+        },
+        "processors": {
+          "title": "Service providers and transfers",
+          "body": "<ul><li>Website hosting: Vercel Inc. The site runs in its Frankfurt region (Germany). Vercel is a US company: [À VÉRIFIER : mécanisme de transfert prévu par son accord de traitement des données (DPA), par exemple clauses contractuelles types ou Data Privacy Framework].</li><li>Database: Neon, servers in the European Union (Frankfurt).</li><li>Profile pictures: Cloudflare R2, European Union jurisdiction.</li><li>Sign-in and moderation emails: Brevo, servers in the European Union only (France, Germany, Belgium).</li><li>Sign-in with Google: only if you choose it.</li></ul><p>Cover art is loaded by your browser directly from the Cover Art Archive (Internet Archive), which therefore sees your IP address, as with any image from another site.</p>"
+        },
+        "cookies": {
+          "title": "Cookies",
+          "body": "<p>Spleen only uses necessary cookies, with no audience measurement or advertising, hence no cookie banner:</p><ul><li>the sign-in session, when you are signed in;</li><li><strong>spleen-theme</strong>: your light or dark theme;</li><li><strong>NEXT_LOCALE</strong>: your language, for the length of your visit.</li></ul>"
+        },
+        "minors": {
+          "title": "Minimum age",
+          "body": "<p>Spleen is for people aged 15 and over, the age from which one can consent alone to the processing of one's data in France.</p>"
+        },
+        "changes": {
+          "title": "Changes",
+          "body": "<p>This policy may change with the service. The date of the last update is shown at the top of the page; an important change will be announced on the site.</p>"
+        }
+      }
+    }
+  },
+  "seo": {
+    "album": "{title} by {artists}: ratings, reviews and lists from Spleen members.",
+    "artist": "{name}'s discography: albums, EPs and singles rated and reviewed on Spleen.",
+    "track": "{title} by {artists}: ratings and reviews on Spleen.",
+    "review": "{name}'s review of “{title}” on Spleen.",
+    "list": "A list by {name} on Spleen: {count, plural, one {# item} other {# items}}.",
+    "profile": "{name}'s listening diary on Spleen: diary, reviews and lists.",
+    "diary": "{name}'s listening diary on Spleen."
+  },
+  "pwa": {
+    "name": "Spleen",
+    "description": "Your listening diary: rate, review and shelve your records.",
+    "offlineTitle": "Offline",
+    "offlineHeading": "The turntable is spinning empty",
+    "offlineBody": "No connection right now. Spleen will be back as soon as the network is.",
+    "offlineRetry": "Try again"
+  },
+  "errorPage": {
+    "metaTitle": "Something went wrong",
+    "quoteLine1": "When the low, heavy sky weighs like a lid",
+    "quoteLine2": "On the groaning spirit, prey to long ennui…",
+    "attribution": "Charles Baudelaire, “Spleen”, Les Fleurs du mal (1857)",
+    "body": "Something jammed on our side. It isn't you: try again in a moment.",
+    "retry": "Try again",
+    "back": "Back to home",
+    "reference": "Error reference: {digest}"
   }
 }

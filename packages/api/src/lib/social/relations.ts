@@ -2,6 +2,7 @@ import {
   and,
   eq,
   inArray,
+  isNull,
   or,
   schema,
   sql,
@@ -58,13 +59,21 @@ export async function requireMember(db: DbOrTx, username: string) {
       displayName: profiles.displayName,
     })
     .from(profiles)
-    .where(sql`lower(${profiles.username}) = ${username.toLowerCase()}`)
+    .where(
+      and(
+        sql`lower(${profiles.username}) = ${username.toLowerCase()}`,
+        isNull(profiles.suspendedAt),
+      ),
+    )
     .limit(1);
   if (!row) fail("NOT_FOUND", "MEMBER_NOT_FOUND");
   return row;
 }
 
-/** Display names and avatars of members, by user id. */
+/**
+ * Display names and avatars of members, by user id. Suspended members are left out: callers
+ * drop what they wrote (feeds, comments, review cards) when its author is missing.
+ */
 export async function memberRefs(db: DbOrTx, userIds: string[]): Promise<Map<string, MemberRef>> {
   const unique = [...new Set(userIds)];
   if (unique.length === 0) return new Map();
@@ -76,11 +85,14 @@ export async function memberRefs(db: DbOrTx, userIds: string[]): Promise<Map<str
       avatarUrl: profiles.avatarUrl,
     })
     .from(profiles)
-    .where(inArray(profiles.userId, unique));
+    .where(and(inArray(profiles.userId, unique), isNull(profiles.suspendedAt)));
   return new Map(rows.map(({ userId, ...ref }) => [userId, ref]));
 }
 
-/** Member cards in the order of `userIds`, with whether the viewer follows each one. */
+/**
+ * Member cards in the order of `userIds`, with whether the viewer follows each one (suspended
+ * members left out).
+ */
 export async function memberCards(
   db: DbOrTx,
   userIds: string[],
@@ -97,7 +109,7 @@ export async function memberCards(
         avatarUrl: profiles.avatarUrl,
       })
       .from(profiles)
-      .where(inArray(profiles.userId, userIds)),
+      .where(and(inArray(profiles.userId, userIds), isNull(profiles.suspendedAt))),
     viewerId
       ? db
           .select({ id: follows.followeeId })

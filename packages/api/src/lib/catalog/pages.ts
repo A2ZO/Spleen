@@ -1,5 +1,5 @@
 import { isMainRelease } from "@spleen/catalog";
-import { and, asc, desc, eq, inArray, isNotNull, schema, sql, type Db } from "@spleen/db";
+import { and, asc, desc, eq, inArray, isNotNull, isNull, schema, sql, type Db } from "@spleen/db";
 import type { AudienceLang } from "@spleen/validators";
 
 import type {
@@ -12,6 +12,7 @@ import type {
   TrackDetail,
 } from "../../types";
 import { buildListenLinks } from "../listen-links";
+import { countsPublicly } from "../ratings";
 import { notBlockedWith } from "../social/relations";
 import { reviewCountColumns } from "../social/reviews";
 import {
@@ -40,16 +41,23 @@ export async function releaseIdBySlug(db: Db, slug: string) {
       tracklistImportedAt: releases.tracklistImportedAt,
     })
     .from(releases)
-    .where(eq(releases.slug, slug))
+    .where(and(eq(releases.slug, slug), isNull(releases.mergedIntoId)))
     .limit(1);
   return row ?? null;
 }
 
+/** Ratings 1..10 of the release (suspended members left out, as in `ratingSummaries`). */
 async function ratingDistribution(db: Db, releaseId: string): Promise<number[]> {
   const rows = await db
     .select({ rating: userItemState.rating, count: sql<number>`count(*)::int` })
     .from(userItemState)
-    .where(and(eq(userItemState.releaseId, releaseId), isNotNull(userItemState.rating)))
+    .where(
+      and(
+        eq(userItemState.releaseId, releaseId),
+        isNotNull(userItemState.rating),
+        countsPublicly(userItemState.userId),
+      ),
+    )
     .groupBy(userItemState.rating);
   const distribution = Array.from({ length: 10 }, () => 0);
   for (const { rating, count } of rows) distribution[rating! - 1] = count;
@@ -83,6 +91,7 @@ async function releaseReviews(
     .where(
       and(
         eq(reviews.releaseId, release.id),
+        isNull(reviews.hiddenAt),
         viewerId ? notBlockedWith(viewerId, reviews.userId) : undefined,
       ),
     )
@@ -171,6 +180,7 @@ async function releaseLists(
     .where(
       and(
         eq(listItems.releaseId, releaseId),
+        isNull(lists.hiddenAt),
         viewerId ? notBlockedWith(viewerId, lists.userId) : undefined,
       ),
     )
@@ -243,7 +253,7 @@ export async function artistIdBySlug(db: Db, slug: string) {
       discographyImportedAt: artists.discographyImportedAt,
     })
     .from(artists)
-    .where(eq(artists.slug, slug))
+    .where(and(eq(artists.slug, slug), isNull(artists.mergedIntoId)))
     .limit(1);
   return row ?? null;
 }
@@ -289,7 +299,7 @@ export async function getTrackDetail(db: Db, slug: string): Promise<TrackDetail 
   const [row] = await db
     .select({ id: tracks.id })
     .from(tracks)
-    .where(eq(tracks.slug, slug))
+    .where(and(eq(tracks.slug, slug), isNull(tracks.mergedIntoId)))
     .limit(1);
   if (!row) return null;
   const [[card], releaseMap, ratings] = await Promise.all([

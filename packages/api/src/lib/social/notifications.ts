@@ -1,6 +1,7 @@
 import { and, eq, inArray, isNull, or, schema, sql, type Db, type DbOrTx } from "@spleen/db";
 
 import type { CursorPage, NotificationGroup } from "../../types";
+import { CONTACT_PLACEHOLDER } from "../moderation/emails";
 import { cursorTime, decodeCursor, encodeCursor, pageOf } from "./cursor";
 import { isBlockedBetween, memberRefs, notBlockedWith } from "./relations";
 
@@ -11,7 +12,8 @@ import { isBlockedBetween, memberRefs, notBlockedWith } from "./relations";
  * removes its row. Nothing is ever created across a block, and a block erases what exists.
  */
 
-const { comments, lists, notifications, profiles, releases, reviews, tracks } = schema;
+const { comments, lists, moderationActions, notifications, profiles, releases, reviews, tracks } =
+  schema;
 
 export const NOTIFICATIONS_PAGE_SIZE = 20;
 const ACTORS_SHOWN = 3;
@@ -94,10 +96,12 @@ export async function eraseNotificationsBetween(db: DbOrTx, a: string, b: string
     );
 }
 
+/** The recipient's notifications, without those from blocked or suspended members. */
 const visible = (userId: string) =>
   and(
     eq(notifications.userId, userId),
     sql`(${notifications.actorId} is null or ${notBlockedWith(userId, notifications.actorId)})`,
+    sql`not exists (select 1 from "profiles" "p" where "p"."user_id" = ${notifications.actorId} and "p"."suspended_at" is not null)`,
   );
 
 /** Number of unread groups (the header badge). */
@@ -121,6 +125,8 @@ export async function listNotifications(
   db: Db,
   userId: string,
   cursor: string | undefined,
+  /** Shown with moderation notices: where to contest a decision. */
+  contactEmail: string = CONTACT_PLACEHOLDER,
 ): Promise<CursorPage<NotificationGroup>> {
   const after = cursor ? decodeCursor(cursor, 2) : null;
   const latest = sql<Date>`max(${notifications.createdAt})`;
@@ -140,6 +146,7 @@ export async function listNotifications(
       commentId: sql<
         string | null
       >`(array_agg(${notifications.commentId}::text order by ${notifications.createdAt} desc))[1]`,
+      moderationActionId: sql<string | null>`min(${notifications.moderationActionId}::text)`,
     })
     .from(notifications)
     .where(visible(userId))
@@ -159,8 +166,9 @@ export async function listNotifications(
   const reviewIds = page.items.flatMap((r) => r.reviewId ?? []);
   const listIds = page.items.flatMap((r) => r.listId ?? []);
   const commentIds = page.items.flatMap((r) => r.commentId ?? []);
+  const actionIds = page.items.flatMap((r) => r.moderationActionId ?? []);
   const releaseTitle = sql<string>`coalesce(${releases.title}, ${tracks.title}, '')`;
-  const [actors, reviewRows, listRows, commentRows] = await Promise.all([
+  const [actors, reviewRows, listRows, commentRows, actionRows] = await Promise.all([
     memberRefs(db, actorIds),
     reviewIds.length
       ? db
@@ -182,7 +190,20 @@ export async function listNotifications(
           .from(comments)
           .where(inArray(comments.id, commentIds))
       : [],
+    actionIds.length
+      ? db
+          .select({
+            id: moderationActions.id,
+            action: moderationActions.action,
+            subject: moderationActions.subject,
+            reason: moderationActions.reason,
+            excerpt: moderationActions.excerpt,
+          })
+          .from(moderationActions)
+          .where(inArray(moderationActions.id, actionIds))
+      : [],
   ]);
+  const actionById = new Map(actionRows.map(({ id, ...notice }) => [id, notice]));
   const reviewTitles = new Map(reviewRows.map((r) => [r.id, r.title]));
   const listTitles = new Map(listRows.map((l) => [l.id, l.title]));
   const bodies = new Map(commentRows.map((c) => [c.id, c.body]));
@@ -204,6 +225,10 @@ export async function listNotifications(
           ? { id: r.reviewId, releaseTitle: reviewTitles.get(r.reviewId) ?? "" }
           : null,
         list: r.listId ? { id: r.listId, title: listTitles.get(r.listId) ?? "" } : null,
+        moderation: (() => {
+          const notice = r.moderationActionId ? actionById.get(r.moderationActionId) : undefined;
+          return notice ? { ...notice, contactEmail } : null;
+        })(),
         commentExcerpt:
           body === undefined
             ? null

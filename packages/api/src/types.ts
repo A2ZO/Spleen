@@ -61,6 +61,17 @@ export interface ReviewCard {
   track?: { slug: string; title: string } | null;
   /** The signed-in viewer liked it (only filled by social sources: feed, review page). */
   viewerLiked?: boolean;
+  /** Hidden by moderation: only its author still sees it (own profile, review page). */
+  hidden?: boolean;
+}
+
+/**
+ * Shown to the author alone on their content hidden by moderation: the reason of the decision
+ * (null once the history was anonymised) and where to contest it.
+ */
+export interface ModerationHold {
+  reason: string | null;
+  contactEmail: string;
 }
 
 /** One of the member's own reviews, as edited on the review edit screen. */
@@ -82,6 +93,8 @@ export interface ListCard {
   owner: MemberRef;
   itemCount: number;
   preview: ReleaseCard[];
+  /** Hidden by moderation: only its owner still sees it (own profile). */
+  hidden?: boolean;
 }
 
 /** A record of the week's trends. */
@@ -140,6 +153,8 @@ export interface ListDetail {
   canLike: boolean;
   /** Signed in with a profile, no block either way (owners may answer). */
   canComment: boolean;
+  /** Hidden by moderation (only the owner gets here): no likes nor comments. */
+  hidden: ModerationHold | null;
 }
 
 /** One of the caller's lists, in the "Add to a list" dialog. */
@@ -313,6 +328,8 @@ export interface ReviewDetail {
   canLike: boolean;
   /** Signed in with a profile, no block either way (authors may answer). */
   canComment: boolean;
+  /** Hidden by moderation (only the author gets here): no likes nor comments. */
+  hidden: ModerationHold | null;
 }
 
 export interface CommentView {
@@ -325,12 +342,14 @@ export interface CommentView {
   canEdit: boolean;
   /** The viewer wrote it, or owns the review / list it is on. */
   canDelete: boolean;
+  /** Hidden by moderation: only its author sees it, and may no longer edit it. */
+  hidden: ModerationHold | null;
 }
 
 /** Similar notifications shown as one ("Camille and 3 others liked your review"). */
 export interface NotificationGroup {
   key: string;
-  type: "follow" | "like" | "comment";
+  type: "follow" | "like" | "comment" | "moderation";
   latestAt: string;
   unread: boolean;
   /** Most recent first, at most 3. */
@@ -340,6 +359,18 @@ export interface NotificationGroup {
   list: { id: string; title: string } | null;
   /** Latest comment of a comment group (shortened). */
   commentExcerpt: string | null;
+  /** A moderation decision about the recipient or their content, with its reason. */
+  moderation: ModerationNotice | null;
+}
+
+export interface ModerationNotice {
+  action: ModerationActionKind;
+  subject: ModerationSubject;
+  reason: string;
+  /** What was judged, as it was (shortened). */
+  excerpt: string;
+  /** Where to contest the decision (placeholder until configured). */
+  contactEmail: string;
 }
 
 export interface BlockedMember {
@@ -471,6 +502,8 @@ export interface Me {
   userId: string;
   email: string;
   profile: MyProfile | null;
+  /** Admins see the moderation link (every admin page checks the role on the server). */
+  isAdmin: boolean;
 }
 
 /** Data export (JSON download). Versioned so the format can evolve. */
@@ -478,4 +511,149 @@ export interface AccountExport {
   format: "spleen-export/1";
   exportedAt: string;
   [section: string]: unknown;
+}
+
+export type ModerationActionKind =
+  "dismiss" | "resolve" | "hide" | "restore" | "delete" | "suspend" | "unsuspend";
+export type ModerationSubject = "member" | "review" | "list" | "comment" | "catalog";
+
+/** Who a report or a decision is about, as admins see it (suspended members included). */
+export interface ModeratedMember {
+  username: string;
+  displayName: string;
+  suspended: boolean;
+  admin: boolean;
+}
+
+/** What a report points to, for the moderation queue. */
+export interface ReportSubjectView {
+  kind: ModerationSubject;
+  /** Path of the page without the locale (null for a catalog addition or deleted content). */
+  href: string | null;
+  /** Title, name or text excerpt. */
+  label: string;
+  /** Author of the content, or the reported member. */
+  member: ModeratedMember | null;
+  hidden: boolean;
+  /**
+   * Duplicate report: the other page, and the merge it suggests (the reported page as the
+   * duplicate, the other one kept; the admin may swap them).
+   */
+  duplicate: {
+    href: string;
+    label: string;
+    merge: { kind: "release" | "track" | "artist"; keep: string; duplicate: string };
+  } | null;
+}
+
+export type ReportReason =
+  | "spam"
+  | "harassment"
+  | "hate"
+  | "spoiler"
+  | "inappropriate"
+  | "catalog_error"
+  | "catalog_addition"
+  | "catalog_cover"
+  | "catalog_duplicate"
+  | "other";
+
+export interface ReportView {
+  id: string;
+  reason: ReportReason;
+  details: string;
+  status: "open" | "resolved" | "dismissed";
+  createdAt: string;
+  /** Null once the reporter deleted their account. */
+  reporter: MemberRef | null;
+  subject: ReportSubjectView;
+  /** Other open reports on the same subject. */
+  sameSubjectOpen: number;
+  resolution: { by: MemberRef | null; at: string; note: string | null } | null;
+  /** Decisions available now (none once the report is closed). */
+  decisions: ("dismiss" | "resolve" | "hide" | "delete" | "suspend")[];
+}
+
+export interface ModerationActionView {
+  id: string;
+  action: ModerationActionKind;
+  subject: ModerationSubject;
+  reason: string;
+  reportReason: ReportReason | null;
+  moderator: MemberRef | null;
+  target: MemberRef | null;
+  excerpt: string;
+  createdAt: string;
+  /** Older than a year: links to people and the excerpt are gone. */
+  anonymized: boolean;
+  /** Content hidden by this decision that is still hidden, so it can be shown again. */
+  restorable: { kind: "review" | "list" | "comment"; id: string } | null;
+}
+
+export interface SuspendedMemberView {
+  username: string;
+  displayName: string;
+  suspendedAt: string;
+  reason: string;
+}
+
+/** What a suspended member sees once signed in. */
+export interface MySuspension {
+  /** To confirm an account deletion, which stays possible. */
+  username: string;
+  suspendedAt: string;
+  reason: string;
+  /** Where to contest the decision (placeholder until configured). */
+  contactEmail: string;
+}
+
+/** One side of a duplicate merge, with what it carries. */
+export interface MergeCandidate {
+  slug: string;
+  title: string;
+  /** Path of the page without the locale. */
+  href: string;
+  listens: number;
+  reviews: number;
+  listItems: number;
+}
+
+/** A merge checked before it runs: `duplicate` will point to `keep`. */
+export interface CatalogMergePreview {
+  kind: "release" | "track" | "artist";
+  keep: MergeCandidate;
+  duplicate: MergeCandidate;
+}
+
+/** One URL of a sitemap file: a path without the locale, and its last change. */
+export interface SitemapEntry {
+  path: string;
+  lastModified: string;
+}
+
+/** Search and sharing facts about a page (`seo.page`). */
+export interface SeoPage {
+  /** Worth indexing (same rule as the sitemap); otherwise the page says noindex. */
+  indexable: boolean;
+  /** Version of its Open Graph image, part of the image URL; null when it has none. */
+  og: string | null;
+}
+
+/** What an Open Graph image shows (`seo.og`), for a page anyone may see. */
+export interface OgCard {
+  kind: "release" | "review" | "list" | "profile";
+  version: string;
+  title: string;
+  /** Artists (release, review), owner (list) or @username (profile). */
+  subtitle: string;
+  /** Cover URLs (release, review: one; list: up to four), or the avatar (profile). */
+  covers: string[];
+  year?: string | null;
+  author?: string;
+  /** 1..10, reviews only. */
+  rating?: number | null;
+  /** Review text or profile bio, shortened. */
+  excerpt?: string;
+  /** Items in a list. */
+  items?: number;
 }

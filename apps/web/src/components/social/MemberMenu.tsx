@@ -8,7 +8,6 @@ import { setBlockAction } from "@/app/[locale]/social/actions";
 import { Button } from "@/components/ui/Button";
 import { FormMessage } from "@/components/ui/Field";
 import { MoreIcon } from "@/components/ui/icons";
-import { useRouter } from "@/i18n/navigation";
 
 import { ReportButton } from "./ReportDialog";
 
@@ -111,7 +110,6 @@ function BlockDialog({
 }) {
   const t = useTranslations("social");
   const te = useTranslations("errors");
-  const router = useRouter();
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const [pending, startTransition] = useTransition();
@@ -127,7 +125,6 @@ function BlockDialog({
       const result = await setBlockAction(username, !blocked);
       if (result.ok) {
         ref.current?.close();
-        router.refresh();
       } else setError(result.error ?? "unknown");
     });
 

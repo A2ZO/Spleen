@@ -11,11 +11,12 @@ import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 import { UserMenu } from "./UserMenu";
 
-export async function Header() {
+/** Site header. `minimal`: logo, language and theme only (suspended account screen). */
+export async function Header({ minimal = false }: { minimal?: boolean }) {
   const t = await getTranslations("nav");
   const locale = await getLocale();
   const api = await getApi();
-  const me = await api.account.me();
+  const me = minimal ? null : await api.account.me();
   const profile = me?.profile;
   const unread = profile ? await api.notification.unreadCount() : 0;
 
@@ -27,31 +28,33 @@ export async function Header() {
           <Logo className="max-[400px]:[&>span]:sr-only" />
           <span className="sr-only">{t("home")}</span>
         </Link>
-        <nav aria-label={t("label")} className="hidden sm:ml-6 sm:block">
-          <ul className="flex items-center gap-1 text-sm">
-            <li className="hidden sm:block">
-              <Link href="/" className="rounded-md px-3 py-2 text-fg-muted hover:text-fg">
-                {t("home")}
-              </Link>
-            </li>
-            <li className="hidden sm:block">
-              <Link href="/discover" className="rounded-md px-3 py-2 text-fg-muted hover:text-fg">
-                {t("discover")}
-              </Link>
-            </li>
-            {profile && (
+        {!minimal && (
+          <nav aria-label={t("label")} className="hidden sm:ml-6 sm:block">
+            <ul className="flex items-center gap-1 text-sm">
               <li className="hidden sm:block">
-                <Link
-                  href={`/u/${profile.username}`}
-                  className="rounded-md px-3 py-2 text-fg-muted hover:text-fg"
-                >
-                  {t("myShelf")}
+                <Link href="/" className="rounded-md px-3 py-2 text-fg-muted hover:text-fg">
+                  {t("home")}
                 </Link>
               </li>
-            )}
-          </ul>
-        </nav>
-        <HeaderSearch />
+              <li className="hidden sm:block">
+                <Link href="/discover" className="rounded-md px-3 py-2 text-fg-muted hover:text-fg">
+                  {t("discover")}
+                </Link>
+              </li>
+              {profile && (
+                <li className="hidden sm:block">
+                  <Link
+                    href={`/u/${profile.username}`}
+                    className="rounded-md px-3 py-2 text-fg-muted hover:text-fg"
+                  >
+                    {t("myShelf")}
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </nav>
+        )}
+        {minimal ? <span className="flex-1" /> : <HeaderSearch />}
         <div className="flex items-center gap-1 sm:gap-2">
           <LocaleSwitcher />
           <ThemeToggle />
@@ -75,12 +78,13 @@ export async function Header() {
               )}
             </Link>
           )}
-          {me ? (
+          {minimal ? null : me ? (
             <UserMenu
               locale={locale}
               username={profile?.username ?? null}
               displayName={profile?.displayName ?? me.email}
               avatarUrl={profile?.avatarUrl ?? null}
+              isAdmin={me.isAdmin}
             />
           ) : (
             <Link href="/sign-in" className={buttonClasses("outline", "px-3 whitespace-nowrap")}>

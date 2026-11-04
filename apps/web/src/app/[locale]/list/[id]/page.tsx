@@ -7,6 +7,7 @@ import { cache } from "react";
 import { ListItemRow } from "@/components/lists/ListItemRow";
 import { CommentForm, CommentItem } from "@/components/social/Comments";
 import { LikeButton } from "@/components/social/LikeButton";
+import { ModerationBanner } from "@/components/social/ModerationBanner";
 import { ReportButton } from "@/components/social/ReportDialog";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
@@ -14,7 +15,8 @@ import { ButtonLink } from "@/components/ui/Button";
 import { CommentIcon, HeartIcon } from "@/components/ui/icons";
 import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { initRouteLocale } from "@/i18n/locale";
+import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { seoMetadata } from "@/lib/seo";
 import { Link, redirect } from "@/i18n/navigation";
 import { loadCursorPage } from "@/lib/api-errors";
 import { firstParam, hrefWith, pageParam, type SearchParams } from "@/lib/search-params";
@@ -31,13 +33,22 @@ const getList = cache(async (id: string, page: number) => {
 });
 
 export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { locale: rawLocale, id } = await params;
+  const locale = metadataLocale(rawLocale);
   const list = await getList(id, pageParam((await searchParams).page));
   if (!list) return {};
-  const t = await getTranslations("list");
+  const t = await getTranslations({ locale });
+  const title = t("list.pageTitle", { title: list.title, name: list.owner.displayName });
+  const description =
+    list.description || t("seo.list", { name: list.owner.displayName, count: list.items.total });
   return {
-    title: t("pageTitle", { title: list.title, name: list.owner.displayName }),
-    description: list.description || undefined,
+    title,
+    description,
+    ...(await seoMetadata(locale, `/list/${id}`, {
+      subject: { kind: "list", key: id },
+      title,
+      description,
+    })),
   };
 }
 
@@ -69,6 +80,7 @@ export default async function ListPage({ params, searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl space-y-12">
+      {list.hidden && <ModerationBanner hold={list.hidden} subject="list" />}
       <article className="space-y-8">
         <header className="space-y-4">
           <p className="flex flex-wrap items-center gap-2 font-mono text-xs tracking-[0.2em] text-star uppercase">
@@ -182,7 +194,7 @@ export default async function ListPage({ params, searchParams }: Props) {
         )}
         {list.canComment ? (
           <CommentForm subject={subject} />
-        ) : signedIn ? (
+        ) : list.hidden ? null : signedIn ? (
           <p className="text-sm text-fg-muted">{t("comments.unavailable")}</p>
         ) : (
           <p className="text-sm text-fg-muted">

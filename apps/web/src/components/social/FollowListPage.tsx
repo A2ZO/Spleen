@@ -34,7 +34,8 @@ export async function followListMetadata(
   const profile = await getProfile((await params).username);
   if (!profile) return {};
   const t = await getTranslations("social");
-  return { title: t(`${direction}Title`, { name: profile.displayName }) };
+  // Lists of names: thin pages, never worth indexing.
+  return { title: t(`${direction}Title`, { name: profile.displayName }), robots: { index: false } };
 }
 
 const linkClasses = "text-link underline-offset-2 hover:underline";

@@ -6,12 +6,14 @@ import { cache } from "react";
 
 import { CommentForm, CommentItem } from "@/components/social/Comments";
 import { LikeButton } from "@/components/social/LikeButton";
+import { ModerationBanner } from "@/components/social/ModerationBanner";
 import { ReportButton } from "@/components/social/ReportDialog";
 import { Avatar } from "@/components/ui/Avatar";
 import { Cover } from "@/components/ui/Cover";
 import { CommentIcon, HeartIcon } from "@/components/ui/icons";
 import { Stars } from "@/components/ui/Stars";
-import { initRouteLocale } from "@/i18n/locale";
+import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { seoMetadata } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
 import { loadCursorPage } from "@/lib/api-errors";
 import { firstParam, hrefWith, type SearchParams } from "@/lib/search-params";
@@ -28,16 +30,30 @@ const getReview = cache(async (id: string) => {
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { locale: rawLocale, id } = await params;
+  const locale = metadataLocale(rawLocale);
   const detail = await getReview(id);
   if (!detail) return {};
-  const t = await getTranslations("review");
+  const t = await getTranslations({ locale });
   const { review } = detail;
+  const about = review.track?.title ?? review.release.title;
+  const title = t("review.pageTitle", { name: review.author.displayName, title: about });
+  const excerpt = review.body.replace(/\s+/g, " ").trim();
+  const description =
+    excerpt.length > 0
+      ? excerpt.length > 160
+        ? `${excerpt.slice(0, 159).trimEnd()}…`
+        : excerpt
+      : t("seo.review", { title: about, name: review.author.displayName });
   return {
-    title: t("pageTitle", {
-      name: review.author.displayName,
-      title: review.track?.title ?? review.release.title,
-    }),
+    title,
+    description,
+    // A hidden review reaches this page for its author only: `seo.page` says noindex.
+    ...(await seoMetadata(locale, `/review/${id}`, {
+      subject: { kind: "review", key: id },
+      title,
+      description,
+    })),
   };
 }
 
@@ -69,9 +85,10 @@ export default async function ReviewPage({ params, searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl space-y-10">
+      {detail.hidden && <ModerationBanner hold={detail.hidden} subject="review" />}
       <article className="space-y-6">
         <header className="flex items-center gap-4">
-          <Link href={itemHref} className="w-20 shrink-0 sm:w-24" tabIndex={-1}>
+          <Link href={itemHref} className="w-20 shrink-0 sm:w-24" tabIndex={-1} aria-hidden="true">
             <Cover
               slug={release.slug}
               title={release.title}
@@ -187,7 +204,7 @@ export default async function ReviewPage({ params, searchParams }: Props) {
         )}
         {detail.canComment ? (
           <CommentForm subject={subject} />
-        ) : me?.profile ? (
+        ) : detail.hidden ? null : me?.profile ? (
           <p className="text-sm text-fg-muted">{t("comments.unavailable")}</p>
         ) : (
           <p className="text-sm text-fg-muted">

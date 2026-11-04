@@ -3,6 +3,8 @@
 import type { ApiErrorCode, ReleaseCard } from "@spleen/api";
 import { shelfRemoveSchema, shelfReorderSchema, shelfSetSchema } from "@spleen/validators";
 
+import { refresh } from "next/cache";
+
 import { errorCode } from "@/lib/api-errors";
 import { getApi } from "@/server/api";
 
@@ -17,6 +19,8 @@ async function run(write: (api: Awaited<ReturnType<typeof getApi>>) => Promise<u
   try {
     const api = await getApi();
     await write(api);
+    // Re-rendered in this response: a client `router.refresh()` meant a second request.
+    refresh();
     return { shelf: await api.shelf.mine() };
   } catch (error) {
     return { error: errorCode(error) };

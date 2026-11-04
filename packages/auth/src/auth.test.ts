@@ -1,4 +1,4 @@
-import { createDb, eq, schema, type DbHandle } from "@spleen/db";
+import { createDb, eq, schema, sql, type DbHandle } from "@spleen/db";
 import type { Email } from "@spleen/infra/email";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
@@ -130,5 +130,163 @@ describe("rate limit", () => {
     for (let i = 0; i < 6; i++) statuses.push((await request()).status);
     expect(statuses.slice(0, 5).every((s) => s === 200)).toBe(true);
     expect(statuses[5]).toBe(429);
+  });
+});
+
+/* Sign-in code: the same email as the link, another way to finish the same sign-in. */
+
+const lastCode = () => /\b(\d{3}) (\d{3})\b/.exec(outbox.at(-1)!.text)!.slice(1).join("");
+
+async function signInWithCode(email: string, otp: string, ip = "198.51.100.1"): Promise<Response> {
+  return auth.handler(
+    new Request("http://localhost:3000/api/auth/sign-in/email-otp", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        origin: env.BETTER_AUTH_URL,
+        "x-forwarded-for": ip,
+      },
+      body: JSON.stringify({ email, otp }),
+    }),
+  );
+}
+
+const cookieOf = (response: Response) =>
+  response.headers
+    .getSetCookie()
+    .map((c) => c.split(";")[0])
+    .join("; ");
+
+/** Signs in through one path; returns the session's user and its row, or null. */
+async function signInThrough(path: "link" | "code", email: string) {
+  const url = await requestLink(email);
+  const response = path === "link" ? await verify(url) : await signInWithCode(email, lastCode());
+  const user = await getSessionUser(auth, new Headers({ cookie: cookieOf(response) }));
+  if (!user) return null;
+  const [row] = await handle.db.select().from(schema.user).where(eq(schema.user.id, user.id));
+  const [session] = await handle.db
+    .select()
+    .from(schema.session)
+    .where(eq(schema.session.userId, user.id))
+    .orderBy(sql`${schema.session.createdAt} desc`)
+    .limit(1);
+  return { user, row: row!, sessionDays: (session!.expiresAt.getTime() - Date.now()) / 86_400_000 };
+}
+
+describe("sign-in code", () => {
+  it("is in the link's email, under the link, in two groups, never in the subject", async () => {
+    for (const [locale, intro] of [
+      ["fr", "Dans l'appli Spleen installée"],
+      ["en", "Using the Spleen app installed"],
+    ] as const) {
+      await requestLink("code@example.test", locale);
+      const email = outbox.at(-1)!;
+      expect(outbox).toHaveLength(1);
+      const code = lastCode();
+      expect(code).toMatch(/^\d{6}$/);
+      expect(email.subject).not.toMatch(/\d/);
+      expect(email.text.indexOf(intro)).toBeGreaterThan(email.text.indexOf("http"));
+      expect(email.text).toContain(`${code.slice(0, 3)} ${code.slice(3)}`);
+      expect(email.html).toContain(`${code.slice(0, 3)} ${code.slice(3)}`);
+      expect(email.html).toContain(intro);
+    }
+  });
+
+  it("gives the same result as the link: sign-up, normalised address, sign-in again, session", async () => {
+    const results = [];
+    for (const path of ["link", "code"] as const) {
+      const email = `Mixed.${path}@Example.TEST`;
+      const first = await signInThrough(path, email);
+      const again = await signInThrough(path, email.toLowerCase());
+      const users = await handle.db
+        .select()
+        .from(schema.user)
+        .where(eq(schema.user.email, email.toLowerCase()));
+      results.push({
+        email: first!.user.email === email.toLowerCase(),
+        verified: first!.row.emailVerified,
+        sameUser: again!.user.id === first!.user.id,
+        users: users.length,
+        sessionDays: Math.round(first!.sessionDays),
+      });
+    }
+    expect(results[0]).toEqual({
+      email: true,
+      verified: true,
+      sameUser: true,
+      users: 1,
+      sessionDays: 7,
+    });
+    expect(results[1]).toEqual(results[0]);
+  });
+
+  it("signs a suspended member in the same way (the app then shows the suspension)", async () => {
+    for (const path of ["link", "code"] as const) {
+      const email = `suspended-${path}@example.test`;
+      const first = await signInThrough(path, email);
+      await handle.db.insert(schema.profiles).values({
+        userId: first!.user.id,
+        username: `suspended_${path}`,
+        displayName: "Suspendu",
+        ageConfirmedAt: new Date(),
+        suspendedAt: new Date(),
+        suspensionReason: "Spam",
+      });
+      // Proof of identity works as with the link: the API then answers ACCOUNT_SUSPENDED and
+      // the web shows the "account suspended" page (packages/api, apps/web e2e).
+      const again = await signInThrough(path, email);
+      expect(again?.user.id).toBe(first!.user.id);
+    }
+  });
+
+  it("dies with a new link, with the link used, and the link dies with the code used", async () => {
+    await requestLink("cancel@example.test");
+    const oldCode = lastCode();
+    await requestLink("cancel@example.test");
+    expect((await signInWithCode("cancel@example.test", oldCode)).ok).toBe(false);
+
+    const link = await requestLink("cancel@example.test");
+    const code = lastCode();
+    expect(cookieOf(await verify(link))).toContain("session_token=");
+    expect((await signInWithCode("cancel@example.test", code)).ok).toBe(false);
+
+    const unused = await requestLink("cancel@example.test");
+    expect((await signInWithCode("cancel@example.test", lastCode())).ok).toBe(true);
+    expect(cookieOf(await verify(unused))).not.toContain("session_token=");
+  });
+
+  it("allows 3 wrong tries per code, then the right one fails too", async () => {
+    await requestLink("tries@example.test");
+    const code = lastCode();
+    const wrong = code === "000000" ? "111111" : "000000";
+    for (let i = 0; i < 3; i++)
+      expect((await signInWithCode("tries@example.test", wrong)).ok).toBe(false);
+    expect((await signInWithCode("tries@example.test", code)).ok).toBe(false);
+  });
+
+  it("refuses an address after 10 failed codes in the hour, whatever the IP addresses", async () => {
+    const email = "target@example.test";
+    for (let i = 0; i < 10; i++) {
+      await requestLink(email);
+      const wrong = lastCode() === "000000" ? "111111" : "000000";
+      await signInWithCode(email, wrong, `203.0.113.${i + 10}`);
+    }
+    await requestLink(email);
+    const response = await signInWithCode(email, lastCode(), "192.0.2.99");
+    expect(response.status).toBe(429);
+    expect(await response.text()).toContain("TOO_MANY_CODE_FAILURES");
+  });
+
+  it("never sends a code by a second email: that route answers 404", async () => {
+    outbox.length = 0;
+    const response = await auth.handler(
+      new Request("http://localhost:3000/api/auth/email-otp/send-verification-otp", {
+        method: "POST",
+        headers: { "content-type": "application/json", origin: env.BETTER_AUTH_URL },
+        body: JSON.stringify({ email: "second@example.test", type: "sign-in" }),
+      }),
+    );
+    expect(response.status).toBe(404);
+    expect(outbox).toEqual([]);
   });
 });

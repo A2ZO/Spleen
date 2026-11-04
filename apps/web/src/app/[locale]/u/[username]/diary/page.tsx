@@ -8,7 +8,8 @@ import { DiaryCalendar } from "@/components/profile/DiaryCalendar";
 import { DiaryList } from "@/components/profile/DiaryList";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
-import { initRouteLocale } from "@/i18n/locale";
+import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { seoMetadata } from "@/lib/seo";
 import { Link, redirect } from "@/i18n/navigation";
 import { shiftMonth } from "@/lib/calendar";
 import {
@@ -32,11 +33,24 @@ const getProfile = cache(async (username: string) => {
 });
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { username } = await params;
+  const { locale: rawLocale, username } = await params;
+  const locale = metadataLocale(rawLocale);
   const profile = await getProfile(username);
   if (!profile) return {};
-  const t = await getTranslations();
-  return { title: t("profile.diaryTitle", { name: profile.displayName }) };
+  const t = await getTranslations({ locale });
+  const title = t("profile.diaryTitle", { name: profile.displayName });
+  const description = t("seo.diary", { name: profile.displayName });
+  // A private diary is empty for visitors: nothing worth indexing. Its pages and months
+  // are views of one diary, reached through links: not indexed separately either.
+  return {
+    title,
+    description,
+    ...(await seoMetadata(locale, `/u/${profile.username}/diary`, {
+      noindex: profile.diaryHidden,
+      title,
+      description,
+    })),
+  };
 }
 
 function Empty({ children }: { children: string }) {

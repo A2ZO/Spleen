@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, schema, sql, type Db, type DbOrTx } from "@spleen/db";
+import { and, asc, desc, eq, isNull, schema, sql, type Db, type DbOrTx } from "@spleen/db";
 import {
   LIST_ITEMS_MAX,
   type ListCreateInput,
@@ -11,7 +11,9 @@ import type { ListDetail, ListItem, MyList } from "../types";
 import { loadArtistCards, loadReleaseCards, loadTrackCards, toReleaseCard } from "./catalog/cards";
 import { maskRelease, ratedReleaseIds } from "./listening/blind";
 import { requireListener } from "./listening/targets";
+import { moderationHold } from "./moderation/holds";
 import { isBlockedBetween, memberRefs, notBlockedWith } from "./social/relations";
+import { visibleTo } from "./social/reviews";
 import type { Viewer } from "./viewer";
 
 /*
@@ -224,13 +226,15 @@ async function loadListItems(
 /**
  * A list page (null when it does not exist). Blocks either way leave the list readable but
  * remove the like and comment buttons, and hide the blocked members' comments from the
- * count (except on the viewer's own list, where they can still delete them).
+ * count (except on the viewer's own list, where they can still delete them). A list hidden by
+ * moderation is shown to its owner alone, with the reason and no likes nor comments.
  */
 export async function getListDetail(
   db: Db,
   id: string,
   viewer: Viewer,
   page: number,
+  contactEmail: string | null,
 ): Promise<ListDetail | null> {
   // Spelled with table names: drizzle drops the qualifiers on single-table selects.
   const hiddenComments = viewer.id
@@ -245,19 +249,20 @@ export async function getListDetail(
       ranked: lists.ranked,
       createdAt: lists.createdAt,
       updatedAt: lists.updatedAt,
+      hiddenAt: lists.hiddenAt,
       total: sql<number>`(select count(*)::int from "list_items" where "list_items"."list_id" = "lists"."id")`,
       likeCount: sql<number>`(select count(*)::int from "likes" where "likes"."list_id" = "lists"."id")`,
-      commentCount: sql<number>`(select count(*)::int from "comments" where "comments"."list_id" = "lists"."id" and "comments"."deleted_at" is null ${hiddenComments})`,
+      commentCount: sql<number>`(select count(*)::int from "comments" where "comments"."list_id" = "lists"."id" and "comments"."deleted_at" is null and "comments"."hidden_at" is null ${hiddenComments})`,
       viewerLiked: viewer.id
         ? sql<boolean>`exists (select 1 from "likes" where "likes"."list_id" = "lists"."id" and "likes"."user_id" = ${viewer.id})`
         : sql<boolean>`false`,
     })
     .from(lists)
-    .where(eq(lists.id, id));
+    .where(and(eq(lists.id, id), visibleTo(lists, viewer.id)));
   if (!list) return null;
   const isOwner = viewer.id === list.userId;
   const offset = (page - 1) * LIST_PAGE_SIZE;
-  const [owners, rows, hasProfile, blocked] = await Promise.all([
+  const [owners, rows, hasProfile, blocked, hidden] = await Promise.all([
     memberRefs(db, [list.userId]),
     db
       .select({
@@ -279,11 +284,12 @@ export async function getListDetail(
           .then((r) => r.length > 0)
       : false,
     viewer.id && !isOwner ? isBlockedBetween(db, viewer.id, list.userId) : false,
+    moderationHold(db, "listId", id, !!list.hiddenAt, contactEmail),
   ]);
   const owner = owners.get(list.userId);
   if (!owner) return null;
   const items = await loadListItems(db, rows, offset, viewer);
-  const canComment = hasProfile && !blocked;
+  const canComment = hasProfile && !blocked && !hidden;
   return {
     id: list.id,
     title: list.title,
@@ -304,6 +310,7 @@ export async function getListDetail(
     isOwner,
     canLike: canComment && !isOwner,
     canComment,
+    hidden,
   };
 }
 
@@ -328,7 +335,7 @@ export async function getMyLists(
     })
     .from(lists)
     .leftJoin(listItems, eq(listItems.listId, lists.id))
-    .where(eq(lists.userId, userId))
+    .where(and(eq(lists.userId, userId), isNull(lists.hiddenAt)))
     .groupBy(lists.id)
     .orderBy(desc(lists.updatedAt));
   return rows;

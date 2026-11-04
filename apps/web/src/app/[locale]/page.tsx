@@ -1,4 +1,5 @@
 import { audienceLangSchema, cursorSchema, type AudienceLang } from "@spleen/validators";
+import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 
 import { ReleaseGrid, TrendsGrid } from "@/components/discovery/Charts";
@@ -9,13 +10,26 @@ import { ReviewCard } from "@/components/social/ReviewCard";
 import { ButtonLink } from "@/components/ui/Button";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { initRouteLocale } from "@/i18n/locale";
+import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { loadCursorPage } from "@/lib/api-errors";
 import { firstParam, hrefWith, type SearchParams } from "@/lib/search-params";
+import { seoMetadata } from "@/lib/seo";
 import { getApi } from "@/server/api";
 
 type Props = { params: Promise<{ locale: string }>; searchParams: Promise<SearchParams> };
+
+export async function generateMetadata({ params, searchParams }: Props): Promise<Metadata> {
+  const locale = metadataLocale((await params).locale);
+  const t = await getTranslations({ locale, namespace: "metadata" });
+  // Feed tabs and pages (?tab=…, ?after=…) are views of the home page: indexed once.
+  const tabbed = Object.keys(await searchParams).length > 0;
+  return seoMetadata(locale, "/", {
+    noindex: tabbed,
+    title: `${t("title")} · ${t("tagline")}`,
+    description: t("description"),
+  });
+}
 
 const TABS = ["friends", "popular"] as const;
 type Tab = (typeof TABS)[number];

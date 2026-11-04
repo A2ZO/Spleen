@@ -1,4 +1,4 @@
-import { and, eq, recomputeItemState, schema, type Db } from "@spleen/db";
+import { and, eq, recomputeItemState, schema, type Db, type DbOrTx } from "@spleen/db";
 import type { AudienceLang, ListenTargetInput } from "@spleen/validators";
 
 import { fail } from "../../trpc";
@@ -66,7 +66,7 @@ export async function updateReview(
 }
 
 /** Deleting a review may leave an empty undated listen behind: it is removed too. */
-export async function deleteReview(db: Db, userId: string, id: string): Promise<void> {
+export async function deleteReview(db: DbOrTx, userId: string, id: string): Promise<void> {
   await db.transaction(async (tx) => {
     const [row] = await tx
       .delete(reviews)

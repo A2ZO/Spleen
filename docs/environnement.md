@@ -20,7 +20,8 @@ booléens comme « commence par postgres:// », « contient -pooler »).
 | `DATABASE_URL`                              | URL Neon **poolée** (`-pooler`)     | l'appli (`getDb()`)               |
 | `DATABASE_URL_UNPOOLED`                     | URL Neon **directe**                | migrations, seed, drizzle-kit     |
 | `DATABASE_URL` absente                      | → PGlite dans `.data/pglite`        | repli local hors ligne            |
-| `NEON_MAIN_HOST`                            | hôte (ou `ep-…`) de la branche production | garde-fou du nettoyage e2e        |
+| `NEON_MAIN_HOST`                            | hôte (ou `ep-…`) de la base du site en ligne | garde-fou du nettoyage e2e        |
+| `SERVICE_WORKER_DISABLED`                   | `1` en cas d'urgence seulement               | retire le service worker (ci-dessous) |
 | `BETTER_AUTH_SECRET` / `BETTER_AUTH_URL`    | 32+ caractères / URL publique       | Better Auth                       |
 | `GOOGLE_CLIENT_ID` / `_SECRET`              | client OAuth Google (Web)           | bouton Google (caché si absent)   |
 | `BREVO_API_KEY` / `EMAIL_FROM`              | clé Brevo v3 / expéditeur vérifié   | liens magiques (dev : terminal)   |
@@ -29,6 +30,32 @@ booléens comme « commence par postgres:// », « contient -pooler »).
 
 La production refuse de démarrer sans les variables d'auth, Brevo et S3
 (`assertProductionConfig()`, `apps/web/src/instrumentation.ts`).
+
+## Service worker (PWA)
+
+`/sw.js` est un route handler (`apps/web/src/app/sw.js/route.ts`), servi avec
+`Cache-Control: no-cache` : le navigateur revérifie le script à chaque visite. Il ne met en
+cache que la page hors ligne (`/offline.html?lang=fr|en`), les fichiers statiques versionnés
+(`/_next/static`, en production seulement) et les icônes ; jamais une page, jamais `/api`
+(donc jamais `/api/auth`, le lien magique va toujours au serveur). Le nom du cache porte le
+numéro de build, lu à l'exécution par la route (le commit sur Vercel, sinon le `BUILD_ID` de
+`next build`, sinon l'heure de démarrage du serveur ; `dev` en développement) ; les anciens caches sont supprimés à l'activation. Une
+nouvelle version attend que tous les onglets Spleen soient fermés et prend la main au lancement
+suivant : pas de `skipWaiting`, pas de rechargement forcé.
+
+**Désactiver en urgence** (un service worker raté qui casse le site chez les gens) :
+
+1. Dans les réglages de l'hébergeur, poser `SERVICE_WORKER_DISABLED=1` (environnement
+   Production) et redéployer.
+2. `/sw.js` sert alors un script qui vide tous les caches et se désinscrit, et le site cesse
+   d'enregistrer le service worker (composant `ServiceWorker`, qui désinscrit au contraire).
+   Comme `/sw.js` n'est jamais mis en cache, chaque navigateur le récupère à sa prochaine
+   visite.
+3. **Vérifier** : `curl -s https://<domaine>/sw.js` contient `unregister` ; dans Chrome,
+   DevTools › Application › Service workers ne liste plus rien après une visite.
+4. Corriger, retirer la variable, redéployer : le service worker revient.
+
+En local : DevTools › Application › Service workers › Unregister, ou « Clear site data ».
 
 ## Base de données
 
@@ -60,8 +87,24 @@ pour les sorties récentes, sur la base de production ; voir `docs/decouverte.md
 
 ## e2e
 
+Ne pas lancer les e2e pendant que le serveur de développement recompile (juste après une
+modification de `next.config.ts`, d'un paquet partagé ou un redémarrage) : attendre qu'une page
+s'ouvre normalement. Des tests de recherche ont échoué ainsi au jalon 9. Signe d'un problème
+plus grave : une page qui se recharge en boucle (« [Fast Refresh] rebuilding » sans fin dans la
+console) ; au jalon 9, une valeur de `env` dans `next.config.ts` qui changeait d'une évaluation à
+l'autre en était la cause (jamais de `Date.now()` dans `env`). Le serveur de dev garde aussi
+l'instance Better Auth en mémoire : après une modification de `packages/auth`, le redémarrer.
+
 Comptes `e2e-<id>@example.test`. `apps/web/e2e/cleanup.ts` (setup et teardown globaux) les
 supprime avec leurs données, même après un passage raté ou interrompu (Postgres seulement),
 et leurs pseudos ne sont pas réservés (développement et tests seulement). Il refuse de
-s'exécuter en production (`NODE_ENV`), sur la branche Neon `production` (`NEON_MAIN_HOST`, hôte
-poolé ou direct), et sur tout hôte Neon tant que `NEON_MAIN_HOST` manque.
+s'exécuter en production (`NODE_ENV`), sur la base désignée par `NEON_MAIN_HOST` (hôte poolé ou
+direct : la branche `production` du projet Neon séparé `spleen-prod`, ou en attendant celle du
+projet de développement, voir `docs/mise-en-ligne.md` § 0), et sur tout hôte Neon tant que
+`NEON_MAIN_HOST` manque.
+
+Journal du serveur : `apps/web/e2e/server-log.ts` fait échouer le passage si le serveur de
+développement a journalisé, pendant les tests, une erreur invisible depuis le navigateur
+(« The destination stream errored », « Unexpected end of JSON input »). Il n'affiche que des
+comptes. Pour trouver le test fautif : `--workers=1`, les lignes `[WebServer]` suivent alors
+le test qui les provoque.

@@ -46,7 +46,7 @@ export function FeedItemCard({ item, now }: { item: FeedItem; now: Date }) {
         </time>
       </p>
       <div className="flex gap-4">
-        <Link href={href} className="w-16 shrink-0 sm:w-20" tabIndex={-1}>
+        <Link href={href} className="w-16 shrink-0 sm:w-20" tabIndex={-1} aria-hidden="true">
           <Cover
             slug={release.slug}
             title={release.title}

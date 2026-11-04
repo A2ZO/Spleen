@@ -100,17 +100,18 @@ describe("feed loading", () => {
 
   it.skipIf(process.env.TEST_DATABASE_URL)("costs few sequential round trips", async () => {
     await setBlind(NUIT, true);
-    const nuit = api(NUIT);
+    // One context per request, as in production (the account is read once per context).
+    const nuit = () => api(NUIT);
     const tracker = trackRoundTrips(handle.db);
     try {
-      // Blind mode lookup, page query, then two for the cards: the rows (entries, reviews),
+      // Account lookup (role, suspension, blind mode), page query, then two for the cards: the rows (entries, reviews),
       // then everything they point to at once. A track's first release would add one.
       // Sequential loaders took 10, 6 and 8.
-      await nuit.feed.friends({});
+      await nuit().feed.friends({});
       expect(tracker.take()).toBe(4);
-      await nuit.feed.popular({ lang: "fr" });
+      await nuit().feed.popular({ lang: "fr" });
       expect(tracker.take()).toBe(4);
-      await nuit.review.byId({ id: VINCE_REVIEW });
+      await nuit().review.byId({ id: VINCE_REVIEW });
       expect(tracker.take()).toBe(4);
     } finally {
       tracker.restore();

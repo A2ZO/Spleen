@@ -61,6 +61,7 @@ async function searchReleaseIds(db: Db, q: string, limit: number) {
     join ${releases} on ${releases.id} = c.id
     left join ${releaseArtists} on ${releaseArtists.releaseId} = ${releases.id}
     left join ${artists} on ${artists.id} = ${releaseArtists.artistId}
+    where ${releases.mergedIntoId} is null
     group by ${releases.id}
     order by ${title.score} + 0.5 * coalesce(max(${artist.score}), 0)
       + case when ${releases.secondaryTypes} <@ ${mainTypes} then 0.05 else 0 end desc,
@@ -75,7 +76,7 @@ async function searchArtistIds(db: Db, q: string, limit: number) {
   const name = matches(artists.name, q);
   const result = await db.execute(sql`
     select ${artists.id} as id from ${artists}
-    where ${name.where}
+    where ${name.where} and ${artists.mergedIntoId} is null
     order by ${name.score} desc, ${artists.name}
     limit ${limit}
   `);
@@ -91,7 +92,7 @@ async function searchTrackIds(db: Db, q: string, limit: number) {
     from ${tracks}
     left join ${trackArtists} on ${trackArtists.trackId} = ${tracks.id}
     left join ${artists} on ${artists.id} = ${trackArtists.artistId}
-    where ${title.where}
+    where ${title.where} and ${tracks.mergedIntoId} is null
     group by ${tracks.id}
     order by ${title.score} + 0.5 * coalesce(max(${artist.score}), 0) desc, ${tracks.title}
     limit ${limit}

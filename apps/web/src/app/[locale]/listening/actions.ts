@@ -14,6 +14,8 @@ import {
   type QuickOrderInput,
 } from "@spleen/validators";
 
+import { refresh } from "next/cache";
+
 import { errorCode } from "@/lib/api-errors";
 import { getApi } from "@/server/api";
 
@@ -36,6 +38,8 @@ async function run(
   try {
     const api = await getApi();
     await write(api);
+    // Re-rendered in this response (community figures): no second request from the client.
+    refresh();
     return { state: (await api.listening.myState(parsed.data)) ?? undefined };
   } catch (error) {
     return { error: errorCode(error) };

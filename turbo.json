@@ -9,6 +9,7 @@
     "GOOGLE_CLIENT_SECRET",
     "BREVO_API_KEY",
     "EMAIL_FROM",
+    "CONTACT_EMAIL",
     "S3_ENDPOINT",
     "S3_REGION",
     "S3_BUCKET",
@@ -16,7 +17,8 @@
     "S3_SECRET_ACCESS_KEY",
     "S3_PUBLIC_URL",
     "MUSICBRAINZ_USER_AGENT",
-    "NEON_MAIN_HOST"
+    "NEON_MAIN_HOST",
+    "SERVICE_WORKER_DISABLED"
   ],
   "tasks": {
     "build": {

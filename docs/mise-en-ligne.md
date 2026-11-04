@@ -86,15 +86,20 @@ l'offre gratuite refuse un deuxième projet.
 
 ## 3. Neon : base de production
 
-- [ ] Réinitialiser le mot de passe du rôle Neon (voir § 8) **avant** de copier les URL.
-- [ ] Console Neon › branche `production` › Connect : copier l'URL **avec pooling** (hôte en
-      `-pooler`) dans `DATABASE_URL`, et l'URL **directe** dans `DATABASE_URL_UNPOOLED`, dans
-      les réglages de l'hébergeur (environnement Production uniquement).
+La base du site est la branche `production` du projet Neon séparé **`spleen-prod`** (§ 0),
+jamais celle du projet de développement.
+
+- [ ] Le projet `spleen-prod` part avec des identifiants neufs ; le § 8 concerne l'ancien
+      projet, dont les URL ont circulé.
+- [ ] Console Neon › projet `spleen-prod` › branche `production` › Connect : copier l'URL
+      **avec pooling** (hôte en `-pooler`) dans `DATABASE_URL`, et l'URL **directe** dans
+      `DATABASE_URL_UNPOOLED`, dans les réglages de l'hébergeur (environnement Production
+      uniquement).
 - [ ] Le déploiement lance `pnpm db:migrate`, **jamais** `pnpm db:seed` ni `pnpm db:reset`.
 - [ ] Région de la branche : Europe (Francfort).
 - [ ] **Vérifier** : `GET https://<domaine>/api/health` répond `200` avec `{"ok":true,…}`, et
-      la branche `production` ne contient aucun membre de démo (`nuitblanche`, `vinylvince`,
-      `rainydaysam`, `fouilleuse`).
+      la branche `production` de `spleen-prod` ne contient aucun membre de démo
+      (`nuitblanche`, `vinylvince`, `rainydaysam`, `fouilleuse`).
 
 ## 4. Brevo : emails des liens magiques
 
@@ -144,12 +149,38 @@ l'offre gratuite refuse un deuxième projet.
 
 ## 7. Pages légales finalisées (jalon 9)
 
-- [ ] Mentions légales, conditions d'utilisation et politique de confidentialité publiées en
-      FR et en EN, sans aucun `[À COMPLÉTER]` ni `[À VÉRIFIER]` restant (partir de
-      `docs/legal/`).
-- [ ] La politique de confidentialité mentionne Neon, Brevo, Cloudflare R2, l'hébergeur, la
-      réservation anonyme des pseudos pendant 30 jours, l'export et la suppression du compte.
-- [ ] Relecture conseillée (modèles de la CNIL ou juriste).
+Les pages existent depuis le jalon 9 : `/legal` (mentions légales et crédits, ancre
+`#credits`), `/terms`, `/privacy`, en FR et en EN. Leur texte est dans `packages/i18n`
+(clés `legal.*`, les deux fichiers) ; la date de mise à jour est `LEGAL_UPDATED` dans
+`apps/web/src/components/legal/LegalPage.tsx`. L'adresse de contact vient de `CONTACT_EMAIL`
+(§ 10).
+
+Mentions de la bêta : site édité à titre non professionnel (article 1-1 II de la LCEN),
+hébergeur et email de contact seulement ; le passage aux mentions complètes est au § 14.
+
+- [ ] Remplacer chaque `[À COMPLÉTER]` (ton nom comme responsable du traitement dans la
+      politique, sans adresse postale ; les mentions de la bêta ne demandent que le nom et
+      l'adresse de l'hébergeur, article 1-1 II de la LCEN) et le
+      `[À VÉRIFIER]` restant (mécanisme de transfert de Vercel, à lire dans son DPA), dans
+      `fr.json` **et** `en.json`. Vérifier : `grep -c "À COMPLÉTER\|À VÉRIFIER"
+      packages/i18n/messages/*.json` répond 0.
+- [ ] Si l'hébergeur change (par exemple Cloudflare au moment de la monétisation) : mettre à
+      jour les mentions (hébergeur), la politique (prestataires, lieu de traitement,
+      garanties de transfert) et `LEGAL_UPDATED`.
+- [ ] Les durées de la politique (sessions, liens de connexion, compteurs anti-abus,
+      modération) sont appliquées par la tâche de nuit `retention` (§ 9) : la vérifier avant
+      l'ouverture.
+- [ ] Vérifier que mon identité est enregistrée chez l'hébergeur (condition de l'anonymat :
+      les mentions de la bêta ne publient ni nom ni adresse, article 1-1 II de la LCEN).
+      [À FAIRE RELIRE]
+- [ ] Relecture conseillée (modèles de la CNIL ou juriste) ; **obligatoire avant d'encaisser
+      de l'argent** (pubs ou Spleen+). Les passages marqués `[À FAIRE RELIRE]` dans
+      `packages/i18n` sont à faire relire en priorité.
+- [ ] Faire relire avec les conditions la case d'inscription « J'ai 15 ans ou plus et
+      j'accepte les conditions d'utilisation » et la phrase sur la confidentialité sous le
+      bouton (`welcome.termsLabel`, `welcome.privacyNotice`). Après toute modification des
+      conditions : changer `TERMS_VERSION` (`packages/validators/src/profile.ts`) et
+      `LEGAL_UPDATED`. [À FAIRE RELIRE]
 - [ ] **Vérifier** : les pages s'ouvrent depuis le pied de page, et leurs adresses sont
       celles déclarées dans l'écran de consentement Google (§ 5).
 
@@ -171,31 +202,128 @@ pour `spleen-prod` si ses URL ont été exposées un jour.
       l'ancienne URL est refusée (par exemple `psql "<ancienne URL>"` → échec
       d'authentification).
 
-## 9. GitHub Actions : sorties récentes (rafraîchissement nocturne)
+## 9. GitHub Actions : tâches nocturnes
 
-Le workflow `.github/workflows/catalog-refresh.yml` relit chaque nuit (03 h 17 UTC) sur
-MusicBrainz la discographie d'au plus 150 artistes (écoutés sur 30 jours ou présents sur une
-Étagère), à 1 requête par seconde via le limiteur de la base. Tant que le secret ci-dessous
-manque, il s'arrête aussitôt sans rien faire. Il ne tourne que depuis `main`.
+Le workflow « Nightly » (`.github/workflows/catalog-refresh.yml`) tourne chaque nuit
+(03 h 17 UTC), en deux tâches indépendantes :
+
+- `refresh` relit sur MusicBrainz la discographie d'au plus 150 artistes (écoutés sur 30
+  jours ou présents sur une Étagère), à 1 requête par seconde via le limiteur de la base ;
+- `retention` applique les durées annoncées dans la politique de confidentialité
+  (`pnpm retention`, `packages/api/src/lib/retention.ts`) : décisions de modération
+  anonymisées et signalements clos supprimés un an après (`docs/social.md`), sessions
+  expirées, liens de connexion expirés, et compteurs anti-abus 24 h après la fin de leur
+  fenêtre (sauf le limiteur MusicBrainz).
+
+Tant que le secret ci-dessous manque, les deux s'arrêtent aussitôt sans rien faire. Le
+workflow ne tourne que depuis `main`.
 
 - [ ] GitHub › dépôt › Settings › Environments › New environment : `production`.
 - [ ] Dans cet environnement, Deployment branches and tags : « Selected branches and tags »,
       règle `main` (seule `main` lit le secret).
 - [ ] Environment secrets › Add secret : `DATABASE_URL_UNPOOLED` = URL **directe** de la
-      branche Neon `production` (sans `-pooler`, § 3), après la réinitialisation du § 8.
+      branche `production` du projet `spleen-prod` (sans `-pooler`, § 3).
 - [ ] Environment variables › Add variable : `MUSICBRAINZ_USER_AGENT` =
       `Spleen/1.0 ( contact@<domaine> )` (vraie adresse de contact).
-- [ ] Ajouter `NEON_MAIN_HOST` (hôte de la branche `production`, pas un secret) dans le `.env`
-      local : le nettoyage e2e refuse alors cette base, et accepte `dev`.
-- [ ] **Vérifier** : onglet Actions › « Catalog refresh » › Run workflow (sur `main`). Le
-      journal affiche `catalog refresh: N artist(s) to re-read (postgres)` puis
-      `done, … release(s) added`. Le lendemain, une exécution planifiée apparaît.
+- [ ] `NEON_MAIN_HOST` dans le `.env` local = hôte de la branche `production` de
+      `spleen-prod` (pas un secret, § 0) : le nettoyage e2e refuse alors cette base, et
+      accepte `dev`.
+- [ ] **Vérifier** : onglet Actions › « Nightly » › Run workflow (sur `main`). Le journal de
+      `refresh` affiche `catalog refresh: N artist(s) to re-read (postgres)` puis
+      `done, … release(s) added` ; celui de `retention` affiche
+      `retention (postgres): 0 decision(s) anonymised, …`. Le lendemain, une
+      exécution planifiée apparaît.
 
-## 10. Vérification finale
+## 10. Modération : adresse de contact et premier admin
 
+Une personne suspendue reçoit le motif par email, avec l'adresse où contester la décision.
+Tant que `CONTACT_EMAIL` manque, emails et notifications affichent
+`[À COMPLÉTER : adresse de contact]`, et la production refuse de démarrer.
+
+- [ ] `CONTACT_EMAIL` = [À COMPLÉTER : adresse de contact, par exemple `bonjour@<domaine>`]
+      dans l'hébergeur. Une boîte réellement lue : les contestations y arrivent.
+- [ ] Premier compte admin : se connecter sur le site de production, choisir son pseudo,
+      puis **en local**, avec `DATABASE_URL_UNPOOLED` de la production dans la session
+      PowerShell (jamais dans un fichier) : `pnpm admin:grant <ton email>`. Le rôle ne se
+      donne jamais depuis le site. Retirer la variable de la session ensuite.
+- [ ] **Vérifier** : `/fr/admin` s'ouvre pour ce compte, et répond 404 dans une fenêtre de
+      navigation privée.
+
+## 11. Performance : cache des pages publiques (avant ou juste après l'ouverture)
+
+Aujourd'hui, le layout lit le cookie de thème côté serveur : chaque page est calculée à chaque
+requête et interroge la base (quota de calcul Neon, réveil de la base, usage chez
+l'hébergeur). Pas bloquant pour ouvrir, mais à traiter avant ou juste après la mise en ligne.
+
+- [ ] Traiter l'issue [#22](https://github.com/A2ZO/Spleen/issues/22) « Performance :
+      appliquer le thème côté navigateur pour permettre le cache des pages publiques », avec
+      la CSP hybride décidée au jalon 9 (conditions dans l'issue). Aujourd'hui : CSP à nonce
+      sur toutes les pages (`apps/web/src/lib/security.ts`, `src/proxy.ts`).
+- [ ] HSTS est envoyé sans `includeSubDomains` ni `preload` : les ajouter une fois le domaine
+      et tous ses sous-domaines en HTTPS (`files.<domaine>` compris), puis vérifier sur
+      `securityheaders.com`.
+- [ ] **Vérifier** : une page publique vue par un visiteur est servie depuis le cache, sans
+      flash de mauvais thème, et les e2e passent (contrôle des journaux serveur compris).
+
+## 12. Tests e2e en CI (jalon 10)
+
+Les e2e ne tournent pas en CI : à ajouter avant la mise en ligne (jalon 10), sur une base
+Postgres jetable, jamais Neon.
+
+- [ ] Job e2e dans `.github/workflows/ci.yml` : service `postgres` (même image que le job
+      `api-postgres`), `pnpm db:seed` sur cette base, puis `pnpm e2e` (contrôle des journaux
+      serveur compris). Aucun secret, aucune URL Neon dans la CI.
+- [ ] En CI, les e2e tournent sur un **build de production** (`next build` puis `next start`),
+      pas sur le serveur de développement : pas de recompilation pendant les tests, et le code
+      testé est celui qui sera déployé (service worker compris, qui ne met en cache
+      `/_next/static` qu'en production).
+- [ ] **Vérifier** : le job passe sur une PR, et échoue si on réintroduit volontairement une
+      erreur connue (par exemple un `router.refresh()` après une action).
+
+## 13. Vérification finale
+
+- [ ] Après le déploiement, installer la PWA sur un iPhone et un Android et s'y connecter par
+      email et par Google (le test sur un vrai téléphone demande HTTPS). Sur iPhone, l'appli
+      installée a ses propres cookies : voir la décision sur la connexion par code
+      (jalon 9, étape 6).
+- [ ] Sur iPhone, dans la PWA installée : connexion Google ; si elle échoue (elle s'ouvre dans
+      Safari et l'appli reste déconnectée), passer par `window.open` dans `SignInForm`.
+- [ ] **Vérifier** que `https://<domaine>/sw.js` répond avec `Cache-Control: no-cache` et
+      que l'hébergeur ne le met pas en cache (en-têtes de la réponse).
+- [ ] Projet Vercel : Root Directory = `apps/web` (là où est `vercel.json`). **Vérifier**
+      dans le résumé du déploiement (onglet Resources / Deployment Summary) que les fonctions
+      tournent à Francfort (`fra1`), pas à Washington (`iad1`, région par défaut) : la base
+      est à Francfort et la politique de confidentialité l'annonce.
 - [ ] Les journaux de démarrage de l'hébergeur ne contiennent pas « Missing environment
       variables for production ».
 - [ ] `MUSICBRAINZ_USER_AGENT` contient une vraie adresse de contact (jalon 4).
 - [ ] Parcours complet en production : inscription par lien magique → choix du pseudo →
       avatar → export → suppression d'un compte de test.
 - [ ] Fermer l'issue GitHub « Brancher les services réels avant la mise en ligne ».
+
+## 13 bis. Référencement
+
+- [ ] Google Search Console et Bing Webmaster Tools : ajouter le domaine, soumettre
+      `https://<domaine>/sitemap.xml`. **Vérifier** : le sitemap est lu sans erreur.
+- [ ] **Vérifier** un aperçu de lien (par exemple en collant l'adresse d'un disque dans une
+      messagerie) : l'image Open Graph s'affiche.
+- [ ] Une fois par an : revoir la liste des robots d'IA de `robots.ts` dans les docs
+      officielles (`docs/referencement.md`).
+
+## 14. Monétisation (avant la première pub ou le premier abonnement)
+
+Pas nécessaire pour un site gratuit et sans pub : à faire avant de gagner le premier euro.
+
+- [ ] Passer aux mentions légales complètes (nom, adresse, téléphone, SIRET, directeur de
+      publication ; et pour l'hébergeur nom, adresse **et téléphone**, article 1-1 I 4° de la
+      LCEN) avant le premier euro : les mentions de la bêta (« édité à titre non
+      professionnel ») ne valent que tant que Spleen ne rapporte rien (ni pub, ni abonnement,
+      ni lien affilié, ni don). [À FAIRE RELIRE]
+- [ ] Tester un build OpenNext avec une image de partage et le sitemap avant de passer sur
+      Cloudflare Workers (la doc d'OpenNext ne parle pas de `next/og` ; son dépôt le teste en
+      e2e).
+- [ ] Publier une nouvelle `TERMS_VERSION` avant la première pub ou le premier abonnement :
+      l'accord sera redemandé à tous les membres.
+- [ ] Licence des genres MusicBrainz (CC BY-NC-SA, non commerciale) : licence commerciale
+      MetaBrainz ou autre source de genres, avant la première pub ou le premier abonnement —
+      voir `docs/stack-et-limites.md` § 5.2.
