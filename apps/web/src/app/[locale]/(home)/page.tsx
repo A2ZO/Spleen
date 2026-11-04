@@ -47,7 +47,10 @@ const HOME_CHART_SIZE = 6;
 /** Memoised per request: the page starts these reads while the session is being read. */
 const discoveryReads = cache(async (lang: AudienceLang) => {
   const api = await getApi();
-  return Promise.all([api.discovery.trends({ lang }), api.discovery.recent({})]);
+  return Promise.all([
+    api.discovery.trends({ lang, size: HOME_CHART_SIZE }),
+    api.discovery.recent({ size: HOME_CHART_SIZE }),
+  ]);
 });
 
 async function DiscoveryBlocks({ lang }: { lang: AudienceLang }) {
@@ -65,7 +68,7 @@ async function DiscoveryBlocks({ lang }: { lang: AudienceLang }) {
           <SectionHeading id="trends" action={more}>
             {lang === "fr" ? t("trendsTitleFr") : t("trendsTitleEn")}
           </SectionHeading>
-          <TrendsGrid items={trends.slice(0, HOME_CHART_SIZE)} />
+          <TrendsGrid items={trends} />
         </section>
       )}
       {recent.items.length > 0 && (
@@ -80,7 +83,7 @@ async function DiscoveryBlocks({ lang }: { lang: AudienceLang }) {
           >
             {t("recentTitle")}
           </SectionHeading>
-          <ReleaseGrid releases={recent.items.slice(0, HOME_CHART_SIZE)} />
+          <ReleaseGrid releases={recent.items} />
         </section>
       )}
     </>

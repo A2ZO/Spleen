@@ -1,12 +1,11 @@
 import { consumeRateLimit } from "@spleen/infra/rate-limit";
 import {
-  audienceLangSchema,
   commentCreateSchema,
   commentListSchema,
   commentUpdateSchema,
   cursorPageSchema,
-  cursorSchema,
   likeSetSchema,
+  popularFeedSchema,
   recentReleasesSchema,
   topRatedSchema,
   trendsSchema,
@@ -259,9 +258,9 @@ export const appRouter = router({
     }),
     /** Most liked and commented reviews of the week, in one language. */
     popular: publicProcedure
-      .input(z.object({ lang: audienceLangSchema, cursor: cursorSchema.optional() }))
+      .input(popularFeedSchema)
       .query(async ({ input, ctx }) =>
-        popularFeed(ctx.db(), await viewerOf(ctx), input.lang, input.cursor, ctx.now),
+        popularFeed(ctx.db(), await viewerOf(ctx), input.lang, input.cursor, ctx.now, input.size),
       ),
     /** Active members to follow (shown when the friends feed is empty). */
     suggestions: protectedProcedure.query(({ ctx }) =>
@@ -273,13 +272,13 @@ export const appRouter = router({
     trends: publicProcedure
       .input(trendsSchema)
       .query(async ({ input, ctx }) =>
-        weeklyTrends(ctx.db(), input.lang, await viewerOf(ctx), ctx.now),
+        weeklyTrends(ctx.db(), input.lang, await viewerOf(ctx), ctx.now, input.size),
       ),
     /** Albums and EPs (or one type) out in the last 90 days, newest first. */
     recent: publicProcedure
       .input(recentReleasesSchema)
       .query(async ({ input, ctx }) =>
-        recentReleases(ctx.db(), await viewerOf(ctx), ctx.now, input.type, input.page),
+        recentReleases(ctx.db(), await viewerOf(ctx), ctx.now, input.type, input.page, input.size),
       ),
     /** Top rated by Bayesian score, by genre and year or decade. */
     topRated: publicProcedure

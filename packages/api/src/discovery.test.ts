@@ -227,6 +227,9 @@ describe("weekly trends", () => {
     expect(trends[0]!.release.id).toBe(french);
     expect(new Set(ids(trends)).size).toBe(trends.length);
     expect(trends.length).toBeGreaterThanOrEqual(TREND_MIN_FILLED);
+    // A shorter chart (the home page) stops completing once it is full.
+    const short = await api(now).discovery.trends({ lang: "fr", size: 3 });
+    expect(short.map((i) => i.source)).toEqual(["lang", "all", "all"]);
   });
 
   it("stop at the language chart when it is long enough", async () => {
@@ -288,6 +291,9 @@ describe("recent releases", () => {
     const second = await api(now).discovery.recent({ page: 2 });
     expect(second).toMatchObject({ page: 2, pageCount: 2, total: RECENT_PAGE_SIZE + 2 });
     expect(second.items).toHaveLength(2);
+    const small = await api(now).discovery.recent({ size: 3 });
+    expect(small.items).toHaveLength(3);
+    expect(small.pageCount).toBe(Math.ceil((RECENT_PAGE_SIZE + 2) / 3));
   });
 });
 

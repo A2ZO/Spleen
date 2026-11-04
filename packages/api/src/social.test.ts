@@ -418,6 +418,24 @@ describe("popular reviews", () => {
     expect(anonymous).toEqual(expect.arrayContaining([mine.id, theirs.id]));
   });
 
+  it("fills a page of the requested size, suspended members left out in the query", async () => {
+    const [suspended, author] = [await member(), await member()];
+    const fans = [await member(), await member(), await member(), await member(), await member()];
+    const loud = await review(suspended, { lang: "en" });
+    await engage(loud.id, fans, fans); // far ahead of every other review
+    const quiet = await review(author, { lang: "en" });
+    await engage(quiet.id, fans.slice(0, 1), []);
+    await handle.db
+      .update(schema.profiles)
+      .set({ suspendedAt: now, suspensionReason: "Spam" })
+      .where(eq(schema.profiles.userId, suspended.user.id));
+
+    const page = await api(null).feed.popular({ lang: "en", size: 1 });
+    expect(page.items).toHaveLength(1);
+    expect(page.items[0]!.id).not.toBe(loud.id);
+    expect(page.nextCursor).not.toBeNull();
+  });
+
   it("refuses a forged score in its cursor", async () => {
     const forged = Buffer.from(JSON.stringify(["x", "2026-10-24 10:00:00+00", nocturnes])).toString(
       "base64url",

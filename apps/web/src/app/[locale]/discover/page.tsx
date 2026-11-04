@@ -79,7 +79,7 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
     }),
     api.discovery.topRated(topInput),
     api.discovery.genres(),
-    api.feed.popular({ lang }),
+    api.feed.popular({ lang, size: POPULAR_ON_PAGE }),
     getTranslations(),
     getLocale(),
   ]);
@@ -257,7 +257,7 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
           <p className="font-serif text-lg text-fg-muted italic">{t("feed.popularEmpty")}</p>
         ) : (
           <ul className="grid gap-4 lg:grid-cols-2">
-            {popular.items.slice(0, POPULAR_ON_PAGE).map((review) => (
+            {popular.items.map((review) => (
               <li key={review.id}>
                 <ReviewCard review={review} />
               </li>

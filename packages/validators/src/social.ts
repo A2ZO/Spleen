@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { audienceLangSchema } from "./catalog";
 import { usernameSchema } from "./profile";
 
 export const COMMENT_BODY_MAX = 1_000;
@@ -35,6 +36,12 @@ export const memberPageSchema = z.object({
   cursor: cursorSchema.optional(),
 });
 export const cursorPageSchema = z.object({ cursor: cursorSchema.optional() });
+
+/** Popular reviews of one language; `size` per page (at most 20, the feed's page). */
+export const popularFeedSchema = cursorPageSchema.extend({
+  lang: audienceLangSchema,
+  size: z.number().int().min(1).max(20).optional(),
+});
 
 /** Reasons a member can pick when reporting a review, a comment, a list or a profile. */
 export const memberReportReasons = [
