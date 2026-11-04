@@ -1,10 +1,11 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 
 import { SearchIcon } from "@/components/ui/icons";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import { useTypedBeforeHydration } from "@/lib/typed-before-hydration";
 
 const DEBOUNCE_MS = 250;
 
@@ -17,6 +18,8 @@ export function SearchBox({ q, type }: { q: string; type: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const [value, setValue] = useState(q);
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => setValue(event.target.value);
+  const typed = useTypedBeforeHydration(value, onChange);
 
   useEffect(() => {
     // Only when the field differs from the URL: a "first run" flag fails under Strict Mode,
@@ -39,11 +42,12 @@ export function SearchBox({ q, type }: { q: string; type: string }) {
       </label>
       <SearchIcon className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-lg text-fg-muted" />
       <input
+        ref={typed}
         id="search-q"
         type="search"
         name="q"
         value={value}
-        onChange={(event) => setValue(event.target.value)}
+        onChange={onChange}
         maxLength={100}
         autoFocus
         placeholder={t("nav.searchPlaceholder")}

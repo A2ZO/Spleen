@@ -68,8 +68,8 @@ export const TERMS_BOX = "J'ai 15 ans ou plus et j'accepte les conditions d'util
 /** Fills the first-visit form (any sign-in path ends there) and lands on the new profile. */
 export async function onboard(page: Page, username: string, displayName: string) {
   await expect(page).toHaveURL(/\/fr\/welcome$/);
-  // After a full load (the code path) the URL matches before hydration, which resets a
-  // controlled field typed into too early (issue #24): type once React has taken over.
+  // After a full load (the code path) the URL matches before hydration: the typed text now
+  // survives it (issue #24), but the live check only starts once React has taken over.
   await waitForHydration(page);
   const field = page.getByLabel("Pseudo");
   await field.fill(username);
