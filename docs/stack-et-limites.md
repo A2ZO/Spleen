@@ -148,6 +148,27 @@ page affichée (titre de la nouvelle page présent) sur un build de production l
   autres liens préchargent au survol, au focus ou au toucher (`apps/web/src/i18n/link.tsx`).
   Chaque préchargement est une requête serveur, donc une invocation dans le quota Vercel.
 
+### Mesure : coût d'une frappe dans la recherche (jalon 12, étape 1)
+
+`apps/web/scripts/measure-search.mjs` (`docs/environnement.md`), base démo sur Neon de dev.
+Temps entre la dernière frappe et les résultats affichés (frappes espacées de 70 ms).
+
+| | Avant : page `/search` rendue à chaque pause | Après : suggestions |
+| --- | --- | --- |
+| Affichage (build de prod local) | 269 à 314 ms (1 258 à froid) | ≈ 133 ms (≈ 190 à froid) |
+| Requêtes serveur | 1 rendu complet (session + recherche + page) par pause | 1 ou 2 par recherche (`/api/search/suggest`), une seule si la frappe ne s'arrête pas |
+| Temps en base par requête | — | ≈ 53 ms, une seule requête SQL (surtout l'aller-retour réseau) |
+| CPU serveur par requête | — | ≈ 1 à 9 ms (moyenne ; Windows compte par tranches de 15,6 ms) |
+| Réponse | page RSC | 450 à 900 octets de JSON |
+
+- Une suggestion déjà vue par le CDN (60 s, puis 10 min servie périmée pendant le recalcul)
+  ne coûte rien au serveur ni à la base. Le cache n'existe qu'avec une règle Cloudflare
+  (`docs/mise-en-ligne.md` § 11) : sans elle, chaque frappe après 200 ms de pause est une
+  invocation.
+- Ordre de grandeur sans cache : 10 recherches par membre actif et par jour × 2 requêtes ×
+  10 ms ≈ 0,2 s de CPU par membre et par mois, négligeable devant les pages (≈ 50 ms chacune).
+- Limite par IP : 30 d'un coup, puis 3/s ; au-delà, 429 sans toucher la base.
+
 ### Tableau des seuils
 
 | Service | Limite gratuite | Ce qui la consomme | Casse vers… (estimation) | Ce qui se passe | Sortie |

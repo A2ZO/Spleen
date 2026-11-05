@@ -458,6 +458,20 @@
       "release_group": "Disque",
       "artist": "Artiste",
       "recording": "Morceau"
+    },
+    "suggest": {
+      "label": "Suggestions",
+      "hint": "Les suggestions s'affichent dès deux lettres. Flèches pour choisir, Entrée pour ouvrir, Suppr pour retirer une recherche récente.",
+      "best": "Meilleur résultat",
+      "members": "Membres",
+      "recent": "Recherches récentes",
+      "remove": "Retirer « {q} »",
+      "seeAll": "Voir tous les résultats",
+      "more": "Plus de résultats",
+      "nothing": "Rien dans Spleen pour l'instant",
+      "noMember": "Personne de ce nom sur Spleen",
+      "count": "{count, plural, =0 {Aucune suggestion} one {# suggestion} other {# suggestions}}",
+      "close": "Fermer"
     }
   },
   "listening": {

@@ -264,6 +264,12 @@ l'hébergeur). Pas bloquant pour ouvrir, mais à traiter avant ou juste après l
       `securityheaders.com`.
 - [ ] **Vérifier** : une page publique vue par un visiteur est servie depuis le cache, sans
       flash de mauvais thème, et les e2e passent (contrôle des journaux serveur compris).
+- [ ] Suggestions de recherche : Cloudflare ne met pas le JSON en cache par défaut. Ajouter
+      une règle de cache « Eligible for cache » sur le chemin `/api/search/suggest`, qui
+      respecte le `Cache-Control` de l'origine (`s-maxage=60`, `stale-while-revalidate=600`),
+      chaîne de requête comprise dans la clé. **Vérifier** : `cf-cache-status: HIT` au 2e
+      appel identique, et aucun `Set-Cookie` dans la réponse (`docs/catalogue.md`,
+      « Recherche instantanée »).
 
 ## 12. Tests e2e en CI (jalon 10)
 

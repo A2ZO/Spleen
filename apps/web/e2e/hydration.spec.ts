@@ -27,11 +27,13 @@ test("an email typed before hydration is the one the link is sent to", async ({
   await expect(page.getByText(email)).toBeVisible();
 });
 
-test("a search typed before hydration runs once React takes over", async ({ page }) => {
+test("a search typed before hydration gets its suggestions", async ({ page }) => {
   await openBeforeHydration(page, "/fr/search");
-  await page.getByLabel("Rechercher dans Spleen").fill("miles");
+  await page.getByLabel("Rechercher dans Spleen").fill("lune bas");
   await expect(page.locator("html[data-hydrated]")).not.toBeAttached();
   await waitForHydration(page);
-  await expect(page).toHaveURL(/\/fr\/search\?q=miles$/);
-  await expect(page.getByLabel("Rechercher dans Spleen")).toHaveValue("miles");
+  await expect(page.getByLabel("Rechercher dans Spleen")).toHaveValue("lune bas");
+  await expect(page.getByRole("option", { name: /^Lune Basse/ }).first()).toBeVisible();
+  // Suggestions only: the page itself is rendered again on Enter.
+  await expect(page).toHaveURL(/\/fr\/search$/);
 });

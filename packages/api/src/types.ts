@@ -472,6 +472,38 @@ export interface CatalogSearchResults {
   tracks: TrackCard[];
 }
 
+/** One instant suggestion: only what the dropdown shows, the same for every viewer. */
+export interface Suggestion {
+  kind: "artist" | "release" | "track";
+  slug: string;
+  /** Title, or the artist's name. */
+  title: string;
+  /** Artist names (release, track) or the artist's disambiguation. */
+  subtitle: string | null;
+  /** Picture: the release, the track's first release, or the artist's image. */
+  cover: { slug: string; title: string; url: string | null } | null;
+  /** Releases only. */
+  year: number | null;
+  releaseType: ReleaseType | null;
+}
+
+export interface MemberSuggestion {
+  username: string;
+  displayName: string;
+  avatarUrl: string | null;
+}
+
+/** Instant search answer (`catalog.suggest`, `GET /api/search/suggest`). */
+export interface CatalogSuggestions {
+  /** First of all kinds by the search order, left out of its own group. */
+  best: Suggestion | null;
+  artists: Suggestion[];
+  releases: Suggestion[];
+  tracks: Suggestion[];
+  /** Only for a query starting with "@" (then the catalog groups are empty). */
+  members: MemberSuggestion[];
+}
+
 /** A catalog provider (MusicBrainz) result that can be imported. */
 export interface RemoteHit {
   kind: ImportKind;

@@ -53,6 +53,20 @@ session y est enregistrée), arrêter le dev, `pnpm build`, `pnpm start` (la pro
 les variables Brevo et S3 : des valeurs factices suffisent en local, aucun email ne part), puis
 relancer le script avec le même `MEASURE_STATE`. Jamais de `next build` pendant `pnpm dev`.
 
+### Mesurer la recherche instantanée (`apps/web/scripts/measure-search.mjs`)
+
+Tape quelques requêtes dans le champ de `/search` (Chrome, visiteur) et mesure dernière frappe
+→ résultats affichés, puis appelle `/api/search/suggest` seul (espacé de 400 ms pour rester
+sous le limiteur) et lit l'en-tête `Server-Timing` (base, CPU, total), présent seulement
+avec le traçage :
+
+```
+$env:SPLEEN_QUERY_TRACE="1"; pnpm dev        # terminal 1
+cd apps/web; $env:PLAYWRIGHT_CHANNEL="chrome"; node scripts/measure-search.mjs [url] [passages]
+```
+
+Sur un build de production local, seules les durées d'affichage sont mesurées.
+
 ## Service worker (PWA)
 
 `/sw.js` est un route handler (`apps/web/src/app/sw.js/route.ts`), servi avec

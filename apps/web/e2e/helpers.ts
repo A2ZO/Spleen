@@ -1,7 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-import { createDb, isPostgresUrl, loadRootEnv, schema, setAdminRole } from "@spleen/db";
+import { createDb, eq, isPostgresUrl, loadRootEnv, schema, setAdminRole } from "@spleen/db";
 import { expect, type Page, type TestInfo } from "./fixtures";
 
 // Without BREVO_API_KEY, the dev server writes emails to <repo>/.data/outbox (see @spleen/infra).
@@ -106,6 +106,26 @@ export async function grantAdmin(username: string): Promise<boolean> {
   const handle = createDb(url);
   try {
     return (await setAdminRole(handle.db, emailOf(username), true)) === "granted";
+  } finally {
+    await handle.close();
+  }
+}
+
+/**
+ * State of the global MusicBrainz gate (`rate_limits` row "musicbrainz"): every provider call
+ * moves it. Undefined on a PGlite database (it belongs to the dev server process).
+ */
+export async function musicBrainzGate(): Promise<string | null | undefined> {
+  loadRootEnv();
+  const url = process.env.DATABASE_URL;
+  if (!isPostgresUrl(url)) return undefined;
+  const handle = createDb(url);
+  try {
+    const [row] = await handle.db
+      .select({ at: schema.rateLimits.nextAllowedAt })
+      .from(schema.rateLimits)
+      .where(eq(schema.rateLimits.key, "musicbrainz"));
+    return row?.at?.toISOString() ?? null;
   } finally {
     await handle.close();
   }

@@ -58,6 +58,39 @@ Si MusicBrainz ne peut pas servir cette édition (erreur répétée), l'import e
    non connecté ne déclenche jamais d'appel à MusicBrainz : il voit une invitation à se
    connecter. Même chose pour la discographie d'un artiste (`discography_imported_at`).
 
+## Recherche instantanée (jalon 12, étape 1)
+
+Suggestions sous le champ de l'en-tête (plein écran sur mobile) et sous celui de `/search`
+(`components/search/SearchCombobox.tsx`, motif combobox APG). La page `/search` n'est
+recalculée qu'à la validation (Entrée, « Voir tous les résultats »), jamais à la frappe.
+
+- **Route** `GET /api/search/suggest?q=…` (`apps/web/src/app/api/search/suggest/route.ts`) :
+  appelle `catalog.suggest` sans aucune session (cookies jamais lus), donc la réponse est la
+  même pour tous et ne contient **aucune donnée personnelle** (ni note, ni état d'écoute).
+  `Cache-Control: public, max-age=0, s-maxage=60, stale-while-revalidate=600`, jamais de
+  `Set-Cookie` ; erreurs et 429 en `no-store`. Utilisable telle quelle par l'appli Expo.
+- **Limiteur en mémoire** par IP (`@spleen/infra/memory-rate-limit`) : seau de 30, recharge
+  3/s, 10 000 IP au plus (les plus anciennes oubliées). Approximatif (par instance), aucune
+  écriture en base ; les réponses servies par le CDN ne l'atteignent pas.
+- **Règles** (`packages/api/src/lib/catalog/suggest.ts`, une seule requête SQL) : dès 2
+  caractères, après 200 ms sans frappe ; « Meilleur résultat » puis 3 artistes, 3 disques,
+  3 morceaux ; ordre = préfixe du titre ou du nom, puis popularité (membres distincts ayant
+  écouté), puis similarité trigramme. La page `/search` suit le même ordre. Fusionnés exclus.
+- **Membres** seulement si la requête commence par `@` (préfixe sur le pseudo, puis nom
+  affiché ; suspendus et masqués exclus), 5 au plus, sans catalogue.
+- **Jamais MusicBrainz** pendant la frappe. Rien trouvé : « Rien dans Spleen pour l'instant »,
+  puis « Chercher sur MusicBrainz » pour un membre connecté (`/search?q=…&remote=1`, qui lance
+  `RemoteSearch` : même chemin et mêmes 60/h qu'avant) ou une invitation à se connecter.
+- Partie trouvée en gras : `highlightParts` (`@spleen/api/highlight`, importable côté client),
+  insensible aux accents et à la casse.
+- Navigateur : requête précédente annulée (`AbortController`), cache mémoire de 50 réponses ;
+  les 5 dernières recherches restent dans le `localStorage` de ce navigateur
+  (`lib/recent-searches.ts`), jamais envoyées au serveur, supprimables (× ou Suppr).
+- Clavier : « / » ouvre la recherche (hors champ de saisie), flèches, Entrée, Échap (un 2e
+  vide le champ). Les options sont de vrais liens (préchargement à l'intention).
+- Sans JavaScript : formulaire GET vers `/search`, et l'icône mobile est un lien.
+- Coût d'une frappe : `docs/stack-et-limites.md` § 3.
+
 Discographie : 2 pages de 100 albums/EP et 1 page de 100 singles au plus (4 requêtes), et
 les pochettes des 100 premières sorties principales.
 

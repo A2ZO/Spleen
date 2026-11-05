@@ -101,3 +101,6 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   Streaming also breaks the page without JavaScript (the content stays in a hidden `div`, the
   page shows "Loading…") and turns `notFound()` / `permanentRedirect()` into a 200. Feedback
   for slow clicks comes from the navigation bar (`NavigationBar`, `useLinkStatus`) instead.
+- Measuring the suggestion route: a tight loop of calls hits the per-IP memory limiter (429
+  after 30) and skews the figures; space the samples (`measure-search.mjs` waits 400 ms). On
+  Windows `process.cpuUsage()` moves in ~15.6 ms ticks: average many calls, never read one.

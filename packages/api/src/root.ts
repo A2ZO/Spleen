@@ -25,6 +25,7 @@ import {
   catalogKinds,
   catalogImportSchema,
   catalogSearchSchema,
+  catalogSuggestSchema,
   deleteAccountSchema,
   entryCreateSchema,
   entryUpdateSchema,
@@ -76,6 +77,7 @@ import {
 } from "./lib/catalog/pages";
 import { tryCatalog, withCatalogErrors } from "./lib/catalog/provider";
 import { searchCatalog, searchRemote } from "./lib/catalog/search";
+import { suggestCatalog } from "./lib/catalog/suggest";
 import { genreOptions, recentReleases, topRated, weeklyTrends } from "./lib/discovery";
 import { checkHealth } from "./lib/health";
 import { ogCard, seoPage, sitemapEntries, sitemapFiles } from "./lib/seo";
@@ -438,6 +440,13 @@ export const appRouter = router({
       const results = await searchCatalog(ctx.db(), input);
       return blindSearchResults(ctx.db(), await blindOf(ctx), results);
     }),
+    /**
+     * Instant suggestions, local catalog only. Never reads the viewer (no session, no blind
+     * mode, no ratings): the answer is cached by the CDN and must be the same for everyone.
+     */
+    suggest: publicProcedure
+      .input(catalogSuggestSchema)
+      .query(({ input, ctx }) => suggestCatalog(ctx.db(), input.q)),
     /** MusicBrainz search, for members, when the local catalog lacks something. */
     searchRemote: protectedProcedure.input(catalogSearchSchema).query(async ({ input, ctx }) => {
       const key = `catalog-search:${ctx.user.id}`;

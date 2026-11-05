@@ -458,6 +458,20 @@
       "release_group": "Record",
       "artist": "Artist",
       "recording": "Track"
+    },
+    "suggest": {
+      "label": "Suggestions",
+      "hint": "Suggestions show from two letters. Arrows to choose, Enter to open, Delete to remove a recent search.",
+      "best": "Top result",
+      "members": "Members",
+      "recent": "Recent searches",
+      "remove": "Remove “{q}”",
+      "seeAll": "See all results",
+      "more": "More results",
+      "nothing": "Nothing in Spleen yet",
+      "noMember": "Nobody by that name on Spleen",
+      "count": "{count, plural, =0 {No suggestions} one {# suggestion} other {# suggestions}}",
+      "close": "Close"
     }
   },
   "listening": {
