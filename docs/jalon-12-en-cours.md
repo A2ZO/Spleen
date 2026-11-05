@@ -10,10 +10,10 @@ une fois son contenu reporté dans `CLAUDE.md` et les docs de domaine.
 | Étape | Contenu | État | Commits |
 | --- | --- | --- | --- |
 | 0 | Vitesse de navigation : mesure, lectures en parallèle, préchargement, issue #24 | fait | `cd91de5` → `0b43c39` |
-| 1 | Recherche instantanée | à faire | — |
+| 1 | Recherche instantanée : suggestions dans l'en-tête et `/search`, route JSON cacheable | fait | voir `git log` (commit `feat(search)`) |
 | plus tard | Barre de navigation aussi pour les navigations lancées par le code (`router.push` / `replace`) | à faire | — |
 
-État vérifié au commit `0b43c39` : `pnpm check` et suite e2e complète verte (vérificateur).
+État vérifié à la fin de l'étape 1 : `pnpm check` et suite e2e complète verte (vérificateur).
 Branche poussée ; PR brouillon [#26](https://github.com/A2ZO/Spleen/pull/26) (« Closes #24 »),
 réutilisée par `/fin-de-jalon`.
 
@@ -54,26 +54,40 @@ réutilisée par `/fin-de-jalon`.
 - Ne pas lancer `pnpm start` depuis la racine (le lancer depuis `apps/web`) ; tuer les `next`
   restés actifs avant un build (`taskkill`).
 
-## À faire ensuite (reprise) : étape 1
+## Étape 1 : ce qui a été fait
 
-Prompt prévu : « Lis CLAUDE.md puis docs/jalon-12-en-cours.md, et fais l'étape 1 ». Présenter
-le plan avant de coder.
+- Suggestions instantanées (`SearchCombobox`, en-tête, plein écran mobile, `/search`) servies par
+  `GET /api/search/suggest` (anonyme, cache CDN 60 s, limiteur mémoire par IP). Règles :
+  `docs/catalogue.md` « Recherche instantanée » ; coût : `docs/stack-et-limites.md` § 3.
+- Affichage dernière frappe → résultats : ≈ 300 → 133 ms (build de prod local).
+- `SearchBox.tsx` supprimé ; `/search` n'est rendue qu'à la validation ; `remote=1` lance la
+  recherche MusicBrainz. Même ordre (préfixe → popularité → similarité) sur la page complète.
+- Tests : `suggest.test.ts`, `memory-rate-limit.test.ts`, e2e `instant-search.spec.ts`,
+  `catalog.spec.ts` et `hydration.spec.ts` adaptés.
+- Mise en ligne : règle de cache Cloudflare à ajouter (`docs/mise-en-ligne.md` § 11).
+- Contrôles demandés en fin d'étape : `q` normalisé dans le navigateur (une seule URL en cache) ;
+  aucune langue dans l'URL, car la réponse ne contient aucun texte traduit (libellés traduits
+  côté navigateur) ; un 429 garde les dernières suggestions, sans message, et la frappe suivante
+  réessaie. Déjà codés ; tests ajoutés dans `instant-search.spec.ts`.
 
-**Recherche instantanée** (cahier des charges : « résultats instantanés sur le catalogue déjà
-connu de Spleen »).
+## Reste à traiter (hors étape 1)
 
-Point de départ : `components/search/SearchBox.tsx` remplace l'URL après 250 ms de pause
-(`router.replace`), et le serveur rend à nouveau toute la page `/search`
-(`app/[locale]/search/page.tsx`) avec `api.catalog.search` (`packages/api/src/lib/catalog/search.ts`,
-public). MusicBrainz reste à part (`RemoteSearch.tsx`, `catalog.searchRemote`, membres, 60/h).
-Sans JS : formulaire GET, à garder.
+- **Issue [#27](https://github.com/A2ZO/Spleen/issues/27), avant l'ouverture publique** : la
+  popularité (`count(distinct user_id)` dans `packages/api/src/lib/catalog/match.ts`) est calculée
+  en direct, jusqu'à 30 sous-requêtes par type à chaque requête qui atteint le serveur. 23 à 30 ms
+  sur la base dev, mais avec 78 lignes dans `user_item_state` : la mesure ne dit rien de la charge
+  réelle. Compteur à tenir à jour à l'écriture ou par la tâche de nuit (à trancher dans l'issue).
 
-Avant de coder : mesurer le temps entre une frappe et l'affichage des résultats
-(`measure.mjs` ou un script voisin), puis présenter le plan.
+## Appris à l'étape 1
 
-Questions ouvertes pour l'utilisateur (à poser d'abord) :
+- Un `pnpm dev` resté actif sur le port 3000 coïncide avec un e2e tué sans sortie (code 137) ;
+  port libre, la suite passe. Cause non prouvée : vérifier le port avant de lancer le e2e.
+- Pour un `EXPLAIN ANALYZE` de la requête exacte : passer à `suggestCatalog` un faux `Db` qui
+  capture le `sql`, puis l'exécuter préfixé par `explain (analyze, buffers)`.
 
-- Où : seulement la page `/search`, ou aussi des suggestions sous le champ de l'en-tête ?
-- Comment : garder le rendu serveur de la page (délai plus court, résultats partiels), ou une
-  route de lecture légère appelée depuis le client (même `catalog.search`, compatible Expo) ?
-- Limite de débit de cette recherche locale publique, si elle part à chaque frappe.
+## Étape suivante
+
+Le jalon 12 n'a pas de liste écrite au-delà de l'étape 1 : **la prochaine étape reste à choisir
+par l'utilisateur**. Candidat noté : barre de navigation pour `router.push` / `replace`
+(`components/layout/NavigationBar.tsx`, `lib/navigation-progress.ts`, voir étape 0). Présenter un
+plan avant de coder. Reprendre sur `feat/12-douceurs`, PR brouillon #26.
