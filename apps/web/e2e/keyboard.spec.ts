@@ -92,17 +92,21 @@ test("no rating while typing in a field or with Ctrl", async ({ page }, testInfo
   await signUp(page, testInfo, "Sanssuite");
   const { slider } = await openAlbum(page);
   const actions = trackActions(page);
-  // No comment field outside a window on this page: one is added for the test.
-  await page.evaluate(() => {
-    const field = document.createElement("textarea");
-    field.setAttribute("aria-label", "Ton commentaire");
-    document.getElementById("main")?.prepend(field);
-  });
-  const field = page.getByLabel("Ton commentaire");
+  // The header's search field; on small screens it lives in the full-screen search window
+  // opened by the header's icon.
+  const mobile = testInfo.project.name === "mobile";
+  if (mobile) await page.locator("header").getByRole("link", { name: "Rechercher" }).click();
+  const field = page.locator(mobile ? "#dialog-search" : "#header-search");
   await field.focus();
   await page.keyboard.type("4");
   await expect(field).toHaveValue("4");
-  await field.blur();
+  if (mobile) {
+    await page.getByRole("dialog").getByRole("button", { name: "Fermer" }).click();
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+  } else {
+    await page.keyboard.press("Escape");
+    await field.blur();
+  }
 
   await page.keyboard.press("Control+Digit1");
   await page.waitForTimeout(800);
