@@ -1,4 +1,10 @@
-import type { AudienceLang, ImportKind, ListenFormat, ReleaseType } from "@spleen/validators";
+import type {
+  AudienceLang,
+  ImportKind,
+  ListenFormat,
+  ListenTargetInput,
+  ReleaseType,
+} from "@spleen/validators";
 
 /* Output shapes of the API. Stable contract for the web app and the future Expo app. */
 
@@ -79,6 +85,8 @@ export interface MyReview {
   id: string;
   /** The release reviewed, or the release of the track reviewed. */
   release: ReleaseCard;
+  /** What the review is about (a release or a track), as the listening actions take it. */
+  target: ListenTargetInput;
   rating: number | null;
   body: string;
   lang: AudienceLang;
