@@ -1,6 +1,6 @@
 import { expect, test } from "./fixtures";
 
-import { deleteAccount, signUp } from "./helpers";
+import { actionAnswered, deleteAccount, signUp, waitForHydration } from "./helpers";
 
 test.use({ locale: "fr-FR", timezoneId: "Europe/Paris" });
 
@@ -11,12 +11,15 @@ test("put a record on the Shelf from its page, find it in Hearts, reorder it", a
   await expect(page.getByText("Ton étagère prend la poussière.")).toBeVisible();
 
   await page.goto("/fr/album/nocturnes-pour-pluie-fine");
+  await waitForHydration(page);
+  const hearted = actionAnswered(page);
   await page
     .getByRole("region", { name: "Ton écoute" })
     .getByRole("button", {
       name: "Coup de cœur",
     })
     .click();
+  await hearted;
   // The server HTML shows before hydration: retry the first click.
   const dialog = page.getByRole("dialog");
   await expect(async () => {

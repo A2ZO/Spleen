@@ -1,6 +1,6 @@
 import { expect, test, type Browser, type Page, type TestInfo } from "./fixtures";
 
-import { signUp } from "./helpers";
+import { actionAnswered, signUp, waitForHydration } from "./helpers";
 
 // Accounts are deleted by the global teardown (`cleanup.ts`), even when a test fails.
 test.use({ locale: "fr-FR", timezoneId: "Europe/Paris" });
@@ -9,12 +9,12 @@ const VINCE_REVIEW = "/fr/review/00000000-0000-4000-8000-000000000507";
 
 /** Follows the member whose profile is open (retried: the button may not be hydrated yet). */
 async function follow(page: Page, displayName: string) {
-  await expect(async () => {
-    await page.getByRole("button", { name: `Suivre ${displayName}` }).click();
-    await expect(page.getByRole("button", { name: `Ne plus suivre ${displayName}` })).toBeVisible({
-      timeout: 2_000,
-    });
-  }).toPass();
+  await waitForHydration(page);
+  // The follow leaves after a short delay: a `goto` right after the click would drop it.
+  const saved = actionAnswered(page);
+  await page.getByRole("button", { name: `Suivre ${displayName}` }).click();
+  await expect(page.getByRole("button", { name: `Ne plus suivre ${displayName}` })).toBeVisible();
+  await saved;
 }
 
 /** Alice and Bob, two new members in their own browser contexts; Bob follows Alice. */
