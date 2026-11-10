@@ -1,14 +1,22 @@
 "use client";
 
-import type { ApiErrorCode } from "@spleen/api";
 import { useTranslations } from "next-intl";
-import { useState, useTransition } from "react";
 
 import { setFollowAction } from "@/app/[locale]/social/actions";
 import { Button } from "@/components/ui/Button";
-import { FormMessage } from "@/components/ui/Field";
+import { ReactionStatus } from "@/components/ui/ReactionStatus";
+import { Link } from "@/i18n/navigation";
+import { useInstantWrites } from "@/lib/use-instant-writes";
 
-/** Follow / unfollow a member; the counts on the page refresh afterwards. */
+const set = (_: boolean, following: boolean) => following;
+const same = (following: boolean, write: boolean) => following === write;
+
+/** The viewer's follow of `username`, shared by every button and count of the page. */
+function useFollow(username: string, following: boolean) {
+  return useInstantWrites({ key: `follow:${username}`, props: following, apply: set, same });
+}
+
+/** Follow / unfollow a member: shown at once, rapid clicks grouped (`useInstantWrites`). */
 export function FollowButton({
   username,
   name,
@@ -22,36 +30,54 @@ export function FollowButton({
   className?: string;
 }) {
   const t = useTranslations("social");
-  const te = useTranslations("errors");
-  const [state, setState] = useState(following);
-  const [pending, startTransition] = useTransition();
-  const [error, setError] = useState<ApiErrorCode | "unknown" | null>(null);
+  const follow = useFollow(username, following);
 
-  const toggle = () =>
-    startTransition(async () => {
-      const next = !state;
-      setState(next);
-      setError(null);
-      const result = await setFollowAction(username, next);
-      if (!result.ok) {
-        setState(!next);
-        setError(result.error ?? "unknown");
-      }
+  const toggle = () => {
+    const next = !follow.shown;
+    follow.write(next, {
+      slot: "following",
+      run: async () => {
+        const result = await setFollowAction(username, next);
+        return result.ok ? { state: next } : { error: result.error ?? "unknown" };
+      },
     });
+  };
 
   return (
-    <span className="inline-flex flex-col items-start gap-1">
+    <span className="inline-flex flex-col items-start">
       <Button
-        variant={state ? "outline" : "primary"}
-        aria-pressed={state}
-        disabled={pending}
+        variant={follow.shown ? "outline" : "primary"}
+        aria-pressed={follow.shown}
         onClick={toggle}
         className={className}
       >
-        {state ? t("unfollow") : t("follow")}
+        {follow.shown ? t("unfollow") : t("follow")}
         <span className="sr-only"> {name}</span>
       </Button>
-      {error && <FormMessage tone="error">{te(error)}</FormMessage>}
+      <ReactionStatus error={follow.error} />
     </span>
+  );
+}
+
+/** The follower count of a profile, moved at once by the viewer's follow button. */
+export function FollowerCountLink({
+  href,
+  username,
+  followerCount,
+  viewerFollows,
+  className,
+}: {
+  href: string;
+  username: string;
+  followerCount: number;
+  viewerFollows: boolean;
+  className?: string;
+}) {
+  const t = useTranslations("profile");
+  const { shown } = useFollow(username, viewerFollows);
+  return (
+    <Link href={href} className={className}>
+      {t("followers", { count: followerCount + Number(shown) - Number(viewerFollows) })}
+    </Link>
   );
 }

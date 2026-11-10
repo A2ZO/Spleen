@@ -87,8 +87,7 @@
       "wantToListen": "Listen later",
       "log": "Log…",
       "signIn": "Sign in to keep track of what you listen to.",
-      "signInLink": "Sign in",
-      "error": "That didn't work. Try again."
+      "signInLink": "Sign in"
     },
     "releasedIn": "Released in {date}",
     "dateUnknown": "Release date unknown",

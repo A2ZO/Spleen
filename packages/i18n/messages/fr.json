@@ -87,8 +87,7 @@
       "wantToListen": "À écouter",
       "log": "Journaliser…",
       "signIn": "Connecte-toi pour garder une trace de tes écoutes.",
-      "signInLink": "Se connecter",
-      "error": "Ça n'a pas marché. Réessaie."
+      "signInLink": "Se connecter"
     },
     "releasedIn": "Sorti en {date}",
     "dateUnknown": "Date de sortie inconnue",

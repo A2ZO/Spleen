@@ -10,7 +10,7 @@ import { StatsPanel } from "@/components/profile/StatsPanel";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { ShelfEditor } from "@/components/shelf/ShelfEditor";
 import { ShelfPicker } from "@/components/shelf/ShelfPicker";
-import { FollowButton } from "@/components/social/FollowButton";
+import { FollowButton, FollowerCountLink } from "@/components/social/FollowButton";
 import { ListCard } from "@/components/social/ListCard";
 import { MemberMenu } from "@/components/social/MemberMenu";
 import { ReviewCard } from "@/components/social/ReviewCard";
@@ -309,9 +309,13 @@ export default async function ProfilePage({ params, searchParams }: Props) {
           <p className="font-mono text-sm text-fg-muted">@{profile.username}</p>
           <p className="mt-3 max-w-2xl text-pretty">{profile.bio}</p>
           <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-fg-muted">
-            <Link href={`${path}/followers`} className={countLink}>
-              {t("profile.followers", { count: profile.followerCount })}
-            </Link>
+            <FollowerCountLink
+              href={`${path}/followers`}
+              username={profile.username}
+              followerCount={profile.followerCount}
+              viewerFollows={profile.viewerFollows}
+              className={countLink}
+            />
             <Link href={`${path}/following`} className={countLink}>
               {t("profile.following", { count: profile.followingCount })}
             </Link>

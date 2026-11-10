@@ -20,6 +20,12 @@ import { getApi } from "@/server/api";
 import { serviceWorkerDisabled, siteUrl } from "@spleen/infra/config";
 
 import { fraunces, inter, plexMono } from "../fonts";
+// Reactions may leave after an internal navigation (`lib/use-instant-writes.ts`): the Server
+// Action is then posted to the new page, which must know it. Imported here, every page does
+// (otherwise Next forwards the call to a page that knows it: in dev that answered `{}` and
+// saved nothing, `docs/pieges.md`).
+import "./listening/actions";
+import "./social/actions";
 
 // No `generateStaticParams` here: reading the theme cookie makes every page dynamic anyway,
 // and in `next dev` it makes each first render rewrite `prerender-manifest.json` in place,

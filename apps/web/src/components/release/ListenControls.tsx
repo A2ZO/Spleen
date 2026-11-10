@@ -1,22 +1,24 @@
 "use client";
 
 import type { MoodRef, MyEntry, MyItemState } from "@spleen/api";
+import { applyListenWrite, type ListenWrite } from "@spleen/api/instant";
 import type { ListenTargetInput } from "@spleen/validators";
 import { useTranslations } from "next-intl";
-import { useEffect, useOptimistic, useRef, useState, useTransition } from "react";
+import { useRef, useState } from "react";
 
 import {
   markListenedAction,
   quickLikeAction,
   quickRateAction,
   wantToListenAction,
-  type ListenResult,
 } from "@/app/[locale]/listening/actions";
 import { buttonClasses } from "@/components/ui/Button";
 import { CheckIcon, ClockIcon, HeartIcon } from "@/components/ui/icons";
+import { ReactionStatus } from "@/components/ui/ReactionStatus";
 import { StarRating } from "@/components/ui/StarRating";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
+import { useInstantWrites } from "@/lib/use-instant-writes";
 
 import { LogDialog, type LogTrack } from "./LogDialog";
 import { MyListens } from "./MyListens";
@@ -32,99 +34,96 @@ export interface ListenControlsProps {
   tracks: LogTrack[];
 }
 
-/** Quick ratings made within this delay are sent as one (the last value). */
-const RATE_DELAY_MS = 350;
+/** A write that changes nothing on the shown state is dropped (double click: no request). */
+function same(state: MyItemState, write: ListenWrite) {
+  switch (write.kind) {
+    case "rating":
+      return state.rating === write.rating;
+    case "liked":
+      return state.liked === write.liked;
+    case "wantToListen":
+      return state.wantToListen === write.wantToListen;
+    case "listened":
+      return false;
+  }
+}
 
 /**
  * "I listened" panel: one-click listen, quick rating and heart (kept on the member's undated
- * listen), "to listen" queue, and the full "log" form. Writes go through Server Actions that
- * return the fresh state and re-render the page in the same response (community figures).
- * Quick ratings are grouped (`RATE_DELAY_MS`), numbered for the server (which drops older
- * ones arriving late), and only the answer to the latest one is applied.
+ * listen), "to listen" queue, and the full "log" form. Every quick write is shown at once
+ * (`applyListenWrite`, the server's rules) and goes through one queue (`useInstantWrites`):
+ * grouped, one request at a time, rolled back with a message on failure. Quick ratings keep
+ * their number (`order`), so the server still drops an older one arriving late.
  */
 export function ListenControls({ target, title, initial, moods, tracks }: ListenControlsProps) {
+  if (!initial) return <SignedOut />;
+  return <Panel target={target} title={title} initial={initial} moods={moods} tracks={tracks} />;
+}
+
+function SignedOut() {
   const t = useTranslations("album.actions");
-  const [state, setState] = useState(initial);
-  const [optimistic, setOptimistic] = useOptimistic(
-    state,
-    (current, change: Partial<MyItemState>) => (current ? { ...current, ...change } : current),
+  return (
+    <section className="rounded-md border border-border/60 bg-surface p-4 text-center shadow-card">
+      <p className="font-serif text-lg">{t("signIn")}</p>
+      <Link href="/sign-in" className={buttonClasses("primary", "mt-3")}>
+        {t("signInLink")}
+      </Link>
+    </section>
   );
-  const [pending, startTransition] = useTransition();
-  const [error, setError] = useState(false);
+}
+
+function Panel({
+  target,
+  title,
+  initial,
+  moods,
+  tracks,
+}: ListenControlsProps & { initial: MyItemState }) {
+  const t = useTranslations("album.actions");
   const [editing, setEditing] = useState<MyEntry | "new" | null>(null);
-  // Rating chosen but not yet confirmed by the server (wrapped: null clears the rating).
-  const [draft, setDraft] = useState<{ rating: number | null } | null>(null);
   const rateOrder = useRef({ clientId: "", seq: 0 });
-  const rateTimer = useRef<{ timer: ReturnType<typeof setTimeout>; send: () => void } | null>(null);
+  const listen = useInstantWrites({
+    key: `listen:${target.kind}:${target.id}`,
+    props: initial,
+    apply: applyListenWrite,
+    same,
+  });
+  const shown = listen.shown;
 
-  // Leaving the page within the delay still saves the last rating.
-  useEffect(
-    () => () => {
-      const pending = rateTimer.current;
-      if (pending) {
-        clearTimeout(pending.timer);
-        rateTimer.current = null;
-        pending.send();
-      }
-    },
-    [],
-  );
-
-  if (!optimistic) {
-    return (
-      <section className="rounded-md border border-border/60 bg-surface p-4 text-center shadow-card">
-        <p className="font-serif text-lg">{t("signIn")}</p>
-        <Link href="/sign-in" className={buttonClasses("primary", "mt-3")}>
-          {t("signInLink")}
-        </Link>
-      </section>
+  const rate = (rating: number | null) =>
+    listen.write(
+      { kind: "rating", rating },
+      {
+        slot: "rating",
+        run: () => {
+          // Numbered when it leaves: the server keeps the highest number of this page.
+          const order = rateOrder.current;
+          order.clientId ||= crypto.randomUUID();
+          return quickRateAction(target, rating, { clientId: order.clientId, seq: ++order.seq });
+        },
+      },
     );
-  }
-
-  const apply = (result: ListenResult) => {
-    if (result.state) {
-      setState(result.state);
-      setError(false);
-    } else {
-      setError(true);
-    }
+  const like = () => {
+    const liked = !shown.liked;
+    listen.write(
+      { kind: "liked", liked },
+      { slot: "liked", run: () => quickLikeAction(target, liked) },
+    );
   };
-
-  const write = (change: Partial<MyItemState>, action: () => Promise<ListenResult>) =>
-    startTransition(async () => {
-      setOptimistic(change);
-      apply(await action());
-    });
-
-  const rate = (rating: number | null) => {
-    const order = rateOrder.current;
-    order.clientId ||= crypto.randomUUID();
-    const seq = ++order.seq;
-    setDraft({ rating });
-    if (rateTimer.current) clearTimeout(rateTimer.current.timer);
-    const send = () => quickRateAction(target, rating, { clientId: order.clientId, seq });
-    rateTimer.current = {
-      send,
-      timer: setTimeout(() => {
-        rateTimer.current = null;
-        startTransition(async () => {
-          const result = await send();
-          // A newer rating was made since: its own answer will be applied.
-          if (seq !== rateOrder.current.seq) return;
-          setDraft(null);
-          apply(result);
-        });
-      }, RATE_DELAY_MS),
-    };
+  const queue = () => {
+    const wantToListen = !shown.wantToListen;
+    listen.write(
+      { kind: "wantToListen", wantToListen },
+      { slot: "wantToListen", run: () => wantToListenAction(target, wantToListen) },
+    );
   };
-
-  const shown = draft
-    ? {
-        ...optimistic,
-        rating: draft.rating,
-        listened: optimistic.listened || draft.rating !== null,
-      }
-    : optimistic;
+  // Every click creates a listen: never merged, and locked while its request runs.
+  const listening = listen.isPending("listened");
+  const markListened = () =>
+    listen.write(
+      { kind: "listened" },
+      { slot: "listened", now: true, run: () => markListenedAction(target) },
+    );
 
   const toggleClasses = (active: boolean) =>
     cn(
@@ -137,7 +136,6 @@ export function ListenControls({ target, title, initial, moods, tracks }: Listen
   return (
     <section
       aria-labelledby="listen-title"
-      aria-busy={pending}
       className="rounded-md border border-border/60 bg-surface p-4 shadow-card"
     >
       <h2 id="listen-title" className="sr-only">
@@ -148,10 +146,8 @@ export function ListenControls({ target, title, initial, moods, tracks }: Listen
         <button
           type="button"
           aria-pressed={shown.listened}
-          disabled={pending}
-          onClick={() =>
-            write({ listened: true, wantToListen: false }, () => markListenedAction(target))
-          }
+          disabled={listening}
+          onClick={markListened}
           className={cn(
             "flex flex-1 items-center justify-center gap-2 rounded-md px-4 py-3 font-medium transition-colors",
             shown.listened
@@ -171,26 +167,18 @@ export function ListenControls({ target, title, initial, moods, tracks }: Listen
       <div className="mt-4 flex gap-2">
         <button
           type="button"
-          aria-pressed={optimistic.liked}
-          disabled={pending}
-          onClick={() =>
-            write({ liked: !optimistic.liked }, () => quickLikeAction(target, !optimistic.liked))
-          }
-          className={toggleClasses(optimistic.liked)}
+          aria-pressed={shown.liked}
+          onClick={like}
+          className={toggleClasses(shown.liked)}
         >
-          <HeartIcon filled={optimistic.liked} className="text-lg" />
+          <HeartIcon filled={shown.liked} className="text-lg" />
           {t("like")}
         </button>
         <button
           type="button"
-          aria-pressed={optimistic.wantToListen}
-          disabled={pending}
-          onClick={() =>
-            write({ wantToListen: !optimistic.wantToListen }, () =>
-              wantToListenAction(target, !optimistic.wantToListen),
-            )
-          }
-          className={toggleClasses(optimistic.wantToListen)}
+          aria-pressed={shown.wantToListen}
+          onClick={queue}
+          className={toggleClasses(shown.wantToListen)}
         >
           <ClockIcon className="text-lg" />
           {t("wantToListen")}
@@ -205,26 +193,22 @@ export function ListenControls({ target, title, initial, moods, tracks }: Listen
         {t("log")}
       </button>
 
-      {error && (
-        <p role="alert" className="mt-3 text-center text-sm text-danger">
-          {t("error")}
-        </p>
-      )}
+      <ReactionStatus error={listen.error} className="mt-3 text-center empty:mt-0" />
 
-      <MyListens entries={optimistic.entries} moods={moods} onEdit={setEditing} />
+      <MyListens entries={shown.entries} moods={moods} onEdit={setEditing} />
 
       {editing && (
         <LogDialog
           target={target}
           title={title}
           entry={editing === "new" ? null : editing}
-          state={optimistic}
+          state={shown}
           moods={moods}
           tracks={tracks}
           onClose={() => setEditing(null)}
           onSaved={(next) => {
             setEditing(null);
-            apply({ state: next });
+            listen.confirm(next);
           }}
         />
       )}
