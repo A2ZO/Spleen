@@ -13,8 +13,9 @@ une fois son contenu reporté dans `CLAUDE.md` et les docs de domaine.
 | 1 | Recherche instantanée : suggestions dans l'en-tête et `/search`, route JSON cacheable | fait | voir `git log` (commit `feat(search)`) |
 | 2 | Réactions instantanées : like, suivre, cœur, « À écouter », note rapide, « J'ai écouté » | fait | voir `git log` (commits `feat(reactions)`) |
 | 3 | Barre de navigation pour les navigations par le code (`useNavigate`) | fait | voir `git log` |
+| 4 | « Annuler » au lieu des confirmations de suppression | fait | voir `git log` |
 
-État vérifié à la fin de l'étape 3 : `pnpm check` et suite e2e complète verte (vérificateur).
+État vérifié à la fin de l'étape 4 : `pnpm check` et suite e2e complète verte (vérificateur).
 Jalons 13 à 16 planifiés (`004ab40`) ; ordre : 12 → 11 → 13 → 14 → 10 → 15 → 16.
 Branche poussée ; PR brouillon [#26](https://github.com/A2ZO/Spleen/pull/26) (« Closes #24 »),
 réutilisée par `/fin-de-jalon`.
@@ -138,6 +139,36 @@ réutilisée par `/fin-de-jalon`.
 - Dans `page.route`, préférer un prédicat sur `url.pathname` à un glob contenant `?`.
 - Test de mutation (barre débranchée dans le hook) : l'e2e « slow push » échoue bien.
 
+## Étape 4 : ce qui a été fait
+
+- Store `apps/web/src/lib/use-undoable-delete.ts` (module, survit aux navigations internes) et
+  bandeaux `components/layout/UndoBanners.tsx` ; `UndoableGate` cache `ListCard` / `ReviewCard`
+  (composants serveur) ; `<li className="empty:hidden">` autour d'eux.
+- Listes (`ListForm`, `DeleteListDialog` retiré), critiques (`ReviewEditForm`), commentaires
+  (`Comments`), écoutes (`LogDialog` → `ListenControls`, `DiaryList`).
+- `MyReview` porte sa `target` (portée de la suppression d'une critique).
+- `<main id="main" tabIndex={-1}>` : cible du focus quand l'élément caché l'emporte.
+- Clés i18n `undo.*` ; anciennes clés de confirmation retirées.
+- e2e `undo-delete.spec.ts` : 16 tests (×2 projets).
+
+## Décisions de l'étape 4
+
+- Suppression différée côté navigateur, 8 s, un bandeau par suppression (3 au plus) ; blocage,
+  compte et modération gardent leur confirmation. Règles : `docs/social.md`.
+- Écriture sur le même objet pendant le délai → la suppression part d'abord (`flushScope`).
+- Limites assumées : compteurs serveur et état de la fiche à jour à la fin du délai.
+
+## Appris à l'étape 4
+
+- `page.clock.install()` avant la première page laisse le temps couler ; `pauseAt` (heure lue
+  dans la page) juste avant la suppression, puis `runFor` : délais déterministes. Une
+  réaction (350 ms) ne part ensuite qu'avec un `runFor`.
+- Les liens « Modifier » des cartes ont un nom accessible complété (« Modifier (titre) »).
+- Captures Chrome faites (sombre ordinateur, clair mobile) : en dev, le bouton « N » de Next
+  chevauche le coin gauche du bandeau sur mobile (dev seulement).
+- Dans le vérificateur, lancer l'e2e via Bash en `PLAYWRIGHT_CHANNEL=chrome pnpm e2e:quiet`
+  (la syntaxe `$env:` est mangée par Bash).
+
 ## Reste à traiter
 
 - **Issue [#27](https://github.com/A2ZO/Spleen/issues/27), avant l'ouverture publique** : la
@@ -160,15 +191,14 @@ réutilisée par `/fin-de-jalon`.
 Dans cet ordre, une étape par session, un plan présenté avant de coder. Reprendre sur
 `feat/12-douceurs`, PR brouillon #26.
 
-4. « Annuler » au lieu des fenêtres de confirmation. Point de départ : les confirmations
-   actuelles (`DeleteListDialog` dans `components/lists/ListForm.tsx`, `confirmDelete` dans
-   `social/ReviewEditForm.tsx`, `social/Comments.tsx`, `release/LogDialog.tsx`, `BlockDialog`
-   dans `social/MemberMenu.tsx`). Questions à poser avant de coder : quelles actions passent à
-   « Annuler » (suppressions d'écoute, de commentaire, de critique, de liste ; blocage ?) ;
-   durée du message (5 s ?) ; suppression différée côté client (rien envoyé avant la fin du
-   délai) ou suppression immédiate puis restauration côté serveur ; la suppression du compte
-   garde sa confirmation par pseudo.
-5. Noter au clavier (1 à 5, L pour le cœur).
+5. Noter au clavier (1 à 5, L pour le cœur). Point de départ : `components/release/ListenControls.tsx`
+   (note rapide, cœur, file `lib/use-instant-writes.ts`, `flushScope` avant chaque écriture) et
+   le curseur « Ta note » (déjà au clavier quand il a le focus : flèches, Fin). Questions à poser
+   avant de coder : raccourcis globaux sur la page d'un disque ou seulement quand le panneau
+   « Ton écoute » a le focus ; 1 à 5 = étoiles entières, et les demi-étoiles (Maj+chiffre ?) ;
+   0 ou Retour arrière pour retirer la note ; ignorés quand on tape dans un champ ; aide visible
+   (« ? ») ou seulement dans l'aide aux lecteurs d'écran ; conflits avec les raccourcis du
+   navigateur et des lecteurs d'écran (lettres seules à éviter ?).
 6. Transitions de page douces.
 
 Puis `/fin-de-jalon`.
