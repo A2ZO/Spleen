@@ -92,6 +92,8 @@ a stats rule changes), social & moderation `docs/social.md`, lists & discovery `
 - Styling only with tokens (`bg-surface`, `text-star`, `text-link`, `fill-vinyl`, ...).
   Never raw hex in components; brand hex values live in `packages/design-tokens`.
 - Ratings: integers 1..10 shown as 0.5..5 stars (`ratingToStars`). UUIDs; slugs in URLs.
+- Navigate from code only with `useNavigate()` (`@/i18n/navigation`, feeds the top bar;
+  ESLint forbids `useRouter`); actions ending in `redirect()` call `useNavigationWhile(pending)`.
 - Animations neutralised by `prefers-reduced-motion` (global rule in `globals.css`).
 - Theme: `spleen-theme` cookie read server-side in the `[locale]` layout (no flash).
 - Verify library versions on the npm registry / official docs, not from memory.
