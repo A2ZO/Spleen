@@ -15,6 +15,7 @@ une fois son contenu reporté dans `CLAUDE.md` et les docs de domaine.
 | 3 | Barre de navigation pour les navigations par le code (`useNavigate`) | fait | voir `git log` |
 | 4 | « Annuler » au lieu des confirmations de suppression | fait | voir `git log` |
 | 5 | Noter au clavier (1 à 5, 0, L, aide « ? », réglage) | fait | voir `git log` |
+| 6 | Transitions de page douces (fondu, pochette qui voyage) | **abandonnée** ([#29](https://github.com/A2ZO/Spleen/issues/29)) | aucun code gardé |
 
 État vérifié à la fin de l'étape 5 : `pnpm check` et suite e2e complète verte (vérificateur).
 Jalons 13 à 16 planifiés (`004ab40`) ; ordre : 12 → 11 → 13 → 14 → 10 → 15 → 16.
@@ -195,6 +196,27 @@ réutilisée par `/fin-de-jalon`.
   regroupement de 350 ms) : 4 `keydown`, vérifié par mutation.
 - Pas de Vitest dans `apps/web` : le garde est couvert par l'e2e.
 
+## Étape 6 : abandonnée
+
+Prévu : fondu léger entre pages et pochette qui « voyage » d'une vignette à la fiche album
+(`ViewTransition` de React, type `nav` posé seulement sur les navigations), ≤ 200 ms, rien
+sous reduced-motion. Code retiré, diagnostic complet dans l'issue
+[#29](https://github.com/A2ZO/Spleen/issues/29).
+
+- **Cause** : en production, Next affiche une navigation en deux commits ; le premier
+  (head, arbre du routeur) consomme le type `nav` sans rien animer, le second (le contenu) n'en
+  a plus. Le fondu est touché autant que la pochette (`docs/pieges.md`).
+- **Démarrages en prod** (5 passes) : clic normal 0/5, pochettes retardées de 2 s 0 à 1/5,
+  processeur ×4 4 à 5/5.
+- **Processeur ×4** : quand la transition part, pire frame 133 ms contre 46 ms sans, à-coups
+  > 50 ms 5/5 contre 2/5.
+- **Vitesse** (`measure.mjs`, clic → page, ms, avant → après) : 259→256, 136→141, 229→225,
+  214→204, 218→226 : pas de régression ; l'affichage n'attendait pas les pochettes. CSP
+  inchangée.
+- Gardé de la session : `a3ead42`, le test clavier sur le vrai champ de recherche de l'en-tête
+  (mobile : la fenêtre de recherche, fermée par « Fermer », Échap ne fermant que les
+  suggestions).
+
 ## Reste à traiter
 
 - **Issue [#27](https://github.com/A2ZO/Spleen/issues/27), avant l'ouverture publique** : la
@@ -218,15 +240,6 @@ Dans cet ordre, une étape par session, un plan présenté avant de coder. Repre
 `feat/12-douceurs`, PR brouillon #26.
 
 5. ~~Noter au clavier~~ (fait).
-6. Transitions de page douces. Point de départ : la barre de navigation
-   (`components/layout/NavigationBar.tsx`, `lib/navigation-progress.ts`, `i18n/use-navigate.ts`)
-   et la règle globale `prefers-reduced-motion` de `globals.css`. Piste : View Transitions
-   (`document.startViewTransition` / option `viewTransition` de Next 16, à vérifier dans
-   `apps/web/node_modules/next/dist/docs`), sans Suspense ni `loading.tsx` (+300 ms, voir
-   « Décisions prises »). Mesurer avec `apps/web/scripts/measure.mjs` avant et après : aucune
-   transition ne doit retarder l'affichage. Questions à poser avant de coder : quelles
-   navigations (toutes, ou fiche ↔ fiche seulement) ; effet (fondu court, ou la pochette qui
-   « voyage » de la liste à la fiche) ; durée (≤ 200 ms ?) ; navigateurs sans View Transitions
-   (rien, sans repli) ; retour arrière animé ou non.
+6. ~~Transitions de page douces~~ (abandonnée, issue #29).
 
 Puis `/fin-de-jalon`.

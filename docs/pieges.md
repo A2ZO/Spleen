@@ -112,3 +112,12 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   module graph does not include the action, Next forwards it, and in dev it answered `{}` with
   status 200 and saved nothing. The `[locale]` layout imports `listening/actions` and
   `social/actions` for this; a new action fired by a reaction must be imported there too.
+- React's transition types (`addTransitionType`, `Link`'s `transitionTypes`) are consumed by
+  the first commit made only of transition lanes, whether it animates or not. In production,
+  Next 16.4 commits a navigation in two steps (head and router tree first, page content next):
+  the first one takes the type, the content arrives without it, and a `ViewTransition` keyed
+  on that type never starts (0/5 clicks). Issue #29 (step 6 of milestone 12, abandoned).
+- A green e2e in dev proves nothing for behaviour that depends on how React splits the
+  renders (view transitions, batching, commit order): dev splits them differently. Check it on
+  a production build (`pnpm build`, `pnpm start`, with `pnpm dev` stopped), with a probe that
+  counts what actually happened.
