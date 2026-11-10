@@ -192,7 +192,7 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - [x] 1. Foundations · 2. Database · 3. Accounts · 4. Catalog · 5. Listening · 6. Profile &
       base stats · 7. Social · 8. Lists & discovery · 9. Admin, legal, polish (moderation and
       merges `docs/social.md`, SEO `docs/referencement.md`, CSP `lib/security.ts`, PWA).
-- [ ] 10. **Launch** (next): publish a new `TERMS_VERSION` before the first real members
+- [ ] 10. **Launch**: publish a new `TERMS_VERSION` before the first real members
       (everyone accepts again, after the legal review); e2e in CI; issue #22 (cache of public
       pages, option a); issue #27 (catalog popularity counter: recomputed by the nightly job,
       plus a pnpm command to recompute it in dev, also run by the seed, since the nightly job
@@ -204,3 +204,17 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - [ ] 12. **Douceurs**: small features that make Spleen smoother and faster, one step per
       feature (step 0: navigation speed, loading skeletons, link prefetch; issue #24, text typed
       before hydration is lost).
+- [ ] 13. **« Quoi écouter ce soir ? »**: "Listen on…" links (Spotify, Deezer, Apple Music,
+      YouTube Music, Bandcamp; direct when MusicBrainz knows the URL, else a search link; no
+      affiliate links), "Your friends on this record", "Pick a record" from "À écouter" (works
+      without JS).
+- [ ] 14. **« Souvenirs »**: "One year ago you were listening to…" on the home page; record
+      anniversaries (exact dates only, round ones highlighted) and "Released on <day month>" on
+      `/discover`.
+- [ ] 15. **« Défi de l'année »** (after launch): yearly goal of discovered records, progress bar
+      on the profile.
+- [ ] 16. **« En ce moment et RSS »** (after launch): "Listening now" for 2 h on the profile and
+      in followers' feeds; public RSS feed of a member's diary and reviews.
+
+Order: 12 (current) → 11 → 13 → 14 → 10 (launch) → 15 → 16. Specs in
+`docs/cahier-des-charges.md`; each milestone opens by having the user validate its default rules.
