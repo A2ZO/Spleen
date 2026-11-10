@@ -2,24 +2,20 @@
 
 import { locales, type Locale } from "@spleen/i18n";
 import { useLocale, useTranslations } from "next-intl";
-import { useTransition } from "react";
 
-import { usePathname, useRouter } from "@/i18n/navigation";
+import { useNavigate, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 
 export function LocaleSwitcher() {
   const t = useTranslations("locale");
   const current = useLocale();
   const pathname = usePathname();
-  const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const { replace, pending } = useNavigate();
 
   // Keeps the query (profile tab, page, calendar month): read at click time, so no
   // `useSearchParams` (and no Suspense boundary) is needed.
   const switchTo = (locale: Locale) =>
-    startTransition(() =>
-      router.replace(`${pathname}${window.location.search}`, { locale, scroll: false }),
-    );
+    replace(`${pathname}${window.location.search}`, { locale, scroll: false });
 
   return (
     <div

@@ -8,7 +8,7 @@ import { useEffect, useId, useRef, useState, useTransition, type FormEvent } fro
 import { createListAction, deleteListAction, updateListAction } from "@/app/[locale]/list/actions";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, FormMessage, TextArea, TextField } from "@/components/ui/Field";
-import { useRouter } from "@/i18n/navigation";
+import { useNavigate } from "@/i18n/navigation";
 
 type ErrorCode = ApiErrorCode | "unknown";
 
@@ -20,7 +20,7 @@ export function ListForm({
 }) {
   const t = useTranslations("list");
   const te = useTranslations("errors");
-  const router = useRouter();
+  const router = useNavigate();
   const [title, setTitle] = useState(list?.title ?? "");
   const [description, setDescription] = useState(list?.description ?? "");
   const [ranked, setRanked] = useState(list?.ranked ?? false);
@@ -116,7 +116,7 @@ function DeleteListDialog({
 }) {
   const t = useTranslations("list");
   const te = useTranslations("errors");
-  const router = useRouter();
+  const router = useNavigate();
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   const [pending, startTransition] = useTransition();

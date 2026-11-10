@@ -8,7 +8,7 @@ import { useState, useTransition, type FormEvent } from "react";
 import { deleteReviewAction, updateReviewAction } from "@/app/[locale]/review/actions";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { FormMessage, SelectField, TextArea } from "@/components/ui/Field";
-import { useRouter } from "@/i18n/navigation";
+import { useNavigate } from "@/i18n/navigation";
 
 /** Edits a review's text and language, or deletes it (asked twice, no browser dialog). */
 export function ReviewEditForm({
@@ -22,7 +22,7 @@ export function ReviewEditForm({
   const t = useTranslations("reviewEdit");
   const tl = useTranslations("locale");
   const te = useTranslations("errors");
-  const router = useRouter();
+  const router = useNavigate();
   const [body, setBody] = useState(review.body);
   const [lang, setLang] = useState<AudienceLang>(review.lang);
   const [confirmDelete, setConfirmDelete] = useState(false);

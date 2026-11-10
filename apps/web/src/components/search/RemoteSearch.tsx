@@ -13,7 +13,7 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { FormMessage } from "@/components/ui/Field";
-import { Link } from "@/i18n/navigation";
+import { Link, useNavigationWhile } from "@/i18n/navigation";
 import { secondaryTypeKey } from "@/lib/catalog-labels";
 
 const PAGE_OF = { release_group: "album", artist: "artist", recording: "track" } as const;
@@ -21,6 +21,8 @@ const PAGE_OF = { release_group: "album", artist: "artist", recording: "track" }
 function HitRow({ hit }: { hit: RemoteHit }) {
   const t = useTranslations();
   const [state, action, pending] = useActionState<ImportState, FormData>(importAction, {});
+  // A successful import redirects to the new page.
+  useNavigationWhile(pending);
   const details = [
     hit.type ? t(`releaseType.${hit.type}`) : t(`search.kind.${hit.kind}`),
     hit.year !== null ? String(hit.year) : null,

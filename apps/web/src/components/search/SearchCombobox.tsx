@@ -18,7 +18,7 @@ import {
 import { Avatar } from "@/components/ui/Avatar";
 import { Cover } from "@/components/ui/Cover";
 import { SearchIcon } from "@/components/ui/icons";
-import { Link, useRouter } from "@/i18n/navigation";
+import { Link, useNavigate } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 import { addRecentSearch, readRecentSearches, removeRecentSearch } from "@/lib/recent-searches";
 import { useTypedBeforeHydration } from "@/lib/typed-before-hydration";
@@ -116,7 +116,7 @@ export function SearchCombobox({
 }: SearchComboboxProps) {
   const t = useTranslations();
   const locale = useLocale();
-  const router = useRouter();
+  const router = useNavigate();
   const listboxId = useId();
   const hintId = useId();
   const wrapper = useRef<HTMLFormElement>(null);

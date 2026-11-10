@@ -75,7 +75,7 @@ export default async function SettingsPage({ params }: Props) {
           <dt className="text-sm text-fg-muted">{t("emailLabel")}</dt>
           <dd className="font-mono">{me.email}</dd>
         </dl>
-        <SignOutButton href={`/${locale}`} className="mt-5">
+        <SignOutButton href="/" className="mt-5">
           {t("signOut")}
         </SignOutButton>
       </Section>

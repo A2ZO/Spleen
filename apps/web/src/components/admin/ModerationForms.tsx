@@ -16,6 +16,7 @@ import {
 } from "@/app/[locale]/admin/actions";
 import { Button } from "@/components/ui/Button";
 import { FormMessage, TextArea, TextField } from "@/components/ui/Field";
+import { useNavigationWhile } from "@/i18n/navigation";
 
 type Decision = ReportView["decisions"][number];
 
@@ -27,6 +28,7 @@ function ReasonForm({
   send,
   children,
   danger = false,
+  navigates = false,
 }: {
   submitLabel: string;
   reasonLabel: string;
@@ -35,12 +37,15 @@ function ReasonForm({
   send: (reason: string) => Promise<ModerationResult>;
   children?: ReactNode;
   danger?: boolean;
+  /** The action redirects on success (merge): its wait is a page change, shown by the top bar. */
+  navigates?: boolean;
 }) {
   const t = useTranslations("admin");
   const te = useTranslations("errors");
   const [reason, setReason] = useState("");
   const [result, setResult] = useState<ModerationResult | null>(null);
   const [pending, startTransition] = useTransition();
+  useNavigationWhile(navigates && pending);
   const tooShort = reason.trim().length < MODERATION_REASON_MIN;
 
   const submit = (event: FormEvent) => {
@@ -188,6 +193,7 @@ export function MergeForm({
       reasonHint={t("reasonHint")}
       submitLabel={t("submit")}
       danger
+      navigates
       send={(reason) => mergeCatalogAction({ ...merge, reason })}
     />
   );

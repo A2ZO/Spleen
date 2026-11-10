@@ -5,6 +5,7 @@ import { useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/Button";
 import { FormMessage, TextField } from "@/components/ui/Field";
+import { useNavigate } from "@/i18n/navigation";
 import { authClient } from "@/lib/auth-client";
 import { cn } from "@/lib/cn";
 
@@ -29,6 +30,7 @@ export function SignInForm({
   const [status, setStatus] = useState<Status>("idle");
   const [code, setCode] = useState("");
   const [codeStatus, setCodeStatus] = useState<CodeStatus>("idle");
+  const { assign } = useNavigate();
   // After signing in, /welcome sends members to onboarding or to their shelf.
   const callbackURL = `/${locale}/welcome`;
 
@@ -55,7 +57,7 @@ export function SignInForm({
       return;
     }
     // A full load, as after the link: the whole layout (header included) reads the new session.
-    window.location.assign(new URL(callbackURL, window.location.origin).href);
+    assign(new URL(callbackURL, window.location.origin).href);
   }
 
   if (status === "sent") {
