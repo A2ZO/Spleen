@@ -6,7 +6,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./errors": "./src/errors.ts",
-    "./highlight": "./src/highlight.ts"
+    "./highlight": "./src/highlight.ts",
+    "./instant": "./src/instant.ts"
   },
   "scripts": {
     "lint": "eslint .",

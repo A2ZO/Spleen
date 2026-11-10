@@ -21,6 +21,7 @@ export { queryTraceEnabled, takeQueryTrace, type TracedQuery } from "./trace";
 export {
   bumpStatsVersion,
   listenedTargets,
+  quickFallback,
   ratedTrackIds,
   recomputeItemState,
   setWantToListen,

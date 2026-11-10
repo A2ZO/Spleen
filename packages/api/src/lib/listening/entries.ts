@@ -7,6 +7,7 @@ import {
   isNull,
   or,
   ratedTrackIds,
+  quickFallback,
   recomputeItemState,
   schema,
   setWantToListen,
@@ -369,7 +370,7 @@ export async function getMyItemState(
   const { timeZone } = listener ?? (await requireListener(db, userId));
   const listenTarget = toTarget(input);
 
-  const [[state], rows] = await Promise.all([
+  const [[state], rows, fallback] = await Promise.all([
     db
       .select()
       .from(userItemState)
@@ -379,6 +380,7 @@ export async function getMyItemState(
       .from(entries)
       .where(targetWhere(entries, userId, listenTarget))
       .orderBy(sql`${entries.listenedOn} desc nulls first`, desc(entries.createdAt)),
+    quickFallback(db, userId, listenTarget),
   ]);
   const ids = rows.map((r) => r.id);
   const [moodRows, ratingRows, reviewRows] =
@@ -423,5 +425,6 @@ export async function getMyItemState(
     wantToListen: state?.wantToListen ?? false,
     entries: myEntries,
     today: todayIn(timeZone, now),
+    quickFallback: fallback,
   };
 }

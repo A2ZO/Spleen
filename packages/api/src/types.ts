@@ -235,6 +235,11 @@ export interface MyItemState {
   entries: MyEntry[];
   /** Today in the member's time zone: the default listening date. */
   today: string;
+  /**
+   * The state without the undated listen: what removing the quick rating falls back to
+   * (`applyListenWrite` in `@spleen/api/instant`).
+   */
+  quickFallback: { rating: number | null; listened: boolean };
 }
 
 /** Distinct items listened to; `track` = tracks logged on their own (not inside an album). */

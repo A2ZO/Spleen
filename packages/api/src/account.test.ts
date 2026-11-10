@@ -101,8 +101,9 @@ describe("per-request memo", () => {
     const afterMe = select.mock.calls.length;
     expect(await caller.account.me()).toBe(first);
     await caller.listening.myState({ kind: "release", id: release!.id });
-    // `myState` reads its two tables; neither it nor the second `me` reads the profile again.
-    expect(select.mock.calls.length - afterMe).toBe(2);
+    // `myState` reads its two tables and the quick-write fallback (`quickFallback`, same wave);
+    // neither it nor the second `me` reads the profile again.
+    expect(select.mock.calls.length - afterMe).toBe(3);
     await caller.account.updateProfile({
       displayName: "Mémo",
       bio: "",
