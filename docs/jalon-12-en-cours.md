@@ -12,8 +12,10 @@ une fois son contenu reporté dans `CLAUDE.md` et les docs de domaine.
 | 0 | Vitesse de navigation : mesure, lectures en parallèle, préchargement, issue #24 | fait | `cd91de5` → `0b43c39` |
 | 1 | Recherche instantanée : suggestions dans l'en-tête et `/search`, route JSON cacheable | fait | voir `git log` (commit `feat(search)`) |
 | 2 | Réactions instantanées : like, suivre, cœur, « À écouter », note rapide, « J'ai écouté » | fait | voir `git log` (commits `feat(reactions)`) |
+| 3 | Barre de navigation pour les navigations par le code (`useNavigate`) | fait | voir `git log` |
 
-État vérifié à la fin de l'étape 2 : `pnpm check` et suite e2e complète verte (vérificateur).
+État vérifié à la fin de l'étape 3 : `pnpm check` et suite e2e complète verte (vérificateur).
+Jalons 13 à 16 planifiés (`004ab40`) ; ordre : 12 → 11 → 13 → 14 → 10 → 15 → 16.
 Branche poussée ; PR brouillon [#26](https://github.com/A2ZO/Spleen/pull/26) (« Closes #24 »),
 réutilisée par `/fin-de-jalon`.
 
@@ -33,7 +35,7 @@ réutilisée par `/fin-de-jalon`.
   (`i18n/link.tsx`) : 4 ou 5 préchargements par page au lieu de 17 à 46.
 - **Barre de navigation** (`components/layout/NavigationBar.tsx`, `lib/navigation-progress.ts`) :
   `useLinkStatus` dans le Link de next-intl, barre `bg-star` après 150 ms, fixe sous
-  reduced-motion, rien sans JS. Ne couvre que les `Link`, pas les `router.push`.
+  reduced-motion, rien sans JS. Navigations par le code : étape 3 (`useNavigate`).
 - **Issue #24** : texte tapé avant l'hydratation gardé (`useTypedBeforeHydration()`, intégré à
   `TextField` et `SearchBox`), e2e `hydration.spec.ts`. Issue à fermer avec la PR.
 
@@ -107,6 +109,35 @@ réutilisée par `/fin-de-jalon`.
 - Next transfère une action inconnue de la page courante ; en dev, réponse `{}` 200 sans rien
   enregistrer. Trouvé en suivant la requête POST vers `/fr/artist/...`.
 
+## Étape 3 : ce qui a été fait
+
+- `apps/web/src/i18n/use-navigate.ts`, exporté par `@/i18n/navigation` à la place de
+  `useRouter` : `useNavigate()` → `push` / `replace` dans une transition dont l'attente alimente
+  la barre (même délai de 150 ms, même aspect, même reduced-motion que les liens) ; `refresh` et
+  `prefetch` sans barre ; `assign` = chargement complet (connexion par code), barre retirée au
+  `pageshow` ou après 10 s. `useNavigationWhile(pending)` pour les actions qui finissent par
+  `redirect()` (la page cible arrive dans la réponse de l'action) : bienvenue, suppression du
+  compte, import MusicBrainz, fusion admin, réglages quand la langue change.
+- Jamais bloquée : la transition finit quand la page arrive, échoue ou est remplacée ; le
+  nettoyage de l'effet ferme aussi au démontage.
+- Règle ESLint (`apps/web/eslint.config.mjs`) : `useRouter` interdit hors du hook.
+- `SignOutButton` reçoit `href="/"` (le routeur next-intl ajoute la langue).
+- e2e `navigation.spec.ts` : push retardé (barre puis plus de barre), push remplacé par un lien.
+
+## Décisions de l'étape 3
+
+- Même délai (150 ms), même aspect et même reduced-motion que pour les liens ; rien pour
+  `refresh()`.
+- Une action qui redirige montre la barre pendant toute l'action (on ne sait pas d'avance si
+  elle redirigera) ; seulement pour les actions dont le succès redirige, et pour les réglages
+  seulement si la langue change.
+- Lien magique et Google : chargements complets hors de notre code, pas de barre.
+
+## Appris à l'étape 3
+
+- Dans `page.route`, préférer un prédicat sur `url.pathname` à un glob contenant `?`.
+- Test de mutation (barre débranchée dans le hook) : l'e2e « slow push » échoue bien.
+
 ## Reste à traiter
 
 - **Issue [#27](https://github.com/A2ZO/Spleen/issues/27), avant l'ouverture publique** : la
@@ -129,11 +160,14 @@ réutilisée par `/fin-de-jalon`.
 Dans cet ordre, une étape par session, un plan présenté avant de coder. Reprendre sur
 `feat/12-douceurs`, PR brouillon #26.
 
-3. Barre de navigation pour `router.push` / `replace` (`components/layout/NavigationBar.tsx`,
-   `lib/navigation-progress.ts`, voir étape 0). Point de départ : chercher les `router.push` /
-   `router.replace` dans `apps/web/src` ; la barre ne couvre aujourd'hui que les `Link`
-   (`useLinkStatus`). Question ouverte : même délai de 150 ms que pour les liens ?
-4. « Annuler » au lieu des fenêtres de confirmation.
+4. « Annuler » au lieu des fenêtres de confirmation. Point de départ : les confirmations
+   actuelles (`DeleteListDialog` dans `components/lists/ListForm.tsx`, `confirmDelete` dans
+   `social/ReviewEditForm.tsx`, `social/Comments.tsx`, `release/LogDialog.tsx`, `BlockDialog`
+   dans `social/MemberMenu.tsx`). Questions à poser avant de coder : quelles actions passent à
+   « Annuler » (suppressions d'écoute, de commentaire, de critique, de liste ; blocage ?) ;
+   durée du message (5 s ?) ; suppression différée côté client (rien envoyé avant la fin du
+   délai) ou suppression immédiate puis restauration côté serveur ; la suppression du compte
+   garde sa confirmation par pseudo.
 5. Noter au clavier (1 à 5, L pour le cœur).
 6. Transitions de page douces.
 
