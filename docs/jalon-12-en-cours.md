@@ -14,8 +14,9 @@ une fois son contenu reporté dans `CLAUDE.md` et les docs de domaine.
 | 2 | Réactions instantanées : like, suivre, cœur, « À écouter », note rapide, « J'ai écouté » | fait | voir `git log` (commits `feat(reactions)`) |
 | 3 | Barre de navigation pour les navigations par le code (`useNavigate`) | fait | voir `git log` |
 | 4 | « Annuler » au lieu des confirmations de suppression | fait | voir `git log` |
+| 5 | Noter au clavier (1 à 5, 0, L, aide « ? », réglage) | fait | voir `git log` |
 
-État vérifié à la fin de l'étape 4 : `pnpm check` et suite e2e complète verte (vérificateur).
+État vérifié à la fin de l'étape 5 : `pnpm check` et suite e2e complète verte (vérificateur).
 Jalons 13 à 16 planifiés (`004ab40`) ; ordre : 12 → 11 → 13 → 14 → 10 → 15 → 16.
 Branche poussée ; PR brouillon [#26](https://github.com/A2ZO/Spleen/pull/26) (« Closes #24 »),
 réutilisée par `/fin-de-jalon`.
@@ -169,6 +170,31 @@ réutilisée par `/fin-de-jalon`.
 - Dans le vérificateur, lancer l'e2e via Bash en `PLAYWRIGHT_CHANNEL=chrome pnpm e2e:quiet`
   (la syntaxe `$env:` est mangée par Bash).
 
+## Étape 5 : ce qui a été fait
+
+- `lib/keyboard-shortcuts.ts` : réglage (`localStorage`, try/catch, `useShortcutsEnabled`
+  via `useSyncExternalStore`), garde `shortcutAllowed()` (modificateurs, `repeat`,
+  `isComposing`, champ, `dialog[open]`, réglage), `digitOf(event.code)`. « / » de
+  `HeaderSearch` passe par ce garde.
+- `ListenControls` : 1 à 5, 0, L par `useEffectEvent` ; annonce dans `ReactionStatus` (prop
+  `announce`, zone `sr-only` sans erreur). Règles : `docs/ecoute.md`.
+- `components/layout/KeyboardHelp.tsx` (fenêtre « ? », montée dans `Header`, bouton du pied de
+  page affiché après l'hydratation), `ShortcutsToggle` dans `/settings#shortcuts` et dans l'aide.
+- Clés `shortcuts.*`, `settings.shortcutsTitle`. e2e `keyboard.spec.ts` (6 tests ×2).
+
+## Décisions de l'étape 5
+
+- Demi-étoiles : flèches du curseur « Ta note » (déjà là). 0 retire, Retour arrière non.
+- Réglage aussi dans la fenêtre d'aide : un visiteur n'a pas accès à `/settings` et doit
+  pouvoir couper « / » et « ? » (WCAG 2.1.4).
+- Annonce seulement pour les raccourcis (à la souris, l'état se voit sur le bouton cliqué).
+
+## Appris à l'étape 5
+
+- Un test « touche maintenue » avec 3 `keydown` passe sans le garde (vrai, faux, vrai + le
+  regroupement de 350 ms) : 4 `keydown`, vérifié par mutation.
+- Pas de Vitest dans `apps/web` : le garde est couvert par l'e2e.
+
 ## Reste à traiter
 
 - **Issue [#27](https://github.com/A2ZO/Spleen/issues/27), avant l'ouverture publique** : la
@@ -191,14 +217,16 @@ réutilisée par `/fin-de-jalon`.
 Dans cet ordre, une étape par session, un plan présenté avant de coder. Reprendre sur
 `feat/12-douceurs`, PR brouillon #26.
 
-5. Noter au clavier (1 à 5, L pour le cœur). Point de départ : `components/release/ListenControls.tsx`
-   (note rapide, cœur, file `lib/use-instant-writes.ts`, `flushScope` avant chaque écriture) et
-   le curseur « Ta note » (déjà au clavier quand il a le focus : flèches, Fin). Questions à poser
-   avant de coder : raccourcis globaux sur la page d'un disque ou seulement quand le panneau
-   « Ton écoute » a le focus ; 1 à 5 = étoiles entières, et les demi-étoiles (Maj+chiffre ?) ;
-   0 ou Retour arrière pour retirer la note ; ignorés quand on tape dans un champ ; aide visible
-   (« ? ») ou seulement dans l'aide aux lecteurs d'écran ; conflits avec les raccourcis du
-   navigateur et des lecteurs d'écran (lettres seules à éviter ?).
-6. Transitions de page douces.
+5. ~~Noter au clavier~~ (fait).
+6. Transitions de page douces. Point de départ : la barre de navigation
+   (`components/layout/NavigationBar.tsx`, `lib/navigation-progress.ts`, `i18n/use-navigate.ts`)
+   et la règle globale `prefers-reduced-motion` de `globals.css`. Piste : View Transitions
+   (`document.startViewTransition` / option `viewTransition` de Next 16, à vérifier dans
+   `apps/web/node_modules/next/dist/docs`), sans Suspense ni `loading.tsx` (+300 ms, voir
+   « Décisions prises »). Mesurer avec `apps/web/scripts/measure.mjs` avant et après : aucune
+   transition ne doit retarder l'affichage. Questions à poser avant de coder : quelles
+   navigations (toutes, ou fiche ↔ fiche seulement) ; effet (fondu court, ou la pochette qui
+   « voyage » de la liste à la fiche) ; durée (≤ 200 ms ?) ; navigateurs sans View Transitions
+   (rien, sans repli) ; retour arrière animé ou non.
 
 Puis `/fin-de-jalon`.
