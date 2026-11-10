@@ -6,6 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { getApi } from "@/server/api";
 
 import { HeaderSearch } from "./HeaderSearch";
+import { KeyboardHelp } from "./KeyboardHelp";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { Logo } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
@@ -102,6 +103,7 @@ export async function Header({ minimal = false }: { minimal?: boolean }) {
           )}
         </div>
       </div>
+      <KeyboardHelp signedIn={Boolean(profile)} />
     </header>
   );
 }

@@ -57,6 +57,29 @@
     "clear": "Clear rating",
     "keyboardHint": "Arrow keys adjust by half a star, Delete clears."
   },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "open": "Keyboard shortcuts",
+    "close": "Close",
+    "intro": "Single keys, when you're not typing in a field and no window is open.",
+    "search": "Search for a record, an artist or a member",
+    "help": "Open this help",
+    "escKey": "Esc",
+    "closeKey": "Close a window",
+    "pageTitle": "On an album or track page",
+    "signInToRate": "Sign in to rate and heart records from the keyboard.",
+    "rate": "Rate 1 to 5 stars",
+    "clear": "Remove your rating",
+    "like": "Add or remove the heart",
+    "halfStars": "On the stars: adjust by half a star",
+    "toggleLabel": "Single-key shortcuts",
+    "toggleHint": "Remembered on this device. When off, /, the digits, 0, L and ? do nothing.",
+    "settingsNote": "This setting is also in your <link>settings</link>.",
+    "rated": "Rated {stars} out of 5",
+    "unrated": "Rating removed",
+    "liked": "Heart added",
+    "unliked": "Heart removed"
+  },
   "home": {
     "kicker": "It's late, the city is asleep",
     "title": "What did you listen to tonight?",
@@ -337,7 +360,8 @@
     "timeZoneHint": "Used to date your listens \"today\".",
     "blocksTitle": "Blocked members",
     "blocksBody": "Members you blocked can no longer follow you, like or comment on your reviews.",
-    "blocksLink": "Manage blocked members"
+    "blocksLink": "Manage blocked members",
+    "shortcutsTitle": "Keyboard shortcuts"
   },
   "errors": {
     "UNAUTHENTICATED": "Sign in to continue.",

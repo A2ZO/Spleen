@@ -6,10 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { SearchCombobox } from "@/components/search/SearchCombobox";
 import { SearchIcon } from "@/components/ui/icons";
 import { Link } from "@/i18n/navigation";
-
-const editable = (target: EventTarget | null) =>
-  target instanceof HTMLElement &&
-  (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
+import { shortcutAllowed } from "@/lib/keyboard-shortcuts";
 
 /** Full-screen search on small screens. */
 function SearchDialog({ signedIn, onClose }: { signedIn: boolean; onClose: () => void }) {
@@ -52,7 +49,7 @@ function SearchDialog({ signedIn, onClose }: { signedIn: boolean; onClose: () =>
 /**
  * Header search with instant suggestions. Without JavaScript: a GET form to /search, and on
  * small screens an icon linking to it. With JavaScript the icon opens a full-screen search,
- * and "/" opens the search from anywhere but a field.
+ * and "/" opens the search from anywhere but a field (`shortcutAllowed`).
  */
 export function HeaderSearch({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations();
@@ -60,8 +57,7 @@ export function HeaderSearch({ signedIn }: { signedIn: boolean }) {
 
   useEffect(() => {
     const onKey = (event: globalThis.KeyboardEvent) => {
-      if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
-      if (editable(event.target) || document.querySelector("dialog[open]")) return;
+      if (event.key !== "/" || !shortcutAllowed(event)) return;
       event.preventDefault();
       // The search page's own field first, then the header's when it shows.
       const field = ["search-q", "header-search"]

@@ -4,7 +4,7 @@ import type { MoodRef, MyEntry, MyItemState } from "@spleen/api";
 import { applyListenWrite, type ListenWrite } from "@spleen/api/instant";
 import type { ListenTargetInput } from "@spleen/validators";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useRef, useState } from "react";
 
 import {
   deleteEntryAction,
@@ -19,6 +19,7 @@ import { ReactionStatus } from "@/components/ui/ReactionStatus";
 import { StarRating } from "@/components/ui/StarRating";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
+import { digitOf, shortcutAllowed } from "@/lib/keyboard-shortcuts";
 import { useInstantWrites } from "@/lib/use-instant-writes";
 import {
   flushScope,
@@ -62,6 +63,10 @@ function same(state: MyItemState, write: ListenWrite) {
  * (`applyListenWrite`, the server's rules) and goes through one queue (`useInstantWrites`):
  * grouped, one request at a time, rolled back with a message on failure. Quick ratings keep
  * their number (`order`), so the server still drops an older one arriving late.
+ *
+ * Keyboard shortcuts for the page's subject (never the tracklist): 1..5 rate in whole stars
+ * (key position, `event.code`, so AZERTY works with or without Shift), 0 clears the rating,
+ * L toggles the heart. Same writes as the mouse; the result is announced in the live region.
  */
 export function ListenControls({ target, title, initial, moods, tracks }: ListenControlsProps) {
   if (!initial) return <SignedOut />;
@@ -88,6 +93,7 @@ function Panel({
   tracks,
 }: ListenControlsProps & { initial: MyItemState }) {
   const t = useTranslations("album.actions");
+  const ts = useTranslations("shortcuts");
   const [editing, setEditing] = useState<MyEntry | "new" | null>(null);
   const rateOrder = useRef({ clientId: "", seq: 0 });
   const listen = useInstantWrites({
@@ -102,6 +108,8 @@ function Panel({
   const scope = scopeOf(target);
   const hidden = useUndoHidden();
   const [opening, setOpening] = useState(false);
+  // What the last keyboard shortcut did, for screen readers; cleared by a pointer write.
+  const [announce, setAnnounce] = useState<string | null>(null);
   const mounted = useRef(false);
   useEffect(() => {
     mounted.current = true;
@@ -141,7 +149,8 @@ function Panel({
     });
   };
 
-  const rate = (rating: number | null) =>
+  const rate = (rating: number | null, said: string | null = null) => {
+    setAnnounce(said);
     listen.write(
       { kind: "rating", rating },
       {
@@ -155,8 +164,10 @@ function Panel({
         },
       },
     );
-  const like = () => {
+  };
+  const like = (keyboard = false) => {
     const liked = !shown.liked;
+    setAnnounce(keyboard ? ts(liked ? "liked" : "unliked") : null);
     listen.write(
       { kind: "liked", liked },
       { slot: "liked", run: after(() => quickLikeAction(target, liked)) },
@@ -169,6 +180,25 @@ function Panel({
       { slot: "wantToListen", run: after(() => wantToListenAction(target, wantToListen)) },
     );
   };
+  // An effect event: it reads the latest `shown` without re-adding the listener.
+  const onKey = useEffectEvent((event: KeyboardEvent) => {
+    if (!shortcutAllowed(event)) return;
+    const digit = digitOf(event.code);
+    if (digit !== null) {
+      event.preventDefault();
+      if (digit === 0) rate(null, ts("unrated"));
+      else rate(digit * 2, ts("rated", { stars: String(digit) }));
+    } else if (event.key.toLowerCase() === "l") {
+      event.preventDefault();
+      like(true);
+    }
+  });
+  useEffect(() => {
+    const listener = (event: KeyboardEvent) => onKey(event);
+    document.addEventListener("keydown", listener);
+    return () => document.removeEventListener("keydown", listener);
+  }, []);
+
   // Every click creates a listen: never merged, and locked while its request runs.
   const listening = listen.isPending("listened");
   const markListened = () =>
@@ -213,14 +243,14 @@ function Panel({
       </div>
 
       <div className="mt-4 flex justify-center">
-        <StarRating value={shown.rating} onChange={rate} />
+        <StarRating value={shown.rating} onChange={(rating) => rate(rating)} />
       </div>
 
       <div className="mt-4 flex gap-2">
         <button
           type="button"
           aria-pressed={shown.liked}
-          onClick={like}
+          onClick={() => like()}
           className={toggleClasses(shown.liked)}
         >
           <HeartIcon filled={shown.liked} className="text-lg" />
@@ -246,7 +276,7 @@ function Panel({
         {t("log")}
       </button>
 
-      <ReactionStatus error={listen.error} className="mt-3 text-center empty:mt-0" />
+      <ReactionStatus error={listen.error} announce={announce} className="mt-3 text-center" />
 
       <MyListens
         entries={shown.entries.filter((entry) => !hidden(entry.id))}

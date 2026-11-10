@@ -7,6 +7,7 @@ import { DeleteAccountForm } from "@/components/account/DeleteAccountForm";
 import { ProfileForm } from "@/components/account/ProfileForm";
 import { SignOutButton } from "@/components/account/SignOutButton";
 import { UsernameForm } from "@/components/account/UsernameForm";
+import { ShortcutsToggle } from "@/components/layout/ShortcutsToggle";
 import { buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Link, redirect } from "@/i18n/navigation";
@@ -64,6 +65,10 @@ export default async function SettingsPage({ params }: Props) {
 
       <Section id="profile" title={t("profileTitle")}>
         <ProfileForm profile={profile} locale={locale} timeZones={timeZoneList(profile.timeZone)} />
+      </Section>
+
+      <Section id="shortcuts" title={t("shortcutsTitle")}>
+        <ShortcutsToggle />
       </Section>
 
       <Section id="username" title={t("usernameTitle")}>

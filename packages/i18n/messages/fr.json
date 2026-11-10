@@ -57,6 +57,29 @@
     "clear": "Effacer la note",
     "keyboardHint": "Flèches pour ajuster par demi-étoile, Suppr pour effacer."
   },
+  "shortcuts": {
+    "title": "Raccourcis clavier",
+    "open": "Raccourcis clavier",
+    "close": "Fermer",
+    "intro": "Une seule touche, quand tu n'écris pas dans un champ et qu'aucune fenêtre n'est ouverte.",
+    "search": "Chercher un disque, un artiste ou un membre",
+    "help": "Ouvrir cette aide",
+    "escKey": "Échap",
+    "closeKey": "Fermer une fenêtre",
+    "pageTitle": "Sur la fiche d'un album ou d'un morceau",
+    "signInToRate": "Connecte-toi pour noter et mettre des coups de cœur au clavier.",
+    "rate": "Noter de 1 à 5 étoiles",
+    "clear": "Retirer ta note",
+    "like": "Ajouter ou retirer le coup de cœur",
+    "halfStars": "Sur les étoiles : ajuster par demi-étoile",
+    "toggleLabel": "Raccourcis d'une touche",
+    "toggleHint": "Mémorisé sur cet appareil. Désactivés, /, les chiffres, 0, L et ? ne font plus rien.",
+    "settingsNote": "Ce réglage est aussi dans tes <link>réglages</link>.",
+    "rated": "Noté {stars} sur 5",
+    "unrated": "Note retirée",
+    "liked": "Coup de cœur ajouté",
+    "unliked": "Coup de cœur retiré"
+  },
   "home": {
     "kicker": "Il est tard, la ville dort",
     "title": "Qu'as-tu écouté ce soir ?",
@@ -337,7 +360,8 @@
     "timeZoneHint": "Sert à dater tes écoutes « aujourd'hui ».",
     "blocksTitle": "Membres bloqués",
     "blocksBody": "Les membres que tu as bloqués ne peuvent plus te suivre, aimer ni commenter tes critiques.",
-    "blocksLink": "Gérer mes blocages"
+    "blocksLink": "Gérer mes blocages",
+    "shortcutsTitle": "Raccourcis clavier"
   },
   "errors": {
     "UNAUTHENTICATED": "Connecte-toi pour continuer.",

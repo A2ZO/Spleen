@@ -78,6 +78,19 @@ like et suivi) passent par une seule file client, `apps/web/src/lib/use-instant-
 Limites assumées : fermer l'onglet ou recharger dans les 350 ms perd la réaction ; la moyenne
 et le nombre de notes de la fiche (calcul serveur, mode aveugle) bougent à la confirmation.
 
+Au clavier (`lib/keyboard-shortcuts.ts`, écouteur dans `ListenControls`) : sur la fiche d'un
+album ou d'un morceau, pour un membre connecté, 1 à 5 donnent une note entière (lu sur
+`event.code`, `Digit`/`Numpad` : AZERTY avec ou sans Maj), 0 retire la note, L (casse
+ignorée) bascule le cœur. Ils portent sur le sujet de la fiche, jamais sur les morceaux.
+Même chemin qu'à la souris (`useInstantWrites`, 350 ms, `flushScope`, `order`) ; résultat
+annoncé dans la zone `aria-live` de `ReactionStatus` (« Noté 4 sur 5 »). Demi-étoiles : les
+flèches sur le curseur « Ta note ». Garde commun `shortcutAllowed()`, aussi pour « / » et
+« ? » : rien avec Ctrl, Alt (AltGr) ou Cmd, ni pour une touche maintenue (`repeat`), ni
+pendant une composition (`isComposing`), ni dans un champ, ni quand un `dialog` est ouvert,
+ni quand le membre a coupé les raccourcis. Réglage « Raccourcis d'une touche » (WCAG 2.1.4) :
+`/settings` et la fenêtre d'aide (« ? » ou le bouton du pied de page, pour les visiteurs
+aussi), mémorisé dans `localStorage` (`spleen-shortcuts`), activés si la lecture échoue.
+
 Supprimer une écoute (fenêtre « Journaliser », bouton « Supprimer ») ne demande plus de
 confirmation : la ligne disparaît, « Annuler » pendant 8 s, envoi à la fin du délai, puis
 `recomputeItemState()` côté serveur ; note, cœur et « écouté » de la fiche bougent à la
