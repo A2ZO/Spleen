@@ -133,9 +133,6 @@
     "edit": "Edit",
     "back": "Back to the list",
     "delete": "Delete list",
-    "deleteConfirm": "Delete “{title}”? Its likes and comments go with it.",
-    "deleteConfirmButton": "Delete for good",
-    "cancel": "Cancel",
     "pageTitle": "{title}, a list by {name}",
     "updated": "Updated on {date}",
     "empty": "This list is still empty.",
@@ -501,7 +498,6 @@
     "saving": "Saving…",
     "cancel": "Cancel",
     "delete": "Delete",
-    "deleteConfirm": "Really delete?",
     "myListens": "Your listens",
     "quickListen": "Quick rating, no date",
     "edit": "Edit",
@@ -560,10 +556,7 @@
     "save": "Save",
     "saving": "Saving…",
     "cancel": "Cancel",
-    "delete": "Delete the review",
-    "deleteConfirm": "Delete it for good?",
-    "deleteYes": "Yes, delete",
-    "deleteNo": "No, keep it"
+    "delete": "Delete the review"
   },
   "social": {
     "follow": "Follow",
@@ -645,9 +638,6 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "deleteConfirm": "Delete this comment?",
-    "deleteYes": "Yes, delete",
-    "deleteNo": "No",
     "edited": "edited",
     "signIn": "Sign in to comment.",
     "unavailable": "Comments are not available here.",
@@ -1038,5 +1028,16 @@
     "retry": "Try again",
     "back": "Back to home",
     "reference": "Error reference: {digest}"
+  },
+  "undo": {
+    "region": "Deletions you can undo",
+    "undo": "Undo",
+    "deleted": {
+      "list": "List “{title}” deleted",
+      "review": "Review deleted",
+      "comment": "Comment deleted",
+      "entry": "Listen deleted"
+    },
+    "failed": "Nothing was deleted. {reason}"
   }
 }

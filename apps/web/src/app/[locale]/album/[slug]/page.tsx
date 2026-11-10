@@ -261,7 +261,7 @@ export default async function AlbumPage({ params }: Props) {
           {release.reviews.length > 0 ? (
             <ul className="space-y-4">
               {release.reviews.map((review) => (
-                <li key={review.id}>
+                <li key={review.id} className="empty:hidden">
                   <ReviewCard review={review} showRelease={false} />
                 </li>
               ))}
@@ -277,7 +277,7 @@ export default async function AlbumPage({ params }: Props) {
           <SectionHeading id="lists">{t("album.listsTitle")}</SectionHeading>
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {release.lists.map((list) => (
-              <li key={list.id}>
+              <li key={list.id} className="empty:hidden">
                 <ListCard list={list} />
               </li>
             ))}

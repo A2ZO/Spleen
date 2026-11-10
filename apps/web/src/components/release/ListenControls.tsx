@@ -4,9 +4,10 @@ import type { MoodRef, MyEntry, MyItemState } from "@spleen/api";
 import { applyListenWrite, type ListenWrite } from "@spleen/api/instant";
 import type { ListenTargetInput } from "@spleen/validators";
 import { useTranslations } from "next-intl";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import {
+  deleteEntryAction,
   markListenedAction,
   quickLikeAction,
   quickRateAction,
@@ -19,6 +20,13 @@ import { StarRating } from "@/components/ui/StarRating";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
 import { useInstantWrites } from "@/lib/use-instant-writes";
+import {
+  flushScope,
+  scheduleDelete,
+  scopeBusy,
+  scopeOf,
+  useUndoHidden,
+} from "@/lib/use-undoable-delete";
 
 import { LogDialog, type LogTrack } from "./LogDialog";
 import { MyListens } from "./MyListens";
@@ -89,13 +97,57 @@ function Panel({
     same,
   });
   const shown = listen.shown;
+  // Listens deleted with "Undo" are hidden at once; every write of this record first sends a
+  // deletion still waiting (`flushScope`), or that late deletion would erase it.
+  const scope = scopeOf(target);
+  const hidden = useUndoHidden();
+  const [opening, setOpening] = useState(false);
+  const mounted = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
+  const after =
+    <R,>(action: () => Promise<R>) =>
+    async () => {
+      await flushScope(scope);
+      return action();
+    };
+
+  /** The "log" form starts from the state after a waiting deletion of this record. */
+  const openLog = async (what: MyEntry | "new") => {
+    if (scopeBusy(scope)) {
+      setOpening(true);
+      await flushScope(scope);
+      setOpening(false);
+    }
+    setEditing(what);
+  };
+
+  const removeEntry = (entry: MyEntry, keyboard: boolean) => {
+    setEditing(null);
+    scheduleDelete({
+      id: entry.id,
+      kind: "entry",
+      scope,
+      focusUndo: keyboard,
+      run: () => deleteEntryAction(target, entry.id),
+      onDone: (result) => {
+        if (mounted.current && result.state) listen.confirm(result.state);
+      },
+    });
+  };
 
   const rate = (rating: number | null) =>
     listen.write(
       { kind: "rating", rating },
       {
         slot: "rating",
-        run: () => {
+        run: async () => {
+          await flushScope(scope);
           // Numbered when it leaves: the server keeps the highest number of this page.
           const order = rateOrder.current;
           order.clientId ||= crypto.randomUUID();
@@ -107,14 +159,14 @@ function Panel({
     const liked = !shown.liked;
     listen.write(
       { kind: "liked", liked },
-      { slot: "liked", run: () => quickLikeAction(target, liked) },
+      { slot: "liked", run: after(() => quickLikeAction(target, liked)) },
     );
   };
   const queue = () => {
     const wantToListen = !shown.wantToListen;
     listen.write(
       { kind: "wantToListen", wantToListen },
-      { slot: "wantToListen", run: () => wantToListenAction(target, wantToListen) },
+      { slot: "wantToListen", run: after(() => wantToListenAction(target, wantToListen)) },
     );
   };
   // Every click creates a listen: never merged, and locked while its request runs.
@@ -122,7 +174,7 @@ function Panel({
   const markListened = () =>
     listen.write(
       { kind: "listened" },
-      { slot: "listened", now: true, run: () => markListenedAction(target) },
+      { slot: "listened", now: true, run: after(() => markListenedAction(target)) },
     );
 
   const toggleClasses = (active: boolean) =>
@@ -187,7 +239,8 @@ function Panel({
 
       <button
         type="button"
-        onClick={() => setEditing("new")}
+        disabled={opening}
+        onClick={() => void openLog("new")}
         className={buttonClasses("outline", "mt-4 w-full")}
       >
         {t("log")}
@@ -195,7 +248,11 @@ function Panel({
 
       <ReactionStatus error={listen.error} className="mt-3 text-center empty:mt-0" />
 
-      <MyListens entries={shown.entries} moods={moods} onEdit={setEditing} />
+      <MyListens
+        entries={shown.entries.filter((entry) => !hidden(entry.id))}
+        moods={moods}
+        onEdit={(entry) => void openLog(entry)}
+      />
 
       {editing && (
         <LogDialog
@@ -210,6 +267,7 @@ function Panel({
             setEditing(null);
             listen.confirm(next);
           }}
+          onDelete={removeEntry}
         />
       )}
     </section>

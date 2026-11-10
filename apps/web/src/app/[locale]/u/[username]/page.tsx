@@ -209,7 +209,7 @@ async function TabContent({
         <>
           <ul className="space-y-4">
             {reviews.items.map((review) => (
-              <li key={review.id}>
+              <li key={review.id} className="empty:hidden">
                 <ReviewCard review={review} editable={profile.isOwner} />
               </li>
             ))}
@@ -241,7 +241,7 @@ async function TabContent({
           {create}
           <ul className="grid gap-4 sm:grid-cols-2">
             {lists.items.map((list) => (
-              <li key={list.id}>
+              <li key={list.id} className="empty:hidden">
                 <ListCard list={list} />
               </li>
             ))}

@@ -165,7 +165,7 @@ export default async function ListPage({ params, searchParams }: Props) {
         ) : (
           <ul className="space-y-5">
             {comments.items.map((comment) => (
-              <li key={comment.id}>
+              <li key={comment.id} className="empty:hidden">
                 <CommentItem comment={comment} canReport={signedIn} />
               </li>
             ))}

@@ -258,7 +258,7 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
         ) : (
           <ul className="grid gap-4 lg:grid-cols-2">
             {popular.items.map((review) => (
-              <li key={review.id}>
+              <li key={review.id} className="empty:hidden">
                 <ReviewCard review={review} />
               </li>
             ))}

@@ -133,9 +133,6 @@
     "edit": "Modifier",
     "back": "Revenir à la liste",
     "delete": "Supprimer la liste",
-    "deleteConfirm": "Supprimer « {title} » ? Ses j'aime et ses commentaires partiront avec elle.",
-    "deleteConfirmButton": "Supprimer pour de bon",
-    "cancel": "Annuler",
     "pageTitle": "{title}, une liste de {name}",
     "updated": "Mise à jour le {date}",
     "empty": "Cette liste est encore vide.",
@@ -501,7 +498,6 @@
     "saving": "Enregistrement…",
     "cancel": "Annuler",
     "delete": "Supprimer",
-    "deleteConfirm": "Vraiment supprimer ?",
     "myListens": "Tes écoutes",
     "quickListen": "Note rapide, sans date",
     "edit": "Modifier",
@@ -560,10 +556,7 @@
     "save": "Enregistrer",
     "saving": "Enregistrement…",
     "cancel": "Annuler",
-    "delete": "Supprimer la critique",
-    "deleteConfirm": "Supprimer pour de bon ?",
-    "deleteYes": "Oui, supprimer",
-    "deleteNo": "Non, la garder"
+    "delete": "Supprimer la critique"
   },
   "social": {
     "follow": "Suivre",
@@ -645,9 +638,6 @@
     "save": "Enregistrer",
     "cancel": "Annuler",
     "delete": "Supprimer",
-    "deleteConfirm": "Supprimer ce commentaire ?",
-    "deleteYes": "Oui, supprimer",
-    "deleteNo": "Non",
     "edited": "modifié",
     "signIn": "Connecte-toi pour commenter.",
     "unavailable": "Les commentaires ne sont pas disponibles ici.",
@@ -1038,5 +1028,16 @@
     "retry": "Réessayer",
     "back": "Retourner à l'accueil",
     "reference": "Référence de l'erreur : {digest}"
+  },
+  "undo": {
+    "region": "Suppressions à annuler",
+    "undo": "Annuler",
+    "deleted": {
+      "list": "Liste « {title} » supprimée",
+      "review": "Critique supprimée",
+      "comment": "Commentaire supprimé",
+      "entry": "Écoute supprimée"
+    },
+    "failed": "Rien n'a été supprimé. {reason}"
   }
 }

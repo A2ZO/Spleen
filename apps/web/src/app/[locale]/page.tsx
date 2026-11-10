@@ -159,7 +159,7 @@ async function FriendsFeed({ cursor: requested }: { cursor: string | null }) {
     <>
       <ul className="space-y-4">
         {feed.items.map((item) => (
-          <li key={`${item.kind}-${item.id}`}>
+          <li key={`${item.kind}-${item.id}`} className="empty:hidden">
             <FeedItemCard item={item} now={now} />
           </li>
         ))}
@@ -205,7 +205,7 @@ async function PopularFeed({
       ) : (
         <ul className="grid gap-4 lg:grid-cols-2">
           {popular.items.map((review) => (
-            <li key={review.id}>
+            <li key={review.id} className="empty:hidden">
               <ReviewCard review={review} />
             </li>
           ))}
