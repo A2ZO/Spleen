@@ -11,7 +11,6 @@ une fois son contenu reporté dans `CLAUDE.md` et les docs de domaine.
 | --- | --- | --- | --- |
 | 0 | Vitesse de navigation : mesure, lectures en parallèle, préchargement, issue #24 | fait | `cd91de5` → `0b43c39` |
 | 1 | Recherche instantanée : suggestions dans l'en-tête et `/search`, route JSON cacheable | fait | voir `git log` (commit `feat(search)`) |
-| plus tard | Barre de navigation aussi pour les navigations lancées par le code (`router.push` / `replace`) | à faire | — |
 
 État vérifié à la fin de l'étape 1 : `pnpm check` et suite e2e complète verte (vérificateur).
 Branche poussée ; PR brouillon [#26](https://github.com/A2ZO/Spleen/pull/26) (« Closes #24 »),
@@ -76,7 +75,9 @@ réutilisée par `/fin-de-jalon`.
   popularité (`count(distinct user_id)` dans `packages/api/src/lib/catalog/match.ts`) est calculée
   en direct, jusqu'à 30 sous-requêtes par type à chaque requête qui atteint le serveur. 23 à 30 ms
   sur la base dev, mais avec 78 lignes dans `user_item_state` : la mesure ne dit rien de la charge
-  réelle. Compteur à tenir à jour à l'écriture ou par la tâche de nuit (à trancher dans l'issue).
+  réelle. **Décidé** : compteur recalculé par la tâche de nuit, avec une commande pnpm pour le
+  recalculer en dev, lancée aussi par le seed (la tâche de nuit ne tourne qu'en production).
+  Reporté au jalon 10 dans `CLAUDE.md`.
 
 ## Appris à l'étape 1
 
@@ -85,9 +86,16 @@ réutilisée par `/fin-de-jalon`.
 - Pour un `EXPLAIN ANALYZE` de la requête exacte : passer à `suggestCatalog` un faux `Db` qui
   capture le `sql`, puis l'exécuter préfixé par `explain (analyze, buffers)`.
 
-## Étape suivante
+## Étapes restantes
 
-Le jalon 12 n'a pas de liste écrite au-delà de l'étape 1 : **la prochaine étape reste à choisir
-par l'utilisateur**. Candidat noté : barre de navigation pour `router.push` / `replace`
-(`components/layout/NavigationBar.tsx`, `lib/navigation-progress.ts`, voir étape 0). Présenter un
-plan avant de coder. Reprendre sur `feat/12-douceurs`, PR brouillon #26.
+Dans cet ordre, une étape par session, un plan présenté avant de coder. Reprendre sur
+`feat/12-douceurs`, PR brouillon #26.
+
+2. Réactions instantanées (like, suivre, « À écouter », cœur, note rapide).
+3. Barre de navigation pour `router.push` / `replace` (`components/layout/NavigationBar.tsx`,
+   `lib/navigation-progress.ts`, voir étape 0).
+4. « Annuler » au lieu des fenêtres de confirmation.
+5. Noter au clavier (1 à 5, L pour le cœur).
+6. Transitions de page douces.
+
+Puis `/fin-de-jalon`.

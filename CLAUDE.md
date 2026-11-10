@@ -193,7 +193,9 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
       merges `docs/social.md`, SEO `docs/referencement.md`, CSP `lib/security.ts`, PWA).
 - [ ] 10. **Launch** (next): publish a new `TERMS_VERSION` before the first real members
       (everyone accepts again, after the legal review); e2e in CI; issue #22 (cache of public
-      pages, option a). **Real services are not connected yet** (Google, Brevo, R2, Neon project
+      pages, option a); issue #27 (catalog popularity counter: recomputed by the nightly job,
+      plus a pnpm command to recompute it in dev, also run by the seed, since the nightly job
+      only runs in production). **Real services are not connected yet** (Google, Brevo, R2, Neon project
       `spleen-prod`, domain): follow `docs/mise-en-ligne.md`.
 - [ ] 11. Upcoming releases from followed artists — spec in docs/cahier-des-charges.md (section
       « Sorties à venir de tes artistes »); may run before milestone 10, depends only on 4, 7
