@@ -11,8 +11,9 @@ une fois son contenu reporté dans `CLAUDE.md` et les docs de domaine.
 | --- | --- | --- | --- |
 | 0 | Vitesse de navigation : mesure, lectures en parallèle, préchargement, issue #24 | fait | `cd91de5` → `0b43c39` |
 | 1 | Recherche instantanée : suggestions dans l'en-tête et `/search`, route JSON cacheable | fait | voir `git log` (commit `feat(search)`) |
+| 2 | Réactions instantanées : like, suivre, cœur, « À écouter », note rapide, « J'ai écouté » | fait | voir `git log` (commits `feat(reactions)`) |
 
-État vérifié à la fin de l'étape 1 : `pnpm check` et suite e2e complète verte (vérificateur).
+État vérifié à la fin de l'étape 2 : `pnpm check` et suite e2e complète verte (vérificateur).
 Branche poussée ; PR brouillon [#26](https://github.com/A2ZO/Spleen/pull/26) (« Closes #24 »),
 réutilisée par `/fin-de-jalon`.
 
@@ -69,7 +70,44 @@ réutilisée par `/fin-de-jalon`.
   côté navigateur) ; un 429 garde les dernières suggestions, sans message, et la frappe suivante
   réessaie. Déjà codés ; tests ajoutés dans `instant-search.spec.ts`.
 
-## Reste à traiter (hors étape 1)
+## Étape 2 : ce qui a été fait
+
+- File d'écriture commune `apps/web/src/lib/use-instant-writes.ts` (état par clé, partagé par
+  tous les boutons du même objet) : affichage au clic, 350 ms de regroupement par champ, double
+  clic = aucune requête, une requête à la fois, retour en arrière + message `errors.<code>` dans
+  `components/ui/ReactionStatus.tsx` (`aria-live="polite"`, toujours monté). Règles :
+  `docs/ecoute.md` § « Réactions instantanées », `docs/social.md` § « Likes et commentaires ».
+- `LikeButton`, `FollowButton` (+ `FollowerCountLink` dans l'en-tête du profil), `ListenControls`
+  (sans `useOptimistic`, `order` des notes rapides gardé). `album.actions.error` supprimé.
+- `@spleen/api/instant` : `applyListenWrite`, copie pure des règles du serveur ;
+  `MyItemState.quickFallback` (note du journal quand on retire la note rapide, lue dans la même
+  vague que `myState`).
+- Correctif : le layout `[locale]` importe `listening/actions` et `social/actions` (action
+  envoyée après une navigation interne = postée à la nouvelle page, `docs/pieges.md`).
+- Tests : `instant.test.ts` (copie client = serveur, 20 cas), e2e `reactions.spec.ts` (retenue,
+  500, regroupement, requête en cours, rechargement ; vrais 429 / suspendu / bloqué) ; aides
+  `holdActions`, `failActions`, `trackActions`, `actionAnswered`, `exhaustRateLimit`,
+  `suspendInDatabase` dans `e2e/helpers.ts` ; `social.spec.ts` et `shelf.spec.ts` attendent la
+  réponse de l'action.
+
+## Décisions de l'étape 2
+
+- Pas de règle partagée client/serveur : le serveur dérive l'état des écoutes en base. D'où la
+  copie pure + test de comparaison ; toute nouvelle règle d'état passe dans les deux.
+- « J'ai écouté » reste désactivé pendant son envoi (chaque clic crée une écoute).
+- Limites assumées : fermer l'onglet ou recharger dans les 350 ms perd la réaction ; moyenne et
+  nombre de notes des fiches, compteurs des onglets abonnés / abonnements bougent à la
+  confirmation.
+
+## Appris à l'étape 2
+
+- Un e2e qui clique puis fait `page.goto` / `reload()` perd l'écriture (350 ms) : attendre
+  `actionAnswered(page)`.
+- Libellé qui change de largeur : deux `click()` plutôt que `dblclick()`.
+- Next transfère une action inconnue de la page courante ; en dev, réponse `{}` 200 sans rien
+  enregistrer. Trouvé en suivant la requête POST vers `/fr/artist/...`.
+
+## Reste à traiter
 
 - **Issue [#27](https://github.com/A2ZO/Spleen/issues/27), avant l'ouverture publique** : la
   popularité (`count(distinct user_id)` dans `packages/api/src/lib/catalog/match.ts`) est calculée
@@ -91,9 +129,10 @@ réutilisée par `/fin-de-jalon`.
 Dans cet ordre, une étape par session, un plan présenté avant de coder. Reprendre sur
 `feat/12-douceurs`, PR brouillon #26.
 
-2. Réactions instantanées (like, suivre, « À écouter », cœur, note rapide).
 3. Barre de navigation pour `router.push` / `replace` (`components/layout/NavigationBar.tsx`,
-   `lib/navigation-progress.ts`, voir étape 0).
+   `lib/navigation-progress.ts`, voir étape 0). Point de départ : chercher les `router.push` /
+   `router.replace` dans `apps/web/src` ; la barre ne couvre aujourd'hui que les `Link`
+   (`useLinkStatus`). Question ouverte : même délai de 150 ms que pour les liens ?
 4. « Annuler » au lieu des fenêtres de confirmation.
 5. Noter au clavier (1 à 5, L pour le cœur).
 6. Transitions de page douces.
