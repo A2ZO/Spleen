@@ -147,6 +147,10 @@ page affichée (titre de la nouvelle page présent) sur un build de production l
   (accueil, /discover, profils remplis), avant. Après : 4 ou 5 (les liens de l'en-tête) ; les
   autres liens préchargent au survol, au focus ou au toucher (`apps/web/src/i18n/link.tsx`).
   Chaque préchargement est une requête serveur, donc une invocation dans le quota Vercel.
+- Pool postgres.js laissé à `max: 5`. La session de Better Auth était déjà lue une seule fois
+  par requête : mesurer avant de « corriger ».
+- Transitions de page (étape 6) : abandonnées, aucune régression mais elles ne démarraient
+  presque jamais en production (issue #29, `docs/pieges.md`).
 
 ### Mesure : coût d'une frappe dans la recherche (jalon 12, étape 1)
 

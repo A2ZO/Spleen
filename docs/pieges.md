@@ -13,6 +13,9 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
 - Next 16 allows one dev server per app; Playwright reuses port 3000. Stopping turbo may
   leave `next` running on Windows: `Get-NetTCPConnection -LocalPort 3000` → `Stop-Process`.
   The dev log `apps/web/.next/dev/logs` can contain error details: never paste it as is.
+  Kill every stray `next` (`taskkill /F /T`) before `pnpm build`, and run `pnpm start` from
+  `apps/web`, not the root. An e2e run killed without output (exit 137) coincided with a
+  `pnpm dev` left on port 3000; check the port is free first.
 - pnpm `minimumReleaseAge` blocks packages published too recently: pin an older version
   rather than adding exclusions (`pnpm add` may write `minimumReleaseAgeExclude` into
   `pnpm-workspace.yaml` by itself: revert it). Native builds: `allowBuilds` there.
@@ -21,6 +24,7 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
 - Client components import `@spleen/api/errors` (or types only), never `@spleen/api`.
   drizzle-kit writes unformatted `migrations/meta/*.json`: run Prettier on them.
 - Backticks in `node -e` run; `Set-Content -Encoding utf8` adds a BOM; Python writes CRLF.
+  In the Bash tool (subagents too), `$env:X=…` is eaten: write `PLAYWRIGHT_CHANNEL=chrome pnpm …`.
 - next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`. Typed message
   keys: map dynamic values through typed helpers (`apps/web/src/lib/catalog-labels.ts`).
 - Strict Mode replays effects in dev: a `<dialog>` closed in an effect cleanup fires `close`
@@ -104,6 +108,8 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
 - Measuring the suggestion route: a tight loop of calls hits the per-IP memory limiter (429
   after 30) and skews the figures; space the samples (`measure-search.mjs` waits 400 ms). On
   Windows `process.cpuUsage()` moves in ~15.6 ms ticks: average many calls, never read one.
+  To `EXPLAIN ANALYZE` the exact query, pass a fake `Db` that captures the `sql`, then run it
+  prefixed with `explain (analyze, buffers)`.
 - Instant reactions wait 350 ms before sending: an e2e test that clicks then calls `page.goto`
   or `reload()` loses the write. Wait for the answer first (`actionAnswered(page)` in
   `e2e/helpers.ts`). A label that changes width moves the button: click twice with two
@@ -121,3 +127,7 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   renders (view transitions, batching, commit order): dev splits them differently. Check it on
   a production build (`pnpm build`, `pnpm start`, with `pnpm dev` stopped), with a probe that
   counts what actually happened.
+- Playwright: in `page.route`, match with a predicate on `url.pathname`, not a glob containing
+  `?`. Timed UI (the 8 s "Undo"): `page.clock.install()` before the first page lets time run;
+  `pauseAt` (time read in the page) just before the action, then `runFor`: deterministic. A
+  reaction (350 ms grouping) then only leaves with a `runFor`.
