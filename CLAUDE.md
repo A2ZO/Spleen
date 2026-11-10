@@ -178,6 +178,7 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - e2e: one account per test (`grantAdmin`); no `next build` while `pnpm dev` runs → `docs/pieges.md`
 - No `loading.tsx` / `Suspense` fallback on pages: up to +300 ms (React) and stuck without JS → `docs/pieges.md`
 - Controlled fields need `useTypedBeforeHydration()` (built into `TextField`, issue #24) → `docs/pieges.md`
+- Reactions: e2e waits for `actionAnswered` before leaving; actions imported in the `[locale]` layout → `docs/pieges.md`
 
 ## Git
 

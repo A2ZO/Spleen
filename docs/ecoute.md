@@ -47,13 +47,36 @@ une fiche :
 **Ordre des notes rapides.** Plusieurs clics rapprochés ne doivent jamais laisser une
 ancienne note enregistrée :
 
-- client (`ListenControls`) : les clics à moins de 350 ms d'intervalle partent en une seule
-  requête (la dernière valeur) ; seule la réponse à la dernière note est appliquée ;
+- client : la note passe par la file commune des réactions (ci-dessous) ; les clics à moins de
+  350 ms d'intervalle partent en une seule requête (la dernière valeur) ;
 - serveur : chaque note porte un `order` `{ clientId, seq }` (un identifiant tiré au hasard
   par panneau affiché, un numéro croissant). Sous le verrou du membre (`bumpStatsVersion`),
   une requête du même panneau dont le numéro n'est pas plus grand que le dernier appliqué
   est ignorée (`user_listening_version.quick_client_id` / `quick_seq`). Un autre panneau
   (rechargement, autre onglet) a sa propre numérotation : la dernière écriture gagne.
+
+**Réactions instantanées.** Note rapide, cœur, « À écouter », « J'ai écouté » (et, côté social,
+like et suivi) passent par une seule file client, `apps/web/src/lib/use-instant-writes.ts` :
+
+- l'état affiché = état confirmé + requête en cours + écritures en attente, appliquées par
+  `applyListenWrite` (`@spleen/api/instant`), copie pure des effets du serveur (une note ou un
+  cœur retire « À écouter » et marque écouté ; retirer la note revient à `quickFallback`, la
+  note du journal). Le serveur, lui, recalcule tout depuis les écoutes en base : la copie est
+  tenue juste par `instant.test.ts`, qui compare les deux après chaque écriture de séquences
+  tirées au hasard. Toute nouvelle règle d'état doit passer dans les deux ;
+- même clé = même état : un objet affiché deux fois sur la page bouge partout à la fois ;
+- `aria-pressed` suit l'état affiché ; les boutons ne sont jamais désactivés, sauf « J'ai
+  écouté » pendant son envoi (chaque clic crée une écoute) ;
+- 350 ms de regroupement par champ ; une écriture qui revient à l'état acquis ne part pas (un
+  double clic n'envoie rien) ; une seule requête à la fois, la suivante part à la réponse ;
+- échec (refus, 500, réseau) : l'écriture sort de la file, retour à l'état d'avant, message
+  `errors.<code>` dans une zone `aria-live="polite"` toujours montée (`ReactionStatus`), effacé
+  au clic suivant ;
+- quitter la page par un lien interne envoie ce qui attend. Le layout `[locale]` importe les
+  actions d'écoute et sociales pour que la page d'arrivée les connaisse (`docs/pieges.md`).
+
+Limites assumées : fermer l'onglet ou recharger dans les 350 ms perd la réaction ; la moyenne
+et le nombre de notes de la fiche (calcul serveur, mode aveugle) bougent à la confirmation.
 
 « J'ai écouté » et le formulaire « Journaliser » créent une écoute datée : **aujourd'hui dans
 le fuseau du membre** (`profiles.time_zone`, IANA, détecté à l'inscription, modifiable dans

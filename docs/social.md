@@ -64,6 +64,13 @@ Sujet = `{ kind: "review" | "list", id }` (listes : `docs/decouverte.md`). Pas d
 1 000 caractères max, modifiés par leur auteur seul (`edited_at` → « modifié »), supprimés
 (suppression douce, `deleted_at`) par leur auteur ou par l'auteur de la critique / liste.
 
+Like et suivi s'affichent au clic (file commune `use-instant-writes.ts`, détails dans
+`docs/ecoute.md` § « Réactions instantanées ») : compteur du like et nombre d'abonnés de
+l'en-tête du profil (`FollowerCountLink`) bougent tout de suite ; double clic = aucune requête,
+donc aucune notification créée puis retirée ; refus (bloqué, suspendu, 429) → retour en arrière
+et message. Limites : fermer l'onglet dans les 350 ms perd le clic ; les compteurs des onglets
+« abonnés / abonnements » des listes de membres bougent à la confirmation.
+
 ## Notifications
 
 Une ligne par événement (`follow`, `like`, `comment`), créée dans la transaction de

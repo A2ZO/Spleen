@@ -104,3 +104,11 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
 - Measuring the suggestion route: a tight loop of calls hits the per-IP memory limiter (429
   after 30) and skews the figures; space the samples (`measure-search.mjs` waits 400 ms). On
   Windows `process.cpuUsage()` moves in ~15.6 ms ticks: average many calls, never read one.
+- Instant reactions wait 350 ms before sending: an e2e test that clicks then calls `page.goto`
+  or `reload()` loses the write. Wait for the answer first (`actionAnswered(page)` in
+  `e2e/helpers.ts`). A label that changes width moves the button: click twice with two
+  `click()` calls (re-aimed), not `dblclick()`.
+- A Server Action sent after an internal navigation is posted to the new page. If that page's
+  module graph does not include the action, Next forwards it, and in dev it answered `{}` with
+  status 200 and saved nothing. The `[locale]` layout imports `listening/actions` and
+  `social/actions` for this; a new action fired by a reaction must be imported there too.
