@@ -78,6 +78,12 @@ like et suivi) passent par une seule file client, `apps/web/src/lib/use-instant-
 Limites assumées : fermer l'onglet ou recharger dans les 350 ms perd la réaction ; la moyenne
 et le nombre de notes de la fiche (calcul serveur, mode aveugle) bougent à la confirmation.
 
+Supprimer une écoute (fenêtre « Journaliser », bouton « Supprimer ») ne demande plus de
+confirmation : la ligne disparaît, « Annuler » pendant 8 s, envoi à la fin du délai, puis
+`recomputeItemState()` côté serveur ; note, cœur et « écouté » de la fiche bougent à la
+réponse. Toute écriture sur le même disque ou la même piste envoie d'abord la suppression en
+attente (`flushScope`). Règles complètes : `docs/social.md`, « Supprimer avec Annuler ».
+
 « J'ai écouté » et le formulaire « Journaliser » créent une écoute datée : **aujourd'hui dans
 le fuseau du membre** (`profiles.time_zone`, IANA, détecté à l'inscription, modifiable dans
 les réglages ; `todayIn()` dans `@spleen/validators`). Une date future est refusée.

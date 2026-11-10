@@ -22,7 +22,8 @@ artiste. Server Actions : `apps/web/src/app/[locale]/list/actions.ts`.
   affiché est la place dans l'ordre (pas de trou après une suppression).
 - Seul l'auteur modifie sa liste ; pour les autres, elle « n'existe pas »
   (`LIST_NOT_FOUND`). Supprimer une liste supprime ses éléments, j'aime, commentaires et
-  notifications (cascade).
+  notifications (cascade). Côté web, « Supprimer la liste » ramène aux listes du membre et
+  laisse 8 s pour « Annuler » avant d'envoyer (`docs/social.md`, « Supprimer avec Annuler »).
 - Côté web, l'éditeur déplace l'élément aussitôt et envoie les enregistrements l'un après
   l'autre (jamais dans le désordre) ; le focus reste sur la flèche de l'élément déplacé.
 - Likes, commentaires et signalements : API sociale (`docs/social.md`), sujet `list`.
