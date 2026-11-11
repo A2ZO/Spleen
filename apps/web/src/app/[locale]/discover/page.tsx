@@ -71,7 +71,7 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
   } as const;
 
   const api = await getApi();
-  const [trends, recent, top, genres, popular] = await Promise.all([
+  const [trends, recent, top, genres, popular, t, uiLocale] = await Promise.all([
     api.discovery.trends({ lang }),
     api.discovery.recent({
       type: recentType.success && recentType.data === "single" ? "single" : undefined,
@@ -79,10 +79,10 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
     }),
     api.discovery.topRated(topInput),
     api.discovery.genres(),
-    api.feed.popular({ lang }),
+    api.feed.popular({ lang, size: POPULAR_ON_PAGE }),
+    getTranslations(),
+    getLocale(),
   ]);
-  const t = await getTranslations();
-  const uiLocale = await getLocale();
   const other: AudienceLang = lang === "fr" ? "en" : "fr";
   const keep = {
     lang: lang === uiLocale ? null : lang,
@@ -257,8 +257,8 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
           <p className="font-serif text-lg text-fg-muted italic">{t("feed.popularEmpty")}</p>
         ) : (
           <ul className="grid gap-4 lg:grid-cols-2">
-            {popular.items.slice(0, POPULAR_ON_PAGE).map((review) => (
-              <li key={review.id}>
+            {popular.items.map((review) => (
+              <li key={review.id} className="empty:hidden">
                 <ReviewCard review={review} />
               </li>
             ))}

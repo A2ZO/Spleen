@@ -13,19 +13,28 @@ interface Opinion {
   rating: number | null;
   liked: boolean;
   updatedAt: Date;
+  /** The member's undated listen (quick rating and heart from an item page). */
+  undated: boolean;
 }
+
+const opinionColumns = {
+  rating: entries.rating,
+  liked: entries.liked,
+  updatedAt: entries.updatedAt,
+  undated: sql<boolean>`${entries.listenedOn} is null`,
+};
 
 /** Listens of a member for one target, with the track ratings given inside album listens. */
 async function opinionsFor(db: DbOrTx, userId: string, target: ListenTarget): Promise<Opinion[]> {
   if ("releaseId" in target) {
     return db
-      .select({ rating: entries.rating, liked: entries.liked, updatedAt: entries.updatedAt })
+      .select(opinionColumns)
       .from(entries)
       .where(and(eq(entries.userId, userId), eq(entries.releaseId, target.releaseId)));
   }
   const [own, fromAlbums] = await Promise.all([
     db
-      .select({ rating: entries.rating, liked: entries.liked, updatedAt: entries.updatedAt })
+      .select(opinionColumns)
       .from(entries)
       .where(and(eq(entries.userId, userId), eq(entries.trackId, target.trackId))),
     db
@@ -35,7 +44,7 @@ async function opinionsFor(db: DbOrTx, userId: string, target: ListenTarget): Pr
       .where(and(eq(entries.userId, userId), eq(trackRatings.trackId, target.trackId))),
   ]);
   // A track rated inside an album listen counts as listened, never as liked.
-  return [...own, ...fromAlbums.map((r) => ({ ...r, liked: false }))];
+  return [...own, ...fromAlbums.map((r) => ({ ...r, liked: false, undated: false }))];
 }
 
 const newestFirst = (a: Opinion, b: Opinion) => b.updatedAt.getTime() - a.updatedAt.getTime();
@@ -103,6 +112,23 @@ export async function recomputeItemState(
       targetWhere: isNotNull(column),
       set: values,
     });
+}
+
+/**
+ * What the state would be without the undated listen: the rating that comes back when the
+ * quick rating is removed, and whether anything else still counts as listened. Lets a client
+ * show the result of a quick write before the server answers (`@spleen/api/instant`).
+ */
+export async function quickFallback(
+  db: DbOrTx,
+  userId: string,
+  target: ListenTarget,
+): Promise<{ rating: number | null; listened: boolean }> {
+  const others = (await opinionsFor(db, userId, target)).filter((o) => !o.undated);
+  return {
+    rating: others.sort(newestFirst).find((o) => o.rating !== null)?.rating ?? null,
+    listened: others.length > 0,
+  };
 }
 
 /**

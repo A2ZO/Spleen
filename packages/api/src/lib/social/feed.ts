@@ -4,6 +4,7 @@ import type { AudienceLang } from "@spleen/validators";
 import type { CursorPage, FeedItem, MemberCard, ReviewCard } from "../../types";
 import { loadReleaseCards, loadTrackCards, toReleaseCard } from "../catalog/cards";
 import { maskRelease, ratedIds, ratedReleaseIds } from "../listening/blind";
+import { countsPublicly } from "../ratings";
 import type { Viewer } from "../viewer";
 import { cursorInt, cursorTime, cursorUuid, decodeCursor, encodeCursor, pageOf } from "./cursor";
 import { memberCards, memberRefs, notBlockedWith } from "./relations";
@@ -175,6 +176,7 @@ export async function popularFeed(
   lang: AudienceLang,
   cursor: string | undefined,
   now: Date,
+  size = FEED_PAGE_SIZE,
 ): Promise<CursorPage<ReviewCard>> {
   const after = cursor ? decodeCursor(cursor, 3) : null;
   // ISO text, not a Date: postgres.js only serialises Dates for typed columns, not raw SQL.
@@ -200,15 +202,16 @@ export async function popularFeed(
       join ${reviews} on ${reviews.id} = engagement.review_id
       where ${reviews.lang} = ${lang}
         and ${reviews.hiddenAt} is null
+        and ${countsPublicly(reviews.userId)}
         ${viewer.id ? sql`and ${notBlockedWith(viewer.id, reviews.userId)}` : sql``}
       group by ${reviews.id}, ${reviews.createdAt}
     )
     select id, score, created::text as at from scored
     ${after ? sql`where (score, created, id) < (${cursorInt(after[0]!)}::int, ${cursorTime(after[1]!)}::timestamptz, ${cursorUuid(after[2]!)}::uuid)` : sql``}
     order by score desc, created desc, id desc
-    limit ${FEED_PAGE_SIZE + 1}
+    limit ${size + 1}
   `);
-  const page = pageOf(rowsOf<PopularRow>(result), FEED_PAGE_SIZE, (last) =>
+  const page = pageOf(rowsOf<PopularRow>(result), size, (last) =>
     encodeCursor([last.score, last.at, last.id]),
   );
   const items = await loadReviewCards(

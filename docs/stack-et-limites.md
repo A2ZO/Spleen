@@ -123,6 +123,56 @@ est ailleurs : une page à nonce est calculée à chaque visite et ne peut pas v
   (estimation, 90 % de réussite du cache ; un fichier en cache coûte 0,6 ms au serveur, 0
   depuis le CDN).
 
+### Mesure : vitesse de navigation (jalon 12, étape 0)
+
+`apps/web/scripts/measure.mjs` (`docs/environnement.md`), membre démo `nuitblanche`, base
+Neon de dev, médianes de 5 à 7 passages. SQL et vagues (allers-retours en série) en dev tracé ;
+page affichée (titre de la nouvelle page présent) sur un build de production local.
+
+| Parcours | Requêtes SQL | Vagues | Temps en base | Page affichée (prod) |
+| --- | --- | --- | --- | --- |
+| accueil → album | 29 → 27 | 12 → 6 | 330 → 225 ms | 351 → 267 ms |
+| album → artiste | 12 → 9 | 8 → 4 | 207 → 107 ms | 227 → 133 ms |
+| artiste → profil | 28 → 26 | 11 → 4 | 316 → 209 ms | 343 → 229 ms |
+| profil → /discover | 20 → 20 | 5 → 6 | 178 → 172 ms | 248 → 211 ms |
+| /discover → accueil | 28 → 26 | 6 → 4 | 248 → 181 ms | 263 → 219 ms |
+
+- Les gains viennent surtout des requêtes lancées ensemble (vagues) et des lignes non chargées
+  (trois blocs de l'accueil, discographie limitée à 12 par groupe). Par page de membre, la
+  session coûte 3 requêtes (session, utilisateur, profil), partagées par l'en-tête et la page.
+- Pas de squelette (`loading.tsx`) : essayé, il faisait attendre les pages rapides au moins
+  300 ms (plancher de React après un `Suspense`) et bloquait l'affichage sans JavaScript
+  (`docs/pieges.md`). Un clic lent affiche à la place une fine barre en haut après 150 ms.
+- Préchargement : 17 à 21 requêtes au chargement d'une page, 31 à 46 après défilement
+  (accueil, /discover, profils remplis), avant. Après : 4 ou 5 (les liens de l'en-tête) ; les
+  autres liens préchargent au survol, au focus ou au toucher (`apps/web/src/i18n/link.tsx`).
+  Chaque préchargement est une requête serveur, donc une invocation dans le quota Vercel.
+- Pool postgres.js laissé à `max: 5`. La session de Better Auth était déjà lue une seule fois
+  par requête : mesurer avant de « corriger ».
+- Transitions de page (étape 6) : abandonnées, aucune régression mais elles ne démarraient
+  presque jamais en production (issue #29, `docs/pieges.md`).
+
+### Mesure : coût d'une frappe dans la recherche (jalon 12, étape 1)
+
+`apps/web/scripts/measure-search.mjs` (`docs/environnement.md`), base démo sur Neon de dev.
+Temps entre la dernière frappe et les résultats affichés (frappes espacées de 70 ms).
+
+| | Avant : page `/search` rendue à chaque pause | Après : suggestions |
+| --- | --- | --- |
+| Affichage (build de prod local) | 269 à 314 ms (1 258 à froid) | ≈ 133 ms (≈ 190 à froid) |
+| Requêtes serveur | 1 rendu complet (session + recherche + page) par pause | 1 ou 2 par recherche (`/api/search/suggest`), une seule si la frappe ne s'arrête pas |
+| Temps en base par requête | — | ≈ 53 ms, une seule requête SQL (surtout l'aller-retour réseau) |
+| CPU serveur par requête | — | ≈ 1 à 9 ms (moyenne ; Windows compte par tranches de 15,6 ms) |
+| Réponse | page RSC | 450 à 900 octets de JSON |
+
+- Une suggestion déjà vue par le CDN (60 s, puis 10 min servie périmée pendant le recalcul)
+  ne coûte rien au serveur ni à la base. Le cache n'existe qu'avec une règle Cloudflare
+  (`docs/mise-en-ligne.md` § 11) : sans elle, chaque frappe après 200 ms de pause est une
+  invocation.
+- Ordre de grandeur sans cache : 10 recherches par membre actif et par jour × 2 requêtes ×
+  10 ms ≈ 0,2 s de CPU par membre et par mois, négligeable devant les pages (≈ 50 ms chacune).
+- Limite par IP : 30 d'un coup, puis 3/s ; au-delà, 429 sans toucher la base.
+
 ### Tableau des seuils
 
 | Service | Limite gratuite | Ce qui la consomme | Casse vers… (estimation) | Ce qui se passe | Sortie |

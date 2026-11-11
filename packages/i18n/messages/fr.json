@@ -57,6 +57,29 @@
     "clear": "Effacer la note",
     "keyboardHint": "Flèches pour ajuster par demi-étoile, Suppr pour effacer."
   },
+  "shortcuts": {
+    "title": "Raccourcis clavier",
+    "open": "Raccourcis clavier",
+    "close": "Fermer",
+    "intro": "Une seule touche, quand tu n'écris pas dans un champ et qu'aucune fenêtre n'est ouverte.",
+    "search": "Chercher un disque, un artiste ou un membre",
+    "help": "Ouvrir cette aide",
+    "escKey": "Échap",
+    "closeKey": "Fermer une fenêtre",
+    "pageTitle": "Sur la fiche d'un album ou d'un morceau",
+    "signInToRate": "Connecte-toi pour noter et mettre des coups de cœur au clavier.",
+    "rate": "Noter de 1 à 5 étoiles",
+    "clear": "Retirer ta note",
+    "like": "Ajouter ou retirer le coup de cœur",
+    "halfStars": "Sur les étoiles : ajuster par demi-étoile",
+    "toggleLabel": "Raccourcis d'une touche",
+    "toggleHint": "Mémorisé sur cet appareil. Désactivés, /, les chiffres, 0, L et ? ne font plus rien.",
+    "settingsNote": "Ce réglage est aussi dans tes <link>réglages</link>.",
+    "rated": "Noté {stars} sur 5",
+    "unrated": "Note retirée",
+    "liked": "Coup de cœur ajouté",
+    "unliked": "Coup de cœur retiré"
+  },
   "home": {
     "kicker": "Il est tard, la ville dort",
     "title": "Qu'as-tu écouté ce soir ?",
@@ -87,8 +110,7 @@
       "wantToListen": "À écouter",
       "log": "Journaliser…",
       "signIn": "Connecte-toi pour garder une trace de tes écoutes.",
-      "signInLink": "Se connecter",
-      "error": "Ça n'a pas marché. Réessaie."
+      "signInLink": "Se connecter"
     },
     "releasedIn": "Sorti en {date}",
     "dateUnknown": "Date de sortie inconnue",
@@ -134,9 +156,6 @@
     "edit": "Modifier",
     "back": "Revenir à la liste",
     "delete": "Supprimer la liste",
-    "deleteConfirm": "Supprimer « {title} » ? Ses j'aime et ses commentaires partiront avec elle.",
-    "deleteConfirmButton": "Supprimer pour de bon",
-    "cancel": "Annuler",
     "pageTitle": "{title}, une liste de {name}",
     "updated": "Mise à jour le {date}",
     "empty": "Cette liste est encore vide.",
@@ -341,7 +360,8 @@
     "timeZoneHint": "Sert à dater tes écoutes « aujourd'hui ».",
     "blocksTitle": "Membres bloqués",
     "blocksBody": "Les membres que tu as bloqués ne peuvent plus te suivre, aimer ni commenter tes critiques.",
-    "blocksLink": "Gérer mes blocages"
+    "blocksLink": "Gérer mes blocages",
+    "shortcutsTitle": "Raccourcis clavier"
   },
   "errors": {
     "UNAUTHENTICATED": "Connecte-toi pour continuer.",
@@ -418,7 +438,9 @@
     "empty": "Aucun disque connu pour l'instant.",
     "pendingMember": "La discographie n'a pas encore pu être importée depuis MusicBrainz. Recharge la page dans un instant.",
     "pendingVisitor": "Connecte-toi pour importer toute la discographie depuis MusicBrainz.",
-    "imageAlt": "{name}"
+    "imageAlt": "{name}",
+    "seeAll": "Tout voir ({count})",
+    "seeLess": "Voir moins"
   },
   "track": {
     "kicker": "Morceau",
@@ -456,6 +478,20 @@
       "release_group": "Disque",
       "artist": "Artiste",
       "recording": "Morceau"
+    },
+    "suggest": {
+      "label": "Suggestions",
+      "hint": "Les suggestions s'affichent dès deux lettres. Flèches pour choisir, Entrée pour ouvrir, Suppr pour retirer une recherche récente.",
+      "best": "Meilleur résultat",
+      "members": "Membres",
+      "recent": "Recherches récentes",
+      "remove": "Retirer « {q} »",
+      "seeAll": "Voir tous les résultats",
+      "more": "Plus de résultats",
+      "nothing": "Rien dans Spleen pour l'instant",
+      "noMember": "Personne de ce nom sur Spleen",
+      "count": "{count, plural, =0 {Aucune suggestion} one {# suggestion} other {# suggestions}}",
+      "close": "Fermer"
     }
   },
   "listening": {
@@ -486,7 +522,6 @@
     "saving": "Enregistrement…",
     "cancel": "Annuler",
     "delete": "Supprimer",
-    "deleteConfirm": "Vraiment supprimer ?",
     "myListens": "Tes écoutes",
     "quickListen": "Note rapide, sans date",
     "edit": "Modifier",
@@ -545,10 +580,7 @@
     "save": "Enregistrer",
     "saving": "Enregistrement…",
     "cancel": "Annuler",
-    "delete": "Supprimer la critique",
-    "deleteConfirm": "Supprimer pour de bon ?",
-    "deleteYes": "Oui, supprimer",
-    "deleteNo": "Non, la garder"
+    "delete": "Supprimer la critique"
   },
   "social": {
     "follow": "Suivre",
@@ -630,9 +662,6 @@
     "save": "Enregistrer",
     "cancel": "Annuler",
     "delete": "Supprimer",
-    "deleteConfirm": "Supprimer ce commentaire ?",
-    "deleteYes": "Oui, supprimer",
-    "deleteNo": "Non",
     "edited": "modifié",
     "signIn": "Connecte-toi pour commenter.",
     "unavailable": "Les commentaires ne sont pas disponibles ici.",
@@ -1023,5 +1052,16 @@
     "retry": "Réessayer",
     "back": "Retourner à l'accueil",
     "reference": "Référence de l'erreur : {digest}"
+  },
+  "undo": {
+    "region": "Suppressions à annuler",
+    "undo": "Annuler",
+    "deleted": {
+      "list": "Liste « {title} » supprimée",
+      "review": "Critique supprimée",
+      "comment": "Commentaire supprimé",
+      "entry": "Écoute supprimée"
+    },
+    "failed": "Rien n'a été supprimé. {reason}"
   }
 }

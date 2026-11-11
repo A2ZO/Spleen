@@ -1,12 +1,11 @@
 import { consumeRateLimit } from "@spleen/infra/rate-limit";
 import {
-  audienceLangSchema,
   commentCreateSchema,
   commentListSchema,
   commentUpdateSchema,
   cursorPageSchema,
-  cursorSchema,
   likeSetSchema,
+  popularFeedSchema,
   recentReleasesSchema,
   topRatedSchema,
   trendsSchema,
@@ -26,6 +25,7 @@ import {
   catalogKinds,
   catalogImportSchema,
   catalogSearchSchema,
+  catalogSuggestSchema,
   deleteAccountSchema,
   entryCreateSchema,
   entryUpdateSchema,
@@ -43,6 +43,7 @@ import {
   shelfReorderSchema,
   shelfSetSchema,
   slugSchema,
+  discographyGroupSchema,
   usernameSchema,
   wantToListenSchema,
   memberModerationSchema,
@@ -59,6 +60,7 @@ import {
   exportAccount,
   getMe,
   onboard,
+  usernameChangeAvailableAt,
   removeAvatar,
   setAvatar,
   updateProfile,
@@ -75,6 +77,7 @@ import {
 } from "./lib/catalog/pages";
 import { tryCatalog, withCatalogErrors } from "./lib/catalog/provider";
 import { searchCatalog, searchRemote } from "./lib/catalog/search";
+import { suggestCatalog } from "./lib/catalog/suggest";
 import { genreOptions, recentReleases, topRated, weeklyTrends } from "./lib/discovery";
 import { checkHealth } from "./lib/health";
 import { ogCard, seoPage, sitemapEntries, sitemapFiles } from "./lib/seo";
@@ -259,9 +262,9 @@ export const appRouter = router({
     }),
     /** Most liked and commented reviews of the week, in one language. */
     popular: publicProcedure
-      .input(z.object({ lang: audienceLangSchema, cursor: cursorSchema.optional() }))
+      .input(popularFeedSchema)
       .query(async ({ input, ctx }) =>
-        popularFeed(ctx.db(), await viewerOf(ctx), input.lang, input.cursor, ctx.now),
+        popularFeed(ctx.db(), await viewerOf(ctx), input.lang, input.cursor, ctx.now, input.size),
       ),
     /** Active members to follow (shown when the friends feed is empty). */
     suggestions: protectedProcedure.query(({ ctx }) =>
@@ -273,13 +276,13 @@ export const appRouter = router({
     trends: publicProcedure
       .input(trendsSchema)
       .query(async ({ input, ctx }) =>
-        weeklyTrends(ctx.db(), input.lang, await viewerOf(ctx), ctx.now),
+        weeklyTrends(ctx.db(), input.lang, await viewerOf(ctx), ctx.now, input.size),
       ),
     /** Albums and EPs (or one type) out in the last 90 days, newest first. */
     recent: publicProcedure
       .input(recentReleasesSchema)
       .query(async ({ input, ctx }) =>
-        recentReleases(ctx.db(), await viewerOf(ctx), ctx.now, input.type, input.page),
+        recentReleases(ctx.db(), await viewerOf(ctx), ctx.now, input.type, input.page, input.size),
       ),
     /** Top rated by Bayesian score, by genre and year or decade. */
     topRated: publicProcedure
@@ -376,7 +379,11 @@ export const appRouter = router({
   release: router({
     /** A stub (known from a discography only) is completed when a member opens it. */
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
-      const found = await releaseIdBySlug(ctx.db(), input.slug);
+      // The session is read while the release row is.
+      const [found, viewer] = await Promise.all([
+        releaseIdBySlug(ctx.db(), input.slug),
+        viewerOf(ctx),
+      ]);
       if (!found) return null;
       const user = found.mbid && !found.tracklistImportedAt ? await ctx.user() : null;
       if (user && found.mbid) {
@@ -385,26 +392,37 @@ export const appRouter = router({
           importReleaseGroup(ctx.db(), ctx.catalog(), mbid, { requestedById: user.id }),
         );
       }
-      const viewer = await viewerOf(ctx);
-      const detail = await getReleaseDetail(ctx.db(), input.slug, viewer.id);
+      // After an import the row changed: read it again.
+      const known = user ? undefined : found;
+      const detail = await getReleaseDetail(ctx.db(), input.slug, viewer.id, known);
       return detail && blindReleaseDetail(ctx.db(), viewer.blind, detail);
     }),
   }),
   artist: router({
     /** The discography is imported when a member first opens the page. */
-    bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
-      const found = await artistIdBySlug(ctx.db(), input.slug);
-      if (!found) return null;
-      const user = found.mbid && !found.discographyImportedAt ? await ctx.user() : null;
-      if (user && found.mbid) {
-        const mbid = found.mbid;
-        await tryCatalog(() =>
-          importArtist(ctx.db(), ctx.catalog(), mbid, { requestedById: user.id }),
+    bySlug: publicProcedure
+      .input(z.object({ slug: slugSchema, all: discographyGroupSchema.optional() }))
+      .query(async ({ input, ctx }) => {
+        const [found, blind] = await Promise.all([
+          artistIdBySlug(ctx.db(), input.slug),
+          blindOf(ctx),
+        ]);
+        if (!found) return null;
+        const user = found.mbid && !found.discographyImportedAt ? await ctx.user() : null;
+        if (user && found.mbid) {
+          const mbid = found.mbid;
+          await tryCatalog(() =>
+            importArtist(ctx.db(), ctx.catalog(), mbid, { requestedById: user.id }),
+          );
+        }
+        const detail = await getArtistDetail(
+          ctx.db(),
+          input.slug,
+          user ? undefined : found,
+          input.all,
         );
-      }
-      const detail = await getArtistDetail(ctx.db(), input.slug);
-      return detail && blindArtistDetail(ctx.db(), await blindOf(ctx), detail);
-    }),
+        return detail && blindArtistDetail(ctx.db(), blind, detail);
+      }),
   }),
   track: router({
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
@@ -422,6 +440,13 @@ export const appRouter = router({
       const results = await searchCatalog(ctx.db(), input);
       return blindSearchResults(ctx.db(), await blindOf(ctx), results);
     }),
+    /**
+     * Instant suggestions, local catalog only. Never reads the viewer (no session, no blind
+     * mode, no ratings): the answer is cached by the CDN and must be the same for everyone.
+     */
+    suggest: publicProcedure
+      .input(catalogSuggestSchema)
+      .query(({ input, ctx }) => suggestCatalog(ctx.db(), input.q)),
     /** MusicBrainz search, for members, when the local catalog lacks something. */
     searchRemote: protectedProcedure.input(catalogSearchSchema).query(async ({ input, ctx }) => {
       const key = `catalog-search:${ctx.user.id}`;
@@ -537,7 +562,9 @@ export const appRouter = router({
     /** The member's state and listens for an item page (null when signed out). */
     myState: publicProcedure.input(listenTargetSchema).query(async ({ input, ctx }) => {
       const user = await ctx.user();
-      return user ? getMyItemState(ctx.db(), user.id, input, ctx.now) : null;
+      if (!user) return null;
+      const profile = (await ctx.account())?.profile;
+      return getMyItemState(ctx.db(), user.id, input, ctx.now, profile);
     }),
     /** Quick rating (null clears it) on the member's undated listen; `order` drops stale ones. */
     quickRate: listenWrite
@@ -606,11 +633,13 @@ export const appRouter = router({
   }),
   account: router({
     /** Null when signed out; `profile` is null until onboarding is done. */
-    me: publicProcedure.query(async ({ ctx }) => {
-      const user = await ctx.user();
-      if (!user) return null;
-      return getMe(ctx.db(), user, ctx.now, (await ctx.account())?.role === "admin");
-    }),
+    me: publicProcedure.query(({ ctx }) =>
+      // Once per request: the header and the page both ask for it.
+      ctx.memo("me", () => getMe(ctx.account)),
+    ),
+    usernameChangeAvailableAt: protectedProcedure.query(({ ctx }) =>
+      usernameChangeAvailableAt(ctx.db(), ctx.user.id, ctx.now),
+    ),
     /**
      * The caller's suspension and its reason: null when signed out or not suspended. Only the
      * signed-in member sees it (the sign-in page never tells whether an address is suspended).

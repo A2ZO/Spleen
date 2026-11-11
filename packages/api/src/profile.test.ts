@@ -271,6 +271,7 @@ describe("review edit screen", () => {
       id,
       body: "Pluvieux et royal.",
       release: { id: leRoi },
+      target: { kind: "release", id: leRoi },
     });
     const other = await member();
     expect(await other.call().review.mine({ id })).toBeNull();

@@ -57,6 +57,29 @@
     "clear": "Clear rating",
     "keyboardHint": "Arrow keys adjust by half a star, Delete clears."
   },
+  "shortcuts": {
+    "title": "Keyboard shortcuts",
+    "open": "Keyboard shortcuts",
+    "close": "Close",
+    "intro": "Single keys, when you're not typing in a field and no window is open.",
+    "search": "Search for a record, an artist or a member",
+    "help": "Open this help",
+    "escKey": "Esc",
+    "closeKey": "Close a window",
+    "pageTitle": "On an album or track page",
+    "signInToRate": "Sign in to rate and heart records from the keyboard.",
+    "rate": "Rate 1 to 5 stars",
+    "clear": "Remove your rating",
+    "like": "Add or remove the heart",
+    "halfStars": "On the stars: adjust by half a star",
+    "toggleLabel": "Single-key shortcuts",
+    "toggleHint": "Remembered on this device. When off, /, the digits, 0, L and ? do nothing.",
+    "settingsNote": "This setting is also in your <link>settings</link>.",
+    "rated": "Rated {stars} out of 5",
+    "unrated": "Rating removed",
+    "liked": "Heart added",
+    "unliked": "Heart removed"
+  },
   "home": {
     "kicker": "It's late, the city is asleep",
     "title": "What did you listen to tonight?",
@@ -87,8 +110,7 @@
       "wantToListen": "Listen later",
       "log": "Log…",
       "signIn": "Sign in to keep track of what you listen to.",
-      "signInLink": "Sign in",
-      "error": "That didn't work. Try again."
+      "signInLink": "Sign in"
     },
     "releasedIn": "Released in {date}",
     "dateUnknown": "Release date unknown",
@@ -134,9 +156,6 @@
     "edit": "Edit",
     "back": "Back to the list",
     "delete": "Delete list",
-    "deleteConfirm": "Delete “{title}”? Its likes and comments go with it.",
-    "deleteConfirmButton": "Delete for good",
-    "cancel": "Cancel",
     "pageTitle": "{title}, a list by {name}",
     "updated": "Updated on {date}",
     "empty": "This list is still empty.",
@@ -341,7 +360,8 @@
     "timeZoneHint": "Used to date your listens \"today\".",
     "blocksTitle": "Blocked members",
     "blocksBody": "Members you blocked can no longer follow you, like or comment on your reviews.",
-    "blocksLink": "Manage blocked members"
+    "blocksLink": "Manage blocked members",
+    "shortcutsTitle": "Keyboard shortcuts"
   },
   "errors": {
     "UNAUTHENTICATED": "Sign in to continue.",
@@ -418,7 +438,9 @@
     "empty": "No known records yet.",
     "pendingMember": "The discography could not be imported from MusicBrainz yet. Reload the page in a moment.",
     "pendingVisitor": "Sign in to import the whole discography from MusicBrainz.",
-    "imageAlt": "{name}"
+    "imageAlt": "{name}",
+    "seeAll": "See all ({count})",
+    "seeLess": "See less"
   },
   "track": {
     "kicker": "Track",
@@ -456,6 +478,20 @@
       "release_group": "Record",
       "artist": "Artist",
       "recording": "Track"
+    },
+    "suggest": {
+      "label": "Suggestions",
+      "hint": "Suggestions show from two letters. Arrows to choose, Enter to open, Delete to remove a recent search.",
+      "best": "Top result",
+      "members": "Members",
+      "recent": "Recent searches",
+      "remove": "Remove “{q}”",
+      "seeAll": "See all results",
+      "more": "More results",
+      "nothing": "Nothing in Spleen yet",
+      "noMember": "Nobody by that name on Spleen",
+      "count": "{count, plural, =0 {No suggestions} one {# suggestion} other {# suggestions}}",
+      "close": "Close"
     }
   },
   "listening": {
@@ -486,7 +522,6 @@
     "saving": "Saving…",
     "cancel": "Cancel",
     "delete": "Delete",
-    "deleteConfirm": "Really delete?",
     "myListens": "Your listens",
     "quickListen": "Quick rating, no date",
     "edit": "Edit",
@@ -545,10 +580,7 @@
     "save": "Save",
     "saving": "Saving…",
     "cancel": "Cancel",
-    "delete": "Delete the review",
-    "deleteConfirm": "Delete it for good?",
-    "deleteYes": "Yes, delete",
-    "deleteNo": "No, keep it"
+    "delete": "Delete the review"
   },
   "social": {
     "follow": "Follow",
@@ -630,9 +662,6 @@
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "deleteConfirm": "Delete this comment?",
-    "deleteYes": "Yes, delete",
-    "deleteNo": "No",
     "edited": "edited",
     "signIn": "Sign in to comment.",
     "unavailable": "Comments are not available here.",
@@ -1023,5 +1052,16 @@
     "retry": "Try again",
     "back": "Back to home",
     "reference": "Error reference: {digest}"
+  },
+  "undo": {
+    "region": "Deletions you can undo",
+    "undo": "Undo",
+    "deleted": {
+      "list": "List “{title}” deleted",
+      "review": "Review deleted",
+      "comment": "Comment deleted",
+      "entry": "Listen deleted"
+    },
+    "failed": "Nothing was deleted. {reason}"
   }
 }

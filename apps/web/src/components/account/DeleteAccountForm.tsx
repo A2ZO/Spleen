@@ -6,12 +6,15 @@ import { useActionState, useState } from "react";
 import { deleteAccountAction, type FormState } from "@/app/[locale]/settings/actions";
 import { Button } from "@/components/ui/Button";
 import { FormMessage, TextField } from "@/components/ui/Field";
+import { useNavigationWhile } from "@/i18n/navigation";
 
 export function DeleteAccountForm({ username, locale }: { username: string; locale: string }) {
   const t = useTranslations("settings");
   const te = useTranslations("errors");
   const [typed, setTyped] = useState("");
   const [state, action, pending] = useActionState<FormState, FormData>(deleteAccountAction, {});
+  // Success redirects to the home page.
+  useNavigationWhile(pending);
   const confirmed = typed.trim().toLowerCase() === username;
 
   return (

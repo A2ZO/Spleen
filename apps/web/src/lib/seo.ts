@@ -1,5 +1,6 @@
 import "server-only";
 
+import type { SeoPage } from "@spleen/api";
 import type { Locale } from "@spleen/i18n";
 import { siteUrl } from "@spleen/infra/config";
 import type { Metadata } from "next";
@@ -12,7 +13,9 @@ import { getPublicApi } from "@/server/api";
  * Search and sharing metadata of a page: canonical and hreflang links (FR / EN, from
  * BETTER_AUTH_URL), robots meta, and the Open Graph image. Whether a page may be indexed and
  * whether it has an image comes from the API (`seo.page`, same rule as the sitemap), asked
- * without a session so it never depends on who is looking.
+ * without a session so it never depends on who is looking. Album, artist and profile pages read
+ * it with their data (`seo` field, same session-independent rule) and pass it as `page`, which
+ * saves a query.
  */
 
 export type SeoSubject = {
@@ -47,9 +50,20 @@ const OG_SIZE = { width: 1200, height: 630 };
 export async function seoMetadata(
   locale: Locale,
   path: string,
-  options: { subject?: SeoSubject; noindex?: boolean; title?: string; description?: string } = {},
+  options: {
+    subject?: SeoSubject;
+    /** `seo.page` of the subject, when the page already read it. */
+    page?: SeoPage | null;
+    noindex?: boolean;
+    title?: string;
+    description?: string;
+  } = {},
 ): Promise<Metadata> {
-  const page = options.subject ? await getPublicApi().seo.page(options.subject) : null;
+  const page = !options.subject
+    ? null
+    : options.page !== undefined
+      ? options.page
+      : await getPublicApi().seo.page(options.subject);
   const indexable = !options.noindex && (!options.subject || page?.indexable === true);
   const image =
     options.subject && page?.og

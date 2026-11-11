@@ -229,3 +229,38 @@ describe("artist.bySlug and track.bySlug", () => {
     expect(await api(null).track.bySlug({ slug: "nothing" })).toBeNull();
   });
 });
+
+describe("artist.bySlug discography groups", () => {
+  it("shows the newest 12 per group, counts them all, and lists one group in full", async () => {
+    const [artist] = await handle.db
+      .insert(schema.artists)
+      .values({ slug: "prolific-one", name: "Prolific One" })
+      .returning();
+    const rows = await handle.db
+      .insert(schema.releases)
+      .values([
+        ...Array.from({ length: 13 }, (_, i) => ({
+          slug: `prolific-album-${i}`,
+          title: `Album ${i}`,
+          type: "album" as const,
+          releaseDate: `${2000 + i}-01-01`,
+        })),
+        { slug: "prolific-single", title: "Single", type: "single" as const },
+        { slug: "prolific-live", title: "Live", type: "album" as const, secondaryTypes: ["live"] },
+      ])
+      .returning({ id: schema.releases.id });
+    await handle.db
+      .insert(schema.releaseArtists)
+      .values(rows.map((r, position) => ({ releaseId: r.id, artistId: artist!.id, position })));
+
+    const page = await api(null).artist.bySlug({ slug: "prolific-one" });
+    expect(page!.discography.albums).toHaveLength(12);
+    expect(page!.discography.albums[0]!.title).toBe("Album 12");
+    expect(page!.discographyTotals).toEqual({ albums: 13, eps: 0, singles: 1, other: 1 });
+    expect(page!.discography.other.map((r) => r.title)).toEqual(["Live"]);
+
+    const full = await api(null).artist.bySlug({ slug: "prolific-one", all: "albums" });
+    expect(full!.discography.albums).toHaveLength(13);
+    expect(full!.discography.albums.at(-1)!.title).toBe("Album 0");
+  });
+});

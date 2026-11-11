@@ -1,6 +1,9 @@
+"use client";
+
 import { useId, type ComponentProps, type ReactNode } from "react";
 
 import { cn } from "@/lib/cn";
+import { useTypedBeforeHydration } from "@/lib/typed-before-hydration";
 
 const control =
   "w-full rounded-md border border-border bg-surface px-3 py-2 text-fg placeholder:text-fg-muted/70 focus:border-star focus:outline-none aria-[invalid=true]:border-danger";
@@ -52,12 +55,14 @@ export function TextField({
   success,
   className,
   ...props
-}: FieldProps & ComponentProps<"input">) {
+}: FieldProps & Omit<ComponentProps<"input">, "ref">) {
   const id = useId();
+  const ref = useTypedBeforeHydration(props.value, props.onChange);
   const described = error || success || hint ? `${id}-msg` : undefined;
   return (
     <FieldShell id={id} label={label} hint={hint} error={error} success={success}>
       <input
+        ref={ref}
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={described}
@@ -74,11 +79,13 @@ export function TextArea({
   error,
   className,
   ...props
-}: FieldProps & ComponentProps<"textarea">) {
+}: FieldProps & Omit<ComponentProps<"textarea">, "ref">) {
   const id = useId();
+  const ref = useTypedBeforeHydration(props.value, props.onChange);
   return (
     <FieldShell id={id} label={label} hint={hint} error={error}>
       <textarea
+        ref={ref}
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={error || hint ? `${id}-msg` : undefined}

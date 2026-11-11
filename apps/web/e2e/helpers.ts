@@ -1,7 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-import { createDb, isPostgresUrl, loadRootEnv, schema, setAdminRole } from "@spleen/db";
+import { createDb, eq, isPostgresUrl, loadRootEnv, schema, setAdminRole } from "@spleen/db";
 import { expect, type Page, type TestInfo } from "./fixtures";
 
 // Without BREVO_API_KEY, the dev server writes emails to <repo>/.data/outbox (see @spleen/infra).
@@ -68,8 +68,8 @@ export const TERMS_BOX = "J'ai 15 ans ou plus et j'accepte les conditions d'util
 /** Fills the first-visit form (any sign-in path ends there) and lands on the new profile. */
 export async function onboard(page: Page, username: string, displayName: string) {
   await expect(page).toHaveURL(/\/fr\/welcome$/);
-  // After a full load (the code path) the URL matches before hydration, which resets a
-  // controlled field typed into too early (issue #24): type once React has taken over.
+  // After a full load (the code path) the URL matches before hydration: the typed text now
+  // survives it (issue #24), but the live check only starts once React has taken over.
   await waitForHydration(page);
   const field = page.getByLabel("Pseudo");
   await field.fill(username);
@@ -106,6 +106,26 @@ export async function grantAdmin(username: string): Promise<boolean> {
   const handle = createDb(url);
   try {
     return (await setAdminRole(handle.db, emailOf(username), true)) === "granted";
+  } finally {
+    await handle.close();
+  }
+}
+
+/**
+ * State of the global MusicBrainz gate (`rate_limits` row "musicbrainz"): every provider call
+ * moves it. Undefined on a PGlite database (it belongs to the dev server process).
+ */
+export async function musicBrainzGate(): Promise<string | null | undefined> {
+  loadRootEnv();
+  const url = process.env.DATABASE_URL;
+  if (!isPostgresUrl(url)) return undefined;
+  const handle = createDb(url);
+  try {
+    const [row] = await handle.db
+      .select({ at: schema.rateLimits.nextAllowedAt })
+      .from(schema.rateLimits)
+      .where(eq(schema.rateLimits.key, "musicbrainz"));
+    return row?.at?.toISOString() ?? null;
   } finally {
     await handle.close();
   }
@@ -149,3 +169,105 @@ export async function throwawayReleases(
     await handle.close();
   }
 }
+
+/** Server Action calls of the page (POST with a `next-action` header). */
+const isAction = (request: { method(): string; headers(): Record<string, string> }) =>
+  request.method() === "POST" && "next-action" in request.headers();
+
+/**
+ * The answer to the next Server Action call. Reactions leave after a short delay
+ * (`GROUP_MS`): wait for it before a `page.goto` or `reload`, which would drop them.
+ */
+export const actionAnswered = (page: Page) =>
+  page.waitForResponse((response) => isAction(response.request()));
+
+/** Counts the Server Action calls of the page from now on, sent and answered. */
+export function trackActions(page: Page) {
+  const counts = { sent: 0, answered: 0 };
+  page.on("request", (request) => {
+    if (isAction(request)) counts.sent += 1;
+  });
+  page.on("requestfinished", (request) => {
+    if (isAction(request)) counts.answered += 1;
+  });
+  page.on("requestfailed", (request) => {
+    if (isAction(request)) counts.answered += 1;
+  });
+  return {
+    sent: () => counts.sent,
+    /** Waits until `n` calls were sent and every one of them answered. */
+    settled: async (n: number) => {
+      await expect.poll(() => counts.sent).toBe(n);
+      await expect.poll(() => counts.answered).toBe(n);
+    },
+  };
+}
+
+/** Holds every Server Action call until `release()`: what the page shows before the answer. */
+export async function holdActions(page: Page) {
+  let release!: () => void;
+  const gate = new Promise<void>((resolve) => (release = resolve));
+  await page.route("**/*", async (route) => {
+    if (!isAction(route.request())) return route.fallback();
+    await gate;
+    await route.continue();
+  });
+  return async () => {
+    release();
+    await page.unrouteAll({ behavior: "wait" });
+  };
+}
+
+/** Answers every Server Action call with a 500 (server down) until the returned undo. */
+export async function failActions(page: Page) {
+  await page.route("**/*", (route) =>
+    isAction(route.request()) ? route.fulfill({ status: 500, body: "" }) : route.fallback(),
+  );
+  return () => page.unrouteAll({ behavior: "wait" });
+}
+
+/** Runs `change` on the dev server's Postgres database; false on PGlite (its own process). */
+async function onDevDatabase(
+  change: (db: ReturnType<typeof createDb>["db"]) => Promise<void>,
+): Promise<boolean> {
+  loadRootEnv();
+  const url = process.env.DATABASE_URL;
+  if (!isPostgresUrl(url)) return false;
+  const handle = createDb(url);
+  try {
+    await change(handle.db);
+    return true;
+  } finally {
+    await handle.close();
+  }
+}
+
+async function userIdOf(db: ReturnType<typeof createDb>["db"], username: string) {
+  const [row] = await db
+    .select({ id: schema.profiles.userId })
+    .from(schema.profiles)
+    .where(eq(schema.profiles.username, username));
+  return row!.id;
+}
+
+/** Spends the member's whole hourly budget of a write bucket (`spend()` in `root.ts`). */
+export const exhaustRateLimit = (username: string, bucket: string) =>
+  onDevDatabase(async (db) => {
+    const key = `${bucket}:${await userIdOf(db, username)}`;
+    await db
+      .insert(schema.rateLimits)
+      .values({ key, count: 100_000 })
+      .onConflictDoUpdate({
+        target: schema.rateLimits.key,
+        set: { count: 100_000, windowStart: new Date() },
+      });
+  });
+
+/** Suspends the member outside the site, keeping their session (as if it happened meanwhile). */
+export const suspendInDatabase = (username: string) =>
+  onDevDatabase(async (db) => {
+    await db
+      .update(schema.profiles)
+      .set({ suspendedAt: new Date() })
+      .where(eq(schema.profiles.username, username));
+  });

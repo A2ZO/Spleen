@@ -59,7 +59,7 @@ export default async function ReviewEditPage({ params }: Props) {
         </div>
       </header>
       <ReviewEditForm
-        review={{ id: review.id, body: review.body, lang: review.lang }}
+        review={{ id: review.id, body: review.body, lang: review.lang, target: review.target }}
         backHref={`/u/${me.profile.username}?tab=reviews`}
       />
     </div>

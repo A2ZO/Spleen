@@ -1,6 +1,6 @@
 import { test as base, type BrowserContext } from "@playwright/test";
 
-export { expect, type Browser, type Page, type TestInfo } from "@playwright/test";
+export { expect, type Browser, type Locator, type Page, type TestInfo } from "@playwright/test";
 
 /*
  * Every spec imports `test` from here: a Content Security Policy violation reported in the

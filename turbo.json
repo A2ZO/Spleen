@@ -18,6 +18,7 @@
     "S3_PUBLIC_URL",
     "MUSICBRAINZ_USER_AGENT",
     "NEON_MAIN_HOST",
+    "SPLEEN_QUERY_TRACE",
     "SERVICE_WORKER_DISABLED"
   ],
   "tasks": {

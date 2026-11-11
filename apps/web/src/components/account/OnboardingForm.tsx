@@ -6,7 +6,7 @@ import { useActionState, useSyncExternalStore, type ReactNode } from "react";
 import { checkUsername, onboardAction, type OnboardingState } from "@/app/[locale]/welcome/actions";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, FormMessage, TextField } from "@/components/ui/Field";
-import { Link } from "@/i18n/navigation";
+import { Link, useNavigationWhile } from "@/i18n/navigation";
 
 import { UsernameField } from "./UsernameField";
 
@@ -34,6 +34,8 @@ export function OnboardingForm({
   const t = useTranslations("welcome");
   const te = useTranslations("errors");
   const [state, action, pending] = useActionState<OnboardingState, FormData>(onboardAction, {});
+  // Success redirects to the profile: the new page comes with the action's answer.
+  useNavigationWhile(pending);
   const usernameError = state.field === "username" ? state.error : undefined;
   // The browser's zone (the server falls back to Europe/Paris before hydration).
   const timeZone = useSyncExternalStore(

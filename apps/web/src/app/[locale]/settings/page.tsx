@@ -7,6 +7,7 @@ import { DeleteAccountForm } from "@/components/account/DeleteAccountForm";
 import { ProfileForm } from "@/components/account/ProfileForm";
 import { SignOutButton } from "@/components/account/SignOutButton";
 import { UsernameForm } from "@/components/account/UsernameForm";
+import { ShortcutsToggle } from "@/components/layout/ShortcutsToggle";
 import { buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Link, redirect } from "@/i18n/navigation";
@@ -40,11 +41,15 @@ function Section({ id, title, children }: { id: string; title: string; children:
 
 export default async function SettingsPage({ params }: Props) {
   const locale = initRouteLocale((await params).locale);
-  const me = await (await getApi()).account.me();
+  const api = await getApi();
+  const me = await api.account.me();
   if (!me) return redirect({ href: "/sign-in", locale });
   if (!me.profile) return redirect({ href: "/welcome", locale });
   const { profile } = me;
-  const t = await getTranslations({ locale, namespace: "settings" });
+  const [t, renameAt] = await Promise.all([
+    getTranslations({ locale, namespace: "settings" }),
+    api.account.usernameChangeAvailableAt(),
+  ]);
 
   return (
     <div className="mx-auto max-w-2xl space-y-12 pb-8">
@@ -62,8 +67,12 @@ export default async function SettingsPage({ params }: Props) {
         <ProfileForm profile={profile} locale={locale} timeZones={timeZoneList(profile.timeZone)} />
       </Section>
 
+      <Section id="shortcuts" title={t("shortcutsTitle")}>
+        <ShortcutsToggle />
+      </Section>
+
       <Section id="username" title={t("usernameTitle")}>
-        <UsernameForm username={profile.username} availableAt={profile.usernameChangeAvailableAt} />
+        <UsernameForm username={profile.username} availableAt={renameAt} />
       </Section>
 
       <Section id="account" title={t("accountTitle")}>
@@ -71,7 +80,7 @@ export default async function SettingsPage({ params }: Props) {
           <dt className="text-sm text-fg-muted">{t("emailLabel")}</dt>
           <dd className="font-mono">{me.email}</dd>
         </dl>
-        <SignOutButton href={`/${locale}`} className="mt-5">
+        <SignOutButton href="/" className="mt-5">
           {t("signOut")}
         </SignOutButton>
       </Section>

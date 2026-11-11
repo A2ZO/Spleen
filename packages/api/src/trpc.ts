@@ -20,7 +20,11 @@ export interface Account {
   suspensionReason: string | null;
   /** Read in the same query: blind listening shapes most pages (`viewerOf`). */
   blindMode: boolean;
+  /** The whole profile row (null before onboarding), reused by `account.me`. */
+  profile: ProfileRow | null;
 }
+
+export type ProfileRow = typeof schema.profiles.$inferSelect;
 
 /** Request context; `now` is injectable so date-based logic stays testable. */
 export interface Context {
@@ -34,6 +38,19 @@ export interface Context {
   user: () => Promise<SessionUser | null>;
   /** The session's account, suspended or not (null when signed out). */
   account: () => Promise<Account | null>;
+  /**
+   * The raw session, suspended or not (null when signed out). Prefer `user()` / `account()`;
+   * this only lets a loader start a query in parallel with the profile read.
+   */
+  session: () => Promise<SessionUser | null>;
+  /**
+   * Per-request memo: `memo(key, fn)` runs `fn` once per context and returns the same value
+   * afterwards. Every mutation clears it (with `account` and `user`), so a read after a write
+   * in the same request sees the new data.
+   */
+  memo: <T>(key: string, fn: () => T) => T;
+  /** Clears the per-request memo (called after each mutation). */
+  forget: () => void;
   /** Transactional emails (suspension notices), created on first use. */
   mailer: () => Mailer;
   /** Where members contest a moderation decision (shown in notices), if configured. */
@@ -61,36 +78,42 @@ const once = <T>(fn: () => T): (() => T) => {
 };
 
 export function createContext(options: ContextOptions): Context {
-  const session = options.user ?? (async () => null);
-  const account = once(async (): Promise<Account | null> => {
-    const user = await session();
-    if (!user) return null;
-    const [row] = await options
-      .db()
-      .select({
-        role: schema.profiles.role,
-        suspendedAt: schema.profiles.suspendedAt,
-        suspensionReason: schema.profiles.suspensionReason,
-        blindMode: schema.profiles.blindMode,
-      })
-      .from(schema.profiles)
-      .where(eq(schema.profiles.userId, user.id));
-    return {
-      user,
-      role: row?.role ?? "member",
-      suspendedAt: row?.suspendedAt ?? null,
-      suspensionReason: row?.suspensionReason ?? null,
-      blindMode: row?.blindMode ?? false,
-    };
-  });
+  const store = new Map<string, unknown>();
+  const memo = <T>(key: string, fn: () => T): T => {
+    if (!store.has(key)) store.set(key, fn());
+    return store.get(key) as T;
+  };
+  // The session itself never changes within a request: it survives `forget()`.
+  const session = once(options.user ?? (async () => null));
+  const account = () =>
+    memo("account", async (): Promise<Account | null> => {
+      const user = await session();
+      if (!user) return null;
+      const [row] = await options
+        .db()
+        .select()
+        .from(schema.profiles)
+        .where(eq(schema.profiles.userId, user.id));
+      return {
+        user,
+        role: row?.role ?? "member",
+        suspendedAt: row?.suspendedAt ?? null,
+        suspensionReason: row?.suspensionReason ?? null,
+        blindMode: row?.blindMode ?? false,
+        profile: row ?? null,
+      };
+    });
   return {
     now: options.now ?? new Date(),
     db: options.db,
     account,
-    user: once(async () => {
+    session,
+    memo,
+    forget: () => store.clear(),
+    user: async () => {
       const found = await account();
       return found && !found.suspendedAt ? found.user : null;
-    }),
+    },
     contactEmail: options.contactEmail ?? null,
     mailer: once(
       options.mailer ??
@@ -116,7 +139,12 @@ export function createContext(options: ContextOptions): Context {
 const t = initTRPC.context<Context>().create();
 
 export const router = t.router;
-export const publicProcedure = t.procedure;
+/** Base of every procedure: a mutation clears the per-request memo once it is done. */
+export const publicProcedure = t.procedure.use(async ({ ctx, type, next }) => {
+  const result = await next();
+  if (type === "mutation") ctx.forget();
+  return result;
+});
 export const createCallerFactory = t.createCallerFactory;
 
 /** Throws a tRPC error whose message is a stable code the clients translate. */
@@ -125,7 +153,7 @@ export function fail(code: TRPCError["code"], message: ApiErrorCode): never {
 }
 
 /** Procedures for signed-in members: `ctx.user` is guaranteed (never a suspended account). */
-export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
+export const protectedProcedure = publicProcedure.use(async ({ ctx, next }) => {
   const user = await ctx.user();
   if (!user) {
     if (await ctx.account()) fail("FORBIDDEN", "ACCOUNT_SUSPENDED");
@@ -138,7 +166,7 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
  * Procedures a suspended account may still use: reading its suspension, and its data rights
  * (export, deletion). `ctx.user` is the session's member, suspended or not.
  */
-export const accountProcedure = t.procedure.use(async ({ ctx, next }) => {
+export const accountProcedure = publicProcedure.use(async ({ ctx, next }) => {
   const account = await ctx.account();
   if (!account) fail("UNAUTHORIZED", "UNAUTHENTICATED");
   return next({ ctx: { ...ctx, user: account.user, account } });

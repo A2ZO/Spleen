@@ -10,7 +10,9 @@ import { SuspendedNotice } from "@/components/account/SuspendedNotice";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { HydrationMarker } from "@/components/layout/HydrationMarker";
+import { NavigationBar } from "@/components/layout/NavigationBar";
 import { ServiceWorker } from "@/components/layout/ServiceWorker";
+import { UndoBanners } from "@/components/layout/UndoBanners";
 import { initRouteLocale } from "@/i18n/locale";
 import { COVER_ERROR_SCRIPT } from "@/lib/cover-errors";
 import { routing } from "@/i18n/routing";
@@ -19,6 +21,15 @@ import { getApi } from "@/server/api";
 import { serviceWorkerDisabled, siteUrl } from "@spleen/infra/config";
 
 import { fraunces, inter, plexMono } from "../fonts";
+// Reactions and deletions may leave after an internal navigation (`lib/use-instant-writes.ts`,
+// `lib/use-undoable-delete.ts`): the Server Action is then posted to the new page, which must
+// know it. Imported here, every page does
+// (otherwise Next forwards the call to a page that knows it: in dev that answered `{}` and
+// saved nothing, `docs/pieges.md`).
+import "./list/actions";
+import "./listening/actions";
+import "./review/actions";
+import "./social/actions";
 
 // No `generateStaticParams` here: reading the theme cookie makes every page dynamic anyway,
 // and in `next dev` it makes each first render rewrite `prerender-manifest.json` in place,
@@ -55,10 +66,13 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const locale = initRouteLocale((await params).locale);
-  const t = await getTranslations({ locale, namespace: "common" });
-  const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
   // A suspended member who signed in sees why on every page, and nothing else.
-  const suspension = await (await getApi()).account.suspension();
+  const [t, jar, suspension] = await Promise.all([
+    getTranslations({ locale, namespace: "common" }),
+    cookies(),
+    getApi().then((api) => api.account.suspension()),
+  ]);
+  const theme = parseTheme(jar.get(THEME_COOKIE)?.value);
 
   return (
     <html
@@ -77,11 +91,18 @@ export default async function LocaleLayout({
           >
             {t("skipToContent")}
           </a>
+          <NavigationBar />
           <Header minimal={suspension !== null} />
-          <main id="main" className="mx-auto max-w-6xl px-4 pt-8 sm:px-6 sm:pt-12">
+          {/* Focusable from code: where the focus goes when its element disappears (`UndoBanners`). */}
+          <main
+            id="main"
+            tabIndex={-1}
+            className="mx-auto max-w-6xl px-4 pt-8 outline-none sm:px-6 sm:pt-12"
+          >
             {suspension ? <SuspendedNotice suspension={suspension} locale={locale} /> : children}
           </main>
           <Footer />
+          <UndoBanners />
           <ServiceWorker enabled={!serviceWorkerDisabled()} />
           <HydrationMarker />
         </NextIntlClientProvider>

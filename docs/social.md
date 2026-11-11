@@ -64,6 +64,43 @@ Sujet = `{ kind: "review" | "list", id }` (listes : `docs/decouverte.md`). Pas d
 1 000 caractères max, modifiés par leur auteur seul (`edited_at` → « modifié »), supprimés
 (suppression douce, `deleted_at`) par leur auteur ou par l'auteur de la critique / liste.
 
+Like et suivi s'affichent au clic (file commune `use-instant-writes.ts`, détails dans
+`docs/ecoute.md` § « Réactions instantanées ») : compteur du like et nombre d'abonnés de
+l'en-tête du profil (`FollowerCountLink`) bougent tout de suite ; double clic = aucune requête,
+donc aucune notification créée puis retirée ; refus (bloqué, suspendu, 429) → retour en arrière
+et message. Limites : fermer l'onglet dans les 350 ms perd le clic ; les compteurs des onglets
+« abonnés / abonnements » des listes de membres bougent à la confirmation.
+
+### Supprimer avec « Annuler »
+
+Supprimer **son** contenu (liste, critique, commentaire, écoute) ne demande plus de
+confirmation : l'élément disparaît tout de suite et un bandeau « … supprimé · Annuler » reste
+8 s ; la suppression n'est **envoyée qu'à la fin du délai** (`apps/web/src/lib/use-undoable-delete.ts`,
+bandeaux `components/layout/UndoBanners.tsx` dans le layout `[locale]`). Rien ne change dans
+l'API ni la base (pas de restauration côté serveur : les cascades l'interdiraient). Bloquer un
+membre, supprimer son compte et toute la modération gardent leur confirmation.
+
+- Un bandeau par suppression, empilés en bas, 3 au plus (un 4e envoie le plus ancien tout de
+  suite). Région nommée, annonce `aria-live="polite"`. Survol ou focus dans les bandeaux :
+  tous les délais en pause. Échap ferme un bandeau **sans annuler** (la suppression part).
+- Lancée au clavier (`event.detail === 0`) : focus sur « Annuler » ; à la souris, focus sur
+  `#main` (l'élément caché l'emporterait).
+- Navigation interne : le bandeau et le délai continuent (le layout `[locale]` importe les
+  actions de listes, critiques, écoute et social). Fermer l'onglet ou recharger : rien n'est
+  supprimé (côté sûr, assumé).
+- Échec : l'élément réapparaît, message `undo.failed` + `errors.<code>` dans la zone des
+  bandeaux (8 s).
+- Une nouvelle écriture sur le **même disque / la même piste** (note rapide, cœur, « À écouter »,
+  « J'ai écouté », enregistrement de « Journaliser » avec sa critique, ouverture de la fenêtre)
+  envoie d'abord la suppression en attente et attend sa réponse (`flushScope`) : sinon la
+  suppression tardive effacerait la nouvelle note ou la nouvelle critique.
+- Limites assumées : pendant les 8 s, les compteurs calculés côté serveur comptent encore
+  l'élément (listes / critiques du profil, commentaires, moyenne et nombre de notes) ; pour une
+  écoute, note, cœur et « écouté » de la fiche bougent à la fin du délai (seule la ligne
+  disparaît tout de suite).
+- e2e : `apps/web/e2e/undo-delete.spec.ts` (horloge Playwright mise en pause avant la
+  suppression, délai écoulé avec `clock.runFor`).
+
 ## Notifications
 
 Une ligne par événement (`follow`, `like`, `comment`), créée dans la transaction de

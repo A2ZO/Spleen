@@ -91,6 +91,34 @@ describe("account.me", () => {
   });
 });
 
+describe("per-request memo", () => {
+  it("reads the caller's account once per request, and again after a mutation", async () => {
+    const user = await member("memoised");
+    const [release] = await handle.db.select().from(schema.releases).limit(1);
+    const select = vi.spyOn(handle.db, "select");
+    const caller = api(user);
+    const first = await caller.account.me();
+    const afterMe = select.mock.calls.length;
+    expect(await caller.account.me()).toBe(first);
+    await caller.listening.myState({ kind: "release", id: release!.id });
+    // `myState` reads its two tables and the quick-write fallback (`quickFallback`, same wave);
+    // neither it nor the second `me` reads the profile again.
+    expect(select.mock.calls.length - afterMe).toBe(3);
+    await caller.account.updateProfile({
+      displayName: "Mémo",
+      bio: "",
+      locale: "fr",
+      theme: "dark",
+      statsPrivate: false,
+      diaryPrivate: false,
+      blindMode: false,
+      timeZone: "Europe/Paris",
+    });
+    expect((await caller.account.me())?.profile?.displayName).toBe("Mémo");
+    select.mockRestore();
+  });
+});
+
 describe("account.onboard", () => {
   const input = {
     displayName: "Camille",
@@ -108,8 +136,8 @@ describe("account.onboard", () => {
       displayName: "Camille",
       locale: "en",
       theme: "light",
-      usernameChangeAvailableAt: null,
     });
+    expect(await api(user).account.usernameChangeAvailableAt()).toBeNull();
     const [row] = await handle.db
       .select()
       .from(schema.profiles)
@@ -158,9 +186,7 @@ describe("account.changeUsername", () => {
   it("renames at most once every 30 days and records the former username", async () => {
     const user = await member("alpha");
     await api(user).account.changeUsername({ username: "alpha_two" });
-    expect((await api(user).account.me())?.profile?.usernameChangeAvailableAt).toBe(
-      days(30).toISOString(),
-    );
+    expect(await api(user).account.usernameChangeAvailableAt()).toBe(days(30).toISOString());
     expect(
       await errorCode(() => api(user, days(29)).account.changeUsername({ username: "alpha3" })),
     ).toBe("USERNAME_COOLDOWN");

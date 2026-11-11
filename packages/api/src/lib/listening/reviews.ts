@@ -106,6 +106,9 @@ export async function getMyReview(db: Db, userId: string, id: string): Promise<M
   return {
     id: row.id,
     release: toReleaseCard(card),
+    target: row.releaseId
+      ? { kind: "release", id: row.releaseId }
+      : { kind: "track", id: row.trackId! },
     rating: row.rating,
     body: row.body,
     lang: row.lang as AudienceLang,

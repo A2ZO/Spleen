@@ -13,6 +13,9 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
 - Next 16 allows one dev server per app; Playwright reuses port 3000. Stopping turbo may
   leave `next` running on Windows: `Get-NetTCPConnection -LocalPort 3000` → `Stop-Process`.
   The dev log `apps/web/.next/dev/logs` can contain error details: never paste it as is.
+  Kill every stray `next` (`taskkill /F /T`) before `pnpm build`, and run `pnpm start` from
+  `apps/web`, not the root. An e2e run killed without output (exit 137) coincided with a
+  `pnpm dev` left on port 3000; check the port is free first.
 - pnpm `minimumReleaseAge` blocks packages published too recently: pin an older version
   rather than adding exclusions (`pnpm add` may write `minimumReleaseAgeExclude` into
   `pnpm-workspace.yaml` by itself: revert it). Native builds: `allowBuilds` there.
@@ -21,6 +24,7 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
 - Client components import `@spleen/api/errors` (or types only), never `@spleen/api`.
   drizzle-kit writes unformatted `migrations/meta/*.json`: run Prettier on them.
 - Backticks in `node -e` run; `Set-Content -Encoding utf8` adds a BOM; Python writes CRLF.
+  In the Bash tool (subagents too), `$env:X=…` is eaten: write `PLAYWRIGHT_CHANNEL=chrome pnpm …`.
 - next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`. Typed message
   keys: map dynamic values through typed helpers (`apps/web/src/lib/catalog-labels.ts`).
 - Strict Mode replays effects in dev: a `<dialog>` closed in an effect cleanup fires `close`
@@ -45,11 +49,13 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   once) must be set before the transition starts.
 - MusicBrainz often answers 503 even under 1 req/s (back-off + retries; next edition when one
   keeps failing). The gate lives in each database: never import on PGlite and Neon at once.
-- e2e after a full load (`window.location.assign`, as the sign-in code does): `toHaveURL` passes
-  before hydration, and hydration resets a controlled field typed into too early (empty
-  field, no error; issue #24). Wait for `html[data-hydrated]` (set by `HydrationMarker`) with
-  `waitForHydration()`, then type once (`onboard()` in `e2e/helpers.ts`); no retry loop, so a
-  real error fails with its message.
+- Text typed into a controlled field before hydration: React 19 leaves it in the DOM, but the
+  state still holds the server value and the next render wiped it (issue #24, fixed).
+  `TextField`, `TextArea` and `SearchBox` call `useTypedBeforeHydration()`
+  (`lib/typed-before-hydration.ts`), which hands the DOM value to `onChange` on mount; a new
+  controlled `<input>` outside them needs the same hook. Tested by `e2e/hydration.spec.ts`
+  (late scripts). In e2e, `toHaveURL` still passes before hydration: `waitForHydration()`
+  before clicking something that needs React.
 - Archive.org storage nodes answer 500 now and then, node by node (CAA redirects to them): the
   same cover can load in one browser and fail with `curl`. An `onError` handler alone is not a
   fallback: the image can fail before hydration (no handler yet) or without JavaScript, and
@@ -93,3 +99,35 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   fixtures with one `insert` (`quietMembers()` in `social.test.ts`) and keep one real API call.
   Faking only the JS clock (`vi.useFakeTimers({ toFake: ["Date"] })`) breaks feed orders: the
   database still stamps rows with its own `now()`. Fake both, or neither.
+- No `loading.tsx` and no `Suspense` fallback on pages. Once React has shown a fallback, it
+  waits at least 300 ms before revealing the content (`FALLBACK_THROTTLE_MS`), so a page ready
+  in 50 ms shows after ~330 ms (measured in step 0 of milestone 12, `scripts/measure.mjs`).
+  Streaming also breaks the page without JavaScript (the content stays in a hidden `div`, the
+  page shows "Loading…") and turns `notFound()` / `permanentRedirect()` into a 200. Feedback
+  for slow clicks comes from the navigation bar (`NavigationBar`, `useLinkStatus`) instead.
+- Measuring the suggestion route: a tight loop of calls hits the per-IP memory limiter (429
+  after 30) and skews the figures; space the samples (`measure-search.mjs` waits 400 ms). On
+  Windows `process.cpuUsage()` moves in ~15.6 ms ticks: average many calls, never read one.
+  To `EXPLAIN ANALYZE` the exact query, pass a fake `Db` that captures the `sql`, then run it
+  prefixed with `explain (analyze, buffers)`.
+- Instant reactions wait 350 ms before sending: an e2e test that clicks then calls `page.goto`
+  or `reload()` loses the write. Wait for the answer first (`actionAnswered(page)` in
+  `e2e/helpers.ts`). A label that changes width moves the button: click twice with two
+  `click()` calls (re-aimed), not `dblclick()`.
+- A Server Action sent after an internal navigation is posted to the new page. If that page's
+  module graph does not include the action, Next forwards it, and in dev it answered `{}` with
+  status 200 and saved nothing. The `[locale]` layout imports `listening/actions` and
+  `social/actions` for this; a new action fired by a reaction must be imported there too.
+- React's transition types (`addTransitionType`, `Link`'s `transitionTypes`) are consumed by
+  the first commit made only of transition lanes, whether it animates or not. In production,
+  Next 16.4 commits a navigation in two steps (head and router tree first, page content next):
+  the first one takes the type, the content arrives without it, and a `ViewTransition` keyed
+  on that type never starts (0/5 clicks). Issue #29 (step 6 of milestone 12, abandoned).
+- A green e2e in dev proves nothing for behaviour that depends on how React splits the
+  renders (view transitions, batching, commit order): dev splits them differently. Check it on
+  a production build (`pnpm build`, `pnpm start`, with `pnpm dev` stopped), with a probe that
+  counts what actually happened.
+- Playwright: in `page.route`, match with a predicate on `url.pathname`, not a glob containing
+  `?`. Timed UI (the 8 s "Undo"): `page.clock.install()` before the first page lets time run;
+  `pauseAt` (time read in the page) just before the action, then `runFor`: deterministic. A
+  reaction (350 ms grouping) then only leaves with a `runFor`.

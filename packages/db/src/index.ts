@@ -17,9 +17,11 @@ export {
 export { setAdminRole, type AdminRoleResult } from "./admin";
 export { loadRootEnv, rootEnvFile } from "./env";
 export { rowsOf } from "./rows";
+export { queryTraceEnabled, takeQueryTrace, type TracedQuery } from "./trace";
 export {
   bumpStatsVersion,
   listenedTargets,
+  quickFallback,
   ratedTrackIds,
   recomputeItemState,
   setWantToListen,

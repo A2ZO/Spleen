@@ -161,6 +161,7 @@ export async function recentReleases(
   now: Date,
   type: ReleaseType | undefined,
   page: number,
+  size = RECENT_PAGE_SIZE,
 ): Promise<Page<ReleaseCard>> {
   const types: ReleaseType[] = type ? [type] : ["album", "ep"];
   const where = sql`
@@ -181,7 +182,7 @@ export async function recentReleases(
       .execute(
         sql`select r.id from releases r where ${where}
           order by r.release_date desc, r.id
-          limit ${RECENT_PAGE_SIZE} offset ${(page - 1) * RECENT_PAGE_SIZE}`,
+          limit ${size} offset ${(page - 1) * size}`,
       )
       .then((r) => rowsOf<{ id: string }>(r).map((row) => row.id)),
     db
@@ -197,7 +198,7 @@ export async function recentReleases(
       return card ? [mask(card)] : [];
     }),
     page,
-    pageCount: Math.max(1, Math.ceil(count / RECENT_PAGE_SIZE)),
+    pageCount: Math.max(1, Math.ceil(count / size)),
     total: count,
   };
 }

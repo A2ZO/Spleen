@@ -2,11 +2,12 @@
 
 import type { MyProfile } from "@spleen/api";
 import { useTranslations } from "next-intl";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 
 import { updateProfileAction, type FormState } from "@/app/[locale]/settings/actions";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, FormMessage, SelectField, TextArea, TextField } from "@/components/ui/Field";
+import { useNavigationWhile } from "@/i18n/navigation";
 
 export function ProfileForm({
   profile,
@@ -22,9 +23,16 @@ export function ProfileForm({
   const tl = useTranslations("locale");
   const te = useTranslations("errors");
   const [state, action, pending] = useActionState<FormState, FormData>(updateProfileAction, {});
+  // A new language redirects to /settings in that language: a page change, so the bar shows.
+  const [switching, setSwitching] = useState(false);
+  useNavigationWhile(pending && switching);
+  const submit = (formData: FormData) => {
+    setSwitching(formData.get("locale") !== locale);
+    action(formData);
+  };
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={submit} className="space-y-5">
       <input type="hidden" name="currentLocale" value={locale} />
       <TextField
         label={t("displayNameLabel")}

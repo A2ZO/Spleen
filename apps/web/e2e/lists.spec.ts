@@ -42,7 +42,7 @@ test("make a list from record pages and reorder it with the keyboard", async ({
   await expect(async () => {
     await moveDown.focus();
     await page.keyboard.press("Enter");
-    await expect(page.getByRole("status")).toHaveText(
+    await expect(page.getByRole("main").getByRole("status")).toHaveText(
       "« Nocturnes pour pluie fine » est maintenant en position 2.",
       { timeout: 1_000 },
     );

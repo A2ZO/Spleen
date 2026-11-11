@@ -16,7 +16,6 @@ import { useEffect, useRef, useState, useTransition, type FormEvent } from "reac
 import {
   createEntryAction,
   createMoodAction,
-  deleteEntryAction,
   updateEntryAction,
 } from "@/app/[locale]/listening/actions";
 import { Button } from "@/components/ui/Button";
@@ -24,6 +23,7 @@ import { Checkbox, FormMessage, SelectField, TextArea, TextField } from "@/compo
 import { StarRating } from "@/components/ui/StarRating";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
+import { flushScope, scopeOf } from "@/lib/use-undoable-delete";
 
 export interface LogTrack {
   id: string;
@@ -41,6 +41,8 @@ interface LogDialogProps {
   tracks: LogTrack[];
   onClose: () => void;
   onSaved: (state: MyItemState) => void;
+  /** "Delete" on an existing listen (with "Undo", in the panel); `keyboard` = clicked with it. */
+  onDelete: (entry: MyEntry, keyboard: boolean) => void;
 }
 
 /**
@@ -57,6 +59,7 @@ export function LogDialog({
   tracks,
   onClose,
   onSaved,
+  onDelete,
 }: LogDialogProps) {
   const t = useTranslations("listening");
   const tf = useTranslations("format");
@@ -67,7 +70,6 @@ export function LogDialog({
   const ref = useRef<HTMLDialogElement>(null);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<ApiErrorCode | "unknown" | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const [listenedOn, setListenedOn] = useState(entry ? (entry.listenedOn ?? "") : state.today);
   const [rating, setRating] = useState(entry ? entry.rating : state.rating);
@@ -126,6 +128,8 @@ export function LogDialog({
       trackRatings: [...trackRatings].map(([trackId, value]) => ({ trackId, rating: value })),
     };
     startTransition(async () => {
+      // A deletion of this record still waiting for its "Undo" leaves first (it would erase this).
+      await flushScope(scopeOf(target));
       const result = entry
         ? await updateEntryAction(target, {
             id: entry.id,
@@ -142,14 +146,6 @@ export function LogDialog({
       else setError(result.error ?? "unknown");
     });
   };
-
-  const remove = () =>
-    startTransition(async () => {
-      if (!entry) return;
-      const result = await deleteEntryAction(target, entry.id);
-      if (result.state) onSaved(result.state);
-      else setError(result.error ?? "unknown");
-    });
 
   return (
     <dialog
@@ -347,9 +343,10 @@ export function LogDialog({
               variant="ghost"
               className="ml-auto text-danger hover:text-danger"
               disabled={pending}
-              onClick={() => (confirmDelete ? remove() : setConfirmDelete(true))}
+              // `detail` is 0 for a click made with the keyboard.
+              onClick={(event) => onDelete(entry, event.detail === 0)}
             >
-              {confirmDelete ? t("deleteConfirm") : t("delete")}
+              {t("delete")}
             </Button>
           )}
         </div>

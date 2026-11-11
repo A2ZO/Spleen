@@ -14,29 +14,23 @@
 pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScript sources
 (no build step); Next transpiles them via `transpilePackages`.
 
-- `apps/web`: Next.js 16 (App Router, Turbopack, `src/proxy.ts` = former middleware),
-  React 19, Tailwind CSS 4 (CSS-first), next-intl 4. Next docs for this version:
-  `apps/web/node_modules/next/dist/docs`.
-- `packages/api`: tRPC 11 routers = all business logic, on the database (catalog, listening,
-  profiles, shelf, stats, social).
-- `packages/catalog`: `CatalogProvider` + MusicBrainz implementation (no DB access), tested on
-  recorded responses (`@spleen/catalog/testing`). Flow, rules, limiter: `docs/catalogue.md`.
+- `apps/web`: Next.js 16 (App Router, Turbopack, `src/proxy.ts` = former middleware), React 19,
+  Tailwind CSS 4 (CSS-first), next-intl 4. Next docs for this version: `apps/web/node_modules/next/dist/docs`.
+- `packages/api`: tRPC 11 routers = all business logic (catalog, listening, profiles, shelf, stats, social).
+- `packages/catalog`: `CatalogProvider` + MusicBrainz (no DB), recorded responses (`@spleen/catalog/testing`); `docs/catalogue.md`.
 - `packages/db`: Drizzle schema (`src/schema/*`, one file per domain), SQL migrations
   (`migrations/`), `createDb()`, `loadRootEnv()`, demo seed and fixtures (`@spleen/db/fixtures`).
 - `packages/auth`: Better Auth config (`createAuth()`, `getSessionUser()`), magic-link emails.
-- `packages/infra`: outside services with dev fallbacks: `./email` (Brevo), `./storage`
-  (S3-R2), `./rate-limit` (Postgres `rate_limits`), `./config` (production checks).
+- `packages/infra`: services with dev fallbacks: `./email` (Brevo), `./storage` (S3-R2), `./rate-limit`, `./config`.
 - `packages/validators`: Zod 4 schemas shared by API, forms and the future app.
 - `packages/i18n`: `messages/fr.json` (source of keys) and `messages/en.json`.
-- `packages/design-tokens`: palette, dark / light themes, cover swatches, WCAG helpers;
-  generates `generated/theme.css` for Tailwind.
+- `packages/design-tokens`: palette, themes, cover swatches, WCAG helpers → `generated/theme.css`.
 - `packages/config`: shared ESLint flat config, tsconfigs, Prettier.
 - To come: `apps/mobile` (Expo).
 
 ## Commands (PowerShell, from the repo root)
 
 ```
-pnpm install
 pnpm dev                 # http://localhost:3000 (redirects to /fr or /en)
 pnpm lint; pnpm typecheck; pnpm format         # format = Prettier write (CI: format:check)
 pnpm check               # silent: prettier --check + lint + typecheck + test (errors only)
@@ -70,28 +64,26 @@ CI, e2e cleanup guard, env vars and database details: `docs/environnement.md`.
 - e2e accounts are `e2e-<id>@example.test`, deleted by `apps/web/e2e/cleanup.ts` (global setup/teardown), which
   refuses production and the Neon branch named by `NEON_MAIN_HOST` (`spleen-prod`'s `production`
   branch once it exists). Keep each e2e test short.
-- Never edit generated migrations (a test fails on schema/snapshot drift);
-  `0000_search_extensions.sql` is hand-written.
+- Never edit generated migrations (a test fails on drift); `0000_search_extensions.sql` is hand-written.
 - "Target" = `release_id` / `track_id` / `artist_id` real FKs + CHECK exactly one
   (`targetColumns()` / `targetCheck()`). Catalog rows are never hard-deleted (`restrict`);
   member data cascades when a user is deleted.
-- Demo seed: `<username>@example.test` (`nuitblanche` full shelf, `vinylvince`, `rainydaysam`
-  empty, `fouilleuse` 30 hearts, `lacontrebasse` admin; `seed/crate.ts`, `seed/social.ts`,
-  `seed/lists.ts`, `seed/moderation.ts`).
+- Demo seed: `<username>@example.test` (`nuitblanche` full shelf, `vinylvince`, `rainydaysam` empty,
+  `fouilleuse` 30 hearts, `lacontrebasse` admin; `seed/crate.ts`, `social.ts`, `lists.ts`, `moderation.ts`).
 
-Domain docs (read before touching the domain): listening `docs/ecoute.md`
-(`recomputeItemState()`), profile & stats `docs/profil-stats.md` (bump `CACHE_VERSION` when
-a stats rule changes), social & moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sharing
-`docs/referencement.md` (indexing rule, sitemaps, robots, OG images).
+Domain docs (read before touching the domain): listening `docs/ecoute.md` (`recomputeItemState()`),
+profile & stats `docs/profil-stats.md` (bump `CACHE_VERSION` when a stats rule changes), social &
+moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sharing `docs/referencement.md`.
 
 ## Conventions
 
 - Code, identifiers, commits (Conventional Commits) and comments in English.
 - UI text only through `packages/i18n` (FR uses "tu"). Both files must have identical keys
   (tested). Years/decades go into messages as strings (ICU would print "2 026").
-- Styling only with tokens (`bg-surface`, `text-star`, `text-link`, `fill-vinyl`, ...).
-  Never raw hex in components; brand hex values live in `packages/design-tokens`.
+- Styling only with tokens (`bg-surface`, `text-star`, ...); never raw hex (it lives in `packages/design-tokens`).
 - Ratings: integers 1..10 shown as 0.5..5 stars (`ratingToStars`). UUIDs; slugs in URLs.
+- Navigate from code only with `useNavigate()` (`@/i18n/navigation`, feeds the top bar;
+  ESLint forbids `useRouter`); actions ending in `redirect()` call `useNavigationWhile(pending)`.
 - Animations neutralised by `prefers-reduced-motion` (global rule in `globals.css`).
 - Theme: `spleen-theme` cookie read server-side in the `[locale]` layout (no flash).
 - Verify library versions on the npm registry / official docs, not from memory.
@@ -110,18 +102,15 @@ a stats rule changes), social & moderation `docs/social.md`, lists & discovery `
 
 ## Accounts and sessions
 
-Read `docs/accounts.md` before touching auth: sign-in, session → tRPC (`contextFor`,
-`protectedProcedure`, error codes), `/welcome` and `/settings`, @username reservation rules
-(`username_history`), avatars, and the **Expo flow** (session cookie sent in the `Cookie`
-header). Dev: magic links are printed in the `pnpm dev` terminal; demo member
-`nuitblanche@example.test`.
+Read `docs/accounts.md` before touching auth: sign-in, session → tRPC (`contextFor`, error codes),
+`/welcome`, `/settings`, @username rules (`username_history`), avatars, **Expo flow** (session
+cookie in the `Cookie` header). Dev: magic links printed in the `pnpm dev` terminal.
 
 `ctx.account()` reads role, suspension and blind mode once per request. `ctx.user()` is null
 for a **suspended** account (a visitor everywhere); `accountProcedure` (suspension, export,
-deletion) still accepts it; `adminProcedure` answers `NOT_FOUND` to non-admins. Hidden
-content (`hidden_at`) and suspended members are filtered in the shared loaders
-(`memberRefs`, `memberCards`, `loadReviewCards`, `findProfile`): keep new queries on them.
-Moderation rules: `docs/social.md`.
+deletion) still accepts it; `adminProcedure` answers `NOT_FOUND` to non-admins. Hidden content
+(`hidden_at`) and suspended members are filtered in the shared loaders (`memberRefs`,
+`memberCards`, `loadReviewCards`, `findProfile`): keep new queries on them. Rules: `docs/social.md`.
 
 ## Decisions and why
 
@@ -133,22 +122,20 @@ Moderation rules: `docs/social.md`.
 - Brevo for emails (French, 300/day free, plain `fetch`); Expo sessions via the Cookie
   header (Better Auth's official flow); no `sharp` (not on Workers): avatars resized client-side.
 - "Today" for a listen = member's `profiles.time_zone` (IANA), never the server's zone.
-- Catalog: MusicBrainz WS/2 with plain `fetch` (no client library); global gate = one atomic
-  `rate_limits` statement (`reserveSlot`); imports and stub completion for members only;
-  covers from Cover Art Archive shown `unoptimized` (no image service, no quota).
+- Catalog: MusicBrainz WS/2 with plain `fetch`; global gate = one atomic `rate_limits` statement
+  (`reserveSlot`); imports for members only; Cover Art Archive covers `unoptimized` (no quota).
+- Speed (milestone 12): no Suspense / `loading.tsx`; slow clicks show the top bar after 150 ms;
+  reactions are instant (`lib/use-instant-writes.ts`); deletions are undoable for 8 s (`lib/use-undoable-delete.ts`).
 
 ## Token economy
 
 - Verify with `pnpm check` and `pnpm e2e:quiet`. Re-run verbose only the failing package or spec.
 - During a step, run only the spec files you touched. Full e2e once per step, through the
   `verificateur` subagent, never twice in a row unless you fixed something.
-- External docs and repo-wide searches go through a subagent (Explore), which brings back only
-  the answer.
+- External docs and repo-wide searches go through a subagent (Explore), which returns only the answer.
 - Read large files by line range. Don't re-read a file you already have unless it changed.
-- Chrome only when the step changes the UI: a few screenshots of the relevant area, never a
-  dump of the whole page.
-- Recaps: 20 lines at most.
-- One step per session: end it with `/fin-d-etape`.
+- Chrome only when the step changes the UI: a few screenshots of the relevant area.
+- Recaps: 20 lines at most. One step per session: end it with `/fin-d-etape`.
 
 ## Pitfalls already met (and the fix)
 
@@ -158,7 +145,7 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - `new URL(…, import.meta.url)` in bundled code exposes files (use `path.resolve`) → `docs/pieges.md`
 - Quotes/spaces in a `.env` URL break parsing; never log raw DB errors → `docs/pieges.md`
 - Neon pooler = PgBouncer: no `SET`/`LISTEN`/`PREPARE`; migrations use the direct URL → `docs/pieges.md`
-- One Next dev server per app; a stray `next` on port 3000 on Windows → `docs/pieges.md`
+- One Next server at a time: no `next build` during `pnpm dev`; stray `next` on 3000 → `taskkill` → `docs/pieges.md`
 - pnpm `minimumReleaseAge` blocks fresh packages: pin older, revert exclusions → `docs/pieges.md`
 - Two drizzle-orm copies break types: import from `@spleen/db` → `docs/pieges.md`
 - Client components import `@spleen/api/errors`, never `@spleen/api`; Prettier on drizzle meta → `docs/pieges.md`
@@ -168,15 +155,19 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - `updated_at` is wall clock: tests compare orders, not times → `docs/pieges.md`
 - New migration → `pnpm db:migrate` on the dev server's database or pages 500 → `docs/pieges.md`
 - Burst writes arrive out of order: group clicks, send an `order` (`docs/ecoute.md`) → `docs/pieges.md`
-- Raw `sql` params reject JS `Date`; read `db.execute()` with `rowsOf()` → `docs/pieges.md`
-- Single-table drizzle selects drop qualifiers in subqueries → `docs/pieges.md`
+- Raw `sql` params reject JS `Date` (`rowsOf()` for `db.execute()`); single-table selects drop qualifiers in subqueries → `docs/pieges.md`
 - Refresh with `refresh()` inside Server Actions, never client `router.refresh()` → `docs/pieges.md`
 - No `generateStaticParams` under `app/` (half-written prerender manifest in dev) → `docs/pieges.md`
 - State updates inside `startTransition` are deferred: set optimistic UI before it → `docs/pieges.md`
 - MusicBrainz often answers 503; never import on PGlite and Neon at once → `docs/catalogue.md`, `docs/pieges.md`
 - CSP nonce on every page: list `archive.org` and `*.archive.org`; a nonce ignores `'unsafe-inline'` → `docs/pieges.md`
-- e2e: one account per test (`grantAdmin`); no `next build` while `pnpm dev` runs → `docs/pieges.md`
-- Controlled fields typed into before hydration lose their text (issue #24; e2e retries) → `docs/pieges.md`
+- No `loading.tsx` / `Suspense` fallback on pages: up to +300 ms (React) and stuck without JS → `docs/pieges.md`
+- Controlled fields need `useTypedBeforeHydration()` (built into `TextField`, issue #24) → `docs/pieges.md`
+- e2e: one account per test (`grantAdmin`); wait for `actionAnswered` after a reaction; actions imported in the `[locale]` layout → `docs/pieges.md`
+- Playwright: `page.route` with a pathname predicate (no `?` glob); timers via `page.clock` `pauseAt` + `runFor` → `docs/pieges.md`
+- Measuring the suggestion route: space the calls (per-IP limiter); Windows CPU time moves in 15.6 ms ticks → `docs/pieges.md`
+- View transitions: Next 16.4 gives the transition type to its first commit, the page arrives without it (issue #29) → `docs/pieges.md`
+- A green e2e in dev proves nothing for what depends on how React splits renders: check a prod build → `docs/pieges.md`
 
 ## Git
 
@@ -188,13 +179,21 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 ## Milestones
 
 - [x] 1. Foundations · 2. Database · 3. Accounts · 4. Catalog · 5. Listening · 6. Profile &
-      base stats · 7. Social · 8. Lists & discovery · 9. Admin, legal, polish (moderation and
-      merges `docs/social.md`, SEO `docs/referencement.md`, CSP `lib/security.ts`, PWA).
-- [ ] 10. **Launch** (next): publish a new `TERMS_VERSION` before the first real members
-      (everyone accepts again, after the legal review); e2e in CI; issue #22 (cache of public
-      pages, option a). **Real services are not connected yet** (Google, Brevo, R2, Neon project
-      `spleen-prod`, domain): follow `docs/mise-en-ligne.md`.
-- [ ] 11. Upcoming releases from followed artists — spec in docs/cahier-des-charges.md (section
-      « Sorties à venir de tes artistes »); may run before milestone 10, depends only on 4, 7
-      and 8.
-- [ ] 12. Polish: text typed before hydration is lost (issue #24).
+      base stats · 7. Social · 8. Lists & discovery · 9. Admin, legal, polish (`docs/social.md`,
+      `docs/referencement.md`, CSP `lib/security.ts`, PWA) · 12. Douceurs (navigation speed,
+      instant search and reactions, "Undo", keyboard rating; `docs/stack-et-limites.md`).
+- [ ] 10. **Launch**: publish a new `TERMS_VERSION` before the first real members (everyone
+      accepts again, after the legal review); e2e in CI; issue #22 (cache of public pages,
+      option a); issue #27 (catalog popularity counter: recomputed by the nightly job, plus a
+      pnpm command for dev, also run by the seed). **Real services are not connected yet**
+      (Google, Brevo, R2, Neon project `spleen-prod`, domain): follow `docs/mise-en-ligne.md`.
+- [ ] 11. **Next.** Upcoming releases from followed artists (cahier, « Sorties à venir de tes
+      artistes »); depends only on 4, 7 and 8. Nothing to provide: the user validates its rules.
+- [ ] 13. **« Quoi écouter ce soir ? »**: "Listen on…" links (direct when MusicBrainz knows the
+      URL, else a search link; no affiliate links), "Your friends on this record", "Pick a record".
+- [ ] 14. **« Souvenirs »**: "One year ago…" on the home page; anniversaries, "Released on" on `/discover`.
+- [ ] 15. **« Défi de l'année »** · 16. **« En ce moment et RSS »** (both after launch).
+- Deferred: page transitions (milestone 12, step 6, abandoned): retry per issue #29.
+
+Order: 11 → 13 → 14 → 10 (launch) → 15 → 16. Specs in `docs/cahier-des-charges.md`; each
+milestone opens by having the user validate its default rules.

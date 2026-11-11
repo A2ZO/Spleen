@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useNavigate } from "@/i18n/navigation";
 import { useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/Button";
@@ -12,13 +12,13 @@ export function SignOutButton({
   variant = "outline",
   children,
 }: {
-  /** Where to go once signed out (localized home). */
+  /** Where to go once signed out, without the locale (the router adds it). */
   href: string;
   className?: string;
   variant?: "outline" | "ghost";
   children: ReactNode;
 }) {
-  const router = useRouter();
+  const router = useNavigate();
   const [pending, setPending] = useState(false);
 
   return (

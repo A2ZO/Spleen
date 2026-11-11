@@ -14,6 +14,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { Button } from "@/components/ui/Button";
 import { FormMessage, TextArea } from "@/components/ui/Field";
 import { Link } from "@/i18n/navigation";
+import { scheduleDelete, useUndoHidden } from "@/lib/use-undoable-delete";
 
 import { ModerationBanner } from "./ModerationBanner";
 import { ReportButton } from "./ReportDialog";
@@ -58,7 +59,7 @@ export function CommentForm({ subject }: { subject: SocialSubjectInput }) {
   );
 }
 
-/** One comment, with edit / delete (asked twice, no browser dialog) / report. */
+/** One comment, with edit / delete (with "Undo", `lib/use-undoable-delete.ts`) / report. */
 export function CommentItem({
   comment,
   canReport,
@@ -71,15 +72,14 @@ export function CommentItem({
   const te = useTranslations("errors");
   const format = useFormatter();
   const [editing, setEditing] = useState(false);
-  const [confirmDelete, setConfirmDelete] = useState(false);
   const [body, setBody] = useState(comment.body);
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<ErrorCode | null>(null);
+  const hidden = useUndoHidden();
 
   const finish = (result: { ok?: boolean; error?: ErrorCode }) => {
     if (result.ok) {
       setEditing(false);
-      setConfirmDelete(false);
       setError(null);
     } else setError(result.error ?? "unknown");
   };
@@ -89,6 +89,7 @@ export function CommentItem({
     startTransition(async () => finish(await updateCommentAction({ id: comment.id, body })));
   };
 
+  if (hidden(comment.id)) return null;
   return (
     <article className="flex gap-3">
       <Link href={`/u/${comment.author.username}`} tabIndex={-1} className="shrink-0">
@@ -154,37 +155,23 @@ export function CommentItem({
                 {t("edit")}
               </button>
             )}
-            {comment.canDelete &&
-              (confirmDelete ? (
-                <span className="flex flex-wrap items-center gap-2">
-                  <span className="text-fg-muted">{t("deleteConfirm")}</span>
-                  <button
-                    type="button"
-                    disabled={pending}
-                    className="text-danger hover:underline"
-                    onClick={() =>
-                      startTransition(async () => finish(await deleteCommentAction(comment.id)))
-                    }
-                  >
-                    {t("deleteYes")}
-                  </button>
-                  <button
-                    type="button"
-                    className="text-fg-muted hover:text-fg"
-                    onClick={() => setConfirmDelete(false)}
-                  >
-                    {t("deleteNo")}
-                  </button>
-                </span>
-              ) : (
-                <button
-                  type="button"
-                  className="text-fg-muted hover:text-fg"
-                  onClick={() => setConfirmDelete(true)}
-                >
-                  {t("delete")}
-                </button>
-              ))}
+            {comment.canDelete && (
+              <button
+                type="button"
+                className="text-fg-muted hover:text-fg"
+                onClick={(event) =>
+                  scheduleDelete({
+                    id: comment.id,
+                    kind: "comment",
+                    // `detail` is 0 for a click made with the keyboard.
+                    focusUndo: event.detail === 0,
+                    run: () => deleteCommentAction(comment.id),
+                  })
+                }
+              >
+                {t("delete")}
+              </button>
+            )}
             {canReport && !comment.canEdit && !comment.hidden && (
               <ReportButton subject={{ kind: "comment", id: comment.id }} />
             )}

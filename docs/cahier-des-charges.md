@@ -83,6 +83,10 @@ Positionnement : « le carnet d'écoute qui a une âme » — fiable comme un ou
 | Import CSV | Récupérer ses notes depuis un autre site ou Last.fm | Facilite l'arrivée des déçus de Musicboard ; optionnel, jamais obligatoire | V2 |
 | Appli installable (PWA) | Le site s'installe sur l'écran d'accueil du téléphone, sans store | Une « appli » dès le lancement, sans payer Apple | MVP |
 | Sorties à venir de tes artistes | Suivre un artiste, voir ses prochains disques, être prévenu le jour de la sortie | Une raison de revenir même sans rien à noter ; coût presque nul grâce à ListenBrainz | Jalon 11 |
+| Quoi écouter ce soir ? | « Écouter sur… » (liens directs quand MusicBrainz les connaît), les notes de mes amis sur une fiche, « Tire un disque » dans « À écouter » | Passer de « je note » à « j'écoute maintenant » ; aide à choisir quand la liste « À écouter » déborde | Jalon 13 |
+| Souvenirs | « Il y a un an, tu écoutais… » sur l'accueil ; anniversaires des disques notés ou aimés ; « Sortis un <jour mois> » sur `/discover` | Fait revenir sans rien demander ; s'appuie sur le journal daté, que les autres sites exploitent peu | Jalon 14 |
+| Défi de l'année | Objectif annuel de disques découverts, barre de progression sur le profil | Le « reading challenge » de Goodreads, éprouvé ; pousse à découvrir plutôt qu'à réécouter | Jalon 15 (après la mise en ligne) |
+| En ce moment et RSS | « J'écoute ça » affiché 2 h sur le profil et dans le fil ; flux RSS public du journal et des critiques | Présence sans dépendre des API de streaming ; le RSS plaît aux blogueurs et aux habitués de Letterboxd | Jalon 16 (après la mise en ligne) |
 
 À éviter : copier tel quel le profil « 5 favoris + 5 en rotation » de Record Club, et tout classement public des « meilleurs critiques », qui nourrit l'élitisme reproché à RYM.
 
@@ -91,7 +95,7 @@ Positionnement : « le carnet d'écoute qui a une âme » — fiable comme un ou
 Le site gratuit d'abord, la monétisation ensuite, et l'appli seulement quand Spleen+ rapporte de quoi payer le compte Apple.
 
 1. **Phase 0, fondations** (jalons 1 et 2) : faite.
-2. **Phase 1, MVP du site, gratuit et sans pub** (jalons 3 à 11) : jalons 3 à 8 faits, jalon 9 en cours, puis jalon 11 (sorties à venir) et jalon 10 (mise en ligne). **Condition de passage** : bêta stable, micro-entreprise créée, hébergement commercial, licence des genres réglée.
+2. **Phase 1, MVP du site, gratuit et sans pub** (jalons 3 à 14) : jalons 3 à 9 faits ; ordre de réalisation 12 (douceurs, en cours) → 11 (sorties à venir) → 13 (quoi écouter ce soir) → 14 (souvenirs) → 10 (mise en ligne). Après la mise en ligne, toujours gratuits : 15 (défi de l'année) puis 16 (en ce moment et RSS). **Condition de passage** : bêta stable, micro-entreprise créée, hébergement commercial, licence des genres réglée.
 3. **Phase 2, monétisation** : Spleen+ (1 €/mois ou 10 €/an via Stripe), stats avancées, thèmes de profil, cartes partageables, Toi vs moi, Club du dimanche, Prête-moi un disque, import CSV, pubs discrètes. **Condition de passage** : Spleen+ rapporte de quoi payer le compte Apple (99 $/an).
 4. **Phase 3, appli Spleen** : Expo sur la même API, Se connecter avec Apple, notifications push, achats intégrés Apple et Google.
 5. **Phase 4, plus tard** : Apple Music, import Last.fm ; Spotify et Deezer si leurs règles s'assouplissent.
@@ -128,6 +132,7 @@ Le MVP couvre le cœur Letterboxd — noter, critiquer, tenir son journal, suivr
 8. **Administration** : file de modération des signalements, fusion des doublons du catalogue, suspension de compte.
 9. **Transverse** : responsive mobile d'abord, appli installable (PWA), accessibilité clavier et lecteur d'écran, pages publiques rendues côté serveur pour le référencement, aperçus soignés quand on partage un lien.
 10. **Sorties à venir de tes artistes** (ajouté le 27 octobre, jalon 11) : voir la section suivante.
+11. **Quoi écouter ce soir ?** et **Souvenirs** (ajoutés le 10 novembre, jalons 13 et 14) : voir leurs sections. Les jalons 15 et 16 viennent après la mise en ligne.
 
 ## Sorties à venir de tes artistes (jalon 11)
 
@@ -178,6 +183,32 @@ Limite assumée : ces données viennent des bénévoles de MusicBrainz. Les gros
 **Coût** : presque nul. Une requête ListenBrainz par nuit, plus un lot plafonné de requêtes MusicBrainz dans la tâche de nuit qui existe déjà.
 
 **Plus tard** : abonnement calendrier `.ics` (une adresse secrète par membre, à ajouter dans Google Agenda ou Calendrier Apple ; candidat pour Spleen+) ; notifications push dans l'appli ; récapitulatif hebdomadaire par email, en option, parce qu'il consomme le quota Brevo.
+
+## Quoi écouter ce soir ? (jalon 13)
+
+Aider à passer de la fiche à l'écoute, et à choisir quand on ne sait pas quoi mettre. Règles ci-dessous = **décisions par défaut, à valider au début du jalon**.
+
+- **Écouter sur…** : sur les fiches album, morceau et artiste, des liens vers Spotify, Deezer, Apple Music, YouTube Music et Bandcamp (remplace les simples liens de recherche prévus au MVP). Lien direct quand MusicBrainz le connaît : relations d'URL demandées dans l'import existant, sans requête en plus ; les fiches déjà importées sont relues peu à peu par la tâche de nuit. Sinon, un lien de recherche (artiste + titre). Aucun lien affilié avant la monétisation.
+- **Tes amis sur ce disque** : sur une fiche, les notes et cœurs des membres que je suis (5 au plus, puis « voir tous »). Comptes bloqués ou suspendus et contenus privés exclus. Caché en écoute à l'aveugle tant que je n'ai pas noté.
+- **Tire un disque** : un bouton qui pioche au hasard dans ma liste « À écouter », avec des filtres de type et de durée et un bouton « Un autre ». Marche sans JavaScript (tirage côté serveur).
+
+## Souvenirs (jalon 14)
+
+Faire revenir sans rien demander, à partir de ce que le membre a déjà noté. Décisions par défaut, à valider au début du jalon.
+
+- **Ce jour-là** : un bloc d'accueil « Il y a un an, tu écoutais… », à partir des écoutes datées, dans le fuseau du membre. Rien s'il n'y a rien ; un réglage pour le masquer.
+- **Anniversaires** : pour les disques que j'ai notés ou aimés, « *Titre* a N ans aujourd'hui », seulement pour les dates connues au jour près. Les anniversaires ronds sont mis en avant (10, 20, 25, 30, 40, 50 ans). Plus un bloc « Sortis un <jour mois> » sur `/discover`.
+
+## Défi de l'année (jalon 15, après la mise en ligne)
+
+Un objectif annuel de disques découverts (première écoute dans l'année) et une barre de progression sur le profil, visible par tous ou par le membre seul. Décisions par défaut, à valider au début du jalon.
+
+## En ce moment et RSS (jalon 16, après la mise en ligne)
+
+Décisions par défaut, à valider au début du jalon.
+
+- **J'écoute ça** : un bouton qui affiche le disque pendant 2 h sur le profil et dans le fil des abonnés.
+- **RSS** : un flux public du journal et des critiques d'un membre, sans rien de privé.
 
 ## Stats : gratuites et Spleen+
 

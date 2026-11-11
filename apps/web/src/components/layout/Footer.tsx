@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 
 import { Link } from "@/i18n/navigation";
 
+import { KeyboardHelpButton } from "./KeyboardHelp";
 import { Logo } from "./Logo";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 
@@ -12,7 +13,10 @@ const LEGAL_LINKS = [
   { href: "/legal#credits", key: "credits" },
 ] as const;
 
-/** Logo, legal links (notice, terms, privacy, MusicBrainz credits) and the language switch. */
+/**
+ * Logo, legal links (notice, terms, privacy, MusicBrainz credits), the keyboard shortcut help
+ * and the language switch.
+ */
 export function Footer() {
   const t = useTranslations("legal");
   return (
@@ -28,6 +32,9 @@ export function Footer() {
                 </Link>
               </li>
             ))}
+            <li className="empty:hidden">
+              <KeyboardHelpButton />
+            </li>
           </ul>
         </nav>
         <LocaleSwitcher />

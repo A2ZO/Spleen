@@ -15,7 +15,9 @@ print `.env`.
    status of the step, decisions taken, « Appris en route », and the next step described
    precisely enough to restart from nothing else (files, commands, open questions).
 3. **Commit and push.** Check `git branch --show-current` is the milestone branch
-   (`feat/<nn>-<name>`), not `main`. Run `pnpm exec prettier --write` on the doc, commit
+   (`feat/<nn>-<name>`), not `main`. First commit the step's own work in logical commits
+   (Conventional Commits, one per coherent change: feature, tests, docs), if not committed yet.
+   Then run `pnpm exec prettier --write` on the doc, commit
    `docs: passation étape <n>` (Conventional Commits, session attribution line), then
    `git push -u origin <branch>`.
 4. **Recap**, 15 lines at most, in French. Then a block « Prompt de reprise » ready to paste:

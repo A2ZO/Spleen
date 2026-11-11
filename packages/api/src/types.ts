@@ -1,4 +1,10 @@
-import type { AudienceLang, ImportKind, ListenFormat, ReleaseType } from "@spleen/validators";
+import type {
+  AudienceLang,
+  ImportKind,
+  ListenFormat,
+  ListenTargetInput,
+  ReleaseType,
+} from "@spleen/validators";
 
 /* Output shapes of the API. Stable contract for the web app and the future Expo app. */
 
@@ -79,6 +85,8 @@ export interface MyReview {
   id: string;
   /** The release reviewed, or the release of the track reviewed. */
   release: ReleaseCard;
+  /** What the review is about (a release or a track), as the listening actions take it. */
+  target: ListenTargetInput;
   rating: number | null;
   body: string;
   lang: AudienceLang;
@@ -168,6 +176,8 @@ export interface MyList {
 }
 
 export interface ReleaseDetail extends ReleaseCard {
+  /** Search metadata of the page (`seo.page`), read with it. */
+  seo: SeoPage | null;
   /** ISO date padded from `releaseDatePrecision` ("1959" → "1959-01-01"). */
   releaseDate: string | null;
   releaseDatePrecision: "year" | "month" | "day" | null;
@@ -233,6 +243,11 @@ export interface MyItemState {
   entries: MyEntry[];
   /** Today in the member's time zone: the default listening date. */
   today: string;
+  /**
+   * The state without the undated listen: what removing the quick rating falls back to
+   * (`applyListenWrite` in `@spleen/api/instant`).
+   */
+  quickFallback: { rating: number | null; listened: boolean };
 }
 
 /** Distinct items listened to; `track` = tracks logged on their own (not inside an album). */
@@ -404,6 +419,8 @@ export interface ProfileDetail {
   viewerBlocked: boolean;
   /** Signed in, not the owner, no block either way: follow and other interactions. */
   canInteract: boolean;
+  /** Search metadata of the page (`seo.page`), read with it. */
+  seo: SeoPage | null;
 }
 
 export interface HomeFeed {
@@ -422,6 +439,8 @@ export interface ArtistCard {
 }
 
 export interface ArtistDetail extends ArtistCard {
+  /** Search metadata of the page (`seo.page`), read with it. */
+  seo: SeoPage | null;
   /** "person", "group"… */
   type: string | null;
   /** The discography has not been imported yet (only releases already known are listed). */
@@ -433,6 +452,11 @@ export interface ArtistDetail extends ArtistCard {
     /** Live albums, compilations, soundtracks, remixes… (mixtapes count as main releases). */
     other: ReleaseCard[];
   };
+  /**
+   * Size of each group: a group shows its newest `DISCOGRAPHY_PREVIEW` releases unless it is the
+   * one asked for in full (`all`), so a total above its length means "see all".
+   */
+  discographyTotals: { albums: number; eps: number; singles: number; other: number };
   listenLinks: ListenLink[];
 }
 
@@ -459,6 +483,38 @@ export interface CatalogSearchResults {
   releases: ReleaseCard[];
   artists: ArtistCard[];
   tracks: TrackCard[];
+}
+
+/** One instant suggestion: only what the dropdown shows, the same for every viewer. */
+export interface Suggestion {
+  kind: "artist" | "release" | "track";
+  slug: string;
+  /** Title, or the artist's name. */
+  title: string;
+  /** Artist names (release, track) or the artist's disambiguation. */
+  subtitle: string | null;
+  /** Picture: the release, the track's first release, or the artist's image. */
+  cover: { slug: string; title: string; url: string | null } | null;
+  /** Releases only. */
+  year: number | null;
+  releaseType: ReleaseType | null;
+}
+
+export interface MemberSuggestion {
+  username: string;
+  displayName: string;
+  avatarUrl: string | null;
+}
+
+/** Instant search answer (`catalog.suggest`, `GET /api/search/suggest`). */
+export interface CatalogSuggestions {
+  /** First of all kinds by the search order, left out of its own group. */
+  best: Suggestion | null;
+  artists: Suggestion[];
+  releases: Suggestion[];
+  tracks: Suggestion[];
+  /** Only for a query starting with "@" (then the catalog groups are empty). */
+  members: MemberSuggestion[];
 }
 
 /** A catalog provider (MusicBrainz) result that can be imported. */
@@ -493,8 +549,6 @@ export interface MyProfile {
   blindMode: boolean;
   /** IANA time zone used for "today" (default listening date). */
   timeZone: string;
-  /** ISO date from which the @username can change again; null when it can now. */
-  usernameChangeAvailableAt: string | null;
 }
 
 /** Who is calling. `profile` is null until the member picks a @username (onboarding). */

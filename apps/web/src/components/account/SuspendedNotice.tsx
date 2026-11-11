@@ -66,7 +66,7 @@ export async function SuspendedNotice({
           <a href="/api/account/export" download className={buttonClasses("outline")}>
             {t("export")}
           </a>
-          <SignOutButton href={`/${locale}`}>{t("signOut")}</SignOutButton>
+          <SignOutButton href="/">{t("signOut")}</SignOutButton>
         </div>
         <details className="rounded-md border border-border p-4">
           <summary className="cursor-pointer">{t("deleteTitle")}</summary>

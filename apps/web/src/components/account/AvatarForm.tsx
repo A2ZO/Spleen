@@ -1,7 +1,7 @@
 "use client";
 
 import { isApiErrorCode, type ApiErrorCode } from "@spleen/api/errors";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 
@@ -21,7 +21,7 @@ export function AvatarForm({
 }) {
   const t = useTranslations("settings");
   const te = useTranslations("errors");
-  const router = useRouter();
+  const router = useNavigate();
   const input = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<ApiErrorCode | "unknown" | null>(null);

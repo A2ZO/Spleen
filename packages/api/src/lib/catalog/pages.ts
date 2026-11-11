@@ -1,6 +1,6 @@
 import { isMainRelease } from "@spleen/catalog";
 import { and, asc, desc, eq, inArray, isNotNull, isNull, schema, sql, type Db } from "@spleen/db";
-import type { AudienceLang } from "@spleen/validators";
+import type { AudienceLang, DiscographyGroup } from "@spleen/validators";
 
 import type {
   ArtistDetail,
@@ -12,6 +12,7 @@ import type {
   TrackDetail,
 } from "../../types";
 import { buildListenLinks } from "../listen-links";
+import { seoPage } from "../seo";
 import { countsPublicly } from "../ratings";
 import { notBlockedWith } from "../social/relations";
 import { reviewCountColumns } from "../social/reviews";
@@ -21,7 +22,6 @@ import {
   ratingSummaries,
   toReleaseCard,
   trackReleaseIds,
-  type ReleaseCardWithTypes,
 } from "./cards";
 
 /* Item pages read from the database: catalog rows plus the community data around them. */
@@ -33,13 +33,10 @@ const LIST_PREVIEW_SIZE = 4;
 const { artists, genres, lists, listItems, profiles, releaseArtists, releaseGenres } = schema;
 const { releaseTracks, releases, reviews, tracks, userItemState } = schema;
 
+/** The release row behind a slug (merged releases left out), reused by `getReleaseDetail`. */
 export async function releaseIdBySlug(db: Db, slug: string) {
   const [row] = await db
-    .select({
-      id: releases.id,
-      mbid: releases.mbid,
-      tracklistImportedAt: releases.tracklistImportedAt,
-    })
+    .select()
     .from(releases)
     .where(and(eq(releases.slug, slug), isNull(releases.mergedIntoId)))
     .limit(1);
@@ -68,9 +65,11 @@ async function ratingDistribution(db: Db, releaseId: string): Promise<number[]> 
  * Most liked reviews of the release. With a viewer, reviews by members blocked either way
  * are left out and comment counts skip the comments hidden from them.
  */
+/** The query starts at once; the release card (read in parallel) is awaited only to map rows. */
 async function releaseReviews(
   db: Db,
-  release: ReleaseCard,
+  releaseId: string,
+  card: Promise<ReleaseCard>,
   viewerId: string | null,
 ): Promise<ReviewCard[]> {
   const { likeCount, commentCount } = reviewCountColumns(viewerId);
@@ -90,13 +89,14 @@ async function releaseReviews(
     .innerJoin(profiles, eq(profiles.userId, reviews.userId))
     .where(
       and(
-        eq(reviews.releaseId, release.id),
+        eq(reviews.releaseId, releaseId),
         isNull(reviews.hiddenAt),
         viewerId ? notBlockedWith(viewerId, reviews.userId) : undefined,
       ),
     )
     .orderBy(desc(likeCount), desc(reviews.createdAt))
     .limit(REVIEWS_ON_PAGE);
+  const release = await card;
   return rows.map((r) => ({
     id: r.id,
     author: { username: r.username, displayName: r.displayName },
@@ -189,41 +189,50 @@ async function releaseLists(
   return loadListCards(db, rows);
 }
 
-/** `viewerId` shapes the community parts (blocks, comment counts); null when signed out. */
+/**
+ * `viewerId` shapes the community parts (blocks, comment counts); null when signed out.
+ * `known` is the row `releaseIdBySlug` already read (skips reading it again). Everything after
+ * the row runs in one wave, the search metadata (`seoPage`) included, so `generateMetadata`
+ * needs no query of its own.
+ */
 export async function getReleaseDetail(
   db: Db,
   slug: string,
   viewerId: string | null,
+  known?: typeof releases.$inferSelect,
 ): Promise<ReleaseDetail | null> {
-  const [row] = await db.select().from(releases).where(eq(releases.slug, slug)).limit(1);
+  const row =
+    known ?? (await db.select().from(releases).where(eq(releases.slug, slug)).limit(1))[0];
   if (!row) return null;
-  const [card] = await loadReleaseCards(db, [row.id]);
-  const release = toReleaseCard(card!);
+  const card = loadReleaseCards(db, [row.id]).then(([c]) => toReleaseCard(c!));
 
-  const [genreRows, trackRows, distribution, reviewCards, listCards] = await Promise.all([
-    db
-      .select({ name: genres.name })
-      .from(releaseGenres)
-      .innerJoin(genres, eq(genres.id, releaseGenres.genreId))
-      .where(eq(releaseGenres.releaseId, row.id))
-      .orderBy(asc(genres.name)),
-    db
-      .select({
-        id: tracks.id,
-        slug: tracks.slug,
-        disc: releaseTracks.disc,
-        position: releaseTracks.position,
-        title: tracks.title,
-        durationMs: tracks.durationMs,
-      })
-      .from(releaseTracks)
-      .innerJoin(tracks, eq(tracks.id, releaseTracks.trackId))
-      .where(eq(releaseTracks.releaseId, row.id))
-      .orderBy(asc(releaseTracks.disc), asc(releaseTracks.position)),
-    ratingDistribution(db, row.id),
-    releaseReviews(db, release, viewerId),
-    releaseLists(db, row.id, viewerId),
-  ]);
+  const [release, genreRows, trackRows, distribution, reviewCards, listCards, seo] =
+    await Promise.all([
+      card,
+      db
+        .select({ name: genres.name })
+        .from(releaseGenres)
+        .innerJoin(genres, eq(genres.id, releaseGenres.genreId))
+        .where(eq(releaseGenres.releaseId, row.id))
+        .orderBy(asc(genres.name)),
+      db
+        .select({
+          id: tracks.id,
+          slug: tracks.slug,
+          disc: releaseTracks.disc,
+          position: releaseTracks.position,
+          title: tracks.title,
+          durationMs: tracks.durationMs,
+        })
+        .from(releaseTracks)
+        .innerJoin(tracks, eq(tracks.id, releaseTracks.trackId))
+        .where(eq(releaseTracks.releaseId, row.id))
+        .orderBy(asc(releaseTracks.disc), asc(releaseTracks.position)),
+      ratingDistribution(db, row.id),
+      releaseReviews(db, row.id, card, viewerId),
+      releaseLists(db, row.id, viewerId),
+      seoPage(db, "release", row.slug),
+    ]);
   const trackList: Track[] = trackRows;
 
   return {
@@ -242,39 +251,85 @@ export async function getReleaseDetail(
       row.title,
       release.artists.map((a) => a.name),
     ),
+    seo,
   };
 }
 
+/** The artist row behind a slug (merged artists left out), reused by `getArtistDetail`. */
 export async function artistIdBySlug(db: Db, slug: string) {
   const [row] = await db
-    .select({
-      id: artists.id,
-      mbid: artists.mbid,
-      discographyImportedAt: artists.discographyImportedAt,
-    })
+    .select()
     .from(artists)
     .where(and(eq(artists.slug, slug), isNull(artists.mergedIntoId)))
     .limit(1);
   return row ?? null;
 }
 
+/** Releases shown per discography group before "see all". */
+export const DISCOGRAPHY_PREVIEW = 12;
+
 /** Newest first; undated releases last. */
-const byDateDesc = (a: ReleaseCardWithTypes, b: ReleaseCardWithTypes) =>
+const byDateDesc = (a: { releaseDate: string | null }, b: { releaseDate: string | null }) =>
   (b.releaseDate ?? "").localeCompare(a.releaseDate ?? "");
 
-export async function getArtistDetail(db: Db, slug: string): Promise<ArtistDetail | null> {
-  const [row] = await db.select().from(artists).where(eq(artists.slug, slug)).limit(1);
+function discographyGroup(r: { type: string; secondaryTypes: string[] }): DiscographyGroup | null {
+  if (!isMainRelease(r.secondaryTypes)) return "other";
+  if (r.type === "album") return "albums";
+  if (r.type === "ep") return "eps";
+  if (r.type === "single") return "singles";
+  return null;
+}
+
+/**
+ * `known`: the row `artistIdBySlug` already read. The search metadata comes in parallel. Each
+ * group keeps its newest `DISCOGRAPHY_PREVIEW` releases (all of them for `all`): cards, artists
+ * and ratings are loaded for those only, the rest is counted from one light query.
+ */
+export async function getArtistDetail(
+  db: Db,
+  slug: string,
+  known?: typeof artists.$inferSelect,
+  all?: DiscographyGroup,
+): Promise<ArtistDetail | null> {
+  const row = known ?? (await db.select().from(artists).where(eq(artists.slug, slug)).limit(1))[0];
   if (!row) return null;
-  const releaseIds = (
-    await db
-      .select({ id: releaseArtists.releaseId })
+  const [releaseRows, seo] = await Promise.all([
+    db
+      .select({
+        id: releases.id,
+        type: releases.type,
+        secondaryTypes: releases.secondaryTypes,
+        releaseDate: releases.releaseDate,
+      })
       .from(releaseArtists)
-      .where(eq(releaseArtists.artistId, row.id))
-  ).map((r) => r.id);
-  const cards = (await loadReleaseCards(db, releaseIds)).sort(byDateDesc);
-  const main = cards.filter((c) => isMainRelease(c.secondaryTypes));
-  const ofType = (type: ReleaseCard["type"]) =>
-    main.filter((c) => c.type === type).map(toReleaseCard);
+      .innerJoin(releases, eq(releases.id, releaseArtists.releaseId))
+      .where(eq(releaseArtists.artistId, row.id)),
+    seoPage(db, "artist", row.slug),
+  ]);
+  const groups: Record<DiscographyGroup, string[]> = {
+    albums: [],
+    eps: [],
+    singles: [],
+    other: [],
+  };
+  for (const release of releaseRows.sort(byDateDesc)) {
+    const group = discographyGroup(release);
+    if (group) groups[group].push(release.id);
+  }
+  const shown = (group: DiscographyGroup) =>
+    group === all ? groups[group] : groups[group].slice(0, DISCOGRAPHY_PREVIEW);
+  const cards = new Map(
+    (
+      await loadReleaseCards(db, [
+        ...shown("albums"),
+        ...shown("eps"),
+        ...shown("singles"),
+        ...shown("other"),
+      ])
+    ).map((card) => [card.id, toReleaseCard(card)]),
+  );
+  const ofGroup = (group: DiscographyGroup): ReleaseCard[] =>
+    shown(group).flatMap((id) => cards.get(id) ?? []);
 
   return {
     id: row.id,
@@ -286,12 +341,19 @@ export async function getArtistDetail(db: Db, slug: string): Promise<ArtistDetai
     type: row.type,
     discographyPending: !!row.mbid && !row.discographyImportedAt,
     discography: {
-      albums: ofType("album"),
-      eps: ofType("ep"),
-      singles: ofType("single"),
-      other: cards.filter((c) => !isMainRelease(c.secondaryTypes)).map(toReleaseCard),
+      albums: ofGroup("albums"),
+      eps: ofGroup("eps"),
+      singles: ofGroup("singles"),
+      other: ofGroup("other"),
+    },
+    discographyTotals: {
+      albums: groups.albums.length,
+      eps: groups.eps.length,
+      singles: groups.singles.length,
+      other: groups.other.length,
     },
     listenLinks: buildListenLinks("", [row.name]),
+    seo,
   };
 }
 
