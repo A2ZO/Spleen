@@ -12,7 +12,7 @@
     "./tsconfig/next.json": "./tsconfig/next.json"
   },
   "dependencies": {
-    "@eslint/js": "9.39.5",
+    "@eslint/js": "10.0.1",
     "eslint-config-next": "16.4.2",
     "eslint-config-prettier": "10.1.8",
     "typescript-eslint": "8.71.2"
