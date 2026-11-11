@@ -30,7 +30,7 @@
     "@spleen/config": "workspace:*",
     "@types/node": "24.19.2",
     "drizzle-kit": "0.31.11",
-    "eslint": "9.39.5",
+    "eslint": "10.14.0",
     "tsx": "4.23.15",
     "typescript": "6.0.3",
     "vitest": "5.0.5"
