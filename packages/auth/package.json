@@ -12,19 +12,19 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "1.7.12",
-    "@better-auth/expo": "1.7.12",
+    "@better-auth/drizzle-adapter": "1.7.18",
+    "@better-auth/expo": "1.7.18",
     "@spleen/db": "workspace:*",
     "@spleen/design-tokens": "workspace:*",
     "@spleen/i18n": "workspace:*",
     "@spleen/infra": "workspace:*",
-    "better-auth": "1.7.12"
+    "better-auth": "1.7.18"
   },
   "devDependencies": {
     "@spleen/config": "workspace:*",
     "@types/node": "24.19.2",
     "eslint": "9.39.5",
     "typescript": "6.0.3",
-    "vitest": "5.0.5"
+    "vitest": "5.1.0"
   }
 }
