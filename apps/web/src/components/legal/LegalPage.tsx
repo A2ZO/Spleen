@@ -4,8 +4,13 @@ import type { ReactNode } from "react";
 import { Link } from "@/i18n/navigation";
 import { getApi } from "@/server/api";
 
-/** Date of the last change to the legal texts (shown at the top of each page). */
-export const LEGAL_UPDATED = "2026-10-27";
+/** Date of the last change to each legal text (shown at the top of its page). */
+export const LEGAL_UPDATED = {
+  notice: "2026-10-27",
+  terms: "2026-10-27",
+  // Theme cookie removed (milestone 17).
+  privacy: "2026-11-12",
+} as const;
 
 const NOTICE = ["publisher", "hosting", "credits", "property"] as const;
 const TERMS = [
@@ -88,7 +93,7 @@ export async function LegalPage({ page }: { page: "notice" | "terms" | "privacy"
   const format = await getFormatter();
   const tags = richTags(await (await getApi()).system.contact());
   const updated = t("updated", {
-    date: format.dateTime(new Date(`${LEGAL_UPDATED}T12:00:00Z`), { dateStyle: "long" }),
+    date: format.dateTime(new Date(`${LEGAL_UPDATED[page]}T12:00:00Z`), { dateStyle: "long" }),
   });
 
   let intro: string | null = null;

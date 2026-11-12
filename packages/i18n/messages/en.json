@@ -20,12 +20,9 @@
     "notifications": "Notifications",
     "unread": "{count, plural, one {# unread} other {# unread}}",
     "discover": "Discover",
-    "admin": "Moderation"
-  },
-  "theme": {
-    "toggle": "Change theme",
-    "toDark": "Switch to night mode",
-    "toLight": "Switch to cream paper mode"
+    "admin": "Moderation",
+    "rate": "Rate a record",
+    "profile": "Profile"
   },
   "locale": {
     "label": "Language",
@@ -327,9 +324,6 @@
     "bioLabel": "Bio",
     "bioHint": "300 characters at most.",
     "localeLabel": "Language",
-    "themeLabel": "Theme",
-    "themeDark": "Dark",
-    "themeLight": "Light",
     "privacyTitle": "Privacy",
     "statsPrivateLabel": "Keep my stats private",
     "diaryPrivateLabel": "Keep my diary private",
@@ -1013,7 +1007,7 @@
         },
         "cookies": {
           "title": "Cookies",
-          "body": "<p>Spleen only uses necessary cookies, with no audience measurement or advertising, hence no cookie banner:</p><ul><li>the sign-in session, when you are signed in;</li><li><strong>spleen-theme</strong>: your light or dark theme;</li><li><strong>NEXT_LOCALE</strong>: your language, for the length of your visit.</li></ul>"
+          "body": "<p>Spleen only uses necessary cookies, with no audience measurement or advertising, hence no cookie banner:</p><ul><li>the sign-in session, when you are signed in;</li><li><strong>NEXT_LOCALE</strong>: your language, for the length of your visit.</li></ul>"
         },
         "minors": {
           "title": "Minimum age",

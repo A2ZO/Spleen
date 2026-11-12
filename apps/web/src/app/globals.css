@@ -25,6 +25,35 @@
     background-color: var(--sp-bg);
   }
 
+  /*
+   * Shell spacing. Phones: the floating tab bar (4 rem, 0.75 rem above the iPhone's home bar)
+   * plus 1 rem of air; the page ends above it, the "Undo" banners rise over it, and a focused
+   * element is never scrolled under it (WCAG 2.4.11). From `md`: no tab bar, and the sticky
+   * header pill (1 rem from the top, 4 rem tall) plus 1 rem is kept clear at the top.
+   */
+  :root {
+    --tab-bar-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    --tab-bar-space: calc(4rem + var(--tab-bar-bottom) + 1rem);
+    --undo-offset: 0px;
+  }
+
+  @media (width < 48rem) {
+    :root:has(#tab-bar) {
+      --undo-offset: calc(4rem + var(--tab-bar-bottom));
+      scroll-padding-bottom: var(--tab-bar-space);
+    }
+
+    body:has(#tab-bar) {
+      padding-bottom: var(--tab-bar-space);
+    }
+  }
+
+  @media (width >= 48rem) {
+    :root {
+      scroll-padding-top: 6rem;
+    }
+  }
+
   h1,
   h2,
   h3 {
@@ -56,6 +85,45 @@
     background-color: var(--sp-accent);
     color: var(--sp-accent-fg);
   }
+}
+
+/* Mobile tab bar (`TabBar`): floats above the iPhone's home bar. */
+.tab-bar {
+  position: fixed;
+  inset-inline: 1rem;
+  bottom: var(--tab-bar-bottom);
+  z-index: 40;
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out;
+}
+
+/*
+ * While a text field has the focus (the on-screen keyboard is open), the bar fades out so it
+ * never sits over the field. Not for boxes, radios, sliders or buttons: no keyboard there.
+ */
+body:has(
+    :is(
+      textarea,
+      [contenteditable]:not([contenteditable="false"]),
+      input:not(
+        [type="checkbox"],
+        [type="radio"],
+        [type="range"],
+        [type="button"],
+        [type="submit"],
+        [type="reset"],
+        [type="color"],
+        [type="file"],
+        [type="image"],
+        [type="hidden"]
+      )
+    ):focus
+  )
+  .tab-bar {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  pointer-events: none;
 }
 
 @utility tabular {

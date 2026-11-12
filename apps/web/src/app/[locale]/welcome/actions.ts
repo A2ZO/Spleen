@@ -2,11 +2,9 @@
 
 import type { ApiErrorCode, UsernameStatus } from "@spleen/api";
 import { onboardingSchema } from "@spleen/validators";
-import { cookies } from "next/headers";
 
 import { redirect } from "@/i18n/navigation";
 import { errorCode } from "@/lib/api-errors";
-import { THEME_COOKIE, THEME_COOKIE_MAX_AGE } from "@/lib/theme";
 import { getApi } from "@/server/api";
 
 export interface OnboardingState {
@@ -27,7 +25,6 @@ export async function onboardAction(
     displayName: formData.get("displayName"),
     termsAccepted: formData.get("termsAccepted") === "on",
     locale: formData.get("locale"),
-    theme: formData.get("theme"),
     timeZone: formData.get("timeZone") || undefined,
   });
   if (!parsed.success) {
@@ -40,11 +37,6 @@ export async function onboardAction(
     const code = errorCode(error);
     return { error: code, field: code.startsWith("USERNAME") ? "username" : undefined };
   }
-  (await cookies()).set(THEME_COOKIE, parsed.data.theme, {
-    path: "/",
-    maxAge: THEME_COOKIE_MAX_AGE,
-    sameSite: "lax",
-  });
   redirect({ href: `/u/${parsed.data.username}`, locale: parsed.data.locale });
   return {};
 }

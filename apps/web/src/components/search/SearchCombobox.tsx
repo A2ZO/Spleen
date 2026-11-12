@@ -413,7 +413,7 @@ export function SearchCombobox({
         <SearchIcon
           className={cn(
             "pointer-events-none absolute top-1/2 -translate-y-1/2 text-fg-muted",
-            variant === "header" ? "left-3" : "left-4 text-lg",
+            variant === "header" ? "left-4" : "left-4 text-lg",
           )}
         />
         <input
@@ -440,8 +440,10 @@ export function SearchCombobox({
           autoFocus={autoFocus}
           placeholder={t("nav.searchPlaceholder")}
           className={cn(
-            "w-full rounded-md border border-border bg-surface text-fg placeholder:text-fg-muted/70 focus:border-star focus:outline-none",
-            variant === "header" ? "py-1.5 pr-3 pl-9 text-sm" : "py-3 pr-4 pl-11 text-lg",
+            "w-full border text-fg placeholder:text-fg-muted/70 focus:border-star focus:outline-none",
+            variant === "header"
+              ? "min-h-11 rounded-full border-border-field bg-bg pr-4 pl-10 text-sm"
+              : "rounded-md border-border bg-surface py-3 pr-4 pl-11 text-lg",
           )}
         />
       </div>

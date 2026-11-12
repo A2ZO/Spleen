@@ -57,6 +57,3 @@ export const dark: Theme = {
 };
 
 export const themes = { dark } as const;
-/** "light" is only still accepted by the theme toggle, which goes away with its cookie. */
-export type ThemeName = "dark" | "light";
-export const defaultTheme: ThemeName = "dark";

@@ -1,13 +1,5 @@
 export { palette, type PaletteName } from "./palette";
-export {
-  colorRoles,
-  dark,
-  defaultTheme,
-  themes,
-  type ColorRole,
-  type Theme,
-  type ThemeName,
-} from "./themes";
+export { colorRoles, dark, themes, type ColorRole, type Theme } from "./themes";
 export {
   edgeDepth,
   fontFamily,

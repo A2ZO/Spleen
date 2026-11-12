@@ -35,7 +35,7 @@ export default function GlobalError({
   }, []);
 
   return (
-    <html lang={lang} data-theme="dark">
+    <html lang={lang}>
       <body className="flex min-h-screen items-center justify-center bg-bg px-4 text-fg">
         {t && (
           <main className="max-w-2xl py-16 text-center">

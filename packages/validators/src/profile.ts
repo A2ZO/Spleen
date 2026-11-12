@@ -71,7 +71,11 @@ export const displayNameSchema = z.string().trim().min(1).max(50);
 export const bioSchema = z.string().trim().max(300);
 
 export const localeSchema = z.enum(["fr", "en"]);
-export const themeSchema = z.enum(["dark", "light"]);
+/**
+ * Spleen has a single, dark theme (milestone 17). The column, this field and the API keep
+ * "light" until they are removed together; forms no longer send it, so it defaults to dark.
+ */
+export const themeSchema = z.enum(["dark", "light"]).default("dark");
 
 /**
  * Version of the terms of use a new member accepts (the date of their last change). Bump it

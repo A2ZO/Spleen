@@ -149,7 +149,11 @@ export function KeyboardHelpButton() {
   );
   if (!hydrated) return null;
   return (
-    <button type="button" onClick={openKeyboardHelp} className="hover:text-fg">
+    <button
+      type="button"
+      onClick={openKeyboardHelp}
+      className="inline-flex min-h-11 items-center underline hover:text-fg"
+    >
       {t("open")}
     </button>
   );

@@ -24,11 +24,9 @@ const legalLink = (href: string) =>
 
 export function OnboardingForm({
   locale,
-  theme,
   defaultDisplayName,
 }: {
   locale: string;
-  theme: string;
   defaultDisplayName: string;
 }) {
   const t = useTranslations("welcome");
@@ -47,7 +45,6 @@ export function OnboardingForm({
   return (
     <form action={action} className="space-y-5">
       <input type="hidden" name="locale" value={locale} />
-      <input type="hidden" name="theme" value={theme} />
       <input type="hidden" name="timeZone" value={timeZone} />
       <UsernameField label={t("usernameLabel")} serverError={usernameError} check={checkUsername} />
       <TextField

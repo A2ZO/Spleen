@@ -79,7 +79,7 @@ test("switching language keeps the profile tab", async ({ page }) => {
   await page.goto("/fr/u/nuitblanche?tab=stats");
   // After a navigation the server HTML shows before React hydrates: retry the click.
   await expect(async () => {
-    await page.getByRole("banner").getByRole("button", { name: "English" }).click();
+    await page.getByRole("contentinfo").getByRole("button", { name: "English" }).click();
     await expect(page).toHaveURL(/\/en\/u\/nuitblanche\?tab=stats$/, { timeout: 2_000 });
   }).toPass();
   await expect(page.getByRole("region", { name: "Profile sections" })).toContainText(
@@ -90,14 +90,6 @@ test("switching language keeps the profile tab", async ({ page }) => {
 test("empty shelf gathers dust", async ({ page }) => {
   await page.goto("/fr/u/rainydaysam");
   await expect(page.getByText("L'étagère de Sam prend la poussière.")).toBeVisible();
-});
-
-test("theme toggle switches to cream paper", async ({ page }) => {
-  await page.goto("/fr");
-  await page.getByRole("button", { name: "Passer en mode papier crème" }).click();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-  await page.reload();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 });
 
 test("unknown pages show the Baudelaire 404", async ({ page }) => {

@@ -145,7 +145,7 @@ test.describe("desktop", () => {
     expect(plain.headers()["cache-control"]).toContain("s-maxage=");
     expect(plain.headers()["set-cookie"]).toBeUndefined();
     const withCookie = await request.get("/api/search/suggest?q=pluie", {
-      headers: { cookie: "better-auth.session_token=whatever; spleen-theme=dark" },
+      headers: { cookie: "better-auth.session_token=whatever" },
     });
     expect(await withCookie.text()).toBe(await plain.text());
     expect(withCookie.headers()["set-cookie"]).toBeUndefined();

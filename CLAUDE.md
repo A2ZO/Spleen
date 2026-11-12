@@ -85,7 +85,7 @@ moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sh
 - Navigate from code only with `useNavigate()` (`@/i18n/navigation`, feeds the top bar;
   ESLint forbids `useRouter`); actions ending in `redirect()` call `useNavigationWhile(pending)`.
 - Animations neutralised by `prefers-reduced-motion` (global rule in `globals.css`).
-- Theme: `spleen-theme` cookie read server-side in the `[locale]` layout (no flash).
+- Dark only (Lilas): no theme cookie or toggle; the `profiles.theme` column awaits removal (issue).
 - Verify library versions on the npm registry / official docs, not from memory.
 
 ## Architecture rules (non-negotiable)

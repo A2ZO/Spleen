@@ -113,7 +113,7 @@ export default async function AlbumPage({ params }: Props) {
 
   return (
     <article className="space-y-16">
-      <header className="grid gap-8 md:grid-cols-[minmax(0,320px)_1fr_minmax(0,300px)] md:gap-10">
+      <header className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,320px)_1fr_minmax(0,300px)] md:gap-10">
         <Cover
           slug={release.slug}
           title={release.title}

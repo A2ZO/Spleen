@@ -50,19 +50,37 @@ export function PenIcon(props: IconProps) {
   );
 }
 
-export function MoonIcon(props: IconProps) {
+export function HomeIcon(props: IconProps) {
   return (
     <Icon {...props}>
-      <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" />
+      <path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1v-8.5Z" />
     </Icon>
   );
 }
 
-export function SunIcon(props: IconProps) {
+export function CompassIcon(props: IconProps) {
   return (
     <Icon {...props}>
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="m15.5 8.5-2 5-5 2 2-5 5-2Z" />
+    </Icon>
+  );
+}
+
+export function UserIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <circle cx="12" cy="8.5" r="3.75" />
+      <path d="M4.75 20a7.25 7.25 0 0 1 14.5 0" />
+    </Icon>
+  );
+}
+
+export function SignInIcon(props: IconProps) {
+  return (
+    <Icon {...props}>
+      <path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4" />
+      <path d="M3.5 12H14m-4-4 4 4-4 4" />
     </Icon>
   );
 }

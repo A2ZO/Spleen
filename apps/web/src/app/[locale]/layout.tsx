@@ -1,7 +1,6 @@
 import "../globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { cookies } from "next/headers";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import type { ReactNode } from "react";
@@ -11,13 +10,14 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { HydrationMarker } from "@/components/layout/HydrationMarker";
 import { NavigationBar } from "@/components/layout/NavigationBar";
+import { TabBar } from "@/components/layout/TabBar";
 import { ServiceWorker } from "@/components/layout/ServiceWorker";
 import { UndoBanners } from "@/components/layout/UndoBanners";
 import { initRouteLocale } from "@/i18n/locale";
 import { COVER_ERROR_SCRIPT } from "@/lib/cover-errors";
 import { routing } from "@/i18n/routing";
-import { parseTheme, THEME_COOKIE } from "@/lib/theme";
 import { getApi } from "@/server/api";
+import { palette } from "@spleen/design-tokens";
 import { serviceWorkerDisabled, siteUrl } from "@spleen/infra/config";
 
 import { bricolage, geist, geistMono } from "../fonts";
@@ -31,7 +31,8 @@ import "./listening/actions";
 import "./review/actions";
 import "./social/actions";
 
-// No `generateStaticParams` here: reading the theme cookie makes every page dynamic anyway,
+// No `generateStaticParams` here: reading the session (suspension, header) makes every page
+// dynamic anyway,
 // and in `next dev` it makes each first render rewrite `prerender-manifest.json` in place,
 // so two routes compiling at once could read it half-written ("Unexpected end of JSON
 // input", then a 500). Enforced by the ESLint config (`@spleen/config/eslint/next`).
@@ -55,7 +56,11 @@ export async function generateMetadata({
 }
 
 export const viewport: Viewport = {
-  themeColor: "#15131C",
+  themeColor: palette.night,
+  // `cover`: `env(safe-area-inset-bottom)` is the iPhone's home bar (the tab bar sits above
+  // it). `resizes-content`: Android shrinks the page for the keyboard instead of covering it.
+  viewportFit: "cover",
+  interactiveWidget: "resizes-content",
 };
 
 export default async function LocaleLayout({
@@ -67,19 +72,13 @@ export default async function LocaleLayout({
 }) {
   const locale = initRouteLocale((await params).locale);
   // A suspended member who signed in sees why on every page, and nothing else.
-  const [t, jar, suspension] = await Promise.all([
+  const [t, suspension] = await Promise.all([
     getTranslations({ locale, namespace: "common" }),
-    cookies(),
     getApi().then((api) => api.account.suspension()),
   ]);
-  const theme = parseTheme(jar.get(THEME_COOKIE)?.value);
 
   return (
-    <html
-      lang={locale}
-      data-theme={theme}
-      className={`${bricolage.variable} ${geist.variable} ${geistMono.variable}`}
-    >
+    <html lang={locale} className={`${bricolage.variable} ${geist.variable} ${geistMono.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: COVER_ERROR_SCRIPT }} />
       </head>
@@ -87,7 +86,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider>
           <a
             href="#main"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-fg"
+            className="sr-only focus:not-sr-only on-accent focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:inline-flex focus:min-h-11 focus:items-center focus:rounded-full focus:bg-accent focus:px-5 focus:font-semibold focus:text-accent-fg"
           >
             {t("skipToContent")}
           </a>
@@ -102,6 +101,7 @@ export default async function LocaleLayout({
             {suspension ? <SuspendedNotice suspension={suspension} locale={locale} /> : children}
           </main>
           <Footer />
+          {suspension ? null : <TabBar />}
           <UndoBanners />
           <ServiceWorker enabled={!serviceWorkerDisabled()} />
           <HydrationMarker />

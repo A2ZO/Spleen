@@ -93,7 +93,7 @@ test("no rating while typing in a field or with Ctrl", async ({ page }, testInfo
   const { slider } = await openAlbum(page);
   const actions = trackActions(page);
   // The header's search field; on small screens it lives in the full-screen search window
-  // opened by the header's icon.
+  // opened by the header's magnifier (members).
   const mobile = testInfo.project.name === "mobile";
   if (mobile) await page.locator("header").getByRole("link", { name: "Rechercher" }).click();
   const field = page.locator(mobile ? "#dialog-search" : "#header-search");

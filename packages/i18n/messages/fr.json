@@ -20,12 +20,9 @@
     "notifications": "Notifications",
     "unread": "{count, plural, one {# non lue} other {# non lues}}",
     "discover": "Découvrir",
-    "admin": "Modération"
-  },
-  "theme": {
-    "toggle": "Changer de thème",
-    "toDark": "Passer en mode nuit",
-    "toLight": "Passer en mode papier crème"
+    "admin": "Modération",
+    "rate": "Noter un disque",
+    "profile": "Profil"
   },
   "locale": {
     "label": "Langue",
@@ -327,9 +324,6 @@
     "bioLabel": "Bio",
     "bioHint": "300 caractères au plus.",
     "localeLabel": "Langue",
-    "themeLabel": "Thème",
-    "themeDark": "Sombre",
-    "themeLight": "Clair",
     "privacyTitle": "Confidentialité",
     "statsPrivateLabel": "Garder mes stats privées",
     "diaryPrivateLabel": "Garder mon journal privé",
@@ -1013,7 +1007,7 @@
         },
         "cookies": {
           "title": "Cookies",
-          "body": "<p>Spleen n'utilise que des cookies nécessaires, sans mesure d'audience ni publicité, d'où l'absence de bandeau :</p><ul><li>la session de connexion, si tu es connecté ;</li><li><strong>spleen-theme</strong> : ton thème clair ou sombre ;</li><li><strong>NEXT_LOCALE</strong> : ta langue, le temps de ta visite.</li></ul>"
+          "body": "<p>Spleen n'utilise que des cookies nécessaires, sans mesure d'audience ni publicité, d'où l'absence de bandeau :</p><ul><li>la session de connexion, si tu es connecté ;</li><li><strong>NEXT_LOCALE</strong> : ta langue, le temps de ta visite.</li></ul>"
         },
         "minors": {
           "title": "Âge minimum",
