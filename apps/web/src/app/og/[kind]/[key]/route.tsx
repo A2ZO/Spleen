@@ -62,7 +62,7 @@ function Sleeve({ size }: { size: number }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: `linear-gradient(135deg, ${palette.velvet}, ${palette.midnight})`,
+        background: `linear-gradient(135deg, ${palette.dusk}, ${palette.plum})`,
         borderRadius: 12,
       }}
     >
@@ -71,7 +71,7 @@ function Sleeve({ size }: { size: number }) {
           width: size * 0.62,
           height: size * 0.62,
           borderRadius: "50%",
-          background: palette.ink,
+          background: palette.night,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -82,7 +82,7 @@ function Sleeve({ size }: { size: number }) {
             width: size * 0.18,
             height: size * 0.18,
             borderRadius: "50%",
-            background: palette.brass,
+            background: palette.lilac,
           }}
         />
       </div>
@@ -128,7 +128,7 @@ function Stars({ rating }: { rating: number }) {
         const points = rating - i * 2;
         return (
           <div key={i} style={{ display: "flex", position: "relative", width: 44, height: 44 }}>
-            {star(palette.smoke)}
+            {star(palette.plum)}
             {points > 0 && (
               <div
                 style={{
@@ -141,7 +141,7 @@ function Stars({ rating }: { rating: number }) {
                   overflow: "hidden",
                 }}
               >
-                {star(palette.brass)}
+                {star(palette.lilac)}
               </div>
             )}
           </div>
@@ -176,14 +176,14 @@ async function render(card: OgCard): Promise<{ element: ReactElement; complete: 
         alignItems: "center",
         gap: 64,
         padding: 72,
-        background: palette.ink,
-        color: palette.cream,
+        background: palette.night,
+        color: palette.mist,
         fontFamily: "Inter",
       }}
     >
       {picture}
       <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 20 }}>
-        <div style={{ fontSize: 26, letterSpacing: 6, color: palette.brass }}>SPLEEN</div>
+        <div style={{ fontSize: 26, letterSpacing: 6, color: palette.lilac }}>SPLEEN</div>
         <div
           style={{
             fontFamily: "Fraunces",
@@ -204,7 +204,7 @@ async function render(card: OgCard): Promise<{ element: ReactElement; complete: 
           </div>
         ) : null}
         {card.kind === "review" && card.author ? (
-          <div style={{ fontSize: 28, color: palette.brass }}>{`— ${card.author}`}</div>
+          <div style={{ fontSize: 28, color: palette.lilac }}>{`— ${card.author}`}</div>
         ) : null}
       </div>
     </div>

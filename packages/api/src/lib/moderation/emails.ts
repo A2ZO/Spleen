@@ -41,13 +41,13 @@ export async function suspensionEmail(
   const paragraph = (value: string) =>
     `<p style="font-size:16px;line-height:1.6">${escapeHtml(value)}</p>`;
   const html = `<!doctype html>
-<html lang="${locale}"><body style="margin:0;background:${palette.cream};color:${palette.ink};font-family:Georgia,serif">
+<html lang="${locale}"><body style="margin:0;background:${palette.mist};color:${palette.ink};font-family:Georgia,serif">
 <span style="display:none">${escapeHtml(m.preview)}</span>
 <div style="max-width:520px;margin:0 auto;padding:40px 24px">
 <p style="font-size:28px;font-style:italic;margin:0 0 32px">Spleen</p>
 ${paragraph(m.greeting)}
 ${paragraph(m.body)}
-<p style="font-size:16px;line-height:1.6;border-left:3px solid ${palette.velvet};padding-left:16px"><strong>${escapeHtml(m.reasonLabel)}</strong><br>${escapeHtml(reason).replaceAll("\n", "<br>")}</p>
+<p style="font-size:16px;line-height:1.6;border-left:3px solid ${palette.lilac};padding-left:16px"><strong>${escapeHtml(m.reasonLabel)}</strong><br>${escapeHtml(reason).replaceAll("\n", "<br>")}</p>
 ${paragraph(m.rights)}
 ${paragraph(contest)}
 <p style="font-size:13px;line-height:1.6;font-style:italic">${escapeHtml(m.signature)}</p>

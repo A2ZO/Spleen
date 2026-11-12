@@ -20,7 +20,7 @@ import { parseTheme, THEME_COOKIE } from "@/lib/theme";
 import { getApi } from "@/server/api";
 import { serviceWorkerDisabled, siteUrl } from "@spleen/infra/config";
 
-import { fraunces, inter, plexMono } from "../fonts";
+import { bricolage, geist, geistMono } from "../fonts";
 // Reactions and deletions may leave after an internal navigation (`lib/use-instant-writes.ts`,
 // `lib/use-undoable-delete.ts`): the Server Action is then posted to the new page, which must
 // know it. Imported here, every page does
@@ -78,7 +78,7 @@ export default async function LocaleLayout({
     <html
       lang={locale}
       data-theme={theme}
-      className={`${fraunces.variable} ${inter.variable} ${plexMono.variable}`}
+      className={`${bricolage.variable} ${geist.variable} ${geistMono.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: COVER_ERROR_SCRIPT }} />

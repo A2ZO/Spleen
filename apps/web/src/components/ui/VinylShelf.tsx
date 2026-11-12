@@ -14,7 +14,7 @@ function Vinyl() {
       viewBox="0 0 100 100"
       className="absolute inset-y-[3%] right-0 h-[94%] w-auto translate-x-[22%] transition-transform duration-500 ease-spleen group-hover:translate-x-[48%] group-focus-visible:translate-x-[48%]"
     >
-      <circle cx="50" cy="50" r="49.5" strokeWidth="1" className="fill-vinyl stroke-vinyl-groove" />
+      <circle cx="50" cy="50" r="49.5" strokeWidth="1" className="fill-edge stroke-border-strong" />
       {[46, 42, 38, 34, 30, 26].map((r) => (
         <circle
           key={r}
@@ -22,13 +22,13 @@ function Vinyl() {
           cy="50"
           r={r}
           fill="none"
-          className="stroke-vinyl-groove"
+          className="stroke-border-strong"
           strokeWidth="0.6"
         />
       ))}
       <path
         d="M20 22a42 42 0 0 1 30-12"
-        className="stroke-vinyl-groove"
+        className="stroke-border-strong"
         strokeWidth="3"
         fill="none"
       />
@@ -85,7 +85,7 @@ export function VinylShelf({
       {/* The wooden plank. */}
       <div
         aria-hidden="true"
-        className="relative -mt-4 h-5 rounded-[2px] bg-gradient-to-b from-wood to-wood-dark shadow-shelf"
+        className="relative -mt-4 h-5 rounded-[2px] bg-surface-raised shadow-card"
       >
         <div className="absolute inset-x-0 top-0 h-px bg-white/15" />
         <div className="absolute inset-0 opacity-30 [background-image:repeating-linear-gradient(90deg,transparent_0_38px,rgb(0_0_0/0.25)_38px_39px,transparent_39px_90px)]" />

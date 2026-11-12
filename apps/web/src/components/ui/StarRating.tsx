@@ -15,7 +15,8 @@ export interface StarRatingProps {
   className?: string;
   /** Accessible name; defaults to the generic "Your rating". */
   label?: string;
-  size?: "sm" | "md";
+  /** `lg`: the big "Your rating" row (48 px per star). */
+  size?: "sm" | "md" | "lg";
 }
 
 /**
@@ -77,8 +78,10 @@ export function StarRating({ value, onChange, className, label, size = "md" }: S
           if (picked !== null) onChange(picked === value ? null : picked);
         }}
         className={cn(
-          "cursor-pointer touch-none rounded-sm leading-none",
-          size === "md" ? "text-3xl" : "text-lg",
+          "cursor-pointer touch-none rounded-lg leading-none",
+          { sm: "py-3 text-lg", md: "py-1.5 text-3xl", lg: "py-1 text-[40px] [&_svg]:px-[0.1em]" }[
+            size
+          ],
         )}
       >
         <Stars rating={shown} />

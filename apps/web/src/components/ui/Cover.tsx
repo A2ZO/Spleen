@@ -20,7 +20,7 @@ export interface CoverProps {
 
 /**
  * Album sleeve. Uses the real cover when there is one, otherwise a generated,
- * deterministic jazz-label style placeholder derived from the slug. While a real cover loads
+ * deterministic placeholder derived from the slug. While a real cover loads
  * (or when it fails without JavaScript) the plain surface shows: never a made-up sleeve under
  * real artwork, never a broken-image icon. The accessible name is the sleeve's, not the image's.
  */
@@ -42,7 +42,7 @@ export function Cover({
       role={alt ? "img" : undefined}
       aria-label={alt || undefined}
       className={cn(
-        "@container relative aspect-square overflow-hidden rounded-sm bg-surface shadow-cover",
+        "@container relative aspect-square overflow-hidden rounded-thumb bg-surface shadow-cover",
         className,
       )}
     >
@@ -51,11 +51,6 @@ export function Cover({
       ) : (
         generated
       )}
-      {/* Sleeve sheen and worn edge. */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-black/25 ring-1 ring-black/20 ring-inset"
-      />
     </div>
   );
 }
@@ -120,7 +115,7 @@ function GeneratedCover({
       </svg>
       {showText && (
         <div className="absolute inset-x-0 bottom-0 p-[7cqw]">
-          <p className="line-clamp-3 font-serif text-[11cqw] leading-[1.05] font-semibold italic">
+          <p className="line-clamp-3 font-display text-[11cqw] leading-[1.05] font-extrabold tracking-[-0.02em]">
             {title}
           </p>
           {artistName && (

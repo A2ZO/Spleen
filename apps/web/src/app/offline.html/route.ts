@@ -19,17 +19,17 @@ export async function GET(request: Request) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="${palette.ink}">
+<meta name="theme-color" content="${palette.night}">
 <title>${escape(t.offlineTitle)} · ${escape(t.name)}</title>
 <style>
   body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 1.5rem;
-    background: ${palette.ink}; color: ${palette.cream}; font-family: Georgia, serif; text-align: center; }
+    background: ${palette.night}; color: ${palette.mist}; font-family: Georgia, serif; text-align: center; }
   main { max-width: 26rem; }
   img { width: 4rem; height: 4rem; }
   h1 { font-size: 1.75rem; font-weight: 600; margin: 1.25rem 0 0.75rem; }
   p { font-family: system-ui, sans-serif; line-height: 1.5; opacity: 0.8; }
-  a { display: inline-block; margin-top: 1rem; padding: 0.6rem 1.2rem; border: 1px solid ${palette.brass};
-    border-radius: 0.4rem; color: ${palette.brass}; font-family: system-ui, sans-serif; text-decoration: none; }
+  a { display: inline-block; margin-top: 1rem; padding: 0.6rem 1.2rem; border: 1px solid ${palette.lilac};
+    border-radius: 0.4rem; color: ${palette.lilac}; font-family: system-ui, sans-serif; text-decoration: none; }
 </style>
 </head>
 <body>

@@ -4,21 +4,21 @@ import { cn } from "@/lib/cn";
 export function Turntable({ playing, className }: { playing: boolean; className?: string }) {
   return (
     <svg aria-hidden="true" viewBox="0 0 64 48" className={className}>
-      <rect x="1" y="2" width="62" height="44" rx="3" className="fill-wood-dark" />
-      <rect x="1" y="2" width="62" height="44" rx="3" fill="none" className="stroke-wood" />
+      <rect x="1" y="2" width="62" height="44" rx="3" className="fill-surface" />
+      <rect x="1" y="2" width="62" height="44" rx="3" fill="none" className="stroke-border" />
       <circle cx="26" cy="24" r="19" className="fill-surface-raised" />
       <g
         className={cn(playing && "animate-record")}
         style={{ transformBox: "fill-box", transformOrigin: "center" }}
       >
-        <circle cx="26" cy="24" r="17" className="fill-vinyl" />
+        <circle cx="26" cy="24" r="17" className="fill-edge" />
         <circle
           cx="26"
           cy="24"
           r="13"
           fill="none"
           strokeWidth="0.5"
-          className="stroke-vinyl-groove"
+          className="stroke-border-strong"
         />
         <circle
           cx="26"
@@ -26,7 +26,7 @@ export function Turntable({ playing, className }: { playing: boolean; className?
           r="9.5"
           fill="none"
           strokeWidth="0.5"
-          className="stroke-vinyl-groove"
+          className="stroke-border-strong"
         />
         <circle cx="26" cy="24" r="5" className="fill-accent" />
         <rect x="25.4" y="19.5" width="1.2" height="3" className="fill-accent-fg" opacity="0.7" />

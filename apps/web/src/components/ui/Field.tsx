@@ -5,8 +5,12 @@ import { useId, type ComponentProps, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 import { useTypedBeforeHydration } from "@/lib/typed-before-hydration";
 
+/*
+ * Pill-shaped field on the page background. Its border is `border-field` (3:1, WCAG 1.4.11);
+ * focus keeps the global lilac ring and turns the border lilac.
+ */
 const control =
-  "w-full rounded-md border border-border bg-surface px-3 py-2 text-fg placeholder:text-fg-muted/70 focus:border-star focus:outline-none aria-[invalid=true]:border-danger";
+  "min-h-11 w-full rounded-full border border-border-field bg-bg px-[18px] py-2 text-[15px] text-fg placeholder:text-fg-muted focus:border-accent aria-[invalid=true]:border-danger";
 
 interface FieldProps {
   label: ReactNode;
@@ -89,7 +93,7 @@ export function TextArea({
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={error || hint ? `${id}-msg` : undefined}
-        className={cn(control, "min-h-24", className)}
+        className={cn(control, "min-h-24 rounded-card-sm py-3", className)}
         {...props}
       />
     </FieldShell>
@@ -131,7 +135,7 @@ export function Checkbox({
         id={id}
         type="checkbox"
         aria-describedby={hint ? `${id}-hint` : undefined}
-        className="mt-1 size-4 shrink-0 accent-accent"
+        className="mt-0.5 size-5 shrink-0 accent-accent"
         {...props}
       />
       <div>
