@@ -1084,6 +1084,7 @@
     "onAccentButton": "See the list",
     "small": "Small",
     "disabled": "Unavailable",
+    "focusShown": "Focus shown permanently (to check the ring)",
     "iconLabel": "Like",
     "cardTitle": "A card",
     "cardBody": "Dark surface, one-pixel top sheen, drop shadow.",

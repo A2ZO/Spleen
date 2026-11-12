@@ -38,13 +38,17 @@
   }
 
   /* Lilac ring, or ink on a lilac background (`on-accent` marks those areas). */
-  :focus-visible {
+  /* `focus-shown` draws the same ring permanently (component demo page, screenshots). */
+  :focus-visible,
+  .focus-shown {
     outline: 2px solid var(--sp-accent);
     outline-offset: 3px;
   }
 
   .on-accent :focus-visible,
-  .on-accent:focus-visible {
+  .on-accent:focus-visible,
+  .on-accent .focus-shown,
+  .on-accent.focus-shown {
     outline-color: var(--sp-accent-fg);
   }
 

@@ -76,6 +76,13 @@ export default async function DevComponentsPage({ params }: Props) {
             {t("disabled")}
           </Button>
         </div>
+        <p className="text-sm text-fg-muted">{t("focusShown")}</p>
+        <div className={row}>
+          <Button className="focus-shown">{t("primary")}</Button>
+          <Button variant="secondary" className="focus-shown">
+            {t("secondary")}
+          </Button>
+        </div>
       </Section>
 
       <Section title={t("onAccent")}>
@@ -85,6 +92,14 @@ export default async function DevComponentsPage({ params }: Props) {
           <div className={row}>
             <Button variant="ink">{t("ink")}</Button>
             <Button variant="on-accent">{t("onAccentButton")}</Button>
+          </div>
+          <div className={row}>
+            <Button variant="ink" className="focus-shown">
+              {t("ink")}
+            </Button>
+            <Button variant="on-accent" className="focus-shown">
+              {t("onAccentButton")}
+            </Button>
           </div>
         </Card>
       </Section>
@@ -130,6 +145,10 @@ export default async function DevComponentsPage({ params }: Props) {
             </SelectField>
             <Checkbox label={t("checkbox")} defaultChecked />
             <TextField label={t("disabled")} disabled defaultValue="vinylvince" />
+            <SelectField label={t("disabled")} disabled defaultValue="cd">
+              <option value="lp">{t("optionLp")}</option>
+              <option value="cd">{t("optionCd")}</option>
+            </SelectField>
           </div>
         </div>
       </Section>

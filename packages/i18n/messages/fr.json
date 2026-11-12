@@ -1084,6 +1084,7 @@
     "onAccentButton": "Voir la liste",
     "small": "Petit",
     "disabled": "Indisponible",
+    "focusShown": "Focus affiché en permanence (pour vérifier le contour)",
     "iconLabel": "J’aime",
     "cardTitle": "Une carte",
     "cardBody": "Surface sombre, reflet d’un pixel en haut, ombre portée.",

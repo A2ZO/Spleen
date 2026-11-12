@@ -2,15 +2,17 @@
 
 import { useId, type ComponentProps, type ReactNode } from "react";
 
+import { ChevronDownIcon } from "@/components/ui/icons";
 import { cn } from "@/lib/cn";
 import { useTypedBeforeHydration } from "@/lib/typed-before-hydration";
 
 /*
  * Pill-shaped field on the page background. Its border is `border-field` (3:1, WCAG 1.4.11);
- * focus keeps the global lilac ring and turns the border lilac.
+ * focus keeps the global lilac ring and turns the border lilac. Disabled: muted ink on
+ * `surface-alt` with the quiet border.
  */
 const control =
-  "min-h-11 w-full rounded-full border border-border-field bg-bg px-[18px] py-2 text-[15px] text-fg placeholder:text-fg-muted focus:border-accent aria-[invalid=true]:border-danger";
+  "min-h-11 w-full rounded-full border border-border-field bg-bg px-[18px] py-2 text-[15px] text-fg placeholder:text-fg-muted focus:border-accent aria-[invalid=true]:border-danger disabled:cursor-not-allowed disabled:border-border disabled:bg-surface-alt disabled:text-fg-muted";
 
 interface FieldProps {
   label: ReactNode;
@@ -93,7 +95,7 @@ export function TextArea({
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={error || hint ? `${id}-msg` : undefined}
-        className={cn(control, "min-h-24 rounded-card-sm py-3", className)}
+        className={cn(control, "min-h-24 rounded-2xl py-3", className)}
         {...props}
       />
     </FieldShell>
@@ -110,14 +112,21 @@ export function SelectField({
   const id = useId();
   return (
     <FieldShell id={id} label={label} hint={hint}>
-      <select
-        id={id}
-        aria-describedby={hint ? `${id}-msg` : undefined}
-        className={cn(control, className)}
-        {...props}
-      >
-        {children}
-      </select>
+      {/* Own chevron: the native one sits against the pill's edge. */}
+      <div className="relative">
+        <select
+          id={id}
+          aria-describedby={hint ? `${id}-msg` : undefined}
+          className={cn(control, "appearance-none pr-12", className)}
+          {...props}
+        >
+          {children}
+        </select>
+        <ChevronDownIcon
+          aria-hidden
+          className="pointer-events-none absolute top-1/2 right-[18px] size-4 -translate-y-1/2 text-fg-muted"
+        />
+      </div>
     </FieldShell>
   );
 }

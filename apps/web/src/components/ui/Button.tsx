@@ -13,11 +13,13 @@ type Variant = "primary" | "secondary" | "outline" | "ghost" | "ink" | "on-accen
 type Size = "md" | "sm" | "icon" | "icon-lg";
 
 /*
+ * Disabled: flat (no edge, no shadow, no press), muted ink on `surface-alt`, so it never
+ * looks clickable.
  * Pressing sinks the button onto its edge (translateY by the edge depth) and drops the edge
  * from the shadow. Only transform is animated; the shadow switches at once.
  */
 const base =
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap transition-transform duration-150 ease-spring select-none disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50";
+  "inline-flex shrink-0 items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap transition-transform duration-150 ease-spring select-none disabled:pointer-events-none disabled:translate-y-0 disabled:border-transparent disabled:bg-surface-alt disabled:text-fg-muted disabled:shadow-none aria-disabled:pointer-events-none aria-disabled:translate-y-0 aria-disabled:border-transparent aria-disabled:bg-surface-alt aria-disabled:text-fg-muted aria-disabled:shadow-none";
 
 const variants: Record<Variant, string> = {
   primary:
