@@ -18,12 +18,25 @@ import { Link } from "@/i18n/navigation";
 type ErrorCode = ApiErrorCode | "unknown";
 
 /** "Add to a list" on a record, track or artist page: opens a dialog of the member's lists. */
-export function AddToListButton({ target, title }: { target: ListTargetInput; title: string }) {
+export function AddToListButton({
+  target,
+  title,
+  className,
+}: {
+  target: ListTargetInput;
+  title: string;
+  className?: string;
+}) {
   const t = useTranslations("list.addTo");
   const [open, setOpen] = useState(false);
   return (
     <>
-      <Button variant="outline" aria-haspopup="dialog" onClick={() => setOpen(true)}>
+      <Button
+        variant="outline"
+        aria-haspopup="dialog"
+        onClick={() => setOpen(true)}
+        className={className}
+      >
         {t("button")}
       </Button>
       {open && <AddToListDialog target={target} title={title} onClose={() => setOpen(false)} />}

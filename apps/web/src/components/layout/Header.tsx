@@ -32,7 +32,10 @@ export async function Header({ minimal = false }: { minimal?: boolean }) {
 
   return (
     <header className="z-40 px-4 md:sticky md:top-4 md:mt-4 md:px-6">
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 md:gap-4 md:rounded-full md:border md:border-border md:bg-surface md:pr-2.5 md:pl-6 md:shadow-card">
+      <div
+        data-header-row
+        className="mx-auto flex h-16 max-w-6xl items-center gap-3 md:gap-4 md:rounded-full md:border md:border-border md:bg-surface md:pr-2.5 md:pl-6 md:shadow-card"
+      >
         <Link prefetch="auto" href="/" className="shrink-0 rounded-full text-fg">
           <Logo />
           <span className="sr-only">{t("home")}</span>

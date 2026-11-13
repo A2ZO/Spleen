@@ -105,7 +105,7 @@
       "listenedDone": "Écouté",
       "like": "Coup de cœur",
       "wantToListen": "À écouter",
-      "log": "Journaliser…",
+      "log": "Noter en détail…",
       "signIn": "Connecte-toi pour garder une trace de tes écoutes.",
       "signInLink": "Se connecter"
     },
@@ -1104,5 +1104,31 @@
     "tabPopularBody": "Ce qui tourne en ce moment.",
     "linkTabsLabel": "Sections",
     "seeMore": "Voir plus"
+  },
+  "detail": {
+    "back": "Retour",
+    "more": "Plus d'actions",
+    "review": "Critique",
+    "community": "Note de la communauté",
+    "outOfFive": "sur 5",
+    "myListensCount": "{count, plural, one {# fois} other {# fois}}",
+    "lastListen": "Dernière écoute le {date}.",
+    "lastListenFormat": "Dernière écoute le {date} ({format}).",
+    "firstListen": "Première écoute le {date}.",
+    "noListens": "Pas encore d'écoute.",
+    "undatedOnly": "Note rapide, sans date : donne-lui une date pour la voir dans ton journal.",
+    "seeDiary": "Voir dans mon journal",
+    "editListens": "Modifier mes écoutes",
+    "listCount": "{count, plural, one {# liste} other {# listes}}",
+    "seeLists": "Voir les listes",
+    "signInToRate": "Connecte-toi pour noter",
+    "discography": "Discographie",
+    "albumCount": "{count, plural, one {# album} other {# albums}}",
+    "epCount": "{count, plural, one {# EP} other {# EP}}",
+    "singleCount": "{count, plural, one {# single} other {# singles}}",
+    "otherCount": "{count, plural, one {# autre} other {# autres}}",
+    "on": "sur",
+    "theirRating": "Sa note",
+    "trackLabel": "Morceau"
   }
 }

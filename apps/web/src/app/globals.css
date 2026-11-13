@@ -46,6 +46,14 @@
     body:has(#tab-bar) {
       padding-bottom: var(--tab-bar-space);
     }
+
+    /*
+     * Detail pages bring their own sticky top bar (`DetailBar`, 4 rem): no site header row
+     * above it, and a focused element is never scrolled under it.
+     */
+    :root:has([data-detail-bar]) {
+      scroll-padding-top: 4.5rem;
+    }
   }
 
   @media (width >= 48rem) {
@@ -84,6 +92,29 @@
   ::selection {
     background-color: var(--sp-accent);
     color: var(--sp-accent-fg);
+  }
+}
+
+/*
+ * Outside the base layer, so it beats the header row's `h-16` utility. Hidden without
+ * `display: none`: the full-screen search opened by the tab bar's "+" lives in that row,
+ * and a modal dialog in the top layer still renders (not clipped by `overflow`).
+ */
+@media (width < 48rem) {
+  body:has([data-detail-bar]) {
+    [data-header-row] {
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
+
+    [data-header-row] dialog {
+      visibility: visible;
+    }
+
+    #main {
+      padding-top: 0;
+    }
   }
 }
 

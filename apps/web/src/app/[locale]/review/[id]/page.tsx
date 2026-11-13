@@ -4,15 +4,22 @@ import { notFound } from "next/navigation";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
+import { DetailBar } from "@/components/detail/DetailBar";
+import { moreMenuItem } from "@/components/detail/MoreMenu";
 import { CommentForm, CommentItem } from "@/components/social/Comments";
 import { LikeButton } from "@/components/social/LikeButton";
 import { ModerationBanner } from "@/components/social/ModerationBanner";
 import { ReportButton } from "@/components/social/ReportDialog";
 import { Avatar } from "@/components/ui/Avatar";
+import { buttonClasses } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { Cover } from "@/components/ui/Cover";
 import { CommentIcon, HeartIcon } from "@/components/ui/icons";
+import { pillClasses } from "@/components/ui/Pill";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Stars } from "@/components/ui/Stars";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { cn } from "@/lib/cn";
 import { seoMetadata } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
 import { loadCursorPage } from "@/lib/api-errors";
@@ -82,100 +89,152 @@ export default async function ReviewPage({ params, searchParams }: Props) {
   const itemHref = review.track ? `/track/${review.track.slug}` : `/album/${release.slug}`;
   const signedIn = Boolean(me?.profile);
   const path = `/review/${id}`;
+  const rating = review.rating;
+  const stars =
+    rating === null
+      ? null
+      : format.number(ratingToStars(rating), {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        });
+  const action = detail.isOwner ? (
+    <Link href={`/review/${id}/edit`} className={moreMenuItem}>
+      {t("review.edit")}
+    </Link>
+  ) : signedIn ? (
+    <ReportButton subject={{ kind: "review", id }} variant="menu" />
+  ) : null;
 
   return (
-    <div className="mx-auto max-w-3xl space-y-10">
-      {detail.hidden && <ModerationBanner hold={detail.hidden} subject="review" />}
-      <article className="space-y-6">
-        <header className="flex items-center gap-4">
-          <Link href={itemHref} className="w-20 shrink-0 sm:w-24" tabIndex={-1} aria-hidden="true">
+    <div className="mx-auto max-w-4xl">
+      <DetailBar backHref={itemHref} label={t("detail.review")} actions={action} />
+      {detail.hidden && <ModerationBanner hold={detail.hidden} subject="review" className="mb-6" />}
+      <article>
+        <header className="flex items-center gap-4 md:gap-6">
+          <Link href={itemHref} className="w-20 shrink-0 md:w-32" tabIndex={-1} aria-hidden="true">
             <Cover
               slug={release.slug}
               title={release.title}
               coverUrl={release.coverUrl}
               showText={false}
-              sizes="96px"
+              sizes="128px"
+              className="rounded-2xl! md:rounded-card-sm!"
             />
           </Link>
           <div className="min-w-0">
-            <p className="font-serif text-sm text-fg-muted italic">
-              {t("review.byline", { name: review.author.displayName })}
+            <p className="font-mono text-xs tracking-[0.06em] text-fg-muted uppercase max-md:hidden">
+              {t("detail.review")}
             </p>
-            <h1 className="text-3xl font-semibold text-balance">
-              <Link href={itemHref} className="hover:text-star">
+            <h1 className="font-display text-[32px] leading-[0.95] font-extrabold tracking-[-0.03em] text-balance [overflow-wrap:anywhere] md:mt-2 md:text-[56px]">
+              <Link href={itemHref} className="hover:text-link">
                 {review.track?.title ?? release.title}
               </Link>
             </h1>
-            <p className="text-sm text-fg-muted">{release.artists.map((a) => a.name).join(", ")}</p>
+            <p className="mt-1.5 text-fg-muted md:text-lg">
+              {release.artists.map((a) => a.name).join(", ")}
+            </p>
           </div>
         </header>
 
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+        <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
           <Link
             href={`/u/${review.author.username}`}
-            className="flex items-center gap-2 text-fg-muted hover:text-fg"
+            className="flex items-center gap-2.5 font-medium hover:text-link"
           >
             <Avatar
               name={review.author.displayName}
               seed={review.author.username}
               src={review.author.avatarUrl}
-              className="size-8 text-xs"
+              className="mb-0! size-9! text-xs"
             />
-            <span>{review.author.displayName}</span>
+            <span>{t("review.byline", { name: review.author.displayName })}</span>
           </Link>
-          {review.rating !== null ? (
-            <span className="flex items-center gap-1">
-              <Stars rating={review.rating} />
-              <span className="sr-only">
-                {t("rating.outOfFive", { stars: format.number(ratingToStars(review.rating)) })}
-              </span>
-            </span>
-          ) : release.ratingsHidden ? (
-            <span className="text-xs text-fg-muted italic">{t("review.ratingHidden")}</span>
-          ) : (
-            <span className="text-xs text-fg-muted italic">{t("review.noRating")}</span>
-          )}
           <time dateTime={review.createdAt} className="font-mono text-xs text-fg-muted">
             {format.dateTime(new Date(review.createdAt), { dateStyle: "long" })}
           </time>
+          {rating === null && (
+            <span className="text-xs text-fg-muted">
+              {release.ratingsHidden ? t("review.ratingHidden") : t("review.noRating")}
+            </span>
+          )}
         </div>
 
-        <p lang={review.lang} className="text-lg leading-relaxed whitespace-pre-line text-pretty">
-          {review.body}
-        </p>
+        <div
+          className={cn(
+            "mt-6 grid gap-3 md:gap-5",
+            stars !== null && "md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]",
+          )}
+        >
+          <Card>
+            <p
+              lang={review.lang}
+              className="text-[17px] leading-relaxed break-words whitespace-pre-line text-pretty md:text-lg"
+            >
+              {review.body}
+            </p>
+          </Card>
+          {stars !== null && (
+            <Card
+              tone="accent"
+              role="region"
+              aria-labelledby="their-rating"
+              className="flex flex-col gap-3 max-md:row-start-1"
+            >
+              <h2
+                id="their-rating"
+                className="font-mono text-[11px] font-normal tracking-[0.06em] uppercase md:text-xs"
+              >
+                {t("detail.theirRating")}
+              </h2>
+              <p className="font-display text-[64px] leading-[0.8] font-extrabold tracking-[-0.04em] md:text-[96px]">
+                {stars}
+                <span className="sr-only"> {t("detail.outOfFive")}</span>
+              </p>
+              <Stars rating={rating} tone="on-accent" className="text-2xl" />
+            </Card>
+          )}
+        </div>
 
-        <div className="flex flex-wrap items-center gap-4 text-sm text-fg-muted">
+        <div className="mt-5 flex flex-wrap items-center gap-2.5 text-sm text-fg-muted">
           {detail.canLike ? (
             <LikeButton subject={subject} liked={detail.viewerLiked} count={review.likeCount} />
           ) : (
-            <span className="flex items-center gap-1">
+            <span className={pillClasses("outline", "min-h-11 text-fg-muted!")}>
               <HeartIcon /> {t("review.likes", { count: review.likeCount })}
             </span>
           )}
-          <span className="flex items-center gap-1">
+          <span className={pillClasses("outline", "min-h-11 text-fg-muted!")}>
             <CommentIcon /> {t("review.comments", { count: review.commentCount })}
           </span>
           {detail.isOwner && (
-            <Link href={`/review/${id}/edit`} className={linkClasses}>
+            <Link
+              href={`/review/${id}/edit`}
+              className={buttonClasses("secondary", "max-md:hidden", "sm")}
+            >
               {t("review.edit")}
             </Link>
           )}
           {signedIn && !detail.isOwner && (
-            <ReportButton subject={{ kind: "review", id }} className="ml-auto" />
+            <div className="ml-auto max-md:hidden">
+              <ReportButton subject={{ kind: "review", id }} />
+            </div>
           )}
         </div>
       </article>
 
-      <section aria-labelledby="comments" className="space-y-6">
-        <h2 id="comments" className="font-serif text-2xl">
+      <section aria-labelledby="comments" className="mt-14 space-y-4 md:mt-20">
+        <SectionHeading id="comments" className="mb-2">
           {t("comments.title")}
-        </h2>
+        </SectionHeading>
         {comments.items.length === 0 && !cursor ? (
-          <p className="font-serif text-lg text-fg-muted italic">{t("comments.empty")}</p>
+          <p className="text-fg-muted">{t("comments.empty")}</p>
         ) : (
-          <ul className="space-y-5">
+          <ul className="space-y-3">
             {comments.items.map((comment) => (
-              <li key={comment.id} className="empty:hidden">
+              <li
+                key={comment.id}
+                className="rounded-card-sm border border-border bg-surface p-4 empty:hidden md:p-5"
+              >
                 <CommentItem comment={comment} canReport={signedIn} />
               </li>
             ))}
@@ -203,7 +262,9 @@ export default async function ReviewPage({ params, searchParams }: Props) {
           </nav>
         )}
         {detail.canComment ? (
-          <CommentForm subject={subject} />
+          <Card>
+            <CommentForm subject={subject} />
+          </Card>
         ) : detail.hidden ? null : me?.profile ? (
           <p className="text-sm text-fg-muted">{t("comments.unavailable")}</p>
         ) : (

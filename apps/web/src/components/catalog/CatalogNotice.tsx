@@ -17,7 +17,7 @@ export async function CatalogNotice({
 }) {
   const t = await getTranslations("nav");
   return (
-    <p className="rounded-md border border-border/70 bg-surface/60 px-4 py-3 text-sm text-fg-muted">
+    <p className="rounded-2xl border border-border bg-surface px-4 py-3.5 text-sm text-fg-muted">
       {signedIn ? (
         memberText
       ) : (

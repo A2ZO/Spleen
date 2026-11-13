@@ -79,7 +79,7 @@ export function StarRating({ value, onChange, className, label, size = "md" }: S
         }}
         className={cn(
           "cursor-pointer touch-none rounded-lg leading-none",
-          { sm: "py-3 text-lg", md: "py-1.5 text-3xl", lg: "py-1 text-[40px] [&_svg]:px-[0.1em]" }[
+          { sm: "py-3 text-lg", md: "py-1.5 text-3xl", lg: "py-1 text-[44px] [&_svg]:px-[0.1em]" }[
             size
           ],
         )}

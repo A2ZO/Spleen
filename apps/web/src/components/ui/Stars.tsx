@@ -30,11 +30,23 @@ function StarRow({ className, filled }: { className?: string; filled: boolean })
  * Fractional averages are drawn proportionally. Empty stars are outlined in `star-empty`
  * (3:1 on surfaces). Callers provide the accessible text.
  */
-export function Stars({ rating, className }: { rating: number | null; className?: string }) {
+export function Stars({
+  rating,
+  className,
+  tone = "default",
+}: {
+  rating: number | null;
+  className?: string;
+  /** `on-accent`: ink stars for a lilac block. */
+  tone?: "default" | "on-accent";
+}) {
   const percent = rating === null ? 0 : (rating / 10) * 100;
+  const onAccent = tone === "on-accent";
   return (
-    <span className={cn("relative inline-flex text-star", className)}>
-      <StarRow filled={false} className="text-star-empty" />
+    <span
+      className={cn("relative inline-flex", onAccent ? "text-accent-fg" : "text-star", className)}
+    >
+      <StarRow filled={false} className={onAccent ? "text-accent-fg/45" : "text-star-empty"} />
       <span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: `${percent}%` }}>
         <StarRow filled />
       </span>

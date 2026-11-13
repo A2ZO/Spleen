@@ -29,7 +29,7 @@ export function ReleaseTile({ release, rank }: { release: ReleaseCard; rank?: nu
           {rank}
         </span>
       )}
-      <h3 className="mt-3 font-serif text-base leading-tight">
+      <h3 className="mt-3 font-display text-base leading-tight font-bold">
         <Link
           href={`/album/${release.slug}`}
           className="after:absolute after:inset-0 hover:text-star focus-visible:outline-none"

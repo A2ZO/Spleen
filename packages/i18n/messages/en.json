@@ -105,7 +105,7 @@
       "listenedDone": "Listened",
       "like": "Favourite",
       "wantToListen": "Listen later",
-      "log": "Log…",
+      "log": "Log in detail…",
       "signIn": "Sign in to keep track of what you listen to.",
       "signInLink": "Sign in"
     },
@@ -1104,5 +1104,31 @@
     "tabPopularBody": "What is spinning right now.",
     "linkTabsLabel": "Sections",
     "seeMore": "See more"
+  },
+  "detail": {
+    "back": "Back",
+    "more": "More actions",
+    "review": "Review",
+    "community": "Community rating",
+    "outOfFive": "out of 5",
+    "myListensCount": "{count, plural, one {once} =2 {twice} other {# times}}",
+    "lastListen": "Last listened on {date}.",
+    "lastListenFormat": "Last listened on {date} ({format}).",
+    "firstListen": "First listened on {date}.",
+    "noListens": "No listens yet.",
+    "undatedOnly": "Quick rating, no date: give it one to see it in your diary.",
+    "seeDiary": "See in my diary",
+    "editListens": "Edit my listens",
+    "listCount": "{count, plural, one {# list} other {# lists}}",
+    "seeLists": "See the lists",
+    "signInToRate": "Sign in to rate",
+    "discography": "Discography",
+    "albumCount": "{count, plural, one {# album} other {# albums}}",
+    "epCount": "{count, plural, one {# EP} other {# EPs}}",
+    "singleCount": "{count, plural, one {# single} other {# singles}}",
+    "otherCount": "{count, plural, one {# other} other {# others}}",
+    "on": "on",
+    "theirRating": "Their rating",
+    "trackLabel": "Track"
   }
 }
