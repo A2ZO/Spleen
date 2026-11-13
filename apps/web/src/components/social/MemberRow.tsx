@@ -12,7 +12,7 @@ export function MemberRow({ member, signedIn }: { member: MemberCard; signedIn: 
   const t = useTranslations("social");
   return (
     <div className="flex items-center gap-3 py-3">
-      <Link href={`/u/${member.username}`} tabIndex={-1} className="shrink-0">
+      <Link href={`/u/${member.username}`} tabIndex={-1} aria-hidden="true" className="shrink-0">
         <Avatar
           name={member.displayName}
           seed={member.username}
