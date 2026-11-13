@@ -1,6 +1,6 @@
 ---
 name: pilote
-description: Spleen autopilot. Advances the current milestone by one step without anyone watching — plan, review by the relecteur subagent, code, verification, review of the result, commit and push on the milestone branch. Use only when the user or a scheduled task asks for the autopilot (/pilote).
+description: Spleen autopilot. Advances the current milestone by one step without anyone watching — plan, review by the relecteur subagent, code, verification, review of the result, commit and push on the milestone branch; at the end of the milestone, opens the PR and merges it when every safety condition holds. Use only when the user or a scheduled task asks for the autopilot (/pilote).
 ---
 
 # Pilote automatique
@@ -12,7 +12,8 @@ context.
 Hard rules, always:
 
 - Never read or print `.env` / `.env.local`.
-- Never commit or push to `main`, never force push, never merge a PR.
+- Never commit or push to `main`, never force push. Merge a PR only through section 6, when
+  every condition there holds; never with `--admin`, never around a failing or pending check.
 - No paid service, no account, no key.
 - Never delete outside the repo; list a folder before deleting anything in it.
 - Stop servers only with `pnpm run free-port` (it stops node processes only).
@@ -78,8 +79,30 @@ phase `verif`.
 ## 5. End of the milestone
 
 After the last step of `feuille-de-route.md`: Phase A of `.claude/skills/fin-de-jalon/SKILL.md`
-(CLAUDE.md, push, PR, CI until green), never the merge. Then phase `fini` in `etat.md`, a
-summary in `journal.md`, commit and push the docs, stop.
+(CLAUDE.md, push, PR, CI until green). Its « never merge » rule is for the manual workflow:
+here, go on with section 6 instead of stopping.
+
+## 6. Merge
+
+1. Delegate to `relecteur`: « Relis la PR <numéro> avant fusion » (it reads
+   `git diff origin/main...HEAD`). Apply its corrections, push, wait for the checks again.
+2. Merge only if **all** of these hold, otherwise « Attente » with the reason:
+   - `docs/pilote/FUSION-AUTO` exists (the owner's switch);
+   - Spleen is not in production yet (`CLAUDE.md` does not say milestone 10 is done);
+   - every check of the PR is green (`gh pr checks <numéro>`), none pending or skipped;
+   - the relecteur's last verdict on the PR is `OK`;
+   - the PR does not touch `packages/db` migrations or schema, the auth logic of
+     `packages/auth` (email templates are fine), `apps/web/src/proxy.ts` or the security
+     headers and CSP, `.github/workflows/`, environment variables (`turbo.json` env lists,
+     `.env.example`), and adds or upgrades no dependency.
+3. Before merging, on the branch: `etat.md` phase `fini` (« fusion automatique de la PR
+   <numéro> demandée le <date> »), a summary in `journal.md`; commit, push, wait until the
+   checks are green again.
+4. Merge with the method used by the previous PRs (`git log --first-parent -5 origin/main`:
+   merge commits → `gh pr merge <numéro> --merge`, otherwise `--squash`). Do not delete the
+   remote branch. If GitHub refuses, put `etat.md` back to `attente` with the reason, commit
+   and push on the branch, stop.
+5. Phase B of `fin-de-jalon` (`git switch main`, `git pull --ff-only`), then stop.
 
 ## Attente
 
