@@ -1,5 +1,5 @@
 // Navigation timing on 5 member paths (home → album → artist → profile → discover → home):
-// real clicks in Chrome, then each page's RSC request replayed alone with its SQL trace.
+// a soft navigation to a fixed demo album, then real clicks in Chrome, then each page's RSC request replayed alone with its SQL trace.
 // Usage (from apps/web, server already running): node scripts/measure.mjs [baseURL] [runs]
 // SQL columns need the dev server started with SPLEEN_QUERY_TRACE=1 (docs/environnement.md);
 // against a production build they stay empty. Signs in nuitblanche@example.test (demo seed)
@@ -17,8 +17,12 @@ const base = process.argv[2] ?? "http://localhost:3000";
 const runs = Number(process.argv[3] ?? 6);
 const email = "nuitblanche@example.test";
 
+// The first step always opens the same demo album (crate seed): the home page's album links
+// change with "Just out", so a click there would measure a different record from run to run.
+// `window.next.router.push` is the router a <Link> click uses (no click, no hover prefetch).
+const album = "/fr/album/brume-sur-le-canal";
 const steps = [
-  { name: "accueil→album", sel: 'main a[href*="/album/"]:visible', url: /\/album\// },
+  { name: "accueil→album", push: album, url: /\/album\/brume-sur-le-canal$/ },
   { name: "album→artiste", sel: 'main a[href*="/artist/"]:visible', url: /\/artist\// },
   { name: "artiste→profil", sel: 'a[href*="/u/"]:visible', url: /\/u\// },
   { name: "profil→discover", sel: 'a[href$="/discover"]:visible', url: /\/discover$/ },
@@ -102,11 +106,12 @@ for (let run = 0; run < runs; run++) {
   await page.locator("html[data-hydrated]").waitFor({ state: "attached" });
   await page.waitForLoadState("networkidle");
   for (let i = 0; i < steps.length; i++) {
-    const target = page.locator(steps[i].sel).first();
-    await target.waitFor();
+    const target = steps[i].push ? null : page.locator(steps[i].sel).first();
+    await target?.waitFor();
     current = { reqs: [], prefetches: 0 };
     const t0 = Date.now();
-    await target.click();
+    if (target) await target.click();
+    else await page.evaluate((href) => window.next.router.push(href), steps[i].push);
     await page.waitForURL(steps[i].url, { waitUntil: "commit" });
     const dt = Date.now() - t0;
     // Page shown: the new page's heading is in.
