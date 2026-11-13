@@ -11,6 +11,8 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { ReleaseGrid, TopRatedList, TrendsGrid } from "@/components/discovery/Charts";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { SelectField, TextField } from "@/components/ui/Field";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -37,8 +39,8 @@ const PATH = "/discover";
 const DECADES = Array.from({ length: 8 }, (_, i) => 2020 - i * 10);
 const POPULAR_ON_PAGE = 4;
 const linkClasses = "text-link underline-offset-2 hover:underline";
-const control =
-  "w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg focus:border-star focus:outline-none";
+/** Empty block: a short muted sentence (no serif or italic in Lilas). */
+const emptyText = "text-lg text-fg-muted text-pretty";
 
 /** `?year=1977` within the accepted range, or undefined. */
 function yearParam(value: string | string[] | undefined, step = 1): number | undefined {
@@ -95,15 +97,15 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
 
   return (
     <div className="space-y-16">
-      <header className="max-w-2xl">
-        <p className="font-mono text-xs tracking-[0.25em] text-star uppercase">
-          {t("discover.kicker")}
-        </p>
-        <h1 className="mt-3 text-4xl font-semibold text-balance sm:text-5xl">
-          {t("discover.title")}
-        </h1>
-        <p className="mt-4 text-lg text-fg-muted text-pretty">{t("discover.intro")}</p>
-      </header>
+      <Card tone="accent" className="md:p-10">
+        <header className="max-w-3xl">
+          <p className="font-mono text-xs tracking-[0.14em] uppercase">{t("discover.kicker")}</p>
+          <h1 className="mt-5 font-display text-[44px] leading-[0.95] font-extrabold tracking-[-0.04em] text-balance md:text-[clamp(56px,6vw,80px)]">
+            {t("discover.title")}
+          </h1>
+          <p className="mt-5 max-w-xl text-lg text-pretty">{t("discover.intro")}</p>
+        </header>
+      </Card>
 
       <section aria-labelledby="trends" className="scroll-mt-24">
         <SectionHeading id="trends">
@@ -120,7 +122,7 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
           </Link>
         </p>
         {trends.length === 0 ? (
-          <p className="font-serif text-lg text-fg-muted italic">{t("discover.trendsEmpty")}</p>
+          <p className={emptyText}>{t("discover.trendsEmpty")}</p>
         ) : (
           <TrendsGrid items={trends} />
         )}
@@ -146,7 +148,7 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
         />
         <div className="pt-6">
           {recent.total === 0 ? (
-            <p className="font-serif text-lg text-fg-muted italic">{t("discover.recentEmpty")}</p>
+            <p className={emptyText}>{t("discover.recentEmpty")}</p>
           ) : (
             <ReleaseGrid releases={recent.items} />
           )}
@@ -171,51 +173,43 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
         >
           {keep.lang && <input type="hidden" name="lang" value={keep.lang} />}
           {keep.recent && <input type="hidden" name="recent" value={keep.recent} />}
-          <label className="space-y-1 text-sm">
-            <span className="block font-medium">{t("discover.genre")}</span>
-            <select name="genre" defaultValue={topInput.genre ?? ""} className={control}>
-              <option value="">{t("discover.allGenres")}</option>
-              {genres.map((g) => (
-                <option key={g.slug} value={g.slug}>
-                  {g.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="space-y-1 text-sm">
-            <span className="block font-medium">{t("discover.period")}</span>
-            <select name="decade" defaultValue={decade?.toString() ?? ""} className={control}>
-              <option value="">{t("discover.allTime")}</option>
-              {DECADES.map((d) => (
-                <option key={d} value={d}>
-                  {t("discover.decade", { decade: String(d) })}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="space-y-1 text-sm">
-            <span className="block font-medium">{t("discover.year")}</span>
-            <input
-              type="number"
-              name="year"
-              inputMode="numeric"
-              min={DISCOVERY_YEAR_MIN}
-              max={2100}
-              defaultValue={year ?? ""}
-              className={control}
-            />
-          </label>
-          <label className="space-y-1 text-sm">
-            <span className="block font-medium">{t("discover.type")}</span>
-            <select name="type" defaultValue={topInput.type} className={control}>
-              {(["album", "ep", "single"] as const).map((type) => (
-                <option key={type} value={type}>
-                  {t(`releaseType.${type}`)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className="flex items-center gap-3">
+          <SelectField label={t("discover.genre")} name="genre" defaultValue={topInput.genre ?? ""}>
+            <option value="">{t("discover.allGenres")}</option>
+            {genres.map((g) => (
+              <option key={g.slug} value={g.slug}>
+                {g.name}
+              </option>
+            ))}
+          </SelectField>
+          <SelectField
+            label={t("discover.period")}
+            name="decade"
+            defaultValue={decade?.toString() ?? ""}
+          >
+            <option value="">{t("discover.allTime")}</option>
+            {DECADES.map((d) => (
+              <option key={d} value={d}>
+                {t("discover.decade", { decade: String(d) })}
+              </option>
+            ))}
+          </SelectField>
+          <TextField
+            label={t("discover.year")}
+            type="number"
+            name="year"
+            inputMode="numeric"
+            min={DISCOVERY_YEAR_MIN}
+            max={2100}
+            defaultValue={year ?? ""}
+          />
+          <SelectField label={t("discover.type")} name="type" defaultValue={topInput.type}>
+            {(["album", "ep", "single"] as const).map((type) => (
+              <option key={type} value={type}>
+                {t(`releaseType.${type}`)}
+              </option>
+            ))}
+          </SelectField>
+          <div className="flex min-h-11 items-center gap-3">
             <Button type="submit">{t("discover.apply")}</Button>
             <Link
               href={`${hrefWith(PATH, { lang: keep.lang, recent: keep.recent })}#top`}
@@ -227,7 +221,7 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
           </div>
         </form>
         {top.total === 0 ? (
-          <p className="font-serif text-lg text-fg-muted italic">{t("discover.topEmpty")}</p>
+          <p className={emptyText}>{t("discover.topEmpty")}</p>
         ) : (
           <TopRatedList items={top.items} />
         )}
@@ -254,9 +248,9 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
           {t("discover.reviewsTitle")}
         </SectionHeading>
         {popular.items.length === 0 ? (
-          <p className="font-serif text-lg text-fg-muted italic">{t("feed.popularEmpty")}</p>
+          <p className={emptyText}>{t("feed.popularEmpty")}</p>
         ) : (
-          <ul className="grid gap-4 lg:grid-cols-2">
+          <ul className="grid items-start gap-4 md:grid-cols-2">
             {popular.items.map((review) => (
               <li key={review.id} className="empty:hidden">
                 <ReviewCard review={review} />

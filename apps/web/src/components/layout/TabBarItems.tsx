@@ -1,7 +1,5 @@
 "use client";
 
-import type { MouseEvent } from "react";
-
 import { buttonClasses } from "@/components/ui/Button";
 import {
   BellIcon,
@@ -14,7 +12,7 @@ import {
 } from "@/components/ui/icons";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
-import { openSearch } from "@/lib/search-dialog";
+import { openSearchInstead } from "@/lib/search-dialog";
 
 import { isActive } from "./nav-active";
 import { NotificationBadge } from "./NotificationBadge";
@@ -40,12 +38,6 @@ const item =
 const current = "text-accent hover:text-accent";
 const dot = "absolute bottom-1 size-[5px] rounded-full bg-accent";
 
-/** Opens the search dialog; a plain link to /search until hydrated or without JavaScript. */
-function onOpenSearch(event: MouseEvent) {
-  event.preventDefault();
-  openSearch();
-}
-
 export function TabBarItems({ label, tabs }: { label: string; tabs: Tab[] }) {
   const pathname = usePathname();
   return (
@@ -59,7 +51,7 @@ export function TabBarItems({ label, tabs }: { label: string; tabs: Tab[] }) {
                   href="/search"
                   aria-haspopup="dialog"
                   aria-label={tab.label}
-                  onClick={onOpenSearch}
+                  onClick={openSearchInstead}
                   className={buttonClasses("primary", undefined, "icon-lg")}
                 >
                   <PlusIcon className="size-6" />
@@ -75,7 +67,7 @@ export function TabBarItems({ label, tabs }: { label: string; tabs: Tab[] }) {
                   href="/search"
                   aria-haspopup="dialog"
                   aria-current={active ? "page" : undefined}
-                  onClick={onOpenSearch}
+                  onClick={openSearchInstead}
                   className={cn(item, active && current)}
                 >
                   <SearchIcon className="size-6" />

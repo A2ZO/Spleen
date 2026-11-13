@@ -78,12 +78,26 @@
     "unliked": "Heart removed"
   },
   "home": {
-    "kicker": "It's late, the city is asleep",
-    "title": "What did you listen to tonight?",
-    "subtitle": "Rate your records, keep a listening diary, put your favourite albums on your shelf. Gently.",
-    "ctaJoin": "Open my notebook",
+    "kicker": "Listening notebook",
+    "title": "Rate your records, keep your diary.",
+    "subtitle": "Follow the ears you trust and find out what they are playing. Gently.",
+    "ctaJoin": "Create my account",
     "ctaWelcome": "Pick my username",
-    "ctaSearch": "Find a record"
+    "findMusic": "Find something to listen to",
+    "memberTitle": "What are you listening to, {name}?",
+    "rate": "Rate a record",
+    "monthTitle": "Your {month}",
+    "monthListens": "{count, plural, one {listen} other {listens}}",
+    "monthFirst": "{first, plural, =0 {no discoveries} one {including # discovery} other {including # discoveries}}",
+    "monthSummary": "{count, plural, one {# listen} other {# listens}} this month, over {days, plural, one {# day} other {# days}}.",
+    "monthEmpty": "Nothing listened to this month yet.",
+    "monthDiary": "See my diary",
+    "justOut": "Just out",
+    "friendsTitle": "From your friends",
+    "howTitle": "How it works",
+    "howRate": "Rate and review the records you listen to.",
+    "howDiary": "Keep your listening diary, night after night.",
+    "howShelf": "Put your favourite albums on your shelf."
   },
   "album": {
     "by": "by",

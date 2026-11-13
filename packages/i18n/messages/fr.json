@@ -78,12 +78,26 @@
     "unliked": "Coup de cœur retiré"
   },
   "home": {
-    "kicker": "Il est tard, la ville dort",
-    "title": "Qu'as-tu écouté ce soir ?",
-    "subtitle": "Note tes disques, tiens ton journal d'écoute, range tes albums préférés sur ton étagère. Doucement.",
-    "ctaJoin": "Ouvrir mon carnet",
+    "kicker": "Carnet d'écoute",
+    "title": "Note tes disques, tiens ton journal.",
+    "subtitle": "Suis les oreilles qui te ressemblent et découvre ce qu'elles écoutent. Doucement.",
+    "ctaJoin": "Créer mon compte",
     "ctaWelcome": "Choisir mon pseudo",
-    "ctaSearch": "Chercher un disque"
+    "findMusic": "Trouver quoi écouter",
+    "memberTitle": "Qu'est-ce que tu écoutes, {name} ?",
+    "rate": "Noter un disque",
+    "monthTitle": "Ton mois {m, select, 4 {d'avril} 8 {d'août} 10 {d'octobre} other {de {month}}}",
+    "monthListens": "{count, plural, one {écoute} other {écoutes}}",
+    "monthFirst": "{first, plural, =0 {aucune découverte} one {dont # découverte} other {dont # découvertes}}",
+    "monthSummary": "{count, plural, one {# écoute} other {# écoutes}} ce mois-ci, sur {days, plural, one {# jour} other {# jours}}.",
+    "monthEmpty": "Rien d'écouté ce mois-ci pour l'instant.",
+    "monthDiary": "Voir mon journal",
+    "justOut": "Vient de sortir",
+    "friendsTitle": "Chez tes amis",
+    "howTitle": "Comment ça marche",
+    "howRate": "Note et critique les disques que tu écoutes.",
+    "howDiary": "Tiens ton journal d'écoute, soir après soir.",
+    "howShelf": "Range tes albums préférés sur ton étagère."
   },
   "album": {
     "by": "par",

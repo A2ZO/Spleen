@@ -21,7 +21,7 @@ export function TrendsGrid({ items, className }: { items: TrendItem[]; className
       : null;
   return (
     <div className={className}>
-      {filled && <p className="mb-5 text-sm text-fg-muted italic">{t(filled)}</p>}
+      {filled && <p className="mb-5 text-sm text-fg-muted">{t(filled)}</p>}
       <ol className={grid}>
         {items.map((item, index) => (
           <li key={item.release.id}>
@@ -66,10 +66,13 @@ export function TopRatedList({ items }: { items: TopRatedItem[] }) {
   const stars = (rating: number) =>
     format.number(ratingToStars(rating), { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   return (
-    <ol className="divide-y divide-border/50 border-y border-border/50">
+    <ol>
       {items.map(({ rank, release, score }) => (
-        <li key={release.id} className="relative flex items-center gap-3 py-3 sm:gap-4">
-          <span className="w-8 shrink-0 text-right font-mono text-sm text-star">
+        <li
+          key={release.id}
+          className="relative flex items-center gap-3 rounded-[14px] px-3 py-2.5 odd:bg-surface-alt sm:gap-4 sm:px-3.5"
+        >
+          <span className="w-8 shrink-0 text-right font-display text-lg font-bold text-fg">
             <span className="sr-only">{t("list.rank", { rank })}</span>
             <span aria-hidden="true">{rank}</span>
           </span>
@@ -83,7 +86,7 @@ export function TopRatedList({ items }: { items: TopRatedItem[] }) {
             />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="truncate font-serif text-lg leading-tight">
+            <p className="truncate font-display text-base leading-tight font-bold sm:text-lg">
               <Link
                 href={`/album/${release.slug}`}
                 className="after:absolute after:inset-0 hover:text-star focus-visible:outline-none"
@@ -99,7 +102,7 @@ export function TopRatedList({ items }: { items: TopRatedItem[] }) {
           </div>
           <div className="shrink-0 text-right">
             {score === null ? (
-              <p className="max-w-28 text-xs text-fg-muted italic">{t("discover.scoreHidden")}</p>
+              <p className="max-w-28 text-xs text-fg-muted">{t("discover.scoreHidden")}</p>
             ) : (
               <>
                 <p className="font-mono text-lg text-star">

@@ -11,7 +11,7 @@ import { Pagination } from "@/components/ui/Pagination";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { seoMetadata } from "@/lib/seo";
 import { Link, redirect } from "@/i18n/navigation";
-import { shiftMonth } from "@/lib/calendar";
+import { currentMonth as thisMonth, shiftMonth } from "@/lib/calendar";
 import {
   firstParam,
   hrefWith,
@@ -68,7 +68,7 @@ export default async function DiaryPage({ params, searchParams }: Props) {
   const view = firstParam(raw.view) === "calendar" ? "calendar" : "list";
   const path = `/u/${profile.username}/diary`;
   // Default month: the latest listen's, else the current one (both are calendar months).
-  const currentMonth = new Date().toISOString().slice(0, 7);
+  const currentMonth = thisMonth();
   const month = monthParam(raw.month) ?? profile.recent[0]?.listenedOn.slice(0, 7) ?? currentMonth;
 
   const api = await getApi();

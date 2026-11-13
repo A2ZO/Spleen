@@ -6,7 +6,9 @@ test.describe("with a French browser", () => {
   test("root redirects to the French home page", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveURL(/\/fr$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Qu'as-tu écouté ce soir ?");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      "Note tes disques, tiens ton journal.",
+    );
   });
 });
 
@@ -22,7 +24,7 @@ test.describe("with an English browser", () => {
 test("home page is available in English", async ({ page }) => {
   await page.goto("/en");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "What did you listen to tonight?",
+    "Rate your records, keep your diary.",
   );
 });
 

@@ -58,5 +58,16 @@ test("listen in one click, rate, log with a mood and find it in the diary", asyn
   ).toBeVisible();
   await expect(diary.getByText("Pluie sur la vitre").first()).toBeVisible();
 
+  // The home page's "Your month" counts today's dated listens and leads to the diary.
+  await page.goto("/fr");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Qu'est-ce que tu écoutes, Écouteur nocturne ?",
+  );
+  await expect(page.getByText(/^\d+ écoutes? ce mois-ci, sur 1 jour\.$/)).toBeAttached();
+  await expect(page.getByRole("link", { name: "Voir mon journal" })).toHaveAttribute(
+    "href",
+    new RegExp(`/fr/u/${username}/diary\\?view=calendar&month=\\d{4}-\\d{2}$`),
+  );
+
   await deleteAccount(page, username);
 });
