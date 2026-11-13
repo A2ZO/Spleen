@@ -18,11 +18,11 @@ const runs = Number(process.argv[3] ?? 6);
 const email = "nuitblanche@example.test";
 
 const steps = [
-  { name: "accueil→album", sel: 'main a[href*="/album/"]', url: /\/album\// },
-  { name: "album→artiste", sel: 'main a[href*="/artist/"]', url: /\/artist\// },
-  { name: "artiste→profil", sel: 'a[href*="/u/"]', url: /\/u\// },
-  { name: "profil→discover", sel: 'a[href$="/discover"]', url: /\/discover$/ },
-  { name: "discover→accueil", sel: 'header a[href="/fr"]', url: /\/fr$/ },
+  { name: "accueil→album", sel: 'main a[href*="/album/"]:visible', url: /\/album\// },
+  { name: "album→artiste", sel: 'main a[href*="/artist/"]:visible', url: /\/artist\// },
+  { name: "artiste→profil", sel: 'a[href*="/u/"]:visible', url: /\/u\// },
+  { name: "profil→discover", sel: 'a[href$="/discover"]:visible', url: /\/discover$/ },
+  { name: "discover→accueil", sel: 'header a[href="/fr"]:visible', url: /\/fr$/ },
 ];
 
 const median = (xs) => {
