@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(pnpm install *)",
+      "Bash(pnpm add *)",
+      "Bash(pnpm run *)",
+      "Bash(pnpm exec *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git switch *)",
+      "Bash(git pull *)",
+      "Bash(git push *)",
+      "Bash(gh pr create *)",
+      "Bash(gh pr view *)",
+      "Bash(gh pr checks *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)",
+      "Bash(gh pr edit *)",
+      "Bash(gh issue create *)",
+      "Bash(gh issue comment *)",
+      "Bash(gh issue view *)",
+      "Bash(gh issue list *)",
+      "Bash(gh pr merge *)"
+    ],
+    "deny": [
+      "Bash(git push *--force*)",
+      "Bash(git push -f *)",
+      "Bash(git push * -f *)",
+      "Bash(git push * main)",
+      "Read(.env)",
+      "Read(.env.local)"
+    ]
+  }
+}
