@@ -97,7 +97,7 @@ function PickerDialog({
       onClick={(event) => {
         if (event.target === ref.current) ref.current.close();
       }}
-      className="m-auto w-[min(34rem,calc(100vw-2rem))] rounded-md border border-border bg-bg p-0 text-fg shadow-card backdrop:bg-bg/80"
+      className="m-auto w-[min(34rem,calc(100vw-2rem))] rounded-card border border-border bg-surface p-0 text-fg shadow-card backdrop:bg-bg/80"
     >
       <div className="space-y-5 p-5 sm:p-6">
         <header>
@@ -116,7 +116,7 @@ function PickerDialog({
                   disabled={pending || here}
                   onClick={() => save(() => setShelfAction(release.id, index + 1))}
                   className={cn(
-                    "group block w-full rounded-sm text-left focus-visible:outline-offset-4 disabled:cursor-default",
+                    "group block w-full rounded-thumb text-left focus-visible:outline-offset-4 disabled:cursor-default",
                     here && "ring-2 ring-star ring-offset-2 ring-offset-bg",
                   )}
                 >
@@ -127,10 +127,10 @@ function PickerDialog({
                       coverUrl={slot.coverUrl}
                       showText={false}
                       sizes="120px"
-                      className="transition-opacity group-enabled:group-hover:opacity-70"
+                      className="rounded-thumb transition-opacity group-enabled:group-hover:opacity-70"
                     />
                   ) : (
-                    <span className="flex aspect-square items-center justify-center rounded-sm border border-dashed border-border bg-surface/40 font-mono text-2xl text-fg-muted">
+                    <span className="flex aspect-square items-center justify-center rounded-thumb border-2 border-dashed border-border-field font-mono text-2xl text-fg-muted">
                       {index + 1}
                     </span>
                   )}

@@ -9,6 +9,7 @@ import { DiaryList } from "@/components/profile/DiaryList";
 import { StatsPanel } from "@/components/profile/StatsPanel";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { ShelfEditor } from "@/components/shelf/ShelfEditor";
+import { ShelfGrid } from "@/components/shelf/ShelfGrid";
 import { ShelfPicker } from "@/components/shelf/ShelfPicker";
 import { FollowButton, FollowerCountLink } from "@/components/social/FollowButton";
 import { ListCard } from "@/components/social/ListCard";
@@ -16,11 +17,13 @@ import { MemberMenu } from "@/components/social/MemberMenu";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { Avatar } from "@/components/ui/Avatar";
 import { ButtonLink, buttonClasses } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { VinylShelf } from "@/components/ui/VinylShelf";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { cn } from "@/lib/cn";
+import { phoneTitleSize } from "@/lib/display-title";
 import { seoMetadata } from "@/lib/seo";
 import { Link, redirect } from "@/i18n/navigation";
 import { firstParam, hrefWith, pageParam, type SearchParams } from "@/lib/search-params";
@@ -86,10 +89,35 @@ const tabReads = {
   ),
 };
 
+/**
+ * Stats (null when private), read with the profile for its three figures and reused by the
+ * Stats tab: keyed by the username as written in the URL, like `tabReads`.
+ */
+const getStats = cache(async (username: string) => (await getApi()).profile.stats({ username }));
+
 const gridClasses = "grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5";
 
 function EmptyState({ children }: { children: string }) {
-  return <p className="py-6 font-serif text-lg text-fg-muted italic">{children}</p>;
+  return <p className="py-6 text-lg text-fg-muted">{children}</p>;
+}
+
+/** Releases (albums, EPs, singles) among distinct items listened to; tracks alone excluded. */
+function releaseCount(counts: { album: number; ep: number; single: number }) {
+  return counts.album + counts.ep + counts.single;
+}
+
+function Figure({ value, label, accent }: { value: number; label: string; accent?: boolean }) {
+  return (
+    <Card
+      tone={accent ? "accent" : "default"}
+      className="flex min-w-0 flex-col-reverse justify-between gap-2 p-4 md:p-6"
+    >
+      <dt className={cn("text-xs leading-snug md:text-sm", !accent && "text-fg-muted")}>{label}</dt>
+      <dd className="font-display text-[40px] leading-[0.9] font-extrabold tracking-[-0.04em] whitespace-nowrap tabular md:text-7xl">
+        {value}
+      </dd>
+    </Card>
+  );
 }
 
 /** Only the active tab is loaded; each one is a link (`?tab=…&page=…`). */
@@ -106,7 +134,6 @@ async function TabContent({
   page: number;
 }) {
   const t = await getTranslations();
-  const api = await getApi();
   const username = profile.username;
   const path = `/u/${username}`;
   const requested = requestedUsername;
@@ -254,7 +281,7 @@ async function TabContent({
       if (profile.statsHidden) {
         return <EmptyState>{t("profile.statsPrivate", { name: profile.displayName })}</EmptyState>;
       }
-      const stats = await api.profile.stats({ username });
+      const stats = await getStats(requested);
       const total = stats?.base.listenedTotal;
       if (!stats || !total || total.album + total.ep + total.single + total.track === 0) {
         return <EmptyState>{t("stats.empty")}</EmptyState>;
@@ -276,11 +303,12 @@ export default async function ProfilePage({ params, searchParams }: Props) {
   // The open tab's data is read alongside the profile (stats keep their own cache).
   if (tab !== "stats") tabReads[tab](requested, page).catch(() => {});
 
-  const [profile, t, format, me] = await Promise.all([
+  const [profile, t, format, me, stats] = await Promise.all([
     getProfile(username),
     getTranslations(),
     getFormatter(),
     getApi().then((api) => api.account.me()),
+    getStats(requested),
   ]);
   if (!profile) notFound();
   const signedIn = Boolean(me?.profile);
@@ -295,56 +323,52 @@ export default async function ProfilePage({ params, searchParams }: Props) {
     stats: t("profile.tabs.stats"),
   };
 
+  const filledShelf = profile.shelf.some((slot) => slot !== null);
+  const year = stats ? String(stats.base.year) : "";
+
   return (
-    <div className="space-y-16">
-      <header className="flex flex-col gap-5 sm:flex-row sm:items-center">
-        <Avatar
-          name={profile.displayName}
-          seed={profile.username}
-          src={profile.avatarUrl}
-          className="size-20 text-3xl"
-        />
-        <div className="min-w-0 flex-1">
-          <h1 className="text-4xl font-semibold">{profile.displayName}</h1>
-          <p className="font-mono text-sm text-fg-muted">@{profile.username}</p>
-          <p className="mt-3 max-w-2xl text-pretty">{profile.bio}</p>
-          <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-fg-muted">
-            <FollowerCountLink
-              href={`${path}/followers`}
-              username={profile.username}
-              followerCount={profile.followerCount}
-              viewerFollows={profile.viewerFollows}
-              className={countLink}
+    <div className="space-y-12 md:space-y-16">
+      <header className="space-y-6">
+        <div className="flex flex-wrap items-start gap-x-6 gap-y-4">
+          <div className="flex min-w-0 flex-1 items-center gap-4 md:gap-6">
+            <Avatar
+              name={profile.displayName}
+              seed={profile.username}
+              src={profile.avatarUrl}
+              className="size-20 shrink-0 text-3xl md:size-28 md:text-5xl"
             />
-            <Link href={`${path}/following`} className={countLink}>
-              {t("profile.following", { count: profile.followingCount })}
-            </Link>
-            <span>
-              {t("profile.joined", {
-                date: format.dateTime(new Date(`${profile.joinedOn}T12:00:00Z`), {
-                  month: "long",
-                  year: "numeric",
-                }),
-              })}
-            </span>
-          </p>
-        </div>
-        {!profile.isOwner && (
-          <div className="flex items-start gap-2 sm:self-start">
-            {profile.canInteract && (
+            <div className="min-w-0">
+              <h1
+                className={cn(
+                  "font-display text-5xl leading-[0.95] font-extrabold tracking-[-0.03em] break-words md:text-[64px]",
+                  phoneTitleSize(profile.displayName, "48"),
+                )}
+              >
+                {profile.displayName}
+              </h1>
+              <p className="mt-1 font-mono text-sm text-fg-muted">@{profile.username}</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-2">
+            {profile.isOwner && (
+              <ButtonLink href="/settings" variant="secondary">
+                {t("nav.settings")}
+              </ButtonLink>
+            )}
+            {!profile.isOwner && profile.canInteract && (
               <FollowButton
                 username={profile.username}
                 name={profile.displayName}
                 following={profile.viewerFollows}
               />
             )}
-            {!signedIn && (
+            {!profile.isOwner && !signedIn && (
               <Link href="/sign-in" className={buttonClasses("primary")}>
                 {t("social.follow")}
                 <span className="sr-only"> {profile.displayName}</span>
               </Link>
             )}
-            {signedIn && (
+            {!profile.isOwner && signedIn && (
               <MemberMenu
                 username={profile.username}
                 name={profile.displayName}
@@ -352,28 +376,77 @@ export default async function ProfilePage({ params, searchParams }: Props) {
               />
             )}
           </div>
+        </div>
+        {profile.bio && (
+          <p className="max-w-2xl text-[15px] text-pretty md:text-base">{profile.bio}</p>
         )}
+        <p className="flex flex-wrap gap-x-5 gap-y-1 text-sm text-fg-muted">
+          <FollowerCountLink
+            href={`${path}/followers`}
+            username={profile.username}
+            followerCount={profile.followerCount}
+            viewerFollows={profile.viewerFollows}
+            className={countLink}
+          />
+          <Link href={`${path}/following`} className={countLink}>
+            {t("profile.following", { count: profile.followingCount })}
+          </Link>
+          <span>
+            {t("profile.joined", {
+              date: format.dateTime(new Date(`${profile.joinedOn}T12:00:00Z`), {
+                month: "long",
+                year: "numeric",
+              }),
+            })}
+          </span>
+        </p>
       </header>
 
-      <section aria-labelledby="shelf">
-        <SectionHeading id="shelf" className="mb-2">
-          {t("profile.shelfTitle")}
-        </SectionHeading>
-        <p className="font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">
-          {profile.isOwner
-            ? t("shelf.subtitleOwn")
-            : t("shelf.subtitle", { name: profile.displayName })}
-        </p>
-        {profile.isOwner ? (
-          <ShelfEditor shelf={profile.shelf} />
-        ) : (
-          <VinylShelf
-            items={profile.shelf}
-            emptyMessage={t("profile.shelfEmpty", { name: profile.displayName })}
-            className="pt-4"
-          />
-        )}
-      </section>
+      {stats && (
+        <section aria-labelledby="figures">
+          <h2 id="figures" className="sr-only">
+            {t("profile.figures.label")}
+          </h2>
+          <dl className="grid grid-cols-3 gap-2.5 md:gap-5">
+            <Figure
+              accent
+              value={releaseCount(stats.base.listenedThisYear)}
+              label={t("profile.figures.thisYear", {
+                count: releaseCount(stats.base.listenedThisYear),
+                year,
+              })}
+            />
+            <Figure
+              value={releaseCount(stats.base.listenedTotal)}
+              label={t("profile.figures.total", { count: releaseCount(stats.base.listenedTotal) })}
+            />
+            <Figure
+              value={stats.base.ratingDistribution.reduce((sum, n) => sum + n, 0)}
+              label={t("profile.figures.rated", {
+                count: stats.base.ratingDistribution.reduce((sum, n) => sum + n, 0),
+              })}
+            />
+          </dl>
+        </section>
+      )}
+
+      {(profile.isOwner || filledShelf) && (
+        <section aria-labelledby="shelf">
+          {profile.isOwner ? (
+            <ShelfEditor shelf={profile.shelf} headingId="shelf" title={t("profile.shelfTitle")} />
+          ) : (
+            <>
+              <SectionHeading id="shelf" className="mb-1">
+                {t("profile.shelfTitle")}
+              </SectionHeading>
+              <p className="mb-4 font-mono text-xs tracking-[0.14em] text-fg-muted uppercase">
+                {t("shelf.subtitle", { name: profile.displayName })}
+              </p>
+              <ShelfGrid items={profile.shelf} />
+            </>
+          )}
+        </section>
+      )}
 
       {profile.recent.length > 0 && (
         <section aria-labelledby="recent">

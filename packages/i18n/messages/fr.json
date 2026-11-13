@@ -207,7 +207,6 @@
     "following": "{count, plural, one {# abonnement} other {# abonnements}}",
     "joined": "Ici depuis {date}",
     "shelfTitle": "L'Étagère",
-    "shelfEmpty": "L'étagère de {name} prend la poussière.",
     "shelfEmptySlot": "Emplacement libre",
     "recentTitle": "Écouté récemment",
     "tabsLabel": "Sections du profil",
@@ -234,7 +233,13 @@
     "reviewed": "Critique écrite",
     "moods": "Humeurs",
     "likesEmpty": "Pas encore de coup de cœur.",
-    "diaryCalendar": "Vue calendrier"
+    "diaryCalendar": "Vue calendrier",
+    "figures": {
+      "label": "En chiffres",
+      "thisYear": "{count, plural, one {disque} other {disques}} en {year}",
+      "total": "{count, plural, one {disque} other {disques}} depuis toujours",
+      "rated": "{count, plural, one {disque noté} other {disques notés}}"
+    }
   },
   "stats": {
     "thisYear": "En {year}",
@@ -539,7 +544,7 @@
   },
   "shelf": {
     "subtitleOwn": "Mes 4 disques favoris",
-    "subtitle": "Les 4 disques favoris de {name}",
+    "subtitle": "Les disques favoris de {name}",
     "put": "Mettre sur mon Étagère",
     "onShelf": "Sur mon Étagère",
     "pickTitle": "Où poser « {title} » ?",

@@ -89,9 +89,10 @@ test("switching language keeps the profile tab", async ({ page }) => {
   );
 });
 
-test("empty shelf gathers dust", async ({ page }) => {
+test("another member's empty shelf is not shown", async ({ page }) => {
   await page.goto("/fr/u/rainydaysam");
-  await expect(page.getByText("L'étagère de Sam prend la poussière.")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByRole("region", { name: "L'Étagère" })).toHaveCount(0);
 });
 
 test("unknown pages show the Baudelaire 404", async ({ page }) => {

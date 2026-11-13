@@ -207,7 +207,6 @@
     "following": "{count} following",
     "joined": "Here since {date}",
     "shelfTitle": "The Shelf",
-    "shelfEmpty": "{name}'s shelf is gathering dust.",
     "shelfEmptySlot": "Empty slot",
     "recentTitle": "Recently listened",
     "tabsLabel": "Profile sections",
@@ -234,7 +233,13 @@
     "reviewed": "Review written",
     "moods": "Moods",
     "likesEmpty": "No hearts yet.",
-    "diaryCalendar": "Calendar view"
+    "diaryCalendar": "Calendar view",
+    "figures": {
+      "label": "In numbers",
+      "thisYear": "{count, plural, one {record} other {records}} in {year}",
+      "total": "{count, plural, one {record} other {records}} all time",
+      "rated": "{count, plural, one {record rated} other {records rated}}"
+    }
   },
   "stats": {
     "thisYear": "In {year}",
@@ -539,7 +544,7 @@
   },
   "shelf": {
     "subtitleOwn": "My 4 favourite records",
-    "subtitle": "{name}'s 4 favourite records",
+    "subtitle": "{name}'s favourite records",
     "put": "Put on my Shelf",
     "onShelf": "On my Shelf",
     "pickTitle": "Where should “{title}” go?",
