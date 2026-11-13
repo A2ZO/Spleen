@@ -25,6 +25,8 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   drizzle-kit writes unformatted `migrations/meta/*.json`: run Prettier on them.
 - Backticks in `node -e` run; `Set-Content -Encoding utf8` adds a BOM; Python writes CRLF.
   In the Bash tool (subagents too), `$env:X=…` is eaten: write `PLAYWRIGHT_CHANNEL=chrome pnpm …`.
+  A Git Bash path `/c/Users/…` given to Node or Playwright becomes `C:\c\Users\…`: pass `C:/Users/…`.
+  Python fed through a heredoc on stdin mangles accents (`\U` escapes too): write a script file.
 - next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`. Typed message
   keys: map dynamic values through typed helpers (`apps/web/src/lib/catalog-labels.ts`).
 - Strict Mode replays effects in dev: a `<dialog>` closed in an effect cleanup fires `close`

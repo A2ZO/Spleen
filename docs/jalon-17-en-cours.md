@@ -21,7 +21,7 @@ comportement testé. Branche `feat/17-nouvelle-peau`.
 2. **Coquille** — faite (commit `b74d8ac`) : barre de navigation, barre d'onglets flottante mobile avec « + » au centre,
    pied de page, suppression du thème clair.
 3. **Pages de détail** — faite : album, artiste, morceau, critique.
-4. Pages d'accueil (accueil visiteur et membre, /discover).
+4. **Pages d'accueil** — faite : accueil visiteur et membre, /discover.
 5. Profil et Étagère (grille de 4 pochettes arrondies, titre dans une pilule).
 6. Le reste : recherche, listes, réglages, connexion, légal, 404, hors ligne, emails, OG, PWA
    (icon.svg, apple-icon, polices OG `assets/fonts`).
@@ -158,11 +158,52 @@ comportement testé. Branche `feat/17-nouvelle-peau`.
 - `measure.mjs` : sélecteurs en `:visible` (le premier lien artiste de l'album est désormais le
   bouton retour de la barre mobile, caché sur ordinateur).
 
-## Prochaine étape : 4 — Pages d'accueil
+## Étape 4 — ce qui a été fait
 
-- Accueil visiteur et membre, /discover d'après les maquettes.
+- Commit e2e séparé (`1675094`) : 2 workers en local par défaut (`PLAYWRIGHT_WORKERS`), ligne
+  de résumé de `pnpm e2e:quiet` (`e2e/summary-reporter.ts`, `scripts/e2e-quiet.mjs`). Règle la
+  question ouverte de l'étape 3 ; la CI ne change pas.
+- Accueil membre : bloc lilas (date du jour, « Qu'est-ce que tu écoutes, {nom} ? » avec
+  `phoneTitleSize`, « + Noter un disque » = même recherche que le « + », « Trouver quoi
+  écouter » → /discover, provisoire, #31) ; « Ton mois » (`profile.diaryMonth`, seule lecture
+  ajoutée ; mois de `currentMonth()` partagé avec le journal, en UTC, #33) ; « Vient de
+  sortir » (1er disque de `discovery.recent`, #32) ; tendances ; « Chez tes amis » avec
+  Amis / Populaire en grille 2 colonnes (3 colonnes trop serrées pour `FeedItemCard`, validé).
+- Accueil visiteur : bloc lilas « Note tes disques, tiens ton journal. », « Comment ça
+  marche », « Vient de sortir », tendances, critiques populaires. Turntable et rangée
+  « Sorties récentes » retirés des accueils.
+- /discover : en-tête = bloc lilas ; filtres en `SelectField` / `TextField` (pilules) ;
+  mieux notés en rangées alternées ; plus de serif ni d'italique.
+- `ReleaseTile` (partagé) : pochette `rounded-cover`, note mono « ★ 4,6 » ; pastille de rang
+  seulement avec `rank` (tendances), vérifié sur artiste, recherche, profil.
+- `FeedItemCard` : titre en display gras (plus de serif).
+
+### Appris en route
+
+- Git Bash : un chemin `/c/Users/…` passé à Node devient `C:\c\Users\…` ; donner des chemins
+  `C:/Users/…` aux scripts Node et Playwright.
+- Navigateur headless absent → tous les tests échouent en quelques secondes :
+  `pnpm exec playwright install chromium-headless-shell`. `PLAYWRIGHT_CHANNEL=chrome` en
+  dépannage seulement, jamais commité.
+- Après `TaskStop` de `pnpm start`, `next start` reste orphelin sur 3000 comme le dev :
+  `netstat`, puis `/api/trace-debug` (404 = prod) avant `taskkill`.
+
+### Mesures
+
+- `pnpm check` : vert. Specs touchés (mockup, listening avec « Ton mois », lists, social) : 38/38.
+- e2e complet en dev, 2 workers : 219 réussis, 1 échoué, 10 ignorés (6 min 55) ;
+  `keyboard.spec:65` passe relancé seul (12/12) → #34.
+- Build de prod, navigateur headless : specs sans compte 104 réussis, 10 ignorés ; seul
+  `hydration.spec` échoue (Brevo factice, attendu) ; `overflow.spec` passe.
+- axe WCAG 2.2 AA, tous impacts, 1280 et 390 px, build de prod : /fr, /en, /fr/discover
+  (avec et sans filtres) : 0 violation.
+- `measure.mjs`, build de prod, page affichée (ms) : 196 / 130 / 234 / 215 / 225, deux
+  passages à ±5 ms (étape 3 : 267 / 134 / 230 / 217 / 216). accueil→album n'est plus
+  comparable (premier lien album = « Vient de sortir », autre disque) ; discover→accueil
+  +9 à +14 ms, sous le seuil de 20 ms.
+
+## Prochaine étape : 5 — Profil et Étagère
+
+- Profil d'après les maquettes : grille de 4 pochettes arrondies, titre dans une pilule.
 - Vérifs : `pnpm check`, specs touchés, e2e complet via `verificateur`, captures 1280/390 + axe,
   build de prod + `measure.mjs`, `/fin-d-etape`.
-- Question ouverte (à trancher avant l'étape 4) : correction durable des échecs de charge de
-  l'e2e local (moins de workers en local et/ou préchauffage des routes du serveur de dev dans
-  `e2e/global-setup.ts`) ; la CI ne change pas. En attendant : `pnpm e2e:quiet --workers=2`.
