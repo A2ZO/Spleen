@@ -349,7 +349,7 @@ export default async function ProfilePage({ params, searchParams }: Props) {
               <p className="mt-1 font-mono text-sm text-fg-muted">@{profile.username}</p>
             </div>
           </div>
-          <div className="flex items-start gap-2">
+          <div className="flex basis-full items-start gap-2 sm:basis-auto">
             {profile.isOwner && (
               <ButtonLink href="/settings" variant="secondary">
                 {t("nav.settings")}
