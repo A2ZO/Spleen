@@ -16,6 +16,9 @@ test-results/
 playwright-report/
 playwright/.cache/
 
+# Autopilot screenshots (docs/pilote)
+docs/pilote/captures/
+
 # Env (never commit secrets)
 .env
 .env.*

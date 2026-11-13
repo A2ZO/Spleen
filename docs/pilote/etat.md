@@ -1,0 +1,15 @@
+# État du pilote
+
+- Jalon : 17 « Nouvelle peau »
+- Branche : feat/17-nouvelle-peau
+- Étape : 5
+- Phase : plan
+- Mis à jour : 2026-11-13 (mise en place)
+
+Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante. `attente` : une
+question pour Azzo dans `decisions.md`. `fini` : jalon terminé, PR ouverte (jamais fusionnée
+par le pilote).
+
+Mettre le pilote en pause : créer un fichier vide `docs/pilote/STOP` (ou mettre la tâche
+planifiée en pause dans l'appli Claude). Reprendre après une `attente` : répondre sous la
+question dans `decisions.md`, puis remettre ici la phase où il s'était arrêté.
