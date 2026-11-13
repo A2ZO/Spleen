@@ -28,7 +28,7 @@ export function MemberRow({ member, signedIn }: { member: MemberCard; signedIn: 
         {member.bio && <p className="mt-1 truncate text-sm text-fg-muted">{member.bio}</p>}
       </div>
       {member.isViewer ? (
-        <span className="text-xs text-fg-muted italic">{t("you")}</span>
+        <span className="text-xs text-fg-muted">{t("you")}</span>
       ) : signedIn ? (
         <FollowButton
           username={member.username}

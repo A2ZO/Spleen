@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 function Empty({ children }: { children: string }) {
-  return <p className="font-serif text-lg text-fg-muted italic">{children}</p>;
+  return <p className="py-6 text-lg text-fg-muted">{children}</p>;
 }
 
 /** Full diary: list view (paginated) or calendar view (one month). Undated listens never show. */
@@ -93,7 +93,7 @@ export default async function DiaryPage({ params, searchParams }: Props) {
         >
           {t("profile.diaryBack")}
         </Link>
-        <h1 className="mt-2 text-4xl font-semibold">
+        <h1 className="mt-2 font-display text-4xl font-extrabold tracking-[-0.03em] break-words md:text-5xl">
           {t("profile.diaryTitle", { name: profile.displayName })}
         </h1>
       </header>
