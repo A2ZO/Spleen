@@ -4,6 +4,9 @@ import { defineConfig, devices } from "@playwright/test";
 const PORT = 3000;
 // Set PLAYWRIGHT_CHANNEL=chrome to use the installed Chrome instead of downloading Chromium.
 const channel = process.env.PLAYWRIGHT_CHANNEL;
+// Locally, 2 workers: at 4, the dev server falls behind and different tests time out on each
+// run. PLAYWRIGHT_WORKERS changes it; CI keeps Playwright's default.
+const localWorkers = Number(process.env.PLAYWRIGHT_WORKERS) || 2;
 
 export default defineConfig({
   testDir: "./e2e",
@@ -14,6 +17,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? undefined : localWorkers,
   use: {
     baseURL: `http://localhost:${PORT}`,
     trace: "on-first-retry",

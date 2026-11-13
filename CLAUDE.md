@@ -34,7 +34,7 @@ pnpm 12 workspaces + Turborepo 2, Node ≥ 24. Internal packages export TypeScri
 pnpm dev                 # http://localhost:3000 (redirects to /fr or /en)
 pnpm lint; pnpm typecheck; pnpm format         # format = Prettier write (CI: format:check)
 pnpm check               # silent: prettier --check + lint + typecheck + test (errors only)
-pnpm e2e:quiet           # silent Playwright (dot reporter); set PLAYWRIGHT_CHANNEL first
+pnpm e2e:quiet           # silent Playwright + summary line; 2 local workers (PLAYWRIGHT_WORKERS)
 pnpm test                # Vitest in every package (in-memory PGlite)
 pnpm --filter @spleen/design-tokens generate   # after editing tokens
 pnpm db:generate         # new SQL migration after editing packages/db/src/schema
