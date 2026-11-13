@@ -20,7 +20,7 @@ comportement testé. Branche `feat/17-nouvelle-peau`.
 1. **Fondations** — faite (commit `a21ef4a`).
 2. **Coquille** — faite (commit `b74d8ac`) : barre de navigation, barre d'onglets flottante mobile avec « + » au centre,
    pied de page, suppression du thème clair.
-3. Pages de détail (album, artiste, morceau, critique).
+3. **Pages de détail** — faite : album, artiste, morceau, critique.
 4. Pages d'accueil (accueil visiteur et membre, /discover).
 5. Profil et Étagère (grille de 4 pochettes arrondies, titre dans une pilule).
 6. Le reste : recherche, listes, réglages, connexion, légal, 404, hors ligne, emails, OG, PWA
@@ -104,11 +104,65 @@ comportement testé. Branche `feat/17-nouvelle-peau`.
   email (Brevo exigé en production) : avec une fausse clé, tous les tests qui s'inscrivent
   échouent (HTTP 401). L'e2e sur build de prod viendra avec l'e2e en CI (jalon 10).
 
-## Prochaine étape : 3 — Pages de détail
+## Étape 3 — ce qui a été fait
 
-- Album, artiste, morceau, critique d'après `maquettes/D-album-mobile.png` et les autres.
-- **Question ouverte** : sur la fiche mobile, la maquette n'a pas d'en-tête (seulement ← et ⋯
-  en haut). Retirer l'en-tête sur les fiches en mobile ou le garder partout ? À trancher avec
-  l'utilisateur en ouvrant l'étape.
-- Vérifs : `pnpm check`, specs touchés, e2e complet via `verificateur`, captures 1280/390 + axe
-  (`shots2.cjs`), build de prod + `measure.mjs`, `/fin-d-etape`.
+- Fiche mobile : l'en-tête est remplacé par `DetailBar` (← retour, libellé mono, ⋯ « Plus
+  d'actions » pour les membres : signaler, modifier). La ligne d'en-tête est cachée en CSS
+  (`body:has([data-detail-bar])`, hauteur 0 + `visibility`, pas `display: none` : la recherche
+  plein écran du « + » vit dans cette ligne). Desktop : en-tête normal.
+- **Album** : grande pochette, pastilles (type, année, titres · durée), titre géant
+  (`phoneTitleSize` réduit un mot long sur téléphone), « par » souligné, genres, date ;
+  carte « Ta note » (`ListenControls`), « Écouter sur » en pilules ; mosaïque lilas
+  `CommunityRating` + `MyListensCard` (compte, dernière/première écoute, journal, liste
+  dépliable « Modifier mes écoutes ») + `InListsCard` ; tracklist en rangées alternées ;
+  critiques et listes. **Artiste** : avatar rond, carte lilas « Discographie », carte écoute/liste.
+  **Morceau** : version réduite de l'album, « sur [album] », « Paraît sur ».
+  **Critique** : vignette, auteur, corps en carte, carte lilas « Sa note » (étoiles encre),
+  pilules j'aime / commentaires, commentaires en cartes, formulaire en carte.
+- Plus d'italique ni de serif sur ces pages (ReviewCard, LogDialog, ReleaseTile, Comments).
+- i18n : espace `detail`, `album.actions.log` = « Noter en détail… ». e2e adaptés (listening,
+  undo-delete, moderation, keyboard).
+
+### Appris en route
+
+- Règles CSS dans `@layer base` perdent contre les utilitaires : la règle de la fiche mobile
+  est hors couche. `cn` = clsx seul : surcharger avec `!`.
+- Un `<dialog>` modal ne s'affiche pas si un ancêtre est en `display: none`, même dans la
+  couche supérieure ; `visibility: hidden` + `visibility: visible` sur le dialog suffit.
+- Dans une carte demi-largeur (mobile), une rangée flex `min-w-0 flex-1` peut tomber à 0 px :
+  container query (`@container`, `@[16rem]:`) pour passer la date sur sa propre ligne.
+- En dev, l'indicateur Next (en bas à gauche) couvre le premier onglet de la barre mobile :
+  les e2e y naviguent au clavier.
+- `CONTACT_EMAIL` est aussi exigé par `next start` ; après `TaskStop` de `pnpm dev`, un
+  `next` orphelin peut rester sur 3000 (le tuer avant le build de prod).
+- e2e complet en dev à 4 workers (défaut local) : échecs de charge, différents à chaque run
+  (`social.spec` jeton de lien magique, « render cancelled mid-stream » après une recherche,
+  puis `accounts.spec:58` et `legal.spec:15` en délai dépassé) ; tous passent relancés seuls,
+  et l'e2e complet passe en entier avec `--workers=2` (6 min 52). C'est la charge du serveur
+  de dev, pas une régression.
+
+### Mesures
+
+- Build de prod, specs sans compte : 104 passent, 10 ignorés ; seul `hydration.spec` (email
+  tapé avant l'hydratation) échoue, attendu avec la clé Brevo factice : ligne 26 (« Regarde ta
+  boîte mail » absent), le champ garde bien l'email tapé, le serveur logue Brevo HTTP 401.
+  `overflow.spec` passe.
+- axe WCAG 2.2 AA, visiteur, 1280 et 390 px, album / artiste / morceau / critique : 0 violation.
+- axe WCAG 2.2 AA, membre (dev, compte e2e jetable avec une écoute notée), album et morceau,
+  1280 et 390 px, « Ton écoute » et « Tes écoutes » remplies, dépliant ouvert : 0 violation.
+- e2e complet en dev, `--workers=2` : tout passe. `pnpm check` : 26/26.
+- `measure.mjs`, build de prod, page affichée (ms) : 267 / 134 / 230 / 217 / 216, deux passages
+  identiques à ±2 ms (étape 2 : 254 / 130 / 221 / 201 / 207). +4 à +16 ms, y compris sur
+  profil, /discover et accueil que l'étape n'a pas touchés : plutôt la machine que les pages ;
+  à surveiller à l'étape 4.
+- `measure.mjs` : sélecteurs en `:visible` (le premier lien artiste de l'album est désormais le
+  bouton retour de la barre mobile, caché sur ordinateur).
+
+## Prochaine étape : 4 — Pages d'accueil
+
+- Accueil visiteur et membre, /discover d'après les maquettes.
+- Vérifs : `pnpm check`, specs touchés, e2e complet via `verificateur`, captures 1280/390 + axe,
+  build de prod + `measure.mjs`, `/fin-d-etape`.
+- Question ouverte (à trancher avant l'étape 4) : correction durable des échecs de charge de
+  l'e2e local (moins de workers en local et/ou préchauffage des routes du serveur de dev dans
+  `e2e/global-setup.ts`) ; la CI ne change pas. En attendant : `pnpm e2e:quiet --workers=2`.
