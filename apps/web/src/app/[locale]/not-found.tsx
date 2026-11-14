@@ -12,7 +12,7 @@ export default async function NotFound() {
 
   return (
     <div className="mx-auto max-w-2xl py-16 text-center">
-      <p className="font-display text-[96px] leading-none font-extrabold tracking-[-0.04em] text-star tabular sm:text-[128px]">
+      <p className="font-display text-[96px] leading-none font-extrabold tracking-[-0.04em] text-fg tabular sm:text-[128px]">
         404
       </p>
       <figure className="mt-10">

@@ -41,7 +41,7 @@ export default function GlobalError({
       <body className="flex min-h-screen items-center justify-center bg-bg px-4 text-fg">
         {t && (
           <main className="max-w-2xl py-16 text-center">
-            <p className="font-display text-[96px] leading-none font-extrabold tracking-[-0.04em] text-star tabular sm:text-[128px]">
+            <p className="font-display text-[96px] leading-none font-extrabold tracking-[-0.04em] text-fg tabular sm:text-[128px]">
               500
             </p>
             <blockquote className="mt-10 font-display text-2xl leading-snug font-bold tracking-[-0.02em] text-balance sm:text-3xl">
