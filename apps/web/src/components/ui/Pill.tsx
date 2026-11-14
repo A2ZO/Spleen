@@ -39,7 +39,7 @@ export function PillLink({
     <Link
       className={pillClasses(
         tone,
-        cn("min-h-11 transition-colors hover:border-fg-muted hover:text-fg", className),
+        cn("min-h-11 hover:border-fg-muted hover:text-fg", className),
       )}
       {...props}
     />

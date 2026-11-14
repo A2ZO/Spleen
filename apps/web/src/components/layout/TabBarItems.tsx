@@ -33,7 +33,7 @@ export type Tab =
   | { kind: "search"; label: string };
 
 const item =
-  "relative flex size-12 flex-col items-center justify-center rounded-full text-fg-muted transition-colors duration-150 hover:text-fg";
+  "relative flex size-12 flex-col items-center justify-center rounded-full text-fg-muted hover:text-fg";
 /** The current tab: lilac icon and a lilac dot under it (not colour alone: the dot). */
 const current = "text-accent hover:text-accent";
 const dot = "absolute bottom-1 size-[5px] rounded-full bg-accent";

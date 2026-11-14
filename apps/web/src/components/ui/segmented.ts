@@ -11,7 +11,7 @@ export const segmentedTrack =
 
 export function segmentedItem(selected: boolean) {
   return cn(
-    "inline-flex min-h-11 shrink-0 items-center justify-center rounded-full px-[18px] text-sm font-semibold whitespace-nowrap transition-colors duration-150 focus-visible:outline-offset-2",
+    "inline-flex min-h-11 shrink-0 items-center justify-center rounded-full px-[18px] text-sm font-semibold whitespace-nowrap focus-visible:outline-offset-2",
     selected ? "bg-accent text-accent-fg" : "text-fg-muted hover:text-fg",
   );
 }

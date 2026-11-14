@@ -22,7 +22,7 @@ export function NavLinks({ items }: { items: { href: string; label: string }[] }
               href={item.href}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "relative inline-flex min-h-11 items-center rounded-full px-4 text-sm font-medium whitespace-nowrap transition-colors duration-150",
+                "relative inline-flex min-h-11 items-center rounded-full px-4 text-sm font-medium whitespace-nowrap",
                 active
                   ? "bg-surface-raised text-fg after:absolute after:bottom-1 after:left-1/2 after:size-[5px] after:-translate-x-1/2 after:rounded-full after:bg-accent"
                   : "text-fg-muted hover:text-fg",

@@ -34,7 +34,7 @@ export function LocaleSwitcher() {
           aria-pressed={locale === current}
           onClick={() => locale !== current && switchTo(locale)}
           className={cn(
-            "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-3 font-mono text-xs uppercase transition-colors duration-150 focus-visible:outline-offset-1",
+            "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-3 font-mono text-xs uppercase focus-visible:outline-offset-1",
             // Current language: raised pill and lilac letters, not just a lighter fill.
             locale === current
               ? "bg-surface-raised font-medium text-star"

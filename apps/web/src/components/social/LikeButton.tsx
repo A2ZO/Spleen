@@ -50,7 +50,7 @@ export function LikeButton({
         aria-pressed={like.shown}
         onClick={toggle}
         className={cn(
-          "inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors",
+          "inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-medium",
           like.shown
             ? "border-accent text-fg"
             : "border-border text-fg-muted hover:border-accent hover:text-fg",

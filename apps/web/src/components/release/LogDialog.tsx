@@ -224,7 +224,7 @@ export function LogDialog({
                     aria-pressed={active}
                     onClick={() => toggleMood(mood.id)}
                     className={cn(
-                      "rounded-full border px-3 py-1 text-sm transition-colors",
+                      "rounded-full border px-3 py-1 text-sm",
                       active
                         ? "border-star bg-star/10 text-star"
                         : "border-border text-fg-muted hover:border-star/60 hover:text-fg",
