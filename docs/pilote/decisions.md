@@ -32,3 +32,15 @@ peut revenir sur n'importe lequel. Les questions qui demandent Azzo sont sous un
   Message « prend la poussière » gardé pour son propre profil seulement.
 - 2026-11-14 — étape 5 — Le sien : bouton « Réglages » (vers `/settings`), pas « Modifier le
   profil » (pas de page dédiée). Section « Récemment » gardée (contenu existant).
+- 2026-11-14 — étape 6 — Aucun bloc lilas sur recherche, listes, notifications, réglages,
+  connexion, légal, erreurs, hors ligne et admin. Raison : le brief le demande pour légal et
+  erreurs ; ailleurs aucun chiffre ni appel à mettre en avant. Écarté : un bloc par page.
+- 2026-11-14 — étape 6 — Images OG : titres en Inter Regular (déjà dans `assets/fonts`),
+  Fraunces supprimé. Raison : aucun TTF de Bricolage dans le dépôt et le pilote ne télécharge
+  rien sans Azzo ; Satori ne fabrique pas de gras. Provisoire : déposer
+  `BricolageGrotesque-ExtraBold.ttf` (OFL) dans `apps/web/assets/fonts` pour le rétablir.
+  Écarté : Geist du paquet `next/og` (licence à part, fichier interne à Next).
+- 2026-11-14 — étape 6 — Page hors ligne et emails en polices système sans serif (Arial /
+  pile système) : ni Geist ni Bricolage n'y sont disponibles. Écarté : polices web en email.
+- 2026-11-14 — étape 6 — Index des listes : pas de page dédiée dans l'appli ; c'est l'onglet
+  Listes du profil, refait à l'étape 5. Rien d'ajouté (pas de nouvelle route).

@@ -3,7 +3,7 @@
 - Jalon : 17 « Nouvelle peau »
 - Branche : feat/17-nouvelle-peau
 - Étape : 6
-- Phase : plan
+- Phase : code
 - Mis à jour : 2026-11-14
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante. `attente` : une
