@@ -14,6 +14,7 @@ import { ListenControls } from "@/components/release/ListenControls";
 import { MyListensCard } from "@/components/release/MyListensCard";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { Badge } from "@/components/ui/Badge";
+import { CoverThumb } from "@/components/detail/CoverThumb";
 import { Cover } from "@/components/ui/Cover";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
@@ -76,15 +77,7 @@ export default async function TrackPage({ params }: Props) {
         label={year === null ? kicker : `${kicker} · ${year}`}
         actions={report}
         thumb={
-          album && (
-            <Cover
-              slug={album.slug}
-              title={album.title}
-              coverUrl={album.coverUrl}
-              showText={false}
-              sizes="32px"
-            />
-          )
+          album && <CoverThumb slug={album.slug} title={album.title} coverUrl={album.coverUrl} />
         }
       />
 

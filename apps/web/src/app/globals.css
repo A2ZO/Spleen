@@ -198,9 +198,9 @@ body:has(
   }
 }
 
+/* Transform only: a tile still below its range stays readable (contrast, no hidden text). */
 @keyframes sp-cascade {
   from {
-    opacity: 0;
     transform: translateY(1.5rem);
   }
 }

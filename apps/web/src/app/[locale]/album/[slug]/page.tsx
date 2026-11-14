@@ -20,6 +20,7 @@ import { ShelfPicker } from "@/components/shelf/ShelfPicker";
 import { ListCard } from "@/components/social/ListCard";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { Badge } from "@/components/ui/Badge";
+import { CoverThumb } from "@/components/detail/CoverThumb";
 import { Cover } from "@/components/ui/Cover";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
@@ -128,15 +129,7 @@ export default async function AlbumPage({ params }: Props) {
         backHref={release.artists[0] ? `/artist/${release.artists[0].slug}` : "/"}
         label={release.year === null ? typeLabel : `${typeLabel} · ${release.year}`}
         actions={report}
-        thumb={
-          <Cover
-            slug={release.slug}
-            title={release.title}
-            coverUrl={release.coverUrl}
-            showText={false}
-            sizes="32px"
-          />
-        }
+        thumb={<CoverThumb slug={release.slug} title={release.title} coverUrl={release.coverUrl} />}
       />
 
       <header className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,420px)_1fr] md:items-end md:gap-12">

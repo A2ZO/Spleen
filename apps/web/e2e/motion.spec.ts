@@ -52,14 +52,16 @@ test.describe("with reduced motion", () => {
   });
 });
 
-test("trend tiles end fully visible once scrolled into view", async ({ page }) => {
+test("trend tiles stay opaque and end in place once scrolled into view", async ({ page }) => {
   await page.goto("/fr");
+  for (const tile of await stateOf(page, ".scroll-cascade")) expect(tile.opacity).toBe("1");
   const last = page.locator(".scroll-cascade").last();
   await last.scrollIntoViewIfNeeded();
   await page.mouse.wheel(0, 300);
+  // At rest: no transform, or the identity matrix the animation interpolates to.
   await expect
-    .poll(() => last.evaluate((node) => Number(getComputedStyle(node).opacity)))
-    .toBeGreaterThan(0.99);
+    .poll(() => last.evaluate((node) => getComputedStyle(node).transform))
+    .toMatch(/^(none|matrix\(1, 0, 0, 1, 0, 0\))$/);
 });
 
 test("on a phone, the cover thumbnail appears in the bar once the cover is gone", async ({
