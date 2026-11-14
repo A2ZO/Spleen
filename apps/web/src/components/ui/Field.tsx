@@ -7,12 +7,12 @@ import { cn } from "@/lib/cn";
 import { useTypedBeforeHydration } from "@/lib/typed-before-hydration";
 
 /*
- * Pill-shaped field on the page background. Its border is `border-field` (3:1, WCAG 1.4.11);
+ * Field on the page background (pill-shaped input and select, rounded textarea). Its border is `border-field` (3:1, WCAG 1.4.11);
  * focus keeps the global lilac ring and turns the border lilac. Disabled: muted ink on
  * `surface-alt` with the quiet border.
  */
 const control =
-  "min-h-11 w-full rounded-full border border-border-field bg-bg px-[18px] py-2 text-[15px] text-fg placeholder:text-fg-muted focus:border-accent aria-[invalid=true]:border-danger disabled:cursor-not-allowed disabled:border-border disabled:bg-surface-alt disabled:text-fg-muted";
+  "w-full border border-border-field bg-bg px-[18px] py-2 text-[15px] text-fg placeholder:text-fg-muted focus:border-accent aria-[invalid=true]:border-danger disabled:cursor-not-allowed disabled:border-border disabled:bg-surface-alt disabled:text-fg-muted";
 
 interface FieldProps {
   label: ReactNode;
@@ -72,7 +72,7 @@ export function TextField({
         id={id}
         aria-invalid={error ? true : undefined}
         aria-describedby={described}
-        className={cn(control, className)}
+        className={cn(control, "min-h-11 rounded-full", className)}
         {...props}
       />
     </FieldShell>
@@ -117,7 +117,7 @@ export function SelectField({
         <select
           id={id}
           aria-describedby={hint ? `${id}-msg` : undefined}
-          className={cn(control, "appearance-none pr-12", className)}
+          className={cn(control, "min-h-11 appearance-none rounded-full pr-12", className)}
           {...props}
         >
           {children}
