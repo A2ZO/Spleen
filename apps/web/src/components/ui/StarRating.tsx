@@ -28,6 +28,14 @@ export function StarRating({ value, onChange, className, label, size = "md" }: S
   const ref = useRef<HTMLDivElement>(null);
   const hintId = useId();
   const [hover, setHover] = useState<number | null>(null);
+  // A new rating (click, keys, shortcuts) replays the stars' bounce; compared while rendering,
+  // so nothing moves on the first render.
+  const [seen, setSeen] = useState(value);
+  const [pop, setPop] = useState(0);
+  if (seen !== value) {
+    setSeen(value);
+    if (value !== null) setPop(pop + 1);
+  }
 
   const fromPointer = (clientX: number) => {
     const box = ref.current?.getBoundingClientRect();
@@ -84,7 +92,7 @@ export function StarRating({ value, onChange, className, label, size = "md" }: S
           ],
         )}
       >
-        <Stars rating={shown} />
+        <Stars rating={shown} pop={pop} />
       </div>
       <span id={hintId} className="sr-only">
         {t("keyboardHint")}

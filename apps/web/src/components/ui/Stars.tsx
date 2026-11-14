@@ -7,11 +7,24 @@ const STAR_PATH =
  * Each star sits in an equal cell (padding on both sides, no gap), so the clipped overlay's
  * width maps linearly to the rating: 10 % of the row is exactly half of the first star.
  */
-function StarRow({ className, filled }: { className?: string; filled: boolean }) {
+function StarRow({
+  className,
+  filled,
+  pop = false,
+}: {
+  className?: string;
+  filled: boolean;
+  pop?: boolean;
+}) {
   return (
     <span className={cn("flex", className)} aria-hidden="true">
       {Array.from({ length: 5 }, (_, i) => (
-        <svg key={i} viewBox="0 0 24 24" className="box-content size-[1em] shrink-0 px-[0.06em]">
+        <svg
+          key={i}
+          viewBox="0 0 24 24"
+          className={cn("box-content size-[1em] shrink-0 px-[0.06em]", pop && "star-pop")}
+          style={pop ? { animationDelay: `${i * 40}ms` } : undefined}
+        >
           <path
             d={STAR_PATH}
             fill={filled ? "currentColor" : "none"}
@@ -34,11 +47,17 @@ export function Stars({
   rating,
   className,
   tone = "default",
+  pop = 0,
 }: {
   rating: number | null;
   className?: string;
   /** `on-accent`: ink stars for a lilac block. */
   tone?: "default" | "on-accent";
+  /**
+   * Bumped by `StarRating` when a rating is picked: the filled stars bounce in one by one
+   * (`.star-pop`, globals.css). 0 = still (never on the first render).
+   */
+  pop?: number;
 }) {
   const percent = rating === null ? 0 : (rating / 10) * 100;
   const onAccent = tone === "on-accent";
@@ -47,8 +66,12 @@ export function Stars({
       className={cn("relative inline-flex", onAccent ? "text-accent-fg" : "text-star", className)}
     >
       <StarRow filled={false} className={onAccent ? "text-accent-fg/45" : "text-star-empty"} />
-      <span className="absolute inset-y-0 left-0 overflow-hidden" style={{ width: `${percent}%` }}>
-        <StarRow filled />
+      <span
+        key={pop}
+        className="absolute inset-y-0 left-0 overflow-hidden"
+        style={{ width: `${percent}%` }}
+      >
+        <StarRow filled pop={pop > 0} />
       </span>
     </span>
   );
