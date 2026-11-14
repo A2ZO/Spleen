@@ -161,17 +161,6 @@ body:has(
   font-variant-numeric: tabular-nums;
 }
 
-/* Spinning record (hero, tonearm). Disabled for reduced motion below. */
-@keyframes sp-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@utility animate-record {
-  animation: sp-spin 4s linear infinite;
-}
-
 /* Navigation bar (NavigationBar): a short stroke sweeping across while a page loads. */
 @keyframes sp-navigation {
   from {
@@ -196,6 +185,91 @@ body:has(
 
 @utility animate-rise {
   animation: sp-rise 0.18s ease-out;
+}
+
+/*
+ * Motion (docs/design/README.md, « Mouvement »): transform and opacity only, every rule below
+ * only under `no-preference`, so nothing moves (and nothing waits) with reduced motion.
+ */
+@keyframes sp-star-pop {
+  from {
+    opacity: 0.4;
+    transform: scale(0.6);
+  }
+}
+
+@keyframes sp-cascade {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+}
+
+@keyframes sp-cover-shrink {
+  to {
+    opacity: 0;
+    transform: translateY(20%) scale(0.55);
+  }
+}
+
+@keyframes sp-cover-thumb {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* `Stars` with `pop`: the filled stars bounce in one by one (delay set inline). */
+  .star-pop {
+    animation: sp-star-pop 150ms var(--ease-spring) backwards;
+  }
+
+  /*
+   * Trends arrive in a cascade while scrolling (`--i` = column offset). Without scroll-driven
+   * animations nothing applies, and a tile already on screen is past its range: visible.
+   */
+  @supports (animation-timeline: view()) {
+    .scroll-cascade {
+      animation: sp-cascade linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i, 0) * 10%) entry calc(70% + var(--i, 0) * 10%);
+    }
+  }
+}
+
+/*
+ * Detail page on phones: the big cover shrinks away as it scrolls under the top bar, where a
+ * thumbnail (`DetailBar` `thumb`) fades in, linked to the cover through `--sp-cover`. Anywhere
+ * else the thumbnail stays hidden and the cover alone shows.
+ */
+.cover-thumb {
+  display: none;
+}
+
+@media (width < 48rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) and (timeline-scope: none) {
+    .cover-scope {
+      timeline-scope: --sp-cover;
+    }
+
+    .cover-scroll {
+      view-timeline: --sp-cover block;
+    }
+
+    .cover-scroll > * {
+      animation: sp-cover-shrink linear both;
+      animation-timeline: --sp-cover;
+      animation-range: exit-crossing 0% exit-crossing 100%;
+    }
+
+    .cover-thumb {
+      display: block;
+      animation: sp-cover-thumb linear both;
+      animation-timeline: --sp-cover;
+      animation-range: exit-crossing 50% exit-crossing 100%;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

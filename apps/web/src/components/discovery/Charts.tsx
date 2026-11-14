@@ -1,6 +1,7 @@
 import type { ReleaseCard, TopRatedItem, TrendItem } from "@spleen/api";
 import { ratingToStars } from "@spleen/validators";
 import { useFormatter, useTranslations } from "next-intl";
+import type { CSSProperties } from "react";
 
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { Cover } from "@/components/ui/Cover";
@@ -11,7 +12,10 @@ import { cn } from "@/lib/cn";
 
 const grid = "grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-6";
 
-/** Weekly trends: ranked tiles with how many members listened; says when it was completed. */
+/**
+ * Weekly trends: ranked tiles with how many members listened; says when it was completed.
+ * Tiles arrive in a cascade while scrolling (`.scroll-cascade`, `--i` = column offset).
+ */
 export function TrendsGrid({ items, className }: { items: TrendItem[]; className?: string }) {
   const t = useTranslations("discover");
   const filled = items.some((i) => i.source === "month")
@@ -24,7 +28,11 @@ export function TrendsGrid({ items, className }: { items: TrendItem[]; className
       {filled && <p className="mb-5 text-sm text-fg-muted">{t(filled)}</p>}
       <ol className={grid}>
         {items.map((item, index) => (
-          <li key={item.release.id}>
+          <li
+            key={item.release.id}
+            className="scroll-cascade"
+            style={{ "--i": index % 3 } as CSSProperties}
+          >
             <ReleaseTile release={item.release} rank={index + 1} />
             <p className="mt-1 font-mono text-xs text-fg-muted">
               {t("listeners", { count: item.listeners })}

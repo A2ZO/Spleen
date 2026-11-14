@@ -123,23 +123,34 @@ export default async function AlbumPage({ params }: Props) {
   const phoneCards = 1 + (mine || hasLists ? 1 : 0);
 
   return (
-    <article>
+    <article className="cover-scope">
       <DetailBar
         backHref={release.artists[0] ? `/artist/${release.artists[0].slug}` : "/"}
         label={release.year === null ? typeLabel : `${typeLabel} · ${release.year}`}
         actions={report}
+        thumb={
+          <Cover
+            slug={release.slug}
+            title={release.title}
+            coverUrl={release.coverUrl}
+            showText={false}
+            sizes="32px"
+          />
+        }
       />
 
       <header className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,420px)_1fr] md:items-end md:gap-12">
-        <Cover
-          slug={release.slug}
-          title={release.title}
-          artistName={release.artists[0]?.name}
-          coverUrl={release.coverUrl}
-          alt={t("album.coverAlt", { title: release.title })}
-          sizes="(min-width: 768px) 420px, 300px"
-          className="mx-auto w-full max-w-[300px] rounded-card-sm! md:max-w-none md:rounded-card!"
-        />
+        <div className="cover-scroll">
+          <Cover
+            slug={release.slug}
+            title={release.title}
+            artistName={release.artists[0]?.name}
+            coverUrl={release.coverUrl}
+            alt={t("album.coverAlt", { title: release.title })}
+            sizes="(min-width: 768px) 420px, 300px"
+            className="mx-auto w-full max-w-[300px] rounded-card-sm! md:max-w-none md:rounded-card!"
+          />
+        </div>
 
         <div className="min-w-0 max-md:text-center">
           <div className="flex flex-wrap gap-2 max-md:hidden">

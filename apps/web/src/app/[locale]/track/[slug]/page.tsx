@@ -70,24 +70,37 @@ export default async function TrackPage({ params }: Props) {
   const duration = track.durationMs === null ? null : formatDuration(track.durationMs);
 
   return (
-    <article>
+    <article className="cover-scope">
       <DetailBar
         backHref={album ? `/album/${album.slug}` : "/"}
         label={year === null ? kicker : `${kicker} · ${year}`}
         actions={report}
+        thumb={
+          album && (
+            <Cover
+              slug={album.slug}
+              title={album.title}
+              coverUrl={album.coverUrl}
+              showText={false}
+              sizes="32px"
+            />
+          )
+        }
       />
 
       <header className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,300px)_1fr] md:items-end md:gap-12">
         {album && (
-          <Cover
-            slug={album.slug}
-            title={album.title}
-            artistName={album.artists[0]?.name}
-            coverUrl={album.coverUrl}
-            alt={t("album.coverAlt", { title: album.title })}
-            sizes="(min-width: 768px) 300px, 220px"
-            className="mx-auto w-full max-w-[220px] rounded-card-sm! md:max-w-none md:rounded-card!"
-          />
+          <div className="cover-scroll">
+            <Cover
+              slug={album.slug}
+              title={album.title}
+              artistName={album.artists[0]?.name}
+              coverUrl={album.coverUrl}
+              alt={t("album.coverAlt", { title: album.title })}
+              sizes="(min-width: 768px) 300px, 220px"
+              className="mx-auto w-full max-w-[220px] rounded-card-sm! md:max-w-none md:rounded-card!"
+            />
+          </div>
         )}
         <div className={cn("min-w-0 max-md:text-center", !album && "md:col-span-2")}>
           <div className="flex flex-wrap gap-2 max-md:hidden">
