@@ -103,7 +103,7 @@ function HelpDialog({ signedIn, onClose }: { signedIn: boolean; onClose: () => v
         <button
           type="button"
           onClick={() => ref.current?.close()}
-          className={buttonClasses("outline")}
+          className={buttonClasses("secondary")}
         >
           {t("close")}
         </button>

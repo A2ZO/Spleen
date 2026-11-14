@@ -104,7 +104,7 @@ function ReportDialog({ subject, onClose }: { subject: Subject; onClose: () => v
         {sent ? (
           <>
             <FormMessage tone="success">{t("reportThanks")}</FormMessage>
-            <Button variant="outline" onClick={() => ref.current?.close()}>
+            <Button variant="secondary" onClick={() => ref.current?.close()}>
               {t("close")}
             </Button>
           </>

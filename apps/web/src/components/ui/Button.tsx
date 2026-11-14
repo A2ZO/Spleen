@@ -5,11 +5,11 @@ import { cn } from "@/lib/cn";
 
 /**
  * - `primary`: lilac, 5 px edge, 52 px tall (the page's main action).
- * - `secondary` (`outline` is the former name): dark, 4 px edge.
+ * - `secondary`: dark, 4 px edge.
  * - `ghost`: flat, for quiet actions.
  * - `ink` / `on-accent`: laid on a lilac block (dark button, translucent outlined button).
  */
-type Variant = "primary" | "secondary" | "outline" | "ghost" | "ink" | "on-accent";
+type Variant = "primary" | "secondary" | "ghost" | "ink" | "on-accent";
 type Size = "md" | "sm" | "icon" | "icon-lg";
 
 /*
@@ -26,8 +26,6 @@ const variants: Record<Variant, string> = {
   primary:
     "bg-accent text-accent-fg shadow-button-accent hover:bg-accent-hover active:translate-y-[5px] active:shadow-button-accent-pressed",
   secondary:
-    "border border-border-strong bg-surface-raised text-fg shadow-button hover:border-fg-muted active:translate-y-[4px] active:shadow-button-pressed",
-  outline:
     "border border-border-strong bg-surface-raised text-fg shadow-button hover:border-fg-muted active:translate-y-[4px] active:shadow-button-pressed",
   ghost: "text-fg-muted hover:bg-surface-raised hover:text-fg",
   ink: "on-accent bg-accent-fg text-fg shadow-button-ink active:translate-y-[5px] active:shadow-button-on-accent-pressed",

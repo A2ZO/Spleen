@@ -251,7 +251,7 @@ export function LogDialog({
                 }}
               />
             </div>
-            <Button variant="outline" onClick={addMood} disabled={pending || !newMood.trim()}>
+            <Button variant="secondary" onClick={addMood} disabled={pending || !newMood.trim()}>
               {t("moodAdd")}
             </Button>
           </div>

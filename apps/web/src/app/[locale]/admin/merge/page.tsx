@@ -106,7 +106,7 @@ export default async function MergePage({ params, searchParams }: Props) {
           />
         </div>
         {reportId && <input type="hidden" name="report" value={reportId} />}
-        <Button type="submit" variant="outline">
+        <Button type="submit" variant="secondary">
           {t("check")}
         </Button>
       </form>

@@ -111,7 +111,7 @@ function CatalogReportDialog({
         {sent ? (
           <>
             <FormMessage tone="success">{t("thanks")}</FormMessage>
-            <Button variant="outline" onClick={() => ref.current?.close()}>
+            <Button variant="secondary" onClick={() => ref.current?.close()}>
               {t("close")}
             </Button>
           </>

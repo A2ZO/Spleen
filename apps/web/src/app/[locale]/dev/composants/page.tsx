@@ -110,7 +110,7 @@ export default async function DevComponentsPage({ params }: Props) {
             <h3 className="text-xl">{t("cardTitle")}</h3>
             <p className="text-fg-muted">{t("cardBody")}</p>
           </Card>
-          <Card className="space-y-2 bg-surface-raised">
+          <Card lift className="space-y-2 bg-surface-raised">
             <h3 className="text-xl">{t("cardTitle")}</h3>
             <p className="text-fg-muted">{t("cardBody")}</p>
           </Card>

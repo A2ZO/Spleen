@@ -172,7 +172,7 @@ async function ReportCard({ report }: { report: ReportView }) {
       </dl>
       {report.status === "open" && subject.duplicate && (
         <ButtonLink
-          variant="outline"
+          variant="secondary"
           href={hrefWith("/admin/merge", { ...subject.duplicate.merge, report: report.id })}
         >
           {t("mergeLink")}

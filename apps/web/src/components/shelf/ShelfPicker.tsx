@@ -17,13 +17,13 @@ import { cn } from "@/lib/cn";
 export function ShelfPicker({
   release,
   shelf,
-  variant = "outline",
+  variant = "secondary",
   className,
 }: {
   release: { id: string; title: string };
   /** The member's current Shelf (4 slots). */
   shelf: (ReleaseCard | null)[];
-  variant?: "outline" | "ghost";
+  variant?: "secondary" | "ghost";
   className?: string;
 }) {
   const t = useTranslations("shelf");
@@ -153,7 +153,7 @@ function PickerDialog({
         <div className="flex flex-wrap gap-3">
           {current >= 0 && (
             <Button
-              variant="outline"
+              variant="secondary"
               disabled={pending}
               onClick={() => save(() => removeShelfAction(current + 1))}
             >

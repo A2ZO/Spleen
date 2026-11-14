@@ -251,7 +251,7 @@ async function TabContent({
       inRange(lists);
       const create = profile.isOwner && (
         <div className="mb-5 flex justify-end">
-          <ButtonLink href="/list/new" variant="outline">
+          <ButtonLink href="/list/new" variant="secondary">
             {t("list.create")}
           </ButtonLink>
         </div>

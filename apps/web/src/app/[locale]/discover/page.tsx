@@ -39,7 +39,7 @@ const PATH = "/discover";
 const DECADES = Array.from({ length: 8 }, (_, i) => 2020 - i * 10);
 const POPULAR_ON_PAGE = 4;
 const linkClasses = "text-link underline-offset-2 hover:underline";
-/** Empty block: a short muted sentence (no serif or italic in Lilas). */
+/** Empty block: a short muted sentence. */
 const emptyText = "text-lg text-fg-muted text-pretty";
 
 /** `?year=1977` within the accepted range, or undefined. */

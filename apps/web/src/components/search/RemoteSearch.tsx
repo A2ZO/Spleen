@@ -58,7 +58,7 @@ function HitRow({ hit }: { hit: RemoteHit }) {
         <form action={action}>
           <input type="hidden" name="kind" value={hit.kind} />
           <input type="hidden" name="mbid" value={hit.mbid} />
-          <Button type="submit" variant="outline" disabled={pending}>
+          <Button type="submit" variant="secondary" disabled={pending}>
             {pending ? t("search.adding") : t("search.add")}
           </Button>
         </form>
@@ -100,7 +100,7 @@ export function RemoteSearch({
   return (
     <div className="space-y-4">
       {current.status !== "done" && (
-        <Button type="button" variant="outline" disabled={pending} onClick={search}>
+        <Button type="button" variant="secondary" disabled={pending} onClick={search}>
           {pending ? t("search.remoteSearching") : t("search.remoteButton")}
         </Button>
       )}

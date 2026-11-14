@@ -38,7 +38,7 @@ export default function ErrorPage({
       <h1 className="mt-10 text-fg-muted">{t("body")}</h1>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Button onClick={reset}>{t("retry")}</Button>
-        <ButtonLink href="/" variant="outline">
+        <ButtonLink href="/" variant="secondary">
           {t("back")}
         </ButtonLink>
       </div>

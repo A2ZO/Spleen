@@ -32,7 +32,7 @@ export function AddToListButton({
   return (
     <>
       <Button
-        variant="outline"
+        variant="secondary"
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
         className={className}

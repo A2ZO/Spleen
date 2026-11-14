@@ -133,7 +133,7 @@ export default async function ListPage({ params, searchParams }: Props) {
               <CommentIcon /> {t("review.comments", { count: list.commentCount })}
             </a>
             {list.isOwner && (
-              <ButtonLink href={`${path}/edit`} variant="outline" className="ml-auto">
+              <ButtonLink href={`${path}/edit`} variant="secondary" className="ml-auto">
                 {t("list.edit")}
               </ButtonLink>
             )}

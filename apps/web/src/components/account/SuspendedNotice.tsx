@@ -63,7 +63,7 @@ export async function SuspendedNotice({
         </h2>
         <p className="text-fg-muted">{t("dataBody")}</p>
         <div className="flex flex-wrap gap-3">
-          <a href="/api/account/export" download className={buttonClasses("outline")}>
+          <a href="/api/account/export" download className={buttonClasses("secondary")}>
             {t("export")}
           </a>
           <SignOutButton href="/">{t("signOut")}</SignOutButton>

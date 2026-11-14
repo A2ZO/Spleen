@@ -127,7 +127,7 @@ export function SignInForm({
             {t("or")}
           </p>
           <Button
-            variant="outline"
+            variant="secondary"
             className="w-full"
             onClick={() => authClient.signIn.social({ provider: "google", callbackURL })}
           >

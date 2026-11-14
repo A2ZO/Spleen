@@ -87,14 +87,14 @@ export default async function SettingsPage({ params }: Props) {
 
       <Section id="blocks" title={t("blocksTitle")}>
         <p className="text-fg-muted">{t("blocksBody")}</p>
-        <Link href="/settings/blocks" className={buttonClasses("outline", "mt-4")}>
+        <Link href="/settings/blocks" className={buttonClasses("secondary", "mt-4")}>
           {t("blocksLink")}
         </Link>
       </Section>
 
       <Section id="export" title={t("exportTitle")}>
         <p className="text-fg-muted">{t("exportBody")}</p>
-        <a href="/api/account/export" download className={buttonClasses("outline", "mt-4")}>
+        <a href="/api/account/export" download className={buttonClasses("secondary", "mt-4")}>
           {t("exportButton")}
         </a>
       </Section>

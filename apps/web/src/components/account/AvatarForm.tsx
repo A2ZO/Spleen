@@ -66,7 +66,7 @@ export function AvatarForm({
         <div className="flex flex-wrap gap-2">
           <label
             className={buttonClasses(
-              "outline",
+              "secondary",
               busy ? "pointer-events-none opacity-50" : "cursor-pointer focus-within:border-star",
             )}
           >

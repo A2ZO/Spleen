@@ -37,7 +37,7 @@ export function MemberRow({ member, signedIn }: { member: MemberCard; signedIn: 
           className="px-3 py-1.5"
         />
       ) : (
-        <Link href="/sign-in" className={buttonClasses("outline", "px-3 py-1.5")}>
+        <Link href="/sign-in" className={buttonClasses("secondary", "px-3 py-1.5")}>
           {t("follow")}
           <span className="sr-only"> {member.displayName}</span>
         </Link>
