@@ -7,11 +7,10 @@ import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { RemoteSearch } from "@/components/search/RemoteSearch";
 import { SearchCombobox } from "@/components/search/SearchCombobox";
 import { Cover } from "@/components/ui/Cover";
-import { pillClasses } from "@/components/ui/Pill";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { segmentedItem, segmentedTrack } from "@/components/ui/segmented";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
-import { cn } from "@/lib/cn";
 import { formatDuration } from "@/lib/release-date";
 import { getApi } from "@/server/api";
 
@@ -73,21 +72,13 @@ export default async function SearchPage({ params, searchParams }: Props) {
           autoFocus
         />
         <nav aria-label={t("search.filtersLabel")}>
-          <ul className="flex flex-wrap gap-2">
+          <ul className={segmentedTrack}>
             {searchKinds.map((kind) => (
               <li key={kind}>
                 <Link
                   href={href(kind)}
                   aria-current={kind === type ? "page" : undefined}
-                  className={pillClasses(
-                    kind === type ? "raised" : "outline",
-                    cn(
-                      "min-h-11",
-                      kind === type
-                        ? "text-fg"
-                        : "text-fg-muted hover:border-fg-muted hover:text-fg",
-                    ),
-                  )}
+                  className={segmentedItem(kind === type)}
                 >
                   {t(`search.filter.${kind}`)}
                 </Link>
