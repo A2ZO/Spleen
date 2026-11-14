@@ -23,7 +23,7 @@ import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { cn } from "@/lib/cn";
-import { phoneTitleSize } from "@/lib/display-title";
+import { profileNameLayout } from "@/lib/display-title";
 import { seoMetadata } from "@/lib/seo";
 import { Link, redirect } from "@/i18n/navigation";
 import { firstParam, hrefWith, pageParam, type SearchParams } from "@/lib/search-params";
@@ -326,11 +326,18 @@ export default async function ProfilePage({ params, searchParams }: Props) {
   const filledShelf = profile.shelf.some((slot) => slot !== null);
   const year = stats ? String(stats.base.year) : "";
 
+  const nameLayout = profileNameLayout(profile.displayName);
+
   return (
     <div className="space-y-12 md:space-y-16">
       <header className="space-y-6">
         <div className="flex flex-wrap items-start gap-x-6 gap-y-4">
-          <div className="flex min-w-0 flex-1 items-center gap-4 md:gap-6">
+          <div
+            className={cn(
+              "flex min-w-0 flex-1 items-center gap-4 md:gap-6",
+              nameLayout.stacked && "max-md:flex-col max-md:items-start",
+            )}
+          >
             <Avatar
               name={profile.displayName}
               seed={profile.username}
@@ -340,8 +347,8 @@ export default async function ProfilePage({ params, searchParams }: Props) {
             <div className="min-w-0">
               <h1
                 className={cn(
-                  "font-display text-5xl leading-[0.95] font-extrabold tracking-[-0.03em] break-words md:text-[64px]",
-                  phoneTitleSize(profile.displayName, "48"),
+                  "font-display leading-[0.95] font-extrabold tracking-[-0.03em] break-words",
+                  nameLayout.size,
                 )}
               >
                 {profile.displayName}
