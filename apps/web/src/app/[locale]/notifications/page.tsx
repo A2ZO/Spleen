@@ -61,15 +61,15 @@ export default async function NotificationsPage({ params, searchParams }: Props)
     <div className="mx-auto max-w-2xl space-y-6">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-4xl font-semibold">{t("title")}</h1>
+          <h1 className="font-display text-4xl font-extrabold tracking-[-0.03em]">{t("title")}</h1>
           <p className="mt-1 text-sm text-fg-muted">{t("unread", { count: unread })}</p>
         </div>
         {unread > 0 && <MarkAllReadButton />}
       </header>
       {page.items.length === 0 && !cursor ? (
-        <p className="py-6 font-serif text-lg text-fg-muted italic">{t("empty")}</p>
+        <p className="py-6 text-lg text-fg-muted">{t("empty")}</p>
       ) : (
-        <ul className="divide-y divide-border/50">
+        <ul className="space-y-2">
           {page.items.map((group) =>
             group.moderation ? (
               <li key={group.key}>
@@ -84,8 +84,10 @@ export default async function NotificationsPage({ params, searchParams }: Props)
                 <Link
                   href={hrefOf(group)}
                   className={cn(
-                    "flex gap-3 rounded-sm px-2 py-3 hover:bg-surface",
-                    group.unread && "bg-surface/60",
+                    "flex gap-3 rounded-card-sm border px-4 py-3 shadow-card hover:bg-surface-raised",
+                    group.unread
+                      ? "border-border-strong bg-surface-raised"
+                      : "border-border bg-surface",
                   )}
                 >
                   <span className="flex shrink-0 -space-x-3">
@@ -113,7 +115,7 @@ export default async function NotificationsPage({ params, searchParams }: Props)
                       {text(group)}
                     </span>
                     {group.commentExcerpt && (
-                      <span className="mt-1 block truncate text-sm text-fg-muted italic">
+                      <span className="mt-1 block truncate text-sm text-fg-muted">
                         {t("excerpt", { text: group.commentExcerpt })}
                       </span>
                     )}
@@ -170,7 +172,12 @@ async function ModerationItem({
   const format = await getFormatter();
   const mailto = notice.contactEmail.includes("@") ? `mailto:${notice.contactEmail}` : null;
   return (
-    <div className={cn("space-y-1 rounded-sm px-2 py-3", unread && "bg-surface/60")}>
+    <div
+      className={cn(
+        "space-y-1 rounded-card-sm border px-4 py-3 shadow-card",
+        unread ? "border-border-strong bg-surface-raised" : "border-border bg-surface",
+      )}
+    >
       <p className="text-pretty">
         {unread && (
           <>
@@ -184,7 +191,7 @@ async function ModerationItem({
         {t(`${notice.action}`, { subject: notice.subject })}
       </p>
       {notice.excerpt && (
-        <p className="truncate text-sm text-fg-muted italic">
+        <p className="truncate border-l-2 border-border-strong pl-2 text-sm text-fg-muted">
           {tn("excerpt", { text: notice.excerpt })}
         </p>
       )}

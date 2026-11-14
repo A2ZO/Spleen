@@ -24,7 +24,7 @@ export async function SuspendedNotice({
   return (
     <div className="mx-auto max-w-2xl space-y-8">
       <header className="space-y-3">
-        <h1 className="text-4xl font-semibold">{t("title")}</h1>
+        <h1 className="font-display text-4xl font-extrabold tracking-[-0.03em]">{t("title")}</h1>
         <p className="text-fg-muted">
           {t("since", {
             date: format.dateTime(new Date(suspension.suspendedAt), { dateStyle: "long" }),
@@ -32,7 +32,7 @@ export async function SuspendedNotice({
         </p>
       </header>
       <section aria-labelledby="suspension-reason" className="space-y-2">
-        <h2 id="suspension-reason" className="font-serif text-xl">
+        <h2 id="suspension-reason" className="font-display text-xl font-bold tracking-[-0.02em]">
           {t("reasonTitle")}
         </h2>
         <blockquote className="border-l-2 border-accent pl-4 whitespace-pre-line">
@@ -41,7 +41,7 @@ export async function SuspendedNotice({
         <p className="text-fg-muted">{t("effects")}</p>
       </section>
       <section aria-labelledby="suspension-contest" className="space-y-2">
-        <h2 id="suspension-contest" className="font-serif text-xl">
+        <h2 id="suspension-contest" className="font-display text-xl font-bold tracking-[-0.02em]">
           {t("contestTitle")}
         </h2>
         <p>
@@ -58,17 +58,17 @@ export async function SuspendedNotice({
         </p>
       </section>
       <section aria-labelledby="suspension-data" className="space-y-4">
-        <h2 id="suspension-data" className="font-serif text-xl">
+        <h2 id="suspension-data" className="font-display text-xl font-bold tracking-[-0.02em]">
           {t("dataTitle")}
         </h2>
         <p className="text-fg-muted">{t("dataBody")}</p>
         <div className="flex flex-wrap gap-3">
-          <a href="/api/account/export" download className={buttonClasses("outline")}>
+          <a href="/api/account/export" download className={buttonClasses("secondary")}>
             {t("export")}
           </a>
           <SignOutButton href="/">{t("signOut")}</SignOutButton>
         </div>
-        <details className="rounded-md border border-border p-4">
+        <details className="rounded-card-sm border border-border bg-surface p-4">
           <summary className="cursor-pointer">{t("deleteTitle")}</summary>
           <div className="mt-4">
             <DeleteAccountForm username={suspension.username} locale={locale} />

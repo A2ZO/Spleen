@@ -2,9 +2,11 @@
 @import "@spleen/design-tokens/theme.css";
 
 @theme inline {
-  --font-serif: var(--font-fraunces), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
+  /* No serif in Lilas: `font-serif` resolves to nothing rather than falling back to Georgia. */
+  --font-serif: initial;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
 }
 
 @layer base {
@@ -13,54 +15,78 @@
     color: var(--sp-fg);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* No faux italic or bold: only the shipped weights and upright styles are drawn. */
+    font-synthesis: none;
   }
 
   body {
     min-height: 100dvh;
     font-family: var(--font-sans);
     background-color: var(--sp-bg);
-    /* Dim lamp glow in the top corner. */
-    background-image: radial-gradient(
-      ellipse 80% 50% at 85% -10%,
-      color-mix(in oklab, var(--sp-star) 12%, transparent),
-      transparent 70%
-    );
-    background-attachment: fixed;
   }
 
-  /* Paper grain: an SVG noise filter laid over everything, never interactive. */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 50;
-    pointer-events: none;
-    opacity: 0.06;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /*
+   * Shell spacing. Phones: the floating tab bar (4 rem, 0.75 rem above the iPhone's home bar)
+   * plus 1 rem of air; the page ends above it, the "Undo" banners rise over it, and a focused
+   * element is never scrolled under it (WCAG 2.4.11). From `md`: no tab bar, and the sticky
+   * header pill (1 rem from the top, 4 rem tall) plus 1 rem is kept clear at the top.
+   */
+  :root {
+    --tab-bar-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    --tab-bar-space: calc(4rem + var(--tab-bar-bottom) + 1rem);
+    --undo-offset: 0px;
   }
 
-  [data-theme="light"] body::before {
-    opacity: 0.1;
-    mix-blend-mode: multiply;
+  @media (width < 48rem) {
+    :root:has(#tab-bar) {
+      --undo-offset: calc(4rem + var(--tab-bar-bottom));
+      scroll-padding-bottom: var(--tab-bar-space);
+    }
+
+    body:has(#tab-bar) {
+      padding-bottom: var(--tab-bar-space);
+    }
+
+    /*
+     * Detail pages bring their own sticky top bar (`DetailBar`, 4 rem): no site header row
+     * above it, and a focused element is never scrolled under it.
+     */
+    :root:has([data-detail-bar]) {
+      scroll-padding-top: 4.5rem;
+    }
+  }
+
+  @media (width >= 48rem) {
+    :root {
+      scroll-padding-top: 6rem;
+    }
   }
 
   h1,
   h2,
   h3 {
-    font-family: var(--font-serif);
-    font-optical-sizing: auto;
-    letter-spacing: -0.01em;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   a {
     text-underline-offset: 3px;
   }
 
-  :focus-visible {
-    outline: 2px solid var(--sp-star);
+  /* Lilac ring, or ink on a lilac background (`on-accent` marks those areas). */
+  /* `focus-shown` draws the same ring permanently (component demo page, screenshots). */
+  :focus-visible,
+  .focus-shown {
+    outline: 2px solid var(--sp-accent);
     outline-offset: 3px;
-    border-radius: var(--radius-sm);
+  }
+
+  .on-accent :focus-visible,
+  .on-accent:focus-visible,
+  .on-accent .focus-shown,
+  .on-accent.focus-shown {
+    outline-color: var(--sp-accent-fg);
   }
 
   ::selection {
@@ -69,19 +95,70 @@
   }
 }
 
-@utility tabular {
-  font-variant-numeric: tabular-nums;
-}
+/*
+ * Outside the base layer, so it beats the header row's `h-16` utility. Hidden without
+ * `display: none`: the full-screen search opened by the tab bar's "+" lives in that row,
+ * and a modal dialog in the top layer still renders (not clipped by `overflow`).
+ */
+@media (width < 48rem) {
+  body:has([data-detail-bar]) {
+    [data-header-row] {
+      height: 0;
+      overflow: hidden;
+      visibility: hidden;
+    }
 
-/* Spinning record (hero, tonearm). Disabled for reduced motion below. */
-@keyframes sp-spin {
-  to {
-    transform: rotate(360deg);
+    [data-header-row] dialog {
+      visibility: visible;
+    }
+
+    #main {
+      padding-top: 0;
+    }
   }
 }
 
-@utility animate-record {
-  animation: sp-spin 4s linear infinite;
+/* Mobile tab bar (`TabBar`): floats above the iPhone's home bar. */
+.tab-bar {
+  position: fixed;
+  inset-inline: 1rem;
+  bottom: var(--tab-bar-bottom);
+  z-index: 40;
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out;
+}
+
+/*
+ * While a text field has the focus (the on-screen keyboard is open), the bar fades out so it
+ * never sits over the field. Not for boxes, radios, sliders or buttons: no keyboard there.
+ */
+body:has(
+    :is(
+      textarea,
+      [contenteditable]:not([contenteditable="false"]),
+      input:not(
+        [type="checkbox"],
+        [type="radio"],
+        [type="range"],
+        [type="button"],
+        [type="submit"],
+        [type="reset"],
+        [type="color"],
+        [type="file"],
+        [type="image"],
+        [type="hidden"]
+      )
+    ):focus
+  )
+  .tab-bar {
+  opacity: 0;
+  transform: translateY(1.5rem);
+  pointer-events: none;
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
 }
 
 /* Navigation bar (NavigationBar): a short stroke sweeping across while a page loads. */
@@ -108,6 +185,129 @@
 
 @utility animate-rise {
   animation: sp-rise 0.18s ease-out;
+}
+
+/*
+ * Motion (docs/design/README.md, « Mouvement »): transform and opacity only, every rule below
+ * only under `no-preference`, so nothing moves (and nothing waits) with reduced motion.
+ */
+@keyframes sp-star-pop {
+  from {
+    opacity: 0.4;
+    transform: scale(0.6);
+  }
+}
+
+/* Transform only: a tile still below its range stays readable (contrast, no hidden text). */
+@keyframes sp-cascade {
+  from {
+    transform: translateY(1.5rem);
+  }
+}
+
+@keyframes sp-cover-shrink {
+  to {
+    opacity: 0;
+    transform: translateY(20%) scale(0.55);
+  }
+}
+
+@keyframes sp-cover-thumb {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* `Stars` with `pop`: the filled stars bounce in one by one (delay set inline). */
+  .star-pop {
+    animation: sp-star-pop 150ms var(--ease-spring) backwards;
+  }
+
+  /*
+   * Trends arrive in a cascade while scrolling (`--i` = column offset). Without scroll-driven
+   * animations nothing applies, and a tile already on screen is past its range: visible.
+   */
+  @supports (animation-timeline: view()) {
+    /* --i = column of the tile in the trends grid (2, 3 then 6 columns), --step per column. */
+    .scroll-cascade {
+      --i: 0;
+      --step: 10%;
+      animation: sp-cascade linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i) * var(--step)) entry calc(70% + var(--i) * var(--step));
+    }
+    .scroll-cascade:nth-child(2n) {
+      --i: 1;
+    }
+    @media (width >= 40rem) {
+      .scroll-cascade:nth-child(n) {
+        --i: 0;
+      }
+      .scroll-cascade:nth-child(3n + 2) {
+        --i: 1;
+      }
+      .scroll-cascade:nth-child(3n) {
+        --i: 2;
+      }
+    }
+    @media (width >= 64rem) {
+      .scroll-cascade:nth-child(n) {
+        --i: 0;
+        --step: 6%;
+      }
+      .scroll-cascade:nth-child(6n + 2) {
+        --i: 1;
+      }
+      .scroll-cascade:nth-child(6n + 3) {
+        --i: 2;
+      }
+      .scroll-cascade:nth-child(6n + 4) {
+        --i: 3;
+      }
+      .scroll-cascade:nth-child(6n + 5) {
+        --i: 4;
+      }
+      .scroll-cascade:nth-child(6n) {
+        --i: 5;
+      }
+    }
+  }
+}
+
+/*
+ * Detail page on phones: the big cover shrinks away as it scrolls under the top bar, where a
+ * thumbnail (`DetailBar` `thumb`) fades in, linked to the cover through `--sp-cover`. Anywhere
+ * else the thumbnail stays hidden and the cover alone shows.
+ */
+.cover-thumb {
+  display: none;
+}
+
+@media (width < 48rem) and (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) and (timeline-scope: none) {
+    .cover-scope {
+      timeline-scope: --sp-cover;
+    }
+
+    .cover-scroll {
+      view-timeline: --sp-cover block;
+    }
+
+    .cover-scroll > * {
+      animation: sp-cover-shrink linear both;
+      animation-timeline: --sp-cover;
+      animation-range: exit-crossing 0% exit-crossing 100%;
+    }
+
+    .cover-thumb {
+      display: block;
+      animation: sp-cover-thumb linear both;
+      animation-timeline: --sp-cover;
+      animation-range: exit-crossing 50% exit-crossing 100%;
+    }
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -5,6 +5,8 @@ import "./globals.css";
 import type { Messages } from "@spleen/i18n";
 import { useEffect, useState } from "react";
 
+import { buttonClasses } from "@/components/ui/Button";
+
 type Texts = Messages["errorPage"];
 
 /**
@@ -35,27 +37,25 @@ export default function GlobalError({
   }, []);
 
   return (
-    <html lang={lang} data-theme="dark">
+    <html lang={lang}>
       <body className="flex min-h-screen items-center justify-center bg-bg px-4 text-fg">
         {t && (
           <main className="max-w-2xl py-16 text-center">
-            <p className="font-mono text-7xl text-star">500</p>
-            <blockquote className="mt-10 font-serif text-2xl leading-snug italic">
+            <p className="font-display text-[96px] leading-none font-extrabold tracking-[-0.04em] text-fg tabular sm:text-[128px]">
+              500
+            </p>
+            <blockquote className="mt-10 font-display text-2xl leading-snug font-bold tracking-[-0.02em] text-balance sm:text-3xl">
               <p>{t.quoteLine1}</p>
               <p>{t.quoteLine2}</p>
             </blockquote>
             <p className="mt-4 font-mono text-xs tracking-wider text-fg-muted">{t.attribution}</p>
             <h1 className="mt-10 text-fg-muted">{t.body}</h1>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
-              <button
-                type="button"
-                onClick={reset}
-                className="rounded-md bg-accent px-4 py-2 text-accent-fg"
-              >
+              <button type="button" onClick={reset} className={buttonClasses("primary")}>
                 {t.retry}
               </button>
               {/* A full load: the layout failed, nothing of the app is reliable here. */}
-              <a href={`/${lang}`} className="rounded-md border border-border px-4 py-2">
+              <a href={`/${lang}`} className={buttonClasses("secondary")}>
                 {t.back}
               </a>
             </div>

@@ -10,14 +10,26 @@ import {
   type ShelfResult,
 } from "@/app/[locale]/shelf/actions";
 import { Button, ButtonLink } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { FormMessage } from "@/components/ui/Field";
-import { VinylShelf } from "@/components/ui/VinylShelf";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+
+import { ShelfGrid } from "./ShelfGrid";
 
 /**
- * The member's own Shelf on their profile: the vinyl display, plus an edit mode to move
- * records between slots (buttons, so it works with the keyboard) and take them off.
+ * The member's own Shelf on their profile: its section heading, the grid with its free slots,
+ * plus an edit mode to move records between slots (buttons, so it works with the keyboard) and
+ * take them off.
  */
-export function ShelfEditor({ shelf }: { shelf: (ReleaseCard | null)[] }) {
+export function ShelfEditor({
+  shelf,
+  headingId,
+  title,
+}: {
+  shelf: (ReleaseCard | null)[];
+  headingId: string;
+  title: string;
+}) {
   const t = useTranslations("shelf");
   const te = useTranslations("errors");
   const [editing, setEditing] = useState(false);
@@ -47,71 +59,90 @@ export function ShelfEditor({ shelf }: { shelf: (ReleaseCard | null)[] }) {
 
   return (
     <div>
-      <VinylShelf items={slots} emptyMessage={t("emptyOwn")} className="pt-4" />
+      <SectionHeading
+        id={headingId}
+        className="mb-1"
+        action={
+          !isEmpty && (
+            <Button
+              variant="ghost"
+              size="sm"
+              aria-expanded={editing}
+              onClick={() => setEditing((e) => !e)}
+            >
+              {editing ? t("done") : t("edit")}
+            </Button>
+          )
+        }
+      >
+        {title}
+      </SectionHeading>
+      <p className="mb-4 font-mono text-xs tracking-[0.14em] text-fg-muted uppercase">
+        {t("subtitleOwn")}
+      </p>
       {isEmpty ? (
-        <div className="mt-3 flex flex-col items-center gap-2 text-center">
+        <Card className="flex flex-col items-center gap-3 text-center">
+          <p className="font-display text-xl font-bold">{t("emptyOwn")}</p>
           <p className="max-w-md text-sm text-fg-muted">{t("emptyHint")}</p>
-          <ButtonLink href="/search" variant="outline">
+          <ButtonLink href="/search" variant="secondary">
             {t("findRecord")}
           </ButtonLink>
-        </div>
+        </Card>
       ) : (
-        <div className="mt-4 flex justify-end">
-          <Button variant="ghost" aria-expanded={editing} onClick={() => setEditing((e) => !e)}>
-            {editing ? t("done") : t("edit")}
-          </Button>
-        </div>
+        <ShelfGrid items={slots} showEmpty />
       )}
       {editing && !isEmpty && (
-        <ol
-          aria-label={t("editLabel")}
-          className="mt-2 divide-y divide-border/50 rounded-md border border-border/60 bg-surface"
-        >
-          {slots.map((slot, index) => (
-            <li
-              key={slot?.id ?? `empty-${index}`}
-              className="flex items-center gap-3 px-3 py-2 text-sm"
-            >
-              <span className="w-5 font-mono text-fg-muted">{index + 1}</span>
-              <span className="min-w-0 flex-1 truncate">
-                {slot ? slot.title : <span className="text-fg-muted italic">{t("free")}</span>}
-              </span>
-              {slot && (
-                <span className="flex gap-1">
-                  <Button
-                    variant="ghost"
-                    className="px-2"
-                    disabled={pending || index === 0}
-                    onClick={() => move(index, index - 1)}
-                    aria-label={t("moveLeft", { title: slot.title })}
-                  >
-                    ←
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="px-2"
-                    disabled={pending || index === slots.length - 1}
-                    onClick={() => move(index, index + 1)}
-                    aria-label={t("moveRight", { title: slot.title })}
-                  >
-                    →
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    className="px-2"
-                    disabled={pending}
-                    onClick={() =>
-                      save(() => removeShelfAction(index + 1), t("removed", { title: slot.title }))
-                    }
-                    aria-label={t("removeOne", { title: slot.title })}
-                  >
-                    {t("removeShort")}
-                  </Button>
+        <Card className="mt-4 p-2 md:p-3">
+          <ol aria-label={t("editLabel")} className="space-y-1">
+            {slots.map((slot, index) => (
+              <li
+                key={slot?.id ?? `empty-${index}`}
+                className="flex min-h-11 items-center gap-3 rounded-thumb px-3 py-1 text-sm odd:bg-surface-alt"
+              >
+                <span className="w-5 font-mono text-fg-muted">{index + 1}</span>
+                <span className="min-w-0 flex-1 truncate">
+                  {slot ? slot.title : <span className="text-fg-muted">{t("free")}</span>}
                 </span>
-              )}
-            </li>
-          ))}
-        </ol>
+                {slot && (
+                  <span className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      disabled={pending || index === 0}
+                      onClick={() => move(index, index - 1)}
+                      aria-label={t("moveLeft", { title: slot.title })}
+                    >
+                      ←
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      disabled={pending || index === slots.length - 1}
+                      onClick={() => move(index, index + 1)}
+                      aria-label={t("moveRight", { title: slot.title })}
+                    >
+                      →
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      disabled={pending}
+                      onClick={() =>
+                        save(
+                          () => removeShelfAction(index + 1),
+                          t("removed", { title: slot.title }),
+                        )
+                      }
+                      aria-label={t("removeOne", { title: slot.title })}
+                    >
+                      {t("removeShort")}
+                    </Button>
+                  </span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </Card>
       )}
       <p role="status" className="sr-only">
         {status}

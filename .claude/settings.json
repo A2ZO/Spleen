@@ -16,7 +16,13 @@
       "Bash(gh pr view *)",
       "Bash(gh pr checks *)",
       "Bash(gh run list *)",
-      "Bash(gh run view *)"
+      "Bash(gh run view *)",
+      "Bash(gh pr edit *)",
+      "Bash(gh issue create *)",
+      "Bash(gh issue comment *)",
+      "Bash(gh issue view *)",
+      "Bash(gh issue list *)",
+      "Bash(gh pr merge *)"
     ],
     "deny": [
       "Bash(git push *--force*)",

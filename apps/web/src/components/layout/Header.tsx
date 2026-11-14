@@ -3,105 +3,79 @@ import { getLocale, getTranslations } from "next-intl/server";
 import { buttonClasses } from "@/components/ui/Button";
 import { BellIcon } from "@/components/ui/icons";
 import { Link } from "@/i18n/navigation";
-import { getApi } from "@/server/api";
+import { loadShell } from "@/server/shell";
 
 import { HeaderSearch } from "./HeaderSearch";
 import { KeyboardHelp } from "./KeyboardHelp";
-import { LocaleSwitcher } from "./LocaleSwitcher";
 import { Logo } from "./Logo";
-import { ThemeToggle } from "./ThemeToggle";
+import { NavLinks } from "./NavLinks";
+import { NotificationBadge } from "./NotificationBadge";
 import { UserMenu } from "./UserMenu";
 
-/** Site header. `minimal`: logo, language and theme only (suspended account screen). */
+/**
+ * Site header. From `md`: a floating pill (logo, links, instant search, bell, avatar) that
+ * sticks to the top. Below: a plain row that scrolls away (logo, then search and avatar for
+ * members); navigation lives in the floating tab bar (`TabBar`). `minimal`: the logo only
+ * (suspended account screen).
+ */
 export async function Header({ minimal = false }: { minimal?: boolean }) {
   const t = await getTranslations("nav");
   const locale = await getLocale();
-  const api = await getApi();
-  const me = minimal ? null : await api.account.me();
+  const { me, unread } = minimal ? { me: null, unread: 0 } : await loadShell();
   const profile = me?.profile;
-  const unread = profile ? await api.notification.unreadCount() : 0;
+
+  const links = [
+    { href: "/", label: t("home") },
+    { href: "/discover", label: t("discover") },
+    ...(profile ? [{ href: `/u/${profile.username}`, label: t("myShelf") }] : []),
+  ];
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-bg/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-2 px-4 sm:gap-4 sm:px-6">
-        <Link prefetch="auto" href="/" className="rounded-sm text-fg hover:text-star">
-          {/* Wordmark hidden on very narrow phones: the header needs the room. */}
-          <Logo className="max-[400px]:[&>span]:sr-only" />
+    <header className="z-40 px-4 md:sticky md:top-4 md:mt-4 md:px-6">
+      <div
+        data-header-row
+        className="mx-auto flex h-16 max-w-6xl items-center gap-3 md:gap-4 md:rounded-full md:border md:border-border md:bg-surface md:pr-2.5 md:pl-6 md:shadow-card"
+      >
+        <Link prefetch="auto" href="/" className="shrink-0 rounded-full text-fg">
+          <Logo />
           <span className="sr-only">{t("home")}</span>
         </Link>
         {!minimal && (
-          <nav aria-label={t("label")} className="hidden sm:ml-6 sm:block">
-            <ul className="flex items-center gap-1 text-sm">
-              <li className="hidden sm:block">
-                <Link
-                  prefetch="auto"
-                  href="/"
-                  className="rounded-md px-3 py-2 text-fg-muted hover:text-fg"
-                >
-                  {t("home")}
-                </Link>
-              </li>
-              <li className="hidden sm:block">
-                <Link
-                  prefetch="auto"
-                  href="/discover"
-                  className="rounded-md px-3 py-2 text-fg-muted hover:text-fg"
-                >
-                  {t("discover")}
-                </Link>
-              </li>
-              {profile && (
-                <li className="hidden sm:block">
-                  <Link
-                    prefetch="auto"
-                    href={`/u/${profile.username}`}
-                    className="rounded-md px-3 py-2 text-fg-muted hover:text-fg"
-                  >
-                    {t("myShelf")}
-                  </Link>
-                </li>
-              )}
-            </ul>
+          <nav aria-label={t("label")} className="hidden md:block">
+            <NavLinks items={links} />
           </nav>
         )}
         {minimal ? <span className="flex-1" /> : <HeaderSearch signedIn={Boolean(me)} />}
-        <div className="flex items-center gap-1 sm:gap-2">
-          <LocaleSwitcher />
-          <ThemeToggle />
-          {profile && (
-            <Link
-              href="/notifications"
-              className="relative rounded-md p-2 text-fg-muted hover:text-fg"
-            >
-              <BellIcon className="size-5" />
-              <span className="sr-only">
-                {t("notifications")}
-                {unread > 0 && ` (${t("unread", { count: unread })})`}
-              </span>
-              {unread > 0 && (
-                <span
-                  aria-hidden="true"
-                  className="absolute -top-0.5 -right-0.5 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-accent px-1 font-mono text-[0.65rem] leading-none text-accent-fg"
-                >
-                  {unread > 9 ? "9+" : unread}
+        {!minimal && (
+          <div className="flex shrink-0 items-center gap-2">
+            {profile && (
+              <Link
+                href="/notifications"
+                className={buttonClasses("secondary", "relative max-md:hidden", "icon")}
+              >
+                <BellIcon className="size-5" />
+                <span className="sr-only">
+                  {t("notifications")}
+                  {unread > 0 && ` (${t("unread", { count: unread })})`}
                 </span>
-              )}
-            </Link>
-          )}
-          {minimal ? null : me ? (
-            <UserMenu
-              locale={locale}
-              username={profile?.username ?? null}
-              displayName={profile?.displayName ?? me.email}
-              avatarUrl={profile?.avatarUrl ?? null}
-              isAdmin={me.isAdmin}
-            />
-          ) : (
-            <Link href="/sign-in" className={buttonClasses("outline", "px-3 whitespace-nowrap")}>
-              {t("signIn")}
-            </Link>
-          )}
-        </div>
+                <NotificationBadge unread={unread} />
+              </Link>
+            )}
+            {me ? (
+              <UserMenu
+                locale={locale}
+                username={profile?.username ?? null}
+                displayName={profile?.displayName ?? me.email}
+                avatarUrl={profile?.avatarUrl ?? null}
+                isAdmin={me.isAdmin}
+              />
+            ) : (
+              <Link href="/sign-in" className={buttonClasses("secondary", "max-md:hidden", "sm")}>
+                {t("signIn")}
+              </Link>
+            )}
+          </div>
+        )}
       </div>
       <KeyboardHelp signedIn={Boolean(profile)} />
     </header>

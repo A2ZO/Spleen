@@ -9,6 +9,7 @@ import {
 } from "@spleen/validators";
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState, useTransition, type FormEvent } from "react";
+import { createPortal } from "react-dom";
 
 import { reportAction } from "@/app/[locale]/social/actions";
 import { Button } from "@/components/ui/Button";
@@ -40,14 +41,19 @@ export function ReportButton({
         className={cn(
           variant === "link"
             ? "inline-flex items-center gap-1 text-xs text-fg-muted hover:text-fg"
-            : "block w-full rounded-sm px-3 py-2 text-left text-sm text-fg hover:bg-surface-raised",
+            : "flex min-h-11 w-full items-center gap-2 rounded-xl px-3 text-left text-sm text-fg hover:bg-surface-raised",
           className,
         )}
       >
         {variant === "link" && <FlagIcon />}
         {t(`reportTitle.${subject.kind}`)}
       </button>
-      {open && <ReportDialog subject={subject} onClose={() => setOpen(false)} />}
+      {/* In `document.body`: it outlives a menu that hides its button. */}
+      {open &&
+        createPortal(
+          <ReportDialog subject={subject} onClose={() => setOpen(false)} />,
+          document.body,
+        )}
     </>
   );
 }
@@ -86,16 +92,19 @@ function ReportDialog({ subject, onClose }: { subject: Subject; onClose: () => v
       onClick={(event) => {
         if (event.target === ref.current) ref.current.close();
       }}
-      className="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-md border border-border bg-bg p-0 text-fg shadow-card backdrop:bg-bg/80"
+      className="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-card-sm border border-border bg-surface p-0 text-fg shadow-card backdrop:bg-bg/80 md:rounded-card"
     >
       <div className="space-y-5 p-5 sm:p-6">
-        <h2 id={titleId} className="text-2xl font-semibold text-balance">
+        <h2
+          id={titleId}
+          className="font-display text-2xl font-bold tracking-[-0.02em] text-balance"
+        >
           {t(`reportTitle.${subject.kind}`)}
         </h2>
         {sent ? (
           <>
             <FormMessage tone="success">{t("reportThanks")}</FormMessage>
-            <Button variant="outline" onClick={() => ref.current?.close()}>
+            <Button variant="secondary" onClick={() => ref.current?.close()}>
               {t("close")}
             </Button>
           </>

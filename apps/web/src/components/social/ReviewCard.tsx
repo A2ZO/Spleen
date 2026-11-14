@@ -45,7 +45,7 @@ export function ReviewCard({
         )}
         <div className="min-w-0 flex-1">
           {showRelease && (
-            <h3 className="font-serif text-lg leading-tight">
+            <h3 className="font-display text-lg leading-tight">
               <Link
                 href={
                   review.track ? `/track/${review.track.slug}` : `/album/${review.release.slug}`
@@ -80,7 +80,7 @@ export function ReviewCard({
                 </span>
               </span>
             ) : (
-              <span className="text-xs text-fg-muted italic">{t("review.noRating")}</span>
+              <span className="text-xs text-fg-muted">{t("review.noRating")}</span>
             )}
             <time dateTime={review.createdAt} className="font-mono text-xs text-fg-muted">
               {format.dateTime(new Date(review.createdAt), { dateStyle: "medium" })}

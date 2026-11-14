@@ -96,11 +96,7 @@ test("a duplicate report needs the address of another page of the same kind", as
 }, testInfo) => {
   const username = await signUp(page, testInfo, "Archiviste");
   await page.goto("/fr/album/nocturnes-pour-pluie-fine");
-  await expect(async () => {
-    await page.getByRole("button", { name: "Signaler une erreur ou proposer un ajout" }).click();
-    await expect(page.getByRole("dialog")).toBeVisible({ timeout: 2_000 });
-  }).toPass();
-  const dialog = page.getByRole("dialog");
+  const dialog = await openCatalogReport(page);
   await dialog.getByLabel("C'est un doublon d'une autre fiche").check();
   await dialog.getByLabel("Adresse de l'autre fiche").fill("/fr/artist/pas-un-album");
   await dialog.getByRole("button", { name: "Envoyer" }).click();
@@ -111,10 +107,16 @@ test("a duplicate report needs the address of another page of the same kind", as
   await deleteAccount(page, username);
 });
 
-/** Opens the catalog report dialog of the current page (retried until hydrated). */
+/**
+ * Opens the catalog report dialog of the current page (retried until hydrated). On phones the
+ * button sits in the top bar's "Plus d'actions" menu.
+ */
 async function openCatalogReport(page: Page) {
+  const report = page.getByRole("button", { name: "Signaler une erreur ou proposer un ajout" });
+  const more = page.getByRole("button", { name: "Plus d'actions", exact: true });
   await expect(async () => {
-    await page.getByRole("button", { name: "Signaler une erreur ou proposer un ajout" }).click();
+    if (!(await report.isVisible())) await more.click();
+    await report.click({ timeout: 2_000 });
     await expect(page.getByRole("dialog")).toBeVisible({ timeout: 2_000 });
   }).toPass();
   return page.getByRole("dialog");

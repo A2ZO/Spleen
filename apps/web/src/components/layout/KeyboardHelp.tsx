@@ -11,7 +11,7 @@ import { ShortcutsToggle } from "./ShortcutsToggle";
 
 function Key({ children }: { children: ReactNode }) {
   return (
-    <kbd className="inline-flex min-w-7 justify-center rounded-sm border border-border bg-surface px-1.5 py-0.5 font-mono text-xs text-fg shadow-card">
+    <kbd className="inline-flex min-w-7 justify-center rounded-lg border border-border-strong bg-surface-raised px-1.5 py-0.5 font-mono text-xs text-fg shadow-button-sm">
       {children}
     </kbd>
   );
@@ -43,10 +43,10 @@ function HelpDialog({ signedIn, onClose }: { signedIn: boolean; onClose: () => v
       onClick={(event) => {
         if (event.target === ref.current) ref.current.close();
       }}
-      className="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-md border border-border bg-bg p-0 text-fg shadow-card backdrop:bg-bg/80"
+      className="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-card-sm border border-border bg-surface p-0 text-fg shadow-card backdrop:bg-bg/80 md:rounded-card"
     >
       <div className="space-y-5 p-5 sm:p-6">
-        <h2 id={titleId} className="text-2xl font-semibold">
+        <h2 id={titleId} className="font-display text-2xl font-bold tracking-[-0.02em]">
           {t("title")}
         </h2>
         <p className="text-sm text-fg-muted">{t("intro")}</p>
@@ -103,7 +103,7 @@ function HelpDialog({ signedIn, onClose }: { signedIn: boolean; onClose: () => v
         <button
           type="button"
           onClick={() => ref.current?.close()}
-          className={buttonClasses("outline")}
+          className={buttonClasses("secondary")}
         >
           {t("close")}
         </button>
@@ -149,7 +149,11 @@ export function KeyboardHelpButton() {
   );
   if (!hydrated) return null;
   return (
-    <button type="button" onClick={openKeyboardHelp} className="hover:text-fg">
+    <button
+      type="button"
+      onClick={openKeyboardHelp}
+      className="inline-flex min-h-11 items-center underline hover:text-fg"
+    >
       {t("open")}
     </button>
   );

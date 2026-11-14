@@ -31,7 +31,8 @@ test.describe("in English", () => {
     await page.goto("/en/privacy");
     await expect(page.getByRole("heading", { level: 1, name: "Privacy policy" })).toBeVisible();
     const cookies = page.getByRole("region", { name: "Cookies" });
-    await expect(cookies.getByText("spleen-theme")).toBeVisible();
     await expect(cookies.getByText("NEXT_LOCALE")).toBeVisible();
+    // Single dark theme: no theme cookie any more.
+    await expect(cookies).not.toContainText("spleen-theme");
   });
 });

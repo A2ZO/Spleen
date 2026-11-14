@@ -19,17 +19,20 @@ export async function GET(request: Request) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="${palette.ink}">
+<meta name="theme-color" content="${palette.night}">
 <title>${escape(t.offlineTitle)} · ${escape(t.name)}</title>
 <style>
   body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 1.5rem;
-    background: ${palette.ink}; color: ${palette.cream}; font-family: Georgia, serif; text-align: center; }
+    background: ${palette.night}; color: ${palette.mist}; text-align: center;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
   main { max-width: 26rem; }
-  img { width: 4rem; height: 4rem; }
-  h1 { font-size: 1.75rem; font-weight: 600; margin: 1.25rem 0 0.75rem; }
-  p { font-family: system-ui, sans-serif; line-height: 1.5; opacity: 0.8; }
-  a { display: inline-block; margin-top: 1rem; padding: 0.6rem 1.2rem; border: 1px solid ${palette.brass};
-    border-radius: 0.4rem; color: ${palette.brass}; font-family: system-ui, sans-serif; text-decoration: none; }
+  img { width: 4rem; height: 4rem; border-radius: 1rem; }
+  h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin: 1.25rem 0 0.75rem; }
+  p { line-height: 1.5; color: ${palette.haze}; margin: 0; }
+  a { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; margin-top: 1.5rem;
+    padding: 0 1.75rem; border-radius: 999px; background: ${palette.lilac}; color: ${palette.ink};
+    font-weight: 700; text-decoration: none; }
+  a:focus-visible { outline: 2px solid ${palette.mist}; outline-offset: 3px; }
 </style>
 </head>
 <body>

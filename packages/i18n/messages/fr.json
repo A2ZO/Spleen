@@ -20,12 +20,9 @@
     "notifications": "Notifications",
     "unread": "{count, plural, one {# non lue} other {# non lues}}",
     "discover": "Découvrir",
-    "admin": "Modération"
-  },
-  "theme": {
-    "toggle": "Changer de thème",
-    "toDark": "Passer en mode nuit",
-    "toLight": "Passer en mode papier crème"
+    "admin": "Modération",
+    "rate": "Noter un disque",
+    "profile": "Profil"
   },
   "locale": {
     "label": "Langue",
@@ -81,12 +78,26 @@
     "unliked": "Coup de cœur retiré"
   },
   "home": {
-    "kicker": "Il est tard, la ville dort",
-    "title": "Qu'as-tu écouté ce soir ?",
-    "subtitle": "Note tes disques, tiens ton journal d'écoute, range tes albums préférés sur ton étagère. Doucement.",
-    "ctaJoin": "Ouvrir mon carnet",
+    "kicker": "Carnet d'écoute",
+    "title": "Note tes disques, tiens ton journal.",
+    "subtitle": "Suis les oreilles qui te ressemblent et découvre ce qu'elles écoutent. Doucement.",
+    "ctaJoin": "Créer mon compte",
     "ctaWelcome": "Choisir mon pseudo",
-    "ctaSearch": "Chercher un disque"
+    "findMusic": "Trouver quoi écouter",
+    "memberTitle": "Qu'est-ce que tu écoutes, {name} ?",
+    "rate": "Noter un disque",
+    "monthTitle": "Ton mois {m, select, 4 {d'avril} 8 {d'août} 10 {d'octobre} other {de {month}}}",
+    "monthListens": "{count, plural, one {écoute} other {écoutes}}",
+    "monthFirst": "{first, plural, =0 {aucune découverte} one {dont # découverte} other {dont # découvertes}}",
+    "monthSummary": "{count, plural, one {# écoute} other {# écoutes}} ce mois-ci, sur {days, plural, one {# jour} other {# jours}}.",
+    "monthEmpty": "Rien d'écouté ce mois-ci pour l'instant.",
+    "monthDiary": "Voir mon journal",
+    "justOut": "Vient de sortir",
+    "friendsTitle": "Chez tes amis",
+    "howTitle": "Comment ça marche",
+    "howRate": "Note et critique les disques que tu écoutes.",
+    "howDiary": "Tiens ton journal d'écoute, soir après soir.",
+    "howShelf": "Range tes albums préférés sur ton étagère."
   },
   "album": {
     "by": "par",
@@ -108,7 +119,7 @@
       "listenedDone": "Écouté",
       "like": "Coup de cœur",
       "wantToListen": "À écouter",
-      "log": "Journaliser…",
+      "log": "Noter en détail…",
       "signIn": "Connecte-toi pour garder une trace de tes écoutes.",
       "signInLink": "Se connecter"
     },
@@ -196,7 +207,6 @@
     "following": "{count, plural, one {# abonnement} other {# abonnements}}",
     "joined": "Ici depuis {date}",
     "shelfTitle": "L'Étagère",
-    "shelfEmpty": "L'étagère de {name} prend la poussière.",
     "shelfEmptySlot": "Emplacement libre",
     "recentTitle": "Écouté récemment",
     "tabsLabel": "Sections du profil",
@@ -223,7 +233,13 @@
     "reviewed": "Critique écrite",
     "moods": "Humeurs",
     "likesEmpty": "Pas encore de coup de cœur.",
-    "diaryCalendar": "Vue calendrier"
+    "diaryCalendar": "Vue calendrier",
+    "figures": {
+      "label": "En chiffres",
+      "thisYear": "{count, plural, one {disque} other {disques}} en {year}",
+      "total": "{count, plural, one {disque} other {disques}} depuis toujours",
+      "rated": "{count, plural, one {disque noté} other {disques notés}}"
+    }
   },
   "stats": {
     "thisYear": "En {year}",
@@ -327,9 +343,6 @@
     "bioLabel": "Bio",
     "bioHint": "300 caractères au plus.",
     "localeLabel": "Langue",
-    "themeLabel": "Thème",
-    "themeDark": "Sombre",
-    "themeLight": "Clair",
     "privacyTitle": "Confidentialité",
     "statsPrivateLabel": "Garder mes stats privées",
     "diaryPrivateLabel": "Garder mon journal privé",
@@ -531,7 +544,7 @@
   },
   "shelf": {
     "subtitleOwn": "Mes 4 disques favoris",
-    "subtitle": "Les 4 disques favoris de {name}",
+    "subtitle": "Les disques favoris de {name}",
     "put": "Mettre sur mon Étagère",
     "onShelf": "Sur mon Étagère",
     "pickTitle": "Où poser « {title} » ?",
@@ -1013,7 +1026,7 @@
         },
         "cookies": {
           "title": "Cookies",
-          "body": "<p>Spleen n'utilise que des cookies nécessaires, sans mesure d'audience ni publicité, d'où l'absence de bandeau :</p><ul><li>la session de connexion, si tu es connecté ;</li><li><strong>spleen-theme</strong> : ton thème clair ou sombre ;</li><li><strong>NEXT_LOCALE</strong> : ta langue, le temps de ta visite.</li></ul>"
+          "body": "<p>Spleen n'utilise que des cookies nécessaires, sans mesure d'audience ni publicité, d'où l'absence de bandeau :</p><ul><li>la session de connexion, si tu es connecté ;</li><li><strong>NEXT_LOCALE</strong> : ta langue, le temps de ta visite.</li></ul>"
         },
         "minors": {
           "title": "Âge minimum",
@@ -1063,5 +1076,78 @@
       "entry": "Écoute supprimée"
     },
     "failed": "Rien n'a été supprimé. {reason}"
+  },
+  "devComponents": {
+    "metaTitle": "Composants (dev)",
+    "title": "Composants Lilas",
+    "intro": "Page de développement : chaque composant de base, ses variantes et ses états.",
+    "buttons": "Boutons",
+    "onAccent": "Sur le bloc lilas",
+    "cards": "Cartes",
+    "pills": "Pilules et étiquettes",
+    "fields": "Champs",
+    "ratings": "Notes",
+    "avatars": "Avatars",
+    "tabs": "Onglets",
+    "covers": "Pochettes",
+    "primary": "Noter un disque",
+    "secondary": "Ajouter à l’étagère",
+    "ghost": "Annuler",
+    "ink": "Tire un disque",
+    "onAccentButton": "Voir la liste",
+    "small": "Petit",
+    "disabled": "Indisponible",
+    "focusShown": "Focus affiché en permanence (pour vérifier le contour)",
+    "iconLabel": "J’aime",
+    "cardTitle": "Une carte",
+    "cardBody": "Surface sombre, reflet d’un pixel en haut, ombre portée.",
+    "accentTitle": "Le bloc lilas",
+    "accentBody": "Un seul par page. Le focus y passe à l’encre.",
+    "badge": "Album · 2025",
+    "pill": "Shoegaze",
+    "pillLink": "Dream pop",
+    "fieldLabel": "Nom d’utilisateur",
+    "fieldHint": "Lettres, chiffres et tirets.",
+    "fieldError": "Ce nom est déjà pris.",
+    "fieldPlaceholder": "nuitblanche",
+    "areaLabel": "Ta critique",
+    "selectLabel": "Format",
+    "optionLp": "Vinyle",
+    "optionCd": "CD",
+    "checkbox": "Rendre ma critique publique",
+    "ratingLabel": "Ta note",
+    "tabsLabel": "Fil",
+    "tabFriends": "Amis",
+    "tabPopular": "Populaire",
+    "tabFriendsBody": "Ce que tes amis écoutent.",
+    "tabPopularBody": "Ce qui tourne en ce moment.",
+    "linkTabsLabel": "Sections",
+    "seeMore": "Voir plus"
+  },
+  "detail": {
+    "back": "Retour",
+    "more": "Plus d'actions",
+    "review": "Critique",
+    "community": "Note de la communauté",
+    "outOfFive": "sur 5",
+    "myListensCount": "{count, plural, one {# fois} other {# fois}}",
+    "lastListen": "Dernière écoute le {date}.",
+    "lastListenFormat": "Dernière écoute le {date} ({format}).",
+    "firstListen": "Première écoute le {date}.",
+    "noListens": "Pas encore d'écoute.",
+    "undatedOnly": "Note rapide, sans date : donne-lui une date pour la voir dans ton journal.",
+    "seeDiary": "Voir dans mon journal",
+    "editListens": "Modifier mes écoutes",
+    "listCount": "{count, plural, one {# liste} other {# listes}}",
+    "seeLists": "Voir les listes",
+    "signInToRate": "Connecte-toi pour noter",
+    "discography": "Discographie",
+    "albumCount": "{count, plural, one {# album} other {# albums}}",
+    "epCount": "{count, plural, one {# EP} other {# EP}}",
+    "singleCount": "{count, plural, one {# single} other {# singles}}",
+    "otherCount": "{count, plural, one {# autre} other {# autres}}",
+    "on": "sur",
+    "theirRating": "Sa note",
+    "trackLabel": "Morceau"
   }
 }

@@ -53,7 +53,7 @@ export function UndoBanners() {
       ref={region}
       role="region"
       aria-label={t("region")}
-      className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex flex-col items-center gap-2 px-4 pb-4"
+      className="pointer-events-none fixed inset-x-0 bottom-(--undo-offset) z-50 flex flex-col items-center gap-2 px-4 pb-4"
       onPointerEnter={() => {
         hover.current = true;
         sync();

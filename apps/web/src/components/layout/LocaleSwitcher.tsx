@@ -21,7 +21,10 @@ export function LocaleSwitcher() {
     <div
       role="group"
       aria-label={t("label")}
-      className={cn("flex rounded-md border border-border p-0.5", pending && "opacity-60")}
+      className={cn(
+        "flex rounded-full border border-border bg-surface p-1",
+        pending && "opacity-60",
+      )}
     >
       {locales.map((locale) => (
         <button
@@ -31,8 +34,11 @@ export function LocaleSwitcher() {
           aria-pressed={locale === current}
           onClick={() => locale !== current && switchTo(locale)}
           className={cn(
-            "rounded-[3px] px-2 py-1 font-mono text-xs uppercase transition-colors",
-            locale === current ? "bg-surface-raised text-star" : "text-fg-muted hover:text-fg",
+            "inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-3 font-mono text-xs uppercase focus-visible:outline-offset-1",
+            // Current language: raised pill and lilac letters, not just a lighter fill.
+            locale === current
+              ? "bg-surface-raised font-medium text-star"
+              : "text-fg-muted hover:text-fg",
           )}
         >
           {locale}

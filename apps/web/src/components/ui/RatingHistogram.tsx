@@ -3,15 +3,20 @@ import { useFormatter, useTranslations } from "next-intl";
 
 import { cn } from "@/lib/cn";
 
-/** Ten brass bars, one per half-star value. Includes a screen-reader list of the counts. */
+/**
+ * Ten bars, one per half-star value. Includes a screen-reader list of the counts.
+ * `on-accent`: ink bars on the lilac block (community rating).
+ */
 export function RatingHistogram({
   distribution,
   label,
   className,
+  tone = "default",
 }: {
   distribution: number[];
   label: string;
   className?: string;
+  tone?: "default" | "on-accent";
 }) {
   const t = useTranslations("rating");
   const format = useFormatter();
@@ -20,18 +25,24 @@ export function RatingHistogram({
   return (
     <figure className={cn("w-full", className)}>
       <figcaption className="sr-only">{label}</figcaption>
-      <div aria-hidden="true" className="flex h-16 items-end gap-[3px]">
+      <div aria-hidden="true" className="flex h-15 items-end gap-[5px]">
         {distribution.map((count, i) => (
           <div
             key={i}
-            className="flex-1 rounded-t-[1px] bg-star/80 transition-[height]"
+            className={cn(
+              "flex-1 rounded-[4px]",
+              tone === "on-accent" ? "bg-accent-fg" : "bg-star/80",
+            )}
             style={{ height: `${Math.max(4, (count / max) * 100)}%` }}
           />
         ))}
       </div>
       <div
         aria-hidden="true"
-        className="mt-1 flex justify-between font-mono text-[0.7rem] text-fg-muted"
+        className={cn(
+          "mt-1 flex justify-between font-mono text-[0.7rem]",
+          tone === "default" && "text-fg-muted",
+        )}
       >
         <span>½</span>
         <span>5 ★</span>

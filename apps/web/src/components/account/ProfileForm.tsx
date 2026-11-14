@@ -53,10 +53,6 @@ export function ProfileForm({
           <option value="fr">{tl("fr")}</option>
           <option value="en">{tl("en")}</option>
         </SelectField>
-        <SelectField label={t("themeLabel")} name="theme" defaultValue={profile.theme}>
-          <option value="dark">{t("themeDark")}</option>
-          <option value="light">{t("themeLight")}</option>
-        </SelectField>
       </div>
       <SelectField
         label={t("timeZoneLabel")}
@@ -71,7 +67,9 @@ export function ProfileForm({
         ))}
       </SelectField>
       <fieldset className="space-y-3">
-        <legend className="mb-2 font-serif text-xl">{t("privacyTitle")}</legend>
+        <legend className="mb-2 font-display text-xl font-bold tracking-[-0.02em]">
+          {t("privacyTitle")}
+        </legend>
         <Checkbox
           name="statsPrivate"
           label={t("statsPrivateLabel")}

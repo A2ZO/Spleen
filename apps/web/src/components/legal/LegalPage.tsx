@@ -4,8 +4,13 @@ import type { ReactNode } from "react";
 import { Link } from "@/i18n/navigation";
 import { getApi } from "@/server/api";
 
-/** Date of the last change to the legal texts (shown at the top of each page). */
-export const LEGAL_UPDATED = "2026-10-27";
+/** Date of the last change to each legal text (shown at the top of its page). */
+export const LEGAL_UPDATED = {
+  notice: "2026-10-27",
+  terms: "2026-10-27",
+  // Theme cookie removed (milestone 17).
+  privacy: "2026-11-12",
+} as const;
 
 const NOTICE = ["publisher", "hosting", "credits", "property"] as const;
 const TERMS = [
@@ -88,7 +93,7 @@ export async function LegalPage({ page }: { page: "notice" | "terms" | "privacy"
   const format = await getFormatter();
   const tags = richTags(await (await getApi()).system.contact());
   const updated = t("updated", {
-    date: format.dateTime(new Date(`${LEGAL_UPDATED}T12:00:00Z`), { dateStyle: "long" }),
+    date: format.dateTime(new Date(`${LEGAL_UPDATED[page]}T12:00:00Z`), { dateStyle: "long" }),
   });
 
   let intro: string | null = null;
@@ -118,7 +123,9 @@ export async function LegalPage({ page }: { page: "notice" | "terms" | "privacy"
   return (
     <article className="mx-auto max-w-2xl space-y-10">
       <header className="space-y-3">
-        <h1 className="text-4xl font-semibold text-balance sm:text-5xl">{t(`${page}.title`)}</h1>
+        <h1 className="font-display text-4xl font-extrabold tracking-[-0.03em] text-balance sm:text-5xl">
+          {t(`${page}.title`)}
+        </h1>
         <p className="font-mono text-xs text-fg-muted">{updated}</p>
         {intro && <p className="text-lg text-pretty text-fg-muted">{intro}</p>}
       </header>
@@ -129,7 +136,10 @@ export async function LegalPage({ page }: { page: "notice" | "terms" | "privacy"
           aria-labelledby={`${section.id}-title`}
           className="scroll-mt-24 space-y-3 leading-relaxed text-pretty"
         >
-          <h2 id={`${section.id}-title`} className="font-serif text-2xl">
+          <h2
+            id={`${section.id}-title`}
+            className="font-display text-2xl font-bold tracking-[-0.02em]"
+          >
             {section.title}
           </h2>
           {section.body}

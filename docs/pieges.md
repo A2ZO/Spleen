@@ -25,6 +25,8 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   drizzle-kit writes unformatted `migrations/meta/*.json`: run Prettier on them.
 - Backticks in `node -e` run; `Set-Content -Encoding utf8` adds a BOM; Python writes CRLF.
   In the Bash tool (subagents too), `$env:X=…` is eaten: write `PLAYWRIGHT_CHANNEL=chrome pnpm …`.
+  A Git Bash path `/c/Users/…` given to Node or Playwright becomes `C:\c\Users\…`: pass `C:/Users/…`.
+  Python fed through a heredoc on stdin mangles accents (`\U` escapes too): write a script file.
 - next-intl detects `Accept-Language`: e2e tests set `test.use({ locale })`. Typed message
   keys: map dynamic values through typed helpers (`apps/web/src/lib/catalog-labels.ts`).
 - Strict Mode replays effects in dev: a `<dialog>` closed in an effect cleanup fires `close`
@@ -131,3 +133,10 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   `?`. Timed UI (the 8 s "Undo"): `page.clock.install()` before the first page lets time run;
   `pauseAt` (time read in the page) just before the action, then `runFor`: deterministic. A
   reaction (350 ms grouping) then only leaves with a `runFor`.
+- `cn()` (`apps/web/src/lib/cn.ts`) is `clsx` alone, without tailwind-merge: a class passed
+  by the caller does not beat the same property in a component's base (`hidden` loses against
+  `buttonClasses`' `inline-flex`). Use a variant (`max-md:hidden`, which wins), or wrap the
+  component, or let a single source carry every size (milestone 17).
+- A tile animated in opacity (scroll-driven cascade) and still faded when axe runs below the
+  fold fails `color-contrast`. Animate transform only; at the end, the computed `transform`
+  is `matrix(1, 0, 0, 1, 0, 0)`, not `none` (milestone 17, step 7).

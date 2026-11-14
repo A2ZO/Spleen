@@ -9,6 +9,7 @@ import {
 } from "@spleen/validators";
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useRef, useState, useTransition, type FormEvent } from "react";
+import { createPortal } from "react-dom";
 
 import { catalogReportAction } from "@/app/[locale]/social/actions";
 import { Button } from "@/components/ui/Button";
@@ -22,7 +23,13 @@ const EXAMPLES: Record<CatalogKind, string> = {
 };
 
 /** "Report an error / suggest an addition" on an album, track or artist page (members). */
-export function CatalogReportButton({ target }: { target: { kind: CatalogKind; id: string } }) {
+export function CatalogReportButton({
+  target,
+  className = "flex items-center gap-2 text-xs text-fg-muted hover:text-fg",
+}: {
+  target: { kind: CatalogKind; id: string };
+  className?: string;
+}) {
   const t = useTranslations("catalogReport");
   const [open, setOpen] = useState(false);
   return (
@@ -31,11 +38,16 @@ export function CatalogReportButton({ target }: { target: { kind: CatalogKind; i
         type="button"
         aria-haspopup="dialog"
         onClick={() => setOpen(true)}
-        className="flex items-center gap-2 text-xs text-fg-muted hover:text-fg"
+        className={className}
       >
         <FlagIcon /> {t("button")}
       </button>
-      {open && <CatalogReportDialog target={target} onClose={() => setOpen(false)} />}
+      {/* In `document.body`: it outlives a menu that hides its button. */}
+      {open &&
+        createPortal(
+          <CatalogReportDialog target={target} onClose={() => setOpen(false)} />,
+          document.body,
+        )}
     </>
   );
 }
@@ -87,16 +99,19 @@ function CatalogReportDialog({
       onClick={(event) => {
         if (event.target === ref.current) ref.current.close();
       }}
-      className="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-md border border-border bg-bg p-0 text-fg shadow-card backdrop:bg-bg/80"
+      className="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-card-sm border border-border bg-surface p-0 text-fg shadow-card backdrop:bg-bg/80 md:rounded-card"
     >
       <div className="space-y-5 p-5 sm:p-6">
-        <h2 id={titleId} className="text-2xl font-semibold text-balance">
+        <h2
+          id={titleId}
+          className="font-display text-2xl font-bold tracking-[-0.02em] text-balance"
+        >
           {t("title")}
         </h2>
         {sent ? (
           <>
             <FormMessage tone="success">{t("thanks")}</FormMessage>
-            <Button variant="outline" onClick={() => ref.current?.close()}>
+            <Button variant="secondary" onClick={() => ref.current?.close()}>
               {t("close")}
             </Button>
           </>

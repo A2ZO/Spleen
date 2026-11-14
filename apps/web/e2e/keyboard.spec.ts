@@ -93,9 +93,12 @@ test("no rating while typing in a field or with Ctrl", async ({ page }, testInfo
   const { slider } = await openAlbum(page);
   const actions = trackActions(page);
   // The header's search field; on small screens it lives in the full-screen search window
-  // opened by the header's icon.
+  // opened by the tab bar's "+" (members; detail pages hide the header row on phones).
   const mobile = testInfo.project.name === "mobile";
-  if (mobile) await page.locator("header").getByRole("link", { name: "Rechercher" }).click();
+  if (mobile) {
+    await page.getByRole("link", { name: "Noter un disque" }).click();
+    await expect(page.getByRole("dialog")).toBeVisible();
+  }
   const field = page.locator(mobile ? "#dialog-search" : "#header-search");
   await field.focus();
   await page.keyboard.type("4");

@@ -1,22 +1,30 @@
-import { Fraunces, IBM_Plex_Mono, Inter } from "next/font/google";
+import { Bricolage_Grotesque, Geist, Geist_Mono } from "next/font/google";
 
-export const fraunces = Fraunces({
+/*
+ * Downloaded at build time and served from our own origin (no Google request, CSP unchanged).
+ * Latin only. Families come from @spleen/design-tokens `fontFamily`.
+ */
+
+/** Titles and big figures: two static weights. */
+export const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  axes: ["opsz", "SOFT"],
-  variable: "--font-fraunces",
+  weight: ["700", "800"],
+  variable: "--font-bricolage",
   display: "swap",
 });
 
-export const inter = Inter({
+/** Body text: the variable file covers 400, 500 and 600 in one download. */
+export const geist = Geist({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-geist",
   display: "swap",
 });
 
-export const plexMono = IBM_Plex_Mono({
+/** Small uppercase labels only: not preloaded. */
+export const geistMono = Geist_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
-  variable: "--font-plex-mono",
+  variable: "--font-geist-mono",
   display: "swap",
+  preload: false,
 });

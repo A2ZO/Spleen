@@ -21,10 +21,12 @@ test.describe("desktop", () => {
   test("typing shows suggestions from the local catalog only", async ({ page }) => {
     const gate = await musicBrainzGate();
     const field = await headerSearch(page);
-    // Only the suggestion route while typing: no page render, no server action.
+    // Only the suggestion route while typing: no page render, no server action. Link prefetches
+    // (production only: the header links in view) are not renders.
     const sent: string[] = [];
     page.on("request", (request) => {
       const headers = request.headers();
+      if (headers["next-router-prefetch"]) return;
       if (headers["next-action"] || headers.rsc || request.url().includes("_rsc="))
         sent.push(`render ${request.url()}`);
       else if (request.url().includes("/api/")) sent.push(new URL(request.url()).pathname);
@@ -145,7 +147,7 @@ test.describe("desktop", () => {
     expect(plain.headers()["cache-control"]).toContain("s-maxage=");
     expect(plain.headers()["set-cookie"]).toBeUndefined();
     const withCookie = await request.get("/api/search/suggest?q=pluie", {
-      headers: { cookie: "better-auth.session_token=whatever; spleen-theme=dark" },
+      headers: { cookie: "better-auth.session_token=whatever" },
     });
     expect(await withCookie.text()).toBe(await plain.text());
     expect(withCookie.headers()["set-cookie"]).toBeUndefined();

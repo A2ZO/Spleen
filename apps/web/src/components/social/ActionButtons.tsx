@@ -12,11 +12,11 @@ import { FormMessage } from "@/components/ui/Field";
 function ActionButton({
   run,
   label,
-  variant = "outline",
+  variant = "secondary",
 }: {
   run: () => Promise<{ ok?: boolean; error?: ApiErrorCode | "unknown" }>;
   label: string;
-  variant?: "outline" | "ghost";
+  variant?: "secondary" | "ghost";
 }) {
   const te = useTranslations("errors");
   const [pending, startTransition] = useTransition();

@@ -155,12 +155,15 @@ export function LogDialog({
       onClick={(event) => {
         if (event.target === ref.current) ref.current.close();
       }}
-      className="m-auto max-h-[90dvh] w-[min(36rem,calc(100vw-2rem))] overflow-y-auto rounded-md border border-border bg-bg p-0 text-fg shadow-card backdrop:bg-bg/80"
+      className="m-auto max-h-[90dvh] w-[min(36rem,calc(100vw-2rem))] overflow-y-auto rounded-card-sm border border-border bg-surface p-0 text-fg shadow-card backdrop:bg-bg/80 md:rounded-card"
     >
       <form onSubmit={submit} className="space-y-6 p-5 sm:p-6">
         <header>
-          <p className="font-serif text-sm text-fg-muted italic">{t("prompt")}</p>
-          <h2 id="log-title" className="mt-1 text-2xl font-semibold text-balance">
+          <p className="text-sm text-fg-muted">{t("prompt")}</p>
+          <h2
+            id="log-title"
+            className="mt-1 font-display text-2xl font-bold tracking-[-0.02em] text-balance"
+          >
             {entry ? t("editTitle") : t("dialogTitle", { title })}
           </h2>
         </header>
@@ -221,7 +224,7 @@ export function LogDialog({
                     aria-pressed={active}
                     onClick={() => toggleMood(mood.id)}
                     className={cn(
-                      "rounded-full border px-3 py-1 text-sm transition-colors",
+                      "rounded-full border px-3 py-1 text-sm",
                       active
                         ? "border-star bg-star/10 text-star"
                         : "border-border text-fg-muted hover:border-star/60 hover:text-fg",
@@ -248,7 +251,7 @@ export function LogDialog({
                 }}
               />
             </div>
-            <Button variant="outline" onClick={addMood} disabled={pending || !newMood.trim()}>
+            <Button variant="secondary" onClick={addMood} disabled={pending || !newMood.trim()}>
               {t("moodAdd")}
             </Button>
           </div>

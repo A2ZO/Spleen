@@ -7,13 +7,20 @@ import { cache } from "react";
 import { CatalogNotice } from "@/components/catalog/CatalogNotice";
 import { CatalogReportButton } from "@/components/catalog/CatalogReportButton";
 import { ListenOn } from "@/components/catalog/ListenOn";
+import { DetailBar } from "@/components/detail/DetailBar";
+import { moreMenuItem } from "@/components/detail/MoreMenu";
 import { AddToListButton } from "@/components/lists/AddToList";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
+import { Avatar } from "@/components/ui/Avatar";
+import { Badge } from "@/components/ui/Badge";
+import { Card } from "@/components/ui/Card";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Link } from "@/i18n/navigation";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { missingCatalogPage } from "@/lib/catalog-redirect";
 import { artistKind } from "@/lib/catalog-labels";
+import { cn } from "@/lib/cn";
+import { phoneTitleSize } from "@/lib/display-title";
 import { seoMetadata } from "@/lib/seo";
 import { getApi } from "@/server/api";
 
@@ -86,7 +93,7 @@ function Discography({
       </Link>
     ) : null;
   return (
-    <section aria-labelledby={group} className="scroll-mt-24">
+    <section aria-labelledby={group}>
       <SectionHeading id={group} action={action}>
         {title}
       </SectionHeading>
@@ -114,63 +121,123 @@ export default async function ArtistPage({ params, searchParams }: Props) {
   if (!artist) return missingCatalogPage("artist", slug, locale);
 
   const { albums, eps, singles, other } = artist.discography;
+  const totals = artist.discographyTotals;
   const empty = albums.length + eps.length + singles.length + other.length === 0;
   const group = (key: DiscographyGroup, releases: ReleaseCard[]) => (
     <Discography
       group={key}
       title={t(`artist.${key}`)}
       releases={releases}
-      total={artist.discographyTotals[key]}
+      total={totals[key]}
       slug={artist.slug}
       expanded={key === all}
-      seeAll={t("artist.seeAll", { count: artist.discographyTotals[key] })}
+      seeAll={t("artist.seeAll", { count: totals[key] })}
       seeLess={t("artist.seeLess")}
     />
   );
   const signedIn = !!me;
+  const target = { kind: "artist" as const, id: artist.id };
   const country = artist.country
     ? new Intl.DisplayNames([uiLocale], { type: "region" }).of(artist.country)
     : null;
-  const kind = artistKind(artist.type);
+  const kindLabel = t(`artist.kind.${artistKind(artist.type)}`);
+  const report = me?.profile ? (
+    <CatalogReportButton target={target} className={moreMenuItem} />
+  ) : null;
+  const smallCounts = [
+    totals.eps > 0 && t("detail.epCount", { count: totals.eps }),
+    totals.singles > 0 && t("detail.singleCount", { count: totals.singles }),
+    totals.other > 0 && t("detail.otherCount", { count: totals.other }),
+  ].filter(Boolean);
+  const hasListenCard = artist.listenLinks.length > 0 || !!me?.profile;
 
   return (
-    <article className="space-y-14">
-      <header className="grid gap-8 md:grid-cols-[1fr_minmax(0,300px)] md:gap-10">
-        <div className="min-w-0">
-          <p className="font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">
-            {t(`artist.kind.${kind}`)}
-            {country && ` · ${country}`}
-          </p>
-          <h1 className="mt-3 text-4xl leading-tight font-semibold text-balance sm:text-6xl">
+    <article>
+      <DetailBar
+        backHref="/"
+        label={country ? `${kindLabel} · ${country}` : kindLabel}
+        actions={report}
+      />
+
+      <header className="grid grid-cols-1 items-center gap-6 md:grid-cols-[auto_1fr] md:gap-12">
+        <Avatar
+          name={artist.name}
+          seed={artist.slug}
+          src={artist.imageUrl}
+          className="mx-auto mb-0! size-[200px]! text-[72px] md:size-[300px]! md:text-[112px]"
+        />
+        <div className="min-w-0 max-md:text-center">
+          <div className="flex flex-wrap gap-2 max-md:hidden">
+            <Badge>{kindLabel}</Badge>
+            {country && <Badge>{country}</Badge>}
+          </div>
+          <h1
+            className={cn(
+              "font-display leading-[0.9] font-extrabold tracking-[-0.04em] text-balance [overflow-wrap:anywhere] md:mt-5 md:text-[clamp(56px,7vw,104px)]",
+              phoneTitleSize(artist.name, "56"),
+            )}
+          >
             {artist.name}
           </h1>
           {artist.disambiguation && (
-            <p className="mt-2 font-serif text-lg text-fg-muted italic">{artist.disambiguation}</p>
-          )}
-          {artist.discographyPending && (
-            <div className="mt-6 max-w-xl">
-              <CatalogNotice
-                signedIn={signedIn}
-                memberText={t("artist.pendingMember")}
-                visitorText={t("artist.pendingVisitor")}
-              />
-            </div>
+            <p className="mt-3 text-lg text-fg-muted md:mt-4">{artist.disambiguation}</p>
           )}
         </div>
-        <aside className="space-y-6">
-          {me?.profile && (
-            <AddToListButton target={{ kind: "artist", id: artist.id }} title={artist.name} />
-          )}
-          <ListenOn links={artist.listenLinks} />
-          {me?.profile && <CatalogReportButton target={{ kind: "artist", id: artist.id }} />}
-        </aside>
       </header>
 
-      {empty && <p className="font-serif text-lg text-fg-muted italic">{t("artist.empty")}</p>}
-      {group("albums", albums)}
-      {group("eps", eps)}
-      {group("singles", singles)}
-      {group("other", other)}
+      <div
+        className={cn(
+          "mt-8 grid gap-3 md:mt-12 md:gap-5",
+          hasListenCard && "md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]",
+        )}
+      >
+        <Card
+          tone="accent"
+          role="region"
+          aria-labelledby="discography-title"
+          className="flex flex-col gap-3"
+        >
+          <h2
+            id="discography-title"
+            className="font-mono text-[11px] font-normal tracking-[0.06em] uppercase md:text-xs"
+          >
+            {t("detail.discography")}
+          </h2>
+          <p className="font-display text-[56px] leading-[0.85] font-extrabold tracking-[-0.04em] md:text-[80px]">
+            {t("detail.albumCount", { count: totals.albums })}
+          </p>
+          {smallCounts.length > 0 && <p className="text-[15px]">{smallCounts.join(" · ")}</p>}
+        </Card>
+        {hasListenCard && (
+          <Card className="flex flex-col gap-4 md:self-start">
+            {artist.listenLinks.length > 0 && <ListenOn links={artist.listenLinks} />}
+            {me?.profile && (
+              <div className="flex flex-wrap gap-2.5">
+                <AddToListButton target={target} title={artist.name} />
+                {report && <div className="max-md:hidden">{report}</div>}
+              </div>
+            )}
+          </Card>
+        )}
+      </div>
+
+      {artist.discographyPending && (
+        <div className="mt-5 max-w-xl">
+          <CatalogNotice
+            signedIn={signedIn}
+            memberText={t("artist.pendingMember")}
+            visitorText={t("artist.pendingVisitor")}
+          />
+        </div>
+      )}
+
+      <div className="mt-14 space-y-14 md:mt-20 md:space-y-20">
+        {empty && <p className="text-fg-muted">{t("artist.empty")}</p>}
+        {group("albums", albums)}
+        {group("eps", eps)}
+        {group("singles", singles)}
+        {group("other", other)}
+      </div>
     </article>
   );
 }

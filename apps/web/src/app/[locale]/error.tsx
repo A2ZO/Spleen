@@ -23,9 +23,11 @@ export default function ErrorPage({
 
   return (
     <div className="mx-auto max-w-2xl py-16 text-center">
-      <p className="font-mono text-7xl text-star">500</p>
+      <p className="font-display text-[96px] leading-none font-extrabold tracking-[-0.04em] text-fg tabular sm:text-[128px]">
+        500
+      </p>
       <figure className="mt-10">
-        <blockquote className="font-serif text-2xl leading-snug italic sm:text-3xl">
+        <blockquote className="font-display text-2xl leading-snug font-bold tracking-[-0.02em] text-balance sm:text-3xl">
           <p>{t("quoteLine1")}</p>
           <p>{t("quoteLine2")}</p>
         </blockquote>
@@ -36,7 +38,7 @@ export default function ErrorPage({
       <h1 className="mt-10 text-fg-muted">{t("body")}</h1>
       <div className="mt-8 flex flex-wrap justify-center gap-3">
         <Button onClick={reset}>{t("retry")}</Button>
-        <ButtonLink href="/" variant="outline">
+        <ButtonLink href="/" variant="secondary">
           {t("back")}
         </ButtonLink>
       </div>

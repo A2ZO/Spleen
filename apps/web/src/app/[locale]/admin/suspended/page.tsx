@@ -16,11 +16,11 @@ export default async function SuspendedPage({ params }: Props) {
   return (
     <div className="space-y-10">
       <section aria-labelledby="suspended-title" className="space-y-4">
-        <h2 id="suspended-title" className="font-serif text-2xl">
+        <h2 id="suspended-title" className="font-display text-2xl font-bold tracking-[-0.02em]">
           {t("tabs.suspended")}
         </h2>
         {members.length === 0 ? (
-          <p className="font-serif text-lg text-fg-muted italic">{t("suspendedEmpty")}</p>
+          <p className="text-lg text-fg-muted">{t("suspendedEmpty")}</p>
         ) : (
           <ul className="space-y-4">
             {members.map((member) => (
@@ -29,7 +29,9 @@ export default async function SuspendedPage({ params }: Props) {
                 className="space-y-3 rounded-md border border-border bg-surface p-4 shadow-card"
               >
                 <p>
-                  <span className="font-serif text-lg">{member.displayName}</span>{" "}
+                  <span className="font-display text-lg font-bold tracking-[-0.02em]">
+                    {member.displayName}
+                  </span>{" "}
                   <span className="text-fg-muted">@{member.username}</span>
                 </p>
                 <p className="text-sm text-fg-muted">
@@ -50,7 +52,7 @@ export default async function SuspendedPage({ params }: Props) {
         )}
       </section>
       <section aria-labelledby="suspend-title" className="max-w-xl space-y-4">
-        <h2 id="suspend-title" className="font-serif text-2xl">
+        <h2 id="suspend-title" className="font-display text-2xl font-bold tracking-[-0.02em]">
           {t("suspendTitle")}
         </h2>
         <p className="text-sm text-fg-muted">{t("suspendHint")}</p>
