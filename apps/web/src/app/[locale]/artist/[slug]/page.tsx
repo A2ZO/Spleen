@@ -209,7 +209,7 @@ export default async function ArtistPage({ params, searchParams }: Props) {
           {smallCounts.length > 0 && <p className="text-[15px]">{smallCounts.join(" · ")}</p>}
         </Card>
         {hasListenCard && (
-          <Card className="flex flex-col justify-center gap-4">
+          <Card className="flex flex-col gap-4 md:self-start">
             {artist.listenLinks.length > 0 && <ListenOn links={artist.listenLinks} />}
             {me?.profile && (
               <div className="flex flex-wrap gap-2.5">
