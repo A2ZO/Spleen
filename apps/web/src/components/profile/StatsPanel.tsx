@@ -3,6 +3,7 @@ import { useFormatter, useTranslations } from "next-intl";
 import type { ReactNode } from "react";
 
 import { Card } from "@/components/ui/Card";
+import { CountUp } from "@/components/ui/CountUp";
 import { RatingHistogram } from "@/components/ui/RatingHistogram";
 
 function StatBlock({
@@ -38,7 +39,7 @@ function Counts({ counts }: { counts: ListenedCounts }) {
         <div key={key} className="flex flex-col-reverse">
           <dt className="mt-1 text-sm text-fg-muted">{t(key, { count })}</dt>
           <dd className="font-display text-4xl leading-none font-extrabold tracking-[-0.03em] text-star tabular">
-            {count}
+            <CountUp value={count} />
           </dd>
         </div>
       ))}

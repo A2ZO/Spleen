@@ -18,6 +18,7 @@ import { ReviewCard } from "@/components/social/ReviewCard";
 import { Avatar } from "@/components/ui/Avatar";
 import { ButtonLink, buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { CountUp } from "@/components/ui/CountUp";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -114,7 +115,7 @@ function Figure({ value, label, accent }: { value: number; label: string; accent
     >
       <dt className={cn("text-xs leading-snug md:text-sm", !accent && "text-fg-muted")}>{label}</dt>
       <dd className="font-display text-[40px] leading-[0.9] font-extrabold tracking-[-0.04em] whitespace-nowrap tabular md:text-7xl">
-        {value}
+        <CountUp value={value} />
       </dd>
     </Card>
   );
