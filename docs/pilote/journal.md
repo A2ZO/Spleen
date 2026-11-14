@@ -29,3 +29,11 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus).
   `decisions.md` (étape 7). Point ouvert : `docs/pilote/installation/*` toujours supprimés sans
   commit.
 - 2026-11-14 — Étape 8 : plan écrit et relu (OK avec corrections, appliquées) ; limite d'usage atteinte avant le code, reprise en phase `code`.
+- 2026-11-14 — Étape 8 (la passe finale), pilote. Commits `2270622`..`a382c19`. `pnpm check`
+  vert ; e2e dev 230 réussis / 0 échoué / 10 ignorés ; prod sans compte 114 réussis (seul
+  `hydration.spec`, attendu) ; axe 0 sur toutes les pages (visiteur, membre, admin, welcome).
+  `measure.mjs` : branche 241/138/226/202/227, `main` A/B 237/140/225/208/210 (max +17 ms).
+  Relecteur : 2 tours (2 écoutes de test parasites supprimées par l'interface, carte artiste,
+  AddToList et titres de liste sur mobile, capture d'édition de liste) → OK. Décisions : voir
+  `decisions.md` (étape 8). Point ouvert : `docs/pilote/installation/*` toujours supprimés sans
+  commit. Prochain passage : fin de jalon (PR, CI verte, sans fusion).

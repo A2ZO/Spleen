@@ -69,3 +69,14 @@ peut revenir sur n'importe lequel. Les questions qui demandent Azzo sont sous un
   Écarté : fusion automatique de la section 6.
 - 2026-11-14 — étape 8 — `--font-serif: initial` plutôt que supprimer la ligne (relecteur :
   sinon `font-serif` retomberait sur Georgia). Variante `outline` de `Button` → `secondary`.
+- 2026-11-14 — étape 8 — Recherche : lien de morceau en `block py-0.5` (cible de 24 px, axe
+  `target-size`) ; commentaires : lien avatar en `aria-hidden` + `tabIndex -1`, le nom reste un
+  lien juste à côté (axe `link-name`). Écarté : agrandir l'avatar.
+- 2026-11-14 — étape 8 — Deux écoutes de test enregistrées par erreur sur nuitblanche (base de
+  dev) supprimées par l'interface, pas en SQL (réversible tant que la fenêtre d'annulation est
+  ouverte, même chemin qu'un membre). Écarté : `db:reset` (refuse Postgres) ou SQL direct.
+- 2026-11-14 — étape 8 — Mesures : écart de la branche dans les 20 ms de `main` mesuré dans la
+  même session (max +17 ms) ; rien à optimiser. Écarté : retirer des animations.
+- 2026-11-14 — étape 8 — Page de démo : la seconde carte passe en `Card lift` pour montrer la
+  montée au survol. Titres d'éléments de liste : deux lignes sous `sm` (relecteur), `truncate`
+  au-dessus. Écarté : boutons sous le texte (rangées plus hautes).
