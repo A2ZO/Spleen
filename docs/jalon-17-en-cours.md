@@ -307,11 +307,41 @@ Plan : `docs/pilote/plan-etape-7.md`. Commits `8651b34`..`eafd049`. Apparence se
 - `measure.mjs`, A/B dans la même session (médianes de 3) : branche 213/133/220/206/218,
   avant l'étape 7 219/136/230/205/212. Référence d'étape 5 : 217/133/223/207/209.
 
-## Prochaine étape : 8 — La passe finale
+## Étape 8 — ce qui a été fait (pilote)
 
-- Brief : `docs/pilote/feuille-de-route.md` § Étape 8 (ménage de l'ancienne identité, captures
-  de toutes les pages revues contre les maquettes, axe partout, `measure.mjs` complet contre
-  l'étape 5 et le jalon 12 267/133/229/211/219, `CLAUDE.md` et `docs/design/README.md`, puis
-  fin de jalon : PR, CI verte).
-- Session de mesure : se connecter contre `pnpm dev` avec `MEASURE_STATE`
-  (`docs/environnement.md`) avant le build de prod.
+Plan : `docs/pilote/plan-etape-8.md`. Commits `2270622`..`a382c19`.
+
+- Ménage de l'ancienne identité : variante `outline` de `Button` renommée `secondary`
+  (~22 fichiers), `--font-serif: initial` (aucun repli Georgia), commentaires et page de démo.
+- `CLAUDE.md` : section « Design (Lilas, milestone 17) », règle des animations, jalon 17 coché ;
+  `docs/design/README.md` : « Changé en route (jalon 17) » ; `docs/pieges.md` : deux pièges.
+- Corrections a11y trouvées par axe : liens de morceau de la recherche à 24 px, lien avatar
+  dupliqué des commentaires masqué (`aria-hidden`, `tabIndex -1`).
+- Corrections du relecteur : carte « Écouter sur » de l'artiste en `md:self-start`, formulaire
+  d'`AddToList` empilé sur mobile, titres des éléments de liste sur deux lignes sous `sm`.
+
+### Appris en route
+
+- Un script de capture qui clique un bouton choisi par regex peut enregistrer des données : viser
+  le nom exact (« Noter en détail… ») et ne jamais valider un dialogue.
+- Les données de démo polluées sur Neon se nettoient par l'interface (`db:reset` refuse Postgres).
+- Une capture d'édition de liste doit viser une liste possédée (la première du profil peut être
+  aimée, d'où un 404).
+
+### Mesures
+
+- `pnpm check` vert ; e2e complet en dev : 230 réussis, 0 échoué, 10 ignorés.
+- Prod, specs sans compte : 114 réussis, 10 ignorés (seul `hydration.spec`, attendu).
+- axe WCAG 2.2, 1280/390 : 0 violation (visiteur 46 passages en prod, membre 32, admin 8,
+  welcome 2, puis 24 passages refaits après corrections).
+- `measure.mjs` prod (médianes de 3) : branche 241/138/226/202/227 ; `main` A/B dans la même
+  session 237/140/225/208/210 (écart max +17 ms) ; étape 5 217/133/223/207/209 ; jalon 12
+  267/133/229/211/219. Navigation douce : recherche 125 ms (main 130), liste 70 ms (main 72).
+
+## Prochaine étape : fin de jalon 17
+
+- Phase A de `.claude/skills/fin-de-jalon/SKILL.md` : `CLAUDE.md` déjà à jour, push, PR de
+  `feat/17-nouvelle-peau` vers `main`, CI jusqu'au vert. Jamais de fusion (feuille de route,
+  décision de l'étape 8) : la PR attend Azzo.
+- À signaler dans la PR : `docs/pilote/installation/*` supprimés dans l'arbre de travail sans
+  commit (au propriétaire de trancher).
