@@ -72,6 +72,9 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
                       ]
                         .filter((part) => part !== null && part !== "")
                         .join(" · ")}
+                      {entry.format && (
+                        <span className="sm:hidden"> · {t(`format.${entry.format}`)}</span>
+                      )}
                     </p>
                     {entry.moods.length > 0 && (
                       <p className="truncate text-xs text-fg-muted">
@@ -124,9 +127,9 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
                         />
                       )}
                       {entry.format && (
-                        <Badge className="hidden sm:inline-flex">
-                          {t(`format.${entry.format}`)}
-                        </Badge>
+                        <span className="hidden sm:inline">
+                          <Badge>{t(`format.${entry.format}`)}</Badge>
+                        </span>
                       )}
                     </span>
                   </div>
