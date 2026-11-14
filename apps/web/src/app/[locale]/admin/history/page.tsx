@@ -43,7 +43,6 @@ export default async function HistoryPage({ params, searchParams }: Props) {
                 >
                   {format.dateTime(new Date(action.createdAt), {
                     dateStyle: "medium",
-                    timeStyle: "short",
                   })}
                 </time>
               </div>

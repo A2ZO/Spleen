@@ -96,7 +96,7 @@ async function ReportCard({ report }: { report: ReportView }) {
         {subject.hidden && <Badge>{t("hiddenBadge")}</Badge>}
         {subject.member?.suspended && <Badge>{t("suspendedBadge")}</Badge>}
         <time dateTime={report.createdAt} className="ml-auto font-mono text-xs text-fg-muted">
-          {format.dateTime(new Date(report.createdAt), { dateStyle: "medium", timeStyle: "short" })}
+          {format.dateTime(new Date(report.createdAt), { dateStyle: "medium" })}
         </time>
       </header>
       <dl className="grid gap-x-4 gap-y-2 text-sm sm:grid-cols-[10rem_1fr]">
