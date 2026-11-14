@@ -23,9 +23,11 @@ export default function ErrorPage({
 
   return (
     <div className="mx-auto max-w-2xl py-16 text-center">
-      <p className="font-mono text-7xl text-star">500</p>
+      <p className="font-display text-[96px] leading-none font-extrabold tracking-[-0.04em] text-star tabular sm:text-[128px]">
+        500
+      </p>
       <figure className="mt-10">
-        <blockquote className="font-serif text-2xl leading-snug italic sm:text-3xl">
+        <blockquote className="font-display text-2xl leading-snug font-bold tracking-[-0.02em] text-balance sm:text-3xl">
           <p>{t("quoteLine1")}</p>
           <p>{t("quoteLine2")}</p>
         </blockquote>

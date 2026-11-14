@@ -123,7 +123,9 @@ export async function LegalPage({ page }: { page: "notice" | "terms" | "privacy"
   return (
     <article className="mx-auto max-w-2xl space-y-10">
       <header className="space-y-3">
-        <h1 className="text-4xl font-semibold text-balance sm:text-5xl">{t(`${page}.title`)}</h1>
+        <h1 className="font-display text-4xl font-extrabold tracking-[-0.03em] text-balance sm:text-5xl">
+          {t(`${page}.title`)}
+        </h1>
         <p className="font-mono text-xs text-fg-muted">{updated}</p>
         {intro && <p className="text-lg text-pretty text-fg-muted">{intro}</p>}
       </header>
@@ -134,7 +136,10 @@ export async function LegalPage({ page }: { page: "notice" | "terms" | "privacy"
           aria-labelledby={`${section.id}-title`}
           className="scroll-mt-24 space-y-3 leading-relaxed text-pretty"
         >
-          <h2 id={`${section.id}-title`} className="font-serif text-2xl">
+          <h2
+            id={`${section.id}-title`}
+            className="font-display text-2xl font-bold tracking-[-0.02em]"
+          >
             {section.title}
           </h2>
           {section.body}
