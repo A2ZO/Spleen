@@ -230,10 +230,48 @@ body:has(
    * animations nothing applies, and a tile already on screen is past its range: visible.
    */
   @supports (animation-timeline: view()) {
+    /* --i = column of the tile in the trends grid (2, 3 then 6 columns), --step per column. */
     .scroll-cascade {
+      --i: 0;
+      --step: 10%;
       animation: sp-cascade linear both;
       animation-timeline: view();
-      animation-range: entry calc(var(--i, 0) * 10%) entry calc(70% + var(--i, 0) * 10%);
+      animation-range: entry calc(var(--i) * var(--step)) entry calc(70% + var(--i) * var(--step));
+    }
+    .scroll-cascade:nth-child(2n) {
+      --i: 1;
+    }
+    @media (width >= 40rem) {
+      .scroll-cascade:nth-child(n) {
+        --i: 0;
+      }
+      .scroll-cascade:nth-child(3n + 2) {
+        --i: 1;
+      }
+      .scroll-cascade:nth-child(3n) {
+        --i: 2;
+      }
+    }
+    @media (width >= 64rem) {
+      .scroll-cascade:nth-child(n) {
+        --i: 0;
+        --step: 6%;
+      }
+      .scroll-cascade:nth-child(6n + 2) {
+        --i: 1;
+      }
+      .scroll-cascade:nth-child(6n + 3) {
+        --i: 2;
+      }
+      .scroll-cascade:nth-child(6n + 4) {
+        --i: 3;
+      }
+      .scroll-cascade:nth-child(6n + 5) {
+        --i: 4;
+      }
+      .scroll-cascade:nth-child(6n) {
+        --i: 5;
+      }
     }
   }
 }
