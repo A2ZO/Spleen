@@ -49,3 +49,11 @@ peut revenir sur n'importe lequel. Les questions qui demandent Azzo sont sous un
   `[locale]/layout.tsx` (commit `ba9c786`, jalon antérieur) quand la 404 est rendue côté
   client. Hors périmètre (apparence seulement) : laissé tel quel, capture refaite sans
   l'indicateur de dev. Écarté : déplacer le script (`next/script`), à décider hors pilote.
+- 2026-11-14 — étape 7 — Montée au survol : seulement les cartes qui sont un lien entier
+  (`ListCard`, tuiles `ReleaseTile`). `ReviewCard` et `FeedItemCard` (plusieurs liens, long
+  texte) restent fixes : une carte qui monte a l'air cliquable. Écarté : toutes les cartes.
+- 2026-11-14 — étape 7 — Chiffres qui comptent : seulement quand le chiffre entre à l'écran
+  après le chargement ; déjà visible au chargement, il ne bouge pas (sinon il passerait par 0
+  à l'affichage, ce qui retarde le contenu). Écarté : compter à l'hydratation.
+- 2026-11-14 — étape 7 — `transition-colors` retirés (7 composants) : la règle « transform et
+  opacity seulement » ; les couleurs de survol changent d'un coup. Écarté : les garder.
