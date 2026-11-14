@@ -67,7 +67,9 @@ export function ProfileForm({
         ))}
       </SelectField>
       <fieldset className="space-y-3">
-        <legend className="mb-2 font-serif text-xl">{t("privacyTitle")}</legend>
+        <legend className="mb-2 font-display text-xl font-bold tracking-[-0.02em]">
+          {t("privacyTitle")}
+        </legend>
         <Checkbox
           name="statsPrivate"
           label={t("statsPrivateLabel")}

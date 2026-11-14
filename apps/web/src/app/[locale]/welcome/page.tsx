@@ -25,7 +25,7 @@ export default async function WelcomePage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-md py-8">
-      <h1 className="text-4xl font-semibold">{t("title")}</h1>
+      <h1 className="font-display text-4xl font-extrabold tracking-[-0.03em]">{t("title")}</h1>
       <p className="mt-3 text-fg-muted">{t("subtitle")}</p>
       <div className="mt-8">
         <OnboardingForm locale={locale} defaultDisplayName="" />

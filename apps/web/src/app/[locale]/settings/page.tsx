@@ -31,7 +31,7 @@ function timeZoneList(current: string): string[] {
 function Section({ id, title, children }: { id: string; title: string; children: ReactNode }) {
   return (
     <section aria-labelledby={id}>
-      <h2 id={id} className="mb-4 font-serif text-2xl">
+      <h2 id={id} className="mb-4 font-display text-2xl font-bold tracking-[-0.02em]">
         {title}
       </h2>
       <Card className="p-5 sm:p-6">{children}</Card>
@@ -53,7 +53,7 @@ export default async function SettingsPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-2xl space-y-12 pb-8">
-      <h1 className="text-4xl font-semibold">{t("title")}</h1>
+      <h1 className="font-display text-4xl font-extrabold tracking-[-0.03em]">{t("title")}</h1>
 
       <Section id="avatar" title={t("avatarTitle")}>
         <AvatarForm

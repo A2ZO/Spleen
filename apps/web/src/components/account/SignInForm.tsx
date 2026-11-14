@@ -64,7 +64,7 @@ export function SignInForm({
     return (
       <div className={cn("space-y-6", className)}>
         <div className="space-y-4" role="status">
-          <h2 className="text-2xl font-semibold">{t("sentTitle")}</h2>
+          <h2 className="font-display text-2xl font-bold tracking-[-0.02em]">{t("sentTitle")}</h2>
           <p className="text-fg-muted">{t("sentBody", { email })}</p>
           {devHint && <p className="font-mono text-xs text-star">{t("devHint")}</p>}
         </div>
