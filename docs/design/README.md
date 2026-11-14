@@ -79,3 +79,28 @@ pilule), le laiton, le serif italique, les vinyles qui dépassent, le thème cla
 **La lune reste**, en lilas : le croissant actuel recoloré avec l'accent, suivi de
 « spleen » en Bricolage Grotesque 800. La lune reste à sa place, devant le mot ; pas de
 point après « spleen ».
+
+## Changé en route (jalon 17)
+
+Ce qui s'écarte des maquettes ou les précise, décidé pendant le jalon (détails dans
+`docs/pilote/decisions.md`) :
+
+- **Étagère adaptable** : grille de pochettes arrondies, 4 colonnes sur ordinateur et 2 sur
+  mobile, titre en pilule opaque ; vide chez un autre membre, la section disparaît ; l'éditeur
+  montre des emplacements en pointillés.
+- **Images OG en Inter** : Satori n'a pas de TTF de Bricolage dans le dépôt ; déposer
+  `BricolageGrotesque-ExtraBold.ttf` (OFL) dans `apps/web/assets/fonts` pour le rétablir.
+  Page hors ligne et emails en polices système sans serif.
+- **Cascade des tendances en transform seul** (pas d'opacity : axe échouait sous la ligne de
+  flottaison), décalage par colonne posé en CSS selon 2, 3 ou 6 colonnes.
+- **Chiffres comptés à l'entrée** : seulement quand le chiffre entre à l'écran après le
+  chargement ; déjà visible au chargement, il ne bouge pas.
+- **Montée au survol** : seulement les cartes qui sont un lien entier (`Card lift`, tuiles de
+  pochettes). Critiques et fil restent fixes.
+- **Couleurs de survol sans transition** : seuls transform et opacity s'animent.
+- **Rôles 3:1** : `border-field` (bordure des champs) et `star-empty` (étoile vide) sont des
+  teintes dérivées qui atteignent 3:1 sur `bg` et `surface` (WCAG 1.4.11).
+- **Boutons** : `primary`, `secondary`, `ghost`, et `ink` / `on-accent` dans le bloc lilas ;
+  l'ancien nom `outline` a disparu. `font-serif` ne pointe plus sur rien.
+- **Blocs lilas** : aucun sur recherche, listes, notifications, réglages, connexion, légal,
+  erreurs, hors ligne et admin (rien à mettre en avant).

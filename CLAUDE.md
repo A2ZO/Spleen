@@ -84,9 +84,27 @@ moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sh
 - Ratings: integers 1..10 shown as 0.5..5 stars (`ratingToStars`). UUIDs; slugs in URLs.
 - Navigate from code only with `useNavigate()` (`@/i18n/navigation`, feeds the top bar;
   ESLint forbids `useRouter`); actions ending in `redirect()` call `useNavigationWhile(pending)`.
-- Animations neutralised by `prefers-reduced-motion` (global rule in `globals.css`).
+- Animations: transform and opacity only, neutralised by `prefers-reduced-motion` (global rule in
+  `globals.css`; scroll-driven ones also need an explicit `no-preference` guard).
 - Dark only (Lilas): no theme cookie or toggle; the `profiles.theme` column awaits removal (issue).
 - Verify library versions on the npm registry / official docs, not from memory.
+
+## Design (Lilas, milestone 17)
+
+Reference: `docs/design/README.md` (principles, tokens, relief, motion, what changed on the
+way) and the mockups `docs/design/maquettes/*.png` (the target; the `.html` twins hold exact
+values). Dev-only gallery of the components: `/fr/dev/composants`.
+
+- Tokens from `packages/design-tokens` only: `bg`, `surface`, `surface-raised`, `border`,
+  `fg`, `fg-muted`, `accent` (lilac) / `accent-fg`, ... `border-field` (form fields) and
+  `star-empty` are derived shades that reach 3:1 (WCAG 1.4.11): use them for those roles.
+- Fonts: Bricolage Grotesque 700/800 (`font-display`, headings and big numbers, tight
+  tracking), Geist (text), Geist Mono (small caps labels). No serif, no italic anywhere.
+- One full lilac block per page at most (`Card tone="accent"`, buttons inside it use `ink` /
+  `on-accent`); no gradient, no glow. Buttons: `primary` (52 px) / `secondary` / `ghost`;
+  every target 44 px at least. Cards that are one whole link rise on hover (`Card lift`).
+- `cn()` is `clsx` without merging: a class never overrides one of the base (use a variant
+  such as `max-md:hidden`) → `docs/pieges.md`.
 
 ## Architecture rules (non-negotiable)
 
@@ -168,6 +186,7 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - Measuring the suggestion route: space the calls (per-IP limiter); Windows CPU time moves in 15.6 ms ticks → `docs/pieges.md`
 - View transitions: Next 16.4 gives the transition type to its first commit, the page arrives without it (issue #29) → `docs/pieges.md`
 - A green e2e in dev proves nothing for what depends on how React splits renders: check a prod build → `docs/pieges.md`
+- A tile animated in opacity below the fold fails axe `color-contrast`: animate transform only → `docs/pieges.md`
 
 ## Git
 
@@ -181,7 +200,7 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - [x] 1. Foundations · 2. Database · 3. Accounts · 4. Catalog · 5. Listening · 6. Profile &
       base stats · 7. Social · 8. Lists & discovery · 9. Admin, legal, polish (`docs/social.md`,
       `docs/referencement.md`, CSP `lib/security.ts`, PWA) · 12. Douceurs (navigation speed,
-      instant search and reactions, "Undo", keyboard rating; `docs/stack-et-limites.md`).
+      instant search and reactions, "Undo", keyboard rating; `docs/stack-et-limites.md`) · 17. Nouvelle peau (Lilas identity, `docs/design/README.md`).
 - [ ] 10. **Launch**: publish a new `TERMS_VERSION` before the first real members (everyone
       accepts again, after the legal review); e2e in CI; issue #22 (cache of public pages,
       option a); issue #27 (catalog popularity counter: recomputed by the nightly job, plus a
