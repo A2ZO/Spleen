@@ -128,11 +128,14 @@ function AddToListDialog({
       onClick={(event) => {
         if (event.target === ref.current) ref.current.close();
       }}
-      className="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-md border border-border bg-bg p-0 text-fg shadow-card backdrop:bg-bg/80"
+      className="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-card-sm border border-border bg-surface p-0 text-fg shadow-card backdrop:bg-bg/80 md:rounded-card"
     >
       <div className="space-y-5 p-5 sm:p-6">
         <div>
-          <h2 id={titleId} className="text-2xl font-semibold text-balance">
+          <h2
+            id={titleId}
+            className="font-display text-2xl font-bold tracking-[-0.02em] text-balance"
+          >
             {t("title")}
           </h2>
           <p className="mt-1 text-sm text-fg-muted">{t("intro", { title })}</p>
@@ -141,12 +144,12 @@ function AddToListDialog({
         {lists === null && !error ? (
           <p className="text-sm text-fg-muted">{t("loading")}</p>
         ) : lists && lists.length === 0 ? (
-          <p className="font-serif text-fg-muted italic">{t("empty")}</p>
+          <p className="text-fg-muted">{t("empty")}</p>
         ) : (
-          <ul className="max-h-72 divide-y divide-border/50 overflow-y-auto rounded-md border border-border/60">
+          <ul className="max-h-72 overflow-y-auto">
             {lists?.map((list) => (
               <li key={list.id}>
-                <label className="flex cursor-pointer items-center gap-3 px-3 py-2.5 text-sm hover:bg-surface">
+                <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-[14px] px-3 py-2.5 text-sm hover:bg-surface-raised">
                   <input
                     type="checkbox"
                     checked={list.itemId !== null}
@@ -175,7 +178,7 @@ function AddToListDialog({
               onChange={(event) => setNewTitle(event.target.value)}
               placeholder={t("newPlaceholder")}
               maxLength={LIST_TITLE_MAX}
-              className="min-w-0 flex-1 rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg placeholder:text-fg-muted/70 focus:border-star focus:outline-none"
+              className="min-h-11 min-w-0 flex-1 rounded-full border border-border-field bg-bg px-[18px] py-2 text-sm text-fg placeholder:text-fg-muted/70 focus:border-accent focus:outline-none"
             />
             <Button type="submit" disabled={pending || newTitle.trim() === ""}>
               {t("createAndAdd")}

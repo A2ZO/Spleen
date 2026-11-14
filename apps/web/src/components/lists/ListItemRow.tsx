@@ -49,7 +49,7 @@ function Thumb({ item }: { item: ListItem }) {
     );
   }
   const release = item.kind === "release" ? item.release : item.track.release;
-  if (!release) return <div className="size-full rounded-sm bg-surface" />;
+  if (!release) return <div className="size-full rounded-thumb bg-surface" />;
   return (
     <Cover
       slug={release.slug}
@@ -78,9 +78,9 @@ export function ListItemRow({
   const rating = item.kind === "release" ? item.release.averageRating : null;
 
   return (
-    <div className="relative flex items-center gap-3 py-3 sm:gap-4">
+    <div className="relative flex items-center gap-3 px-3 py-3 sm:gap-4">
       {ranked && (
-        <span className="w-8 shrink-0 text-right font-mono text-sm text-star">
+        <span className="w-8 shrink-0 text-right font-display text-xl font-extrabold text-star tabular">
           <span className="sr-only">{t("list.rank", { rank: item.position })}</span>
           <span aria-hidden="true">{item.position}</span>
         </span>
@@ -89,7 +89,7 @@ export function ListItemRow({
         <Thumb item={item} />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate font-serif text-lg leading-tight">
+        <p className="truncate font-display text-lg leading-tight font-bold tracking-[-0.02em]">
           <Link
             href={view.href}
             className="hover:text-star focus-visible:outline-none after:absolute after:inset-0"

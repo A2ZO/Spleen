@@ -32,7 +32,7 @@ export function ListCard({ list }: { list: List }) {
           ))}
         </div>
         <div>
-          <h3 className="font-serif text-lg leading-tight">
+          <h3 className="font-display text-lg leading-tight font-bold tracking-[-0.02em]">
             <Link
               href={`/list/${list.id}`}
               className="after:absolute after:inset-0 hover:text-star focus-visible:outline-none"
