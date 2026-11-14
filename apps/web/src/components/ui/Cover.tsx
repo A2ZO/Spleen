@@ -71,7 +71,11 @@ function GeneratedCover({
   const hash = hashString(slug);
   const [bg, ink, accent] = coverSwatches[hash % coverSwatches.length]!;
   const style = STYLES[(hash >>> 4) % STYLES.length]!;
-  const offset = 20 + ((hash >>> 8) % 50);
+  const seed = hash >>> 8;
+  // With the title printed at the bottom, every shape stays in the top half (y <= 48 of 100)
+  // so the title never sits on a band; without text, the shape is centred and larger.
+  const cy = showText ? 24 : 50;
+  const cx = showText ? 30 + (seed % 40) : 40 + (seed % 20);
 
   return (
     <div
@@ -86,30 +90,27 @@ function GeneratedCover({
         className="absolute inset-0 h-full w-full"
       >
         {style === "label" && (
-          <>
-            <rect x="0" y={offset} width="100" height="9" fill={accent} />
-            <rect x="0" y={offset + 12} width="62" height="3" fill={ink} opacity="0.85" />
-          </>
+          <LabelBand y={showText ? 8 + (seed % 22) : 30 + (seed % 30)} ink={ink} accent={accent} />
         )}
         {style === "moon" && (
-          <>
-            <circle cx={offset + 15} cy="38" r="24" fill={accent} />
-            <circle cx={offset + 25} cy="32" r="22" fill={bg} />
-          </>
+          <Moon cx={cx} cy={cy} r={showText ? 18 : 30} bg={bg} accent={accent} />
         )}
         {style === "grooves" && (
           <g fill="none" stroke={accent} strokeWidth="0.8" opacity="0.9">
-            {[44, 38, 32, 26, 20, 14].map((r) => (
-              <circle key={r} cx={offset + 25} cy="40" r={r} />
+            {(showText ? [22, 17, 12] : [44, 38, 32, 26, 20, 14]).map((r) => (
+              <circle key={r} cx={cx} cy={cy} r={r} />
             ))}
-            <circle cx={offset + 25} cy="40" r="7" fill={accent} />
+            <circle cx={cx} cy={cy} r={showText ? 5 : 7} fill={accent} />
           </g>
         )}
         {style === "stripes" && (
-          <g transform={`rotate(-${offset / 2} 50 50)`}>
-            <rect x="-20" y="22" width="140" height="10" fill={accent} />
-            <rect x="-20" y="36" width="140" height="4" fill={ink} opacity="0.8" />
-            <rect x="-20" y="44" width="140" height="10" fill={accent} opacity="0.6" />
+          // At most 8 degrees with text: the 140-wide bands then stay above y = 48.
+          <g
+            transform={`rotate(-${showText ? seed % 9 : 10 + (seed % 25)} 50 ${showText ? 24 : 50})`}
+          >
+            <rect x="-20" y={cy - 16} width="140" height="10" fill={accent} />
+            <rect x="-20" y={cy - 2} width="140" height="4" fill={ink} opacity="0.8" />
+            <rect x="-20" y={cy + 4} width="140" height="10" fill={accent} opacity="0.6" />
           </g>
         )}
       </svg>
@@ -126,5 +127,35 @@ function GeneratedCover({
         </div>
       )}
     </div>
+  );
+}
+
+function LabelBand({ y, ink, accent }: { y: number; ink: string; accent: string }) {
+  return (
+    <>
+      <rect x="0" y={y} width="100" height="9" fill={accent} />
+      <rect x="0" y={y + 12} width="62" height="3" fill={ink} opacity="0.85" />
+    </>
+  );
+}
+
+function Moon({
+  cx,
+  cy,
+  r,
+  bg,
+  accent,
+}: {
+  cx: number;
+  cy: number;
+  r: number;
+  bg: string;
+  accent: string;
+}) {
+  return (
+    <>
+      <circle cx={cx} cy={cy} r={r} fill={accent} />
+      <circle cx={cx + r * 0.42} cy={cy - r * 0.25} r={r * 0.92} fill={bg} />
+    </>
   );
 }
