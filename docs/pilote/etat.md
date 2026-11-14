@@ -2,8 +2,8 @@
 
 - Jalon : 17 « Nouvelle peau »
 - Branche : feat/17-nouvelle-peau
-- Étape : fin de jalon (après l'étape 8 : PR, CI verte, jamais de fusion)
-- Phase : plan
+- Étape : fin de jalon faite (PR #35 ouverte, CI verte, non fusionnée : la fusion reste à Azzo)
+- Phase : fini
 - Mis à jour : 2026-11-14
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante. `attente` : une

@@ -37,3 +37,8 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus).
   AddToList et titres de liste sur mobile, capture d'édition de liste) → OK. Décisions : voir
   `decisions.md` (étape 8). Point ouvert : `docs/pilote/installation/*` toujours supprimés sans
   commit. Prochain passage : fin de jalon (PR, CI verte, sans fusion).
+- 2026-11-14 — Fin de jalon, pilote. `pnpm check` + e2e complet (verificateur) : tout passe.
+  CLAUDE.md ramené de 218 à 199 lignes (`94b3369`, pièges regroupés, détails dans
+  `docs/pieges.md`). PR https://github.com/A2ZO/Spleen/pull/35 ouverte, CI verte
+  (check, api-postgres). Pas de fusion (feuille de route, décision de l'étape 8) : à Azzo, puis
+  `/fin-de-jalon fusionné`. Point ouvert : `docs/pilote/installation/*` toujours supprimés sans commit.
