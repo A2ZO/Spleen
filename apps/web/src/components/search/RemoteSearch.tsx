@@ -29,9 +29,9 @@ function HitRow({ hit }: { hit: RemoteHit }) {
   ].filter(Boolean);
 
   return (
-    <li className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3">
+    <li className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[14px] px-3 py-3 odd:bg-surface-alt">
       <div className="min-w-0 flex-1">
-        <p className="font-serif text-lg leading-tight">{hit.title}</p>
+        <p className="font-display text-lg leading-tight font-bold tracking-[-0.02em]">{hit.title}</p>
         <p className="truncate text-sm text-fg-muted">
           {[hit.subtitle, ...details].filter(Boolean).join(" · ")}
         </p>
@@ -107,13 +107,13 @@ export function RemoteSearch({
       )}
       {current.status === "done" &&
         (current.hits.length > 0 ? (
-          <ul aria-live="polite" className="divide-y divide-border/50">
+          <ul aria-live="polite">
             {current.hits.map((hit) => (
               <HitRow key={`${hit.kind}:${hit.mbid}`} hit={hit} />
             ))}
           </ul>
         ) : (
-          <p aria-live="polite" className="font-serif text-lg text-fg-muted italic">
+          <p aria-live="polite" className="text-lg text-fg-muted">
             {t("search.remoteEmpty")}
           </p>
         ))}
