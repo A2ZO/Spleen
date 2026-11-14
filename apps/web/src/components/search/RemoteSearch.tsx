@@ -31,7 +31,9 @@ function HitRow({ hit }: { hit: RemoteHit }) {
   return (
     <li className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[14px] px-3 py-3 odd:bg-surface-alt">
       <div className="min-w-0 flex-1">
-        <p className="font-display text-lg leading-tight font-bold tracking-[-0.02em]">{hit.title}</p>
+        <p className="font-display text-lg leading-tight font-bold tracking-[-0.02em]">
+          {hit.title}
+        </p>
         <p className="truncate text-sm text-fg-muted">
           {[hit.subtitle, ...details].filter(Boolean).join(" · ")}
         </p>

@@ -225,7 +225,12 @@ export function SearchCombobox({
           <>
             <Picture item={item} size={size} />
             <span className="min-w-0 flex-1">
-              <span className={cn("block truncate text-fg", size === "lg" && "font-display text-xl font-bold tracking-[-0.02em]")}>
+              <span
+                className={cn(
+                  "block truncate text-fg",
+                  size === "lg" && "font-display text-xl font-bold tracking-[-0.02em]",
+                )}
+              >
                 <Marked text={item.title} q={value} />
               </span>
               <span className="block truncate text-xs text-fg-muted">
