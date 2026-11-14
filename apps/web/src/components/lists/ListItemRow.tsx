@@ -89,7 +89,7 @@ export function ListItemRow({
         <Thumb item={item} />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="truncate font-display text-lg leading-tight font-bold tracking-[-0.02em]">
+        <p className="font-display text-lg leading-tight font-bold tracking-[-0.02em] break-words max-sm:line-clamp-2 sm:truncate">
           <Link
             href={view.href}
             className="hover:text-star focus-visible:outline-none after:absolute after:inset-0"
@@ -97,7 +97,11 @@ export function ListItemRow({
             {view.title}
           </Link>
         </p>
-        {view.subtitle && <p className="truncate text-sm text-fg-muted">{view.subtitle}</p>}
+        {view.subtitle && (
+          <p className="text-sm break-words text-fg-muted max-sm:line-clamp-2 sm:truncate">
+            {view.subtitle}
+          </p>
+        )}
         <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-fg-muted">
           <Badge>{t(`list.kind.${item.kind}`)}</Badge>
           {rating !== null && (
