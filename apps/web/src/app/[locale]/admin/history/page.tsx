@@ -19,12 +19,12 @@ export default async function HistoryPage({ params, searchParams }: Props) {
 
   return (
     <section aria-labelledby="history-title" className="space-y-6">
-      <h2 id="history-title" className="font-serif text-2xl">
+      <h2 id="history-title" className="font-display text-2xl font-bold tracking-[-0.02em]">
         {t("tabs.history")}
       </h2>
       <p className="text-sm text-fg-muted">{t("historyHint")}</p>
       {history.items.length === 0 ? (
-        <p className="py-6 font-serif text-lg text-fg-muted italic">{t("historyEmpty")}</p>
+        <p className="py-6 text-lg text-fg-muted">{t("historyEmpty")}</p>
       ) : (
         <ol className="space-y-4">
           {history.items.map((action) => (
@@ -49,7 +49,7 @@ export default async function HistoryPage({ params, searchParams }: Props) {
               </div>
               <p className="whitespace-pre-line">{action.reason}</p>
               {action.excerpt && (
-                <p className="border-l-2 border-border pl-3 text-sm text-fg-muted italic">
+                <p className="border-l-2 border-border-strong pl-3 text-sm text-fg-muted">
                   {action.excerpt}
                 </p>
               )}

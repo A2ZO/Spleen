@@ -101,7 +101,10 @@ function PickerDialog({
     >
       <div className="space-y-5 p-5 sm:p-6">
         <header>
-          <h2 id="shelf-picker-title" className="text-2xl font-semibold text-balance">
+          <h2
+            id="shelf-picker-title"
+            className="font-display text-2xl font-bold tracking-[-0.02em] text-balance"
+          >
             {t("pickTitle", { title: release.title })}
           </h2>
           <p className="mt-1 text-sm text-fg-muted">{t("pickHint")}</p>

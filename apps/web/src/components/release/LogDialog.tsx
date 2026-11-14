@@ -160,7 +160,10 @@ export function LogDialog({
       <form onSubmit={submit} className="space-y-6 p-5 sm:p-6">
         <header>
           <p className="text-sm text-fg-muted">{t("prompt")}</p>
-          <h2 id="log-title" className="mt-1 text-2xl font-semibold text-balance">
+          <h2
+            id="log-title"
+            className="mt-1 font-display text-2xl font-bold tracking-[-0.02em] text-balance"
+          >
             {entry ? t("editTitle") : t("dialogTitle", { title })}
           </h2>
         </header>

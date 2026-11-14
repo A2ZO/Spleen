@@ -95,7 +95,10 @@ function ReportDialog({ subject, onClose }: { subject: Subject; onClose: () => v
       className="m-auto w-[min(30rem,calc(100vw-2rem))] rounded-card-sm border border-border bg-surface p-0 text-fg shadow-card backdrop:bg-bg/80 md:rounded-card"
     >
       <div className="space-y-5 p-5 sm:p-6">
-        <h2 id={titleId} className="text-2xl font-semibold text-balance">
+        <h2
+          id={titleId}
+          className="font-display text-2xl font-bold tracking-[-0.02em] text-balance"
+        >
           {t(`reportTitle.${subject.kind}`)}
         </h2>
         {sent ? (
