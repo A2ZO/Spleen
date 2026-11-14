@@ -28,3 +28,4 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus).
   Relecteur : 1 tour (mesure A/B, décalage par colonne) → appliqué. Décisions : voir
   `decisions.md` (étape 7). Point ouvert : `docs/pilote/installation/*` toujours supprimés sans
   commit.
+- 2026-11-14 — Étape 8 : plan écrit et relu (OK avec corrections, appliquées) ; limite d'usage atteinte avant le code, reprise en phase `code`.

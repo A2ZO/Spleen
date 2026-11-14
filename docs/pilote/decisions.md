@@ -64,3 +64,8 @@ peut revenir sur n'importe lequel. Les questions qui demandent Azzo sont sous un
 - 2026-11-14 — étape 7 — Cascade des tendances : décalage par colonne posé en CSS
   (`nth-child` selon 2 / 3 / 6 colonnes, pas de 6 % en 6 colonnes) au lieu de `index % 3`
   (relecteur). Écarté : un décalage approximatif documenté.
+- 2026-11-14 — étape 8 — Fin de jalon : la feuille de route dit « PR, CI verte, jamais de
+  fusion » ; le pilote la suit plutôt que `FUSION-AUTO` (le plus prudent, réversible).
+  Écarté : fusion automatique de la section 6.
+- 2026-11-14 — étape 8 — `--font-serif: initial` plutôt que supprimer la ligne (relecteur :
+  sinon `font-serif` retomberait sur Georgia). Variante `outline` de `Button` → `secondary`.
