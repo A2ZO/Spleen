@@ -151,7 +151,10 @@ export default async function SearchPage({ params, searchParams }: Props) {
                       />
                     )}
                     <div className="min-w-0 flex-1">
-                      <Link href={`/track/${track.slug}`} className="hover:text-star">
+                      <Link
+                        href={`/track/${track.slug}`}
+                        className="block truncate py-0.5 hover:text-star"
+                      >
                         {track.title}
                       </Link>
                       <p className="truncate text-sm text-fg-muted">

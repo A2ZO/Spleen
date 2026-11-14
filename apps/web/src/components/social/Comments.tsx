@@ -92,7 +92,12 @@ export function CommentItem({
   if (hidden(comment.id)) return null;
   return (
     <article className="flex gap-3">
-      <Link href={`/u/${comment.author.username}`} tabIndex={-1} className="shrink-0">
+      <Link
+        href={`/u/${comment.author.username}`}
+        tabIndex={-1}
+        aria-hidden="true"
+        className="shrink-0"
+      >
         <Avatar
           name={comment.author.displayName}
           seed={comment.author.username}
