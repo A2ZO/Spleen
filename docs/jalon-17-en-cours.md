@@ -22,7 +22,8 @@ comportement testé. Branche `feat/17-nouvelle-peau`.
    pied de page, suppression du thème clair.
 3. **Pages de détail** — faite : album, artiste, morceau, critique.
 4. **Pages d'accueil** — faite : accueil visiteur et membre, /discover.
-5. Profil et Étagère (grille de 4 pochettes arrondies, titre dans une pilule).
+5. **Profil et Étagère** — faite (pilote, `0e230ff`..`6fe3741`) : en-tête, trois chiffres,
+   Étagère en grille, journal, stats, abonnés.
 6. Le reste : recherche, listes, réglages, connexion, légal, 404, hors ligne, emails, OG, PWA
    (icon.svg, apple-icon, polices OG `assets/fonts`).
 7. Animations.
@@ -202,8 +203,42 @@ comportement testé. Branche `feat/17-nouvelle-peau`.
   comparable (premier lien album = « Vient de sortir », autre disque) ; discover→accueil
   +9 à +14 ms, sous le seuil de 20 ms.
 
-## Prochaine étape : 5 — Profil et Étagère
+## Étape 5 — ce qui a été fait (pilote)
 
-- Profil d'après les maquettes : grille de 4 pochettes arrondies, titre dans une pilule.
+Plan : `docs/pilote/plan-etape-5.md` ; décisions : `docs/pilote/decisions.md`.
+
+- `measure.mjs` : étape 1 = album fixe du seed (`0e230ff`) ; nouvelle référence
+  217 / 133 / 223 / 207 / 209 ms.
+- Profil : avatar à côté du nom, actions sous le nom sur mobile, « Réglages » pour soi ;
+  `profileNameLayout()` (`lib/display-title.ts`) : avatar au-dessus du nom au-delà de
+  12 lettres dans un mot, taille selon le mot le plus long.
+- Trois chiffres (`profile.stats` en `cache()`, réutilisé par l'onglet Stats) : disques cette
+  année (carte lilas), depuis toujours, notés.
+- Étagère : `ShelfGrid` (pochettes arrondies, titre en pilule opaque) ; vide chez un autre
+  membre → section absente ; `ShelfEditor` avec emplacements en pointillés.
+  `VinylShelf` et `Turntable` supprimés.
+- Journal en cartes (jour en display, note « ★ 4,5 » mono) ; sur mobile le support suit
+  l'artiste. Calendrier, stats et listes d'abonnés au même style ; plus d'italique.
+
+### Appris en route
+
+- `cn()` = `clsx` sans fusion : `hidden` posé sur un composant qui a déjà `inline-flex`
+  ne gagne pas toujours. Envelopper, ou faire porter toutes les tailles par une seule source.
+- `break-words` masque un mot coupé : `overflow.spec` passe, seule une capture le montre.
+
+### Mesures
+
+- `pnpm check` vert ; e2e complet en dev, 2 workers : 220 réussis, 0 échoué, 10 ignorés
+  (le teardown signale un « render cancelled mid-stream » → #34).
+- Prod, specs sans compte : 104 réussis, 10 ignorés (seul `hydration.spec` échoue, attendu).
+- axe WCAG 2.2, 1280/390 : 0 violation (visiteur et membre, éditeur ouvert, nom long).
+- `measure.mjs` ×2 : 222/136/231/205/228 et 221/134/223/204/221 (référence ci-dessus, < 20 ms).
+  Son propre profil juste après une écoute : 226–247 ms (204–206 à chaud).
+
+## Prochaine étape : 6 — Le reste
+
+- Brief : `docs/pilote/feuille-de-route.md` § Étape 6 (recherche, listes, notifications,
+  réglages, connexion, légal, 404, hors ligne, raccourcis, admin ; pochettes générées,
+  emails, OG, PWA).
 - Vérifs : `pnpm check`, specs touchés, e2e complet via `verificateur`, captures 1280/390 + axe,
-  build de prod + `measure.mjs`, `/fin-d-etape`.
+  build de prod + `measure.mjs`.
