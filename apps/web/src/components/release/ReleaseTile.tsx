@@ -13,7 +13,7 @@ export function ReleaseTile({ release, rank }: { release: ReleaseCard; rank?: nu
 
   return (
     <article className="group relative">
-      <div className="relative transition-transform duration-300 ease-spleen group-hover:-translate-y-1">
+      <div className="relative transition-transform duration-150 ease-spleen motion-safe:group-hover:-translate-y-1">
         <Cover
           slug={release.slug}
           title={release.title}

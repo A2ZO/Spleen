@@ -13,7 +13,7 @@ export function ListCard({ list }: { list: List }) {
 
   return (
     <UndoableGate id={list.id}>
-      <Card className="relative flex flex-col gap-3">
+      <Card lift className="relative flex flex-col gap-3">
         <div aria-hidden="true" className="flex">
           {list.preview.map((release, index) => (
             <div
