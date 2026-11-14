@@ -44,3 +44,8 @@ peut revenir sur n'importe lequel. Les questions qui demandent Azzo sont sous un
   pile système) : ni Geist ni Bricolage n'y sont disponibles. Écarté : polices web en email.
 - 2026-11-14 — étape 6 — Index des listes : pas de page dédiée dans l'appli ; c'est l'onglet
   Listes du profil, refait à l'étape 5. Rien d'ajouté (pas de nouvelle route).
+- 2026-11-14 — étape 6 — Badge « 1 Issue » de Next sur la 404 en dev : React avertit
+  « Encountered a script tag » à cause du `<script>` `COVER_ERROR_SCRIPT` de
+  `[locale]/layout.tsx` (commit `ba9c786`, jalon antérieur) quand la 404 est rendue côté
+  client. Hors périmètre (apparence seulement) : laissé tel quel, capture refaite sans
+  l'indicateur de dev. Écarté : déplacer le script (`next/script`), à décider hors pilote.

@@ -235,10 +235,46 @@ Plan : `docs/pilote/plan-etape-5.md` ; décisions : `docs/pilote/decisions.md`.
 - `measure.mjs` ×2 : 222/136/231/205/228 et 221/134/223/204/221 (référence ci-dessus, < 20 ms).
   Son propre profil juste après une écoute : 226–247 ms (204–206 à chaud).
 
-## Prochaine étape : 6 — Le reste
+## Étape 6 — ce qui a été fait (pilote)
 
-- Brief : `docs/pilote/feuille-de-route.md` § Étape 6 (recherche, listes, notifications,
-  réglages, connexion, légal, 404, hors ligne, raccourcis, admin ; pochettes générées,
-  emails, OG, PWA).
-- Vérifs : `pnpm check`, specs touchés, e2e complet via `verificateur`, captures 1280/390 + axe,
-  build de prod + `measure.mjs`.
+Plan : `docs/pilote/plan-etape-6.md` ; décisions : `docs/pilote/decisions.md` (étape 6).
+Commits `4bd712a`..`1f3c7f7`.
+
+- Recherche (filtres en piste segmentée, pilule active lilas), listes, notifications en
+  cartes (lue / non lue), réglages et connexion en `Card`, légal, 404 et erreurs (grand
+  numéro en encre), admin (dates seules) : titres display, plus de serif ni d'italique.
+- `Field` : les champs et listes en pilule, la zone de texte en `rounded-2xl`.
+- Page hors ligne : pile système, bouton pilule lilas de 52 px, contour `mist` au focus.
+- Pochettes générées (`Cover.tsx`) : formes dans le haut quand le titre est imprimé ;
+  centrées et plus grandes sans texte (`LabelBand`, `Moon`).
+- Emails (lien magique, suspension) en tables : fond `night`, carte `plum`, bouton lilas.
+- OG : lune + « spleen », titre en Inter 400 (provisoire, Bricolage absent) ; Fraunces
+  supprimée. Icône PWA : carré `night` + croissant lilas, PNG régénérés.
+
+### Appris en route
+
+- `/welcome` redirige un compte existant vers son profil : capturer le formulaire demande
+  un compte neuf.
+- Dans le gabarit d'un email, un `"
+"` remplacé par un script devient un vrai saut de
+  ligne : éditer ces chaînes à la main.
+
+### Mesures
+
+- `pnpm check` vert ; e2e complet en dev : 220 réussis, 0 échoué, 10 ignorés.
+- Prod, specs sans compte : 104 réussis, 10 ignorés (seul `hydration.spec`, attendu).
+- Après les corrections : specs instant-search, lists, legal, moderation, a11y et overflow,
+  68 réussis, 8 ignorés.
+- axe WCAG 2.2, 1280/390 : 0 violation.
+- `measure.mjs` ×2 : 214/128/221/197/219 et 214/129/216/183/218 (référence 217/133/223/207/209).
+  Sans référence antérieure, à reprendre à l'étape 8 : `/fr/search?q=pluie` ≈ 117 ms, fiche
+  liste ≈ 110 ms.
+
+## Prochaine étape : 7 — Les animations
+
+- Brief : `docs/pilote/feuille-de-route.md` § Étape 7 (étoiles, ressort des boutons, survol
+  des cartes, cascade au défilement, pochette mobile, chiffres qui comptent).
+- Règles : transform et opacity seulement, tout coupé sous `prefers-reduced-motion`, aucun
+  contenu caché en attendant une animation, ni Suspense ni transitions de page (#29).
+- Vérifs : `pnpm check`, specs touchés, e2e complet via `verificateur`, test
+  reduced-motion, captures + axe, build de prod + `measure.mjs`.
