@@ -19,3 +19,12 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus).
   dates admin, numéro 404 en encre, captures nuitblanche) → OK. Décisions : OG en Inter
   (Bricolage TTF à déposer), aucun bloc lilas, badge dev de la 404 (script du layout, hors
   périmètre). Point ouvert : `docs/pilote/installation/*` toujours supprimés sans commit.
+- 2026-11-14 — Étape 7 (les animations), pilote. Commits `8651b34`..`eafd049`. `pnpm check`
+  vert ; e2e dev 230 réussis / 0 échoué / 10 ignorés (teardown « render cancelled mid-stream »
+  → #34 commenté) après correction de 8 échecs (contraste des tuiles en cascade, vignette en
+  `<img>`) ; prod sans compte 114 réussis (seul `hydration.spec`, attendu) ; axe 0 (visiteur et
+  membre). `measure.mjs` : accueil 226–234 ms contre 209 de référence ; A/B dans la même
+  session : branche 213/133/220/206/218 contre 219/136/230/205/212 avant l'étape (accueil +6).
+  Relecteur : 1 tour (mesure A/B, décalage par colonne) → appliqué. Décisions : voir
+  `decisions.md` (étape 7). Point ouvert : `docs/pilote/installation/*` toujours supprimés sans
+  commit.
