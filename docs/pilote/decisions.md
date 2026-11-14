@@ -57,3 +57,10 @@ peut revenir sur n'importe lequel. Les questions qui demandent Azzo sont sous un
   à l'affichage, ce qui retarde le contenu). Écarté : compter à l'hydratation.
 - 2026-11-14 — étape 7 — `transition-colors` retirés (7 composants) : la règle « transform et
   opacity seulement » ; les couleurs de survol changent d'un coup. Écarté : les garder.
+- 2026-11-14 — étape 7 — Mesure de l'accueil (relecteur) : 226–234 ms contre 209 de référence.
+  A/B en build de prod dans la même session, `measure.mjs` ×3 : accueil 217–219 ms sur la
+  branche, 212 ms avant l'étape 7 (+6 ms, sous le seuil) ; les autres pages égales ou plus
+  rapides. Écart initial = bruit de la machine. Écarté : retirer `CountUp` / `StarRating`.
+- 2026-11-14 — étape 7 — Cascade des tendances : décalage par colonne posé en CSS
+  (`nth-child` selon 2 / 3 / 6 colonnes, pas de 6 % en 6 colonnes) au lieu de `index % 3`
+  (relecteur). Écarté : un décalage approximatif documenté.

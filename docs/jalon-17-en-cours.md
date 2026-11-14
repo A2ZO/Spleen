@@ -270,11 +270,48 @@ Commits `4bd712a`..`1f3c7f7`.
   Sans référence antérieure, à reprendre à l'étape 8 : `/fr/search?q=pluie` ≈ 117 ms, fiche
   liste ≈ 110 ms.
 
-## Prochaine étape : 7 — Les animations
+## Étape 7 — ce qui a été fait (pilote)
 
-- Brief : `docs/pilote/feuille-de-route.md` § Étape 7 (étoiles, ressort des boutons, survol
-  des cartes, cascade au défilement, pochette mobile, chiffres qui comptent).
-- Règles : transform et opacity seulement, tout coupé sous `prefers-reduced-motion`, aucun
-  contenu caché en attendant une animation, ni Suspense ni transitions de page (#29).
-- Vérifs : `pnpm check`, specs touchés, e2e complet via `verificateur`, test
-  reduced-motion, captures + axe, build de prod + `measure.mjs`.
+Plan : `docs/pilote/plan-etape-7.md`. Commits `8651b34`..`eafd049`. Apparence seulement.
+
+- Ménage : plus de `transition-colors` (7 composants) ni `animate-record` ; seuls transform et
+  opacity bougent, tout sous `prefers-reduced-motion: no-preference`.
+- `Button` : l'appui descend vite, le relâchement remonte en ressort (`--ease-spring`).
+- `Stars` (`pop`) / `StarRating` : les étoiles pleines rebondissent une à une à chaque note
+  donnée, jamais au chargement.
+- `Card lift` (`ListCard`) et `ReleaseTile` : montée de 4 px au survol (`motion-safe:`).
+- Tendances : `.scroll-cascade` (scroll-driven, transform seul, décalage par colonne en CSS
+  selon la grille 2 / 3 / 6 colonnes) ; sans support ou mouvement réduit : rien.
+- Album et morceau sur mobile : la pochette rétrécit au défilement (`.cover-scroll`) et une
+  vignette `CoverThumb` (background CSS, sans `<img>`) apparaît dans `DetailBar`.
+- `CountUp` (profil, `StatsPanel`) : compte seulement s'il entre à l'écran après le chargement ;
+  valeur en `sr-only`, largeur réservée.
+- `e2e/motion.spec.ts` : contenu visible, rien ne bouge en mouvement réduit.
+
+### Appris en route
+
+- Une tuile animée en opacity sous la ligne de flottaison fait échouer axe (`color-contrast`) :
+  cascade en transform seul.
+- Une vignette en `<img>` compte comme une seconde pochette (`covers.spec`) : background CSS,
+  que Chrome ne télécharge pas tant que l'élément est `display: none`.
+- La règle globale reduced-motion (durées à 0,01 ms) ne suffit pas pour les animations liées au
+  défilement : garde `no-preference` explicite.
+- En fin d'animation, `transform` calculé vaut `matrix(1, 0, 0, 1, 0, 0)` et non `none`.
+
+### Mesures
+
+- `pnpm check` vert ; e2e complet en dev : 230 réussis, 0 échoué, 10 ignorés (teardown
+  « render cancelled mid-stream » → #34).
+- Prod, specs sans compte : 114 réussis, 10 ignorés (seul `hydration.spec`, attendu).
+- axe WCAG 2.2, 1280/390 : 0 violation (visiteur en prod, membre nuitblanche en dev).
+- `measure.mjs`, A/B dans la même session (médianes de 3) : branche 213/133/220/206/218,
+  avant l'étape 7 219/136/230/205/212. Référence d'étape 5 : 217/133/223/207/209.
+
+## Prochaine étape : 8 — La passe finale
+
+- Brief : `docs/pilote/feuille-de-route.md` § Étape 8 (ménage de l'ancienne identité, captures
+  de toutes les pages revues contre les maquettes, axe partout, `measure.mjs` complet contre
+  l'étape 5 et le jalon 12 267/133/229/211/219, `CLAUDE.md` et `docs/design/README.md`, puis
+  fin de jalon : PR, CI verte).
+- Session de mesure : se connecter contre `pnpm dev` avec `MEASURE_STATE`
+  (`docs/environnement.md`) avant le build de prod.
