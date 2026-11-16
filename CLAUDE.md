@@ -39,6 +39,7 @@ pnpm db:seed             # migrate + insert demo data (idempotent) — never in 
 pnpm db:reset            # wipe the LOCAL PGlite database, migrate, seed (refuses Postgres)
 pnpm db:seed:catalog     # import packages/api/scripts/catalog-seed.json from MusicBrainz
 pnpm catalog:refresh     # re-read discographies for recent releases (nightly in Actions)
+pnpm releases:notify     # "out today" notifications for followers (nightly, after catalog:refresh)
 pnpm admin:grant <email> # admin role (also admin:revoke); never from the site
 pnpm retention          # privacy retention rules (nightly in Actions, src/lib/retention.ts)
 $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # Playwright with the installed Chrome
@@ -68,7 +69,7 @@ CI, e2e cleanup guard, env vars and database details: `docs/environnement.md`.
 
 Domain docs (read before touching the domain): listening `docs/ecoute.md` (`recomputeItemState()`),
 profile & stats `docs/profil-stats.md` (bump `CACHE_VERSION` when a stats rule changes), social &
-moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sharing `docs/referencement.md`.
+moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sharing `docs/referencement.md`, upcoming releases `docs/sorties.md`.
 
 ## Conventions
 
@@ -133,6 +134,7 @@ deletion) still accepts it; `adminProcedure` answers `NOT_FOUND` to non-admins. 
 - Brevo for emails (French, 300/day free, plain `fetch`); Expo sessions via the Cookie
   header (Better Auth's official flow); no `sharp` (not on Workers): avatars resized client-side.
 - "Today" for a listen = member's `profiles.time_zone` (IANA), never the server's zone.
+- Upcoming releases: ListenBrainz only picks what to re-read; MusicBrainz is the only source of dates.
 - Catalog: MusicBrainz WS/2 with plain `fetch`; global gate = one atomic `rate_limits` statement
   (`reserveSlot`); imports for members only; Cover Art Archive covers `unoptimized` (no quota).
 - Speed (milestone 12): no Suspense / `loading.tsx`; slow clicks show the top bar after 150 ms;
@@ -184,18 +186,17 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - [x] 1. Foundations · 2. Database · 3. Accounts · 4. Catalog · 5. Listening · 6. Profile &
       base stats · 7. Social · 8. Lists & discovery · 9. Admin, legal, polish (`docs/social.md`,
       `docs/referencement.md`, CSP `lib/security.ts`, PWA) · 12. Douceurs (navigation speed,
-      instant search and reactions, "Undo", keyboard rating; `docs/stack-et-limites.md`) · 17. Nouvelle peau (Lilas identity, `docs/design/README.md`).
+      instant search and reactions, "Undo", keyboard rating; `docs/stack-et-limites.md`) · 17. Nouvelle peau (Lilas identity, `docs/design/README.md`) · 11. Upcoming releases
+      from followed artists (follow, `/upcoming`, out-today notification; `docs/sorties.md`).
 - [ ] 10. **Launch**: a new `TERMS_VERSION` before the first real members (all accept again, after
       the legal review); e2e in CI; issues #22 (public page cache, option a) and #27 (catalog
       popularity counter: nightly job + pnpm command, also run by the seed). **Real services are
       not connected yet** (Google, Brevo, R2, Neon `spleen-prod`, domain): `docs/mise-en-ligne.md`.
-- [ ] 11. **Next.** Upcoming releases from followed artists (cahier, « Sorties à venir de tes
-      artistes »); depends only on 4, 7 and 8. Nothing to provide: the user validates its rules.
-- [ ] 13. **« Quoi écouter ce soir ? »**: "Listen on…" links (direct when MusicBrainz knows the
+- [ ] 13. **Next. « Quoi écouter ce soir ? »**: "Listen on…" links (direct when MusicBrainz knows the
       URL, else a search link; no affiliate links), "Your friends on this record", "Pick a record".
 - [ ] 14. **« Souvenirs »**: "One year ago…" on the home page; anniversaries, "Released on" on `/discover`.
 - [ ] 15. **« Défi de l'année »** · 16. **« En ce moment et RSS »** (both after launch).
 - Deferred: page transitions (milestone 12, step 6, abandoned): retry per issue #29 (Next 16.4 pitfall in `docs/pieges.md`).
 
-Order: 11 → 13 → 14 → 10 (launch) → 15 → 16. Specs in `docs/cahier-des-charges.md`; each
+Order: 13 → 14 → 10 (launch) → 15 → 16. Specs in `docs/cahier-des-charges.md`; each
 milestone opens by having the user validate its default rules.
