@@ -1,9 +1,11 @@
+import { TRPCError } from "@trpc/server";
 import type { ReleaseCard } from "@spleen/api";
 import { discographyGroupSchema, slugSchema, type DiscographyGroup } from "@spleen/validators";
 import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
+import { ArtistFollowButton } from "@/components/catalog/ArtistFollowButton";
 import { CatalogNotice } from "@/components/catalog/CatalogNotice";
 import { CatalogReportButton } from "@/components/catalog/CatalogReportButton";
 import { ListenOn } from "@/components/catalog/ListenOn";
@@ -11,8 +13,10 @@ import { DetailBar } from "@/components/detail/DetailBar";
 import { moreMenuItem } from "@/components/detail/MoreMenu";
 import { AddToListButton } from "@/components/lists/AddToList";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
+import { UpcomingGrid } from "@/components/upcoming/UpcomingGrid";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
+import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Link } from "@/i18n/navigation";
@@ -108,13 +112,42 @@ function Discography({
   );
 }
 
+/**
+ * The viewer and, for a member, whether they follow the artist: read beside the artist (which
+ * stays the same for everyone), in parallel with it, by slug.
+ */
+async function memberState(slug: string) {
+  const api = await getApi();
+  const me = await api.account.me();
+  const parsed = slugSchema.safeParse(slug);
+  const followStatus =
+    me?.profile && parsed.success ? await api.artistFollow.status({ slug: parsed.data }) : null;
+  return { me, followStatus };
+}
+
+/**
+ * The artist's upcoming releases, read by the requested slug in parallel with the artist (a
+ * merged artist's slug reads the kept one); an unknown artist has none.
+ */
+async function upcomingFor(slug: string) {
+  const parsed = slugSchema.safeParse(slug);
+  if (!parsed.success) return [];
+  try {
+    return await (await getApi()).upcoming.byArtist({ slug: parsed.data });
+  } catch (error) {
+    if (error instanceof TRPCError && error.code === "NOT_FOUND") return [];
+    throw error;
+  }
+}
+
 export default async function ArtistPage({ params, searchParams }: Props) {
   const { locale, slug } = await params;
   initRouteLocale(locale);
   const all = await fullGroup(searchParams);
-  const [artist, me, t, uiLocale] = await Promise.all([
+  const [artist, { me, followStatus }, upcoming, t, uiLocale] = await Promise.all([
     getArtist(slug, all),
-    getApi().then((api) => api.account.me()),
+    memberState(slug),
+    upcomingFor(slug),
     getTranslations(),
     getLocale(),
   ]);
@@ -182,6 +215,24 @@ export default async function ArtistPage({ params, searchParams }: Props) {
           {artist.disambiguation && (
             <p className="mt-3 text-lg text-fg-muted md:mt-4">{artist.disambiguation}</p>
           )}
+          {followStatus ? (
+            <div className="mt-6">
+              <ArtistFollowButton
+                artistId={artist.id}
+                name={artist.name}
+                following={followStatus.following}
+              />
+            </div>
+          ) : (
+            !signedIn && (
+              <div className="mt-6">
+                <ButtonLink href="/sign-in" variant="secondary">
+                  {t("artist.follow")}
+                  <span className="sr-only"> {artist.name}</span>
+                </ButtonLink>
+              </div>
+            )
+          )}
         </div>
       </header>
 
@@ -232,6 +283,23 @@ export default async function ArtistPage({ params, searchParams }: Props) {
       )}
 
       <div className="mt-14 space-y-14 md:mt-20 md:space-y-20">
+        {upcoming.length > 0 && (
+          <section aria-labelledby="upcoming">
+            <SectionHeading id="upcoming">{t("upcoming.artistTitle")}</SectionHeading>
+            <UpcomingGrid items={upcoming} />
+          </section>
+        )}
+        {me?.profile && (
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-fg-muted">
+            {t("upcoming.artistMissing")}
+            <CatalogReportButton
+              target={target}
+              defaultType="addition"
+              label={t("upcoming.artistReport")}
+              className="inline-flex min-h-11 items-center gap-2 text-link underline-offset-2 hover:underline"
+            />
+          </p>
+        )}
         {empty && <p className="text-fg-muted">{t("artist.empty")}</p>}
         {group("albums", albums)}
         {group("eps", eps)}

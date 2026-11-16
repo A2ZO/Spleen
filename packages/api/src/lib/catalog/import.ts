@@ -13,6 +13,8 @@ import {
 import { and, eq, inArray, schema, slugify, sql, type Db } from "@spleen/db";
 import type { ImportKind } from "@spleen/validators";
 
+import { announcedAtFor, mayUpdateDate, trackedDateSet } from "./release-dates";
+
 /*
  * On-demand import from the catalog provider (MusicBrainz), once and for all: the provider id
  * (`mbid`) is the uniqueness key, so every import is an idempotent upsert. Slugs are chosen
@@ -241,8 +243,13 @@ const releaseFields = (group: ReleaseGroupSummary) => ({
   title: group.title,
   type: group.type,
   secondaryTypes: group.secondaryTypes,
+});
+
+/** Date columns of a new release row (tracking rules in `release-dates.ts`). */
+const newDateFields = (group: ReleaseGroupSummary, now: Date) => ({
   releaseDate: group.firstReleaseDate?.date ?? null,
   releaseDatePrecision: group.firstReleaseDate?.precision ?? null,
+  announcedAt: announcedAtFor(group.firstReleaseDate, now),
 });
 
 async function setReleaseArtists(
@@ -356,13 +363,18 @@ async function writeReleaseGroup(
     };
     let [release] = await tdb
       .update(releases)
-      .set(fields)
+      .set({ ...fields, ...trackedDateSet(group.firstReleaseDate, now) })
       .where(eq(releases.mbid, group.mbid))
       .returning({ id: releases.id, slug: releases.slug });
     if (!release) {
       [release] = await tdb
         .insert(releases)
-        .values({ ...fields, slug: await releaseSlug(tdb, group), mbid: group.mbid })
+        .values({
+          ...fields,
+          ...newDateFields(group, now),
+          slug: await releaseSlug(tdb, group),
+          mbid: group.mbid,
+        })
         .returning({ id: releases.id, slug: releases.slug });
     }
     const releaseId = release!.id;
@@ -437,27 +449,33 @@ async function mapLimit<T, R>(items: T[], limit: number, fn: (item: T) => Promis
   return results;
 }
 
+/** Rows already in the catalog for these release groups, by mbid. */
+async function knownGroups(db: Db, groups: ReleaseGroupSummary[]) {
+  if (groups.length === 0)
+    return new Map<string, { date: string | null; precision: string | null }>();
+  const rows = await db
+    .select({
+      mbid: releases.mbid,
+      date: releases.releaseDate,
+      precision: releases.releaseDatePrecision,
+    })
+    .from(releases)
+    .where(
+      inArray(
+        releases.mbid,
+        groups.map((g) => g.mbid),
+      ),
+    );
+  return new Map(rows.map((r) => [r.mbid!, { date: r.date, precision: r.precision }]));
+}
+
 /** Release groups of a discography that are not in the catalog yet, with their covers. */
 async function newDiscographyGroups(
   db: Db,
   provider: CatalogProvider,
   groups: ReleaseGroupSummary[],
 ) {
-  const known = new Set(
-    groups.length === 0
-      ? []
-      : (
-          await db
-            .select({ mbid: releases.mbid })
-            .from(releases)
-            .where(
-              inArray(
-                releases.mbid,
-                groups.map((g) => g.mbid),
-              ),
-            )
-        ).map((r) => r.mbid),
-  );
+  const known = await knownGroups(db, groups);
   const stubs = groups.filter((g) => !known.has(g.mbid));
   // Covers for studio releases only (the ones shown first on the artist page).
   const coverTargets = new Set(
@@ -471,8 +489,34 @@ async function newDiscographyGroups(
       return [id, await provider.getCoverUrl(id)] as const;
     }),
   );
-  return { stubs, covers };
+  return { stubs, covers, known };
 }
+
+/**
+ * Writes the MusicBrainz date of a known, unmerged release group with date tracking, when
+ * the re-read may touch it (`mayUpdateDate`). Returns whether a row changed.
+ */
+async function updateKnownDate(db: Db, group: ReleaseGroupSummary, now: Date) {
+  const updated = await db
+    .update(releases)
+    .set({ ...trackedDateSet(group.firstReleaseDate, now), updatedAt: now })
+    .where(
+      and(
+        eq(releases.mbid, group.mbid),
+        sql`${releases.mergedIntoId} is null`,
+        mayUpdateDate(group.firstReleaseDate, now),
+      ),
+    )
+    .returning({ id: releases.id });
+  return updated.length > 0;
+}
+
+const sameDate = (
+  group: ReleaseGroupSummary,
+  row: { date: string | null; precision: string | null },
+) =>
+  (group.firstReleaseDate?.date ?? null) === row.date &&
+  (group.firstReleaseDate?.precision ?? null) === row.precision;
 
 /** Adds release groups as stubs (no tracklist yet), credited to their artists. */
 async function insertStubs(
@@ -493,6 +537,7 @@ async function insertStubs(
   for (const group of stubs) {
     values.push({
       ...releaseFields(group),
+      ...newDateFields(group, now),
       slug: await freeSlug(
         isTaken,
         releaseSlugCandidates(group),
@@ -568,10 +613,15 @@ export async function refreshArtistDiscography(
   return tracked(db, "artist", artist.mbid, options, async () => {
     const now = options.now ?? new Date();
     const groups = await provider.getArtistReleaseGroups(artist.mbid);
-    const { stubs, covers } = await newDiscographyGroups(db, provider, groups);
+    const { stubs, covers, known } = await newDiscographyGroups(db, provider, groups);
     return db.transaction(async (tx) => {
       const tdb = tx as unknown as Db;
       const added = await insertStubs(tdb, stubs, covers, new Map(), now);
+      // Dates of known groups that moved (announced or future ones only).
+      for (const group of groups) {
+        const row = known.get(group.mbid);
+        if (row && !sameDate(group, row)) await updateKnownDate(tdb, group, now);
+      }
       await tdb
         .update(artists)
         .set({ discographyImportedAt: now, discographyRefreshedAt: now })
@@ -579,6 +629,24 @@ export async function refreshArtistDiscography(
       return added;
     });
   });
+}
+
+/**
+ * Re-reads one known release group on MusicBrainz for its date only (the release keeps its
+ * page, tracklist and slug). Used when ListenBrainz reports another date. Returns whether the
+ * stored date changed.
+ */
+export async function refreshReleaseDate(
+  db: Db,
+  provider: CatalogProvider,
+  mbid: string,
+  options: ImportOptions = {},
+): Promise<boolean> {
+  const now = options.now ?? new Date();
+  const group = await provider.getReleaseGroup(mbid);
+  const [row] = (await knownGroups(db, [group])).values();
+  if (!row || sameDate(group, row)) return false;
+  return updateKnownDate(db, group, now);
 }
 
 /** A recording, imported through the album it first appeared on. Returns the track slug. */

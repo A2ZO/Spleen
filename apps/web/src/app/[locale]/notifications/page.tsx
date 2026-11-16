@@ -5,6 +5,7 @@ import { getFormatter, getTranslations } from "next-intl/server";
 
 import { MarkAllReadButton } from "@/components/social/ActionButtons";
 import { Avatar } from "@/components/ui/Avatar";
+import { Cover } from "@/components/ui/Cover";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { Link, redirect } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
@@ -71,7 +72,14 @@ export default async function NotificationsPage({ params, searchParams }: Props)
       ) : (
         <ul className="space-y-2">
           {page.items.map((group) =>
-            group.moderation ? (
+            group.type === "release" ? (
+              // A group whose records are all gone (should not happen: `restrict`) shows nothing.
+              group.releases.length > 0 && (
+                <li key={group.key}>
+                  <ReleaseItem group={group} />
+                </li>
+              )
+            ) : group.moderation ? (
               <li key={group.key}>
                 <ModerationItem
                   notice={group.moderation}
@@ -152,6 +160,107 @@ export default async function NotificationsPage({ params, searchParams }: Props)
           )}
         </nav>
       )}
+    </div>
+  );
+}
+
+/** The unread mark of a card (a dot, and words for screen readers). */
+function UnreadMark({ label }: { label: string }) {
+  return (
+    <>
+      <span
+        aria-hidden="true"
+        className="mr-2 inline-block size-2 rounded-full bg-star align-middle"
+      />
+      <span className="sr-only">{label} </span>
+    </>
+  );
+}
+
+/**
+ * Records of followed artists out today (`pnpm releases:notify`). One record: the whole card
+ * links to it. Several: a card of links, one row each for the first 3, then « et N autres ».
+ */
+async function ReleaseItem({ group }: { group: NotificationGroup }) {
+  const t = await getTranslations("notifications");
+  const format = await getFormatter();
+  const time = (
+    <time dateTime={group.latestAt} className="mt-1 block font-mono text-xs text-fg-muted">
+      {format.relativeTime(new Date(group.latestAt), new Date())}
+    </time>
+  );
+  const box = group.unread ? "border-border-strong bg-surface-raised" : "border-border bg-surface";
+  const artistsOf = (release: NotificationGroup["releases"][number]) =>
+    release.artists.map((a) => a.name).join(", ");
+  const first = group.releases[0];
+  if (!first) return null;
+
+  if (group.releaseCount === 1) {
+    return (
+      <Link
+        href={`/album/${first.slug}`}
+        className={cn(
+          "flex gap-3 rounded-card-sm border px-4 py-3 shadow-card hover:bg-surface-raised",
+          box,
+        )}
+      >
+        <Cover
+          slug={first.slug}
+          title={first.title}
+          coverUrl={first.coverUrl}
+          showText={false}
+          sizes="40px"
+          className="size-10 shrink-0"
+        />
+        <span className="min-w-0 flex-1">
+          <span className="block text-pretty">
+            {group.unread && <UnreadMark label={t("unreadLabel")} />}
+            {t.rich("release", {
+              title: first.title,
+              artists: artistsOf(first),
+              b: (chunks) => <strong className="font-semibold">{chunks}</strong>,
+            })}
+          </span>
+          {time}
+        </span>
+      </Link>
+    );
+  }
+
+  const more = group.releaseCount - group.releases.length;
+  return (
+    <div className={cn("rounded-card-sm border px-4 py-3 shadow-card", box)}>
+      <p className="text-pretty">
+        {group.unread && <UnreadMark label={t("unreadLabel")} />}
+        {t("releases", { count: group.releaseCount })}
+      </p>
+      <ul className="mt-1">
+        {group.releases.map((release) => (
+          <li key={release.id}>
+            <Link
+              href={`/album/${release.slug}`}
+              className="-mx-2 flex min-h-11 items-center gap-3 rounded-card-sm px-2 py-1 hover:bg-surface-raised"
+            >
+              <Cover
+                slug={release.slug}
+                title={release.title}
+                coverUrl={release.coverUrl}
+                showText={false}
+                sizes="32px"
+                className="size-8 shrink-0"
+              />
+              <span className="min-w-0">
+                <span className="block truncate font-semibold">{release.title}</span>
+                <span className="block truncate text-sm text-fg-muted">{artistsOf(release)}</span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {more > 0 && (
+        <p className="mt-1 text-sm text-fg-muted">{t("releasesMore", { count: more })}</p>
+      )}
+      {time}
     </div>
   );
 }

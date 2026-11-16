@@ -1,68 +1,79 @@
-# Plan — étape 6 « Le reste »
+# Plan — étape 6 « La passe finale » (jalon 11)
 
-Apparence seulement : aucune lecture d'API, route, migration ni dépendance nouvelle. Briques
-existantes : `Card`, `SectionHeading`, `Pill`, `Badge`, `Button`, `Field`, `LinkTabs`/`Tabs`,
-`Cover`, rangées `rounded-card-sm bg-surface` (comme `FollowListPage`). Aucun bloc lilas sur
-ces pages (décision : la règle « un seul » devient « aucun » quand il n'apporte rien).
+Brief : `feuille-de-route.md`, « Étape 6 ». Aucune migration, aucune dépendance, aucun code
+métier : docs, vérifications, captures. Code touché seulement si une vérification échoue.
+Relu par le relecteur (OK avec corrections, appliquées).
 
-## Vocabulaire commun (appliqué partout)
-- h1 de page : `font-display text-4xl font-extrabold tracking-[-0.03em]`, jamais `break-words`
-  (coupe les mots) ; titre saisi par un membre (nom de liste) : `phoneTitleSize`.
-- h2/h3 en `font-serif` → `font-display font-bold tracking-[-0.02em]` (ou `SectionHeading`).
-- États vides en serif italique → phrase `text-fg-muted` droite (comme `/discover`).
-- Citations/notes en italique (`admin`, notifications) → texte droit `text-fg-muted`, la
-  bordure gauche garde la distinction.
-- Sections de formulaire → `Card` ; listes → rangées `rounded-card-sm bg-surface`.
+1. [x] **`docs/sorties.md`** (doc du domaine, 80 lignes au plus) : le point d'entrée du jalon,
+   sans recopier le détail qui reste où il est :
+   - règles retenues (validées le 16 novembre) : suivi réservé aux membres, 500 artistes,
+     200 écritures par heure, liste privée (réglages), « à venir » (renvoi `decouverte.md`),
+     précision de la date, horizon 12 mois, rien d'autre que « À écouter » avant la sortie
+     (`RELEASE_NOT_OUT`, renvoi `ecoute.md`), notification du jour J (in-site, réglage
+     `notify_releases`) ;
+   - données : migrations 0014 (`artist_follows`, `profiles.notify_releases`), 0015
+     (`releases.announced_at`, `release_date_changed_at`), 0016 (`notifications.release_id`,
+     type `release`) ; `releases.release_date_precision` existait avant le jalon ; export,
+     suppression du compte, fusion de doublons ;
+   - API par routeur (`artistFollow`, `upcoming`, `discovery.awaited`, `notification`) et
+     fichiers (`lib/catalog/artist-follows.ts`, `upcoming.ts`, `upcoming-feed.ts`,
+     `release-dates.ts`, `release-notifications.ts`) ;
+   - commandes et tâches de nuit : `pnpm catalog:refresh` (fil ListenBrainz puis
+     discographies), `pnpm releases:notify`, ordre dans `catalog-refresh.yml` (03:17 UTC) ;
+   - écrans (une ligne chacun, renvoi `decouverte.md`) ; démo (`seed/upcoming.ts`) ;
+   - questions laissées à Azzo (doublon « À venir » / discographie, texte d'une notification
+     d'un jour passé, heure de la tâche pour les Amériques).
+2. [x] **Renvois** : une ligne en tête de « Sorties à venir » dans `decouverte.md` et de « Dates
+   annoncées et sorties annoncées » dans `catalogue.md` vers `docs/sorties.md` ; vérifier que
+   la référence de `release-notifications.ts` pointe vers un fichier qui existe.
+3. [x] **Cahier** : cocher « Sorties à venir : valider les règles par défaut », avec les règles
+   retenues en une phrase et le renvoi `docs/sorties.md` (date du 16 novembre).
+4. [x] **Captures 1280 et 390 px** dans `docs/pilote/captures/6/`, données de démo, axe WCAG 2.2
+   AA à chaque capture (script du scratchpad dérivé de `shots4.cjs`) :
+   - avant tout : la carte « Sort … » de l'accueil de `nuitblanche` et les groupes de
+     `/upcoming` sont non vides (dates de démo calculées au seed ; sinon `pnpm db:seed`) ;
+   - visiteur sur le build de prod : `/fr`, `/fr/discover`, `/fr/artist/lune-basse`,
+     `/fr/album/les-heures-bleues`, `/fr/album/nuit-polaire` (« Annoncé pour … ») ;
+   - `nuitblanche` (session enregistrée) sur le build de prod : les mêmes, plus
+     `/fr/upcoming`, `/fr/upcoming?type=album`, `/fr/settings` ;
+   - `rainydaysam` (sans suivi) en dev : `/fr`, `/fr/upcoming`, `/fr/discover`,
+     `/fr/artist/lune-basse` ;
+   - écart à noter dans `decisions.md` : axe membre sur des comptes de démo (les données de
+     démo sont nécessaires), pas sur un compte e2e jetable ;
+   - notifications « Sortie aujourd'hui » : captures de l'étape 5 copiées (aucune donnée de
+     démo n'est datée d'aujourd'hui ; écart déjà noté dans `decisions.md`).
+   Relues par le relecteur avec l'étape.
+5. [x] **Vérifications** : `pnpm check` ; build de prod (`pnpm run free-port`, valeurs factices
+   dans la commande) : specs sans compte et `overflow.spec` ; `measure.mjs` complet, deux
+   passages, contre 237 / 140 / 225 / 208 / 210 (+20 ms) ; `/upcoming` avec la méthode de sa
+   référence (accueil → `/upcoming` par `router.push`, `nuitblanche`, médianes de 6,
+   `upcoming-measure.cjs`) contre 149 / 151 ;
+   e2e complet en dev via `verificateur`.
+6. [x] **`CLAUDE.md`** : jalon 11 coché en une ligne dans « Milestones » (renvoi
+   `docs/sorties.md`), retiré de la liste à faire ; `pnpm releases:notify` dans « Commands » ;
+   `docs/sorties.md` dans les docs de domaine ; une décision (ListenBrainz ne sert qu'à choisir
+   quoi relire, MusicBrainz seule source des dates) ; ordre des jalons mis à jour (13 → 14 → 10
+   → 15 → 16). Rien d'autre.
+7. [ ] **Vérif** de l'étape (relecteur), puis clôture et fin de jalon (sections 5 et 6 du
+   skill) : PR vers `dev` avec `Closes #32`, l'écart e2e de l'étape 5, les trois questions
+   pour Azzo et la ligne de script `releases:notify` du `package.json` racine (pas une
+   dépendance). Avant la fusion : `git diff --stat origin/dev...HEAD` comparé à « Autorisé à
+   la fusion ». Phase B : PR de release `dev` → `main` en brouillon (`--draft`), qui répète
+   `Closes #32` (GitHub ne ferme l'issue qu'à la fusion dans `main`) et les questions.
 
-## Commits prévus (un par groupe)
-1. **Recherche** : `search/page.tsx`, `RemoteSearch`, `SearchCombobox` (fenêtre instantanée :
-   panneau `rounded-card-sm` + `shadow-card`, titres en display, état vide droit).
-2. **Listes** : fiche `list/[id]` (en-tête display, commentaires et vide), `ListCard`,
-   `ListItemRow`, `ListItemsEditor`, `AddToList`, `ListForm` (création/édition en `Card`).
-   L'index des listes = onglet Listes du profil (déjà fait à l'étape 5) : rien à ajouter.
-3. **Notifications** : rangées en cartes, extraits sans italique ; la carte ne devient pas
-   un lien entier (liens inchangés).
-4. **Compte** : `settings` (sections en `Card`, `DeleteAccountForm` garde son bouton `bg-danger` et
-   ses confirmations), `settings/blocks`, `ProfileForm` (legend display), `SuspendedNotice`,
-   `sign-in` + `SignInForm` (code : `autocomplete="one-time-code"`, `inputMode="numeric"`,
-   `useTypedBeforeHydration` intacts — on ne touche que les classes), `welcome` +
-   `OnboardingForm`.
-5. **Légal, erreurs, hors ligne, raccourcis** : `LegalPage` (h2 display), `not-found`,
-   `error`, `global-error` (citation → grand titre display droit, pas de bloc lilas),
-   `offline.html` (Geist absent hors Next → pile système sans serif, bouton pilule lilas
-   `palette.lilac`/`palette.ink`, 52 px de haut,
-   `:focus-visible` contour `mist` décalé, paragraphe en `haze` au lieu d'une opacité), `KeyboardHelp` (dialogue en carte, touches en Geist Mono).
-6. **Admin et modération** : `admin`, `admin/history`, `admin/merge`, `admin/suspended`
-   (sobres : cartes, titres display, plus de serif/italique). `review/[id]/edit` (kicker).
-7. **Pochettes générées** (`Cover.tsx`) : les formes restent dans le haut (`y` ≤ 48 sur 100)
-   quand le titre est imprimé ; bande `label` et rayures bornées au-dessus du texte ; sans
-   texte (`showText=false`), formes centrées et plus grandes. Nuancier `coverSwatches`
-   inchangé (jetons Lilas, testé AA) ; vérifié en capture sur 8 slugs.
-8. **Emails** (`packages/auth/src/emails.ts`, `packages/api/src/lib/moderation/emails.ts`) :
-   mise en page en `<table role="presentation">`, styles en ligne, fond `night`, carte
-   `plum`, texte `mist`, bouton lilas encre, police de repli `Arial, Helvetica, sans-serif`,
-   lune en caractère texte + U+FE0E (pas d'image, pas d'emoji). Diff limité au gabarit HTML
-   (sujet, URL, code, envoi inchangés ; dit dans le commit). Lien et code : texte sur fond explicite
-   (`bgcolor` + `background`), lisible si le client inverse. Version texte inchangée (déjà
-   à jour). Les tests existants (`auth.test.ts`, `moderation.test.ts`) restent verts.
-9. **OG** : fond `night`, lune lilas + « spleen », titre en Inter 400 grand corps serré
-   (police déclarée en `weight: 400` seulement, provisoire). **Bricolage TTF absent du
-   dépôt et aucun téléchargement sans Azzo** → titres en Inter (déjà dans `assets/fonts`,
-   sans serif) ; `Fraunces-SemiBold.ttf` et sa licence supprimés, README mis à jour ; pochette
-   de repli = même dessin que `Cover` (aplat + lune), plus de dégradé. Décision notée.
-10. **PWA** : `icon.svg` refait (1er élément = `<rect fill="#0E0C12"/>` lu par le script ; carré `night`, croissant lilas du `Logo`, zone sûre 80 %),
-    `pnpm --filter @spleen/web icons` régénère PNG + `apple-icon` ; manifest déjà
-    `palette.night` (#0E0C12), vérifié.
+Avancement (2026-11-16, run interrompu par la limite d'usage) : points 1 à 3 faits (649c239) ;
+captures visiteur et `nuitblanche` sur prod faites (axe : 0 violation) ; mesures prod :
+215/213 · 136/135 · 231/219 · 182/180 · 228/225 ; `/upcoming` 158 / 160 (référence 149 / 151,
++9 ms). Reste : captures `rainydaysam` en dev, copie des captures 5, specs sans compte et
+`overflow.spec` sur prod, e2e complet, `CLAUDE.md`, relecture, PR.
 
-## Vérifications
-- `measure.mjs` sur le build de prod (pages de référence) ; `/search` et une fiche liste
-  mesurées en plus, sans référence antérieure (notées pour l'étape 8).
+Suite (2026-11-16, second run) : captures `rainydaysam` en dev (axe : 0 violation), captures 5
+copiées ; `pnpm check` vert ; e2e complet en dev 245 réussis · 1 échoué · 10 ignorés
+(`undo-delete.spec.ts:289` passe seul, issue #34) ; build de prod, specs sans compte +
+`overflow.spec` 114 réussis · 2 échoués · 10 ignorés (`covers.spec.ts:72` passe seul sur les
+deux projets, issue #34) ; `CLAUDE.md` à jour.
 
-- Recherche finale : `grep -rnE "font-serif|italic|Georgia|serif"` sur `apps/web/src` et
-  `packages/*/src` → seulement l'alias
-  `--font-serif` de `globals.css` (retiré à l'étape 8) et le commentaire « No faux italic ».
-- Habituelles (feuille de route) + specs touchés : instant-search, lists, accounts, legal,
-  moderation, pwa, keyboard, covers, seo (OG), a11y, hydration (connexion).
-- Captures 1280/390 : recherche (page + fenêtre ouverte), fiche liste, création de liste,
-  notifications, réglages, connexion (+ étape du code), welcome, légal, 404, hors ligne,
-  raccourcis, admin ; plus un email HTML, une image OG, l'icône PWA, 8 pochettes générées.
+- [x] vérifications
+- [x] relecture 1 (OK avec corrections : fiche d'un disque à venir, appliquées)
+- [x] relecture 2 (OK ; moyenne et critiques remises selon les décisions actées, voir `decisions.md`)
+- [x] clôture

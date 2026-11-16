@@ -61,6 +61,13 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
           DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
           MUSICBRAINZ_USER_AGENT: ${{ vars.MUSICBRAINZ_USER_AGENT }}
+      # Even when the refresh failed (MusicBrainz down): today's records are already known.
+      - if: ${{ !cancelled() && steps.config.outputs.ready == 'true' }}
+        name: Notify today's releases (in-site only)
+        run: pnpm releases:notify
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_UNPOOLED }}
+          DATABASE_URL_UNPOOLED: ${{ secrets.DATABASE_URL_UNPOOLED }}
 
   retention:
     runs-on: ubuntu-latest

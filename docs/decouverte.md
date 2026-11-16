@@ -61,7 +61,9 @@ artiste. Server Actions : `apps/web/src/app/[locale]/list/actions.ts`.
 
 - Disques sortis ces 90 derniers jours, au jour ou au mois près (une année seule n'est pas
   « récente »), sans live ni compilation ; albums et EP par défaut, singles à part ;
-  du plus récent au plus ancien. Aucun appel à MusicBrainz à l'affichage.
+  du plus récent au plus ancien. Aucun appel à MusicBrainz à l'affichage. Ce que la règle
+  des sorties à venir retient (jour de Paris) en est exclu : un mois annoncé reste « à venir »
+  pendant ce mois, puis devient récent.
 - Alimentation : `pnpm catalog:refresh` relit la discographie (stubs des nouvelles
   sorties) d'au plus 150 artistes : ceux écoutés par des membres sur 30 jours (disques,
   morceaux, artistes) et ceux présents sur une Étagère, les plus suivis d'abord, chacun au
@@ -70,6 +72,70 @@ artiste. Server Actions : `apps/web/src/app/[locale]/list/actions.ts`.
 - Lancement : chaque nuit par `.github/workflows/catalog-refresh.yml` (environnement
   GitHub `production`, secret `DATABASE_URL_UNPOOLED` ; activation :
   `docs/mise-en-ligne.md` § 9), ou à la main sur Neon `dev` : `pnpm catalog:refresh`.
+
+## Sorties à venir (jalon 11)
+
+Vue d'ensemble du domaine (règles, données, commandes, tâches de nuit) : `docs/sorties.md`.
+
+Règle partagée (`lib/catalog/upcoming.ts`), au jour du lecteur (fuseau de son profil,
+Europe/Paris pour un visiteur) :
+
+- au jour : après aujourd'hui ; au mois : un mois suivant, ou le mois en cours si la sortie a
+  été annoncée (`announced_at`) ; à l'année : l'année suivante, ou l'année en cours si annoncée ;
+- jamais au-delà de 12 mois (une année : la suivante au plus) ; « pas encore sorti » (fiche du
+  disque, refus `RELEASE_NOT_OUT`) est la même règle sans ce plafond (`upcomingRelease()`) ;
+- non fusionnée, disque principal (sans live ni compilation), album, EP ou single.
+
+Date au jour affichée courte (« ven. 21 nov. »), avec l'année hors de l'année en cours
+(`formatUpcomingDate()`).
+
+Lectures (routeur `upcoming`) :
+
+- `mine({ type? })` (membre) : sorties des artistes suivis, par date puis titre, 200 au plus,
+  en groupes `week` (7 prochains jours), `month` (reste du mois, ou mois en cours au mois),
+  `later`, `tba` (année seule) ; `dateChanged` quand la date a bougé ;
+- `byArtist({ slug })` (publique) : 20 au plus, identique pour tous (cache public, issue #22),
+  jour de Paris ; un artiste fusionné lit la fiche gardée, inconnu → `NOT_FOUND`.
+- `home()` (publique, `null` pour un visiteur ou un compte suspendu) : `{ following, items,
+  soon }` ; `items` = 5 prochaines sorties suivies (année seule en dernier, puis date, titre) ;
+  `soon` = première sortie suivie **au jour** entre demain et J+6, avec `inDays` (issue #32).
+- `discovery.awaited()` (publique, 10 au plus, jour de Paris, sans données du lecteur) : sorties
+  à venir comptées par membres distincts qui suivent un de leurs artistes **ou** les ont dans
+  « À écouter » (une fois chacun, membres suspendus exclus), 2 au moins ; tri : nombre, année
+  seule en dernier, date, titre. Aucun nombre ni nom n'est montré.
+
+Écrans (étape 3) :
+
+- `/upcoming` (« Mes sorties à venir », membre, `noindex` ; visiteur → connexion) : onglets
+  Tout / Albums / EP / Singles (`?type=`), quatre groupes (« Cette semaine », « Ce mois-ci »,
+  « Plus tard », « Annoncé, date à préciser ») ; chaque ligne : pochette, titre, artistes, date courte
+  (`formatUpcomingDate()`, `lib/release-date.ts`), type, badge « Date modifiée », bouton
+  « À écouter » instantané (`components/upcoming/`). Sans suivi : invitation à suivre depuis
+  les fiches ; suggestions d'artistes (`upcoming.suggestions`) ; lien de signalement en bas.
+  Lien depuis `/settings` (« Sorties »).
+- Fiche artiste : section « À venir » au-dessus de la discographie (tuiles, date à la place de
+  l'année ; les disques restent aussi dans la discographie) ; pour un membre, « Une sortie
+  manque ? » ouvre le signalement catalogue avec le type « ajout » présélectionné.
+- Accueil membre (étape 4) : « Bientôt dans tes oreilles » (`upcoming.home`, pleine largeur
+  sous la grille du haut, lien « Toutes tes sorties à venir ») ; sans suivi, l'invitation ;
+  suivis sans annonce, rien. La petite carte devient « Sort demain » / « Sort vendredi » quand
+  `soon` existe (sans action d'écoute), sinon « Vient de sortir ». Visiteur : inchangé.
+- `/discover` : « Les plus attendus » (`#awaited`) avant « Sorties récentes », caché si vide.
+  Les tuiles de ces trois endroits viennent de `components/upcoming/UpcomingGrid.tsx`.
+- Fiche d'un disque à venir : « Sort le … », « Sort en … » ou « Annoncé pour … » à la place de
+  la date, badge « Date modifiée » ; contrôles réduits (voir `docs/ecoute.md`).
+- Notifications du jour J (étape 5) : `pnpm releases:notify` (chaque nuit après
+  `catalog:refresh` dans `.github/workflows/catalog-refresh.yml`, même si la relecture a
+  échoué) crée « Sortie aujourd'hui » pour chaque membre qui suit un artiste crédité, a
+  `notify_releases` vrai, n'est pas suspendu, quand la date **au jour** du disque (principal,
+  non fusionné) est aujourd'hui dans son fuseau (`todayIn`, repli Europe/Paris si le fuseau est
+  inconnu). Une fois par membre et par disque, relançable ; pas d'email ni de push. Les disques
+  d'un même jour forment un groupe : un seul → « Sortie aujourd'hui : **Titre** de Artiste »,
+  carte liée à la fiche ; plusieurs → « N sorties aujourd'hui chez tes artistes », les 3
+  premiers par titre liés, puis « et N autres ». La fusion de doublons repointe `release_id`.
+
+Démo : `nuitblanche` suit trois artistes, `vinylvince` deux, six sorties annoncées
+(`seed/upcoming.ts`, dates recalculées à chaque seed, sans `mbid`).
 
 ## Les mieux notés
 

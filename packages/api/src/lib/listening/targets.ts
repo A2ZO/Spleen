@@ -1,7 +1,8 @@
 import { and, eq, schema, type DbOrTx, type ListenTarget } from "@spleen/db";
-import type { ListenTargetInput } from "@spleen/validators";
+import { DEFAULT_TIME_ZONE, todayIn, type ListenTargetInput } from "@spleen/validators";
 
 import { fail } from "../../trpc";
+import { upcomingRelease } from "../catalog/upcoming";
 
 const { profiles, releases, tracks } = schema;
 
@@ -39,4 +40,20 @@ export async function requireListener(db: DbOrTx, userId: string) {
     .where(eq(profiles.userId, userId));
   if (!row) fail("PRECONDITION_FAILED", "PROFILE_REQUIRED");
   return row;
+}
+
+/**
+ * A record not out yet (the upcoming rule, the member's today) takes no listen, rating, heart
+ * or review: RELEASE_NOT_OUT. Tracks are not concerned (a single may come before its album);
+ * removing something and "Want to listen" stay allowed (docs/ecoute.md).
+ */
+export async function requireReleased(
+  db: DbOrTx,
+  target: ListenTarget,
+  timeZone: string | null | undefined,
+  now: Date,
+): Promise<void> {
+  if (!("releaseId" in target)) return;
+  const today = todayIn(timeZone || DEFAULT_TIME_ZONE, now);
+  if (await upcomingRelease(db, target.releaseId, today)) fail("BAD_REQUEST", "RELEASE_NOT_OUT");
 }

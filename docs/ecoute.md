@@ -29,6 +29,17 @@ utilisent exactement le même code.
 L'état d'un morceau tient compte de ses propres écoutes et des notes données piste par piste
 dans les écoutes d'album (même règle `updated_at`, jamais de cœur).
 
+**Disque pas encore sorti** (jalon 11, `requireReleased()` dans `lib/listening/targets.ts`) :
+tant que la règle `upcomingSql()` le dit à venir au jour du fuseau du membre, l'API refuse
+ce qui ajoute (`RELEASE_NOT_OUT`) : note non nulle, cœur, « J'ai écouté », écoute créée ou
+modifiée, critique créée ou modifiée. Retirer une note ou un cœur, supprimer une écoute ou
+une critique, « À écouter » et les listes restent permis ; un morceau n'est jamais refusé
+(un single peut précéder son album). Le jour de sortie est accepté.
+Écran : `myState.releaseNotOut` (fuseau du membre) passe `notOut` à `ListenControls` : ni
+étoiles, ni « J'ai écouté », ni cœur, ni journal détaillé, ni raccourcis clavier ; « À
+écouter » et les listes restent, sans carte « Tes écoutes » ni étagère. Visiteur : jour de
+Paris (`release.upcoming`).
+
 ## Écoute sans date
 
 `listened_on` est nul pour **au plus une** écoute par membre et par cible (index uniques

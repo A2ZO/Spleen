@@ -4,10 +4,13 @@ import type { ReactNode } from "react";
 
 import { AvatarForm } from "@/components/account/AvatarForm";
 import { DeleteAccountForm } from "@/components/account/DeleteAccountForm";
+import { NotifyReleasesForm } from "@/components/account/NotifyReleasesForm";
 import { ProfileForm } from "@/components/account/ProfileForm";
 import { SignOutButton } from "@/components/account/SignOutButton";
 import { UsernameForm } from "@/components/account/UsernameForm";
+import { ArtistFollowButton } from "@/components/catalog/ArtistFollowButton";
 import { ShortcutsToggle } from "@/components/layout/ShortcutsToggle";
+import { Avatar } from "@/components/ui/Avatar";
 import { buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Link, redirect } from "@/i18n/navigation";
@@ -46,9 +49,11 @@ export default async function SettingsPage({ params }: Props) {
   if (!me) return redirect({ href: "/sign-in", locale });
   if (!me.profile) return redirect({ href: "/welcome", locale });
   const { profile } = me;
-  const [t, renameAt] = await Promise.all([
+  const [t, tu, renameAt, followed] = await Promise.all([
     getTranslations({ locale, namespace: "settings" }),
+    getTranslations({ locale, namespace: "upcoming" }),
     api.account.usernameChangeAvailableAt(),
+    api.artistFollow.mine(),
   ]);
 
   return (
@@ -73,6 +78,41 @@ export default async function SettingsPage({ params }: Props) {
 
       <Section id="username" title={t("usernameTitle")}>
         <UsernameForm username={profile.username} availableAt={renameAt} />
+      </Section>
+
+      <Section id="releases" title={t("releasesTitle")}>
+        <NotifyReleasesForm enabled={profile.notifyReleases} />
+        <p className="mt-6">
+          <Link href="/upcoming" className={buttonClasses("secondary", undefined, "sm")}>
+            {tu("settingsLink")}
+          </Link>
+        </p>
+        <h3 className="mt-8 font-display text-xl font-bold tracking-[-0.02em]">
+          {t("followedArtists")}
+        </h3>
+        {followed.length === 0 ? (
+          <p className="mt-3 text-fg-muted">{t("followedArtistsEmpty")}</p>
+        ) : (
+          <ul className="mt-3 divide-y divide-border">
+            {followed.map((artist) => (
+              <li key={artist.id} className="flex items-center gap-3 py-3">
+                <Avatar
+                  name={artist.name}
+                  seed={artist.slug}
+                  src={artist.imageUrl}
+                  className="mb-0!"
+                />
+                <Link
+                  href={`/artist/${artist.slug}`}
+                  className="min-w-0 flex-1 truncate font-medium hover:underline"
+                >
+                  {artist.name}
+                </Link>
+                <ArtistFollowButton artistId={artist.id} name={artist.name} following />
+              </li>
+            ))}
+          </ul>
+        )}
       </Section>
 
       <Section id="account" title={t("accountTitle")}>

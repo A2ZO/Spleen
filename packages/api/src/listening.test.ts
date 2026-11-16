@@ -632,3 +632,97 @@ describe("demo members", () => {
     ]);
   });
 });
+
+describe("records not out yet (RELEASE_NOT_OUT)", () => {
+  // `now` is 2026-10-21 12:00 UTC: the 22nd starts at 22:00 UTC in Paris, later in Los Angeles.
+  async function upcomingRelease(date: string) {
+    const [row] = await handle.db
+      .insert(schema.releases)
+      .values({
+        slug: `a-venir-${date}-${Math.random().toString(36).slice(2, 8)}`,
+        title: "Bientôt",
+        type: "album",
+        releaseDate: date,
+        releaseDatePrecision: "day",
+        announcedAt: now,
+      })
+      .returning();
+    return { kind: "release" as const, id: row!.id };
+  }
+  const setDate = (id: string, date: string) =>
+    handle.db.update(schema.releases).set({ releaseDate: date }).where(eq(schema.releases.id, id));
+  const entryInput = (target: { kind: "release"; id: string }) => ({
+    target,
+    rating: null,
+    liked: false,
+    relisten: false,
+    format: null,
+    moodIds: [],
+    trackRatings: [],
+  });
+
+  it("refuses every addition before the release day", async () => {
+    const m = await member();
+    const target = await upcomingRelease("2026-11-20");
+    const refused = [
+      () => m.call().listening.quickRate({ target, rating: 8 }),
+      () => m.call().listening.quickLike({ target, liked: true }),
+      () => m.call().listening.markListened(target),
+      () => m.call().listening.entry.create({ ...entryInput(target), listenedOn: "2026-10-20" }),
+      () => m.call().review.create({ target, body: "Trop tôt.", lang: "fr" }),
+    ];
+    for (const fn of refused) expect(await errorCode(fn)).toBe("RELEASE_NOT_OUT");
+    expect(await stateOf(m.user.id, { releaseId: target.id })).toBeNull();
+  });
+
+  it("refuses a record dated beyond the 12 months of « à venir »", async () => {
+    const m = await member();
+    const target = await upcomingRelease("2028-05-20");
+    expect(await errorCode(() => m.call().listening.quickRate({ target, rating: 8 }))).toBe(
+      "RELEASE_NOT_OUT",
+    );
+  });
+
+  it("allows removals and the listening queue", async () => {
+    const m = await member();
+    const target = await upcomingRelease("2026-11-21");
+    await m.call().listening.quickRate({ target, rating: null });
+    await m.call().listening.quickLike({ target, liked: false });
+    await m.call().listening.setWantToListen({ target, wantToListen: true });
+    expect((await stateOf(m.user.id, { releaseId: target.id }))?.wantToListen).toBe(true);
+  });
+
+  it("refuses editing a listen or a review once the date moved later", async () => {
+    const m = await member();
+    const target = await upcomingRelease("2026-10-01");
+    const { id } = await m
+      .call()
+      .listening.entry.create({ ...entryInput(target), listenedOn: "2026-10-02" });
+    const review = await m.call().review.create({ target, body: "Déjà.", lang: "fr" });
+    await setDate(target.id, "2026-12-01");
+    expect(
+      await errorCode(() =>
+        m.call().listening.entry.update({ ...entryInput(target), id, listenedOn: "2026-10-03" }),
+      ),
+    ).toBe("RELEASE_NOT_OUT");
+    expect(
+      await errorCode(() => m.call().review.update({ id: review.id, body: "Encore.", lang: "fr" })),
+    ).toBe("RELEASE_NOT_OUT");
+    await m.call().review.delete({ id: review.id });
+    await m.call().listening.entry.delete({ id });
+  });
+
+  it("accepts the release day in the member's zone, and tracks", async () => {
+    const target = await upcomingRelease("2026-10-22");
+    const evening = new Date("2026-10-21T22:30:00Z");
+    const paris = await member({ timeZone: "Europe/Paris" });
+    const la = await member({ timeZone: "America/Los_Angeles" });
+    await paris.call(evening).listening.quickRate({ target, rating: 8 });
+    expect(await errorCode(() => la.call(evening).listening.quickRate({ target, rating: 8 }))).toBe(
+      "RELEASE_NOT_OUT",
+    );
+    await la
+      .call()
+      .listening.quickRate({ target: { kind: "track", id: leRoiTrack(1) }, rating: 6 });
+  });
+});

@@ -1,5 +1,6 @@
 import { consumeRateLimit } from "@spleen/infra/rate-limit";
 import {
+  artistFollowSchema,
   commentCreateSchema,
   commentListSchema,
   commentUpdateSchema,
@@ -7,6 +8,7 @@ import {
   likeSetSchema,
   popularFeedSchema,
   recentReleasesSchema,
+  upcomingMineSchema,
   topRatedSchema,
   trendsSchema,
   listCreateSchema,
@@ -65,8 +67,22 @@ import {
   setAvatar,
   updateProfile,
 } from "./lib/account";
+import {
+  artistFollowStatus,
+  followArtist,
+  myFollowedArtists,
+  setNotifyReleases,
+  unfollowArtist,
+} from "./lib/catalog/artist-follows";
 import { importArtist, importEntity, importReleaseGroup } from "./lib/catalog/import";
 import { mergeCatalog, mergedSlug, previewMerge } from "./lib/catalog/merge";
+import {
+  awaitedReleases,
+  upcomingByArtist,
+  upcomingForMember,
+  upcomingHome,
+  upcomingSuggestions,
+} from "./lib/catalog/upcoming";
 import { createCatalogReport } from "./lib/catalog/reports";
 import {
   artistIdBySlug,
@@ -168,6 +184,8 @@ const MOOD_CREATE_RULE = { window: 60 * 60, max: 30 };
 const SHELF_WRITE_RULE = { window: 60 * 60, max: 120 };
 /** Social writes, per member and per hour. */
 const FOLLOW_WRITE_RULE = { window: 60 * 60, max: 200 };
+/** Following and unfollowing artists, per member and per hour. */
+const ARTIST_FOLLOW_WRITE_RULE = { window: 60 * 60, max: 200 };
 const LIKE_WRITE_RULE = { window: 60 * 60, max: 300 };
 const COMMENT_WRITE_RULE = { window: 60 * 60, max: 60 };
 const BLOCK_WRITE_RULE = { window: 60 * 60, max: 60 };
@@ -215,6 +233,7 @@ const limitedWrite = (bucket: string, rule: { window: number; max: number }) =>
 
 const shelfWrite = limitedWrite("shelf-write", SHELF_WRITE_RULE);
 const followWrite = limitedWrite("follow-write", FOLLOW_WRITE_RULE);
+const artistFollowWrite = limitedWrite("artist-follow-write", ARTIST_FOLLOW_WRITE_RULE);
 const likeWrite = limitedWrite("like-write", LIKE_WRITE_RULE);
 const commentWrite = limitedWrite("comment-write", COMMENT_WRITE_RULE);
 const blockWrite = limitedWrite("block-write", BLOCK_WRITE_RULE);
@@ -289,6 +308,8 @@ export const appRouter = router({
       .input(topRatedSchema)
       .query(async ({ input, ctx }) => topRated(ctx.db(), await viewerOf(ctx), input)),
     genres: publicProcedure.query(({ ctx }) => genreOptions(ctx.db())),
+    /** « Les plus attendus »: the upcoming releases most members wait for (Paris day). */
+    awaited: publicProcedure.query(({ ctx }) => awaitedReleases(ctx.db(), ctx.now)),
   }),
   social: router({
     follow: followWrite
@@ -394,7 +415,7 @@ export const appRouter = router({
       }
       // After an import the row changed: read it again.
       const known = user ? undefined : found;
-      const detail = await getReleaseDetail(ctx.db(), input.slug, viewer.id, known);
+      const detail = await getReleaseDetail(ctx.db(), input.slug, viewer.id, ctx.now, known);
       return detail && blindReleaseDetail(ctx.db(), viewer.blind, detail);
     }),
   }),
@@ -423,6 +444,62 @@ export const appRouter = router({
         );
         return detail && blindArtistDetail(ctx.db(), blind, detail);
       }),
+  }),
+  /** Artists the caller follows. Private: no procedure reads another member's follows. */
+  artistFollow: router({
+    follow: artistFollowWrite
+      .input(artistFollowSchema)
+      .mutation(({ input, ctx }) => followArtist(ctx.db(), ctx.user.id, input.artistId, ctx.now)),
+    unfollow: artistFollowWrite
+      .input(artistFollowSchema)
+      .mutation(({ input, ctx }) => unfollowArtist(ctx.db(), ctx.user.id, input.artistId)),
+    /** Read apart from `artist.bySlug`, which stays the same for everyone (public cache). */
+    status: protectedProcedure
+      .input(z.object({ slug: slugSchema }))
+      .query(async ({ input, ctx }) => {
+        // The profile comes from `ctx.account()`, already read for this request.
+        if (!(await ctx.account())?.profile) fail("PRECONDITION_FAILED", "PROFILE_REQUIRED");
+        return artistFollowStatus(ctx.db(), ctx.user.id, input.slug);
+      }),
+    mine: protectedProcedure.query(({ ctx }) => myFollowedArtists(ctx.db(), ctx.user.id)),
+  }),
+  /** Upcoming releases (docs/decouverte.md « Sorties à venir »). */
+  upcoming: router({
+    /** Of the artists the caller follows, in their zone, grouped by period. */
+    mine: protectedProcedure.input(upcomingMineSchema).query(async ({ input, ctx }) => {
+      const account = await ctx.account();
+      return upcomingForMember(
+        ctx.db(),
+        await viewerOf(ctx),
+        ctx.user.id,
+        account?.profile?.timeZone,
+        ctx.now,
+        input.type,
+      );
+    }),
+    /**
+     * The member's home page (« Bientôt dans tes oreilles », « Sort … » card); null for a
+     * visitor, a suspended account or before onboarding, so it can start before `account.me`.
+     */
+    home: publicProcedure.query(async ({ ctx }) => {
+      const account = await ctx.account();
+      if (!account?.profile || account.suspendedAt) return null;
+      return upcomingHome(
+        ctx.db(),
+        await viewerOf(ctx),
+        account.user.id,
+        account.profile.timeZone,
+        ctx.now,
+      );
+    }),
+    /** Of one artist: the same for everyone (public cache), Paris day. */
+    byArtist: publicProcedure
+      .input(z.object({ slug: slugSchema }))
+      .query(({ input, ctx }) => upcomingByArtist(ctx.db(), input.slug, ctx.now)),
+    /** Followed count and top artists not followed yet (« Tes artistes les plus écoutés »). */
+    suggestions: protectedProcedure.query(({ ctx }) =>
+      upcomingSuggestions(ctx.db(), ctx.user.id, ctx.now),
+    ),
   }),
   track: router({
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
@@ -570,11 +647,13 @@ export const appRouter = router({
     quickRate: listenWrite
       .input(quickRateSchema)
       .mutation(({ input, ctx }) =>
-        quickRate(ctx.db(), ctx.user.id, input.target, input.rating, input.order),
+        quickRate(ctx.db(), ctx.user.id, input.target, input.rating, ctx.now, input.order),
       ),
     quickLike: listenWrite
       .input(quickLikeSchema)
-      .mutation(({ input, ctx }) => quickLike(ctx.db(), ctx.user.id, input.target, input.liked)),
+      .mutation(({ input, ctx }) =>
+        quickLike(ctx.db(), ctx.user.id, input.target, input.liked, ctx.now),
+      ),
     /** "I listened" in one click: a dated listen today, in the member's time zone. */
     markListened: listenWrite
       .input(listenTargetSchema)
@@ -623,10 +702,10 @@ export const appRouter = router({
       .query(({ input, ctx }) => getMyReview(ctx.db(), ctx.user.id, input.id)),
     create: reviewWrite
       .input(reviewCreateSchema)
-      .mutation(({ input, ctx }) => createReview(ctx.db(), ctx.user.id, input)),
+      .mutation(({ input, ctx }) => createReview(ctx.db(), ctx.user.id, input, ctx.now)),
     update: reviewWrite
       .input(reviewUpdateSchema)
-      .mutation(({ input, ctx }) => updateReview(ctx.db(), ctx.user.id, input)),
+      .mutation(({ input, ctx }) => updateReview(ctx.db(), ctx.user.id, input, ctx.now)),
     delete: reviewWrite
       .input(z.object({ id: z.uuid() }))
       .mutation(({ input, ctx }) => deleteReview(ctx.db(), ctx.user.id, input.id)),
@@ -675,6 +754,9 @@ export const appRouter = router({
         if (!limit.allowed) fail("TOO_MANY_REQUESTS", "RATE_LIMITED");
         return setAvatar(ctx.db(), ctx.storage(), ctx.user, input.data);
       }),
+    setNotifyReleases: protectedProcedure
+      .input(z.object({ enabled: z.boolean() }))
+      .mutation(({ input, ctx }) => setNotifyReleases(ctx.db(), ctx.user.id, input.enabled)),
     removeAvatar: protectedProcedure.mutation(({ ctx }) =>
       removeAvatar(ctx.db(), ctx.storage(), ctx.user),
     ),

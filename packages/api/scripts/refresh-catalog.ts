@@ -1,14 +1,17 @@
 /**
  * Re-reads on MusicBrainz the discographies members care about, so new albums reach
- * "Recent releases" (pnpm catalog:refresh). Run nightly by
+ * "Recent releases", after feeding the upcoming releases of followed artists from
+ * ListenBrainz (pnpm catalog:refresh). Run nightly by
  * .github/workflows/catalog-refresh.yml on the production database, or by hand on Neon
  * `dev`. Goes through the same global 1 request/s gate as the site. Never run in CI tests.
  */
+import { createListenBrainzClient } from "@spleen/catalog";
 import { createDb, loadRootEnv, migrationDatabaseUrl } from "@spleen/db";
 
 import { refreshArtistDiscography } from "../src/lib/catalog/import";
 import { createCatalogProvider } from "../src/lib/catalog/provider";
 import { artistsToRefresh } from "../src/lib/catalog/refresh";
+import { runUpcomingFeed } from "../src/lib/catalog/upcoming-feed";
 
 loadRootEnv();
 const handle = createDb(migrationDatabaseUrl());
@@ -19,6 +22,16 @@ let failed = 0;
 let total = 0;
 
 try {
+  // Announced releases of followed artists first (ListenBrainz, then MusicBrainz); a
+  // ListenBrainz failure is only reported.
+  const listenBrainz = createListenBrainzClient({ userAgent: process.env.MUSICBRAINZ_USER_AGENT });
+  const feed = await runUpcomingFeed(handle.db, provider, listenBrainz, new Date(), console.log);
+  console.log(
+    `upcoming: ListenBrainz ${feed.listenBrainz}, ${feed.matched} matched, ` +
+      `${feed.imported} imported, ${feed.completed} completed, ${feed.datesChecked} date(s) ` +
+      `checked, ${feed.failed} failed, ${feed.skipped} left for later`,
+  );
+
   const artists = await artistsToRefresh(handle.db, new Date());
   total = artists.length;
   console.log(`catalog refresh: ${artists.length} artist(s) to re-read (${handle.kind})`);

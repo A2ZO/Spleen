@@ -6,7 +6,16 @@ import { Cover } from "@/components/ui/Cover";
 import { Link } from "@/i18n/navigation";
 
 /** Cover + title + artist + community average, as used in grids. */
-export function ReleaseTile({ release, rank }: { release: ReleaseCard; rank?: number }) {
+export function ReleaseTile({
+  release,
+  rank,
+  detail,
+}: {
+  release: ReleaseCard;
+  rank?: number;
+  /** Shown in place of the year (an upcoming date). */
+  detail?: string;
+}) {
   const t = useTranslations();
   const format = useFormatter();
   const artistNames = release.artists.map((a) => a.name).join(", ");
@@ -39,7 +48,9 @@ export function ReleaseTile({ release, rank }: { release: ReleaseCard; rank?: nu
         </Link>
       </h3>
       <p className="mt-0.5 truncate text-sm text-fg-muted">
-        {[artistNames, release.year].filter((part) => part !== null && part !== "").join(" · ")}
+        {[artistNames, detail ?? release.year]
+          .filter((part) => part !== null && part !== "")
+          .join(" · ")}
       </p>
       {release.averageRating !== null && (
         <p className="mt-1 font-mono text-xs text-star">

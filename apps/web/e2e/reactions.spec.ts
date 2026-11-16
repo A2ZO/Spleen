@@ -27,6 +27,10 @@ const UNKNOWN = "Quelque chose s'est mal passé. Réessaie.";
 const pressed = (button: Locator, value: boolean) =>
   expect(button).toHaveAttribute("aria-pressed", String(value));
 
+/** A follow button has no `aria-pressed`: its label says the state. */
+const following = (button: Locator, value: boolean) =>
+  expect(button).toHaveAccessibleName(value ? /^Ne plus suivre/ : /^Suivre/);
+
 /** Reads the number in `locator`'s text. */
 async function numberIn(locator: Locator) {
   return Number((await locator.innerText()).match(/\d+/)?.[0] ?? 0);
@@ -36,7 +40,12 @@ async function numberIn(locator: Locator) {
  * The same checks for every toggle, starting off: shown before the answer (with its count),
  * rolled back on a 500, rapid clicks grouped, a click during a request sent after it.
  */
-async function checkToggle(page: Page, button: Locator, count?: Locator) {
+async function checkToggle(
+  page: Page,
+  button: Locator,
+  count?: Locator,
+  isOn: (value: boolean) => Promise<void> = (value) => pressed(button, value),
+) {
   await waitForHydration(page);
   const actions = trackActions(page);
 
@@ -44,7 +53,7 @@ async function checkToggle(page: Page, button: Locator, count?: Locator) {
   const before = count ? await numberIn(count) : 0;
   let release = await holdActions(page);
   await button.click();
-  await pressed(button, true);
+  await isOn(true);
   if (count) expect(await numberIn(count)).toBe(before + 1);
   await release();
   await actions.settled(1);
@@ -52,9 +61,9 @@ async function checkToggle(page: Page, button: Locator, count?: Locator) {
   // 2. Server down: back to the state before, a message, the page still works.
   const undo = await failActions(page);
   await button.click();
-  await pressed(button, false);
+  await isOn(false);
   await expect(page.getByText(UNKNOWN)).toBeVisible();
-  await pressed(button, true);
+  await isOn(true);
   await undo();
 
   // 3. Double click (two clicks, re-aimed: the label may change width): nothing sent. Three
@@ -68,7 +77,7 @@ async function checkToggle(page: Page, button: Locator, count?: Locator) {
   await button.click();
   await button.click();
   await button.click();
-  await pressed(button, false);
+  await isOn(false);
   await actions.settled(sent + 1);
 
   // 4. A click while a request runs: sent after its answer, one more request.
@@ -76,12 +85,12 @@ async function checkToggle(page: Page, button: Locator, count?: Locator) {
   await button.click();
   await expect.poll(actions.sent).toBe(sent + 2);
   await button.click();
-  await pressed(button, false);
+  await isOn(false);
   await release();
   await actions.settled(sent + 3);
 
   await page.reload();
-  await pressed(button, false);
+  await isOn(false);
 }
 
 test("liking a review", async ({ page }, testInfo) => {
@@ -101,10 +110,9 @@ test("liking a list", async ({ page }, testInfo) => {
 test("following a member moves the follower count at once", async ({ page }, testInfo) => {
   await signUp(page, testInfo, "Suiveuse");
   await page.goto("/fr/u/vinylvince");
-  await checkToggle(
-    page,
-    page.getByRole("button", { name: /suivre Vince$/i }),
-    page.getByRole("link", { name: /abonnés?$/ }),
+  const follow = page.getByRole("button", { name: /suivre Vince$/i });
+  await checkToggle(page, follow, page.getByRole("link", { name: /abonnés?$/ }), (value) =>
+    following(follow, value),
   );
 });
 
@@ -230,6 +238,6 @@ test("following a member who blocked you meanwhile is refused", async ({ browser
   const follow = bob.getByRole("button", { name: /suivre Alice Nocturne$/i });
   await follow.click();
   await expect(bob.getByText("Action impossible.")).toBeVisible();
-  await pressed(follow, false);
+  await following(follow, false);
   await expect(bob.getByRole("link", { name: "0 abonné" })).toBeVisible();
 });

@@ -1,6 +1,11 @@
 import { isMainRelease } from "@spleen/catalog";
 import { and, asc, desc, eq, inArray, isNotNull, isNull, schema, sql, type Db } from "@spleen/db";
-import type { AudienceLang, DiscographyGroup } from "@spleen/validators";
+import {
+  DEFAULT_TIME_ZONE,
+  todayIn,
+  type AudienceLang,
+  type DiscographyGroup,
+} from "@spleen/validators";
 
 import type {
   ArtistDetail,
@@ -13,6 +18,7 @@ import type {
 } from "../../types";
 import { buildListenLinks } from "../listen-links";
 import { seoPage } from "../seo";
+import { upcomingRelease } from "./upcoming";
 import { countsPublicly } from "../ratings";
 import { notBlockedWith } from "../social/relations";
 import { reviewCountColumns } from "../social/reviews";
@@ -199,6 +205,7 @@ export async function getReleaseDetail(
   db: Db,
   slug: string,
   viewerId: string | null,
+  now: Date,
   known?: typeof releases.$inferSelect,
 ): Promise<ReleaseDetail | null> {
   const row =
@@ -206,7 +213,7 @@ export async function getReleaseDetail(
   if (!row) return null;
   const card = loadReleaseCards(db, [row.id]).then(([c]) => toReleaseCard(c!));
 
-  const [release, genreRows, trackRows, distribution, reviewCards, listCards, seo] =
+  const [release, genreRows, trackRows, distribution, reviewCards, listCards, seo, upcoming] =
     await Promise.all([
       card,
       db
@@ -232,6 +239,7 @@ export async function getReleaseDetail(
       releaseReviews(db, row.id, card, viewerId),
       releaseLists(db, row.id, viewerId),
       seoPage(db, "release", row.slug),
+      upcomingRelease(db, row.id, todayIn(DEFAULT_TIME_ZONE, now)),
     ]);
   const trackList: Track[] = trackRows;
 
@@ -252,6 +260,7 @@ export async function getReleaseDetail(
       release.artists.map((a) => a.name),
     ),
     seo,
+    upcoming,
   };
 }
 
