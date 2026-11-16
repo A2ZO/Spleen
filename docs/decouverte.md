@@ -91,6 +91,21 @@ Lectures (routeur `upcoming`) :
 - `byArtist({ slug })` (publique) : 20 au plus, identique pour tous (cache public, issue #22),
   jour de Paris ; un artiste fusionné lit la fiche gardée, inconnu → `NOT_FOUND`.
 
+Écrans (étape 3) :
+
+- `/upcoming` (« Mes sorties à venir », membre, `noindex` ; visiteur → connexion) : onglets
+  Tout / Albums / EP / Singles (`?type=`), quatre groupes (« Cette semaine », « Ce mois-ci »,
+  « Plus tard », « Date à confirmer ») ; chaque ligne : pochette, titre, artistes, date courte
+  (`formatUpcomingDate()`, `lib/release-date.ts`), type, badge « Date modifiée », bouton
+  « À écouter » instantané (`components/upcoming/`). Sans suivi : invitation à suivre depuis
+  les fiches ; suggestions d'artistes (`upcoming.suggestions`) ; lien de signalement en bas.
+  Lien depuis `/settings` (« Sorties »).
+- Fiche artiste : section « À venir » au-dessus de la discographie (tuiles, date à la place de
+  l'année ; les disques restent aussi dans la discographie) ; pour un membre, « Une sortie
+  manque ? » ouvre le signalement catalogue avec le type « ajout » présélectionné.
+- Fiche d'un disque à venir : « Sort le … », « Sort en … » ou « Annoncé pour … » à la place de
+  la date, badge « Date modifiée » ; contrôles réduits (voir `docs/ecoute.md`).
+
 Démo : `nuitblanche` suit trois artistes, `vinylvince` deux, six sorties annoncées
 (`seed/upcoming.ts`, dates recalculées à chaque seed, sans `mbid`).
 
