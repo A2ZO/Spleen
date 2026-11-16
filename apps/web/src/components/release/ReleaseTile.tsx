@@ -3,7 +3,6 @@ import { ratingToStars } from "@spleen/validators";
 import { useFormatter, useTranslations } from "next-intl";
 
 import { Cover } from "@/components/ui/Cover";
-import { Stars } from "@/components/ui/Stars";
 import { Link } from "@/i18n/navigation";
 
 /** Cover + title + artist + community average, as used in grids. */
@@ -14,22 +13,24 @@ export function ReleaseTile({ release, rank }: { release: ReleaseCard; rank?: nu
 
   return (
     <article className="group relative">
-      <Cover
-        slug={release.slug}
-        title={release.title}
-        artistName={release.artists[0]?.name}
-        coverUrl={release.coverUrl}
-        className="transition-transform duration-300 ease-spleen group-hover:-translate-y-1"
-      />
-      {rank !== undefined && (
-        <span
-          aria-hidden="true"
-          className="absolute -top-2 -left-2 z-10 flex size-7 items-center justify-center rounded-full bg-bg font-mono text-xs text-star ring-1 ring-border"
-        >
-          {rank}
-        </span>
-      )}
-      <h3 className="mt-3 font-serif text-base leading-tight">
+      <div className="relative transition-transform duration-150 ease-spleen motion-safe:group-hover:-translate-y-1">
+        <Cover
+          slug={release.slug}
+          title={release.title}
+          artistName={release.artists[0]?.name}
+          coverUrl={release.coverUrl}
+          className="rounded-cover"
+        />
+        {rank !== undefined && (
+          <span
+            aria-hidden="true"
+            className="absolute top-2.5 left-2.5 z-10 flex size-7 items-center justify-center rounded-full bg-bg font-display text-sm font-bold text-fg"
+          >
+            {rank}
+          </span>
+        )}
+      </div>
+      <h3 className="mt-3 font-display text-base leading-tight font-bold">
         <Link
           href={`/album/${release.slug}`}
           className="after:absolute after:inset-0 hover:text-star focus-visible:outline-none"
@@ -41,22 +42,20 @@ export function ReleaseTile({ release, rank }: { release: ReleaseCard; rank?: nu
         {[artistNames, release.year].filter((part) => part !== null && part !== "").join(" · ")}
       </p>
       {release.averageRating !== null && (
-        <p className="mt-1 flex items-center gap-1.5 text-sm">
-          <Stars rating={release.averageRating} />
-          <span className="font-mono text-xs text-fg-muted">
-            <span className="sr-only">
-              {t("rating.outOfFive", {
-                stars: format.number(ratingToStars(release.averageRating), {
-                  maximumFractionDigits: 1,
-                }),
-              })}
-            </span>
-            <span aria-hidden="true">
-              {format.number(ratingToStars(release.averageRating), {
-                minimumFractionDigits: 1,
+        <p className="mt-1 font-mono text-xs text-star">
+          <span className="sr-only">
+            {t("rating.outOfFive", {
+              stars: format.number(ratingToStars(release.averageRating), {
                 maximumFractionDigits: 1,
-              })}
-            </span>
+              }),
+            })}
+          </span>
+          <span aria-hidden="true">
+            ★{" "}
+            {format.number(ratingToStars(release.averageRating), {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })}
           </span>
         </p>
       )}

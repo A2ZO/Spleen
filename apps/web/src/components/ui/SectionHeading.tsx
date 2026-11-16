@@ -14,13 +14,8 @@ export function SectionHeading({
   className?: string;
 }) {
   return (
-    <div
-      className={cn(
-        "mb-5 flex items-end justify-between gap-4 border-b border-border/60 pb-2",
-        className,
-      )}
-    >
-      <h2 id={id} className="font-serif text-2xl">
+    <div className={cn("mb-5 flex items-end justify-between gap-4", className)}>
+      <h2 id={id} className="font-display text-[22px] font-bold tracking-[-0.02em] md:text-[34px]">
         {children}
       </h2>
       {action}

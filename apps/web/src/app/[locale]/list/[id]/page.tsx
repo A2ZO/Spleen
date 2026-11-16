@@ -19,6 +19,8 @@ import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { seoMetadata } from "@/lib/seo";
 import { Link, redirect } from "@/i18n/navigation";
 import { loadCursorPage } from "@/lib/api-errors";
+import { cn } from "@/lib/cn";
+import { phoneTitleSize } from "@/lib/display-title";
 import { firstParam, hrefWith, pageParam, type SearchParams } from "@/lib/search-params";
 import { getApi } from "@/server/api";
 
@@ -87,7 +89,14 @@ export default async function ListPage({ params, searchParams }: Props) {
             <span>{t("list.itemCount", { count: list.items.total })}</span>
             {list.ranked && <Badge>{t("list.ranked")}</Badge>}
           </p>
-          <h1 className="text-4xl font-semibold text-balance sm:text-5xl">{list.title}</h1>
+          <h1
+            className={cn(
+              "font-display leading-[0.95] font-extrabold tracking-[-0.03em] text-balance [overflow-wrap:anywhere] md:text-5xl",
+              phoneTitleSize(list.title, "48"),
+            )}
+          >
+            {list.title}
+          </h1>
           {list.description && (
             <p className="max-w-2xl text-lg whitespace-pre-line text-fg-muted text-pretty">
               {list.description}
@@ -124,7 +133,7 @@ export default async function ListPage({ params, searchParams }: Props) {
               <CommentIcon /> {t("review.comments", { count: list.commentCount })}
             </a>
             {list.isOwner && (
-              <ButtonLink href={`${path}/edit`} variant="outline" className="ml-auto">
+              <ButtonLink href={`${path}/edit`} variant="secondary" className="ml-auto">
                 {t("list.edit")}
               </ButtonLink>
             )}
@@ -137,13 +146,13 @@ export default async function ListPage({ params, searchParams }: Props) {
             {t("list.itemsTitle")}
           </h2>
           {list.items.total === 0 ? (
-            <p className="font-serif text-lg text-fg-muted italic">
+            <p className="text-lg text-fg-muted">
               {list.isOwner ? t("list.emptyOwnList") : t("list.empty")}
             </p>
           ) : (
-            <ol className="divide-y divide-border/50 border-y border-border/50">
+            <ol>
               {list.items.items.map((item) => (
-                <li key={item.id}>
+                <li key={item.id} className="rounded-[14px] odd:bg-surface-alt">
                   <ListItemRow item={item} ranked={list.ranked} />
                 </li>
               ))}
@@ -161,7 +170,7 @@ export default async function ListPage({ params, searchParams }: Props) {
       <section aria-labelledby="comments" className="scroll-mt-24 space-y-6">
         <SectionHeading id="comments">{t("list.comments")}</SectionHeading>
         {comments.items.length === 0 && !cursor ? (
-          <p className="font-serif text-lg text-fg-muted italic">{t("comments.empty")}</p>
+          <p className="text-lg text-fg-muted">{t("comments.empty")}</p>
         ) : (
           <ul className="space-y-5">
             {comments.items.map((comment) => (

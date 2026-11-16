@@ -44,7 +44,9 @@ export default async function EditListPage({ params }: Props) {
         <Link href={`/list/${id}`} className="text-sm text-link underline-offset-2 hover:underline">
           ← {t("back")}
         </Link>
-        <h1 className="text-4xl font-semibold text-balance">{t("editTitle")}</h1>
+        <h1 className="font-display text-4xl font-extrabold tracking-[-0.03em] text-balance">
+          {t("editTitle")}
+        </h1>
       </header>
       <ListForm
         list={{

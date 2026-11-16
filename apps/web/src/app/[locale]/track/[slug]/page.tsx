@@ -1,18 +1,26 @@
-import { ratingToStars, slugSchema } from "@spleen/validators";
+import { slugSchema } from "@spleen/validators";
 import type { Metadata } from "next";
-import { getFormatter, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import { cache } from "react";
 
 import { ArtistLinks } from "@/components/catalog/ArtistLinks";
 import { CatalogReportButton } from "@/components/catalog/CatalogReportButton";
 import { ListenOn } from "@/components/catalog/ListenOn";
+import { CommunityRating } from "@/components/detail/CommunityRating";
+import { DetailBar } from "@/components/detail/DetailBar";
+import { moreMenuItem } from "@/components/detail/MoreMenu";
 import { AddToListButton } from "@/components/lists/AddToList";
 import { ListenControls } from "@/components/release/ListenControls";
+import { MyListensCard } from "@/components/release/MyListensCard";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
+import { Badge } from "@/components/ui/Badge";
+import { CoverThumb } from "@/components/detail/CoverThumb";
 import { Cover } from "@/components/ui/Cover";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { Stars } from "@/components/ui/Stars";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/cn";
+import { phoneTitleSize } from "@/lib/display-title";
 import { seoMetadata } from "@/lib/seo";
 import { missingCatalogPage } from "@/lib/catalog-redirect";
 import { formatDuration } from "@/lib/release-date";
@@ -49,84 +57,123 @@ export default async function TrackPage({ params }: Props) {
   if (!track) return missingCatalogPage("track", slug, locale);
 
   const t = await getTranslations();
-  const format = await getFormatter();
-  const cover = track.release;
+  const album = track.release;
   const api = await getApi();
   const target = { kind: "track" as const, id: track.id };
-  const [mine, moods] = await Promise.all([
+  const [mine, moods, me] = await Promise.all([
     api.listening.myState(target),
     api.listening.moods.list(),
+    api.account.me(),
   ]);
+  const kicker = t("track.kicker");
+  const year = album?.year ?? null;
+  const report = mine ? <CatalogReportButton target={target} className={moreMenuItem} /> : null;
+  const duration = track.durationMs === null ? null : formatDuration(track.durationMs);
 
   return (
-    <article className="space-y-14">
-      <header className="grid gap-8 md:grid-cols-[minmax(0,220px)_1fr_minmax(0,300px)] md:gap-10">
-        {cover ? (
-          <Cover
-            slug={cover.slug}
-            title={cover.title}
-            artistName={cover.artists[0]?.name}
-            coverUrl={cover.coverUrl}
-            alt={t("album.coverAlt", { title: cover.title })}
-            sizes="(min-width: 768px) 220px, 60vw"
-            className="mx-auto w-full max-w-[220px]"
-          />
-        ) : (
-          <div aria-hidden="true" />
+    <article className="cover-scope">
+      <DetailBar
+        backHref={album ? `/album/${album.slug}` : "/"}
+        label={year === null ? kicker : `${kicker} · ${year}`}
+        actions={report}
+        thumb={
+          album && <CoverThumb slug={album.slug} title={album.title} coverUrl={album.coverUrl} />
+        }
+      />
+
+      <header className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,300px)_1fr] md:items-end md:gap-12">
+        {album && (
+          <div className="cover-scroll">
+            <Cover
+              slug={album.slug}
+              title={album.title}
+              artistName={album.artists[0]?.name}
+              coverUrl={album.coverUrl}
+              alt={t("album.coverAlt", { title: album.title })}
+              sizes="(min-width: 768px) 300px, 220px"
+              className="mx-auto w-full max-w-[220px] rounded-card-sm! md:max-w-none md:rounded-card!"
+            />
+          </div>
         )}
-        <div className="min-w-0">
-          <p className="font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">
-            {t("track.kicker")}
-          </p>
-          <h1 className="mt-3 text-4xl leading-tight font-semibold text-balance sm:text-5xl">
+        <div className={cn("min-w-0 max-md:text-center", !album && "md:col-span-2")}>
+          <div className="flex flex-wrap gap-2 max-md:hidden">
+            <Badge>{kicker}</Badge>
+            {duration && <Badge>{duration}</Badge>}
+          </div>
+          <h1
+            className={cn(
+              "font-display leading-[0.9] font-extrabold tracking-[-0.04em] text-balance [overflow-wrap:anywhere] md:mt-5 md:text-[clamp(48px,6vw,88px)]",
+              phoneTitleSize(track.title, "48"),
+            )}
+          >
             {track.title}
           </h1>
-          <p className="mt-2 text-lg">
+          <p className="mt-3 text-lg md:mt-4 md:text-[22px]">
             <span className="text-fg-muted">{t("album.by")} </span>
-            <ArtistLinks artists={track.artists} />
+            <ArtistLinks
+              artists={track.artists}
+              linkClassName="font-medium underline decoration-1 underline-offset-4 hover:text-link"
+            />
           </p>
-          {track.durationMs !== null && (
-            <p className="mt-1 text-sm text-fg-muted">
-              {t("track.duration", { duration: formatDuration(track.durationMs) })}
+          {album && (
+            <p className="mt-1 text-base md:text-lg">
+              <span className="text-fg-muted">{t("detail.on")} </span>
+              <Link
+                href={`/album/${album.slug}`}
+                className="underline decoration-1 underline-offset-4 hover:text-link"
+              >
+                {album.title}
+              </Link>
             </p>
           )}
-          <section aria-labelledby="ratings" className="mt-8">
-            <h2 id="ratings" className="font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">
-              {t("album.ratingsTitle")}
-            </h2>
-            <div className="mt-3 flex items-center gap-3">
-              <Stars rating={track.averageRating} className="text-lg" />
-              <span className="font-mono text-sm text-fg-muted">
-                {track.averageRating === null
-                  ? t("rating.none")
-                  : format.number(ratingToStars(track.averageRating), {
-                      minimumFractionDigits: 1,
-                      maximumFractionDigits: 1,
-                    })}
-                {" · "}
-                {t("rating.count", { count: track.ratingCount })}
-              </span>
-            </div>
-            {track.ratingsHidden && (
-              <p className="mt-2 text-sm text-fg-muted italic">{t("listening.blindHidden")}</p>
-            )}
-          </section>
+          {duration && (
+            <p className="mt-2 text-sm text-fg-muted md:hidden">
+              {t("track.duration", { duration })}
+            </p>
+          )}
         </div>
-        <aside className="space-y-6">
-          <ListenControls
+      </header>
+
+      <div className="mt-8 space-y-5 md:mt-12">
+        <ListenControls
+          target={target}
+          title={track.title}
+          initial={mine}
+          moods={moods}
+          tracks={[]}
+          actions={
+            mine && (
+              <AddToListButton
+                target={target}
+                title={track.title}
+                className="max-md:w-full md:min-h-13"
+              />
+            )
+          }
+        />
+        {track.listenLinks.length > 0 && <ListenOn links={track.listenLinks} />}
+        {report && <div className="max-md:hidden">{report}</div>}
+      </div>
+
+      <div className={cn("mt-8 grid grid-cols-2 gap-3 md:mt-12 md:gap-5", !mine && "*:col-span-2")}>
+        <CommunityRating
+          average={track.averageRating}
+          count={track.ratingCount}
+          hidden={track.ratingsHidden ?? false}
+        />
+        {mine && (
+          <MyListensCard
             target={target}
             title={track.title}
             initial={mine}
             moods={moods}
             tracks={[]}
+            username={me?.profile?.username ?? null}
           />
-          {mine && <AddToListButton target={target} title={track.title} />}
-          <ListenOn links={track.listenLinks} />
-          {mine && <CatalogReportButton target={target} />}
-        </aside>
-      </header>
+        )}
+      </div>
 
-      <section aria-labelledby="appears-on">
+      <section aria-labelledby="appears-on" className="mt-14 md:mt-20">
         <SectionHeading id="appears-on">{t("track.appearsOn")}</SectionHeading>
         {track.appearsOn.length > 0 ? (
           <ul className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
@@ -137,7 +184,7 @@ export default async function TrackPage({ params }: Props) {
             ))}
           </ul>
         ) : (
-          <p className="font-serif text-lg text-fg-muted italic">{t("track.notOnRelease")}</p>
+          <p className="text-fg-muted">{t("track.notOnRelease")}</p>
         )}
       </section>
     </article>

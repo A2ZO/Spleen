@@ -27,7 +27,7 @@ export default async function AdminLayout({ children, params }: Props) {
   return (
     <div className="space-y-8">
       <header className="space-y-2">
-        <h1 className="text-4xl font-semibold">{t("title")}</h1>
+        <h1 className="font-display text-4xl font-extrabold tracking-[-0.03em]">{t("title")}</h1>
         <p className="text-fg-muted">{t("subtitle")}</p>
       </header>
       <AdminTabs />

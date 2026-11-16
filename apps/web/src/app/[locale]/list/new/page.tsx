@@ -24,7 +24,9 @@ export default async function NewListPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-2xl space-y-8">
-      <h1 className="text-4xl font-semibold text-balance">{t("newTitle")}</h1>
+      <h1 className="font-display text-4xl font-extrabold tracking-[-0.03em] text-balance">
+        {t("newTitle")}
+      </h1>
       <ListForm />
     </div>
   );

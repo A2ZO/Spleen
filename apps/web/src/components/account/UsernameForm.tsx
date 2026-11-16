@@ -47,7 +47,7 @@ export function UsernameForm({
       />
       <p className="text-sm text-fg-muted">{t("usernameNote")}</p>
       {state.ok && !pending && <FormMessage tone="success">{t("saved")}</FormMessage>}
-      <Button type="submit" variant="outline" disabled={pending}>
+      <Button type="submit" variant="secondary" disabled={pending}>
         {pending ? t("saving") : t("usernameSubmit")}
       </Button>
     </form>

@@ -1,7 +1,7 @@
 import { Link } from "@/i18n/navigation";
-import { cn } from "@/lib/cn";
 
 import { ActiveTabIntoView } from "./ActiveTabIntoView";
+import { segmentedItem, segmentedTrack } from "./segmented";
 
 export interface LinkTab {
   id: string;
@@ -27,9 +27,7 @@ export function LinkTabs({
 }) {
   return (
     <nav aria-label={label} className={className}>
-      {/* Bottom rule drawn inside the list: a border plus overlapping tab underlines would
-          overflow by 1px and give the scrolling list a vertical scrollbar. */}
-      <ul className="flex gap-1 overflow-x-auto [scrollbar-width:thin] shadow-[inset_0_-1px_0_var(--color-border)]">
+      <ul className={segmentedTrack}>
         {tabs.map((tab) => {
           const selected = tab.id === current;
           return (
@@ -38,12 +36,7 @@ export function LinkTabs({
                 href={tab.href}
                 scroll={false}
                 aria-current={selected ? "page" : undefined}
-                className={cn(
-                  "block border-b-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors",
-                  selected
-                    ? "border-star text-fg"
-                    : "border-transparent text-fg-muted hover:text-fg",
-                )}
+                className={segmentedItem(selected)}
               >
                 {tab.label}
               </Link>

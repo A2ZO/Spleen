@@ -1,19 +1,25 @@
 import { audienceLangSchema, cursorSchema, type AudienceLang } from "@spleen/validators";
 import type { Metadata } from "next";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
-import { ReleaseGrid, TrendsGrid } from "@/components/discovery/Charts";
-import { Turntable } from "@/components/release/Turntable";
+import { TrendsGrid } from "@/components/discovery/Charts";
+import { JustOutCard } from "@/components/home/JustOutCard";
+import { MonthCard } from "@/components/home/MonthCard";
+import { RateButton } from "@/components/home/RateButton";
 import { FeedItemCard } from "@/components/social/FeedItemCard";
 import { MemberRow } from "@/components/social/MemberRow";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { ButtonLink } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { loadCursorPage } from "@/lib/api-errors";
+import { currentMonth } from "@/lib/calendar";
+import { cn } from "@/lib/cn";
+import { phoneTitleSize } from "@/lib/display-title";
 import { firstParam, hrefWith, type SearchParams } from "@/lib/search-params";
 import { seoMetadata } from "@/lib/seo";
 import { getApi } from "@/server/api";
@@ -37,58 +43,69 @@ type Tab = (typeof TABS)[number];
 
 const linkClasses = "text-link underline-offset-2 hover:underline";
 
-/** Records per discovery block on the home page (one row on a wide screen). */
+/** Records in the home page's trends (one row on a wide screen). */
 const HOME_CHART_SIZE = 6;
 
 /**
- * The week's trends and recent releases, from real data only. A block with nothing to show
- * is left out rather than shown empty (trends already widen to every language and 30 days).
+ * The week's trends and the newest release, from real data only. A block with nothing to
+ * show is left out rather than shown empty (trends already widen to every language and 30
+ * days). Only the newest recent release is shown ("Just out"); the list lives on /discover.
+ * Memoised per request: the page starts these reads while the session is being read.
  */
-/** Memoised per request: the page starts these reads while the session is being read. */
 const discoveryReads = cache(async (lang: AudienceLang) => {
   const api = await getApi();
   return Promise.all([
     api.discovery.trends({ lang, size: HOME_CHART_SIZE }),
-    api.discovery.recent({ size: HOME_CHART_SIZE }),
+    api.discovery.recent({ size: 1 }),
   ]);
 });
 
-async function DiscoveryBlocks({ lang }: { lang: AudienceLang }) {
+async function Trends({ lang }: { lang: AudienceLang }) {
   const t = await getTranslations("discover");
-  const [trends, recent] = await discoveryReads(lang);
-  const more = (
-    <Link href="/discover" className={`text-sm ${linkClasses}`}>
-      {t("more")}
-    </Link>
-  );
+  const [trends] = await discoveryReads(lang);
+  if (trends.length === 0) return null;
   return (
-    <>
-      {trends.length > 0 && (
-        <section aria-labelledby="trends" className="scroll-mt-24">
-          <SectionHeading id="trends" action={more}>
-            {lang === "fr" ? t("trendsTitleFr") : t("trendsTitleEn")}
-          </SectionHeading>
-          <TrendsGrid items={trends} />
-        </section>
-      )}
-      {recent.items.length > 0 && (
-        <section aria-labelledby="recent" className="scroll-mt-24">
-          <SectionHeading
-            id="recent"
-            action={
-              <Link href="/discover#recent" className={`text-sm ${linkClasses}`}>
-                {t("seeAll")}
-              </Link>
-            }
-          >
-            {t("recentTitle")}
-          </SectionHeading>
-          <ReleaseGrid releases={recent.items} />
-        </section>
-      )}
-    </>
+    <section aria-labelledby="trends" className="scroll-mt-24">
+      <SectionHeading
+        id="trends"
+        action={
+          <Link href="/discover" className={`shrink-0 text-sm ${linkClasses}`}>
+            {t("more")}
+          </Link>
+        }
+      >
+        {lang === "fr" ? t("trendsTitleFr") : t("trendsTitleEn")}
+      </SectionHeading>
+      <TrendsGrid items={trends} />
+    </section>
   );
 }
+
+async function JustOut({ lang }: { lang: AudienceLang }) {
+  const [, recent] = await discoveryReads(lang);
+  const release = recent.items[0];
+  return release ? <JustOutCard release={release} /> : null;
+}
+
+/** The member's month, from the diary calendar's own procedure and month rule. */
+async function Month({ username }: { username: string }) {
+  const api = await getApi();
+  const month = currentMonth();
+  const entries = await api.profile.diaryMonth({ username, month });
+  if (!entries) return null;
+  return (
+    <MonthCard
+      month={month}
+      entries={entries}
+      diaryHref={hrefWith(`/u/${username}/diary`, { view: "calendar", month })}
+    />
+  );
+}
+
+/** Small mono label and huge title of the lilac block. */
+const heroLabel = "font-mono text-xs tracking-[0.14em] uppercase";
+const heroTitle =
+  "mt-5 font-display leading-[0.95] font-extrabold tracking-[-0.04em] text-balance md:text-[clamp(56px,6vw,80px)]";
 
 /** "Older" link (cursor) and, past the first page, back to the newest. */
 async function FeedPaging({
@@ -132,7 +149,7 @@ async function FriendsFeed({ cursor: requested }: { cursor: string | null }) {
     return (
       <div className="space-y-6">
         <div>
-          <p className="font-serif text-2xl text-balance">{t("emptyTitle")}</p>
+          <p className="font-display text-2xl font-bold text-balance">{t("emptyTitle")}</p>
           <p className="mt-2 max-w-xl text-fg-muted text-pretty">{t("emptyBody")}</p>
         </div>
         {suggestions.length > 0 && (
@@ -157,7 +174,7 @@ async function FriendsFeed({ cursor: requested }: { cursor: string | null }) {
   }
   return (
     <>
-      <ul className="space-y-4">
+      <ul className="grid items-start gap-4 md:grid-cols-2">
         {feed.items.map((item) => (
           <li key={`${item.kind}-${item.id}`} className="empty:hidden">
             <FeedItemCard item={item} now={now} />
@@ -201,9 +218,9 @@ async function PopularFeed({
         </Link>
       </p>
       {popular.items.length === 0 ? (
-        <p className="py-6 font-serif text-lg text-fg-muted italic">{t("popularEmpty")}</p>
+        <p className="py-6 text-lg text-fg-muted">{t("popularEmpty")}</p>
       ) : (
-        <ul className="grid gap-4 lg:grid-cols-2">
+        <ul className="grid items-start gap-4 md:grid-cols-2">
           {popular.items.map((review) => (
             <li key={review.id} className="empty:hidden">
               <ReviewCard review={review} />
@@ -220,6 +237,8 @@ async function PopularFeed({
   );
 }
 
+const HOW_STEPS = ["howRate", "howDiary", "howShelf"] as const;
+
 export default async function HomePage({ params, searchParams }: Props) {
   const { locale } = await params;
   initRouteLocale(locale);
@@ -230,7 +249,11 @@ export default async function HomePage({ params, searchParams }: Props) {
   const lang: AudienceLang = parsedLang.success ? parsedLang.data : locale === "en" ? "en" : "fr";
   // Shown to everyone: started before knowing who is looking.
   discoveryReads(lang).catch(() => {});
-  const [t, me] = await Promise.all([getTranslations(), getApi().then((api) => api.account.me())]);
+  const [t, format, me] = await Promise.all([
+    getTranslations(),
+    getFormatter(),
+    getApi().then((api) => api.account.me()),
+  ]);
   const member = me?.profile ?? null;
   // Members land on their friends; visitors only have the popular reviews.
   const tab: Tab = member ? (TABS.find((x) => x === firstParam(raw.tab)) ?? "friends") : "popular";
@@ -238,34 +261,46 @@ export default async function HomePage({ params, searchParams }: Props) {
 
   if (!member) {
     return (
-      <div className="space-y-20">
-        <section className="grid items-center gap-10 pt-4 md:grid-cols-[1.4fr_1fr]">
-          <div>
-            <p className="font-mono text-xs tracking-[0.25em] text-star uppercase">
-              {t("home.kicker")}
-            </p>
-            <h1 className="mt-4 text-5xl leading-[1.02] font-semibold text-balance sm:text-7xl">
-              {t("home.title")}
-            </h1>
-            <p className="mt-6 max-w-xl text-lg text-fg-muted text-pretty">{t("home.subtitle")}</p>
+      <div className="space-y-14 md:space-y-20">
+        <div className="grid gap-5 lg:grid-cols-[2fr_1fr]">
+          <Card tone="accent" className="flex flex-col justify-between md:p-10">
+            <div>
+              <p className={heroLabel}>{t("home.kicker")}</p>
+              <h1 className={cn(heroTitle, "text-[44px]")}>{t("home.title")}</h1>
+              <p className="mt-5 max-w-xl text-lg text-pretty">{t("home.subtitle")}</p>
+            </div>
             <div className="mt-8 flex flex-wrap gap-3">
-              <ButtonLink href={shelfHref}>
+              <ButtonLink href={shelfHref} variant="ink">
                 {me ? t("home.ctaWelcome") : t("home.ctaJoin")}
               </ButtonLink>
-              <ButtonLink href="/search" variant="outline">
-                {t("home.ctaSearch")}
-              </ButtonLink>
-              <ButtonLink href="/discover" variant="ghost">
-                {t("discover.more")}
+              <ButtonLink href="/discover" variant="on-accent">
+                {t("home.findMusic")}
               </ButtonLink>
             </div>
+          </Card>
+          <div className="flex flex-col gap-5">
+            <Card>
+              <h2 className="font-mono text-xs tracking-[0.14em] text-fg-muted uppercase">
+                {t("home.howTitle")}
+              </h2>
+              <ol className="mt-4 space-y-3">
+                {HOW_STEPS.map((key, index) => (
+                  <li key={key} className="flex gap-3">
+                    <span
+                      aria-hidden="true"
+                      className="flex size-7 shrink-0 items-center justify-center rounded-full bg-surface-raised font-display text-sm font-bold"
+                    >
+                      {index + 1}
+                    </span>
+                    <span className="pt-0.5 text-pretty">{t(`home.${key}`)}</span>
+                  </li>
+                ))}
+              </ol>
+            </Card>
+            <JustOut lang={lang} />
           </div>
-          <div aria-hidden="true" className="relative mx-auto hidden w-full max-w-sm md:block">
-            <div className="absolute inset-6 rounded-full bg-star/10 blur-3xl" />
-            <Turntable playing className="relative h-auto w-full drop-shadow-2xl" />
-          </div>
-        </section>
-        <DiscoveryBlocks lang={lang} />
+        </div>
+        <Trends lang={lang} />
         <section aria-labelledby="popular">
           <SectionHeading id="popular">{t("feed.popularTitle")}</SectionHeading>
           <PopularFeed lang={lang} cursor={cursor} tabParam={null} />
@@ -274,34 +309,59 @@ export default async function HomePage({ params, searchParams }: Props) {
     );
   }
 
+  // The display name is required; the username stands in rather than an empty title.
+  const name = member.displayName.trim() || member.username;
+  const today = format.dateTime(new Date(), { weekday: "long", day: "numeric", month: "long" });
+
   return (
-    <div className="space-y-12">
-      <header>
-        <p className="font-mono text-xs tracking-[0.25em] text-star uppercase">
-          {t("home.kicker")}
-        </p>
-        <h1 className="mt-3 text-4xl font-semibold text-balance sm:text-5xl">{t("home.title")}</h1>
-      </header>
-      <DiscoveryBlocks lang={lang} />
-      <section aria-labelledby="feed">
-        <h2 id="feed" className="sr-only">
-          {t("feed.title")}
-        </h2>
-        <LinkTabs
-          label={t("feed.tabsLabel")}
-          current={tab}
-          tabs={[
-            { id: "friends", label: t("feed.friends"), href: "/" },
-            { id: "popular", label: t("feed.popular"), href: hrefWith("/", { tab: "popular" }) },
-          ]}
-        />
-        <div className="pt-6">
-          {tab === "friends" ? (
-            <FriendsFeed cursor={cursor} />
-          ) : (
-            <PopularFeed lang={lang} cursor={cursor} tabParam="popular" />
-          )}
+    <div className="space-y-14 md:space-y-20">
+      <div className="grid gap-5 lg:grid-cols-[2fr_1fr]">
+        <Card tone="accent" className="flex flex-col justify-between md:p-10">
+          <div>
+            <p className={heroLabel}>{today}</p>
+            <h1 className={cn(heroTitle, "[overflow-wrap:anywhere]", phoneTitleSize(name, "48"))}>
+              {t("home.memberTitle", { name })}
+            </h1>
+          </div>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <RateButton label={t("nav.rate")} />
+            <ButtonLink href="/discover" variant="on-accent">
+              {t("home.findMusic")}
+            </ButtonLink>
+          </div>
+        </Card>
+        <div className="flex flex-col gap-5">
+          <Month username={member.username} />
+          <JustOut lang={lang} />
         </div>
+      </div>
+      <Trends lang={lang} />
+      <section aria-labelledby="feed">
+        <SectionHeading
+          id="feed"
+          className="flex-wrap items-center"
+          action={
+            <LinkTabs
+              label={t("feed.tabsLabel")}
+              current={tab}
+              tabs={[
+                { id: "friends", label: t("feed.friends"), href: "/" },
+                {
+                  id: "popular",
+                  label: t("feed.popular"),
+                  href: hrefWith("/", { tab: "popular" }),
+                },
+              ]}
+            />
+          }
+        >
+          {tab === "friends" ? t("home.friendsTitle") : t("feed.popularTitle")}
+        </SectionHeading>
+        {tab === "friends" ? (
+          <FriendsFeed cursor={cursor} />
+        ) : (
+          <PopularFeed lang={lang} cursor={cursor} tabParam="popular" />
+        )}
       </section>
     </div>
   );

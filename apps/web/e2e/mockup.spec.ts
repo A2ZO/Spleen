@@ -6,7 +6,9 @@ test.describe("with a French browser", () => {
   test("root redirects to the French home page", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveURL(/\/fr$/);
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Qu'as-tu écouté ce soir ?");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      "Note tes disques, tiens ton journal.",
+    );
   });
 });
 
@@ -22,7 +24,7 @@ test.describe("with an English browser", () => {
 test("home page is available in English", async ({ page }) => {
   await page.goto("/en");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "What did you listen to tonight?",
+    "Rate your records, keep your diary.",
   );
 });
 
@@ -79,7 +81,7 @@ test("switching language keeps the profile tab", async ({ page }) => {
   await page.goto("/fr/u/nuitblanche?tab=stats");
   // After a navigation the server HTML shows before React hydrates: retry the click.
   await expect(async () => {
-    await page.getByRole("banner").getByRole("button", { name: "English" }).click();
+    await page.getByRole("contentinfo").getByRole("button", { name: "English" }).click();
     await expect(page).toHaveURL(/\/en\/u\/nuitblanche\?tab=stats$/, { timeout: 2_000 });
   }).toPass();
   await expect(page.getByRole("region", { name: "Profile sections" })).toContainText(
@@ -87,17 +89,10 @@ test("switching language keeps the profile tab", async ({ page }) => {
   );
 });
 
-test("empty shelf gathers dust", async ({ page }) => {
+test("another member's empty shelf is not shown", async ({ page }) => {
   await page.goto("/fr/u/rainydaysam");
-  await expect(page.getByText("L'étagère de Sam prend la poussière.")).toBeVisible();
-});
-
-test("theme toggle switches to cream paper", async ({ page }) => {
-  await page.goto("/fr");
-  await page.getByRole("button", { name: "Passer en mode papier crème" }).click();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-  await page.reload();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByRole("region", { name: "L'Étagère" })).toHaveCount(0);
 });
 
 test("unknown pages show the Baudelaire 404", async ({ page }) => {

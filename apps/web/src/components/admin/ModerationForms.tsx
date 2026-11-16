@@ -73,7 +73,7 @@ function ReasonForm({
       <div className="flex flex-wrap items-center gap-3">
         <Button
           type="submit"
-          variant={danger ? "primary" : "outline"}
+          variant={danger ? "primary" : "secondary"}
           disabled={pending || tooShort}
         >
           {submitLabel}

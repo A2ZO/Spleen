@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 
-import { cn } from "@/lib/cn";
+import { segmentedItem, segmentedTrack } from "./segmented";
 
 export interface TabItem {
   id: string;
@@ -46,12 +46,7 @@ export function Tabs({
 
   return (
     <div className={className}>
-      <div
-        role="tablist"
-        aria-label={label}
-        onKeyDown={onKeyDown}
-        className="flex gap-1 overflow-x-auto border-b border-border"
-      >
+      <div role="tablist" aria-label={label} onKeyDown={onKeyDown} className={segmentedTrack}>
         {items.map((item, index) => {
           const selected = index === active;
           return (
@@ -67,10 +62,7 @@ export function Tabs({
               aria-controls={`${baseId}-panel-${item.id}`}
               tabIndex={selected ? 0 : -1}
               onClick={() => setActive(index)}
-              className={cn(
-                "-mb-px border-b-2 px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors",
-                selected ? "border-star text-fg" : "border-transparent text-fg-muted hover:text-fg",
-              )}
+              className={segmentedItem(selected)}
             >
               {item.label}
             </button>

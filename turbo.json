@@ -35,7 +35,7 @@
     "test": {},
     "e2e": {
       "cache": false,
-      "passThroughEnv": ["PLAYWRIGHT_CHANNEL"]
+      "passThroughEnv": ["PLAYWRIGHT_CHANNEL", "PLAYWRIGHT_WORKERS"]
     }
   }
 }

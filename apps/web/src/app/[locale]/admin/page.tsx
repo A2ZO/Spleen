@@ -59,7 +59,7 @@ export default async function ReportsPage({ params, searchParams }: Props) {
       />
       <p className="text-sm text-fg-muted">{t("count", { count: reports.total })}</p>
       {reports.items.length === 0 ? (
-        <p className="py-6 font-serif text-lg text-fg-muted italic">{t("empty")}</p>
+        <p className="py-6 text-lg text-fg-muted">{t("empty")}</p>
       ) : (
         <ul className="space-y-4">
           {reports.items.map((report) => (
@@ -90,13 +90,13 @@ async function ReportCard({ report }: { report: ReportView }) {
     >
       <header className="flex flex-wrap items-center gap-2">
         <Badge>{t(`kind.${subject.kind}`)}</Badge>
-        <h3 id={titleId} className="font-serif text-lg">
+        <h3 id={titleId} className="font-display text-lg font-bold tracking-[-0.02em]">
           {t(`reasons.${report.reason}`)}
         </h3>
         {subject.hidden && <Badge>{t("hiddenBadge")}</Badge>}
         {subject.member?.suspended && <Badge>{t("suspendedBadge")}</Badge>}
         <time dateTime={report.createdAt} className="ml-auto font-mono text-xs text-fg-muted">
-          {format.dateTime(new Date(report.createdAt), { dateStyle: "medium", timeStyle: "short" })}
+          {format.dateTime(new Date(report.createdAt), { dateStyle: "medium" })}
         </time>
       </header>
       <dl className="grid gap-x-4 gap-y-2 text-sm sm:grid-cols-[10rem_1fr]">
@@ -162,7 +162,9 @@ async function ReportCard({ report }: { report: ReportView }) {
                 date: format.dateTime(new Date(report.resolution.at), { dateStyle: "medium" }),
               })}
               {report.resolution.note && (
-                <span className="mt-1 block text-fg-muted italic">{report.resolution.note}</span>
+                <span className="mt-1 block border-l-2 border-border-strong pl-2 text-fg-muted">
+                  {report.resolution.note}
+                </span>
               )}
             </dd>
           </>
@@ -170,7 +172,7 @@ async function ReportCard({ report }: { report: ReportView }) {
       </dl>
       {report.status === "open" && subject.duplicate && (
         <ButtonLink
-          variant="outline"
+          variant="secondary"
           href={hrefWith("/admin/merge", { ...subject.duplicate.merge, report: report.id })}
         >
           {t("mergeLink")}

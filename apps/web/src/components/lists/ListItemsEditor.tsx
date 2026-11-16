@@ -93,16 +93,16 @@ export function ListItemsEditor({
   };
 
   if (items.length === 0) {
-    return <p className="font-serif text-lg text-fg-muted italic">{t("emptyOwnList")}</p>;
+    return <p className="text-lg text-fg-muted">{t("emptyOwnList")}</p>;
   }
 
   return (
     <div>
-      <ol aria-label={t("orderLabel")} className="divide-y divide-border/50">
+      <ol aria-label={t("orderLabel")}>
         {items.map((item, index) => {
           const { title } = listItemView(item);
           return (
-            <li key={item.id}>
+            <li key={item.id} className="rounded-[14px] odd:bg-surface-alt">
               <ListItemRow
                 item={item}
                 ranked={ranked}

@@ -32,11 +32,13 @@ export default async function BlocksPage({ params }: Props) {
         <Link href="/settings" className="text-sm text-fg-muted hover:text-fg">
           ← {t("back")}
         </Link>
-        <h1 className="mt-2 text-4xl font-semibold">{t("title")}</h1>
+        <h1 className="mt-2 font-display text-4xl font-extrabold tracking-[-0.03em]">
+          {t("title")}
+        </h1>
         <p className="mt-2 text-fg-muted text-pretty">{t("intro")}</p>
       </header>
       {blocked.length === 0 ? (
-        <p className="py-6 font-serif text-lg text-fg-muted italic">{t("empty")}</p>
+        <p className="py-6 text-lg text-fg-muted">{t("empty")}</p>
       ) : (
         <ul className="divide-y divide-border/50">
           {blocked.map((member) => (

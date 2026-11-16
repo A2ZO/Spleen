@@ -123,6 +123,12 @@ pour les sorties récentes, sur la base de production ; voir `docs/decouverte.md
 
 ## e2e
 
+En local, Playwright tourne sur 2 workers (à 4, le serveur de dev décroche et des tests
+différents dépassent leur délai à chaque passage) ; `$env:PLAYWRIGHT_WORKERS="4"` change ce
+nombre. La CI garde le défaut de Playwright. `pnpm e2e:quiet [args Playwright]`
+(`scripts/e2e-quiet.mjs`) n'affiche que les erreurs, puis une ligne de résumé (réussis,
+échoués, instables, ignorés, durée) écrite par `apps/web/e2e/summary-reporter.ts`.
+
 Ne pas lancer les e2e pendant que le serveur de développement recompile (juste après une
 modification de `next.config.ts`, d'un paquet partagé ou un redémarrage) : attendre qu'une page
 s'ouvre normalement. Des tests de recherche ont échoué ainsi au jalon 9. Signe d'un problème

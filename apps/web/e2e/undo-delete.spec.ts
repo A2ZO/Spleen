@@ -35,13 +35,17 @@ async function clickAway(target: Locator) {
   await target.page().mouse.move(0, 0);
 }
 
-/** Leaves through the header's home link (an internal navigation). */
+/**
+ * Leaves through the header's home link, or the tab bar's on phones (an internal navigation).
+ * With the keyboard: in dev, Next's indicator covers the tab bar's first tab.
+ */
 async function goHome(page: Page) {
   await page
-    .getByRole("banner")
     .getByRole("link", { name: /Accueil/ })
+    .filter({ visible: true })
     .first()
-    .click();
+    .focus();
+  await page.keyboard.press("Enter");
   await expect(page).toHaveURL(/\/fr$/);
 }
 
@@ -72,7 +76,7 @@ async function newReview(page: Page, username: string) {
   const panel = page.getByRole("region", { name: "Ton écoute" });
   const dialog = page.getByRole("dialog");
   await expect(async () => {
-    await panel.getByRole("button", { name: "Journaliser…" }).click();
+    await panel.getByRole("button", { name: "Noter en détail…" }).click();
     await expect(dialog).toBeVisible({ timeout: 1_000 });
   }).toPass();
   await dialog.getByLabel("Critique (facultative)").fill(body);
@@ -92,8 +96,15 @@ async function newComment(page: Page, username: string) {
 }
 
 const panelOf = (page: Page) => page.getByRole("region", { name: "Ton écoute" });
-const listenRow = (page: Page) =>
-  panelOf(page).getByRole("button", { name: "Modifier", exact: true });
+const listensOf = (page: Page) => page.getByRole("region", { name: "Tes écoutes" });
+/** The count on the "Tes écoutes" card: visible without unfolding the list. */
+const listenCount = (page: Page) => listensOf(page).getByText("1 fois", { exact: true });
+/** Unfolds "Modifier mes écoutes" and opens the only listen's editor. */
+async function editListen(page: Page) {
+  const card = listensOf(page);
+  await card.getByText("Modifier mes écoutes").click();
+  await card.getByRole("button", { name: "Modifier", exact: true }).click();
+}
 
 const cases: Case[] = [
   {
@@ -157,13 +168,13 @@ const cases: Case[] = [
       const answered = actionAnswered(page);
       await expect(async () => {
         await panelOf(page).getByRole("button", { name: "J'ai écouté" }).click();
-        await expect(listenRow(page)).toBeVisible({ timeout: 2_000 });
+        await expect(listenCount(page)).toBeVisible({ timeout: 2_000 });
       }).toPass();
       await answered;
-      return { url: ALBUM, item: listenRow(page) };
+      return { url: ALBUM, item: listenCount(page) };
     },
     async remove(page) {
-      await listenRow(page).click();
+      await editListen(page);
       const dialog = page.getByRole("dialog");
       await clickAway(dialog.getByRole("button", { name: "Supprimer" }));
       await expect(dialog).toBeHidden();
@@ -285,13 +296,13 @@ test("rating the record during the delay keeps the new rating", async ({ page },
   await expect(async () => {
     await slider.focus();
     await page.keyboard.press("End");
-    await expect(panel.getByText("Note rapide, sans date")).toBeVisible({ timeout: 2_000 });
+    await expect(listenCount(page)).toBeVisible({ timeout: 2_000 });
   }).toPass();
   await answered;
 
   await pauseClock(page);
   await remove(page);
-  await expect(panel.getByText("Note rapide, sans date")).toBeHidden();
+  await expect(listenCount(page)).toBeHidden();
 
   // The new rating first sends the waiting deletion, then itself.
   const tracker = trackActions(page);
@@ -305,10 +316,10 @@ test("rating the record during the delay keeps the new rating", async ({ page },
     "aria-valuenow",
     "9",
   );
-  await expect(panel.getByText("Note rapide, sans date")).toBeVisible();
+  await expect(listenCount(page)).toBeVisible();
 
   async function remove(p: Page) {
-    await listenRow(p).click();
+    await editListen(p);
     const dialog = p.getByRole("dialog");
     await clickAway(dialog.getByRole("button", { name: "Supprimer" }));
     await expect(dialog).toBeHidden();
@@ -335,7 +346,7 @@ test("a new review on the record during the delay is kept", async ({ page }, tes
   const dialog = page.getByRole("dialog");
   await page
     .getByRole("region", { name: "Ton écoute" })
-    .getByRole("button", { name: "Journaliser…" })
+    .getByRole("button", { name: "Noter en détail…" })
     .click();
   await dialog.getByLabel("Critique (facultative)").fill(body);
   await dialog.getByRole("button", { name: "Enregistrer" }).click();

@@ -50,13 +50,13 @@ export function LikeButton({
         aria-pressed={like.shown}
         onClick={toggle}
         className={cn(
-          "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 text-sm transition-colors",
+          "inline-flex min-h-11 items-center gap-2 rounded-full border px-4 text-sm font-medium",
           like.shown
-            ? "border-accent bg-accent/15 text-fg"
-            : "border-border text-fg-muted hover:border-star hover:text-star",
+            ? "border-accent text-fg"
+            : "border-border text-fg-muted hover:border-accent hover:text-fg",
         )}
       >
-        <HeartIcon filled={like.shown} className={like.shown ? "text-star" : undefined} />
+        <HeartIcon filled={like.shown} className={like.shown ? "text-accent" : undefined} />
         {t("social.like")}
         <span aria-hidden="true" className="font-mono text-xs tabular">
           · {shownCount}

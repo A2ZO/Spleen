@@ -29,9 +29,11 @@ function HitRow({ hit }: { hit: RemoteHit }) {
   ].filter(Boolean);
 
   return (
-    <li className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3">
+    <li className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-[14px] px-3 py-3 odd:bg-surface-alt">
       <div className="min-w-0 flex-1">
-        <p className="font-serif text-lg leading-tight">{hit.title}</p>
+        <p className="font-display text-lg leading-tight font-bold tracking-[-0.02em]">
+          {hit.title}
+        </p>
         <p className="truncate text-sm text-fg-muted">
           {[hit.subtitle, ...details].filter(Boolean).join(" · ")}
         </p>
@@ -56,7 +58,7 @@ function HitRow({ hit }: { hit: RemoteHit }) {
         <form action={action}>
           <input type="hidden" name="kind" value={hit.kind} />
           <input type="hidden" name="mbid" value={hit.mbid} />
-          <Button type="submit" variant="outline" disabled={pending}>
+          <Button type="submit" variant="secondary" disabled={pending}>
             {pending ? t("search.adding") : t("search.add")}
           </Button>
         </form>
@@ -98,7 +100,7 @@ export function RemoteSearch({
   return (
     <div className="space-y-4">
       {current.status !== "done" && (
-        <Button type="button" variant="outline" disabled={pending} onClick={search}>
+        <Button type="button" variant="secondary" disabled={pending} onClick={search}>
           {pending ? t("search.remoteSearching") : t("search.remoteButton")}
         </Button>
       )}
@@ -107,13 +109,13 @@ export function RemoteSearch({
       )}
       {current.status === "done" &&
         (current.hits.length > 0 ? (
-          <ul aria-live="polite" className="divide-y divide-border/50">
+          <ul aria-live="polite">
             {current.hits.map((hit) => (
               <HitRow key={`${hit.kind}:${hit.mbid}`} hit={hit} />
             ))}
           </ul>
         ) : (
-          <p aria-live="polite" className="font-serif text-lg text-fg-muted italic">
+          <p aria-live="polite" className="text-lg text-fg-muted">
             {t("search.remoteEmpty")}
           </p>
         ))}

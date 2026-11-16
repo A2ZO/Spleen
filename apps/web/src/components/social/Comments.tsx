@@ -92,7 +92,12 @@ export function CommentItem({
   if (hidden(comment.id)) return null;
   return (
     <article className="flex gap-3">
-      <Link href={`/u/${comment.author.username}`} tabIndex={-1} className="shrink-0">
+      <Link
+        href={`/u/${comment.author.username}`}
+        tabIndex={-1}
+        aria-hidden="true"
+        className="shrink-0"
+      >
         <Avatar
           name={comment.author.displayName}
           seed={comment.author.username}
@@ -102,13 +107,13 @@ export function CommentItem({
       </Link>
       <div className="min-w-0 flex-1">
         <p className="flex flex-wrap items-baseline gap-x-2 text-sm">
-          <Link href={`/u/${comment.author.username}`} className="font-medium hover:text-star">
+          <Link href={`/u/${comment.author.username}`} className="font-medium hover:text-link">
             {comment.author.displayName}
           </Link>
           <time dateTime={comment.createdAt} className="font-mono text-xs text-fg-muted">
             {format.dateTime(new Date(comment.createdAt), { dateStyle: "medium" })}
           </time>
-          {comment.edited && <span className="text-xs text-fg-muted italic">{t("edited")}</span>}
+          {comment.edited && <span className="text-xs text-fg-muted">{t("edited")}</span>}
         </p>
         {editing ? (
           <form onSubmit={save} className="mt-2 space-y-2">

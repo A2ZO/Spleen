@@ -8,7 +8,7 @@ test.use({ locale: "fr-FR" });
 test("header search opens the results, accents and case ignored", async ({ page, isMobile }) => {
   await page.goto("/fr");
   await waitForHydration(page);
-  // Phones get a search icon opening a full-screen search.
+  // Phones: the tab bar's Search tab (visitors) opens a full-screen search.
   if (isMobile) await page.getByRole("link", { name: "Rechercher" }).click();
   const search = page.getByRole("combobox", { name: "Rechercher", exact: true });
   await search.fill("BETON velours");

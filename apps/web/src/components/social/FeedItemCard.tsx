@@ -56,7 +56,7 @@ export function FeedItemCard({ item, now }: { item: FeedItem; now: Date }) {
           />
         </Link>
         <div className="min-w-0 flex-1">
-          <h3 className="font-serif text-lg leading-tight">
+          <h3 className="font-display text-lg leading-tight font-bold">
             <Link href={href} className="hover:text-star">
               {item.track?.title ?? release.title}
             </Link>{" "}

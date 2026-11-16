@@ -225,7 +225,12 @@ export function SearchCombobox({
           <>
             <Picture item={item} size={size} />
             <span className="min-w-0 flex-1">
-              <span className={cn("block truncate text-fg", size === "lg" && "font-serif text-xl")}>
+              <span
+                className={cn(
+                  "block truncate text-fg",
+                  size === "lg" && "font-display text-xl font-bold tracking-[-0.02em]",
+                )}
+              >
                 <Marked text={item.title} q={value} />
               </span>
               <span className="block truncate text-xs text-fg-muted">
@@ -413,7 +418,7 @@ export function SearchCombobox({
         <SearchIcon
           className={cn(
             "pointer-events-none absolute top-1/2 -translate-y-1/2 text-fg-muted",
-            variant === "header" ? "left-3" : "left-4 text-lg",
+            variant === "header" ? "left-4" : "left-4 text-lg",
           )}
         />
         <input
@@ -440,8 +445,10 @@ export function SearchCombobox({
           autoFocus={autoFocus}
           placeholder={t("nav.searchPlaceholder")}
           className={cn(
-            "w-full rounded-md border border-border bg-surface text-fg placeholder:text-fg-muted/70 focus:border-star focus:outline-none",
-            variant === "header" ? "py-1.5 pr-3 pl-9 text-sm" : "py-3 pr-4 pl-11 text-lg",
+            "w-full rounded-full border border-border-field bg-bg text-fg placeholder:text-fg-muted/70 focus:border-accent focus:outline-none",
+            variant === "header"
+              ? "min-h-11 pr-4 pl-10 text-sm"
+              : "min-h-[52px] py-3 pr-5 pl-11 text-lg",
           )}
         />
       </div>
@@ -456,14 +463,14 @@ export function SearchCombobox({
       <div
         hidden={!expanded}
         className={cn(
-          "overflow-y-auto bg-bg",
+          floating ? "overflow-y-auto bg-surface" : "overflow-y-auto bg-bg",
           floating
-            ? "absolute top-full right-0 z-50 mt-2 max-h-[min(36rem,75vh)] w-full rounded-md border border-border py-2 shadow-card sm:min-w-[26rem]"
+            ? "absolute top-full right-0 z-50 mt-2 max-h-[min(36rem,75vh)] w-full rounded-card-sm border border-border py-2 shadow-card sm:min-w-[26rem]"
             : "mt-4",
         )}
       >
         {nothing && (
-          <p className="px-4 py-2 font-serif text-fg-muted italic" aria-hidden="true">
+          <p className="px-4 py-2 text-fg-muted" aria-hidden="true">
             {isMembers ? t("search.suggest.noMember") : t("search.suggest.nothing")}
           </p>
         )}
@@ -504,7 +511,7 @@ export function SearchCombobox({
                     }}
                     className={cn(
                       "flex items-center gap-3 px-4 py-2 text-sm outline-none",
-                      option === active && "bg-surface",
+                      option === active && (floating ? "bg-surface-raised" : "bg-surface"),
                       option.recent && "pr-11",
                       option.className,
                     )}

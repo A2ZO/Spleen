@@ -4,9 +4,11 @@ import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
 import { SearchCombobox } from "@/components/search/SearchCombobox";
+import { buttonClasses } from "@/components/ui/Button";
 import { SearchIcon } from "@/components/ui/icons";
 import { Link } from "@/i18n/navigation";
 import { shortcutAllowed } from "@/lib/keyboard-shortcuts";
+import { OPEN_SEARCH_EVENT } from "@/lib/search-dialog";
 
 /** Full-screen search on small screens. */
 function SearchDialog({ signedIn, onClose }: { signedIn: boolean; onClose: () => void }) {
@@ -48,8 +50,9 @@ function SearchDialog({ signedIn, onClose }: { signedIn: boolean; onClose: () =>
 
 /**
  * Header search with instant suggestions. Without JavaScript: a GET form to /search, and on
- * small screens an icon linking to it. With JavaScript the icon opens a full-screen search,
- * and "/" opens the search from anywhere but a field (`shortcutAllowed`).
+ * phones (members) a magnifier linking to it. With JavaScript the magnifier opens a
+ * full-screen search, as do the tab bar's "+" and Search tab (`openSearch`), and "/" opens
+ * the search from anywhere but a field (`shortcutAllowed`).
  */
 export function HeaderSearch({ signedIn }: { signedIn: boolean }) {
   const t = useTranslations();
@@ -66,25 +69,34 @@ export function HeaderSearch({ signedIn }: { signedIn: boolean }) {
       if (field) field.focus();
       else setDialog(true);
     };
+    const onOpen = () => setDialog(true);
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
+    window.addEventListener(OPEN_SEARCH_EVENT, onOpen);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener(OPEN_SEARCH_EVENT, onOpen);
+    };
   }, []);
 
   return (
     <>
-      <Link
-        href="/search"
-        aria-haspopup="dialog"
-        onClick={(event) => {
-          event.preventDefault();
-          setDialog(true);
-        }}
-        className="ml-auto rounded-md p-2 text-lg text-fg-muted hover:text-fg sm:hidden"
-      >
-        <SearchIcon />
-        <span className="sr-only">{t("nav.searchLabel")}</span>
-      </Link>
-      <div className="hidden min-w-0 flex-1 sm:ml-auto sm:block sm:max-w-xs">
+      {/* Visitors search from the tab bar; members keep a magnifier next to their avatar. */}
+      <span className="flex-1 md:hidden" />
+      {signedIn && (
+        <Link
+          href="/search"
+          aria-haspopup="dialog"
+          onClick={(event) => {
+            event.preventDefault();
+            setDialog(true);
+          }}
+          className={buttonClasses("ghost", "md:hidden", "icon")}
+        >
+          <SearchIcon className="size-5" />
+          <span className="sr-only">{t("nav.searchLabel")}</span>
+        </Link>
+      )}
+      <div className="hidden min-w-0 flex-1 md:block">
         <SearchCombobox
           id="header-search"
           label={t("nav.searchLabel")}

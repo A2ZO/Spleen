@@ -54,7 +54,7 @@ export default async function MergePage({ params, searchParams }: Props) {
 
   return (
     <section aria-labelledby="merge-title" className="max-w-3xl space-y-6">
-      <h2 id="merge-title" className="text-2xl font-semibold">
+      <h2 id="merge-title" className="font-display text-2xl font-bold tracking-[-0.02em]">
         {t("title")}
       </h2>
       <p className="text-pretty text-fg-muted">{t("intro")}</p>
@@ -106,7 +106,7 @@ export default async function MergePage({ params, searchParams }: Props) {
           />
         </div>
         {reportId && <input type="hidden" name="report" value={reportId} />}
-        <Button type="submit" variant="outline">
+        <Button type="submit" variant="secondary">
           {t("check")}
         </Button>
       </form>
@@ -146,7 +146,7 @@ async function CandidateCard({ title, candidate }: { title: string; candidate: M
   return (
     <article className="space-y-2 rounded-md border border-border bg-surface p-4 shadow-card">
       <p className="font-mono text-xs tracking-[0.2em] text-star uppercase">{title}</p>
-      <h3 className="font-serif text-lg break-words">
+      <h3 className="font-display text-lg font-bold tracking-[-0.02em] break-words">
         <Link href={candidate.href} className={linkClasses}>
           {candidate.title}
         </Link>

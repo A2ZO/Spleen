@@ -9,13 +9,13 @@ import { authClient } from "@/lib/auth-client";
 export function SignOutButton({
   href,
   className,
-  variant = "outline",
+  variant = "secondary",
   children,
 }: {
   /** Where to go once signed out, without the locale (the router adds it). */
   href: string;
   className?: string;
-  variant?: "outline" | "ghost";
+  variant?: "secondary" | "ghost";
   children: ReactNode;
 }) {
   const router = useNavigate();

@@ -1,7 +1,7 @@
 /**
  * PWA and Apple icons from src/app/icon.svg (pnpm --filter @spleen/web icons). Drawn with
  * next/og (no sharp): the regular icons keep the SVG's rounded square; the maskable and
- * Apple ones fill the square with the ink background and keep the record inside the safe
+ * Apple ones fill the square with the ink background and keep the moon inside the safe
  * zone (80 %), since the system cuts the corners itself. Run again after editing icon.svg.
  */
 import { readFile, writeFile } from "node:fs/promises";

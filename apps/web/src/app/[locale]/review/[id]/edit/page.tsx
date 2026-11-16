@@ -49,7 +49,9 @@ export default async function ReviewEditPage({ params }: Props) {
           />
         </Link>
         <div className="min-w-0">
-          <p className="font-serif text-sm text-fg-muted italic">{t("kicker")}</p>
+          <p className="font-mono text-xs tracking-[0.12em] text-fg-muted uppercase">
+            {t("kicker")}
+          </p>
           <h1 className="text-3xl font-semibold text-balance">
             <Link href={`/album/${release.slug}`} className="hover:text-star">
               {release.title}

@@ -7,7 +7,8 @@ import { SignOutButton } from "@/components/account/SignOutButton";
 import { Avatar } from "@/components/ui/Avatar";
 import { Link } from "@/i18n/navigation";
 
-const item = "block w-full rounded-sm px-3 py-2 text-left text-sm text-fg hover:bg-surface-raised";
+const item =
+  "flex min-h-11 w-full items-center rounded-xl px-3 text-left text-sm text-fg hover:bg-surface-raised";
 
 /** Avatar button opening a small menu: shelf, settings, moderation (admins), sign out. Closes on Escape or outside click. */
 export function UserMenu({
@@ -64,14 +65,14 @@ export function UserMenu({
           name={displayName}
           seed={username ?? displayName}
           src={avatarUrl}
-          className="size-9"
+          className="size-11"
         />
         <span className="sr-only">{t("accountMenu")}</span>
       </button>
       {open && (
         <div
           id={menuId}
-          className="absolute right-0 mt-2 w-52 rounded-md border border-border bg-surface p-1 shadow-card"
+          className="absolute right-0 z-50 mt-2 w-56 rounded-2xl border border-border bg-surface p-1.5 shadow-card"
         >
           <p className="truncate px-3 py-2 text-xs text-fg-muted">
             {username ? `@${username}` : displayName}
@@ -80,12 +81,6 @@ export function UserMenu({
             <li>
               <Link href={username ? `/u/${username}` : "/welcome"} className={item}>
                 {t("myShelf")}
-              </Link>
-            </li>
-            {/* The header's links are hidden on phones: Discover is reachable here. */}
-            <li className="sm:hidden">
-              <Link href="/discover" className={item}>
-                {t("discover")}
               </Link>
             </li>
             {username && (

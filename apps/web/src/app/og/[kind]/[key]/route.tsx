@@ -21,13 +21,14 @@ import { getPublicApi } from "@/server/api";
 const SIZE = { width: 1200, height: 630 };
 
 /**
- * Fraunces SemiBold for titles, Inter Regular for the rest: static TTF instances, subset to
- * Latin (assets/fonts/README.md, OFL licences there). Read once; a missing file must not crash
- * the server (unhandled rejection): next/og then draws its own default font.
+ * Inter Regular for every text, titles included, until a static Bricolage Grotesque TTF is
+ * added (next/og reads neither woff2 nor synthesises bold): static instance subset to Latin
+ * (assets/fonts/README.md, OFL licence there). Read once; a missing file must not crash the
+ * server (unhandled rejection): next/og then draws its own default font.
  */
-const fontFile = (name: string) =>
-  readFile(join(process.cwd(), "assets/fonts", name)).catch(() => null);
-const fontFiles = Promise.all([fontFile("Fraunces-SemiBold.ttf"), fontFile("Inter-Regular.ttf")]);
+const interFile = readFile(join(process.cwd(), "assets/fonts", "Inter-Regular.ttf")).catch(
+  () => null,
+);
 
 const COVER_TIMEOUT_MS = 3_000;
 const COVER_MAX_BYTES = 3 * 1024 * 1024;
@@ -52,7 +53,16 @@ async function loadImage(url: string): Promise<string | null> {
   }
 }
 
-/** A drawn record sleeve when there is no cover. */
+/** The crescent of the logo (`Logo`), drawn in lilac. */
+function Moon({ size }: { size: number }) {
+  return (
+    <svg width={size} height={size} viewBox="14.25 2.75 15 15">
+      <path d="M22 3.5a7 7 0 1 0 6.5 9.5 5.5 5.5 0 0 1-6.5-9.5Z" fill={palette.lilac} />
+    </svg>
+  );
+}
+
+/** A drawn sleeve when there is no cover: flat plum with the lilac moon, like `Cover`. */
 function Sleeve({ size }: { size: number }) {
   return (
     <div
@@ -62,30 +72,11 @@ function Sleeve({ size }: { size: number }) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: `linear-gradient(135deg, ${palette.velvet}, ${palette.midnight})`,
-        borderRadius: 12,
+        background: palette.plum,
+        borderRadius: 24,
       }}
     >
-      <div
-        style={{
-          width: size * 0.62,
-          height: size * 0.62,
-          borderRadius: "50%",
-          background: palette.ink,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <div
-          style={{
-            width: size * 0.18,
-            height: size * 0.18,
-            borderRadius: "50%",
-            background: palette.brass,
-          }}
-        />
-      </div>
+      <Moon size={size * 0.42} />
     </div>
   );
 }
@@ -107,7 +98,7 @@ function Picture({
       width={size}
       height={size}
       alt=""
-      style={{ borderRadius: round ? "50%" : 12, objectFit: "cover" }}
+      style={{ borderRadius: round ? "50%" : 24, objectFit: "cover" }}
     />
   );
 }
@@ -128,7 +119,7 @@ function Stars({ rating }: { rating: number }) {
         const points = rating - i * 2;
         return (
           <div key={i} style={{ display: "flex", position: "relative", width: 44, height: 44 }}>
-            {star(palette.smoke)}
+            {star(palette.plum)}
             {points > 0 && (
               <div
                 style={{
@@ -141,7 +132,7 @@ function Stars({ rating }: { rating: number }) {
                   overflow: "hidden",
                 }}
               >
-                {star(palette.brass)}
+                {star(palette.lilac)}
               </div>
             )}
           </div>
@@ -176,35 +167,37 @@ async function render(card: OgCard): Promise<{ element: ReactElement; complete: 
         alignItems: "center",
         gap: 64,
         padding: 72,
-        background: palette.ink,
-        color: palette.cream,
+        background: palette.night,
+        color: palette.mist,
         fontFamily: "Inter",
       }}
     >
       {picture}
       <div style={{ display: "flex", flexDirection: "column", flex: 1, gap: 20 }}>
-        <div style={{ fontSize: 26, letterSpacing: 6, color: palette.brass }}>SPLEEN</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 32 }}>
+          <Moon size={40} />
+          <span style={{ letterSpacing: -1 }}>spleen</span>
+        </div>
         <div
           style={{
-            fontFamily: "Fraunces",
-            fontWeight: 600,
-            fontSize: card.title.length > 40 ? 52 : 64,
-            lineHeight: 1.1,
+            fontSize: card.title.length > 40 ? 60 : 76,
+            lineHeight: 1,
+            letterSpacing: card.title.length > 40 ? -2 : -3,
           }}
         >
           {clamp(card.title, 80)}
         </div>
-        <div style={{ fontSize: 32, opacity: 0.75 }}>
+        <div style={{ fontSize: 32, color: palette.haze }}>
           {clamp([card.subtitle, card.year].filter(Boolean).join(" · "), 70)}
         </div>
         {card.kind === "review" && card.rating ? <Stars rating={card.rating} /> : null}
         {card.excerpt ? (
-          <div style={{ fontSize: 28, lineHeight: 1.35, opacity: 0.85 }}>
+          <div style={{ fontSize: 28, lineHeight: 1.35, color: palette.haze }}>
             {clamp(card.excerpt, card.kind === "review" ? 160 : 120)}
           </div>
         ) : null}
         {card.kind === "review" && card.author ? (
-          <div style={{ fontSize: 28, color: palette.brass }}>{`— ${card.author}`}</div>
+          <div style={{ fontSize: 28, color: palette.lilac }}>{`— ${card.author}`}</div>
         ) : null}
       </div>
     </div>
@@ -222,15 +215,10 @@ export async function GET(
   const card = await getPublicApi().seo.og({ kind, key: decodeURIComponent(key) });
   if (!card) return new Response("Not found", { status: 404 });
   const current = new URL(request.url).searchParams.get("v") === card.version;
-  const [{ element, complete }, [fraunces, inter]] = await Promise.all([render(card), fontFiles]);
-  const fonts = [
-    ...(fraunces
-      ? [{ name: "Fraunces", data: fraunces, weight: 600 as const, style: "normal" as const }]
-      : []),
-    ...(inter
-      ? [{ name: "Inter", data: inter, weight: 400 as const, style: "normal" as const }]
-      : []),
-  ];
+  const [{ element, complete }, inter] = await Promise.all([render(card), interFile]);
+  const fonts = inter
+    ? [{ name: "Inter", data: inter, weight: 400 as const, style: "normal" as const }]
+    : [];
   return new ImageResponse(element, {
     ...SIZE,
     ...(fonts.length > 0 ? { fonts } : {}),

@@ -15,7 +15,8 @@ export interface StarRatingProps {
   className?: string;
   /** Accessible name; defaults to the generic "Your rating". */
   label?: string;
-  size?: "sm" | "md";
+  /** `lg`: the big "Your rating" row (48 px per star). */
+  size?: "sm" | "md" | "lg";
 }
 
 /**
@@ -27,6 +28,14 @@ export function StarRating({ value, onChange, className, label, size = "md" }: S
   const ref = useRef<HTMLDivElement>(null);
   const hintId = useId();
   const [hover, setHover] = useState<number | null>(null);
+  // A new rating (click, keys, shortcuts) replays the stars' bounce; compared while rendering,
+  // so nothing moves on the first render.
+  const [seen, setSeen] = useState(value);
+  const [pop, setPop] = useState(0);
+  if (seen !== value) {
+    setSeen(value);
+    if (value !== null) setPop(pop + 1);
+  }
 
   const fromPointer = (clientX: number) => {
     const box = ref.current?.getBoundingClientRect();
@@ -77,11 +86,13 @@ export function StarRating({ value, onChange, className, label, size = "md" }: S
           if (picked !== null) onChange(picked === value ? null : picked);
         }}
         className={cn(
-          "cursor-pointer touch-none rounded-sm leading-none",
-          size === "md" ? "text-3xl" : "text-lg",
+          "cursor-pointer touch-none rounded-lg leading-none",
+          { sm: "py-3 text-lg", md: "py-1.5 text-3xl", lg: "py-1 text-[44px] [&_svg]:px-[0.1em]" }[
+            size
+          ],
         )}
       >
-        <Stars rating={shown} />
+        <Stars rating={shown} pop={pop} />
       </div>
       <span id={hintId} className="sr-only">
         {t("keyboardHint")}

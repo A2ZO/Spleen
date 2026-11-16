@@ -48,7 +48,9 @@ export function DiaryCalendar({
         <Link href={previousHref} scroll={false} className={linkClasses}>
           ← {t("previousMonth")}
         </Link>
-        <h2 className="font-serif text-2xl first-letter:uppercase">{monthLabel}</h2>
+        <h2 className="font-display text-2xl font-bold tracking-[-0.02em] first-letter:uppercase">
+          {monthLabel}
+        </h2>
         {nextHref ? (
           <Link href={nextHref} scroll={false} className={linkClasses}>
             {t("nextMonth")} →
@@ -92,7 +94,7 @@ export function DiaryCalendar({
                   <td key={day} className="p-0.5 align-top">
                     <div
                       className={cn(
-                        "relative aspect-square overflow-hidden rounded-sm border",
+                        "relative aspect-square overflow-hidden rounded-thumb border",
                         first ? "border-transparent" : "border-border/50 bg-surface/30",
                       )}
                     >
@@ -147,9 +149,7 @@ export function DiaryCalendar({
           ))}
         </tbody>
       </table>
-      {entries.length === 0 && (
-        <p className="font-serif text-lg text-fg-muted italic">{t("monthEmpty")}</p>
-      )}
+      {entries.length === 0 && <p className="py-6 text-lg text-fg-muted">{t("monthEmpty")}</p>}
     </div>
   );
 }

@@ -69,7 +69,7 @@ export async function FollowListPage({
         <Link href={path} className="text-sm text-fg-muted hover:text-fg">
           ← {t("backToProfile", { name })}
         </Link>
-        <h1 className="mt-2 text-3xl font-semibold text-balance">
+        <h1 className="mt-2 font-display text-4xl font-extrabold tracking-[-0.03em] text-balance break-words">
           {t(`${direction}Title`, { name })}
         </h1>
       </header>
@@ -90,13 +90,11 @@ export async function FollowListPage({
         ]}
       />
       {page.items.length === 0 && !cursor ? (
-        <p className="py-6 font-serif text-lg text-fg-muted italic">
-          {t(`${direction}Empty`, { name })}
-        </p>
+        <p className="py-6 text-lg text-fg-muted">{t(`${direction}Empty`, { name })}</p>
       ) : (
-        <ul className="divide-y divide-border/50">
+        <ul className="space-y-2">
           {page.items.map((member) => (
-            <li key={member.username}>
+            <li key={member.username} className="rounded-card-sm bg-surface px-4">
               <MemberRow member={member} signedIn={Boolean(me?.profile)} />
             </li>
           ))}

@@ -5,7 +5,6 @@ import { useFormatter, useLocale, useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/Badge";
 import { Cover } from "@/components/ui/Cover";
 import { HeartIcon, PenIcon, RepeatIcon } from "@/components/ui/icons";
-import { Stars } from "@/components/ui/Stars";
 import { UndoableGate } from "@/components/ui/UndoableGate";
 import { Link } from "@/i18n/navigation";
 
@@ -27,18 +26,18 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
         <section key={month} aria-labelledby={`diary-${month}`}>
           <h3
             id={`diary-${month}`}
-            className="mb-2 font-mono text-xs tracking-[0.2em] text-star uppercase"
+            className="mb-3 font-mono text-xs tracking-[0.14em] text-fg-muted uppercase"
           >
             {format.dateTime(new Date(`${month}-01T12:00:00Z`), { month: "long", year: "numeric" })}
           </h3>
-          <ul className="divide-y divide-border/50">
+          <ul className="space-y-2">
             {monthEntries.map((entry) => (
               // Hidden while deleted with "Undo" (the same session may still show it here).
               <UndoableGate key={entry.id} id={entry.id}>
-                <li className="flex items-center gap-3 py-3 sm:gap-4">
+                <li className="flex items-center gap-3 rounded-card-sm bg-surface px-3 py-2.5 sm:gap-4 sm:px-4">
                   <time
                     dateTime={entry.listenedOn}
-                    className="w-8 shrink-0 text-center font-mono text-xl text-fg-muted tabular"
+                    className="w-8 shrink-0 text-center font-display text-2xl font-extrabold tabular"
                   >
                     <span aria-hidden="true">{Number(entry.listenedOn.slice(8, 10))}</span>
                     <span className="sr-only">
@@ -53,7 +52,7 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
                     slug={entry.release.slug}
                     title={entry.release.title}
                     coverUrl={entry.release.coverUrl}
-                    className="w-11 shrink-0"
+                    className="w-11 shrink-0 rounded-thumb"
                     showText={false}
                     sizes="44px"
                   />
@@ -62,7 +61,7 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
                       href={
                         entry.track ? `/track/${entry.track.slug}` : `/album/${entry.release.slug}`
                       }
-                      className="block truncate font-serif text-lg leading-tight hover:text-star"
+                      className="block truncate font-display text-base leading-tight font-bold hover:text-star sm:text-lg"
                     >
                       {entry.track?.title ?? entry.release.title}
                     </Link>
@@ -73,9 +72,12 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
                       ]
                         .filter((part) => part !== null && part !== "")
                         .join(" · ")}
+                      {entry.format && (
+                        <span className="sm:hidden"> · {t(`format.${entry.format}`)}</span>
+                      )}
                     </p>
                     {entry.moods.length > 0 && (
-                      <p className="truncate text-xs text-fg-muted italic">
+                      <p className="truncate text-xs text-fg-muted">
                         <span className="sr-only">{t("profile.moods")} : </span>
                         {entry.moods
                           .map((m) => (locale === "en" ? m.labelEn : m.labelFr))
@@ -85,8 +87,14 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
                   </div>
                   <div className="flex shrink-0 flex-col items-end gap-1 sm:flex-row sm:items-center sm:gap-3">
                     {entry.rating !== null && (
-                      <span>
-                        <Stars rating={entry.rating} className="text-sm" />
+                      <span className="font-mono text-sm whitespace-nowrap text-star">
+                        <span aria-hidden="true">
+                          ★{" "}
+                          {format.number(ratingToStars(entry.rating), {
+                            minimumFractionDigits: 1,
+                            maximumFractionDigits: 1,
+                          })}
+                        </span>
                         <span className="sr-only">
                           {t("rating.outOfFive", {
                             stars: format.number(ratingToStars(entry.rating)),
@@ -119,9 +127,9 @@ export function DiaryList({ entries }: { entries: DiaryEntry[] }) {
                         />
                       )}
                       {entry.format && (
-                        <Badge className="hidden sm:inline-flex">
-                          {t(`format.${entry.format}`)}
-                        </Badge>
+                        <span className="hidden sm:inline">
+                          <Badge>{t(`format.${entry.format}`)}</Badge>
+                        </span>
                       )}
                     </span>
                   </div>

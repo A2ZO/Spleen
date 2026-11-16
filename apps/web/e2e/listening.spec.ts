@@ -17,7 +17,8 @@ test("listen in one click, rate, log with a mood and find it in the diary", asyn
     "aria-pressed",
     "true",
   );
-  await expect(panel.getByText("Tes écoutes")).toBeVisible();
+  const listens = page.getByRole("region", { name: "Tes écoutes" });
+  await expect(listens.getByText("1 fois", { exact: true })).toBeVisible();
 
   // Quick rating with the keyboard: 4.5 stars, kept after a reload.
   const slider = panel.getByRole("slider", { name: "Ta note" });
@@ -25,7 +26,8 @@ test("listen in one click, rate, log with a mood and find it in the diary", asyn
   await page.keyboard.press("End");
   await page.keyboard.press("ArrowLeft");
   await expect(slider).toHaveAttribute("aria-valuenow", "9");
-  await expect(panel.getByText("Note rapide, sans date")).toBeVisible();
+  await listens.getByText("Modifier mes écoutes").click();
+  await expect(listens.getByText("Note rapide, sans date")).toBeVisible();
   await page.reload();
   await expect(panel.getByRole("slider", { name: "Ta note" })).toHaveAttribute(
     "aria-valuenow",
@@ -36,7 +38,7 @@ test("listen in one click, rate, log with a mood and find it in the diary", asyn
   // After a reload the server HTML is visible before React hydrates: retry the first click.
   const dialog = page.getByRole("dialog");
   await expect(async () => {
-    await panel.getByRole("button", { name: "Journaliser…" }).click();
+    await panel.getByRole("button", { name: "Noter en détail…" }).click();
     await expect(dialog).toBeVisible({ timeout: 1_000 });
   }).toPass();
   await expect(dialog.getByLabel("Date d'écoute")).not.toHaveValue("");
@@ -55,6 +57,17 @@ test("listen in one click, rate, log with a mood and find it in the diary", asyn
     diary.getByRole("link", { name: "Nocturnes pour pluie fine" }).first(),
   ).toBeVisible();
   await expect(diary.getByText("Pluie sur la vitre").first()).toBeVisible();
+
+  // The home page's "Your month" counts today's dated listens and leads to the diary.
+  await page.goto("/fr");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "Qu'est-ce que tu écoutes, Écouteur nocturne ?",
+  );
+  await expect(page.getByText(/^\d+ écoutes? ce mois-ci, sur 1 jour\.$/)).toBeAttached();
+  await expect(page.getByRole("link", { name: "Voir mon journal" })).toHaveAttribute(
+    "href",
+    new RegExp(`/fr/u/${username}/diary\\?view=calendar&month=\\d{4}-\\d{2}$`),
+  );
 
   await deleteAccount(page, username);
 });

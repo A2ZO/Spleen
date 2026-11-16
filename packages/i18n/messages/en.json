@@ -20,12 +20,9 @@
     "notifications": "Notifications",
     "unread": "{count, plural, one {# unread} other {# unread}}",
     "discover": "Discover",
-    "admin": "Moderation"
-  },
-  "theme": {
-    "toggle": "Change theme",
-    "toDark": "Switch to night mode",
-    "toLight": "Switch to cream paper mode"
+    "admin": "Moderation",
+    "rate": "Rate a record",
+    "profile": "Profile"
   },
   "locale": {
     "label": "Language",
@@ -81,12 +78,26 @@
     "unliked": "Heart removed"
   },
   "home": {
-    "kicker": "It's late, the city is asleep",
-    "title": "What did you listen to tonight?",
-    "subtitle": "Rate your records, keep a listening diary, put your favourite albums on your shelf. Gently.",
-    "ctaJoin": "Open my notebook",
+    "kicker": "Listening notebook",
+    "title": "Rate your records, keep your diary.",
+    "subtitle": "Follow the ears you trust and find out what they are playing. Gently.",
+    "ctaJoin": "Create my account",
     "ctaWelcome": "Pick my username",
-    "ctaSearch": "Find a record"
+    "findMusic": "Find something to listen to",
+    "memberTitle": "What are you listening to, {name}?",
+    "rate": "Rate a record",
+    "monthTitle": "Your {month}",
+    "monthListens": "{count, plural, one {listen} other {listens}}",
+    "monthFirst": "{first, plural, =0 {no discoveries} one {including # discovery} other {including # discoveries}}",
+    "monthSummary": "{count, plural, one {# listen} other {# listens}} this month, over {days, plural, one {# day} other {# days}}.",
+    "monthEmpty": "Nothing listened to this month yet.",
+    "monthDiary": "See my diary",
+    "justOut": "Just out",
+    "friendsTitle": "From your friends",
+    "howTitle": "How it works",
+    "howRate": "Rate and review the records you listen to.",
+    "howDiary": "Keep your listening diary, night after night.",
+    "howShelf": "Put your favourite albums on your shelf."
   },
   "album": {
     "by": "by",
@@ -108,7 +119,7 @@
       "listenedDone": "Listened",
       "like": "Favourite",
       "wantToListen": "Listen later",
-      "log": "Log…",
+      "log": "Log in detail…",
       "signIn": "Sign in to keep track of what you listen to.",
       "signInLink": "Sign in"
     },
@@ -196,7 +207,6 @@
     "following": "{count} following",
     "joined": "Here since {date}",
     "shelfTitle": "The Shelf",
-    "shelfEmpty": "{name}'s shelf is gathering dust.",
     "shelfEmptySlot": "Empty slot",
     "recentTitle": "Recently listened",
     "tabsLabel": "Profile sections",
@@ -223,7 +233,13 @@
     "reviewed": "Review written",
     "moods": "Moods",
     "likesEmpty": "No hearts yet.",
-    "diaryCalendar": "Calendar view"
+    "diaryCalendar": "Calendar view",
+    "figures": {
+      "label": "In numbers",
+      "thisYear": "{count, plural, one {record} other {records}} in {year}",
+      "total": "{count, plural, one {record} other {records}} all time",
+      "rated": "{count, plural, one {record rated} other {records rated}}"
+    }
   },
   "stats": {
     "thisYear": "In {year}",
@@ -327,9 +343,6 @@
     "bioLabel": "Bio",
     "bioHint": "300 characters at most.",
     "localeLabel": "Language",
-    "themeLabel": "Theme",
-    "themeDark": "Dark",
-    "themeLight": "Light",
     "privacyTitle": "Privacy",
     "statsPrivateLabel": "Keep my stats private",
     "diaryPrivateLabel": "Keep my diary private",
@@ -531,7 +544,7 @@
   },
   "shelf": {
     "subtitleOwn": "My 4 favourite records",
-    "subtitle": "{name}'s 4 favourite records",
+    "subtitle": "{name}'s favourite records",
     "put": "Put on my Shelf",
     "onShelf": "On my Shelf",
     "pickTitle": "Where should “{title}” go?",
@@ -1013,7 +1026,7 @@
         },
         "cookies": {
           "title": "Cookies",
-          "body": "<p>Spleen only uses necessary cookies, with no audience measurement or advertising, hence no cookie banner:</p><ul><li>the sign-in session, when you are signed in;</li><li><strong>spleen-theme</strong>: your light or dark theme;</li><li><strong>NEXT_LOCALE</strong>: your language, for the length of your visit.</li></ul>"
+          "body": "<p>Spleen only uses necessary cookies, with no audience measurement or advertising, hence no cookie banner:</p><ul><li>the sign-in session, when you are signed in;</li><li><strong>NEXT_LOCALE</strong>: your language, for the length of your visit.</li></ul>"
         },
         "minors": {
           "title": "Minimum age",
@@ -1063,5 +1076,78 @@
       "entry": "Listen deleted"
     },
     "failed": "Nothing was deleted. {reason}"
+  },
+  "devComponents": {
+    "metaTitle": "Components (dev)",
+    "title": "Lilas components",
+    "intro": "Development page: every base component, its variants and states.",
+    "buttons": "Buttons",
+    "onAccent": "On the lilac block",
+    "cards": "Cards",
+    "pills": "Pills and labels",
+    "fields": "Fields",
+    "ratings": "Ratings",
+    "avatars": "Avatars",
+    "tabs": "Tabs",
+    "covers": "Covers",
+    "primary": "Rate a record",
+    "secondary": "Add to shelf",
+    "ghost": "Cancel",
+    "ink": "Pick a record",
+    "onAccentButton": "See the list",
+    "small": "Small",
+    "disabled": "Unavailable",
+    "focusShown": "Focus shown permanently (to check the ring)",
+    "iconLabel": "Like",
+    "cardTitle": "A card",
+    "cardBody": "Dark surface, one-pixel top sheen, drop shadow.",
+    "accentTitle": "The lilac block",
+    "accentBody": "One per page. Focus turns ink on it.",
+    "badge": "Album · 2025",
+    "pill": "Shoegaze",
+    "pillLink": "Dream pop",
+    "fieldLabel": "Username",
+    "fieldHint": "Letters, digits and dashes.",
+    "fieldError": "This username is taken.",
+    "fieldPlaceholder": "nuitblanche",
+    "areaLabel": "Your review",
+    "selectLabel": "Format",
+    "optionLp": "Vinyl",
+    "optionCd": "CD",
+    "checkbox": "Make my review public",
+    "ratingLabel": "Your rating",
+    "tabsLabel": "Feed",
+    "tabFriends": "Friends",
+    "tabPopular": "Popular",
+    "tabFriendsBody": "What your friends are playing.",
+    "tabPopularBody": "What is spinning right now.",
+    "linkTabsLabel": "Sections",
+    "seeMore": "See more"
+  },
+  "detail": {
+    "back": "Back",
+    "more": "More actions",
+    "review": "Review",
+    "community": "Community rating",
+    "outOfFive": "out of 5",
+    "myListensCount": "{count, plural, one {once} =2 {twice} other {# times}}",
+    "lastListen": "Last listened on {date}.",
+    "lastListenFormat": "Last listened on {date} ({format}).",
+    "firstListen": "First listened on {date}.",
+    "noListens": "No listens yet.",
+    "undatedOnly": "Quick rating, no date: give it one to see it in your diary.",
+    "seeDiary": "See in my diary",
+    "editListens": "Edit my listens",
+    "listCount": "{count, plural, one {# list} other {# lists}}",
+    "seeLists": "See the lists",
+    "signInToRate": "Sign in to rate",
+    "discography": "Discography",
+    "albumCount": "{count, plural, one {# album} other {# albums}}",
+    "epCount": "{count, plural, one {# EP} other {# EPs}}",
+    "singleCount": "{count, plural, one {# single} other {# singles}}",
+    "otherCount": "{count, plural, one {# other} other {# others}}",
+    "on": "on",
+    "theirRating": "Their rating",
+    "trackLabel": "Track"
   }
 }

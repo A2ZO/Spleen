@@ -7,7 +7,6 @@ import { cookies } from "next/headers";
 
 import { redirect } from "@/i18n/navigation";
 import { errorCode } from "@/lib/api-errors";
-import { THEME_COOKIE, THEME_COOKIE_MAX_AGE } from "@/lib/theme";
 import { getApi } from "@/server/api";
 
 export interface FormState {
@@ -23,7 +22,6 @@ export async function updateProfileAction(
     displayName: formData.get("displayName"),
     bio: formData.get("bio") ?? "",
     locale: formData.get("locale"),
-    theme: formData.get("theme"),
     statsPrivate: formData.get("statsPrivate") === "on",
     diaryPrivate: formData.get("diaryPrivate") === "on",
     blindMode: formData.get("blindMode") === "on",
@@ -36,11 +34,6 @@ export async function updateProfileAction(
   } catch (error) {
     return { error: errorCode(error) };
   }
-  (await cookies()).set(THEME_COOKIE, parsed.data.theme, {
-    path: "/",
-    maxAge: THEME_COOKIE_MAX_AGE,
-    sameSite: "lax",
-  });
   if (parsed.data.locale !== currentLocale) {
     redirect({ href: "/settings", locale: parsed.data.locale });
   }
