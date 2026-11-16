@@ -4,7 +4,7 @@
 - Branche : feat/11-sorties-a-venir
 - Doc du jalon : docs/jalon-11-en-cours.md
 - Étape : 4 (Accueil et découverte)
-- Phase : plan
+- Phase : code
 - Mis à jour : 2026-11-16
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante, sans arrêt entre les

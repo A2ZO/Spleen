@@ -84,6 +84,16 @@ Ajouts du conseiller, validés :
 - 2026-11-16, étape 3 — Suggestions de `/upcoming` : boutons « Suivre » secondaires et petits
   (un seul bloc lilas par page, relecteur) ; le bouton principal reste sur la fiche artiste.
 
+- 2026-11-16, étape 4 — « Bientôt dans tes oreilles » en section pleine largeur juste sous la
+  grille du haut (donc sous « Ton mois »), pas dans la colonne de droite, trop étroite pour 5
+  tuiles. Écarté : une liste compacte dans la colonne.
+- 2026-11-16, étape 4 — « Les plus attendus » sans nombre de membres affiché (le brief ne
+  demande que disque, artiste, date) et sans données du lecteur (cache public #22). Écarté :
+  « 12 membres l'attendent ».
+- 2026-11-16, étape 4 — Sorties à l'année seule après les sorties datées dans les 5 tuiles de
+  l'accueil et à égalité dans « Les plus attendus » (relecteur : le 1er janvier stocké n'est
+  pas une vraie date).
+
 ## QUESTION POUR AZZO
 
 Plan de l'étape 1 à valider : docs/pilote/plan-etape-1.md (migration `artist_follows` et
