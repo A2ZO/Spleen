@@ -68,7 +68,7 @@ Relu par le relecteur (OK avec corrections, appliquées).
 - [x] 6. Fiche artiste
 - [x] 7. Fiche d'un disque à venir
 - [x] 8. Réglages
-- [ ] 9. e2e
+- [x] 9. e2e
 - [ ] 10. Docs et captures
 - [ ] vérifications
 - [ ] relecture 1

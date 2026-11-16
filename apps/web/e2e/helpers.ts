@@ -2,6 +2,7 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
 import { createDb, eq, isPostgresUrl, loadRootEnv, schema, setAdminRole } from "@spleen/db";
+import { todayIn } from "@spleen/validators";
 import { expect, type Page, type TestInfo } from "./fixtures";
 
 // Without BREVO_API_KEY, the dev server writes emails to <repo>/.data/outbox (see @spleen/infra).
@@ -147,24 +148,89 @@ export async function deleteAccount(page: Page, username: string) {
 export async function throwawayReleases(
   testInfo: TestInfo,
   count: number,
+  options: ThrowawayOptions = {},
 ): Promise<{ slug: string; title: string }[] | null> {
+  return (
+    (
+      await throwawayCatalog(
+        testInfo,
+        Array.from({ length: count }, () => options),
+      )
+    )?.releases ?? null
+  );
+}
+
+/** A throwaway release's type and date (none by default). */
+export interface ThrowawayOptions {
+  type?: "album" | "ep" | "single";
+  /** Days after today in Paris (day precision), or next year (year precision, announced). */
+  date?: { inDays: number } | "nextYear";
+}
+
+/**
+ * Throwaway releases (one per item of `specs`), all credited to one new throwaway artist.
+ * Catalog rows are never deleted: unique slugs, nothing else points at them.
+ */
+export async function throwawayCatalog(
+  testInfo: TestInfo,
+  specs: ThrowawayOptions[],
+  withArtist = false,
+): Promise<{
+  artist: { slug: string; name: string } | null;
+  releases: { slug: string; title: string }[];
+} | null> {
   loadRootEnv();
   const url = process.env.DATABASE_URL;
   if (!isPostgresUrl(url)) return null;
   const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}${testInfo.project.name.slice(0, 1)}`;
+  const today = todayIn("Europe/Paris", new Date());
+  const dateOf = (date: ThrowawayOptions["date"]) => {
+    if (!date) return {};
+    if (date === "nextYear") {
+      return {
+        releaseDate: `${Number(today.slice(0, 4)) + 1}-01-01`,
+        releaseDatePrecision: "year" as const,
+        announcedAt: new Date(),
+      };
+    }
+    const day = new Date(`${today}T12:00:00Z`);
+    day.setUTCDate(day.getUTCDate() + date.inDays);
+    return {
+      releaseDate: day.toISOString().slice(0, 10),
+      releaseDatePrecision: "day" as const,
+      announcedAt: new Date(),
+    };
+  };
   const handle = createDb(url);
   try {
-    return await handle.db
+    const releases = await handle.db
       .insert(schema.releases)
       .values(
-        Array.from({ length: count }, (_, i) => ({
+        specs.map((spec, i) => ({
           slug: `e2e-${id}-${i + 1}`,
           title: `Disque jetable ${id} ${i + 1}`,
-          type: "album" as const,
+          type: spec.type ?? ("album" as const),
           tracklistImportedAt: new Date(),
+          ...dateOf(spec.date),
         })),
       )
-      .returning({ slug: schema.releases.slug, title: schema.releases.title });
+      .returning({
+        id: schema.releases.id,
+        slug: schema.releases.slug,
+        title: schema.releases.title,
+      });
+    let artist: { slug: string; name: string } | null = null;
+    if (withArtist) {
+      const [row] = await handle.db
+        .insert(schema.artists)
+        .values({ slug: `e2e-${id}`, name: `Artiste jetable ${id}` })
+        .returning({ id: schema.artists.id, slug: schema.artists.slug, name: schema.artists.name });
+      await handle.db
+        .insert(schema.releaseArtists)
+        .values(releases.map((r) => ({ releaseId: r.id, artistId: row!.id })));
+      artist = { slug: row!.slug, name: row!.name };
+    }
+    return { artist, releases: releases.map(({ slug, title }) => ({ slug, title })) };
   } finally {
     await handle.close();
   }
