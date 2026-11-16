@@ -49,8 +49,9 @@ each step and the usual checks), `decisions.md`, `journal.md`. Screenshots go to
 4. Do not ask the owner the questions the plan raises. Take the most cautious option (the one
    that changes the least, can be undone, and uses what exists) and log it in `decisions.md`:
    date, step, choice, reason, alternative left aside. Exception: anything irreversible, or
-   touching data, security or money → « Attente », unless a plan the owner validated says it
-   (additive migrations, for example). Never delete or rewrite existing data.
+   touching data, security or money → « Attente », unless `feuille-de-route.md` already
+   allows it (its « Cadre », « Autorisé à la fusion » or the step's « Décisions actées »).
+   Never delete or rewrite existing data.
 5. If `feuille-de-route.md` says plans are validated by the owner (« Plans validés par
    Azzo »): write in `decisions.md`, under a heading `QUESTION POUR AZZO`, « Plan de l'étape
    <n> à valider : docs/pilote/plan-etape-<n>.md », then stop as in « Attente », with « plan à
@@ -104,7 +105,9 @@ here, go on with section 6 instead of stopping.
    - the PR does not touch `packages/db` migrations or schema, the auth logic of
      `packages/auth` (email templates are fine), `apps/web/src/proxy.ts` or the security
      headers and CSP, `.github/workflows/`, environment variables (`turbo.json` env lists,
-     `.env.example`), and adds or upgrades no dependency.
+     `.env.example`), and adds or upgrades no dependency — except exactly what the section
+     « Autorisé à la fusion » of `feuille-de-route.md` lists (check each changed file of those
+     areas against it with `git diff --stat origin/dev...HEAD`).
 3. Before merging, on the branch: `etat.md` phase `fini` (« fusion automatique de la PR
    <numéro> demandée le <date> »), a summary in `journal.md`; commit, push, wait until the
    checks are green again.

@@ -4,12 +4,12 @@
 - Branche : feat/11-sorties-a-venir
 - Doc du jalon : docs/jalon-11-en-cours.md
 - Étape : 1 (Suivre un artiste)
-- Phase : attente (plan à valider ; reprendre en `code` après validation)
+- Phase : code (plan validé par Azzo le 16 novembre, avec deux corrections dans `decisions.md`)
 - Mis à jour : 2026-11-16
 
-Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante. Ce jalon, chaque plan
-est validé par Azzo : après le plan, phase `attente` (« plan à valider »), puis Azzo remet
-`code`. `attente` : une question pour Azzo dans `decisions.md`. `fini` : jalon terminé, PR
+Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante, sans arrêt entre les
+étapes (décisions actées dans `feuille-de-route.md`). `attente` : une question pour Azzo dans
+`decisions.md`. `fini` : jalon terminé, PR
 ouverte (fusionnée par le pilote dans `dev` si les conditions de la section 6 tiennent ; la PR
 `dev` → `main` reste à Azzo).
 

@@ -47,3 +47,13 @@ Plan de l'étape 1 à valider : docs/pilote/plan-etape-1.md (migration `artist_f
 apparaît dès l'étape 1 mais n'agit qu'à l'étape 5 (tout part dans la même PR de fin de jalon).
 Réponds ici (« validé », avec tes corrections éventuelles), puis mets la phase `code` dans
 `etat.md`.
+
+**Réponse d'Azzo (16 novembre) : validé, avec deux corrections.**
+
+1. Bouton dont le libellé change (« Suivre » / « Ne plus suivre ») : pas d'`aria-pressed`, le
+   libellé suffit (un bouton bascule garde un libellé fixe, sinon les lecteurs d'écran
+   annoncent « Ne plus suivre, enfoncé »). Même correction pour `FollowButton` (abonnement à
+   un membre) s'il fait pareil, dans cette étape.
+2. Lien « Suivre » d'un visiteur : vers la connexion avec retour sur la fiche de l'artiste
+   après la connexion, comme les autres liens visiteurs vers `/sign-in` (même mécanisme ; s'il
+   n'en existe pas, le noter dans le journal sans en créer un).
