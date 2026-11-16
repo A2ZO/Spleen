@@ -8,6 +8,7 @@ import {
   likeSetSchema,
   popularFeedSchema,
   recentReleasesSchema,
+  upcomingMineSchema,
   topRatedSchema,
   trendsSchema,
   listCreateSchema,
@@ -75,6 +76,7 @@ import {
 } from "./lib/catalog/artist-follows";
 import { importArtist, importEntity, importReleaseGroup } from "./lib/catalog/import";
 import { mergeCatalog, mergedSlug, previewMerge } from "./lib/catalog/merge";
+import { upcomingByArtist, upcomingForMember } from "./lib/catalog/upcoming";
 import { createCatalogReport } from "./lib/catalog/reports";
 import {
   artistIdBySlug,
@@ -452,6 +454,25 @@ export const appRouter = router({
         return artistFollowStatus(ctx.db(), ctx.user.id, input.slug);
       }),
     mine: protectedProcedure.query(({ ctx }) => myFollowedArtists(ctx.db(), ctx.user.id)),
+  }),
+  /** Upcoming releases (docs/decouverte.md « Sorties à venir »). */
+  upcoming: router({
+    /** Of the artists the caller follows, in their zone, grouped by period. */
+    mine: protectedProcedure.input(upcomingMineSchema).query(async ({ input, ctx }) => {
+      const account = await ctx.account();
+      return upcomingForMember(
+        ctx.db(),
+        await viewerOf(ctx),
+        ctx.user.id,
+        account?.profile?.timeZone,
+        ctx.now,
+        input.type,
+      );
+    }),
+    /** Of one artist: the same for everyone (public cache), Paris day. */
+    byArtist: publicProcedure
+      .input(z.object({ slug: slugSchema }))
+      .query(({ input, ctx }) => upcomingByArtist(ctx.db(), input.slug, ctx.now)),
   }),
   track: router({
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {

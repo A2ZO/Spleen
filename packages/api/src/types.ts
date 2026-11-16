@@ -117,6 +117,20 @@ export interface TrendItem {
   source: "lang" | "all" | "month";
 }
 
+/** Section of « Mes sorties à venir »: next 7 days, rest of the month, later, year only. */
+export type UpcomingGroup = "week" | "month" | "later" | "tba";
+
+/** An upcoming release (docs/decouverte.md « Sorties à venir »). */
+export interface UpcomingItem {
+  release: ReleaseCard;
+  /** `YYYY-MM-DD`; a month or a year is given on its first day, see `precision`. */
+  date: string;
+  precision: "year" | "month" | "day";
+  /** The announced date moved at least once (`release_date_changed_at`). */
+  dateChanged: boolean;
+  group: UpcomingGroup;
+}
+
 /** A place in a top rated chart. */
 export interface TopRatedItem {
   rank: number;
