@@ -82,8 +82,12 @@ Europe/Paris pour un visiteur) :
 
 - au jour : après aujourd'hui ; au mois : un mois suivant, ou le mois en cours si la sortie a
   été annoncée (`announced_at`) ; à l'année : l'année suivante, ou l'année en cours si annoncée ;
-- jamais au-delà de 12 mois (une année : la suivante au plus) ;
+- jamais au-delà de 12 mois (une année : la suivante au plus) ; « pas encore sorti » (fiche du
+  disque, refus `RELEASE_NOT_OUT`) est la même règle sans ce plafond (`upcomingRelease()`) ;
 - non fusionnée, disque principal (sans live ni compilation), album, EP ou single.
+
+Date au jour affichée courte (« ven. 21 nov. »), avec l'année hors de l'année en cours
+(`formatUpcomingDate()`).
 
 Lectures (routeur `upcoming`) :
 

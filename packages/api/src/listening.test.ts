@@ -675,6 +675,14 @@ describe("records not out yet (RELEASE_NOT_OUT)", () => {
     expect(await stateOf(m.user.id, { releaseId: target.id })).toBeNull();
   });
 
+  it("refuses a record dated beyond the 12 months of « à venir »", async () => {
+    const m = await member();
+    const target = await upcomingRelease("2028-05-20");
+    expect(await errorCode(() => m.call().listening.quickRate({ target, rating: 8 }))).toBe(
+      "RELEASE_NOT_OUT",
+    );
+  });
+
   it("allows removals and the listening queue", async () => {
     const m = await member();
     const target = await upcomingRelease("2026-11-21");

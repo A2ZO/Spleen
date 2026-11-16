@@ -51,31 +51,41 @@ export function mainReleaseSql(): SQL {
     )}]::text[]`;
 }
 
-/** The date part of the rule, on alias `r`, for `today` (`YYYY-MM-DD`). */
-export function upcomingDateSql(today: string): SQL {
+/**
+ * The date part of the rule, on alias `r`, for `today` (`YYYY-MM-DD`). `horizon: false` drops
+ * the 12-month cap: « not out yet », for the record page and the refusals of `RELEASE_NOT_OUT`.
+ */
+export function upcomingDateSql(today: string, horizon = true): SQL {
   const t = sql`${today}::date`;
+  const capped = horizon ? sql`r.release_date <= ${t} + interval '12 months'` : sql`true`;
+  const nextYear = horizon
+    ? sql`extract(year from r.release_date) = extract(year from ${t}) + 1`
+    : sql`extract(year from r.release_date) > extract(year from ${t})`;
   return sql`(
     (r.release_date_precision = 'day'
       and r.release_date > ${t}
-      and r.release_date <= ${t} + interval '12 months')
+      and ${capped})
     or (r.release_date_precision = 'month'
       and (date_trunc('month', r.release_date) > date_trunc('month', ${t})
         or (date_trunc('month', r.release_date) = date_trunc('month', ${t})
           and r.announced_at is not null))
-      and r.release_date <= ${t} + interval '12 months')
+      and ${capped})
     or (r.release_date_precision = 'year'
-      and (extract(year from r.release_date) = extract(year from ${t}) + 1
+      and (${nextYear}
         or (extract(year from r.release_date) = extract(year from ${t})
           and r.announced_at is not null)))
   )`;
 }
 
 /** The whole rule, on alias `r`. */
-export function upcomingSql(today: string): SQL {
-  return sql`(${mainReleaseSql()} and ${upcomingDateSql(today)})`;
+export function upcomingSql(today: string, horizon = true): SQL {
+  return sql`(${mainReleaseSql()} and ${upcomingDateSql(today, horizon)})`;
 }
 
-/** The release when the rule calls it upcoming for `today`, else null. */
+/**
+ * The release when it is not out yet for `today` (the rule without its 12-month cap: a record
+ * dated in two years is not out either), else null.
+ */
 export async function upcomingRelease(
   db: DbOrTx,
   releaseId: string,
@@ -84,7 +94,7 @@ export async function upcomingRelease(
   const [row] = rowsOf<{ changed: boolean }>(
     await db.execute(sql`
       select r.release_date_changed_at is not null as changed
-      from releases r where r.id = ${releaseId} and ${upcomingSql(today)}
+      from releases r where r.id = ${releaseId} and ${upcomingSql(today, false)}
     `),
   );
   return row ? { dateChanged: row.changed } : null;

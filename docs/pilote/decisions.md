@@ -146,3 +146,9 @@ Réponds ici (« validé », avec tes corrections éventuelles), puis mets la ph
   (décision actée). Captures `*-album_nuit-polaire-*` refaites en dev (axe : 0 violation). À
   poser à Azzo dans la PR : masquer la moyenne et remplacer l'invitation à la critique par
   « Les critiques ouvriront le jour de la sortie. » sur un disque à venir ?
+- 2026-11-16 — Fin du jalon (relecture de la PR 40). Corrigé sur la branche plutôt que dans
+  `dev` après fusion : « pas encore sorti » sans le plafond de 12 mois (un disque daté dans
+  18 mois refuse aussi écoutes et notes ; test PGlite) et l'année ajoutée aux dates au jour hors
+  de l'année en cours. Année courante prise à Paris dans `formatUpcomingDate()` (écart de
+  quelques heures possible le 31 décembre pour un autre fuseau). Écarté : passer le jour du
+  lecteur à chaque composant.
