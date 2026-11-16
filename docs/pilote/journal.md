@@ -33,3 +33,9 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   210 (régression album→artiste +36 ms corrigée) ; `/upcoming` 149 / 151 ms (référence).
   Relecteur : 2 tours, OK. Point ouvert pour Azzo (PR) : retirer les sorties à venir de la
   discographie de la fiche artiste ?
+- 2026-11-16 — Étape 4 « Accueil et découverte » faite : ac29227..352e016 (API, écrans, e2e et
+  docs, une requête pour l'accueil). `pnpm check` vert ; e2e complet 244 réussis · 0 échoués ·
+  0 instables · 10 ignorés · 7 min 33 ; axe AA 2.2 0 violation (nuitblanche et visiteur sur
+  build de prod, rainydaysam en dev). Mesures prod : 211/205 · 135/130 · 218/216 · 171/157 ·
+  219/220 contre 237 / 140 / 225 / 208 / 210 (accueil +25–32 ms au premier passage, corrigé).
+  Relecteur : 1 tour, OK. Rappel PR : `Closes #32`.

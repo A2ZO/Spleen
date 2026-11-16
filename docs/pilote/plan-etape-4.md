@@ -48,4 +48,4 @@ Brief : `feuille-de-route.md`, « Étape 4 ». Aucune migration ni dépendance. 
 - [x] 6. Carte #32
 - [x] 7. `/discover`
 - [x] 8. e2e
-- [ ] 9. Docs et captures
+- [x] 9. Docs et captures

@@ -110,10 +110,38 @@ Appris en route :
 - Build de prod : `hydration.spec` échoue (lien magique absent de `.data/outbox` avec un Brevo
   factice), attendu.
 
-## Prochaine étape : 4 « Accueil et découverte »
+## Étape 4 — faite (16 novembre)
 
-Brief : `docs/pilote/feuille-de-route.md`, « Étape 4 » (« Bientôt dans tes oreilles » sur
-l'accueil membre, issue #32 carte « Sort … », « Les plus attendus » sur `/discover`, test du
-passage aux sorties récentes). Commencer par le plan (`docs/pilote/plan-etape-4.md`), relu par
-le relecteur. Lectures existantes : `upcoming.mine`, `discovery.recent`, `UpcomingRow`,
-`ReleaseTile detail`.
+- API : `upcoming.home` (publique, `null` pour un visiteur ou un compte suspendu) →
+  `{ following, items, soon }` en une seule requête (5 prochaines sorties suivies, année seule
+  en dernier ; `soon` = sortie suivie au jour entre J+1 et J+6) ; `discovery.awaited` (10 au
+  plus, membres distincts qui suivent un artiste ou ont le disque dans « À écouter », 2 au
+  moins, suspendus exclus, jour de Paris, sans données du lecteur). Constantes dans
+  `lib/catalog/upcoming.ts`. Tests PGlite, dont le passage « à venir » → « sorties récentes ».
+- Web : `components/upcoming/UpcomingGrid.tsx` (accueil, `/discover`, fiche artiste) ;
+  accueil membre « Bientôt dans tes oreilles » (invitation sans suivi, rien si rien
+  d'annoncé) ; `JustOutCard` « Sort demain » / « Sort {weekday} » (issue #32, la PR doit
+  dire `Closes #32`) ; `/discover` « Les plus attendus » (`#awaited`). e2e dans
+  `upcoming.spec.ts`. Doc : `docs/decouverte.md`.
+- Mesures prod (médianes de 6, deux passages) : 211/205 · 135/130 · 218/216 · 171/157 ·
+  219/220 contre 237 / 140 / 225 / 208 / 210.
+- Décisions (`docs/pilote/decisions.md`) : section pleine largeur sous la grille ; « Les plus
+  attendus » sans nombre affiché ; année seule en dernier.
+
+Appris en route :
+
+- Le pool Postgres a 5 connexions : trois lectures parallèles de plus sur l'accueil le
+  ralentissaient de 25 à 32 ms ; les fondre en une requête (`left join lateral` + `union all`)
+  a suffi.
+- Captures membre sur le build de prod : réutiliser une session enregistrée (`storageState`) ;
+  un compte sans session se capture en dev (lien magique dans `.data/outbox`).
+
+## Prochaine étape : 5 « Les notifications du jour J »
+
+Brief et décisions actées : `docs/pilote/feuille-de-route.md`, « Étape 5 ». Migration
+générée (type `release`, `notifications.release_id` → `releases`, `restrict`, index ; la fusion
+de doublons repointe la colonne), commande `pnpm releases:notify`, étape dans
+`.github/workflows/catalog-refresh.yml` (job `refresh`, `!cancelled()`, même garde), rendu
+dans la page des notifications, tests API et e2e (`page.clock`). Commencer par le plan
+(`docs/pilote/plan-etape-5.md`), relu par le relecteur. À lire : `docs/social.md`
+(notifications, `group_key`), la règle `upcomingSql()` et `artist_follows`.
