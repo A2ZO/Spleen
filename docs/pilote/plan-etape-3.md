@@ -62,7 +62,7 @@ Relu par le relecteur (OK avec corrections, appliquées).
 
 - [x] 1. Refus côté API
 - [x] 2. Lectures
-- [ ] 3. Dates
+- [x] 3. Dates
 - [ ] 4. Page `/upcoming`
 - [ ] 5. Rangée
 - [ ] 6. Fiche artiste
