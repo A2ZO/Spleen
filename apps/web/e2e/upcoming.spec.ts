@@ -1,6 +1,12 @@
 import { expect, test } from "./fixtures";
 
-import { actionAnswered, signUp, throwawayCatalog, waitForHydration } from "./helpers";
+import {
+  actionAnswered,
+  notifyReleasesInDatabase,
+  signUp,
+  throwawayCatalog,
+  waitForHydration,
+} from "./helpers";
 
 // Upcoming releases (milestone 11). Dates are relative to today (no dependency on the seed's
 // day); the throwaway artist and releases stay in the catalog, which is never cleaned.
@@ -107,4 +113,34 @@ test("the home page announces tomorrow's record to its follower, not to a visito
   await expect(visitor.getByRole("heading", { name: "Sort demain" })).toHaveCount(0);
   await expect(visitor.getByRole("region", { name: "Bientôt dans tes oreilles" })).toHaveCount(0);
   await visitor.context().close();
+});
+
+test("the notifications page announces today's records of the artists a member follows", async ({
+  page,
+}, testInfo) => {
+  // One `now` for the records' day and the nightly run: stable around midnight.
+  const now = new Date();
+  const today = { date: { inDays: 0 } };
+  const single = await throwawayCatalog(testInfo, [today], true, now);
+  test.skip(!single, NEEDS_POSTGRES);
+  const four = (await throwawayCatalog(testInfo, [today, today, today, today], true, now))!;
+  const username = await signUp(page, testInfo, "Matinale");
+
+  await notifyReleasesInDatabase(username, [single!.artist!.slug], now);
+  await page.goto("/fr/notifications");
+  const record = single!.releases[0]!;
+  const card = page.getByRole("link", {
+    name: `Sortie aujourd'hui : ${record.title} de ${single!.artist!.name}`,
+    exact: false,
+  });
+  await expect(card).toBeVisible();
+
+  // A second followed artist's records the same day join the same notification.
+  await notifyReleasesInDatabase(username, [four.artist!.slug], now);
+  await page.reload();
+  const group = page.getByRole("listitem").filter({ hasText: "5 sorties aujourd'hui" });
+  await expect(group.getByRole("link")).toHaveCount(3);
+  await expect(group.getByText("et 2 autres")).toBeVisible();
+  await group.getByRole("link").first().click();
+  await expect(page).toHaveURL(/\/fr\/album\/e2e-/);
 });

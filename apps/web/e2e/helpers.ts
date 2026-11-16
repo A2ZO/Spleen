@@ -1,7 +1,16 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 
-import { createDb, eq, isPostgresUrl, loadRootEnv, schema, setAdminRole } from "@spleen/db";
+import { notifyReleasesOfDay } from "@spleen/api/jobs";
+import {
+  createDb,
+  eq,
+  inArray,
+  isPostgresUrl,
+  loadRootEnv,
+  schema,
+  setAdminRole,
+} from "@spleen/db";
 import { todayIn } from "@spleen/validators";
 import { expect, type Page, type TestInfo } from "./fixtures";
 
@@ -169,12 +178,14 @@ export interface ThrowawayOptions {
 
 /**
  * Throwaway releases (one per item of `specs`), all credited to one new throwaway artist.
- * Catalog rows are never deleted: unique slugs, nothing else points at them.
+ * Catalog rows are never deleted: unique slugs, nothing else points at them. Dates count
+ * from `now`'s day in Paris.
  */
 export async function throwawayCatalog(
   testInfo: TestInfo,
   specs: ThrowawayOptions[],
   withArtist = false,
+  now = new Date(),
 ): Promise<{
   artist: { slug: string; name: string } | null;
   releases: { slug: string; title: string }[];
@@ -183,7 +194,7 @@ export async function throwawayCatalog(
   const url = process.env.DATABASE_URL;
   if (!isPostgresUrl(url)) return null;
   const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}${testInfo.project.name.slice(0, 1)}`;
-  const today = todayIn("Europe/Paris", new Date());
+  const today = todayIn("Europe/Paris", now);
   const dateOf = (date: ThrowawayOptions["date"]) => {
     if (!date) return {};
     if (date === "nextYear") {
@@ -327,6 +338,24 @@ export const exhaustRateLimit = (username: string, bucket: string) =>
         target: schema.rateLimits.key,
         set: { count: 100_000, windowStart: new Date() },
       });
+  });
+
+/**
+ * The member follows these artists (outside the site), then the nightly « Sortie aujourd'hui »
+ * runs for them alone at `now` (`pnpm releases:notify` limited to one account).
+ */
+export const notifyReleasesInDatabase = (username: string, artistSlugs: string[], now: Date) =>
+  onDevDatabase(async (db) => {
+    const userId = await userIdOf(db, username);
+    const artists = await db
+      .select({ id: schema.artists.id })
+      .from(schema.artists)
+      .where(inArray(schema.artists.slug, artistSlugs));
+    await db
+      .insert(schema.artistFollows)
+      .values(artists.map((a) => ({ userId, artistId: a.id })))
+      .onConflictDoNothing();
+    await notifyReleasesOfDay(db, now, { userIds: [userId] });
   });
 
 /** Suspends the member outside the site, keeping their session (as if it happened meanwhile). */

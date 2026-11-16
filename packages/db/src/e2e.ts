@@ -51,6 +51,9 @@ export async function deleteE2eAccounts(db: Db): Promise<number> {
       sql`delete from "user" where lower("email") ~ '^e2e-[a-z0-9]+@example[.]test$' returning "id"`,
     );
     await tx.execute(sql`delete from "username_history" where "username" ~ '^e2e_[a-z0-9]+$'`);
+    // Release notifications point at records with `restrict`: a member outside the suite
+    // could hold one (`pnpm releases:notify` run by hand) for a throwaway record.
+    await tx.execute(sql`delete from "notifications" where "release_id" in (${e2eReleases})`);
     await tx.execute(
       sql`delete from "releases" where "id" in (${e2eReleases}) and "merged_into_id" is not null`,
     );
