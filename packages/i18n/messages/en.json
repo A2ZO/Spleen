@@ -422,6 +422,7 @@
     "MERGE_SAME": "Pick two different pages.",
     "MERGE_ALREADY_MERGED": "One of these pages was already merged.",
     "ARTIST_FOLLOW_LIMIT": "You already follow 500 artists: unfollow one to add another.",
+    "RELEASE_NOT_OUT": "This record is not out yet: keep it in your listening queue in the meantime.",
     "MODERATION_ACTION_INVALID": "This action does not apply to this report.",
     "ALREADY_SUSPENDED": "This account is already suspended.",
     "NOT_SUSPENDED": "This account is not suspended.",

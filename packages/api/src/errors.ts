@@ -47,6 +47,7 @@ export const API_ERROR_CODES = [
   "MERGE_SAME",
   "MERGE_ALREADY_MERGED",
   "ARTIST_FOLLOW_LIMIT",
+  "RELEASE_NOT_OUT",
 ] as const;
 
 export type ApiErrorCode = (typeof API_ERROR_CODES)[number];

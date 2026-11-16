@@ -423,6 +423,7 @@
     "MERGE_SAME": "Choisis deux fiches différentes.",
     "MERGE_ALREADY_MERGED": "L'une de ces fiches a déjà été fusionnée.",
     "ARTIST_FOLLOW_LIMIT": "Tu suis déjà 500 artistes : arrête d'en suivre un pour en ajouter un autre.",
+    "RELEASE_NOT_OUT": "Ce disque n'est pas encore sorti : garde-le « À écouter » en attendant.",
     "ALREADY_SUSPENDED": "Ce compte est déjà suspendu.",
     "NOT_SUSPENDED": "Ce compte n'est pas suspendu.",
     "CANNOT_MODERATE_ADMIN": "On ne suspend pas un compte admin depuis le site."

@@ -620,11 +620,13 @@ export const appRouter = router({
     quickRate: listenWrite
       .input(quickRateSchema)
       .mutation(({ input, ctx }) =>
-        quickRate(ctx.db(), ctx.user.id, input.target, input.rating, input.order),
+        quickRate(ctx.db(), ctx.user.id, input.target, input.rating, ctx.now, input.order),
       ),
     quickLike: listenWrite
       .input(quickLikeSchema)
-      .mutation(({ input, ctx }) => quickLike(ctx.db(), ctx.user.id, input.target, input.liked)),
+      .mutation(({ input, ctx }) =>
+        quickLike(ctx.db(), ctx.user.id, input.target, input.liked, ctx.now),
+      ),
     /** "I listened" in one click: a dated listen today, in the member's time zone. */
     markListened: listenWrite
       .input(listenTargetSchema)
@@ -673,10 +675,10 @@ export const appRouter = router({
       .query(({ input, ctx }) => getMyReview(ctx.db(), ctx.user.id, input.id)),
     create: reviewWrite
       .input(reviewCreateSchema)
-      .mutation(({ input, ctx }) => createReview(ctx.db(), ctx.user.id, input)),
+      .mutation(({ input, ctx }) => createReview(ctx.db(), ctx.user.id, input, ctx.now)),
     update: reviewWrite
       .input(reviewUpdateSchema)
-      .mutation(({ input, ctx }) => updateReview(ctx.db(), ctx.user.id, input)),
+      .mutation(({ input, ctx }) => updateReview(ctx.db(), ctx.user.id, input, ctx.now)),
     delete: reviewWrite
       .input(z.object({ id: z.uuid() }))
       .mutation(({ input, ctx }) => deleteReview(ctx.db(), ctx.user.id, input.id)),

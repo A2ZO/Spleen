@@ -26,7 +26,7 @@ import {
 
 import { fail } from "../../trpc";
 import type { MyEntry, MyItemState } from "../../types";
-import { requireListener, requireTarget, targetWhere, toTarget } from "./targets";
+import { requireListener, requireReleased, requireTarget, targetWhere, toTarget } from "./targets";
 
 /*
  * Listening writes. Every write that touches a listen recomputes the member's state for the
@@ -96,11 +96,14 @@ async function quickUpdate(
   userId: string,
   input: ListenTargetInput,
   change: { rating: number | null } | { liked: boolean },
+  now: Date,
   order?: QuickOrderInput,
 ): Promise<void> {
-  await requireListener(db, userId);
+  const { timeZone } = await requireListener(db, userId);
   await db.transaction(async (tx) => {
     const target = await requireTarget(tx, input);
+    const adds = "liked" in change ? change.liked : change.rating !== null;
+    if (adds) await requireReleased(tx, target, timeZone, now);
     const last = await bumpStatsVersion(tx, userId);
     if (order && last.quickClientId === order.clientId && order.seq <= (last.quickSeq ?? 0)) {
       return;
@@ -143,13 +146,20 @@ export function quickRate(
   userId: string,
   input: ListenTargetInput,
   rating: number | null,
+  now: Date,
   order?: QuickOrderInput,
 ) {
-  return quickUpdate(db, userId, input, { rating }, order);
+  return quickUpdate(db, userId, input, { rating }, now, order);
 }
 
-export function quickLike(db: Db, userId: string, input: ListenTargetInput, liked: boolean) {
-  return quickUpdate(db, userId, input, { liked });
+export function quickLike(
+  db: Db,
+  userId: string,
+  input: ListenTargetInput,
+  liked: boolean,
+  now: Date,
+) {
+  return quickUpdate(db, userId, input, { liked }, now);
 }
 
 /** "I listened" in one click: a dated listen today (member's time zone), no rating. */
@@ -162,6 +172,7 @@ export async function markListened(
   const { timeZone } = await requireListener(db, userId);
   return db.transaction(async (tx) => {
     const target = await requireTarget(tx, input);
+    await requireReleased(tx, target, timeZone, now);
     const state = await currentState(tx, userId, target);
     const [row] = await tx
       .insert(entries)
@@ -270,6 +281,7 @@ export async function createEntry(
   checkDate(listenedOn, timeZone, now);
   return db.transaction(async (tx) => {
     const target = await requireTarget(tx, input.target);
+    await requireReleased(tx, target, timeZone, now);
     const moodIds = await checkMoods(tx, userId, input.moodIds);
     const byTrack = await checkTrackRatings(tx, target, input.trackRatings);
     const [row] = await tx
@@ -323,6 +335,7 @@ export async function updateEntry(
   const { timeZone } = await requireListener(db, userId);
   await db.transaction(async (tx) => {
     const { row, target } = await ownEntry(tx, userId, input.id);
+    await requireReleased(tx, target, timeZone, now);
     if (input.listenedOn === null && row.listenedOn !== null) fail("BAD_REQUEST", "DATE_REQUIRED");
     if (input.listenedOn !== null) checkDate(input.listenedOn, timeZone, now);
     const moodIds = await checkMoods(tx, userId, input.moodIds);

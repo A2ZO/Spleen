@@ -60,7 +60,7 @@ Relu par le relecteur (OK avec corrections, appliquées).
 
 ## Avancement
 
-- [ ] 1. Refus côté API
+- [x] 1. Refus côté API
 - [ ] 2. Lectures
 - [ ] 3. Dates
 - [ ] 4. Page `/upcoming`

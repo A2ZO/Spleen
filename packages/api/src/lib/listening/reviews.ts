@@ -5,7 +5,7 @@ import { fail } from "../../trpc";
 import type { MyReview } from "../../types";
 import { loadReleaseCards, loadTrackCards, toReleaseCard } from "../catalog/cards";
 import { pruneUndated } from "./entries";
-import { requireListener, requireTarget, targetWhere } from "./targets";
+import { requireListener, requireReleased, requireTarget, targetWhere } from "./targets";
 
 /*
  * Reviews are independent from ratings: a review may have no rating (the snapshot is the
@@ -18,10 +18,12 @@ export async function createReview(
   db: Db,
   userId: string,
   input: { target: ListenTargetInput; body: string; lang: AudienceLang; entryId?: string | null },
+  now: Date,
 ): Promise<{ id: string }> {
-  await requireListener(db, userId);
+  const { timeZone } = await requireListener(db, userId);
   return db.transaction(async (tx) => {
     const target = await requireTarget(tx, input.target);
+    await requireReleased(tx, target, timeZone, now);
     let rating: number | null = null;
     if (input.entryId) {
       const [entry] = await tx
@@ -56,7 +58,14 @@ export async function updateReview(
   db: Db,
   userId: string,
   input: { id: string; body: string; lang: AudienceLang },
+  now: Date,
 ): Promise<void> {
+  const { timeZone } = await requireListener(db, userId);
+  const [own] = await db
+    .select({ releaseId: reviews.releaseId })
+    .from(reviews)
+    .where(and(eq(reviews.id, input.id), eq(reviews.userId, userId)));
+  if (own?.releaseId) await requireReleased(db, { releaseId: own.releaseId }, timeZone, now);
   const updated = await db
     .update(reviews)
     .set({ body: input.body, lang: input.lang })
