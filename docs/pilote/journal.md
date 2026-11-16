@@ -39,3 +39,10 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   build de prod, rainydaysam en dev). Mesures prod : 211/205 · 135/130 · 218/216 · 171/157 ·
   219/220 contre 237 / 140 / 225 / 208 / 210 (accueil +25–32 ms au premier passage, corrigé).
   Relecteur : 1 tour, OK. Rappel PR : `Closes #32`.
+- 2026-11-16 — Étape 5 « Les notifications du jour J » faite : d8a46cc..HEAD (migration 0016,
+  `pnpm releases:notify` et étape de nuit, rendu dans les notifications, tests, docs).
+  `pnpm check` vert ; tests API 6/6 ; e2e complet 246 réussis · 0 échoués · 0 instables ·
+  10 ignorés · 7 min 32 ; axe AA 2.2 0 violation (/fr/notifications, 1280 et 390). Mesures
+  prod : 217 / 136 / 228 / 181 / 227 contre 237 / 140 / 225 / 208 / 210 (première série 234 sur
+  discover→accueil, page non touchée). Relecteur : 1 tour, OK avec corrections (deux lignes
+  par disque à 390 px, groupe vide filtré). Écart e2e et deux questions pour Azzo à la PR.

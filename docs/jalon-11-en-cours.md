@@ -136,12 +136,32 @@ Appris en route :
 - Captures membre sur le build de prod : réutiliser une session enregistrée (`storageState`) ;
   un compte sans session se capture en dev (lien magique dans `.data/outbox`).
 
-## Prochaine étape : 5 « Les notifications du jour J »
+## Étape 5 — faite (16 novembre)
 
-Brief et décisions actées : `docs/pilote/feuille-de-route.md`, « Étape 5 ». Migration
-générée (type `release`, `notifications.release_id` → `releases`, `restrict`, index ; la fusion
-de doublons repointe la colonne), commande `pnpm releases:notify`, étape dans
-`.github/workflows/catalog-refresh.yml` (job `refresh`, `!cancelled()`, même garde), rendu
-dans la page des notifications, tests API et e2e (`page.clock`). Commencer par le plan
-(`docs/pilote/plan-etape-5.md`), relu par le relecteur. À lire : `docs/social.md`
-(notifications, `group_key`), la règle `upcomingSql()` et `artist_follows`.
+- Migration `0016` (générée) : type `release`, `notifications.release_id` → `releases`
+  (`restrict`), index unique partiel `notifications_release_once_uidx` ; la fusion de doublons
+  repointe la colonne.
+- `pnpm releases:notify` (`lib/catalog/release-notifications.ts`, export `@spleen/api/jobs`) :
+  « aujourd'hui » dans le fuseau de chaque membre (`todayIn`, repli Europe/Paris), date au jour,
+  disque principal ; une fois par membre et par disque. Étape « Notify today's releases » dans
+  `catalog-refresh.yml` après la relecture des discographies (`!cancelled()`).
+- Page des notifications : un disque → carte liée « Sortie aujourd'hui : **Titre** de
+  Artiste » ; plusieurs → « N sorties aujourd'hui chez tes artistes », 3 liens (titre, artiste
+  dessous), « et N autres ». Tests API (6) et e2e dans `upcoming.spec.ts`.
+- Écart à la feuille de route (à redire dans la PR) : e2e sans données de démo ni `page.clock`.
+- Mesures prod : 217 / 136 / 228 / 181 / 227 contre 237 / 140 / 225 / 208 / 210.
+
+Appris en route :
+
+- Une valeur d'enum ajoutée ne peut pas servir dans la migration qui la crée : index partiel
+  sur `release_id is not null` plutôt que sur le type.
+- e2e : `notifyReleasesInDatabase` (helpers) lance la tâche pour le seul compte du test ; le
+  nettoyage supprime ces notifications avant les disques jetables.
+
+## Prochaine étape : 6 « La passe finale »
+
+Brief : `docs/pilote/feuille-de-route.md`, « Étape 6 ». `docs/sorties.md` (déjà cité par
+`release-notifications.ts`), renvois depuis `decouverte.md` et `catalogue.md` ; question
+ouverte du cahier cochée ; captures de tous les écrans du jalon ; axe, `overflow.spec`, e2e
+complet, mesures complètes ; `CLAUDE.md`. Puis la PR vers `dev` (`Closes #32`, écart e2e de
+l'étape 5, questions pour Azzo de `decisions.md`).

@@ -124,3 +124,11 @@ Réponds ici (« validé », avec tes corrections éventuelles), puis mets la ph
   rien) et aucune date de démo ne reste « aujourd'hui ». Catalogue jetable daté du jour comme
   les autres e2e du jalon, tâche limitée au compte du test. À redire dans la PR. Écarté : figer
   des notifications de démo dans le seed.
+- 2026-11-16 — Étape 5 (relecture). Une notification d'un jour passé garde « Sortie
+  aujourd'hui : … » (texte de la décision actée), à côté de « il y a 3 jours ». Choix
+  prudent : texte inchangé. Écarté pour l'instant : « Sorti le {date} » quand le jour est
+  passé. À poser à Azzo dans la PR.
+- 2026-11-16 — Étape 5 (relecture). La tâche de nuit tourne à 03:17 UTC : les membres des
+  Amériques reçoivent la notification le soir de la sortie (17 h à 22 h chez eux). Choix
+  prudent : horaire inchangé (une seule tâche, celle de `catalog:refresh`). Écarté : une
+  seconde exécution dans la journée. À poser à Azzo dans la PR.
