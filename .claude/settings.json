@@ -29,6 +29,7 @@
       "Bash(git push -f *)",
       "Bash(git push * -f *)",
       "Bash(git push * main)",
+      "Bash(git push * dev)",
       "Read(.env)",
       "Read(.env.local)"
     ]

@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Fin d'étape
 
-Answer in French. Hard rules: never commit or push to `main`, no force push, never read or
+Answer in French. Hard rules: never commit or push to `main` or `dev`, no force push, never read or
 print `.env`.
 
 1. **Verify once.** Delegate to the `verificateur` subagent (full run: check + e2e). One run
@@ -15,7 +15,7 @@ print `.env`.
    status of the step, decisions taken, « Appris en route », and the next step described
    precisely enough to restart from nothing else (files, commands, open questions).
 3. **Commit and push.** Check `git branch --show-current` is the milestone branch
-   (`feat/<nn>-<name>`), not `main`. First commit the step's own work in logical commits
+   (`feat/<nn>-<name>`), not `main` or `dev`. First commit the step's own work in logical commits
    (Conventional Commits, one per coherent change: feature, tests, docs), if not committed yet.
    Then run `pnpm exec prettier --write` on the doc, commit
    `docs: passation étape <n>` (Conventional Commits, session attribution line), then

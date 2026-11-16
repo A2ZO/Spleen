@@ -8,6 +8,8 @@ name: Nightly
 #   legal.privacy): anonymises moderation decisions a year old and deletes the closed reports
 #   (docs/social.md); deletes expired sessions, expired sign-in links and anti-abuse counters
 #   24 hours after their window, except the MusicBrainz gate (packages/api/src/lib/retention.ts).
+# Scheduled runs start from the default branch (dev), but both jobs check out `main`: the
+# production database only ever runs released code.
 
 on:
   schedule:
@@ -40,6 +42,8 @@ jobs:
           fi
       - if: steps.config.outputs.ready == 'true'
         uses: actions/checkout@v7
+        with:
+          ref: main
       - if: steps.config.outputs.ready == 'true'
         uses: pnpm/action-setup@v6
       - if: steps.config.outputs.ready == 'true'
@@ -76,6 +80,8 @@ jobs:
           fi
       - if: steps.config.outputs.ready == 'true'
         uses: actions/checkout@v7
+        with:
+          ref: main
       - if: steps.config.outputs.ready == 'true'
         uses: pnpm/action-setup@v6
       - if: steps.config.outputs.ready == 'true'
