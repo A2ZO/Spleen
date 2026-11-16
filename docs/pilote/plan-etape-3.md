@@ -70,7 +70,7 @@ Relu par le relecteur (OK avec corrections, appliquées).
 - [x] 8. Réglages
 - [x] 9. e2e
 - [x] 10. Docs et captures
-- [ ] vérifications
-- [ ] relecture 1
-- [ ] relecture 2
-- [ ] clôture
+- [x] vérifications
+- [x] relecture 1
+- [x] relecture 2
+- [x] clôture

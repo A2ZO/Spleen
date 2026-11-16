@@ -25,3 +25,11 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   assumé au tour 1 du relecteur, accepté au tour 2). Relecteur : 2 tours, OK avec corrections,
   appliquées. Note : `.claude/skills/pilote` modifié par une session d'Azzo pendant l'étape
   (section « Avancement »), suivi tel quel.
+- 2026-11-16 — Étape 3 « Les écrans des sorties à venir » faite : d68155a..bdf7683 (refus API,
+  lectures, `/upcoming`, fiche artiste, fiche à venir, e2e, docs, corrections). `pnpm check`
+  vert ; e2e complet 242 réussis · 0 échoués · 0 instables · 10 ignorés · 7 min 23 ; axe AA 2.2
+  0 violation (membre, membre sans suivi, visiteur sur build de prod ; target-size corrigé).
+  Mesures prod : 211–216 / 131–134 / 219–221 / 178–180 / 202–203 contre 237 / 140 / 225 / 208 /
+  210 (régression album→artiste +36 ms corrigée) ; `/upcoming` 149 / 151 ms (référence).
+  Relecteur : 2 tours, OK. Point ouvert pour Azzo (PR) : retirer les sorties à venir de la
+  discographie de la fiche artiste ?
