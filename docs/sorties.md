@@ -59,7 +59,7 @@ d'entrée du domaine ; le détail reste dans les docs citées.
 - `/upcoming` : « Mes sorties à venir », filtre par type, suggestions d'artistes.
 - Accueil membre : « Bientôt dans tes oreilles », carte « Sort demain » / « Sort vendredi ».
 - `/discover` : « Les plus attendus ». Fiche d'un disque à venir : « Sort le … », contrôles
-  réduits, sans note de la communauté, critiques ouvertes à la sortie. Notifications : « Sortie aujourd'hui », regroupées par jour.
+  réduits. Notifications : « Sortie aujourd'hui », regroupées par jour.
 - Démo : `packages/db/src/seed/upcoming.ts` (`nuitblanche` suit trois artistes, `vinylvince`
   deux, six sorties annoncées, dates recalculées à chaque seed).
 

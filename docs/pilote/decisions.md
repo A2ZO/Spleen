@@ -137,10 +137,12 @@ Réponds ici (« validé », avec tes corrections éventuelles), puis mets la ph
   n'ont de contenu qu'avec les suivis et sorties de la démo. Les captures de « Sortie
   aujourd'hui » restent celles de l'étape 5 (compte jetable). Écarté : recréer les données de
   démo dans un compte e2e.
-- 2026-11-16 — Étape 6 (relecture 1). Fiche d'un disque à venir : plus de bloc « Note de la
-  communauté », « Les critiques ouvriront le jour de la sortie. » au lieu de l'invitation à la
-  critique, texte visiteur « Connecte-toi pour l'ajouter à « À écouter ». ». Fiche d'un titre
-  inchangée : l'API ne refuse pas les écoutes d'un titre (`requireReleased()` ne regarde que les
-  disques) et la démo n'a aucun titre de disque à venir. Captures `*-album_nuit-polaire-*`
-  refaites en dev (axe : 0 violation) plutôt que sur un nouveau build de prod : seul le texte
-  change. Écarté : bloquer aussi les titres d'un disque à venir (règle d'API, hors étape).
+- 2026-11-16 — Étape 6 (relecture 1 et 2). Le relecteur demandait de masquer la « Note de la
+  communauté » et l'invitation à la critique sur un disque à venir. Appliqué puis retiré : les
+  « Décisions actées » (fiche d'un disque à venir) disent que les blocs vides (moyenne,
+  critiques) suivent leurs règles actuelles. Gardé : le texte visiteur « Connecte-toi pour
+  l'ajouter à « À écouter ». » (ce n'est pas un bloc vide ; l'ancien parlait d'écoutes,
+  refusées avant la sortie). Fiche d'un titre inchangée : les morceaux ne sont pas concernés
+  (décision actée). Captures `*-album_nuit-polaire-*` refaites en dev (axe : 0 violation). À
+  poser à Azzo dans la PR : masquer la moyenne et remplacer l'invitation à la critique par
+  « Les critiques ouvriront le jour de la sortie. » sur un disque à venir ?

@@ -75,5 +75,5 @@ deux projets, issue #34) ; `CLAUDE.md` à jour.
 
 - [x] vérifications
 - [x] relecture 1 (OK avec corrections : fiche d'un disque à venir, appliquées)
-- [ ] relecture 2
+- [x] relecture 2 (OK ; moyenne et critiques remises selon les décisions actées, voir `decisions.md`)
 - [ ] clôture

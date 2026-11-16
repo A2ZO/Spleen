@@ -78,9 +78,6 @@ test("a record not out yet offers « À écouter » but no listen", async ({
   await signUp(page, testInfo, "Patiente");
   await page.goto(`/fr/album/${record!.slug}`);
   await expect(page.getByText(/^Sort le /)).toBeVisible();
-  // Neither ratings nor reviews before the release.
-  await expect(page.getByText("Note de la communauté")).toHaveCount(0);
-  await expect(page.getByText("Les critiques ouvriront le jour de la sortie.")).toBeVisible();
   await expect(page.getByRole("button", { name: "J'ai écouté" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Coup de cœur" })).toHaveCount(0);
   await waitForHydration(page);

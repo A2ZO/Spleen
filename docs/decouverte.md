@@ -119,7 +119,7 @@ Lectures (routeur `upcoming`) :
 - `/discover` : « Les plus attendus » (`#awaited`) avant « Sorties récentes », caché si vide.
   Les tuiles de ces trois endroits viennent de `components/upcoming/UpcomingGrid.tsx`.
 - Fiche d'un disque à venir : « Sort le … », « Sort en … » ou « Annoncé pour … » à la place de
-  la date, badge « Date modifiée » ; contrôles réduits (voir `docs/ecoute.md`) ; ni note de la communauté ni invitation à la critique.
+  la date, badge « Date modifiée » ; contrôles réduits (voir `docs/ecoute.md`).
 - Notifications du jour J (étape 5) : `pnpm releases:notify` (chaque nuit après
   `catalog:refresh` dans `.github/workflows/catalog-refresh.yml`, même si la relecture a
   échoué) crée « Sortie aujourd'hui » pour chaque membre qui suit un artiste crédité, a
