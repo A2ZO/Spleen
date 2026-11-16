@@ -85,10 +85,35 @@ Appris en route :
   parfois un report).
 - À date égale, `upcoming.mine` trie par titre.
 
-## Prochaine étape : 3 « Les écrans des sorties à venir »
+## Étape 3 — faite (16 novembre)
 
-Brief : `docs/pilote/feuille-de-route.md`, « Étape 3 » (page `/[locale]/upcoming`, section
-« À venir » de la fiche artiste, fiche d'un disque pas encore sorti, refus côté API). Commencer
-par le plan (`docs/pilote/plan-etape-3.md`), relu par le relecteur. Lectures prêtes :
-`upcoming.mine` / `upcoming.byArtist` (`packages/api/src/root.ts`), données de démo sur
-`nuitblanche`.
+- API : refus `RELEASE_NOT_OUT` (`requireReleased()`, `lib/listening/targets.ts`) pour ce qui
+  ajoute sur un disque pas encore sorti (fuseau du membre) ; `release.bySlug.upcoming`,
+  `listening.myState.releaseNotOut`, `upcoming.suggestions`, état « À écouter » dans
+  `upcoming.mine`.
+- Web : `/upcoming` (`app/[locale]/upcoming/page.tsx`, `components/upcoming/`), section « À
+  venir » et « Une sortie manque ? » sur la fiche artiste (lue en parallèle de l'artiste),
+  fiche d'un disque à venir (`ListenControls notOut`), lien depuis `/settings`,
+  `formatUpcomingDate()`, `ArtistFollowButton quiet` pour les listes.
+- e2e `upcoming.spec.ts` ; helper `throwawayCatalog()` (sorties datées + artiste jetables).
+- Docs : `decouverte.md` (écrans), `ecoute.md` (refus et contrôles).
+- Mesures : voir « Mesures de référence » (`/upcoming` 149 / 151 ms).
+- Décisions (`docs/pilote/decisions.md`) : doublon « À venir » / discographie gardé (à
+  trancher par Azzo dans la PR) ; ligne de date au jour de Paris, contrôles au fuseau du membre.
+
+Appris en route :
+
+- axe 2.2 (`target-size`) : deux lignes de liens empilées en `text-sm` / `leading-tight`
+  échouent ; `leading-6` / `leading-7` suffit.
+- Une lecture ajoutée après `await` de la fiche crée une vague de plus (+36 ms) : la lancer
+  dans le même `Promise.all`, par le slug demandé (`NOT_FOUND` → liste vide).
+- Build de prod : `hydration.spec` échoue (lien magique absent de `.data/outbox` avec un Brevo
+  factice), attendu.
+
+## Prochaine étape : 4 « Accueil et découverte »
+
+Brief : `docs/pilote/feuille-de-route.md`, « Étape 4 » (« Bientôt dans tes oreilles » sur
+l'accueil membre, issue #32 carte « Sort … », « Les plus attendus » sur `/discover`, test du
+passage aux sorties récentes). Commencer par le plan (`docs/pilote/plan-etape-4.md`), relu par
+le relecteur. Lectures existantes : `upcoming.mine`, `discovery.recent`, `UpcomingRow`,
+`ReleaseTile detail`.
