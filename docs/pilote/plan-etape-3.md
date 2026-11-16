@@ -63,8 +63,8 @@ Relu par le relecteur (OK avec corrections, appliquées).
 - [x] 1. Refus côté API
 - [x] 2. Lectures
 - [x] 3. Dates
-- [ ] 4. Page `/upcoming`
-- [ ] 5. Rangée
+- [x] 4. Page `/upcoming`
+- [x] 5. Rangée
 - [ ] 6. Fiche artiste
 - [ ] 7. Fiche d'un disque à venir
 - [ ] 8. Réglages
