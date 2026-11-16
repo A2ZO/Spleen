@@ -23,7 +23,10 @@ test("sign up with a magic link, pick a username, edit and delete the account", 
   await expect(page.locator("#avatar ~ div img")).toHaveAttribute("src", /\/avatars\//);
 
   await page.getByLabel("Bio").fill("Du jazz, la nuit.");
-  await page.getByRole("button", { name: "Enregistrer" }).click();
+  await page
+    .getByRole("region", { name: "Profil" })
+    .getByRole("button", { name: "Enregistrer" })
+    .click();
   await expect(page.getByRole("status").filter({ hasText: "C'est enregistré." })).toBeVisible();
 
   await deleteAccount(page, username);
