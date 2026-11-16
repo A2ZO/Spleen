@@ -60,6 +60,8 @@ Si MusicBrainz ne peut pas servir cette édition (erreur répétée), l'import e
 
 ## Dates annoncées et sorties annoncées (jalon 11)
 
+Vue d'ensemble des sorties à venir (règles, données, commandes, tâches de nuit) : `docs/sorties.md`.
+
 - **MusicBrainz est la seule source des dates** (`releases.release_date` et sa précision).
   ListenBrainz ne sert qu'à savoir quels groupes relire : il donne la date d'une édition.
 - `announced_at` (`lib/catalog/release-dates.ts`) : rempli la première fois qu'une sortie est

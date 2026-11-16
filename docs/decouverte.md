@@ -75,6 +75,8 @@ artiste. Server Actions : `apps/web/src/app/[locale]/list/actions.ts`.
 
 ## Sorties à venir (jalon 11)
 
+Vue d'ensemble du domaine (règles, données, commandes, tâches de nuit) : `docs/sorties.md`.
+
 Règle partagée (`lib/catalog/upcoming.ts`), au jour du lecteur (fuseau de son profil,
 Europe/Paris pour un visiteur) :
 
