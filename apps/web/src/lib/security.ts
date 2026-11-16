@@ -1,8 +1,8 @@
 /*
  * Security headers. The Content Security Policy carries a fresh nonce per request (set in
  * `proxy.ts`): Next reads it from the request header and puts it on its own scripts. Every
- * page is dynamic anyway (theme cookie); the hybrid policy for cached public pages comes with
- * issue #22.
+ * page is dynamic anyway (session in the layout, member header); the hybrid policy for cached
+ * public pages comes with issue #22.
  */
 
 import { createHash } from "node:crypto";

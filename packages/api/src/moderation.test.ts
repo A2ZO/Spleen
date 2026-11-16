@@ -63,7 +63,6 @@ async function member() {
     displayName: `Member ${memberCount}`,
     termsAccepted: true,
     locale: "fr",
-    theme: "dark",
     timeZone: "Europe/Paris",
   });
   return { user, username, call: (at = now) => api(user, at) };

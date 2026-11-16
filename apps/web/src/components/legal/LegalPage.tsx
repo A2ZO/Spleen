@@ -8,8 +8,8 @@ import { getApi } from "@/server/api";
 export const LEGAL_UPDATED = {
   notice: "2026-10-27",
   terms: "2026-10-27",
-  // Theme cookie removed (milestone 17).
-  privacy: "2026-11-12",
+  // Theme removed from the account data (issue #30).
+  privacy: "2026-11-16",
 } as const;
 
 const NOTICE = ["publisher", "hosting", "credits", "property"] as const;

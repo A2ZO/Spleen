@@ -10,8 +10,9 @@ export default tseslint.config(
   ...base,
   { ignores: ["next-env.d.ts", "playwright-report/**", "test-results/**"] },
   {
-    // Every page is dynamic (theme cookie), so static params prerender nothing; in
-    // `next dev` they make concurrent first renders race on prerender-manifest.json.
+    // Every page is dynamic (session in the layout, member header, CSP nonce), so static
+    // params prerender nothing; in `next dev` they make concurrent first renders race on
+    // prerender-manifest.json.
     files: ["src/app/**/*.{ts,tsx}"],
     rules: {
       "no-restricted-syntax": [

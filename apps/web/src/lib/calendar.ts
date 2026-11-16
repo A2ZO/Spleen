@@ -1,5 +1,7 @@
 /* Calendar month arithmetic on "YYYY-MM" strings (UTC, no time zone involved). */
 
+import { DEFAULT_TIME_ZONE, monthIn } from "@spleen/validators";
+
 export function shiftMonth(month: string, delta: number): string {
   const [y, m] = month.split("-").map(Number) as [number, number];
   const date = new Date(Date.UTC(y, m - 1 + delta, 1));
@@ -19,11 +21,12 @@ export function monthGrid(month: string, weekStartsOn: 0 | 1): (string | null)[]
 }
 
 /**
- * The current calendar month, "YYYY-MM", as the diary and the home page count it (UTC: the
- * member's time zone is not applied yet, issue to fix before launch). One source for both pages.
+ * The current calendar month, "YYYY-MM", as the diary and the home page count it: in the
+ * viewer's time zone (`profiles.time_zone`, the zone their listens are dated in), Europe/Paris
+ * for a visitor. One source for both pages.
  */
-export function currentMonth(now: Date = new Date()): string {
-  return now.toISOString().slice(0, 7);
+export function currentMonth(timeZone: string | null | undefined, now: Date = new Date()): string {
+  return monthIn(timeZone ?? DEFAULT_TIME_ZONE, now);
 }
 
 /** Every day of a month, "YYYY-MM-DD", first to last. */

@@ -1,4 +1,5 @@
 import { loadMessages } from "@spleen/i18n";
+import { DEFAULT_TIME_ZONE } from "@spleen/validators";
 import { hasLocale } from "next-intl";
 import { getRequestConfig } from "next-intl/server";
 
@@ -10,6 +11,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
   return {
     locale,
     messages: await loadMessages(locale),
-    timeZone: "Europe/Paris",
+    timeZone: DEFAULT_TIME_ZONE,
   };
 });

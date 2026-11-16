@@ -45,7 +45,6 @@ async function member() {
     displayName: `instant${count}`,
     termsAccepted: true,
     locale: "fr",
-    theme: "dark",
     timeZone: "Europe/Paris",
   });
   return call;

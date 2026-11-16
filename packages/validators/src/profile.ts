@@ -72,12 +72,6 @@ export const bioSchema = z.string().trim().max(300);
 
 export const localeSchema = z.enum(["fr", "en"]);
 /**
- * Spleen has a single, dark theme (milestone 17). The column, this field and the API keep
- * "light" until they are removed together; forms no longer send it, so it defaults to dark.
- */
-export const themeSchema = z.enum(["dark", "light"]).default("dark");
-
-/**
  * Version of the terms of use a new member accepts (the date of their last change). Bump it
  * when the terms change: members whose `terms_version` differs are to be asked again.
  */
@@ -92,7 +86,6 @@ export const onboardingSchema = z.object({
   displayName: displayNameSchema,
   termsAccepted: z.literal(true),
   locale: localeSchema,
-  theme: themeSchema,
   /** Detected by the browser; the default zone is kept when missing or unknown. */
   timeZone: timeZoneSchema.optional(),
 });
@@ -102,7 +95,6 @@ export const profileUpdateSchema = z.object({
   displayName: displayNameSchema,
   bio: bioSchema,
   locale: localeSchema,
-  theme: themeSchema,
   statsPrivate: z.boolean(),
   diaryPrivate: z.boolean(),
   blindMode: z.boolean(),

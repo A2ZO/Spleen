@@ -251,19 +251,20 @@ Tant que `CONTACT_EMAIL` manque, emails et notifications affichent
 
 ## 11. Performance : cache des pages publiques (avant ou juste après l'ouverture)
 
-Aujourd'hui, le layout lit le cookie de thème côté serveur : chaque page est calculée à chaque
+Aujourd'hui, la session lue dans le layout, l'en-tête du membre (`loadShell()`) et le nonce
+CSP rendent chaque page dynamique : elle est calculée à chaque
 requête et interroge la base (quota de calcul Neon, réveil de la base, usage chez
 l'hébergeur). Pas bloquant pour ouvrir, mais à traiter avant ou juste après la mise en ligne.
 
-- [ ] Traiter l'issue [#22](https://github.com/A2ZO/Spleen/issues/22) « Performance :
-      appliquer le thème côté navigateur pour permettre le cache des pages publiques », avec
+- [ ] Traiter l'issue [#22](https://github.com/A2ZO/Spleen/issues/22) « Cache des
+      pages publiques (coquille, session, CSP) », avec
       la CSP hybride décidée au jalon 9 (conditions dans l'issue). Aujourd'hui : CSP à nonce
       sur toutes les pages (`apps/web/src/lib/security.ts`, `src/proxy.ts`).
 - [ ] HSTS est envoyé sans `includeSubDomains` ni `preload` : les ajouter une fois le domaine
       et tous ses sous-domaines en HTTPS (`files.<domaine>` compris), puis vérifier sur
       `securityheaders.com`.
-- [ ] **Vérifier** : une page publique vue par un visiteur est servie depuis le cache, sans
-      flash de mauvais thème, et les e2e passent (contrôle des journaux serveur compris).
+- [ ] **Vérifier** : une page publique vue par un visiteur est servie depuis le cache, et
+      les e2e passent (contrôle des journaux serveur compris).
 - [ ] Suggestions de recherche : Cloudflare ne met pas le JSON en cache par défaut. Ajouter
       une règle de cache « Eligible for cache » sur le chemin `/api/search/suggest`, qui
       respecte le `Cache-Control` de l'origine (`s-maxage=60`, `stale-while-revalidate=600`),

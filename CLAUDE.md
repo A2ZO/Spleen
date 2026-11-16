@@ -81,7 +81,7 @@ moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sh
   ESLint forbids `useRouter`); actions ending in `redirect()` call `useNavigationWhile(pending)`.
 - Animations: transform and opacity only, neutralised by `prefers-reduced-motion` (global rule in
   `globals.css`; scroll-driven ones also need an explicit `no-preference` guard).
-- Dark only (Lilas): no theme cookie or toggle; the `profiles.theme` column awaits removal (issue).
+- Dark only (Lilas): no theme cookie, toggle or column (`profiles.theme` dropped, issue #30).
 - Verify library versions on the npm registry / official docs, not from memory.
 
 ## Design (Lilas, milestone 17)

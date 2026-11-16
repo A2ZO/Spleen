@@ -11,7 +11,7 @@
 ## Données collectées et pourquoi
 
 - **Compte** : adresse email (connexion par lien magique ou Google), pseudo, nom affiché,
-  bio, avatar, langue, thème, réglages de confidentialité, date de confirmation de l'âge
+  bio, avatar, langue, fuseau horaire, réglages de confidentialité, date de confirmation de l'âge
   minimum (15 ans).
 - **Sessions** : date, adresse IP et navigateur de chaque session, pour la sécurité du
   compte.
@@ -44,4 +44,4 @@ Données hébergées dans l'Union européenne : base Neon (Francfort), fichiers 
 
 ## Cookies
 
-Uniquement des cookies nécessaires : session de connexion et préférence de thème.
+Uniquement des cookies nécessaires : session de connexion.

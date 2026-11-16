@@ -49,7 +49,6 @@ async function member(options: { blindMode?: boolean } = {}) {
     displayName: `Member ${memberCount}`,
     termsAccepted: true,
     locale: "fr",
-    theme: "dark",
     timeZone: "Europe/Paris",
   });
   if (options.blindMode) {

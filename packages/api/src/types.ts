@@ -543,7 +543,6 @@ export interface MyProfile {
   bio: string;
   avatarUrl: string | null;
   locale: "fr" | "en";
-  theme: "dark" | "light";
   statsPrivate: boolean;
   diaryPrivate: boolean;
   blindMode: boolean;

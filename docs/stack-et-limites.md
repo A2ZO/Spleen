@@ -58,7 +58,8 @@ Changer de fournisseur = changer des variables d'environnement, ou un seul fichi
 Pour comprendre les limites, il faut savoir ce que coûte une visite :
 
 - **Chaque page est calculée à chaque visite**, pour les visiteurs comme pour les robots,
-  parce que le layout lit le cookie de thème (issue #22). Une page vue = une exécution
+  à cause de la session lue dans le layout, l'en-tête du membre (`loadShell()`) et le nonce CSP
+  (issue #22). Une page vue = une exécution
   côté serveur + quelques requêtes SQL. C'est ce qui consomme l'hébergement et réveille la
   base.
 - **Chaque écriture d'un membre** (écoute, note, like, commentaire…) = une transaction
@@ -285,7 +286,8 @@ Spleen+**, il faut l'une de ces solutions :
 
 ### 5.5 Hébergement et base
 
-- **Issue #22 d'abord** : une fois le thème appliqué côté navigateur, les pages publiques
+- **Issue #22 d'abord** : une fois l'en-tête du membre et la session sortis du rendu
+  serveur (et la CSP hybride en place), les pages publiques
   vues par les visiteurs et les robots peuvent être servies depuis un cache, sans toucher
   la base. C'est ce qui repousse le plus les paliers 1 et 2. À décider avec la CSP du
   jalon 9.
