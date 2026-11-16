@@ -61,14 +61,26 @@ test("a follower finds the artist's next records, filters them, and the artist p
   await expect(page.getByRole("link", { name: album!.title })).toHaveCount(0);
 });
 
-test("a record not out yet offers « À écouter » but no listen", async ({ page }, testInfo) => {
+test("a record not out yet offers « À écouter » but no listen", async ({
+  page,
+  browser,
+}, testInfo) => {
   const catalog = await throwawayCatalog(testInfo, [{ date: { inDays: 20 } }], true);
   test.skip(!catalog, NEEDS_POSTGRES);
   const [record] = catalog!.releases;
 
+  // A visitor is offered « À écouter », not a listen.
+  const visitor = await (await browser.newContext({ locale: "fr-FR" })).newPage();
+  await visitor.goto(`/fr/album/${record!.slug}`);
+  await expect(visitor.getByText("Connecte-toi pour l'ajouter à « À écouter ».")).toBeVisible();
+  await visitor.context().close();
+
   await signUp(page, testInfo, "Patiente");
   await page.goto(`/fr/album/${record!.slug}`);
   await expect(page.getByText(/^Sort le /)).toBeVisible();
+  // Neither ratings nor reviews before the release.
+  await expect(page.getByText("Note de la communauté")).toHaveCount(0);
+  await expect(page.getByText("Les critiques ouvriront le jour de la sortie.")).toBeVisible();
   await expect(page.getByRole("button", { name: "J'ai écouté" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Coup de cœur" })).toHaveCount(0);
   await waitForHydration(page);

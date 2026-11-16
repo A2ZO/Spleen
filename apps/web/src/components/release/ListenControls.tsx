@@ -86,7 +86,9 @@ function SignedOut({ notOut }: { notOut: boolean }) {
         </div>
       )}
       <div className="min-w-0 flex-1 space-y-3">
-        <p className="text-fg-muted">{t("album.actions.signIn")}</p>
+        <p className="text-fg-muted">
+          {t(notOut ? "album.actions.signInNotOut" : "album.actions.signIn")}
+        </p>
         <Link href="/sign-in" className={buttonClasses("primary", "max-md:w-full")}>
           {t("album.actions.signInLink")}
         </Link>

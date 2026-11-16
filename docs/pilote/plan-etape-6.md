@@ -74,6 +74,6 @@ copiées ; `pnpm check` vert ; e2e complet en dev 245 réussis · 1 échoué · 
 deux projets, issue #34) ; `CLAUDE.md` à jour.
 
 - [x] vérifications
-- [ ] relecture 1
+- [x] relecture 1 (OK avec corrections : fiche d'un disque à venir, appliquées)
 - [ ] relecture 2
 - [ ] clôture

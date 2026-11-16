@@ -114,6 +114,7 @@
     "distributionLabel": "Rating distribution",
     "reviewsTitle": "Reviews",
     "reviewsEmpty": "Nobody has written about this record yet. The first review is waiting for you.",
+    "reviewsNotOut": "Reviews open on release day.",
     "listsTitle": "In lists",
     "listenOn": "Listen on",
     "coverAlt": "Cover of {title}",
@@ -125,6 +126,7 @@
       "wantToListen": "Listen later",
       "log": "Log in detail…",
       "signIn": "Sign in to keep track of what you listen to.",
+      "signInNotOut": "Sign in to save it for later.",
       "signInLink": "Sign in"
     },
     "releasedIn": "Released in {date}",
