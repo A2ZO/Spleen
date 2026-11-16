@@ -11,7 +11,8 @@ rhythm). Answer and recap in French.
 
 Hard rules:
 
-- Never commit or push to `main`, never `git push --force`, never rewrite pushed history.
+- Never commit or push to `main` or `dev`, never merge into `main` (only Azzo does, from `dev`),
+  never `git push --force`, never rewrite pushed history.
 - **Merge only after the user's explicit approval in this conversation, PR by PR or for a
   list they confirmed.** Approval for one round does not carry to the next one.
 - Never read or print `.env`; never paste raw logs that may contain secrets (`CLAUDE.md`,
@@ -23,7 +24,7 @@ Hard rules:
 ## 1. Inventory
 
 ```
-git switch main; git pull --ff-only
+git switch dev; git pull --ff-only
 gh pr list --author "app/dependabot" --json number,title,headRefName,labels,createdAt
 gh pr checks <number>          # for each PR
 ```
@@ -50,7 +51,9 @@ For each one:
 2. Read the changelogs of the bumped packages quickly for anything that matters here
    (deprecations, behaviour changes in Next, tRPC, Drizzle, Better Auth, next-intl, Zod).
 3. Present the list to the user (PR, packages, CI status, notable changelog points) and
-   ask: « Je fusionne ces PR ? ». Only then:
+   ask: « Je fusionne ces PR ? ». Only PRs whose base is `dev` (`gh pr view <number> --json
+baseRefName`); one still aimed at `main` is never merged: report it to the
+   user. Only then:
 
 ```
 gh pr merge <number> --merge --delete-branch
@@ -107,7 +110,7 @@ a `chore/services-<yyyy-mm>` branch (PR as for any change).
 
 - PRs merged (with the main packages and versions), PRs waiting for approval, majors
   migrated or held back (and why), PRs closed or ignored;
-- CI status of `main` after the merges (`gh run list --branch main --limit 3`);
+- CI status of `dev` after the merges (`gh run list --branch dev --limit 3`);
 - what `docs/services.md` needs re-verified, and any budget alert the user should set or
   check in a dashboard (never ask for credentials or secrets in the chat);
 - open Dependabot security alerts, if any.

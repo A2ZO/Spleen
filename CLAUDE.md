@@ -171,11 +171,13 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
 - e2e: one account per test (`grantAdmin`); wait for `actionAnswered` after a reaction; `page.route` with a pathname predicate; timers via `page.clock` → `docs/pieges.md`
 - What depends on how React splits renders: check a prod build; tiles animated below the fold use transform only (axe contrast) → `docs/pieges.md`
 
-## Git
+## Branches
 
-- Never commit or push to `main`; no force push; no history rewrite of pushed branches.
-- One branch per milestone `feat/<nn>-<name>` from an up-to-date `main` (`git switch main; git pull`).
-- Milestone end: run `/fin-de-jalon` (`.claude/skills/fin-de-jalon/SKILL.md`).
+- Work branches (`feat/<nn>-<name>` per milestone, `fix/…`, `chore/…`) start from an up-to-date `dev`
+  (`git switch dev; git pull --ff-only`); PRs go to `dev` (`gh pr create --base dev`).
+- Never commit or push to `main` or `dev` (GitHub rulesets); no force push; no history rewrite.
+- `main` only receives PRs `dev` → `main`, as merge commits, merged by Azzo. Milestone end:
+  `/fin-de-jalon` (`.claude/skills/fin-de-jalon/SKILL.md`), then that PR `dev` → `main`.
 
 ## Milestones
 

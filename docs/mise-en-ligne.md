@@ -215,12 +215,16 @@ Le workflow « Nightly » (`.github/workflows/catalog-refresh.yml`) tourne chaqu
   expirées, liens de connexion expirés, et compteurs anti-abus 24 h après la fin de leur
   fenêtre (sauf le limiteur MusicBrainz).
 
-Tant que le secret ci-dessous manque, les deux s'arrêtent aussitôt sans rien faire. Le
-workflow ne tourne que depuis `main`.
+Tant que le secret ci-dessous manque, les deux s'arrêtent aussitôt sans rien faire. Les
+exécutions planifiées partent de la branche par défaut (`dev`), mais les deux tâches
+récupèrent le code de `main` (`ref: main`) : la base de production ne voit que du code publié.
 
 - [ ] GitHub › dépôt › Settings › Environments › New environment : `production`.
 - [ ] Dans cet environnement, Deployment branches and tags : « Selected branches and tags »,
-      règle `main` (seule `main` lit le secret).
+      règles `dev` (exécutions planifiées) et `main` (lancement manuel) ; aucune autre branche
+      ne lit le secret. Les exécutions planifiées lancent le YAML de `dev` avec ce secret (`ref: main`
+      ne protège que le code récupéré) : toute PR qui touche `.github/workflows/` est fusionnée
+      par Azzo seul, jamais par le pilote.
 - [ ] Environment secrets › Add secret : `DATABASE_URL_UNPOOLED` = URL **directe** de la
       branche `production` du projet `spleen-prod` (sans `-pooler`, § 3).
 - [ ] Environment variables › Add variable : `MUSICBRAINZ_USER_AGENT` =
@@ -228,7 +232,7 @@ workflow ne tourne que depuis `main`.
 - [ ] `NEON_MAIN_HOST` dans le `.env` local = hôte de la branche `production` de
       `spleen-prod` (pas un secret, § 0) : le nettoyage e2e refuse alors cette base, et
       accepte `dev`.
-- [ ] **Vérifier** : onglet Actions › « Nightly » › Run workflow (sur `main`). Le journal de
+- [ ] **Vérifier** : onglet Actions › « Nightly » › Run workflow (sur `dev` ou `main`). Le journal de
       `refresh` affiche `catalog refresh: N artist(s) to re-read (postgres)` puis
       `done, … release(s) added` ; celui de `retention` affiche
       `retention (postgres): 0 decision(s) anonymised, …`. Le lendemain, une
