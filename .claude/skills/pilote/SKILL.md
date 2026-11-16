@@ -31,11 +31,13 @@ each step and the usual checks), `decisions.md`, `journal.md`. Screenshots go to
    stop without writing anything. Otherwise write the current date and time into it. Delete it
    at the end of the run, whatever happens.
 3. `git branch --show-current` must be the branch named in `etat.md`. If it is not, switch only
-   when the working tree is clean; otherwise go to « Attente » with the reason.
+   when the working tree is clean; otherwise go to « Attente » with the reason. When the tree is
+   clean, `git pull --ff-only` (the owner may have answered from GitHub).
 4. Uncommitted changes mean an interrupted run (usage limit): read `git diff` and the phase in
    `etat.md`, and continue from there. Never discard them.
-5. Read `docs/jalon-17-en-cours.md`, `docs/design/README.md`, `docs/pilote/decisions.md` and,
-   in `feuille-de-route.md`, the usual checks and the brief of the current step.
+5. Read the milestone doc named in `etat.md` (« Doc du jalon »), `docs/pilote/decisions.md`
+   (the owner's answers included), `docs/design/README.md` when the step changes screens, and,
+   in `feuille-de-route.md`, its « Cadre », the usual checks and the brief of the current step.
 
 ## 1. Plan — phase `plan`
 
@@ -47,14 +49,20 @@ each step and the usual checks), `decisions.md`, `journal.md`. Screenshots go to
 4. Do not ask the owner the questions the plan raises. Take the most cautious option (the one
    that changes the least, can be undone, and uses what exists) and log it in `decisions.md`:
    date, step, choice, reason, alternative left aside. Exception: anything irreversible, or
-   touching data, security or money → « Attente ».
-5. Set phase `code` in `etat.md`.
+   touching data, security or money → « Attente », unless a plan the owner validated says it
+   (additive migrations, for example). Never delete or rewrite existing data.
+5. If `feuille-de-route.md` says plans are validated by the owner (« Plans validés par
+   Azzo »): write in `decisions.md`, under a heading `QUESTION POUR AZZO`, « Plan de l'étape
+   <n> à valider : docs/pilote/plan-etape-<n>.md », then stop as in « Attente », with « plan à
+   valider » in `etat.md`. The owner answers under the question (« validé », maybe with
+   corrections) and sets phase `code`; the next run applies those corrections before coding.
+6. Otherwise, set phase `code` in `etat.md`.
 
 ## 2. Code — phase `code`
 
-Implement the plan. Commit as you go, in logical commits (Conventional Commits in English,
-ending with the session's attribution line), so that an interruption loses little. Then set
-phase `verif`.
+Implement the plan, with the owner's corrections from `decisions.md` if any. Commit as you go,
+in logical commits (Conventional Commits in English, ending with the session's attribution
+line), so that an interruption loses little. Then set phase `verif`.
 
 ## 3. Verification — phase `verif`
 

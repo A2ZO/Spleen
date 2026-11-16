@@ -1,121 +1,154 @@
-# Feuille de route du pilote — jalon 17 « Nouvelle peau »
+# Feuille de route du pilote — jalon 11 « Sorties à venir »
 
-Écrite par le conseiller d'Azzo. Le pilote (`/pilote`) fait une étape par exécution, dans
-l'ordre. Branche `feat/17-nouvelle-peau`. Référence : `docs/design/README.md` et
-`docs/design/maquettes/*.png`. Le cadre de `docs/jalon-17-en-cours.md` s'applique partout :
-apparence seulement, ni italique ni serif, un seul bloc lilas par page, aucune animation avant
-l'étape 7.
+Écrite par le conseiller d'Azzo le 16 novembre 2026. Le pilote (`/pilote`) fait une étape par
+exécution, dans l'ordre. Branche `feat/11-sorties-a-venir` (depuis `dev`). Spécification :
+`docs/cahier-des-charges.md`, section « Sorties à venir de tes artistes (jalon 11) ». Règles
+validées par Azzo : `docs/pilote/decisions.md`, « Déjà décidé avec Azzo ».
+
+**Plans validés par Azzo** : après chaque plan relu par le relecteur, le pilote s'arrête en
+`attente` (« plan de l'étape <n> à valider ») et ne code qu'après la validation.
+
+## Cadre
+
+- Nouvelle fonction : nouvelles tables, procédures tRPC et écrans sont prévus. Toute la logique
+  dans `packages/api` (utilisable par l'appli). Aucun appel à ListenBrainz ni à MusicBrainz
+  pendant l'affichage d'une page.
+- Migrations : générées par `pnpm db:generate`, additives, et seulement celles écrites dans un
+  plan validé. Jamais de suppression ni de réécriture de données existantes. Après chaque
+  migration : `pnpm db:migrate` sur la base de dev (Neon `dev`), jamais ailleurs.
+- Écrans : identité Lilas (`docs/design/README.md`) et composants existants, un seul bloc lilas
+  par page, jamais de carte vide. Pas de maquette pour ce jalon : s'inspirer des fiches, de
+  l'accueil et de `/discover`.
+- Textes FR et EN dans `packages/i18n`, tutoiement.
+- Données personnelles nouvelles (suivis, réglage des notifications) : politique de
+  confidentialité, export des données et suppression du compte mis à jour dans la même étape.
+  `TERMS_VERSION` ne change pas (prévu au jalon 10).
+- Pas de service payant, pas de compte, pas de clé. ListenBrainz s'appelle sans clé, avec le
+  User-Agent de MusicBrainz, en respectant ses en-têtes `X-RateLimit-*`.
+- Fin de jalon : la PR touche les migrations et le workflow de nuit, donc la section 6 du skill
+  la laissera à Azzo. C'est attendu.
 
 ## Vérifications habituelles (à chaque étape)
 
-- `pnpm check` ; les specs touchés ; puis l'e2e complet via le sous-agent `verificateur`
-  (2 workers, ligne de résumé).
-- Build de prod (`pnpm run free-port` d'abord ; Brevo, S3 et `CONTACT_EMAIL` en valeurs
-  factices dans la commande seulement, jamais dans `.env`) : specs sans compte et
-  `overflow.spec`. `hydration.spec` échoue à l'envoi de l'email (Brevo factice) : attendu,
-  seulement s'il échoue à cette ligne.
-- axe WCAG 2.2 AA à 1280 et 390 px : pages visiteur sur le build de prod ; pages membre en dev,
-  avec un compte e2e jetable supprimé à la fin.
-- `scripts/measure.mjs` sur le build de prod, deux passages, comparé à la référence (dernière
-  ligne « Mesures » de `docs/jalon-17-en-cours.md`, mêmes pages). Plus de 20 ms de plus sur une
-  page : à corriger ou à expliquer dans le journal.
-- Captures 1280 et 390 px des pages de l'étape dans `docs/pilote/captures/<n>/`, en visiteur
-  et en membre quand la page change selon le cas.
+- `pnpm check` ; les specs touchés ; puis l'e2e complet via le sous-agent `verificateur`.
+- Un test d'API (PGlite) pour chaque règle de l'étape ; la CI les rejoue sur Postgres. Réponses
+  ListenBrainz et MusicBrainz enregistrées, jamais de réseau dans les tests. Dates maîtrisées :
+  date passée en paramètre côté API, `page.clock` en e2e.
+- Quand l'étape change des écrans :
+  - build de prod (`pnpm run free-port` d'abord ; Brevo, S3 et `CONTACT_EMAIL` en valeurs
+    factices dans la commande seulement, jamais dans `.env`) : specs sans compte et
+    `overflow.spec` ;
+  - axe WCAG 2.2 AA à 1280 et 390 px sur les pages de l'étape : visiteur sur le build de prod,
+    membre en dev avec un compte e2e jetable supprimé à la fin ;
+  - `scripts/measure.mjs` sur le build de prod, deux passages : les pages déjà mesurées restent
+    dans les 20 ms de la référence (`docs/jalon-11-en-cours.md`, « Mesures de référence ») ;
+  - captures 1280 et 390 px dans `docs/pilote/captures/<n>/`, en visiteur et en membre quand la
+    page change selon le cas, avec les données de démo (jamais une page vide faute de données).
 
-## Étape 5 — Le profil et l'Étagère
+## Étape 1 — Suivre un artiste
 
-Maquette : `D-profil-mobile.png` (mobile seulement ; sur ordinateur, même contenu en mosaïque,
-comme les fiches et l'accueil).
+- Migration : `artist_follows` (membre, artiste, date ; clé primaire (membre, artiste), index
+  par artiste ; cascade à la suppression du membre, `restrict` côté catalogue) et
+  `profiles.notify_releases` (vrai par défaut).
+- API : suivre, ne plus suivre, état pour un artiste, liste de mes artistes suivis. 500 artistes
+  au plus (code d'erreur dédié), 200 suivis par heure (limiteur existant). Un compte suspendu ne
+  peut pas suivre. La liste est privée : aucune procédure ne montre les suivis d'un autre membre.
+- Fusion de doublons d'artistes (admin) : les suivis passent sur la fiche gardée, sans doublon.
+- Export des données : les suivis et le réglage y figurent. Suppression du compte : les suivis
+  disparaissent (vérifié par un test).
+- Politique de confidentialité (`legal.privacy`) : les artistes suivis et le réglage des
+  notifications de sorties.
+- Fiche artiste : bouton « Suivre » / « Suivi » (`aria-pressed`), écriture instantanée comme
+  les réactions existantes, formulaire qui marche sans JavaScript ; un visiteur va vers la
+  connexion.
+- Réglages : section « Sorties à venir » avec l'interrupteur des notifications de sorties et la
+  liste de mes artistes suivis, chacun avec « Ne plus suivre ».
+- Captures : fiche artiste (visiteur, membre qui suit, membre qui ne suit pas), réglages.
 
-- **D'abord, commit à part** : `measure.mjs` vise toujours le même album par son adresse, au
-  lieu du premier lien album de l'accueil. Remesurer une fois : nouvelle référence.
-- En-tête : grand avatar avec sa tranche, nom en Bricolage 800 (règle des longs titres),
-  @pseudo en Geist Mono, bio, abonnés et abonnements.
-- Le bouton d'action qui existe déjà : « Suivre » sur le profil d'un autre (vers la connexion
-  pour un visiteur), réglages ou « Modifier » sur le sien.
-- Trois chiffres : le premier dans le bloc lilas (le seul de la page), les deux autres en
-  cartes, avec les données que le profil charge déjà ou que l'API fournit déjà
-  (`profile.stats`). Sinon, d'autres chiffres qui existent (décision notée).
-- L'Étagère : grille de pochettes arrondies, titre en pilule, à la place du bois et des
-  vinyles. Si elle peut contenir plus ou moins de 4 disques, la grille s'adapte et le titre ne
-  dit pas « 4 ». Vide : une invitation sur son propre profil, rien sur celui d'un autre.
-- Onglets Journal / Critiques / Listes / Stats en contrôle segmenté. Journal en rangées
-  regroupées par mois : jour en gros chiffres, vignette, titre, artiste, note en Geist Mono
-  lilas.
-- Pages du profil : journal (avec la vue calendrier), critiques, listes, stats, abonnés et
-  abonnements, éditeur de l'Étagère, avec les mêmes briques. Les états existants gardent leur
-  message (journal masqué, compte suspendu, profil sans activité…).
-- Ce qui reste de `wood`, `vinyl`, `VinylShelf` ou `Turntable` disparaît.
-- Captures : son propre profil, le profil d'un autre, le journal, les stats, l'éditeur de
-  l'Étagère.
+## Étape 2 — Alimentation de nuit et lectures
 
-## Étape 6 — Le reste
+- Migration : `releases.announced_at` (première fois que le disque est vu « à venir ») et
+  `releases.release_date_changed_at` (pour le badge « date modifiée »).
+- Client ListenBrainz dans `packages/catalog`, à côté de MusicBrainz :
+  `GET /1/explore/fresh-releases/` avec `release_date` = aujourd'hui, `days=90`, `past=false`,
+  `future=true`. Vérifier ces paramètres sur la documentation officielle avant de coder.
+  Réponses enregistrées pour les tests.
+- `pnpm catalog:refresh`, en plus de ce qu'il fait déjà :
+  1. une requête ListenBrainz ; garder les disques principaux (album, EP, single ; ni live ni
+     compilation) d'un artiste suivi par au moins un membre ; créer les fiches incomplètes comme
+     pour les discographies ; remplir `announced_at` à la première vue ;
+  2. la relecture des discographies inclut les artistes suivis, les plus suivis d'abord, chacun
+     au plus une fois par semaine, dans le plafond existant de 150 artistes par nuit ;
+  3. une date de sortie qui change met à jour la fiche et `release_date_changed_at`.
+- Lectures (API, aucun appel externe) :
+  - mes sorties à venir : disques principaux de mes artistes suivis, datés après aujourd'hui
+    dans mon fuseau, 12 mois au plus ; groupes *Cette semaine*, *Ce mois-ci*, *Plus tard* et
+    *Annoncé, date à préciser* (année seule) ; filtre album / EP / single ;
+  - les sorties à venir d'un artiste, pour tous.
+- Démo : `pnpm db:seed` ajoute des suivis (dont `nuitblanche`) et quelques sorties à venir, aux
+  dates calculées depuis le jour du seed : au jour, au mois, à l'année seule, et une date
+  modifiée. Toujours idempotent. Ces données servent aux écrans et aux e2e des étapes suivantes.
+- Pas d'écran dans cette étape. Lancer `pnpm catalog:refresh` une fois sur la base de dev et
+  noter le résultat dans le journal.
 
-Pages : recherche (page `/search` et fenêtre de recherche instantanée), listes (index, fiche
-d'une liste, création et édition), notifications, réglages et formulaire de profil,
-connexion (lien magique, code à 6 chiffres, `/welcome`), pages légales, 404 et page d'erreur,
-page hors ligne, aide des raccourcis clavier, pages d'administration et de modération
-(sobres, mêmes briques).
+## Étape 3 — Les écrans des sorties à venir
 
-Hors pages :
+- Page `/[locale]/upcoming`, pour les membres (un visiteur va vers la connexion) : les quatre
+  groupes, filtre album / EP / single en contrôle segmenté (liens, marche sans JavaScript).
+  Chaque disque : pochette, titre, artiste, date (jamais un jour inventé pour une date
+  partielle), badge « date modifiée », bouton « À écouter ».
+- Suggestions : suivre en un clic les artistes que j'écoute le plus (stats existantes), hors
+  ceux déjà suivis. Sans aucun suivi, la page montre ces suggestions et une phrase d'invitation.
+- « Une sortie manque ? Signale-la. » : vers le signalement de catalogue existant, type « ajout
+  manquant ».
+- Fiche artiste : section « À venir », visible par tous, cachée quand il n'y a rien.
+- Fiche d'un disque pas encore sorti : ni « J'ai écouté », ni note, ni critique, et l'API les
+  refuse aussi avec un code d'erreur (`docs/ecoute.md` à jour) ; « À écouter » autorisé ; date
+  de sortie et badge. Après la date, la fiche redevient normale.
+- Accès à `/upcoming` : un lien sobre (depuis l'accueil membre à l'étape 4, et depuis la fiche
+  artiste ou les réglages) ; la barre d'onglets mobile ne change pas.
+- Captures : `/upcoming` avec et sans suivis, fiche artiste avec « À venir », fiche d'un disque
+  à venir.
 
-- **Pochettes générées** : rendu refait avec le nuancier des jetons ; la bande ne passe plus
-  jamais sur le titre ; lisibles en vignette.
-- **Emails** (connexion et modération) : tableaux et styles en ligne, couleurs de la palette,
-  aucune dépendance aux polices web (police de repli), version texte à jour. Le lien et le code
-  restent lisibles si le client email inverse les couleurs.
-- **Images Open Graph** : nouvelle identité (fond sombre, lune lilas, titre en Bricolage).
-  `next/og` (Satori) n'accepte pas le woff2 : TTF ou OTF dans `assets/fonts`.
-- **PWA** : manifest (`theme_color` et `background_color` `#0E0C12`), `icon.svg`,
-  `apple-icon`, icônes maskables avec la lune lilas dans la zone sûre.
+## Étape 4 — Accueil et découverte
 
-Règles :
+- Accueil membre : bloc « Bientôt dans tes oreilles » avec mes 5 prochaines sorties et un lien
+  vers `/upcoming`. Aucun suivi : une phrase courte qui invite à suivre ses artistes. Des suivis
+  mais rien d'annoncé : bloc caché.
+- Issue #32 (« Sort vendredi ») : lire l'issue et la résoudre avec ces données ; la PR la
+  fermera (`Closes #32`).
+- `/discover` : bloc « Les plus attendus » : sorties à venir classées par nombre de membres
+  distincts qui suivent l'artiste ou ont mis le disque dans « À écouter » ; 2 membres au moins
+  par disque ; comptes suspendus exclus ; bloc caché s'il est vide. Lecture d'API et tests.
+- Après sa date de sortie, le disque rejoint les sorties récentes : un test le vérifie, avec une
+  date maîtrisée.
+- Captures : accueil membre (avec sorties, sans suivi), `/discover`.
 
-- Connexion : le champ du code garde `autocomplete="one-time-code"` et le clavier numérique ;
-  `useTypedBeforeHydration` intact.
-- Réglages : la suppression du compte en rôle `danger`, confirmations inchangées.
-- Pas de bloc lilas sur les pages légales et d'erreur s'il n'apporte rien.
-- À la fin de l'étape, plus aucun `font-serif` ni italique dans `apps/web` (vérifié par
-  recherche).
-- Captures en plus : un email rendu en HTML, une image OG générée, une icône PWA.
+## Étape 5 — Les notifications du jour J
 
-## Étape 7 — Les animations
+- Migration : type de notification `release`, avec une colonne `release_id`.
+- Commande `pnpm releases:notify` : pour chaque membre qui suit l'artiste, une notification
+  « Sortie aujourd'hui : *Titre* de *Artiste* » quand la date du disque (au jour près) est
+  aujourd'hui dans son fuseau ; regroupée s'il y en a plusieurs le même jour (« 3 sorties
+  aujourd'hui chez tes artistes ») ; jamais deux fois (relançable sans doublon) ; jamais pour un
+  compte suspendu ni quand le réglage est coupé.
+- Workflow Nightly : `pnpm releases:notify` après la relecture, sur le code de `main` comme les
+  autres tâches, avec la même garde « base de production configurée ».
+- Page des notifications : rendu du type `release`, chaque disque lié à sa fiche.
+- Tests : API (fuseaux, regroupement, doublons, compte suspendu, réglage coupé) et e2e de la
+  page des notifications avec les données de démo.
+- Captures : notifications avec une sortie, puis avec plusieurs.
 
-Section « Mouvement » de `docs/design/README.md` :
+## Étape 6 — La passe finale
 
-- Les étoiles se remplissent une à une avec un léger rebond quand on note.
-- Les boutons descendent déjà à l'appui : ajouter la remontée en ressort (easing des jetons).
-- Les cartes montent de quelques pixels au survol, seulement avec `@media (hover: hover)`.
-- Les tendances arrivent en cascade au défilement : `animation-timeline: view()` dans un
-  `@supports`. Sans support, tout est visible tout de suite : jamais de contenu caché en
-  attendant une animation.
-- Sur une fiche mobile, la pochette rétrécit et se range dans la barre du haut au défilement
-  (animation liée au défilement).
-- Les chiffres comptent jusqu'à leur valeur : la vraie valeur est dans le HTML (lecteurs
-  d'écran, sans JavaScript) ; l'animation est décorative (`aria-hidden`), en chiffres
-  tabulaires pour ne rien décaler.
-
-Règles : transform et opacity seulement ; 150 ms pour une petite réaction, 300 ms pour un
-grand changement ; tout coupé sous `prefers-reduced-motion` ; ni Suspense, ni `loading.tsx`,
-ni transitions de page (#29) ; refaisable à l'identique dans l'appli ; aucune animation ne
-retarde l'affichage du contenu au chargement.
-
-Tests : les e2e existants ne deviennent pas instables (attendre l'état final, jamais un délai
-fixe) ; un test vérifie qu'avec `prefers-reduced-motion` le contenu est visible sans animation.
-Vérifier dans le code qu'aucune animation ne touche une autre propriété que transform et
-opacity.
-
-## Étape 8 — La passe finale
-
-1. Ménage : retirer l'alias `font-serif` et tout reste de l'ancienne identité (recherche :
-   serif, italic, wood, vinyl, brass, velvet, cream, Fraunces, Plex). La page de démo reste (dev
-   seulement) et montre l'état final des composants.
-2. Captures 1280 et 390 px de toutes les pages, visiteur et membre, revues par le relecteur
-   contre les maquettes, en une ou deux fournées.
-3. axe sur toutes les pages, `overflow.spec`, e2e complet en dev, specs sans compte en prod.
-4. `measure.mjs` complet, comparé à la référence de l'étape 5 et au jalon 12
-   (267 / 133 / 229 / 211 / 219).
-5. `CLAUDE.md` : la nouvelle identité (jetons, polices, règles du design, où sont les
-   maquettes) et les décisions du jalon ; `docs/design/README.md` mis à jour de ce qui a changé
-   en route.
-6. Puis la fin de jalon du pilote : PR, CI verte, jamais de fusion.
+1. Doc du domaine : `docs/sorties.md` (règles, commandes, tâches de nuit), avec des renvois
+   depuis `docs/decouverte.md` et `docs/catalogue.md`.
+2. `docs/cahier-des-charges.md` : cocher la question ouverte « Sorties à venir : valider les
+   règles », avec les règles retenues.
+3. Captures 1280 et 390 px de tous les écrans du jalon, visiteur et membre, revues par le
+   relecteur.
+4. axe sur ces écrans, `overflow.spec`, e2e complet en dev, specs sans compte en prod,
+   `measure.mjs` complet comparé à la référence.
+5. `CLAUDE.md` : jalon 11 coché en une ligne, décisions et commandes nouvelles.
+6. Puis la fin de jalon du pilote (section 5 du skill) : PR vers `dev`. La fusion reviendra à
+   Azzo (migrations et workflow).
