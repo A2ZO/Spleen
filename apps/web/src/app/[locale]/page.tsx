@@ -88,9 +88,9 @@ async function JustOut({ lang }: { lang: AudienceLang }) {
 }
 
 /** The member's month, from the diary calendar's own procedure and month rule. */
-async function Month({ username }: { username: string }) {
+async function Month({ username, timeZone }: { username: string; timeZone: string }) {
   const api = await getApi();
-  const month = currentMonth();
+  const month = currentMonth(timeZone);
   const entries = await api.profile.diaryMonth({ username, month });
   if (!entries) return null;
   return (
@@ -331,7 +331,7 @@ export default async function HomePage({ params, searchParams }: Props) {
           </div>
         </Card>
         <div className="flex flex-col gap-5">
-          <Month username={member.username} />
+          <Month username={member.username} timeZone={member.timeZone} />
           <JustOut lang={lang} />
         </div>
       </div>

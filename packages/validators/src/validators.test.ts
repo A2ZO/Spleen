@@ -6,10 +6,12 @@ import {
   catalogImportSchema,
   catalogSearchSchema,
   COMMENT_BODY_MAX,
+  DEFAULT_TIME_ZONE,
   commentBodySchema,
   REPORT_DETAILS_MAX,
   reportCreateSchema,
   isReservedUsername,
+  monthIn,
   onboardingSchema,
   ratingSchema,
   ratingToStars,
@@ -156,5 +158,15 @@ describe("catalog reports", () => {
       catalogReportSchema.safeParse({ target, type: "duplicate", duplicate: "x" }).success,
     ).toBe(true);
     expect(catalogReportSchema.safeParse({ target, type: "cover" }).success).toBe(true);
+  });
+});
+
+describe("monthIn", () => {
+  it("counts the month in the given zone, not in UTC", () => {
+    // 23:30 UTC on 31 October = 00:30 in Paris on 1 November.
+    const now = new Date("2026-10-31T23:30:00Z");
+    expect(monthIn("UTC", now)).toBe("2026-10");
+    expect(monthIn(DEFAULT_TIME_ZONE, now)).toBe("2026-11");
+    expect(monthIn("America/New_York", new Date("2026-11-01T03:00:00Z"))).toBe("2026-10");
   });
 });

@@ -20,6 +20,7 @@ import {
   type SearchParams,
 } from "@/lib/search-params";
 import { getApi } from "@/server/api";
+import { loadShell } from "@/server/shell";
 
 type Props = {
   params: Promise<{ locale: string; username: string }>;
@@ -67,8 +68,10 @@ export default async function DiaryPage({ params, searchParams }: Props) {
   const raw = await searchParams;
   const view = firstParam(raw.view) === "calendar" ? "calendar" : "list";
   const path = `/u/${profile.username}/diary`;
-  // Default month: the latest listen's, else the current one (both are calendar months).
-  const currentMonth = thisMonth();
+  // Default month: the latest listen's, else the current one (both are calendar months). The
+  // current month is the viewer's (the owner's zone is not public), read from the header's call.
+  const { me } = await loadShell();
+  const currentMonth = thisMonth(me?.profile?.timeZone);
   const month = monthParam(raw.month) ?? profile.recent[0]?.listenedOn.slice(0, 7) ?? currentMonth;
 
   const api = await getApi();

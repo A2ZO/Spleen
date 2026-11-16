@@ -120,3 +120,11 @@ export function todayIn(timeZone: string, now: Date): string {
   const part = (type: string) => parts.find((p) => p.type === type)!.value;
   return `${part("year")}-${part("month")}-${part("day")}`;
 }
+
+/** Zone for a visitor, and the site's own (next-intl formats dates in it). Members' default too. */
+export const DEFAULT_TIME_ZONE = "Europe/Paris";
+
+/** Calendar month ("YYYY-MM") of `now` in `timeZone`. */
+export function monthIn(timeZone: string, now: Date): string {
+  return todayIn(timeZone, now).slice(0, 7);
+}
