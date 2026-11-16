@@ -35,6 +35,9 @@ each step and the usual checks), `decisions.md`, `journal.md`. Screenshots go to
    in `feuille-de-route.md`, its « Cadre », the usual checks and the brief of the current step.
    Rules and answers written by the advisor (« Décidé par le conseiller », « Réponse du
    conseiller ») count as the owner's: he delegated those decisions.
+6. Credit reserve: read `.git/pilote-usage.json`. If it was written less than 15 minutes ago and `five_hour.used_percentage` or `seven_day.used_percentage` is 95 or more, keep 5 % for the advisor's scheduled task: commit what is done (tick « Avancement »), keep the current phase in `etat.md`, add one line to `journal.md` (« pause : réserve de crédit, reprise après <resets_at> »), push, `pnpm run free-port`, delete the lock and stop. If the file is missing or older than 15 minutes, go on as usual.
+
+Run the same credit-reserve check (point 6) at each phase change and after each commit.
 
 ## 1. Plan — phase `plan`
 
