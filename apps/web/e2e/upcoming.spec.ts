@@ -77,3 +77,34 @@ test("a record not out yet offers « À écouter » but no listen", async ({ pag
     "true",
   );
 });
+
+test("the home page announces tomorrow's record to its follower, not to a visitor", async ({
+  page,
+  browser,
+}, testInfo) => {
+  const catalog = await throwawayCatalog(testInfo, [{ date: { inDays: 1 } }], true);
+  test.skip(!catalog, NEEDS_POSTGRES);
+  const { artist, releases } = catalog!;
+  const [record] = releases;
+
+  await signUp(page, testInfo, "Impatiente");
+  await page.goto("/fr");
+  const soon = page.getByRole("region", { name: "Bientôt dans tes oreilles" });
+  await expect(soon.getByText("Suis tes artistes depuis leur fiche")).toBeVisible();
+  await page.goto(`/fr/artist/${artist!.slug}`);
+  await waitForHydration(page);
+  const followed = actionAnswered(page);
+  await page.getByRole("button", { name: `Suivre ${artist!.name}` }).click();
+  await followed;
+
+  await page.goto("/fr");
+  await expect(soon.getByRole("link", { name: record!.title })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Sort demain" })).toBeVisible();
+
+  const visitor = await (await browser.newContext({ locale: "fr-FR" })).newPage();
+  await visitor.goto("/fr");
+  await expect(visitor.locator("h1")).toBeVisible();
+  await expect(visitor.getByRole("heading", { name: "Sort demain" })).toHaveCount(0);
+  await expect(visitor.getByRole("region", { name: "Bientôt dans tes oreilles" })).toHaveCount(0);
+  await visitor.context().close();
+});

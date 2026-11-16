@@ -90,6 +90,13 @@ Lectures (routeur `upcoming`) :
   `later`, `tba` (année seule) ; `dateChanged` quand la date a bougé ;
 - `byArtist({ slug })` (publique) : 20 au plus, identique pour tous (cache public, issue #22),
   jour de Paris ; un artiste fusionné lit la fiche gardée, inconnu → `NOT_FOUND`.
+- `home()` (publique, `null` pour un visiteur ou un compte suspendu) : `{ following, items,
+  soon }` ; `items` = 5 prochaines sorties suivies (année seule en dernier, puis date, titre) ;
+  `soon` = première sortie suivie **au jour** entre demain et J+6, avec `inDays` (issue #32).
+- `discovery.awaited()` (publique, 10 au plus, jour de Paris, sans données du lecteur) : sorties
+  à venir comptées par membres distincts qui suivent un de leurs artistes **ou** les ont dans
+  « À écouter » (une fois chacun, membres suspendus exclus), 2 au moins ; tri : nombre, année
+  seule en dernier, date, titre. Aucun nombre ni nom n'est montré.
 
 Écrans (étape 3) :
 
@@ -103,6 +110,12 @@ Lectures (routeur `upcoming`) :
 - Fiche artiste : section « À venir » au-dessus de la discographie (tuiles, date à la place de
   l'année ; les disques restent aussi dans la discographie) ; pour un membre, « Une sortie
   manque ? » ouvre le signalement catalogue avec le type « ajout » présélectionné.
+- Accueil membre (étape 4) : « Bientôt dans tes oreilles » (`upcoming.home`, pleine largeur
+  sous la grille du haut, lien « Toutes tes sorties à venir ») ; sans suivi, l'invitation ;
+  suivis sans annonce, rien. La petite carte devient « Sort demain » / « Sort vendredi » quand
+  `soon` existe (sans action d'écoute), sinon « Vient de sortir ». Visiteur : inchangé.
+- `/discover` : « Les plus attendus » (`#awaited`) avant « Sorties récentes », caché si vide.
+  Les tuiles de ces trois endroits viennent de `components/upcoming/UpcomingGrid.tsx`.
 - Fiche d'un disque à venir : « Sort le … », « Sort en … » ou « Annoncé pour … » à la place de
   la date, badge « Date modifiée » ; contrôles réduits (voir `docs/ecoute.md`).
 
