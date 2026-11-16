@@ -46,7 +46,7 @@ test("a follower finds the artist's next records, filters them, and the artist p
   await page.goto("/fr/upcoming");
   const week = page.getByRole("region", { name: "Cette semaine" });
   await expect(week.getByRole("link", { name: ep!.title })).toBeVisible();
-  const later = page.getByRole("region", { name: "Date à confirmer" });
+  const later = page.getByRole("region", { name: "Annoncé, date à préciser" });
   await expect(later.getByRole("link", { name: album!.title })).toBeVisible();
 
   await page.getByRole("link", { name: "EP", exact: true }).click();

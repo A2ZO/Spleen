@@ -36,7 +36,8 @@ validées par Azzo le 16 novembre : `docs/pilote/decisions.md`. Consignes de cha
 
 - `measure.mjs` (fin du jalon 17, build de prod, `main`, médianes de 3) :
   237 / 140 / 225 / 208 / 210. Une page déjà mesurée ne doit pas prendre plus de 20 ms.
-- `/upcoming` n'a pas de référence : la première mesure (étape 3) devient la sienne.
+- `/upcoming` (étape 3, build de prod, accueil → `/upcoming` par `router.push`, page affichée,
+  médianes de 6, deux passages, `nuitblanche`) : **149 / 151 ms**, sa référence.
 
 ## Étape 1 — faite (16 novembre)
 

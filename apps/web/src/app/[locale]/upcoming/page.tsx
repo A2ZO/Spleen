@@ -99,7 +99,12 @@ export default async function UpcomingPage({ params, searchParams }: Props) {
                 >
                   {artist.name}
                 </Link>
-                <ArtistFollowButton artistId={artist.id} name={artist.name} following={false} />
+                <ArtistFollowButton
+                  artistId={artist.id}
+                  name={artist.name}
+                  following={false}
+                  quiet
+                />
               </li>
             ))}
           </ul>

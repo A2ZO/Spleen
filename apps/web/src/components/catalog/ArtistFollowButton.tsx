@@ -24,12 +24,15 @@ export function ArtistFollowButton({
   artistId,
   name,
   following,
+  quiet = false,
   className,
 }: {
   artistId: string;
   /** Artist name, for the accessible label. */
   name: string;
   following: boolean;
+  /** Small secondary button in both states, for lists (the artist page keeps the primary). */
+  quiet?: boolean;
   className?: string;
 }) {
   const t = useTranslations("artist");
@@ -61,7 +64,12 @@ export function ArtistFollowButton({
     <form action={formAction} onSubmit={submit} className="inline-flex flex-col">
       <input type="hidden" name="artistId" value={artistId} />
       <input type="hidden" name="follow" value={String(!follow.shown)} />
-      <Button type="submit" variant={follow.shown ? "secondary" : "primary"} className={className}>
+      <Button
+        type="submit"
+        variant={follow.shown || quiet ? "secondary" : "primary"}
+        size={quiet ? "sm" : undefined}
+        className={className}
+      >
         {follow.shown ? t("unfollow") : t("follow")}
         <span className="sr-only"> {name}</span>
       </Button>

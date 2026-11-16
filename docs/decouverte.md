@@ -95,7 +95,7 @@ Lectures (routeur `upcoming`) :
 
 - `/upcoming` (« Mes sorties à venir », membre, `noindex` ; visiteur → connexion) : onglets
   Tout / Albums / EP / Singles (`?type=`), quatre groupes (« Cette semaine », « Ce mois-ci »,
-  « Plus tard », « Date à confirmer ») ; chaque ligne : pochette, titre, artistes, date courte
+  « Plus tard », « Annoncé, date à préciser ») ; chaque ligne : pochette, titre, artistes, date courte
   (`formatUpcomingDate()`, `lib/release-date.ts`), type, badge « Date modifiée », bouton
   « À écouter » instantané (`components/upcoming/`). Sans suivi : invitation à suivre depuis
   les fiches ; suggestions d'artistes (`upcoming.suggestions`) ; lien de signalement en bas.

@@ -72,6 +72,17 @@ Ajouts du conseiller, validés :
   (règles actuelles des blocs vides, brief). Écarté : une variante (à proposer à Azzo).
 - 2026-11-16, étape 3 — Refus `RELEASE_NOT_OUT` pour ce qui ajoute seulement : retirer une
   note, un cœur ou une écoute reste permis (disque reporté après coup ; relecteur).
+- 2026-11-16, étape 3 — Fiche artiste : les sorties à venir restent aussi dans la discographie
+  et ses compteurs (relecteur : doublon). Choix le plus prudent : ne pas toucher
+  `getArtistDetail` dans cette étape, la section « À venir » au-dessus suffit à les situer.
+  Écarté : les retirer de la discographie (règle `upcomingSql` côté API) ; à proposer à Azzo
+  dans la PR.
+- 2026-11-16, étape 3 — Fiche d'un disque à venir : la ligne « Sort le … » suit le jour de
+  Paris (identique pour tous, cache public #22), les contrôles le fuseau du membre
+  (`releaseNotOut`). Quelques heures autour du jour de sortie, un membre loin de Paris peut
+  voir l'une sans l'autre. Écarté : la ligne au fuseau du membre (page différente par membre).
+- 2026-11-16, étape 3 — Suggestions de `/upcoming` : boutons « Suivre » secondaires et petits
+  (un seul bloc lilas par page, relecteur) ; le bouton principal reste sur la fiche artiste.
 
 ## QUESTION POUR AZZO
 
