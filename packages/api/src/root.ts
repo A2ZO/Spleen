@@ -1,5 +1,6 @@
 import { consumeRateLimit } from "@spleen/infra/rate-limit";
 import {
+  artistFollowSchema,
   commentCreateSchema,
   commentListSchema,
   commentUpdateSchema,
@@ -437,14 +438,14 @@ export const appRouter = router({
   /** Artists the caller follows. Private: no procedure reads another member's follows. */
   artistFollow: router({
     follow: artistFollowWrite
-      .input(z.object({ artistId: z.uuid() }))
+      .input(artistFollowSchema)
       .mutation(({ input, ctx }) => followArtist(ctx.db(), ctx.user.id, input.artistId, ctx.now)),
     unfollow: artistFollowWrite
-      .input(z.object({ artistId: z.uuid() }))
+      .input(artistFollowSchema)
       .mutation(({ input, ctx }) => unfollowArtist(ctx.db(), ctx.user.id, input.artistId)),
     /** Read apart from `artist.bySlug`, which stays the same for everyone (public cache). */
     status: protectedProcedure
-      .input(z.object({ artistId: z.uuid() }))
+      .input(artistFollowSchema)
       .query(({ input, ctx }) => artistFollowStatus(ctx.db(), ctx.user.id, input.artistId)),
     mine: protectedProcedure.query(({ ctx }) => myFollowedArtists(ctx.db(), ctx.user.id)),
   }),

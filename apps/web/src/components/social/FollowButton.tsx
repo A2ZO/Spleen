@@ -47,7 +47,6 @@ export function FollowButton({
     <span className="inline-flex flex-col items-start">
       <Button
         variant={follow.shown ? "secondary" : "primary"}
-        aria-pressed={follow.shown}
         onClick={toggle}
         className={className}
       >

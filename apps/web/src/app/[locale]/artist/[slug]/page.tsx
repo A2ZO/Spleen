@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { getLocale, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
+import { ArtistFollowButton } from "@/components/catalog/ArtistFollowButton";
 import { CatalogNotice } from "@/components/catalog/CatalogNotice";
 import { CatalogReportButton } from "@/components/catalog/CatalogReportButton";
 import { ListenOn } from "@/components/catalog/ListenOn";
@@ -13,6 +14,7 @@ import { AddToListButton } from "@/components/lists/AddToList";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
+import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Link } from "@/i18n/navigation";
@@ -119,6 +121,10 @@ export default async function ArtistPage({ params, searchParams }: Props) {
     getLocale(),
   ]);
   if (!artist) return missingCatalogPage("artist", slug, locale);
+  // Read apart from the artist, which stays the same for everyone; members only.
+  const followStatus = me?.profile
+    ? await (await getApi()).artistFollow.status({ artistId: artist.id })
+    : null;
 
   const { albums, eps, singles, other } = artist.discography;
   const totals = artist.discographyTotals;
@@ -181,6 +187,24 @@ export default async function ArtistPage({ params, searchParams }: Props) {
           </h1>
           {artist.disambiguation && (
             <p className="mt-3 text-lg text-fg-muted md:mt-4">{artist.disambiguation}</p>
+          )}
+          {followStatus ? (
+            <div className="mt-6">
+              <ArtistFollowButton
+                artistId={artist.id}
+                name={artist.name}
+                following={followStatus.following}
+              />
+            </div>
+          ) : (
+            !signedIn && (
+              <div className="mt-6">
+                <ButtonLink href="/sign-in" variant="secondary">
+                  {t("artist.follow")}
+                  <span className="sr-only"> {artist.name}</span>
+                </ButtonLink>
+              </div>
+            )
           )}
         </div>
       </header>
