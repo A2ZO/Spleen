@@ -73,9 +73,12 @@ export default async function NotificationsPage({ params, searchParams }: Props)
         <ul className="space-y-2">
           {page.items.map((group) =>
             group.type === "release" ? (
-              <li key={group.key}>
-                <ReleaseItem group={group} />
-              </li>
+              // A group whose records are all gone (should not happen: `restrict`) shows nothing.
+              group.releases.length > 0 && (
+                <li key={group.key}>
+                  <ReleaseItem group={group} />
+                </li>
+              )
             ) : group.moderation ? (
               <li key={group.key}>
                 <ModerationItem
@@ -246,9 +249,9 @@ async function ReleaseItem({ group }: { group: NotificationGroup }) {
                 sizes="32px"
                 className="size-8 shrink-0"
               />
-              <span className="min-w-0 truncate">
-                <span className="font-semibold">{release.title}</span>
-                <span className="text-fg-muted"> · {artistsOf(release)}</span>
+              <span className="min-w-0">
+                <span className="block truncate font-semibold">{release.title}</span>
+                <span className="block truncate text-sm text-fg-muted">{artistsOf(release)}</span>
               </span>
             </Link>
           </li>
