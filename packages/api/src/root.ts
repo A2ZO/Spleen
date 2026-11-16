@@ -445,8 +445,12 @@ export const appRouter = router({
       .mutation(({ input, ctx }) => unfollowArtist(ctx.db(), ctx.user.id, input.artistId)),
     /** Read apart from `artist.bySlug`, which stays the same for everyone (public cache). */
     status: protectedProcedure
-      .input(artistFollowSchema)
-      .query(({ input, ctx }) => artistFollowStatus(ctx.db(), ctx.user.id, input.artistId)),
+      .input(z.object({ slug: slugSchema }))
+      .query(async ({ input, ctx }) => {
+        // The profile comes from `ctx.account()`, already read for this request.
+        if (!(await ctx.account())?.profile) fail("PRECONDITION_FAILED", "PROFILE_REQUIRED");
+        return artistFollowStatus(ctx.db(), ctx.user.id, input.slug);
+      }),
     mine: protectedProcedure.query(({ ctx }) => myFollowedArtists(ctx.db(), ctx.user.id)),
   }),
   track: router({

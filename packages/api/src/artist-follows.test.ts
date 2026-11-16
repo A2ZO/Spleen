@@ -82,19 +82,19 @@ describe("following an artist", () => {
   it("follows, reads the status and the list, unfollows; following twice is harmless", async () => {
     const m = await member();
     const [b, a] = [await artist("Beta"), await artist("Alpha")];
-    expect(await api(m).artistFollow.status({ artistId: a.id })).toEqual({ following: false });
+    expect(await api(m).artistFollow.status({ slug: a.slug })).toEqual({ following: false });
     await api(m).artistFollow.follow({ artistId: b.id });
     await api(m).artistFollow.follow({ artistId: a.id });
     await api(m).artistFollow.follow({ artistId: a.id });
     expect(await followRows(m.id)).toHaveLength(2);
-    expect(await api(m).artistFollow.status({ artistId: a.id })).toEqual({ following: true });
+    expect(await api(m).artistFollow.status({ slug: a.slug })).toEqual({ following: true });
     const mine = await api(m).artistFollow.mine();
     expect(mine.map((r) => r.name)).toEqual(["Alpha", "Beta"]);
     expect(mine[0]).toMatchObject({ id: a.id, slug: a.slug, followedAt: now.toISOString() });
 
     await api(m).artistFollow.unfollow({ artistId: a.id });
     await api(m).artistFollow.unfollow({ artistId: a.id });
-    expect(await api(m).artistFollow.status({ artistId: a.id })).toEqual({ following: false });
+    expect(await api(m).artistFollow.status({ slug: a.slug })).toEqual({ following: false });
     expect((await api(m).artistFollow.mine()).map((r) => r.id)).toEqual([b.id]);
   });
 
@@ -107,7 +107,7 @@ describe("following an artist", () => {
       .where(eq(schema.artists.id, dup.id));
     await api(m).artistFollow.follow({ artistId: dup.id });
     expect((await followRows(m.id)).map((r) => r.artistId)).toEqual([keep.id]);
-    expect(await api(m).artistFollow.status({ artistId: dup.id })).toEqual({ following: true });
+    expect(await api(m).artistFollow.status({ slug: dup.slug })).toEqual({ following: true });
     expect(await errorCode(() => api(m).artistFollow.follow({ artistId: randomUUID() }))).toBe(
       "ITEM_NOT_FOUND",
     );
@@ -170,7 +170,7 @@ describe("following an artist", () => {
     expect(await errorCode(() => api(fresh).artistFollow.follow({ artistId: a.id }))).toBe(
       "PROFILE_REQUIRED",
     );
-    expect(await errorCode(() => api(fresh).artistFollow.status({ artistId: a.id }))).toBe(
+    expect(await errorCode(() => api(fresh).artistFollow.status({ slug: a.slug }))).toBe(
       "PROFILE_REQUIRED",
     );
     expect(await errorCode(() => api(fresh).account.setNotifyReleases({ enabled: false }))).toBe(

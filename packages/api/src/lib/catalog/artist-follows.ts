@@ -1,4 +1,4 @@
-import { and, asc, eq, schema, type Db } from "@spleen/db";
+import { and, asc, eq, schema, sql, type Db } from "@spleen/db";
 import { ARTIST_FOLLOWS_MAX } from "@spleen/validators";
 
 import { fail } from "../../trpc";
@@ -69,14 +69,21 @@ export async function unfollowArtist(
 export async function artistFollowStatus(
   db: Db,
   userId: string,
-  artistId: string,
+  slug: string,
 ): Promise<{ following: boolean }> {
-  await requireProfile(db, userId);
-  const id = await resolveArtist(db, artistId);
+  // One query, read in parallel with the artist page: a merged duplicate's slug stands for
+  // the page it was merged into.
   const [row] = await db
     .select({ artistId: artistFollows.artistId })
-    .from(artistFollows)
-    .where(and(eq(artistFollows.userId, userId), eq(artistFollows.artistId, id)));
+    .from(artists)
+    .innerJoin(
+      artistFollows,
+      and(
+        eq(artistFollows.userId, userId),
+        eq(artistFollows.artistId, sql`coalesce(${artists.mergedIntoId}, ${artists.id})`),
+      ),
+    )
+    .where(eq(artists.slug, slug));
   return { following: Boolean(row) };
 }
 

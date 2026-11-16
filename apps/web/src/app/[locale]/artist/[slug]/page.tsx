@@ -110,21 +110,30 @@ function Discography({
   );
 }
 
+/**
+ * The viewer and, for a member, whether they follow the artist: read beside the artist (which
+ * stays the same for everyone), in parallel with it, by slug.
+ */
+async function memberState(slug: string) {
+  const api = await getApi();
+  const me = await api.account.me();
+  const parsed = slugSchema.safeParse(slug);
+  const followStatus =
+    me?.profile && parsed.success ? await api.artistFollow.status({ slug: parsed.data }) : null;
+  return { me, followStatus };
+}
+
 export default async function ArtistPage({ params, searchParams }: Props) {
   const { locale, slug } = await params;
   initRouteLocale(locale);
   const all = await fullGroup(searchParams);
-  const [artist, me, t, uiLocale] = await Promise.all([
+  const [artist, { me, followStatus }, t, uiLocale] = await Promise.all([
     getArtist(slug, all),
-    getApi().then((api) => api.account.me()),
+    memberState(slug),
     getTranslations(),
     getLocale(),
   ]);
   if (!artist) return missingCatalogPage("artist", slug, locale);
-  // Read apart from the artist, which stays the same for everyone; members only.
-  const followStatus = me?.profile
-    ? await (await getApi()).artistFollow.status({ artistId: artist.id })
-    : null;
 
   const { albums, eps, singles, other } = artist.discography;
   const totals = artist.discographyTotals;
