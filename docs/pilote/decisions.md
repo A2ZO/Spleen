@@ -48,6 +48,18 @@ Ajouts du conseiller, validés :
   dans la même session donne 217–232 (page non touchée) : bruit de la machine. Écarté : rien.
 - 2026-11-16, étape 1 — Sans JavaScript, une erreur de suivi (plafond, limite horaire) s'affiche
   sous le bouton (`useActionState`), comme les réglages (relecteur). Écarté : la documenter.
+- 2026-11-16, étape 2 — MusicBrainz reste la seule source de date : une sortie inconnue vue
+  par ListenBrainz est importée par MusicBrainz, une sortie connue dont la date ListenBrainz
+  diffère est relue sur MusicBrainz (ListenBrainz donne la date d'une édition ; relecteur).
+  Écarté : créer ou dater la fiche depuis ListenBrainz.
+- 2026-11-16, étape 2 — 40 appels MusicBrainz par nuit au plus pour ces imports et relectures.
+  Raison : garder le passage dans sa durée actuelle. Écarté : sans plafond.
+- 2026-11-16, étape 2 — `announced_at` compare au jour UTC du passage (vers 4 h à Paris, même
+  jour civil) ; une date au mois ou à l'année compte par son premier jour. Écarté : le fuseau
+  de chaque membre (la fiche est commune).
+- 2026-11-16, étape 2 — Une précision ajoutée (« 2027 » → « 2027-03-14 ») n'est pas une date
+  modifiée ; seules les dates des sorties annoncées ou futures sont mises à jour par la
+  relecture, jamais les dates passées (relecteur). Écarté : tout réécrire.
 
 ## QUESTION POUR AZZO
 
