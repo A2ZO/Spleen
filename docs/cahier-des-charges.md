@@ -45,7 +45,7 @@ La v1 décrivait l'intention. Voici ce que le développement a ajouté ou tranch
 - Emails : **Brevo** (entreprise française, 300 emails par jour gratuits).
 - Base : deux branches Neon (`dev`, `production`) pendant le développement, puis **un projet Neon séparé, `spleen-prod`**, pour la production. Développement hors ligne et tests sur PGlite.
 - Hébergement : la taille d'un Worker Cloudflare n'est plus un obstacle (64 Mio sur les deux offres, `docs/services.md`).
-- Performance : toutes les pages sont aujourd'hui calculées à chaque visite, à cause du cookie de thème. L'issue #22 (cache des pages publiques) est le plus gros levier avant l'ouverture (`docs/stack-et-limites.md`).
+- Performance : toutes les pages sont aujourd'hui calculées à chaque visite, à cause de la session lue dans le layout, l'en-tête du membre (`loadShell()`) et le nonce CSP. L'issue #22 (cache des pages publiques) est le plus gros levier avant l'ouverture (`docs/stack-et-limites.md`).
 
 **Ce qui reste du MVP** : pages légales, référencement et images de partage, PWA, finitions et accessibilité (fin du jalon 9) ; branchement des vrais services, e2e en CI et mise en ligne (jalon 10, `docs/mise-en-ligne.md`).
 
@@ -108,7 +108,7 @@ Le MVP couvre le cœur Letterboxd — noter, critiquer, tenir son journal, suivr
 
 1. **Comptes**
    - Inscription par email (lien magique) et Google ; Apple plus tard (voir Contraintes techniques).
-   - Pseudo unique (@pseudo), avatar, bio, langue FR/EN, thème sombre ou clair.
+   - Pseudo unique (@pseudo), avatar, bio, langue FR/EN (un seul thème, sombre, depuis le jalon 17).
    - Export de ses données et suppression du compte en un clic.
 2. **Catalogue**
    - Quatre types : artiste, album, EP/single, morceau.
