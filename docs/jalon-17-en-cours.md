@@ -83,7 +83,8 @@ comportement testé. Branche `feat/17-nouvelle-peau`.
   bannières « Annuler » au-dessus (`--undo-offset`).
 - **Pied de page** : logo, liens légaux, raccourcis clavier, choix de langue (sorti de l'en-tête).
 - **Thème clair supprimé** : `ThemeToggle`, `lib/theme.ts`, cookie et sa lecture, `ThemeName`.
-  `profiles.theme` reste (Zod : facultatif, `"dark"` par défaut) → **issue #30** pour le retirer.
+  `profiles.theme` restait (Zod : facultatif, `"dark"` par défaut) : retiré ensuite par
+  l'**issue #30** (migration 0013).
   Politique de confidentialité : mention du cookie retirée, `LEGAL_UPDATED` par page
   (privacy 2026-11-12). Note ajoutée à l'**issue #22** (ce qui rend encore les pages dynamiques).
 - Fiche album : `grid-cols-1` sur mobile (la colonne débordait à 425 px pour 390).
