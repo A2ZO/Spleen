@@ -65,6 +65,13 @@ import {
   setAvatar,
   updateProfile,
 } from "./lib/account";
+import {
+  artistFollowStatus,
+  followArtist,
+  myFollowedArtists,
+  setNotifyReleases,
+  unfollowArtist,
+} from "./lib/catalog/artist-follows";
 import { importArtist, importEntity, importReleaseGroup } from "./lib/catalog/import";
 import { mergeCatalog, mergedSlug, previewMerge } from "./lib/catalog/merge";
 import { createCatalogReport } from "./lib/catalog/reports";
@@ -168,6 +175,8 @@ const MOOD_CREATE_RULE = { window: 60 * 60, max: 30 };
 const SHELF_WRITE_RULE = { window: 60 * 60, max: 120 };
 /** Social writes, per member and per hour. */
 const FOLLOW_WRITE_RULE = { window: 60 * 60, max: 200 };
+/** Following and unfollowing artists, per member and per hour. */
+const ARTIST_FOLLOW_WRITE_RULE = { window: 60 * 60, max: 200 };
 const LIKE_WRITE_RULE = { window: 60 * 60, max: 300 };
 const COMMENT_WRITE_RULE = { window: 60 * 60, max: 60 };
 const BLOCK_WRITE_RULE = { window: 60 * 60, max: 60 };
@@ -215,6 +224,7 @@ const limitedWrite = (bucket: string, rule: { window: number; max: number }) =>
 
 const shelfWrite = limitedWrite("shelf-write", SHELF_WRITE_RULE);
 const followWrite = limitedWrite("follow-write", FOLLOW_WRITE_RULE);
+const artistFollowWrite = limitedWrite("artist-follow-write", ARTIST_FOLLOW_WRITE_RULE);
 const likeWrite = limitedWrite("like-write", LIKE_WRITE_RULE);
 const commentWrite = limitedWrite("comment-write", COMMENT_WRITE_RULE);
 const blockWrite = limitedWrite("block-write", BLOCK_WRITE_RULE);
@@ -423,6 +433,20 @@ export const appRouter = router({
         );
         return detail && blindArtistDetail(ctx.db(), blind, detail);
       }),
+  }),
+  /** Artists the caller follows. Private: no procedure reads another member's follows. */
+  artistFollow: router({
+    follow: artistFollowWrite
+      .input(z.object({ artistId: z.uuid() }))
+      .mutation(({ input, ctx }) => followArtist(ctx.db(), ctx.user.id, input.artistId, ctx.now)),
+    unfollow: artistFollowWrite
+      .input(z.object({ artistId: z.uuid() }))
+      .mutation(({ input, ctx }) => unfollowArtist(ctx.db(), ctx.user.id, input.artistId)),
+    /** Read apart from `artist.bySlug`, which stays the same for everyone (public cache). */
+    status: protectedProcedure
+      .input(z.object({ artistId: z.uuid() }))
+      .query(({ input, ctx }) => artistFollowStatus(ctx.db(), ctx.user.id, input.artistId)),
+    mine: protectedProcedure.query(({ ctx }) => myFollowedArtists(ctx.db(), ctx.user.id)),
   }),
   track: router({
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
@@ -675,6 +699,9 @@ export const appRouter = router({
         if (!limit.allowed) fail("TOO_MANY_REQUESTS", "RATE_LIMITED");
         return setAvatar(ctx.db(), ctx.storage(), ctx.user, input.data);
       }),
+    setNotifyReleases: protectedProcedure
+      .input(z.object({ enabled: z.boolean() }))
+      .mutation(({ input, ctx }) => setNotifyReleases(ctx.db(), ctx.user.id, input.enabled)),
     removeAvatar: protectedProcedure.mutation(({ ctx }) =>
       removeAvatar(ctx.db(), ctx.storage(), ctx.user),
     ),

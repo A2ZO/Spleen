@@ -62,6 +62,7 @@ export async function getMe(account: () => Promise<Account | null>): Promise<Me 
     diaryPrivate: row.diaryPrivate,
     blindMode: row.blindMode,
     timeZone: row.timeZone,
+    notifyReleases: row.notifyReleases,
   };
   return {
     userId: found.user.id,
@@ -242,6 +243,7 @@ export async function exportAccount(db: Db, user: SessionUser, now: Date): Promi
     blocks,
     reports,
     subscriptions,
+    artistFollows,
   ] = await Promise.all([
     db.select().from(s.profiles).where(eq(s.profiles.userId, uid)),
     db
@@ -283,6 +285,16 @@ export async function exportAccount(db: Db, user: SessionUser, now: Date): Promi
     db.select().from(s.blocks).where(eq(s.blocks.blockerId, uid)),
     db.select().from(s.reports).where(eq(s.reports.reporterId, uid)),
     db.select().from(s.subscriptions).where(eq(s.subscriptions.userId, uid)),
+    db
+      .select({
+        artistId: s.artists.id,
+        slug: s.artists.slug,
+        name: s.artists.name,
+        followedAt: s.artistFollows.createdAt,
+      })
+      .from(s.artistFollows)
+      .innerJoin(s.artists, eq(s.artists.id, s.artistFollows.artistId))
+      .where(eq(s.artistFollows.userId, uid)),
   ]);
 
   return {
@@ -309,6 +321,7 @@ export async function exportAccount(db: Db, user: SessionUser, now: Date): Promi
     blocks,
     reports,
     subscriptions,
+    artistFollows,
   };
 }
 

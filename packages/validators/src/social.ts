@@ -5,6 +5,8 @@ import { usernameSchema } from "./profile";
 
 export const COMMENT_BODY_MAX = 1_000;
 export const REPORT_DETAILS_MAX = 500;
+/** Artists one member may follow (upcoming releases). */
+export const ARTIST_FOLLOWS_MAX = 500;
 
 export const commentBodySchema = z.string().trim().min(1).max(COMMENT_BODY_MAX);
 

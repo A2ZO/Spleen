@@ -374,7 +374,11 @@
     "blocksTitle": "Blocked members",
     "blocksBody": "Members you blocked can no longer follow you, like or comment on your reviews.",
     "blocksLink": "Manage blocked members",
-    "shortcutsTitle": "Keyboard shortcuts"
+    "shortcutsTitle": "Keyboard shortcuts",
+    "releasesTitle": "Upcoming releases",
+    "notifyReleases": "Notify me on release day",
+    "followedArtists": "Artists I follow",
+    "followedArtistsEmpty": "You don't follow any artist yet. Follow them from their page to see their next records."
   },
   "errors": {
     "UNAUTHENTICATED": "Sign in to continue.",
@@ -417,6 +421,7 @@
     "DUPLICATE_NOT_FOUND": "This address matches no page of the same kind.",
     "MERGE_SAME": "Pick two different pages.",
     "MERGE_ALREADY_MERGED": "One of these pages was already merged.",
+    "ARTIST_FOLLOW_LIMIT": "You already follow 500 artists: unfollow one to add another.",
     "MODERATION_ACTION_INVALID": "This action does not apply to this report.",
     "ALREADY_SUSPENDED": "This account is already suspended.",
     "NOT_SUSPENDED": "This account is not suspended.",
@@ -453,7 +458,9 @@
     "pendingVisitor": "Sign in to import the whole discography from MusicBrainz.",
     "imageAlt": "{name}",
     "seeAll": "See all ({count})",
-    "seeLess": "See less"
+    "seeLess": "See less",
+    "follow": "Follow",
+    "unfollow": "Unfollow"
   },
   "track": {
     "kicker": "Track",
@@ -1002,7 +1009,7 @@
         },
         "data": {
           "title": "Data collected",
-          "body": "<ul><li><strong>Your account</strong>: email address, username, display name, bio, profile picture, language, time zone, settings (private diary, private stats, blind listening) and the date you confirmed you are 15 or older.</li><li><strong>If you sign in with Google</strong>: the basic information of your Google account (email address, name, picture).</li><li><strong>Your activity</strong>: listens (dates, ratings, hearts, relistens, formats, moods), track ratings, reviews, lists, Shelf, follows, likes, comments, blocks, reports and notifications.</li><li><strong>Your sessions</strong>: date, IP address and browser of each sign-in, to keep your account safe.</li><li><strong>Abuse counters</strong>: your account id or IP address, with a number of requests over a short period.</li><li><strong>Moderation</strong>: decisions concerning you, with their reason and an excerpt of the content judged.</li></ul>"
+          "body": "<ul><li><strong>Your account</strong>: email address, username, display name, bio, profile picture, language, time zone, settings (private diary, private stats, blind listening, release notifications) and the date you confirmed you are 15 or older.</li><li><strong>If you sign in with Google</strong>: the basic information of your Google account (email address, name, picture).</li><li><strong>Your activity</strong>: listens (dates, ratings, hearts, relistens, formats, moods), track ratings, reviews, lists, Shelf, follows, followed artists, likes, comments, blocks, reports and notifications.</li><li><strong>Your sessions</strong>: date, IP address and browser of each sign-in, to keep your account safe.</li><li><strong>Abuse counters</strong>: your account id or IP address, with a number of requests over a short period.</li><li><strong>Moderation</strong>: decisions concerning you, with their reason and an excerpt of the content judged.</li></ul>"
         },
         "purposes": {
           "title": "Why",
@@ -1010,7 +1017,7 @@
         },
         "visibility": {
           "title": "What others see",
-          "body": "<p>Your profile, reviews, lists, comments, follows and followers are public. So are your diary and stats, unless you make them private in the <settings>settings</settings>. Your ratings count anonymously in record averages. Your email address and your blocks are never visible.</p>"
+          "body": "<p>Your profile, reviews, lists, comments, follows and followers are public. So are your diary and stats, unless you make them private in the <settings>settings</settings>. Your ratings count anonymously in record averages. Your email address, your blocks and the artists you follow are never visible.</p>"
         },
         "retention": {
           "title": "How long",

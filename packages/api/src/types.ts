@@ -438,6 +438,15 @@ export interface ArtistCard {
   imageUrl: string | null;
 }
 
+/** An artist the caller follows (private: only the member reads their own list). */
+export interface FollowedArtist {
+  id: string;
+  slug: string;
+  name: string;
+  imageUrl: string | null;
+  followedAt: string;
+}
+
 export interface ArtistDetail extends ArtistCard {
   /** Search metadata of the page (`seo.page`), read with it. */
   seo: SeoPage | null;
@@ -548,6 +557,8 @@ export interface MyProfile {
   blindMode: boolean;
   /** IANA time zone used for "today" (default listening date). */
   timeZone: string;
+  /** Notified on the release day of a followed artist's record. */
+  notifyReleases: boolean;
 }
 
 /** Who is calling. `profile` is null until the member picks a @username (onboarding). */
