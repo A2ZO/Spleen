@@ -111,3 +111,16 @@ Réponds ici (« validé », avec tes corrections éventuelles), puis mets la ph
 2. Lien « Suivre » d'un visiteur : vers la connexion avec retour sur la fiche de l'artiste
    après la connexion, comme les autres liens visiteurs vers `/sign-in` (même mécanisme ; s'il
    n'en existe pas, le noter dans le journal sans en créer un).
+
+- 2026-11-16 — Étape 5. Unicité « une notification par membre et par disque » : index unique
+  partiel sur (`user_id`, `release_id`) plutôt qu'étendre `notifications_once_uidx` (la
+  nouvelle valeur d'enum n'est pas utilisée dans la migration qui la crée). Écarté : modifier
+  l'index existant.
+- 2026-11-16 — Étape 5. « Aujourd'hui » par fuseau calculé en JS avec `todayIn()`, repli
+  `DEFAULT_TIME_ZONE` pour un fuseau refusé, plutôt que `timezone()` en SQL (un fuseau inconnu
+  de Postgres ferait échouer tout le passage). Écarté : le calcul SQL.
+- 2026-11-16 — Étape 5. **Écart à la feuille de route** : l'e2e n'utilise ni les données de
+  démo ni `page.clock`. Le texte est rendu côté serveur (l'horloge du navigateur n'y change
+  rien) et aucune date de démo ne reste « aujourd'hui ». Catalogue jetable daté du jour comme
+  les autres e2e du jalon, tâche limitée au compte du test. À redire dans la PR. Écarté : figer
+  des notifications de démo dans le seed.
