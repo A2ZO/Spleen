@@ -18,6 +18,7 @@ import {
 } from "./fixtures";
 import { seedLists } from "./lists";
 import { seedModeration } from "./moderation";
+import { seedUpcoming } from "./upcoming";
 import { slugify } from "./slugify";
 import { seedSocial } from "./social";
 
@@ -318,6 +319,7 @@ export async function seed(db: Db, options: { now?: Date } = {}): Promise<void> 
     await seedCrate(tx, [...genreIdByName.values()]);
     await seedSocial(tx, now);
     await seedDiscovery(tx, now);
+    await seedUpcoming(tx, now);
     await seedLists(tx, now);
     // After the lists: a report points to one of them.
     await seedModeration(tx, now);
