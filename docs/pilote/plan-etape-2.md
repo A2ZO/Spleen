@@ -1,8 +1,7 @@
 # Plan — étape 2 « Alimentation de nuit et lectures »
 
-Pas d'écran. Doc ListenBrainz vérifiée (16 nov.) : `GET /1/explore/fresh-releases/`,
-`release_date`, `days` ≤ 90, `past`, `future` ; réponse `payload.releases[]` (`artist_mbids`,
-`release_group_mbid`, `release_date`…), en-têtes `X-RateLimit-*`.
+Pas d'écran. Doc ListenBrainz vérifiée (16 nov.) : paramètres `release_date`, `days` ≤ 90,
+`past`, `future` ; réponse `payload.releases[]`, en-têtes `X-RateLimit-*`.
 
 1. **Migration** (`schema/catalog.ts`, `pnpm db:generate`, `pnpm db:migrate` sur Neon dev) :
    `releases.announced_at`, `releases.release_date_changed_at`, `timestamptz` nullables.
@@ -50,8 +49,7 @@ Pas d'écran. Doc ListenBrainz vérifiée (16 nov.) : `GET /1/explore/fresh-rele
    chaque seed (J+3, J+10, mois prochain au jour, M+2 au mois, année suivante, une avec
    `release_date_changed_at`), toutes avec `announced_at`. Puis `pnpm db:seed` et un vrai
    `pnpm catalog:refresh` sur Neon dev (résultat au journal).
-8. **Docs** : `catalogue.md` (ListenBrainz, ordre du passage), `decouverte.md` (règle « à
-   venir ») ; ligne « validé par Azzo » de `jalon-11-en-cours.md` corrigée.
+8. **Docs** : `catalogue.md`, `decouverte.md`, ligne « validé par Azzo » de `jalon-11-en-cours.md`.
 
 Tests d'API (PGlite, date en paramètre, sans réseau) : `announced_at` (jour futur ; mois en cours
 vu la première fois → rien ; mois suivant → rempli et reste à venir pendant ce mois) ; changement
@@ -59,6 +57,3 @@ contre précision affinée ; dates passées jamais réécrites ; ListenBrainz �
 passages → aucun second changement ; artiste non suivi ignoré ; erreur ListenBrainz sans arrêt ;
 plafond de 40 ; ordre de la file ; règle par précision, 12 mois, groupes, filtre, 200, passage
 aux récentes, `byArtist` identique visiteur / membre.
-
-Choix prudents (dans `decisions.md`) : MusicBrainz seule source de date ; plafond de 40 ; jour
-UTC pour `announced_at` ; précision affinée ≠ date modifiée.
