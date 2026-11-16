@@ -152,3 +152,18 @@ Réponds ici (« validé », avec tes corrections éventuelles), puis mets la ph
   de l'année en cours. Année courante prise à Paris dans `formatUpcomingDate()` (écart de
   quelques heures possible le 31 décembre pour un autre fuseau). Écarté : passer le jour du
   lecteur à chaque composant.
+
+## QUESTION POUR AZZO
+
+- 2026-11-16 — Fin du jalon 11, fusion de la PR 40 (https://github.com/A2ZO/Spleen/pull/40)
+  en suspens. CI verte, corrections de la relecture appliquées (ad44693), zones sensibles dans
+  « Autorisé à la fusion ». Verdict du relecteur avant fusion : `BLOQUANT`, pour une seule
+  raison : la PR contient quatre commits qui modifient `.claude/` (ddb5e1a, 991a58a, 8abaf21,
+  2ad3881, trailer `Claude-Session: session_01T5msRKGPL1juWy9yXHhCLM`, donc une session
+  interactive, pas le pilote). ddb5e1a et 991a58a assouplissent la règle de fusion du relecteur
+  (migrations et workflow permis via « Autorisé à la fusion ») ; 8abaf21 et 2ad3881 modifient
+  `SKILL.md` (verrou, reprise, « Avancement »). As-tu demandé toi-même ces quatre commits ?
+  Si oui : fusionne la PR 40 dans `dev` (ou réponds « oui » ici et remets la phase `cloture`
+  dans `etat.md` pour que le pilote la fusionne et ouvre la PR `dev` → `main`). Questions de la
+  PR à trancher aussi : voir sa description (dont la question 4, moyenne et critiques sur un
+  disque à venir).

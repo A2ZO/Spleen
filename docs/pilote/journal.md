@@ -54,3 +54,4 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   237 / 140 / 225 / 208 / 210 ; `/upcoming` 158/160 contre 149/151. Relecteur : 2 tours (OK avec
   corrections, puis OK) ; moyenne et critiques remises selon les décisions actées, question à
   la PR.
+- 2026-11-16 — Fin du jalon 11 : PR 40 ouverte vers `dev`, CI verte, corrections de relecture (ad44693 : « pas encore sorti » sans plafond, année sur les dates lointaines) ; e2e ciblés 16 passed. Fusion en attente : relecteur `BLOQUANT` sur les commits `.claude/` à confirmer par Azzo (question dans `decisions.md`).
