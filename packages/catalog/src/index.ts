@@ -1,4 +1,11 @@
 export { CatalogError, isCatalogError, type CatalogErrorKind } from "./errors";
+export {
+  createListenBrainzClient,
+  parseFreshReleases,
+  type FreshRelease,
+  type ListenBrainzClient,
+  type ListenBrainzOptions,
+} from "./listenbrainz";
 export { createMusicBrainzProvider, type MusicBrainzOptions } from "./musicbrainz/provider";
 export {
   isMainRelease,

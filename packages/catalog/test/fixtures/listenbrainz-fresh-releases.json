@@ -1,0 +1,117 @@
+{
+  "payload": {
+    "releases": [
+      {
+        "artist_credit_name": "ALONEDARK",
+        "artist_mbids": [
+          "a6133600-3fc8-436f-9e00-c4477092f46b"
+        ],
+        "caa_id": null,
+        "caa_release_mbid": null,
+        "listen_count": 0,
+        "release_date": "2026-11-16",
+        "release_group_mbid": "ab9df95e-90e2-419f-9a61-74ac9beae8f6",
+        "release_group_primary_type": "Album",
+        "release_mbid": "f8f7d5d2-ac74-474f-91f6-a43feaf39fcd",
+        "release_name": "BACKSEAT",
+        "release_tags": []
+      },
+      {
+        "artist_credit_name": "HAGANE",
+        "artist_mbids": [
+          "945329a8-2c4c-44bf-937b-3ae10730fa89"
+        ],
+        "caa_id": 46672493717,
+        "caa_release_mbid": "82217d9c-8eab-42c6-b48a-ba12c54b6d66",
+        "listen_count": 0,
+        "release_date": "2026-12-02",
+        "release_group_mbid": "394cb8e9-82b3-4592-a7f3-3fb517e485ad",
+        "release_group_primary_type": "Album",
+        "release_mbid": "82217d9c-8eab-42c6-b48a-ba12c54b6d66",
+        "release_name": "Through the Night",
+        "release_tags": []
+      },
+      {
+        "artist_credit_name": "Chintana Jo",
+        "artist_mbids": [
+          "6baaa57d-757f-4c72-9d1c-6621ab1fe2a1"
+        ],
+        "caa_id": null,
+        "caa_release_mbid": null,
+        "listen_count": 0,
+        "release_date": "2026-11-21",
+        "release_group_mbid": "bd347261-cd7c-42b0-9edf-2bc1f3fbfbbb",
+        "release_group_primary_type": "Single",
+        "release_mbid": "4eecaa3b-0a33-494e-9c61-6f3b2def24d9",
+        "release_name": "Percaya Lagi",
+        "release_tags": []
+      },
+      {
+        "artist_credit_name": "Anna Lunoe",
+        "artist_mbids": [
+          "55c48847-73e9-4272-8c87-612dadcf8a37"
+        ],
+        "caa_id": null,
+        "caa_release_mbid": null,
+        "listen_count": 0,
+        "release_date": "2026-11-27",
+        "release_group_mbid": "17037359-43a5-4fb2-bd72-60944db82b4e",
+        "release_group_primary_type": "EP",
+        "release_mbid": "1f46bf1f-b40e-49cf-b270-62ce2062fac9",
+        "release_name": "Everything",
+        "release_tags": []
+      },
+      {
+        "artist_credit_name": "Alex Viegas",
+        "artist_mbids": [
+          "91376f20-9541-4c3f-ad5c-6ef8a0f37f90"
+        ],
+        "caa_id": 46178854677,
+        "caa_release_mbid": "07e4441b-ce1a-47e0-9bfe-fe118fb9cad2",
+        "listen_count": 0,
+        "release_date": "2026-11-16",
+        "release_group_mbid": "6536764b-69e0-4b26-86dd-ec74c7fbf0be",
+        "release_group_primary_type": "Single",
+        "release_group_secondary_type": "Soundtrack",
+        "release_mbid": "07e4441b-ce1a-47e0-9bfe-fe118fb9cad2",
+        "release_name": "Take Me Back to 2016",
+        "release_tags": [
+          "nostalgia dance"
+        ]
+      },
+      {
+        "artist_credit_name": "Noor Chahal & The Junior",
+        "artist_mbids": [
+          "c1879b36-bc34-4f3e-8bf4-1a710d23a772",
+          "d438e515-2021-48c0-bd32-842a4f33834e"
+        ],
+        "caa_id": 46726842049,
+        "caa_release_mbid": "aeec7aca-5bab-4244-b7d4-3297f646bf46",
+        "listen_count": 0,
+        "release_date": "2026-11-16",
+        "release_group_mbid": "f51f15fe-8e90-4e27-9932-3e5ec048bb65",
+        "release_group_primary_type": "Single",
+        "release_group_secondary_type": "Soundtrack",
+        "release_mbid": "aeec7aca-5bab-4244-b7d4-3297f646bf46",
+        "release_name": "Lori (From \"70 Syaal\")",
+        "release_tags": []
+      },
+      {
+        "artist_credit_name": "Ancestral Maloence",
+        "artist_mbids": [
+          "0cedb1b8-9c7e-45d5-8836-52550daf07ab"
+        ],
+        "caa_id": null,
+        "caa_release_mbid": null,
+        "listen_count": 0,
+        "release_date": "2027-01-02",
+        "release_group_mbid": "1f06dade-d544-4ce7-a995-7a2e50f297e2",
+        "release_group_primary_type": "Album",
+        "release_mbid": "51cf0f3b-42f7-41dc-8911-83b5175036d1",
+        "release_name": "Ancestral Maloence",
+        "release_tags": []
+      }
+    ],
+    "total_count": 7
+  }
+}
