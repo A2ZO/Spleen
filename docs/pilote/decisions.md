@@ -132,3 +132,8 @@ Réponds ici (« validé », avec tes corrections éventuelles), puis mets la ph
   Amériques reçoivent la notification le soir de la sortie (17 h à 22 h chez eux). Choix
   prudent : horaire inchangé (une seule tâche, celle de `catalog:refresh`). Écarté : une
   seconde exécution dans la journée. À poser à Azzo dans la PR.
+- 2026-11-16 — Étape 6. axe et captures membre sur les comptes de démo (`nuitblanche` sur le
+  build de prod, `rainydaysam` en dev) plutôt qu'un compte e2e jetable : les écrans du jalon
+  n'ont de contenu qu'avec les suivis et sorties de la démo. Les captures de « Sortie
+  aujourd'hui » restent celles de l'étape 5 (compte jetable). Écarté : recréer les données de
+  démo dans un compte e2e.
