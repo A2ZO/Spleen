@@ -118,6 +118,15 @@ Lectures (routeur `upcoming`) :
   Les tuiles de ces trois endroits viennent de `components/upcoming/UpcomingGrid.tsx`.
 - Fiche d'un disque à venir : « Sort le … », « Sort en … » ou « Annoncé pour … » à la place de
   la date, badge « Date modifiée » ; contrôles réduits (voir `docs/ecoute.md`).
+- Notifications du jour J (étape 5) : `pnpm releases:notify` (chaque nuit après
+  `catalog:refresh` dans `.github/workflows/catalog-refresh.yml`, même si la relecture a
+  échoué) crée « Sortie aujourd'hui » pour chaque membre qui suit un artiste crédité, a
+  `notify_releases` vrai, n'est pas suspendu, quand la date **au jour** du disque (principal,
+  non fusionné) est aujourd'hui dans son fuseau (`todayIn`, repli Europe/Paris si le fuseau est
+  inconnu). Une fois par membre et par disque, relançable ; pas d'email ni de push. Les disques
+  d'un même jour forment un groupe : un seul → « Sortie aujourd'hui : **Titre** de Artiste »,
+  carte liée à la fiche ; plusieurs → « N sorties aujourd'hui chez tes artistes », les 3
+  premiers par titre liés, puis « et N autres ». La fusion de doublons repointe `release_id`.
 
 Démo : `nuitblanche` suit trois artistes, `vinylvince` deux, six sorties annoncées
 (`seed/upcoming.ts`, dates recalculées à chaque seed, sans `mbid`).
