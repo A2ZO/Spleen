@@ -119,6 +119,24 @@ beforeAll(async () => {
 afterAll(() => handle.close());
 
 describe("runUpcomingFeed", () => {
+  // First: no incomplete stub yet, so the budget goes to date checks only.
+  it("checks an earlier ListenBrainz date before a later one", async () => {
+    const [later, earlier] = [newMbid(), newMbid()];
+    await existing(later, "2026-12-08", true);
+    await existing(earlier, "2026-12-09", true);
+    const mb = provider(new Map([[earlier, day("2026-12-09")]]));
+    const result = await runUpcomingFeed(
+      db(),
+      mb.provider,
+      listenBrainz([fresh(later, "2026-12-15"), fresh(earlier, "2026-12-04")]),
+      NOW,
+      () => {},
+      1,
+    );
+    expect(result).toMatchObject({ datesChecked: 1, skipped: 1 });
+    expect(mb.calls).toEqual([earlier]);
+  });
+
   it("imports the unknown groups of followed artists and ignores the others", async () => {
     const [mine, other] = [newMbid(), newMbid()];
     const mb = provider(new Map([[mine, day("2026-12-04")]]));

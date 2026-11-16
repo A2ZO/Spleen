@@ -70,5 +70,5 @@ aux récentes, `byArtist` identique visiteur / membre.
 - [x] 8. Docs
 - [x] vérifications
 - [x] relecture 1
-- [ ] relecture 2
+- [x] relecture 2
 - [ ] clôture
