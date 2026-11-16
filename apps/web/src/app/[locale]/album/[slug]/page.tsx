@@ -102,13 +102,27 @@ export default async function AlbumPage({ params }: Props) {
     ).values(),
   ];
 
-  const releaseDate = release.releaseDate
-    ? release.releaseDatePrecision === "day"
-      ? t("album.releasedOn", { date: formatReleaseDate(format, release.releaseDate, "day") })
-      : t("album.releasedIn", {
-          date: formatReleaseDate(format, release.releaseDate, release.releaseDatePrecision),
-        })
-    : t("album.dateUnknown");
+  // A record not out yet: the member's zone decides the controls, Paris the public line.
+  const notOut = mine ? mine.releaseNotOut : release.upcoming !== null;
+  const upcomingDate =
+    release.upcoming && release.releaseDate && release.releaseDatePrecision
+      ? release.releaseDatePrecision === "day"
+        ? t("upcoming.releasesOn", { date: formatReleaseDate(format, release.releaseDate, "day") })
+        : release.releaseDatePrecision === "month"
+          ? t("upcoming.releasesIn", {
+              date: formatReleaseDate(format, release.releaseDate, "month"),
+            })
+          : t("upcoming.announcedFor", { date: release.releaseDate.slice(0, 4) })
+      : null;
+  const releaseDate = upcomingDate
+    ? upcomingDate
+    : release.releaseDate
+      ? release.releaseDatePrecision === "day"
+        ? t("album.releasedOn", { date: formatReleaseDate(format, release.releaseDate, "day") })
+        : t("album.releasedIn", {
+            date: formatReleaseDate(format, release.releaseDate, release.releaseDatePrecision),
+          })
+      : t("album.dateUnknown");
   const size = [
     release.tracks.length > 0 && t("album.trackCount", { count: release.tracks.length }),
     release.totalDurationMs > 0 &&
@@ -120,8 +134,10 @@ export default async function AlbumPage({ params }: Props) {
   // Mosaic: never an empty card. Phones keep two cards, the lists card standing in for
   // "Your listens" for visitors; a lone card takes the full row.
   const hasLists = release.lists.length > 0;
-  const cards = 1 + (mine ? 1 : 0) + (hasLists ? 1 : 0);
-  const phoneCards = 1 + (mine || hasLists ? 1 : 0);
+  // No "Your listens" card on a record not out yet (nothing can be logged).
+  const showMine = mine !== null && !notOut;
+  const cards = 1 + (showMine ? 1 : 0) + (hasLists ? 1 : 0);
+  const phoneCards = 1 + (showMine || hasLists ? 1 : 0);
 
   return (
     <article className="cover-scope">
@@ -185,7 +201,10 @@ export default async function AlbumPage({ params }: Props) {
               </ul>
             </div>
           )}
-          <p className="mt-2 text-sm text-fg-muted md:mt-5">{releaseDate}</p>
+          <p className="mt-2 flex flex-wrap items-center gap-2 text-sm text-fg-muted max-md:justify-center md:mt-5">
+            {releaseDate}
+            {release.upcoming?.dateChanged && <Badge>{t("upcoming.dateChanged")}</Badge>}
+          </p>
         </div>
       </header>
 
@@ -196,6 +215,7 @@ export default async function AlbumPage({ params }: Props) {
           initial={mine}
           moods={moods}
           tracks={logTracks}
+          notOut={notOut}
           actions={
             shelf && (
               <AddToListButton
@@ -206,7 +226,8 @@ export default async function AlbumPage({ params }: Props) {
             )
           }
           extra={
-            shelf && (
+            shelf &&
+            !notOut && (
               <ShelfPicker
                 release={{ id: release.id, title: release.title }}
                 shelf={shelf}
@@ -233,7 +254,7 @@ export default async function AlbumPage({ params }: Props) {
           hidden={release.ratingsHidden ?? false}
           distribution={release.ratingDistribution}
         />
-        {mine && (
+        {mine && showMine && (
           <MyListensCard
             target={target}
             title={release.title}
@@ -244,7 +265,7 @@ export default async function AlbumPage({ params }: Props) {
           />
         )}
         {hasLists && (
-          <InListsCard lists={release.lists} className={mine ? "max-md:hidden" : undefined} />
+          <InListsCard lists={release.lists} className={showMine ? "max-md:hidden" : undefined} />
         )}
       </div>
 

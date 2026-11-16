@@ -49,8 +49,9 @@ export default async function SettingsPage({ params }: Props) {
   if (!me) return redirect({ href: "/sign-in", locale });
   if (!me.profile) return redirect({ href: "/welcome", locale });
   const { profile } = me;
-  const [t, renameAt, followed] = await Promise.all([
+  const [t, tu, renameAt, followed] = await Promise.all([
     getTranslations({ locale, namespace: "settings" }),
+    getTranslations({ locale, namespace: "upcoming" }),
     api.account.usernameChangeAvailableAt(),
     api.artistFollow.mine(),
   ]);
@@ -81,6 +82,11 @@ export default async function SettingsPage({ params }: Props) {
 
       <Section id="releases" title={t("releasesTitle")}>
         <NotifyReleasesForm enabled={profile.notifyReleases} />
+        <p className="mt-6">
+          <Link href="/upcoming" className={buttonClasses("secondary", undefined, "sm")}>
+            {tu("settingsLink")}
+          </Link>
+        </p>
         <h3 className="mt-8 font-display text-xl font-bold tracking-[-0.02em]">
           {t("followedArtists")}
         </h3>

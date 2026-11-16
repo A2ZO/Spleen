@@ -37,6 +37,11 @@ export interface ListenControlsProps {
   actions?: ReactNode;
   /** More quiet buttons on the second row (the Shelf). */
   extra?: ReactNode;
+  /**
+   * A record not out yet (`releaseNotOut`): no stars, listen, heart, detailed log or keyboard
+   * shortcuts (the API refuses them); « À écouter » and the `actions` stay.
+   */
+  notOut?: boolean;
 }
 
 const label = "font-mono text-xs tracking-[0.06em] text-fg-muted uppercase";
@@ -56,25 +61,30 @@ const pressed = "aria-pressed:border-accent aria-pressed:text-accent";
  * L toggles the heart. Same writes as the mouse; the result is announced in the live region.
  */
 export function ListenControls(props: ListenControlsProps) {
-  if (!props.initial) return <SignedOut />;
+  if (!props.initial) return <SignedOut notOut={props.notOut ?? false} />;
   return <Panel {...props} initial={props.initial} />;
 }
 
-/** Same card for visitors: the empty stars and the main button lead to the sign-in page. */
-function SignedOut() {
+/**
+ * Same card for visitors: the empty stars and the main button lead to the sign-in page. A
+ * record not out yet has no stars to offer.
+ */
+function SignedOut({ notOut }: { notOut: boolean }) {
   const t = useTranslations();
   return (
     <Card className="flex flex-wrap items-end gap-x-8 gap-y-4">
-      <div className="max-md:w-full">
-        <p className={label}>{t("listening.rating")}</p>
-        <Link
-          href="/sign-in"
-          className="mt-1 inline-flex rounded-lg py-1 text-[44px] leading-none [&_svg]:px-[0.1em]"
-        >
-          <Stars rating={null} />
-          <span className="sr-only">{t("detail.signInToRate")}</span>
-        </Link>
-      </div>
+      {!notOut && (
+        <div className="max-md:w-full">
+          <p className={label}>{t("listening.rating")}</p>
+          <Link
+            href="/sign-in"
+            className="mt-1 inline-flex rounded-lg py-1 text-[44px] leading-none [&_svg]:px-[0.1em]"
+          >
+            <Stars rating={null} />
+            <span className="sr-only">{t("detail.signInToRate")}</span>
+          </Link>
+        </div>
+      )}
       <div className="min-w-0 flex-1 space-y-3">
         <p className="text-fg-muted">{t("album.actions.signIn")}</p>
         <Link href="/sign-in" className={buttonClasses("primary", "max-md:w-full")}>
@@ -93,6 +103,7 @@ function Panel({
   tracks,
   actions,
   extra,
+  notOut = false,
 }: ListenControlsProps & { initial: MyItemState }) {
   const t = useTranslations("album.actions");
   const tl = useTranslations("listening");
@@ -147,7 +158,7 @@ function Panel({
   };
   // An effect event: it reads the latest `shown` without re-adding the listener.
   const onKey = useEffectEvent((event: KeyboardEvent) => {
-    if (!shortcutAllowed(event)) return;
+    if (notOut || !shortcutAllowed(event)) return;
     const digit = digitOf(event.code);
     if (digit !== null) {
       event.preventDefault();
@@ -178,61 +189,72 @@ function Panel({
         {t("title")}
       </h2>
       <div className="flex flex-wrap items-end gap-x-6 gap-y-4">
-        <div className="max-md:w-full">
-          <p aria-hidden="true" className={label}>
-            {tl("rating")}
-          </p>
-          <StarRating
-            size="lg"
-            value={shown.rating}
-            onChange={(rating) => rate(rating)}
-            className="mt-1"
-          />
-        </div>
+        {!notOut && (
+          <div className="max-md:w-full">
+            <p aria-hidden="true" className={label}>
+              {tl("rating")}
+            </p>
+            <StarRating
+              size="lg"
+              value={shown.rating}
+              onChange={(rating) => rate(rating)}
+              className="mt-1"
+            />
+          </div>
+        )}
         <div className="flex min-w-0 flex-wrap gap-2.5 max-md:w-full">
-          <button
-            type="button"
-            aria-pressed={shown.listened}
-            disabled={listening}
-            onClick={markListened}
-            className={buttonClasses("primary", "max-md:flex-1")}
-          >
-            {shown.listened && <CheckIcon />}
-            {shown.listened ? t("listenedDone") : t("listened")}
-          </button>
-          <button
-            type="button"
-            aria-pressed={shown.liked}
-            onClick={() => like()}
-            className={buttonClasses("secondary", cn("text-[22px]", pressed), "icon-lg")}
-          >
-            <HeartIcon filled={shown.liked} />
-            <span className="sr-only">{t("like")}</span>
-          </button>
+          {!notOut && (
+            <>
+              <button
+                type="button"
+                aria-pressed={shown.listened}
+                disabled={listening}
+                onClick={markListened}
+                className={buttonClasses("primary", "max-md:flex-1")}
+              >
+                {shown.listened && <CheckIcon />}
+                {shown.listened ? t("listenedDone") : t("listened")}
+              </button>
+              <button
+                type="button"
+                aria-pressed={shown.liked}
+                onClick={() => like()}
+                className={buttonClasses("secondary", cn("text-[22px]", pressed), "icon-lg")}
+              >
+                <HeartIcon filled={shown.liked} />
+                <span className="sr-only">{t("like")}</span>
+              </button>
+            </>
+          )}
           <button
             type="button"
             aria-pressed={shown.wantToListen}
             onClick={queue}
-            className={buttonClasses("secondary", cn(roundOnPhones, pressed))}
+            className={buttonClasses(
+              "secondary",
+              cn(notOut ? "min-h-13 max-md:flex-1" : roundOnPhones, pressed),
+            )}
           >
             <ClockIcon className="text-[22px] md:text-lg" />
-            <span className="max-md:sr-only">{t("wantToListen")}</span>
+            <span className={notOut ? undefined : "max-md:sr-only"}>{t("wantToListen")}</span>
           </button>
           {actions}
         </div>
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-2 border-t border-border pt-4">
-        <button
-          type="button"
-          disabled={log.opening}
-          onClick={() => void log.openLog("new")}
-          className={buttonClasses("ghost", undefined, "sm")}
-        >
-          {t("log")}
-        </button>
-        {extra}
-      </div>
+      {!notOut && (
+        <div className="mt-4 flex flex-wrap gap-2 border-t border-border pt-4">
+          <button
+            type="button"
+            disabled={log.opening}
+            onClick={() => void log.openLog("new")}
+            className={buttonClasses("ghost", undefined, "sm")}
+          >
+            {t("log")}
+          </button>
+          {extra}
+        </div>
+      )}
 
       <ReactionStatus error={listen.error} announce={announce} className="mt-3 text-center" />
       {log.dialog}
