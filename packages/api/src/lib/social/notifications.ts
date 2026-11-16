@@ -1,14 +1,16 @@
 import { and, eq, inArray, isNull, or, schema, sql, type Db, type DbOrTx } from "@spleen/db";
 
 import type { CursorPage, NotificationGroup } from "../../types";
+import { loadReleaseCards, toReleaseCard } from "../catalog/cards";
 import { CONTACT_PLACEHOLDER } from "../moderation/emails";
 import { cursorTime, decodeCursor, encodeCursor, pageOf } from "./cursor";
 import { isBlockedBetween, memberRefs, notBlockedWith } from "./relations";
 
 /*
  * In-site notifications: a new follower, a like or a comment on the member's review (or
- * list). One row per event; rows sharing a `group_key` show as one group: likes and comments
- * per review / list, new followers per day (in the recipient's time zone). Undoing the action (unfollow, unlike, deleted comment)
+ * list), a followed artist's record out today (`lib/catalog/release-notifications.ts`). One
+ * row per event; rows sharing a `group_key` show as one group: likes and comments per review /
+ * list, new followers and records out per day (in the recipient's time zone). Undoing the action (unfollow, unlike, deleted comment)
  * removes its row. Nothing is ever created across a block, and a block erases what exists.
  */
 
@@ -17,6 +19,7 @@ const { comments, lists, moderationActions, notifications, profiles, releases, r
 
 export const NOTIFICATIONS_PAGE_SIZE = 20;
 const ACTORS_SHOWN = 3;
+const RELEASES_SHOWN = 3;
 const EXCERPT_LENGTH = 140;
 
 export interface NotificationEvent {
@@ -147,6 +150,10 @@ export async function listNotifications(
         string | null
       >`(array_agg(${notifications.commentId}::text order by ${notifications.createdAt} desc))[1]`,
       moderationActionId: sql<string | null>`min(${notifications.moderationActionId}::text)`,
+      releaseIds: sql<
+        string[] | null
+      >`(array_agg(distinct ${notifications.releaseId}::text) filter (where ${notifications.releaseId} is not null))`,
+      releaseCount: sql<number>`count(distinct ${notifications.releaseId})::int`,
     })
     .from(notifications)
     .where(visible(userId))
@@ -167,8 +174,9 @@ export async function listNotifications(
   const listIds = page.items.flatMap((r) => r.listId ?? []);
   const commentIds = page.items.flatMap((r) => r.commentId ?? []);
   const actionIds = page.items.flatMap((r) => r.moderationActionId ?? []);
+  const releaseIds = page.items.flatMap((r) => r.releaseIds ?? []);
   const releaseTitle = sql<string>`coalesce(${releases.title}, ${tracks.title}, '')`;
-  const [actors, reviewRows, listRows, commentRows, actionRows] = await Promise.all([
+  const [actors, reviewRows, listRows, commentRows, actionRows, releaseCards] = await Promise.all([
     memberRefs(db, actorIds),
     reviewIds.length
       ? db
@@ -202,7 +210,9 @@ export async function listNotifications(
           .from(moderationActions)
           .where(inArray(moderationActions.id, actionIds))
       : [],
+    loadReleaseCards(db, releaseIds),
   ]);
+  const cardById = new Map(releaseCards.map((c) => [c.id, toReleaseCard(c)]));
   const actionById = new Map(actionRows.map(({ id, ...notice }) => [id, notice]));
   const reviewTitles = new Map(reviewRows.map((r) => [r.id, r.title]));
   const listTitles = new Map(listRows.map((l) => [l.id, l.title]));
@@ -229,6 +239,11 @@ export async function listNotifications(
           const notice = r.moderationActionId ? actionById.get(r.moderationActionId) : undefined;
           return notice ? { ...notice, contactEmail } : null;
         })(),
+        releases: (r.releaseIds ?? [])
+          .flatMap((id) => cardById.get(id) ?? [])
+          .sort((a, b) => a.title.localeCompare(b.title) || a.id.localeCompare(b.id))
+          .slice(0, RELEASES_SHOWN),
+        releaseCount: r.releaseCount,
         commentExcerpt:
           body === undefined
             ? null

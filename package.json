@@ -26,6 +26,7 @@
     "admin:revoke": "pnpm --filter @spleen/db admin revoke",
     "db:seed:catalog": "pnpm --filter @spleen/api seed:catalog",
     "catalog:refresh": "pnpm --filter @spleen/api refresh:catalog",
+    "releases:notify": "pnpm --filter @spleen/api notify:releases",
     "retention": "pnpm --filter @spleen/api retention"
   },
   "devDependencies": {

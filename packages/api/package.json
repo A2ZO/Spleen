@@ -7,7 +7,8 @@
     ".": "./src/index.ts",
     "./errors": "./src/errors.ts",
     "./highlight": "./src/highlight.ts",
-    "./instant": "./src/instant.ts"
+    "./instant": "./src/instant.ts",
+    "./jobs": "./src/jobs.ts"
   },
   "scripts": {
     "lint": "eslint .",
@@ -15,6 +16,7 @@
     "test": "vitest run",
     "seed:catalog": "tsx scripts/seed-catalog.ts",
     "refresh:catalog": "tsx scripts/refresh-catalog.ts",
+    "notify:releases": "tsx scripts/notify-releases.ts",
     "retention": "tsx scripts/retention.ts"
   },
   "dependencies": {

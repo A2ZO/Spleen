@@ -402,7 +402,7 @@ export interface CommentView {
 /** Similar notifications shown as one ("Camille and 3 others liked your review"). */
 export interface NotificationGroup {
   key: string;
-  type: "follow" | "like" | "comment" | "moderation";
+  type: "follow" | "like" | "comment" | "moderation" | "release";
   latestAt: string;
   unread: boolean;
   /** Most recent first, at most 3. */
@@ -414,6 +414,10 @@ export interface NotificationGroup {
   commentExcerpt: string | null;
   /** A moderation decision about the recipient or their content, with its reason. */
   moderation: ModerationNotice | null;
+  /** Records of followed artists out that day (type `release`): by title, at most 3. */
+  releases: ReleaseCard[];
+  /** How many records the group holds (`releases` shows the first 3). */
+  releaseCount: number;
 }
 
 export interface ModerationNotice {

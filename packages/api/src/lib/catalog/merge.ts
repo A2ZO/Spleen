@@ -283,6 +283,7 @@ async function mergeRelease(tx: DbOrTx, keepId: string, dupId: string) {
   await repoint(tx, "reviews", "release_id", keepId, dupId);
   await repoint(tx, "list_items", "release_id", keepId, dupId, "list_id");
   await repoint(tx, "favorites", "release_id", keepId, dupId, "user_id");
+  await repoint(tx, "notifications", "release_id", keepId, dupId, "user_id");
   await tx.execute(sql`
     update "releases" "k" set
       "cover_url" = coalesce("k"."cover_url", "d"."cover_url"),
