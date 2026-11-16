@@ -1,3 +1,4 @@
+import { TRPCError } from "@trpc/server";
 import type { ReleaseCard } from "@spleen/api";
 import { discographyGroupSchema, slugSchema, type DiscographyGroup } from "@spleen/validators";
 import type { Metadata } from "next";
@@ -124,21 +125,34 @@ async function memberState(slug: string) {
   return { me, followStatus };
 }
 
+/**
+ * The artist's upcoming releases, read by the requested slug in parallel with the artist (a
+ * merged artist's slug reads the kept one); an unknown artist has none.
+ */
+async function upcomingFor(slug: string) {
+  const parsed = slugSchema.safeParse(slug);
+  if (!parsed.success) return [];
+  try {
+    return await (await getApi()).upcoming.byArtist({ slug: parsed.data });
+  } catch (error) {
+    if (error instanceof TRPCError && error.code === "NOT_FOUND") return [];
+    throw error;
+  }
+}
+
 export default async function ArtistPage({ params, searchParams }: Props) {
   const { locale, slug } = await params;
   initRouteLocale(locale);
   const all = await fullGroup(searchParams);
-  const [artist, { me, followStatus }, t, uiLocale] = await Promise.all([
+  const [artist, { me, followStatus }, upcoming, t, uiLocale, format] = await Promise.all([
     getArtist(slug, all),
     memberState(slug),
+    upcomingFor(slug),
     getTranslations(),
     getLocale(),
-  ]);
-  if (!artist) return missingCatalogPage("artist", slug, locale);
-  const [upcoming, format] = await Promise.all([
-    (await getApi()).upcoming.byArtist({ slug: artist.slug }),
     getFormatter(),
   ]);
+  if (!artist) return missingCatalogPage("artist", slug, locale);
 
   const { albums, eps, singles, other } = artist.discography;
   const totals = artist.discographyTotals;
