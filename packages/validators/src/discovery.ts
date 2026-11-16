@@ -33,3 +33,6 @@ export const topRatedSchema = z
     message: "year and decade cannot both be set",
   });
 export type TopRatedInput = z.infer<typeof topRatedSchema>;
+
+/** « Mes sorties à venir »: the three types, or one. */
+export const upcomingMineSchema = z.object({ type: releaseTypeSchema.optional() });

@@ -109,6 +109,11 @@ ne plus aimer, commentaire supprimé) retire la ligne. `group_key` regroupe : li
 commentaires par critique / liste, abonnés par jour (fuseau du destinataire). La pastille
 compte les groupes non lus. Pas de temps réel : le compteur se met à jour au rendu des pages.
 
+Type `release` (jalon 11) : « Sortie aujourd'hui », sans acteur (`actor_id` nul), créé la
+nuit par `pnpm releases:notify` (`lib/catalog/release-notifications.ts`), une ligne par
+membre et par disque (`notifications_release_once_uidx`), `group_key` = `release:day:<jour>`
+dans le fuseau du destinataire. Règles dans `docs/decouverte.md`, « Sorties à venir ».
+
 ## Blocage
 
 Un blocage vaut dans les deux sens : désabonnement mutuel, notifications entre eux

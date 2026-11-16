@@ -35,6 +35,25 @@ export const follows = pgTable(
   ],
 );
 
+/**
+ * Artists a member follows (upcoming releases, milestone 11). Private: only the member reads
+ * them. Catalog side `restrict` (artists are never hard-deleted; merges repoint the rows).
+ */
+export const artistFollows = pgTable(
+  "artist_follows",
+  {
+    userId: userRef("user_id").notNull(),
+    artistId: uuid("artist_id")
+      .notNull()
+      .references(() => artists.id, { onDelete: "restrict" }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.artistId] }),
+    index("artist_follows_artist_idx").on(t.artistId),
+  ],
+);
+
 /** Likes on a review or a list (exactly one). */
 export const likes = pgTable(
   "likes",
@@ -91,6 +110,8 @@ export const notificationType = pgEnum("notification_type", [
   "like",
   "comment",
   "moderation",
+  /** A followed artist's record out today (`lib/catalog/release-notifications.ts`). */
+  "release",
 ]);
 
 export const notifications = pgTable(
@@ -108,9 +129,12 @@ export const notifications = pgTable(
     moderationActionId: uuid("moderation_action_id").references(() => moderationActions.id, {
       onDelete: "cascade",
     }),
+    /** The record out today (type `release`); catalog rows are never hard-deleted. */
+    releaseId: uuid("release_id").references(() => releases.id, { onDelete: "restrict" }),
     /**
      * Similar notifications share a key and show as one ("Camille and 3 others liked your
-     * review"): likes and comments per subject, follows per day (`lib/social/notifications.ts`).
+     * review"): likes and comments per subject, follows and records out per day
+     * (`lib/social/notifications.ts`).
      */
     groupKey: text("group_key").notNull(),
     readAt: timestamp("read_at", { withTimezone: true }),
@@ -126,6 +150,13 @@ export const notifications = pgTable(
     uniqueIndex("notifications_once_uidx")
       .on(t.userId, t.actorId, t.type, sql`coalesce(${t.reviewId}, ${t.listId}, ${t.userId})`)
       .where(sql`${t.type} in ('follow', 'like')`),
+    // One notification per member and record: the nightly command can run again.
+    uniqueIndex("notifications_release_once_uidx")
+      .on(t.userId, t.releaseId)
+      .where(sql`${t.releaseId} is not null`),
+    index("notifications_release_idx")
+      .on(t.releaseId)
+      .where(sql`${t.releaseId} is not null`),
   ],
 );
 

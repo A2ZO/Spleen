@@ -449,7 +449,7 @@ Le plus gros risque n'est pas technique : c'est un site vide au lancement et un 
 - [ ] Bêta : sur invitation seulement, ou liste d'attente publique ?
 - [ ] Qui aide à modérer quand la communauté grandit ?
 - [ ] Genres : licence commerciale MetaBrainz ou autre source ? (avant la monétisation)
-- [ ] Sorties à venir : valider les règles par défaut (liste des suivis privée, pas de note avant la sortie, notification le matin du jour J).
+- [x] Sorties à venir : valider les règles par défaut (liste des suivis privée, pas de note avant la sortie, notification le matin du jour J). Validées par Azzo le 16 novembre 2026 et livrées au jalon 11 : suivi réservé aux membres (500 artistes, 200 écritures par heure), liste privée, seulement « À écouter » avant la sortie, « Sortie aujourd'hui » dans le site selon le fuseau de chacun (`docs/sorties.md`).
 
 ## Sources
 

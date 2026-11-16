@@ -57,3 +57,32 @@ export function createReplayFetch(options: ReplayOptions = {}): typeof fetch & {
   };
   return Object.assign(replay as typeof fetch, { calls });
 }
+
+/** Day of the recorded ListenBrainz answer (`listenbrainz-fresh-releases.json`, 7 releases). */
+export const FIXTURE_FRESH_RELEASES_DATE = "2026-11-16";
+
+export interface ListenBrainzReplayOptions {
+  status?: number;
+  headers?: Record<string, string>;
+  /** Raw body instead of the recorded answer. */
+  body?: string;
+}
+
+/** A `fetch` answering ListenBrainz "fresh releases" with the recorded answer. */
+export function createListenBrainzReplayFetch(
+  options: ListenBrainzReplayOptions = {},
+): typeof fetch & { calls: string[] } {
+  const calls: string[] = [];
+  const replay = async (input: string | URL | Request) => {
+    const url = String(input);
+    calls.push(url);
+    if (!url.includes("/explore/fresh-releases/")) return new Response(null, { status: 404 });
+    const body =
+      options.body ?? readFileSync(path.join(dir, "listenbrainz-fresh-releases.json"), "utf8");
+    return new Response(body, {
+      status: options.status ?? 200,
+      headers: { "content-type": "application/json", ...options.headers },
+    });
+  };
+  return Object.assign(replay as typeof fetch, { calls });
+}

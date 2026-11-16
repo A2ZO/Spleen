@@ -64,11 +64,12 @@ describe("migrations", () => {
 describe("seed", () => {
   it("loads the demo dataset", async () => {
     expect(await count(s.artists)).toBe(12);
-    expect(await count(s.releases)).toBe(45);
+    expect(await count(s.releases)).toBe(51);
     expect(await count(s.profiles)).toBe(11);
     expect(await count(s.entries)).toBe(73);
     expect(await count(s.favorites)).toBe(12);
     expect(await count(s.follows)).toBe(7);
+    expect(await count(s.artistFollows)).toBe(5);
     expect(await count(s.likes)).toBe(19);
     expect(await count(s.comments)).toBe(12);
     expect(await count(s.blocks)).toBe(1);
@@ -86,6 +87,7 @@ describe("seed", () => {
       s.notifications,
       s.reports,
       s.moderationActions,
+      s.artistFollows,
     ] as const;
     const before = await Promise.all(tables.map((t) => count(t)));
     await seed(handle.db);

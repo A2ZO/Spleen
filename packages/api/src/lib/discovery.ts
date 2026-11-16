@@ -1,6 +1,11 @@
-import { MAIN_SECONDARY_TYPES } from "@spleen/catalog";
 import { rowsOf, schema, sql, type Db, type SQL } from "@spleen/db";
-import type { AudienceLang, ReleaseType, TopRatedInput } from "@spleen/validators";
+import {
+  DEFAULT_TIME_ZONE,
+  todayIn,
+  type AudienceLang,
+  type ReleaseType,
+  type TopRatedInput,
+} from "@spleen/validators";
 
 import type {
   GenreOption,
@@ -11,6 +16,7 @@ import type {
   TrendItem,
 } from "../types";
 import { loadReleaseCards, toReleaseCard } from "./catalog/cards";
+import { mainReleaseSql, upcomingDateSql } from "./catalog/upcoming";
 import { maskRelease, ratedIds } from "./listening/blind";
 import { countsPublicly } from "./ratings";
 import type { Viewer } from "./viewer";
@@ -165,18 +171,15 @@ export async function recentReleases(
 ): Promise<Page<ReleaseCard>> {
   const types: ReleaseType[] = type ? [type] : ["album", "ep"];
   const where = sql`
-    r.merged_into_id is null
+    ${mainReleaseSql()}
+    and not ${upcomingDateSql(todayIn(DEFAULT_TIME_ZONE, now))}
     and r.release_date between ${dayOf(new Date(now.getTime() - RECENT_DAYS * DAY_MS))}::date
       and ${dayOf(now)}::date
     and r.release_date_precision in ('day', 'month')
     and r.type in (${sql.join(
       types.map((t) => sql`${t}`),
       sql`, `,
-    )})
-    and r.secondary_types <@ array[${sql.join(
-      MAIN_SECONDARY_TYPES.map((t) => sql`${t}`),
-      sql`, `,
-    )}]::text[]`;
+    )})`;
   const [ids, [total]] = await Promise.all([
     db
       .execute(

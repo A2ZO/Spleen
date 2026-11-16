@@ -99,6 +99,27 @@
       "when": 1794827496330,
       "tag": "0013_flowery_joystick",
       "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1794832822870,
+      "tag": "0014_pink_the_fallen",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1794835413841,
+      "tag": "0015_friendly_bullseye",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1794841911329,
+      "tag": "0016_violet_goliath",
+      "breakpoints": true
     }
   ]
 }

@@ -76,6 +76,10 @@ export const releases = pgTable(
       .default(sql`'{}'::text[]`),
     releaseDate: date("release_date"),
     releaseDatePrecision: datePrecision("release_date_precision"),
+    /** First time the release was seen with a date after the day of the import; never rewritten. */
+    announcedAt: timestamp("announced_at", { withTimezone: true }),
+    /** Last time the date of an announced release moved out of its previous period. */
+    releaseDateChangedAt: timestamp("release_date_changed_at", { withTimezone: true }),
     coverUrl: text("cover_url"),
     /** Main language of the release (trends follow the members' language, not this one). */
     language: varchar("language", { length: 8 }),

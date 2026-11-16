@@ -1,44 +1,57 @@
-# Journal du pilote
+# Journal du pilote — jalon 11 « Sorties à venir »
 
-Une entrée par exécution qui a fait quelque chose (10 lignes au plus).
+Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal du jalon 17 :
+`docs/pilote/archives/jalon-17/journal.md`.
 
-- 2026-11-13 — Mise en place du pilote. Étapes 1 à 4 faites à la main. Prochaine : étape 5.
-- 2026-11-14 — Étape 5 (profil et Étagère), pilote. Commits `0e230ff`..`6fe3741`, passation `4ee6850`.
-  `pnpm check` vert ; e2e dev 220 réussis / 0 échoué / 10 ignorés (teardown « render cancelled
-  mid-stream » → #34) ; prod sans compte 104 réussis (seul `hydration.spec`, attendu) ; axe 0 ;
-  `measure.mjs` ×2 dans les 20 ms de la référence 217/133/223/207/209 ; son profil après une
-  écoute 226–247 ms. Relecteur : 2 tours (nom long coupé, badge du journal sur mobile) → OK.
-  Décisions : voir `decisions.md` (étape 5). Points ouverts : 3 écoutes de test créées pour
-  nuitblanche dans la base de dev puis supprimées par l'interface ; `docs/pilote/installation/*`
-  supprimés dans l'arbre de travail sans être commités (au propriétaire de trancher).
-- 2026-11-14 — Étape 6 (le reste), pilote. Commits `4bd712a`..`1f3c7f7`. `pnpm check` vert ;
-  e2e dev 220 réussis / 0 échoué / 10 ignorés ; prod sans compte 104 réussis (seul
-  `hydration.spec`, attendu) ; après corrections, 6 specs : 68 réussis / 8 ignorés ; axe 0 ;
-  `measure.mjs` ×2 dans les 20 ms de la référence (214/128/221/197/219) ; search ≈ 117 ms,
-  liste ≈ 110 ms (sans référence). Relecteur : 2 tours (filtres segmentés, zone de texte,
-  dates admin, numéro 404 en encre, captures nuitblanche) → OK. Décisions : OG en Inter
-  (Bricolage TTF à déposer), aucun bloc lilas, badge dev de la 404 (script du layout, hors
-  périmètre). Point ouvert : `docs/pilote/installation/*` toujours supprimés sans commit.
-- 2026-11-14 — Étape 7 (les animations), pilote. Commits `8651b34`..`eafd049`. `pnpm check`
-  vert ; e2e dev 230 réussis / 0 échoué / 10 ignorés (teardown « render cancelled mid-stream »
-  → #34 commenté) après correction de 8 échecs (contraste des tuiles en cascade, vignette en
-  `<img>`) ; prod sans compte 114 réussis (seul `hydration.spec`, attendu) ; axe 0 (visiteur et
-  membre). `measure.mjs` : accueil 226–234 ms contre 209 de référence ; A/B dans la même
-  session : branche 213/133/220/206/218 contre 219/136/230/205/212 avant l'étape (accueil +6).
-  Relecteur : 1 tour (mesure A/B, décalage par colonne) → appliqué. Décisions : voir
-  `decisions.md` (étape 7). Point ouvert : `docs/pilote/installation/*` toujours supprimés sans
-  commit.
-- 2026-11-14 — Étape 8 : plan écrit et relu (OK avec corrections, appliquées) ; limite d'usage atteinte avant le code, reprise en phase `code`.
-- 2026-11-14 — Étape 8 (la passe finale), pilote. Commits `2270622`..`a382c19`. `pnpm check`
-  vert ; e2e dev 230 réussis / 0 échoué / 10 ignorés ; prod sans compte 114 réussis (seul
-  `hydration.spec`, attendu) ; axe 0 sur toutes les pages (visiteur, membre, admin, welcome).
-  `measure.mjs` : branche 241/138/226/202/227, `main` A/B 237/140/225/208/210 (max +17 ms).
-  Relecteur : 2 tours (2 écoutes de test parasites supprimées par l'interface, carte artiste,
-  AddToList et titres de liste sur mobile, capture d'édition de liste) → OK. Décisions : voir
-  `decisions.md` (étape 8). Point ouvert : `docs/pilote/installation/*` toujours supprimés sans
-  commit. Prochain passage : fin de jalon (PR, CI verte, sans fusion).
-- 2026-11-14 — Fin de jalon, pilote. `pnpm check` + e2e complet (verificateur) : tout passe.
-  CLAUDE.md ramené de 218 à 199 lignes (`94b3369`, pièges regroupés, détails dans
-  `docs/pieges.md`). PR https://github.com/A2ZO/Spleen/pull/35 ouverte, CI verte
-  (check, api-postgres). Pas de fusion (feuille de route, décision de l'étape 8) : à Azzo, puis
-  `/fin-de-jalon fusionné`. Point ouvert : `docs/pilote/installation/*` toujours supprimés sans commit.
+- 2026-11-16 — Jalon 11 préparé par le conseiller : feuille de route, règles validées par Azzo,
+  skill et relecteur adaptés (plans validés par Azzo). Prochaine : étape 1.
+- 2026-11-16 — Étape 1 : plan écrit et relu (OK avec corrections, appliquées) ; attente de la
+  validation d'Azzo (`docs/pilote/plan-etape-1.md`).
+- 2026-11-16 — Étape 1 « Suivre un artiste » faite : e2fce69 (db), c3124ce (api), 6b7cfa1 (web),
+  a5a0974 (e2e), 0cf425c (perf), 79c6a35 (erreur sans JavaScript). `pnpm check` vert (API 250
+  tests) ; e2e complet 230 réussis / 6 échecs (`aria-pressed` attendu, deux « Enregistrer »)
+  corrigés et rejoués verts, plus un « render cancelled mid-stream » au teardown (#34). axe AA
+  0 violation (fiche artiste visiteur et membre, réglages, 1280 et 390 px). Mesures prod :
+  214–234 / 139–140 / 227–230 / 194–220 / 218–232 contre 237 / 140 / 225 / 208 / 210 ; `dev`
+  dans la même session : 221–226 / 135 / 235–247 / 196–206 / 217–232 (écart = machine).
+  Décision : aucun mécanisme de retour après connexion n'existe (tout le monde arrive sur
+  `/welcome`), aucun créé. Relecteur : OK avec corrections, appliquées.
+- 2026-11-16 — Étape 2 « Alimentation de nuit et lectures » faite : 2b22659..04112ac (migration
+  0015, client ListenBrainz, suivi des dates, file des discographies, règle et lectures
+  `upcoming`, passage de nuit, démo, docs, corrections). `pnpm check` vert ; e2e complet 236
+  réussis · 0 échoués · 0 instables · 10 ignorés · 7 min 21 ; pas d'écran (ni axe ni mesure).
+  `pnpm catalog:refresh` réel : ListenBrainz ok, 0 groupe d'artiste suivi, 1 sortie ajoutée.
+  Décision : budget de nuit dans l'ordre imports → fiches → dates plus tôt → plus tard (écart
+  assumé au tour 1 du relecteur, accepté au tour 2). Relecteur : 2 tours, OK avec corrections,
+  appliquées. Note : `.claude/skills/pilote` modifié par une session d'Azzo pendant l'étape
+  (section « Avancement »), suivi tel quel.
+- 2026-11-16 — Étape 3 « Les écrans des sorties à venir » faite : d68155a..bdf7683 (refus API,
+  lectures, `/upcoming`, fiche artiste, fiche à venir, e2e, docs, corrections). `pnpm check`
+  vert ; e2e complet 242 réussis · 0 échoués · 0 instables · 10 ignorés · 7 min 23 ; axe AA 2.2
+  0 violation (membre, membre sans suivi, visiteur sur build de prod ; target-size corrigé).
+  Mesures prod : 211–216 / 131–134 / 219–221 / 178–180 / 202–203 contre 237 / 140 / 225 / 208 /
+  210 (régression album→artiste +36 ms corrigée) ; `/upcoming` 149 / 151 ms (référence).
+  Relecteur : 2 tours, OK. Point ouvert pour Azzo (PR) : retirer les sorties à venir de la
+  discographie de la fiche artiste ?
+- 2026-11-16 — Étape 4 « Accueil et découverte » faite : ac29227..352e016 (API, écrans, e2e et
+  docs, une requête pour l'accueil). `pnpm check` vert ; e2e complet 244 réussis · 0 échoués ·
+  0 instables · 10 ignorés · 7 min 33 ; axe AA 2.2 0 violation (nuitblanche et visiteur sur
+  build de prod, rainydaysam en dev). Mesures prod : 211/205 · 135/130 · 218/216 · 171/157 ·
+  219/220 contre 237 / 140 / 225 / 208 / 210 (accueil +25–32 ms au premier passage, corrigé).
+  Relecteur : 1 tour, OK. Rappel PR : `Closes #32`.
+- 2026-11-16 — Étape 5 « Les notifications du jour J » faite : d8a46cc..HEAD (migration 0016,
+  `pnpm releases:notify` et étape de nuit, rendu dans les notifications, tests, docs).
+  `pnpm check` vert ; tests API 6/6 ; e2e complet 246 réussis · 0 échoués · 0 instables ·
+  10 ignorés · 7 min 32 ; axe AA 2.2 0 violation (/fr/notifications, 1280 et 390). Mesures
+  prod : 217 / 136 / 228 / 181 / 227 contre 237 / 140 / 225 / 208 / 210 (première série 234 sur
+  discover→accueil, page non touchée). Relecteur : 1 tour, OK avec corrections (deux lignes
+  par disque à 390 px, groupe vide filtré). Écart e2e et deux questions pour Azzo à la PR.
+- 2026-11-16 — Étape 6 « La passe finale » faite : 7c6250c..HEAD (`docs/sorties.md`, renvois,
+  cahier, `CLAUDE.md`, texte visiteur d'un disque à venir). `pnpm check` vert ; e2e complet en
+  dev 245 réussis · 1 échoué · 10 ignorés (`undo-delete.spec.ts:289`, passe seul, issue #34) ;
+  prod sans compte + overflow 114 · 2 · 10 (`covers.spec.ts:72`, passe seul, issue #34) ; axe
+  AA 2.2 0 violation. Mesures prod : 215/213 · 136/135 · 231/219 · 182/180 · 228/225 contre
+  237 / 140 / 225 / 208 / 210 ; `/upcoming` 158/160 contre 149/151. Relecteur : 2 tours (OK avec
+  corrections, puis OK) ; moyenne et critiques remises selon les décisions actées, question à
+  la PR.
+- 2026-11-16 — Fin du jalon 11 : PR 40 ouverte vers `dev`, CI verte, corrections de relecture (ad44693 : « pas encore sorti » sans plafond, année sur les dates lointaines) ; e2e ciblés 16 passed. Fusion en attente : relecteur `BLOQUANT` sur les commits `.claude/` à confirmer par Azzo (question dans `decisions.md`).

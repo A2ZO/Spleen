@@ -27,34 +27,40 @@ each step and the usual checks), `decisions.md`, `journal.md`. Screenshots go to
 
 1. If `docs/pilote/STOP` exists, or `etat.md` says phase `attente` or `fini`: stop without
    writing anything.
-2. Lock: if `.git/pilote.lock` exists and is less than 4 hours old, another run is working:
-   stop without writing anything. Otherwise write the current date and time into it. Delete it
-   at the end of the run, whatever happens.
+2. Lock: if `.git/pilote.lock` exists and the time written in it is less than 2 hours old, another run is working: stop without writing anything. Otherwise (no lock, or a stale one left by a run cut short by the usage limit) write the current date and time into it, and rewrite that time at each commit and each phase change. Delete it at the end of the run, whatever happens. Then run `pnpm run free-port`: a run cut short may have left a server on port 3000.
 3. `git branch --show-current` must be the branch named in `etat.md`. If it is not, switch only
-   when the working tree is clean; otherwise go to « Attente » with the reason.
-4. Uncommitted changes mean an interrupted run (usage limit): read `git diff` and the phase in
-   `etat.md`, and continue from there. Never discard them.
-5. Read `docs/jalon-17-en-cours.md`, `docs/design/README.md`, `docs/pilote/decisions.md` and,
-   in `feuille-de-route.md`, the usual checks and the brief of the current step.
+   when the working tree is clean; otherwise go to « Attente » with the reason. When the tree is
+   clean, `git pull --ff-only` (the owner may have answered from GitHub).
+4. Resuming: uncommitted changes, or a phase other than `plan`, mean the previous run may have been cut short. Read « Avancement » at the end of the step's plan, `git log` since the last `docs: pilote étape` commit and `git diff`, then continue from the first unchecked line. If the plan has no « Avancement » yet, add it from what `git log` shows. Never discard changes; never redo what is checked and committed.
+5. Read the milestone doc named in `etat.md` (« Doc du jalon »), `docs/pilote/decisions.md`
+   (the owner's answers included), `docs/design/README.md` when the step changes screens, and,
+   in `feuille-de-route.md`, its « Cadre », the usual checks and the brief of the current step.
 
 ## 1. Plan — phase `plan`
 
 1. Write the plan to `docs/pilote/plan-etape-<n>.md` (60 lines at most), following the brief.
-   Check in the code that every piece of data the plan uses already exists.
+   Check in the code that every piece of data the plan uses already exists. End the plan with a section « Avancement »: one checkbox per item of the plan, then « vérifications », « relecture 1 », « relecture 2 », « clôture ».
 2. Delegate to the `relecteur` subagent: « Relis le plan docs/pilote/plan-etape-<n>.md ».
 3. Apply its corrections to the plan. On `BLOQUANT`, rework and ask once more; still
    `BLOQUANT` → « Attente ».
 4. Do not ask the owner the questions the plan raises. Take the most cautious option (the one
    that changes the least, can be undone, and uses what exists) and log it in `decisions.md`:
    date, step, choice, reason, alternative left aside. Exception: anything irreversible, or
-   touching data, security or money → « Attente ».
-5. Set phase `code` in `etat.md`.
+   touching data, security or money → « Attente », unless `feuille-de-route.md` already
+   allows it (its « Cadre », « Autorisé à la fusion » or the step's « Décisions actées »).
+   Never delete or rewrite existing data.
+5. If `feuille-de-route.md` says plans are validated by the owner (« Plans validés par
+   Azzo »): write in `decisions.md`, under a heading `QUESTION POUR AZZO`, « Plan de l'étape
+   <n> à valider : docs/pilote/plan-etape-<n>.md », then stop as in « Attente », with « plan à
+   valider » in `etat.md`. The owner answers under the question (« validé », maybe with
+   corrections) and sets phase `code`; the next run applies those corrections before coding.
+6. Otherwise, set phase `code` in `etat.md`.
 
 ## 2. Code — phase `code`
 
-Implement the plan. Commit as you go, in logical commits (Conventional Commits in English,
-ending with the session's attribution line), so that an interruption loses little. Then set
-phase `verif`.
+Implement the plan, with the owner's corrections from `decisions.md` if any. Commit as you go,
+in logical commits (Conventional Commits in English, ending with the session's attribution
+line), so that an interruption loses little. Tick each item of « Avancement » in the same commit as its work. Then set phase `verif`.
 
 ## 3. Verification — phase `verif`
 
@@ -63,7 +69,7 @@ phase `verif`.
 3. Delegate to `relecteur`: « Relis l'étape <n> : commits <range>, résultats <résumé>, captures
    docs/pilote/captures/<n>/ ».
 4. Fix its corrections, then re-run only what they concern. Two rounds at most; after that,
-   « Attente » with the remaining points.
+   « Attente » with the remaining points. Tick « vérifications » and each relecteur round in « Avancement » (in the commit of its fixes), so that the two-round limit holds across an interruption.
 5. A test that fails in the full run and passes alone: comment issue #34
    (`gh issue comment 34`) and go on. A test that fails alone: fix the code.
 6. Set phase `cloture`.
@@ -74,7 +80,7 @@ phase `verif`.
    without its recap and without waiting for `/clear`.
 2. Append to `journal.md`, 10 lines at most: date, step, commits, results (check, e2e summary
    line, axe, measures against the reference), decisions taken, open points.
-3. In `etat.md`: next step, phase `plan`, date. Commit `docs: pilote étape <n>`, push.
+3. In `etat.md`: next step, phase `plan`, date. Tick « clôture » in « Avancement » in the same commit as `etat.md`. Commit `docs: pilote étape <n>`, push.
 4. `pnpm run free-port`, delete the lock, stop.
 
 ## 5. End of the milestone
@@ -96,7 +102,9 @@ here, go on with section 6 instead of stopping.
    - the PR does not touch `packages/db` migrations or schema, the auth logic of
      `packages/auth` (email templates are fine), `apps/web/src/proxy.ts` or the security
      headers and CSP, `.github/workflows/`, environment variables (`turbo.json` env lists,
-     `.env.example`), and adds or upgrades no dependency.
+     `.env.example`), and adds or upgrades no dependency — except exactly what the section
+     « Autorisé à la fusion » of `feuille-de-route.md` lists (check each changed file of those
+     areas against it with `git diff --stat origin/dev...HEAD`).
 3. Before merging, on the branch: `etat.md` phase `fini` (« fusion automatique de la PR
    <numéro> demandée le <date> »), a summary in `journal.md`; commit, push, wait until the
    checks are green again.

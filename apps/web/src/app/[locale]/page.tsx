@@ -14,6 +14,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { LinkTabs } from "@/components/ui/LinkTabs";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { UpcomingGrid } from "@/components/upcoming/UpcomingGrid";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { Link } from "@/i18n/navigation";
 import { loadCursorPage } from "@/lib/api-errors";
@@ -60,6 +61,38 @@ const discoveryReads = cache(async (lang: AudienceLang) => {
   ]);
 });
 
+/**
+ * The member's next followed releases and the « Sort … » release of `JustOutCard` (#32):
+ * `null` for a visitor. Memoised per request, started with `account.me`.
+ */
+const upcomingRead = cache(async () => (await getApi()).upcoming.home());
+
+/** « Bientôt dans tes oreilles »: an invitation without follows, nothing when none is announced. */
+async function Soon() {
+  const t = await getTranslations();
+  const home = await upcomingRead();
+  if (!home || (home.following && home.items.length === 0)) return null;
+  return (
+    <section aria-labelledby="soon" className="scroll-mt-24">
+      <SectionHeading
+        id="soon"
+        action={
+          <Link href="/upcoming" className={`shrink-0 text-sm ${linkClasses}`}>
+            {t("home.soonAll")}
+          </Link>
+        }
+      >
+        {t("home.soonTitle")}
+      </SectionHeading>
+      {home.items.length > 0 ? (
+        <UpcomingGrid items={home.items} />
+      ) : (
+        <p className="max-w-xl text-fg-muted text-pretty">{t("upcoming.invite")}</p>
+      )}
+    </section>
+  );
+}
+
 async function Trends({ lang }: { lang: AudienceLang }) {
   const t = await getTranslations("discover");
   const [trends] = await discoveryReads(lang);
@@ -82,7 +115,11 @@ async function Trends({ lang }: { lang: AudienceLang }) {
 }
 
 async function JustOut({ lang }: { lang: AudienceLang }) {
-  const [, recent] = await discoveryReads(lang);
+  const [[, recent], home] = await Promise.all([discoveryReads(lang), upcomingRead()]);
+  if (home?.soon) {
+    const { item, inDays } = home.soon;
+    return <JustOutCard release={item.release} soon={{ date: item.date, inDays }} />;
+  }
   const release = recent.items[0];
   return release ? <JustOutCard release={release} /> : null;
 }
@@ -249,6 +286,7 @@ export default async function HomePage({ params, searchParams }: Props) {
   const lang: AudienceLang = parsedLang.success ? parsedLang.data : locale === "en" ? "en" : "fr";
   // Shown to everyone: started before knowing who is looking.
   discoveryReads(lang).catch(() => {});
+  upcomingRead().catch(() => {});
   const [t, format, me] = await Promise.all([
     getTranslations(),
     getFormatter(),
@@ -335,6 +373,7 @@ export default async function HomePage({ params, searchParams }: Props) {
           <JustOut lang={lang} />
         </div>
       </div>
+      <Soon />
       <Trends lang={lang} />
       <section aria-labelledby="feed">
         <SectionHeading

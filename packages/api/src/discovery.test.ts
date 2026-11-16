@@ -491,4 +491,33 @@ describe("discography refresh", () => {
     expect(picked.length).toBeLessThanOrEqual(REFRESH_BATCH);
     expect(await artistsToRefresh(handle.db, now, 1)).toHaveLength(1);
   });
+
+  it("puts followed artists first, most followed first, still once a week", async () => {
+    const { now, ago } = era();
+    const [a, b] = [await member("fr"), await member("fr")];
+    const listened = await artist();
+    const once = await artist();
+    const twice = await artist();
+    const followedFresh = await artist();
+    for (const m of [a, b]) {
+      await listen(m, { releaseId: await release({ artistId: listened.id }) }, ago(1));
+    }
+    await handle.db.insert(schema.artistFollows).values([
+      { userId: a.id, artistId: once.id },
+      { userId: a.id, artistId: twice.id },
+      { userId: b.id, artistId: twice.id },
+      { userId: a.id, artistId: followedFresh.id },
+    ]);
+    await handle.db
+      .update(schema.artists)
+      .set({ discographyRefreshedAt: ago(2) })
+      .where(eq(schema.artists.id, followedFresh.id));
+
+    const picked = await artistsToRefresh(handle.db, now);
+    const ids = picked.map((p) => p.id);
+    expect(ids.slice(0, 2)).toEqual([twice.id, once.id]);
+    expect(picked[0]).toMatchObject({ followers: 2, listeners: 0 });
+    expect(ids).toContain(listened.id);
+    expect(ids).not.toContain(followedFresh.id);
+  });
 });

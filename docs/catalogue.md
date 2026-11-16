@@ -58,6 +58,33 @@ Si MusicBrainz ne peut pas servir cette édition (erreur répétée), l'import e
    non connecté ne déclenche jamais d'appel à MusicBrainz : il voit une invitation à se
    connecter. Même chose pour la discographie d'un artiste (`discography_imported_at`).
 
+## Dates annoncées et sorties annoncées (jalon 11)
+
+Vue d'ensemble des sorties à venir (règles, données, commandes, tâches de nuit) : `docs/sorties.md`.
+
+- **MusicBrainz est la seule source des dates** (`releases.release_date` et sa précision).
+  ListenBrainz ne sert qu'à savoir quels groupes relire : il donne la date d'une édition.
+- `announced_at` (`lib/catalog/release-dates.ts`) : rempli la première fois qu'une sortie est
+  écrite avec une date dont le premier jour (mois ou année stockés au 1er) est après le jour
+  UTC du passage ; jamais réécrit.
+- `release_date_changed_at` : quand la date d'une sortie annoncée sort de sa période,
+  comparée à la précision la plus grossière des deux (« 2027 » → « 2027-03-14 » ajoute de la
+  précision, ce n'est pas un changement).
+- Une relecture de discographie ne réécrit jamais une date passée : seulement les sorties
+  annoncées, ou dont l'ancienne ou la nouvelle date est après aujourd'hui.
+- **Passage de nuit** (`lib/catalog/upcoming-feed.ts`, avant les discographies de
+  `pnpm catalog:refresh`) : ListenBrainz « fresh releases » sur 90 jours
+  (`packages/catalog/src/listenbrainz.ts`, sans clé, User-Agent MusicBrainz, en-têtes
+  `X-RateLimit-*` respectés, attente de plus de 60 s refusée) ; seuls les groupes crédités à
+  un artiste suivi (par `artists.mbid`) comptent : groupe inconnu → importé, fiche incomplète
+  → complétée, date différente → relue sur MusicBrainz. Puis les fiches incomplètes des
+  sorties à venir d'artistes suivis. **40 relectures par nuit au plus**, dans l'ordre :
+  imports, fiches à compléter, dates ListenBrainz plus tôt, puis plus tard (souvent la date
+  d'une édition, parfois un report) avec ce qui reste ; une erreur de
+  ListenBrainz est notée et la suite continue.
+- La file des discographies met les artistes suivis en tête (les plus suivis d'abord),
+  toujours une fois par semaine au plus.
+
 ## Recherche instantanée (jalon 12, étape 1)
 
 Suggestions sous le champ de l'en-tête (plein écran sur mobile) et sous celui de `/search`

@@ -3,8 +3,9 @@ import { rowsOf, sql, type Db } from "@spleen/db";
 /*
  * Nightly discography refresh ("Recent releases"): which artists to re-read on MusicBrainz.
  * Each one costs a request or two at 1 request/s, so only artists members care about: the
- * ones they listened to in the last 30 days and the ones on their Shelves, most followed
- * first, each at most once a week.
+ * ones they follow (first, most followed first: their upcoming releases, milestone 11), the
+ * ones they listened to in the last 30 days and the ones on their Shelves, each at most once a
+ * week.
  */
 
 /** Artists re-read per run (about 5 minutes at 1 request/s). */
@@ -24,6 +25,8 @@ export interface ArtistToRefresh {
   listeners: number;
   /** Distinct members with one of their records on the Shelf. */
   shelves: number;
+  /** Members who follow them (`artist_follows`). */
+  followers: number;
 }
 
 export async function artistsToRefresh(
@@ -55,24 +58,30 @@ export async function artistsToRefresh(
       select ra.artist_id, f.user_id from favorites f
         join release_artists ra on ra.release_id = f.release_id
     ),
+    followed as (
+      select artist_id, user_id from artist_follows
+    ),
     scores as (
       select artist_id,
         count(distinct user_id) filter (where source = 'listen')::int as listeners,
-        count(distinct user_id) filter (where source = 'shelf')::int as shelves
+        count(distinct user_id) filter (where source = 'shelf')::int as shelves,
+        count(distinct user_id) filter (where source = 'follow')::int as followers
       from (
         select artist_id, user_id, 'listen' as source from listened
         union all
         select artist_id, user_id, 'shelf' as source from shelved
+        union all
+        select artist_id, user_id, 'follow' as source from followed
       ) activity
       group by artist_id
     )
-    select a.id, a.mbid, a.name, s.listeners, s.shelves
+    select a.id, a.mbid, a.name, s.listeners, s.shelves, s.followers
     from scores s
     join artists a on a.id = s.artist_id
     where a.mbid is not null
       and (a.discography_refreshed_at is null
            or a.discography_refreshed_at < ${staleBefore}::timestamptz)
-    order by s.listeners + s.shelves desc, s.listeners desc,
+    order by s.followers desc, s.listeners + s.shelves desc, s.listeners desc,
       a.discography_refreshed_at asc nulls first, a.id
     limit ${limit}
   `);

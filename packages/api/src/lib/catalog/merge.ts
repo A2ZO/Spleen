@@ -283,6 +283,7 @@ async function mergeRelease(tx: DbOrTx, keepId: string, dupId: string) {
   await repoint(tx, "reviews", "release_id", keepId, dupId);
   await repoint(tx, "list_items", "release_id", keepId, dupId, "list_id");
   await repoint(tx, "favorites", "release_id", keepId, dupId, "user_id");
+  await repoint(tx, "notifications", "release_id", keepId, dupId, "user_id");
   await tx.execute(sql`
     update "releases" "k" set
       "cover_url" = coalesce("k"."cover_url", "d"."cover_url"),
@@ -335,6 +336,7 @@ async function mergeArtist(tx: DbOrTx, keepId: string, dupId: string) {
   await repoint(tx, "list_items", "artist_id", keepId, dupId, "list_id");
   await repoint(tx, "release_artists", "artist_id", keepId, dupId, "release_id");
   await repoint(tx, "track_artists", "artist_id", keepId, dupId, "track_id");
+  await repoint(tx, "artist_follows", "artist_id", keepId, dupId, "user_id");
   await tx.execute(sql`
     update "artists" "k" set
       "sort_name" = coalesce("k"."sort_name", "d"."sort_name"),

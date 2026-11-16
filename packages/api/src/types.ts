@@ -117,6 +117,40 @@ export interface TrendItem {
   source: "lang" | "all" | "month";
 }
 
+/** Section of « Mes sorties à venir »: next 7 days, rest of the month, later, year only. */
+export type UpcomingGroup = "week" | "month" | "later" | "tba";
+
+/** An upcoming release (docs/decouverte.md « Sorties à venir »). */
+export interface UpcomingItem {
+  release: ReleaseCard;
+  /** `YYYY-MM-DD`; a month or a year is given on its first day, see `precision`. */
+  date: string;
+  precision: "year" | "month" | "day";
+  /** The announced date moved at least once (`release_date_changed_at`). */
+  dateChanged: boolean;
+  group: UpcomingGroup;
+  /** In the reader's « À écouter » (always false for a visitor and on an artist page). */
+  wantToListen: boolean;
+}
+
+/** The member's home page: « Bientôt dans tes oreilles » and the « Sort … » card (issue #32). */
+export interface UpcomingHome {
+  /** Follows at least one artist. */
+  following: boolean;
+  /** The next few upcoming releases of the followed artists (year-only ones last). */
+  items: UpcomingItem[];
+  /** The first followed release with a day between tomorrow and 6 days ahead, if any. */
+  soon: { item: UpcomingItem; inDays: number } | null;
+}
+
+/** « Tes artistes les plus écoutés » on « Mes sorties à venir ». */
+export interface UpcomingSuggestions {
+  /** Artists the member follows. */
+  following: number;
+  /** Top artists of the year (profile stats) the member does not follow yet. */
+  artists: { id: string; slug: string; name: string }[];
+}
+
 /** A place in a top rated chart. */
 export interface TopRatedItem {
   rank: number;
@@ -193,6 +227,8 @@ export interface ReleaseDetail extends ReleaseCard {
   reviews: ReviewCard[];
   lists: ListCard[];
   listenLinks: ListenLink[];
+  /** Not out yet for a Paris reader (the upcoming rule): the page says « Sort le … ». */
+  upcoming: { dateChanged: boolean } | null;
 }
 
 export interface MoodRef {
@@ -248,6 +284,8 @@ export interface MyItemState {
    * (`applyListenWrite` in `@spleen/api/instant`).
    */
   quickFallback: { rating: number | null; listened: boolean };
+  /** A record not out yet in the member's zone: no rating, heart or listen (RELEASE_NOT_OUT). */
+  releaseNotOut: boolean;
 }
 
 /** Distinct items listened to; `track` = tracks logged on their own (not inside an album). */
@@ -364,7 +402,7 @@ export interface CommentView {
 /** Similar notifications shown as one ("Camille and 3 others liked your review"). */
 export interface NotificationGroup {
   key: string;
-  type: "follow" | "like" | "comment" | "moderation";
+  type: "follow" | "like" | "comment" | "moderation" | "release";
   latestAt: string;
   unread: boolean;
   /** Most recent first, at most 3. */
@@ -376,6 +414,10 @@ export interface NotificationGroup {
   commentExcerpt: string | null;
   /** A moderation decision about the recipient or their content, with its reason. */
   moderation: ModerationNotice | null;
+  /** Records of followed artists out that day (type `release`): by title, at most 3. */
+  releases: ReleaseCard[];
+  /** How many records the group holds (`releases` shows the first 3). */
+  releaseCount: number;
 }
 
 export interface ModerationNotice {
@@ -436,6 +478,15 @@ export interface ArtistCard {
   disambiguation: string | null;
   country: string | null;
   imageUrl: string | null;
+}
+
+/** An artist the caller follows (private: only the member reads their own list). */
+export interface FollowedArtist {
+  id: string;
+  slug: string;
+  name: string;
+  imageUrl: string | null;
+  followedAt: string;
 }
 
 export interface ArtistDetail extends ArtistCard {
@@ -548,6 +599,8 @@ export interface MyProfile {
   blindMode: boolean;
   /** IANA time zone used for "today" (default listening date). */
   timeZone: string;
+  /** Notified on the release day of a followed artist's record. */
+  notifyReleases: boolean;
 }
 
 /** Who is calling. `profile` is null until the member picks a @username (onboarding). */
