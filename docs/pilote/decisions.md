@@ -167,3 +167,9 @@ Réponds ici (« validé », avec tes corrections éventuelles), puis mets la ph
   dans `etat.md` pour que le pilote la fusionne et ouvre la PR `dev` → `main`). Questions de la
   PR à trancher aussi : voir sa description (dont la question 4, moyenne et critiques sur un
   disque à venir).
+
+Réponse d'Azzo (16 novembre) : oui, ces quatre commits de `.claude/` viennent de mes demandes
+(prompts du conseiller). J'ai fusionné la PR 40 moi-même. Questions de la PR, tranchées par le
+conseiller : notification d'un jour passé → « Sorti le <date> » ; horaire de nuit inchangé ;
+disque à venir → moyenne masquée et « Les critiques ouvriront le jour de la sortie. ». Les deux
+changements font l'objet d'issues.
