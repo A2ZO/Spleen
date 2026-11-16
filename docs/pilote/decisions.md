@@ -64,6 +64,14 @@ Ajouts du conseiller, validés :
   ListenBrainz plus tôt, puis dates plus tard (souvent une édition, parfois un report) avec ce
   qui reste. Raison : un report reste visible sans gaspiller le budget (relecteur, tour 1).
   Écarté : ne jamais relire une date plus tard (un report passerait inaperçu).
+- 2026-11-16, étape 3 — Fiche d'un disque à venir : `ShelfPicker` caché avec « Noter en
+  détail » (le brief ne garde que « À écouter » et « Ajouter à une liste »). Écarté : le garder.
+- 2026-11-16, étape 3 — Fiche artiste : « Une sortie manque ? » reste affichée aux membres
+  quand « À venir » est vide (c'est là qu'elle sert ; une phrase, pas une carte vide).
+- 2026-11-16, étape 3 — « La première critique t'attend » inchangée sur un disque à venir
+  (règles actuelles des blocs vides, brief). Écarté : une variante (à proposer à Azzo).
+- 2026-11-16, étape 3 — Refus `RELEASE_NOT_OUT` pour ce qui ajoute seulement : retirer une
+  note, un cœur ou une écoute reste permis (disque reporté après coup ; relecteur).
 
 ## QUESTION POUR AZZO
 
