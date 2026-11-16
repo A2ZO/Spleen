@@ -28,7 +28,7 @@ La référence fonctionnelle complète est `docs/cahier-des-charges.md`. En cas 
 
 ## Git et GitHub
 
-- **Ne jamais committer ni pousser sur `main`.** Une branche par jalon, nommée `feat/<numéro>-<nom-court>` (ex. `feat/01-fondations`), créée depuis `main` à jour.
+- **Ne jamais committer ni pousser sur `main`.** Une branche par jalon, nommée `feat/<numéro>-<nom-court>` (ex. `feat/01-fondations`), créée depuis `main` à jour. *(Remplacé depuis : branches tirées de `dev`, PR vers `dev` ; voir la section « Branches » de `CLAUDE.md`.)*
 - Commits petits et fréquents (Conventional Commits, en anglais).
 - En fin de jalon : `git push`, puis ouvre une pull request avec `gh pr create`. Description : ce qui a été fait, comment le tester, les décisions prises, ce qui reste.
 - Vérifie que la CI passe sur la PR (`gh pr checks`) et corrige si besoin.

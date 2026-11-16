@@ -117,9 +117,13 @@ typecheck, test (PGlite). Job `api-postgres` = les tests de l'API à nouveau sur
 `postgres:18` (version majeure de Neon, `C.UTF-8`) via postgres.js comme l'appli :
 `TEST_DATABASE_URL` fait créer par `createTestDb()` (`@spleen/db/testing`) une base jetable
 par fichier de test. Monter l'image quand Neon change de version majeure. Aucun secret en CI.
+Elle tourne sur les PR et les push vers `main` et `dev` ; `check` et `api-postgres` sont les
+vérifications exigées par les rulesets des deux branches (sans « à jour avec la base » : chaque
+fusion `dev` → `main` crée un commit que `dev` n'a pas).
 
 `.github/workflows/catalog-refresh.yml` (planifié, la nuit) : rafraîchit les discographies
-pour les sorties récentes, sur la base de production ; voir `docs/decouverte.md`.
+pour les sorties récentes, sur la base de production ; voir `docs/decouverte.md`. Il part de
+`dev` (branche par défaut) mais récupère le code de `main`.
 
 ## e2e
 

@@ -1,6 +1,6 @@
 ---
 name: fin-de-jalon
-description: Close a Spleen milestone — all checks green, push the milestone branch, open the PR, watch CI, update CLAUDE.md in the same PR, recap in French and stop. Run again with "fusionné" once the user has merged, to return to main and pull.
+description: Close a Spleen milestone — all checks green, push the milestone branch, open the PR to dev, watch CI, update CLAUDE.md in the same PR, recap in French and stop. Run again with "fusionné" once the user has merged, to return to dev, pull and open the release PR dev → main (merged by the user).
 argument-hint: "[fusionné]"
 disable-model-invocation: true
 ---
@@ -14,8 +14,8 @@ Two phases. Pick one from the arguments: `$ARGUMENTS`.
 
 Hard rules for both phases:
 
-- Never merge a PR (`gh pr merge` is forbidden), never commit or push to `main`, never
-  `git push --force`, never rewrite pushed history.
+- Never merge a PR (`gh pr merge` is forbidden), never commit or push to `main` or `dev`,
+  never `git push --force`, never rewrite pushed history.
 - Never read or print `.env`; never paste raw logs that may contain secrets (see
   `CLAUDE.md`, "Environment variables").
 - Commits: Conventional Commits in English, ending with the attribution line required by
@@ -26,8 +26,8 @@ Hard rules for both phases:
 ### 1. Check the branch
 
 - `git status` and `git branch --show-current`: must be a milestone branch
-  `feat/<nn>-<name>`, not `main`. If on `main` or the tree has unrelated changes, stop and
-  ask the user.
+  `feat/<nn>-<name>` (started from `dev`), not `main` or `dev`. If on `main` or `dev`, or the
+  tree has unrelated changes, stop and ask the user.
 - Commit pending milestone work first (logical commits).
 
 ### 2. Everything green, locally
@@ -59,7 +59,7 @@ Run `pnpm format:check`, then commit (`docs: update CLAUDE.md for milestone <n>`
 
 ```
 git push -u origin <branch>
-gh pr create --base main --title "<type>(<scope>): milestone <n> — <summary>" --body-file <tmp file>
+gh pr create --base dev --title "<type>(<scope>): milestone <n> — <summary>" --body-file <tmp file>
 ```
 
 Write the body in the scratchpad directory, in English, with these sections:
@@ -99,13 +99,28 @@ do not start the next milestone, do not merge.
 1. `gh pr view <branch> --json state -q .state` must be `MERGED`. If not, tell the user and
    stop.
 2. Stop the dev server on port 3000 if it was started for this milestone.
-3. Return to main and update:
+3. Return to dev and update:
 
 ```
-git switch main
+git switch dev
 git pull --ff-only
 ```
 
-4. Report in French: `main` is up to date (last commit), the merged branch can be deleted
-   (offer `git branch -d <branch>`; do not delete the remote branch without asking), and
-   the next milestone from CLAUDE.md, whose plan must be presented before any code.
+4. Open the release PR `dev` → `main` (merged by the user, as a merge commit; never by you).
+   If one is already open (`gh pr list --base main --head dev`), only report it.
+
+```
+gh pr create --draft --base main --head dev --title "release: milestone <n> — <summary>" --body-file <tmp file>
+gh pr checks <number> --watch --interval 15
+```
+
+Body in English: the milestone PRs merged into `dev` since the last release
+(`git log --first-parent --oneline origin/main..origin/dev`), ending with the Claude Code
+attribution line. Draft on purpose: GitHub refuses to merge a draft, so only the user merges
+it (« Ready for review », then « Create a merge commit »).
+
+5. Report in French: `dev` is up to date (last commit), the merged branch can be deleted
+   (offer `git branch -d <branch>`; do not delete the remote branch without asking), the
+   release PR link (draft) and its CI status (« passe-la en Ready for review et fusionne-la, en
+   commit de fusion »), and
+   the next milestone from CLAUDE.md, whose plan must be presented before any code. Then stop.
