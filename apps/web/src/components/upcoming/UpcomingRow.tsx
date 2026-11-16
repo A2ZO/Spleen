@@ -31,12 +31,12 @@ export function UpcomingRow({ item }: { item: UpcomingItem }) {
         </span>
       </Link>
       <div className="min-w-0 flex-1">
-        <p className="font-display text-lg leading-tight font-bold tracking-[-0.02em] break-words max-sm:line-clamp-2 sm:truncate">
+        <p className="font-display text-lg leading-7 font-bold tracking-[-0.02em] break-words max-sm:line-clamp-2 sm:truncate">
           <Link href={`/album/${release.slug}`} className="hover:text-star">
             {release.title}
           </Link>
         </p>
-        <p className="text-sm break-words text-fg-muted max-sm:line-clamp-2 sm:truncate">
+        <p className="text-sm leading-6 break-words text-fg-muted max-sm:line-clamp-2 sm:truncate">
           <ArtistLinks artists={release.artists} />
         </p>
         <p className="mt-1 flex flex-wrap items-center gap-2 text-xs text-fg-muted">
