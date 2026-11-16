@@ -60,6 +60,10 @@ Ajouts du conseiller, validés :
 - 2026-11-16, étape 2 — Une précision ajoutée (« 2027 » → « 2027-03-14 ») n'est pas une date
   modifiée ; seules les dates des sorties annoncées ou futures sont mises à jour par la
   relecture, jamais les dates passées (relecteur). Écarté : tout réécrire.
+- 2026-11-16, étape 2 — Budget de nuit dans l'ordre : imports, fiches à compléter, dates
+  ListenBrainz plus tôt, puis dates plus tard (souvent une édition, parfois un report) avec ce
+  qui reste. Raison : un report reste visible sans gaspiller le budget (relecteur, tour 1).
+  Écarté : ne jamais relire une date plus tard (un report passerait inaperçu).
 
 ## QUESTION POUR AZZO
 

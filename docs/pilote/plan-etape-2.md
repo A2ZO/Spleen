@@ -57,3 +57,18 @@ contre précision affinée ; dates passées jamais réécrites ; ListenBrainz �
 passages → aucun second changement ; artiste non suivi ignoré ; erreur ListenBrainz sans arrêt ;
 plafond de 40 ; ordre de la file ; règle par précision, 12 mois, groupes, filtre, 200, passage
 aux récentes, `byArtist` identique visiteur / membre.
+
+## Avancement
+
+- [x] 1. Migration
+- [x] 2. Client ListenBrainz
+- [x] 3. Suivi des dates
+- [x] 4. Passage de nuit
+- [x] 5. Règle partagée
+- [x] 6. Lectures tRPC
+- [x] 7. Démo
+- [x] 8. Docs
+- [x] vérifications
+- [x] relecture 1
+- [ ] relecture 2
+- [ ] clôture

@@ -134,18 +134,38 @@ describe("runUpcomingFeed", () => {
     expect(await row(other)).toBeUndefined();
   });
 
-  it("keeps the MusicBrainz date when ListenBrainz disagrees, night after night", async () => {
+  it("keeps the MusicBrainz date when ListenBrainz gives an earlier one", async () => {
     const mbid = newMbid();
     await existing(mbid, "2026-12-10", true);
     const mb = provider(new Map([[mbid, day("2026-12-10")]]));
-    const lb = listenBrainz([fresh(mbid, "2026-12-03")]);
-    for (const at of [NOW, new Date("2026-11-17T03:00:00Z")]) {
-      expect(await runUpcomingFeed(db(), mb.provider, lb, at)).toMatchObject({ datesChecked: 1 });
-    }
+    const result = await runUpcomingFeed(
+      db(),
+      mb.provider,
+      listenBrainz([fresh(mbid, "2026-12-03")]),
+      NOW,
+    );
+    expect(result).toMatchObject({ datesChecked: 1 });
     expect(await row(mbid)).toMatchObject({
       releaseDate: "2026-12-10",
       releaseDateChangedAt: null,
     });
+  });
+
+  it("checks a later ListenBrainz date only after the stubs, within the budget", async () => {
+    const [later, stub] = [newMbid(), newMbid()];
+    await existing(later, "2026-12-09", true);
+    await existing(stub, "2026-12-02", false);
+    const mb = provider(new Map([[stub, day("2026-12-02")]]));
+    const result = await runUpcomingFeed(
+      db(),
+      mb.provider,
+      listenBrainz([fresh(later, "2026-12-16")]),
+      NOW,
+      () => {},
+      1,
+    );
+    expect(result).toMatchObject({ completed: 1, datesChecked: 0 });
+    expect(mb.calls).toEqual([stub]);
   });
 
   it("applies a date MusicBrainz moved, and skips a group whose date already matches", async () => {
@@ -184,6 +204,23 @@ describe("runUpcomingFeed", () => {
     expect((await row(stubs[0]!))?.tracklistImportedAt).toEqual(NOW);
     expect((await row(stubs[2]!))?.tracklistImportedAt).toBeNull();
     expect(logs[0]).toContain("ListenBrainz failed");
+  });
+
+  it("spends a tight budget on a stub before a date check", async () => {
+    const [dated, stub] = [newMbid(), newMbid()];
+    await existing(dated, "2026-12-30", true);
+    await existing(stub, "2026-12-01", false);
+    const mb = provider(new Map([[stub, day("2026-12-01")]]));
+    const result = await runUpcomingFeed(
+      db(),
+      mb.provider,
+      listenBrainz([fresh(dated, "2026-12-05")]),
+      NOW,
+      () => {},
+      1,
+    );
+    expect(result).toMatchObject({ completed: 1, datesChecked: 0 });
+    expect(mb.calls).toEqual([stub]);
   });
 
   it("counts a failed re-read and goes on with the next one", async () => {

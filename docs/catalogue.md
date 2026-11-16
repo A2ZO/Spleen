@@ -76,7 +76,9 @@ Si MusicBrainz ne peut pas servir cette édition (erreur répétée), l'import e
   `X-RateLimit-*` respectés, attente de plus de 60 s refusée) ; seuls les groupes crédités à
   un artiste suivi (par `artists.mbid`) comptent : groupe inconnu → importé, fiche incomplète
   → complétée, date différente → relue sur MusicBrainz. Puis les fiches incomplètes des
-  sorties à venir d'artistes suivis. **40 relectures par nuit au plus** ; une erreur de
+  sorties à venir d'artistes suivis. **40 relectures par nuit au plus**, dans l'ordre :
+  imports, fiches à compléter, dates ListenBrainz plus tôt, puis plus tard (souvent la date
+  d'une édition, parfois un report) avec ce qui reste ; une erreur de
   ListenBrainz est notée et la suite continue.
 - La file des discographies met les artistes suivis en tête (les plus suivis d'abord),
   toujours une fois par semaine au plus.

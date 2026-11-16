@@ -94,7 +94,7 @@ async function incompleteUpcoming(db: Db, now: Date): Promise<string[]> {
   return rows.map((r) => r.mbid);
 }
 
-type Task = { kind: "import" | "complete" | "date"; mbid: string };
+type Task = { kind: "import" | "complete" | "date"; mbid: string; later?: boolean };
 
 /** What to do for one ListenBrainz release group already matched to a followed artist. */
 function taskFor(fresh: FreshRelease, known: KnownRow | undefined): Task | null {
@@ -104,9 +104,17 @@ function taskFor(fresh: FreshRelease, known: KnownRow | undefined): Task | null 
     return known.keptMbid ? { kind: "date", mbid: known.keptMbid } : null;
   }
   if (!known.complete) return { kind: "complete", mbid: known.mbid };
-  const same = known.precision === "day" && known.date === fresh.releaseDate;
-  return same ? null : { kind: "date", mbid: known.mbid };
+  if (known.precision !== "day" || known.date === null || fresh.releaseDate < known.date) {
+    return { kind: "date", mbid: known.mbid };
+  }
+  // A later ListenBrainz date is often one edition's date (MusicBrainz keeps the first), but it
+  // may be a postponement: checked only with what the budget leaves.
+  return fresh.releaseDate === known.date ? null : { kind: "date", mbid: known.mbid, later: true };
 }
+
+/** Imports, then completions, then date checks, later dates last: new data gets the budget first. */
+const TASK_ORDER: Record<Task["kind"], number> = { import: 0, complete: 1, date: 2 };
+const rank = (task: Task) => TASK_ORDER[task.kind] + (task.later ? 1 : 0);
 
 export async function runUpcomingFeed(
   db: Db,
@@ -155,6 +163,7 @@ export async function runUpcomingFeed(
     add({ kind: "complete", mbid });
   }
 
+  tasks.sort((a, b) => rank(a) - rank(b));
   result.skipped = Math.max(0, tasks.length - budget);
   for (const task of tasks.slice(0, budget)) {
     try {
