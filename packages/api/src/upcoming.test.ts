@@ -5,7 +5,12 @@ import { createTestDb } from "@spleen/db/testing";
 import { TRPCError } from "@trpc/server";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { UPCOMING_ARTIST_MAX, UPCOMING_MINE_MAX } from "./lib/catalog/upcoming";
+import {
+  AWAITED_MAX,
+  UPCOMING_ARTIST_MAX,
+  UPCOMING_HOME_MAX,
+  UPCOMING_MINE_MAX,
+} from "./lib/catalog/upcoming";
 import { createCaller } from "./root";
 import { createContext, type SessionUser } from "./trpc";
 
@@ -192,6 +197,165 @@ describe("recent releases", () => {
     expect(today).not.toContain(announced!.id);
     // In December, November is no longer upcoming: the release is recent.
     expect(await recentIds(new Date("2026-12-02T12:00:00Z"))).toContain(announced!.id);
+  });
+});
+
+describe("from upcoming to recent releases", () => {
+  it("moves a day release on the day it stops being upcoming", async () => {
+    const a = await artist();
+    const fans = [await member(), await member()];
+    for (const m of fans) await follow(m.id, a.id);
+    const [tomorrow] = await releases(a.id, [{ date: "2026-11-17" }]);
+    const at = (when: Date) =>
+      createCaller(createContext({ now: when, db: () => handle.db, user: async () => fans[0]! }));
+    const read = async (when: Date) => {
+      const caller = at(when);
+      const [recent, awaited, mine] = await Promise.all([
+        caller.discovery.recent({ size: 24 }),
+        caller.discovery.awaited(),
+        caller.upcoming.mine({}),
+      ]);
+      return {
+        recent: recent.items.some((c) => c.id === tomorrow!.id),
+        awaited: awaited.some((i) => i.release.id === tomorrow!.id),
+        mine: mine.some((i) => i.release.id === tomorrow!.id),
+      };
+    };
+    expect(await read(now)).toEqual({ recent: false, awaited: true, mine: true });
+    // The next day at 13:00 in Paris: out.
+    expect(await read(new Date("2026-11-17T12:00:00Z"))).toEqual({
+      recent: true,
+      awaited: false,
+      mine: false,
+    });
+  });
+});
+
+describe("upcoming.home", () => {
+  it("is null for a visitor, and says when the member follows nobody", async () => {
+    expect(await api(null).upcoming.home()).toBeNull();
+    const m = await member();
+    expect(await api(m).upcoming.home()).toEqual({ following: false, items: [], soon: null });
+  });
+
+  it(`gives the next ${UPCOMING_HOME_MAX} releases, year-only ones last`, async () => {
+    const a = await artist();
+    const m = await member();
+    await follow(m.id, a.id);
+    const rows = await releases(a.id, [
+      { date: "2027", precision: "year" },
+      { date: "2027-01-15" },
+      { date: "2026-12-01" },
+      { date: "2026-12-02" },
+      { date: "2026-12-03" },
+      { date: "2026-12-04" },
+    ]);
+    const home = await api(m).upcoming.home();
+    expect(home!.following).toBe(true);
+    expect(home!.items.map((i) => i.release.id)).toEqual(
+      [rows[2], rows[3], rows[4], rows[5], rows[1]].map((r) => r!.id),
+    );
+    const few = await member();
+    const b = await artist();
+    await follow(few.id, b.id);
+    const [year, day] = await releases(b.id, [
+      { date: "2027", precision: "year" },
+      { date: "2027-06-30" },
+    ]);
+    expect((await api(few).upcoming.home())!.items.map((i) => i.release.id)).toEqual([
+      day!.id,
+      year!.id,
+    ]);
+  });
+
+  it("finds the « Sort … » release from tomorrow to 6 days ahead, in the member's zone", async () => {
+    const soonOf = async (timeZone: string, inputs: ReleaseInput[]) => {
+      const a = await artist();
+      const m = await member(timeZone);
+      await follow(m.id, a.id);
+      const rows = await releases(a.id, inputs);
+      const soon = (await api(m).upcoming.home())!.soon;
+      return (
+        soon && { index: rows.findIndex((r) => r.id === soon.item.release.id), days: soon.inDays }
+      );
+    };
+    expect(await soonOf("Europe/Paris", [{ date: "2026-11-22" }, { date: "2026-11-17" }])).toEqual({
+      index: 1,
+      days: 1,
+    });
+    expect(await soonOf("Europe/Paris", [{ date: "2026-11-22" }])).toEqual({ index: 0, days: 6 });
+    // Too far, a month or today (not upcoming): no card.
+    expect(
+      await soonOf("Europe/Paris", [
+        { date: "2026-11-23" },
+        { date: "2026-11", precision: "month", announced: true },
+        { date: "2026-11-16" },
+      ]),
+    ).toBeNull();
+    // Already Tuesday in Kiritimati: the 17th is today there, the 18th tomorrow.
+    expect(
+      await soonOf("Pacific/Kiritimati", [{ date: "2026-11-17" }, { date: "2026-11-18" }]),
+    ).toEqual({ index: 1, days: 1 });
+  });
+});
+
+describe("discovery.awaited", () => {
+  const queue = (m: SessionUser, releaseId: string) =>
+    api(m).listening.setWantToListen({
+      target: { kind: "release", id: releaseId },
+      wantToListen: true,
+    });
+
+  it("ranks by distinct members (follow or « À écouter »), 2 at least, suspended left out", async () => {
+    const a = await artist();
+    const b = await artist();
+    const [m1, m2, m3, suspended] = [
+      await member(),
+      await member(),
+      await member(),
+      await member(),
+    ];
+    await db()
+      .update(schema.profiles)
+      .set({ suspendedAt: now })
+      .where(eq(schema.profiles.userId, suspended.id));
+    const [three, two, alone, past] = [
+      ...(await releases(a.id, [{ date: "2027-03-01" }, { date: "2026-12-10" }])),
+      ...(await releases(b.id, [{ date: "2026-12-11" }, { date: "2026-11-10" }])),
+    ];
+    // `three`: m1 and m2 follow its artist, m3 queued it (m1 too: counted once).
+    await follow(m1.id, a.id);
+    await follow(m2.id, a.id);
+    await queue(m3, three!.id);
+    await queue(m1, three!.id);
+    // `two`: m1 and m2 (artist a). `alone`: m3 and a suspended member. `past`: out already.
+    await follow(m3.id, b.id);
+    await follow(suspended.id, b.id);
+    const ids = (await api(null).discovery.awaited()).map((i) => i.release.id);
+    expect(ids.indexOf(three!.id)).toBeLessThan(ids.indexOf(two!.id));
+    expect(ids).toContain(two!.id);
+    expect(ids).not.toContain(alone!.id);
+    expect(ids).not.toContain(past!.id);
+    // The same for a member (no reader data).
+    const mine = await api(m1).discovery.awaited();
+    expect(mine.map((i) => i.release.id)).toEqual(ids);
+    expect(mine.every((i) => !i.wantToListen)).toBe(true);
+  });
+
+  it(`breaks ties by the nearest date, year-only last, ${AWAITED_MAX} at most`, async () => {
+    const a = await artist();
+    const fans = [await member(), await member(), await member(), await member(), await member()];
+    for (const m of fans) await follow(m.id, a.id);
+    const rows = await releases(a.id, [
+      { date: "2027", precision: "year" },
+      ...Array.from({ length: AWAITED_MAX + 1 }, (_, i) => ({
+        date: `2027-02-${String(i + 10).padStart(2, "0")}`,
+      })),
+    ]);
+    const ids = (await api(null).discovery.awaited()).map((i) => i.release.id);
+    expect(ids).toHaveLength(AWAITED_MAX);
+    // Five members beat every record of the other tests (four at most).
+    expect(ids).toEqual(rows.slice(1, AWAITED_MAX + 1).map((r) => r.id));
   });
 });
 

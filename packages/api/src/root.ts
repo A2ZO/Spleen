@@ -76,7 +76,13 @@ import {
 } from "./lib/catalog/artist-follows";
 import { importArtist, importEntity, importReleaseGroup } from "./lib/catalog/import";
 import { mergeCatalog, mergedSlug, previewMerge } from "./lib/catalog/merge";
-import { upcomingByArtist, upcomingForMember, upcomingSuggestions } from "./lib/catalog/upcoming";
+import {
+  awaitedReleases,
+  upcomingByArtist,
+  upcomingForMember,
+  upcomingHome,
+  upcomingSuggestions,
+} from "./lib/catalog/upcoming";
 import { createCatalogReport } from "./lib/catalog/reports";
 import {
   artistIdBySlug,
@@ -302,6 +308,8 @@ export const appRouter = router({
       .input(topRatedSchema)
       .query(async ({ input, ctx }) => topRated(ctx.db(), await viewerOf(ctx), input)),
     genres: publicProcedure.query(({ ctx }) => genreOptions(ctx.db())),
+    /** « Les plus attendus »: the upcoming releases most members wait for (Paris day). */
+    awaited: publicProcedure.query(({ ctx }) => awaitedReleases(ctx.db(), ctx.now)),
   }),
   social: router({
     follow: followWrite
@@ -467,6 +475,21 @@ export const appRouter = router({
         account?.profile?.timeZone,
         ctx.now,
         input.type,
+      );
+    }),
+    /**
+     * The member's home page (« Bientôt dans tes oreilles », « Sort … » card); null for a
+     * visitor, a suspended account or before onboarding, so it can start before `account.me`.
+     */
+    home: publicProcedure.query(async ({ ctx }) => {
+      const account = await ctx.account();
+      if (!account?.profile || account.suspendedAt) return null;
+      return upcomingHome(
+        ctx.db(),
+        await viewerOf(ctx),
+        account.user.id,
+        account.profile.timeZone,
+        ctx.now,
       );
     }),
     /** Of one artist: the same for everyone (public cache), Paris day. */

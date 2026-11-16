@@ -3,7 +3,13 @@ import { rowsOf, sql, type Db, type DbOrTx, type SQL } from "@spleen/db";
 import { DEFAULT_TIME_ZONE, todayIn, type ReleaseType } from "@spleen/validators";
 
 import { fail } from "../../trpc";
-import type { ReleaseCard, UpcomingGroup, UpcomingItem, UpcomingSuggestions } from "../../types";
+import type {
+  ReleaseCard,
+  UpcomingGroup,
+  UpcomingHome,
+  UpcomingItem,
+  UpcomingSuggestions,
+} from "../../types";
 import { loadReleaseCards, toReleaseCard } from "./cards";
 import { maskRelease, ratedIds } from "../listening/blind";
 import { getMemberStats } from "../stats";
@@ -27,6 +33,14 @@ export const UPCOMING_MINE_MAX = 200;
 export const UPCOMING_ARTIST_MAX = 20;
 /** « Cette semaine »: the next 7 days, today excluded. */
 export const UPCOMING_WEEK_DAYS = 7;
+/** Tiles of « Bientôt dans tes oreilles » on the home page. */
+export const UPCOMING_HOME_MAX = 5;
+/** The « Sort … » card of the home page: a day release at most this many days ahead. */
+export const UPCOMING_SOON_DAYS = 6;
+/** « Les plus attendus » on /discover: at most this many records… */
+export const AWAITED_MAX = 10;
+/** …each awaited by at least this many members. */
+export const AWAITED_MIN_MEMBERS = 2;
 
 /** Not merged and a main release (secondary types limited to MAIN_SECONDARY_TYPES). */
 export function mainReleaseSql(): SQL {
@@ -102,11 +116,16 @@ interface UpcomingRow {
   changed: boolean;
 }
 
+/**
+ * Items for `rows`, in their order. `withQueue: false` skips the reader's « À écouter »
+ * (tiles that show no button).
+ */
 async function toItems(
   db: Db,
   viewer: Viewer,
   rows: UpcomingRow[],
   today: string,
+  withQueue = true,
 ): Promise<UpcomingItem[]> {
   const cards = new Map(
     (
@@ -117,7 +136,7 @@ async function toItems(
     ).map((c) => [c.id, toReleaseCard(c)]),
   );
   const queued = new Set<string>();
-  if (viewer.id && cards.size > 0) {
+  if (withQueue && viewer.id && cards.size > 0) {
     const rows = rowsOf<{ id: string }>(
       await db.execute(sql`
         select release_id as id from user_item_state
@@ -154,6 +173,13 @@ async function toItems(
 const rowColumns = sql`r.id, to_char(r.release_date, 'YYYY-MM-DD') as date,
   r.release_date_precision as precision, r.release_date_changed_at is not null as changed`;
 
+/** Followed by `userId`: one of the release's artists. */
+const followedBy = (userId: string) => sql`exists (
+  select 1 from release_artists ra
+  join artist_follows af on af.artist_id = ra.artist_id
+  where ra.release_id = r.id and af.user_id = ${userId}
+)`;
+
 /**
  * Upcoming releases of the artists the member follows, by date then title, in the member's
  * zone; one type or all three.
@@ -172,15 +198,97 @@ export async function upcomingForMember(
     from releases r
     where ${upcomingSql(today)}
       and ${type ? sql`r.type = ${type}` : sql`true`}
-      and exists (
-        select 1 from release_artists ra
-        join artist_follows af on af.artist_id = ra.artist_id
-        where ra.release_id = r.id and af.user_id = ${userId}
-      )
+      and ${followedBy(userId)}
     order by r.release_date, r.title, r.id
     limit ${UPCOMING_MINE_MAX}
   `);
   return toItems(db, viewer, rowsOf<UpcomingRow>(result), today);
+}
+
+const daysBetween = (from: string, to: string) =>
+  Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000);
+
+/**
+ * The member's home page (in their zone): the next UPCOMING_HOME_MAX followed releases
+ * (a year-only date is stored on January 1st: those come last), the first day release from
+ * tomorrow to UPCOMING_SOON_DAYS ahead, and whether they follow anyone.
+ */
+export async function upcomingHome(
+  db: Db,
+  viewer: Viewer,
+  userId: string,
+  timeZone: string | null | undefined,
+  now: Date,
+): Promise<UpcomingHome> {
+  const today = todayIn(timeZone || DEFAULT_TIME_ZONE, now);
+  const [next, soon, follows] = await Promise.all([
+    db.execute(sql`
+      select ${rowColumns}
+      from releases r
+      where ${upcomingSql(today)} and ${followedBy(userId)}
+      order by (r.release_date_precision = 'year'), r.release_date, r.title, r.id
+      limit ${UPCOMING_HOME_MAX}
+    `),
+    db.execute(sql`
+      select ${rowColumns}
+      from releases r
+      where ${upcomingSql(today)} and ${followedBy(userId)}
+        and r.release_date_precision = 'day'
+        and r.release_date <= ${addDays(today, UPCOMING_SOON_DAYS)}::date
+      order by r.release_date, r.title, r.id
+      limit 1
+    `),
+    db.execute(
+      sql`select exists (select 1 from artist_follows where user_id = ${userId}) as following`,
+    ),
+  ]);
+  const nextRows = rowsOf<UpcomingRow>(next);
+  const soonRow = rowsOf<UpcomingRow>(soon)[0];
+  // The soon release is often among the next ones: one card load for both.
+  const rows =
+    soonRow && !nextRows.some((r) => r.id === soonRow.id) ? [...nextRows, soonRow] : nextRows;
+  const items = await toItems(db, viewer, rows, today, false);
+  const soonItem = soonRow && items.find((i) => i.release.id === soonRow.id);
+  return {
+    following: rowsOf<{ following: boolean }>(follows)[0]?.following ?? false,
+    items: items.filter((i) => nextRows.some((r) => r.id === i.release.id)),
+    soon: soonItem ? { item: soonItem, inDays: daysBetween(today, soonItem.date) } : null,
+  };
+}
+
+/**
+ * « Les plus attendus » (Paris day, the same for every reader: public cache, issue #22):
+ * upcoming releases ranked by distinct members who follow one of their artists or have them
+ * in « À écouter », AWAITED_MIN_MEMBERS at least, suspended members left out, every language;
+ * ties go to the nearest date (year-only last). No member is named or counted in the result.
+ */
+export async function awaitedReleases(db: Db, now: Date): Promise<UpcomingItem[]> {
+  const today = todayIn(DEFAULT_TIME_ZONE, now);
+  const result = await db.execute(sql`
+    with coming as (
+      select ${rowColumns}, r.release_date as day, r.title
+      from releases r where ${upcomingSql(today)}
+    ),
+    fans as (
+      select c.id, af.user_id
+      from coming c
+      join release_artists ra on ra.release_id = c.id
+      join artist_follows af on af.artist_id = ra.artist_id
+      union
+      select c.id, s.user_id
+      from coming c
+      join user_item_state s on s.release_id = c.id and s.want_to_listen
+    )
+    select c.id, c.date, c.precision, c.changed
+    from coming c
+    join fans f on f.id = c.id
+    join profiles p on p.user_id = f.user_id and p.suspended_at is null
+    group by c.id, c.date, c.precision, c.changed, c.day, c.title
+    having count(distinct f.user_id) >= ${AWAITED_MIN_MEMBERS}
+    order by count(distinct f.user_id) desc, (c.precision = 'year'), c.day, c.title, c.id
+    limit ${AWAITED_MAX}
+  `);
+  return toItems(db, { id: null, blind: null }, rowsOf<UpcomingRow>(result), today, false);
 }
 
 /**

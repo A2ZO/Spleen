@@ -133,6 +133,16 @@ export interface UpcomingItem {
   wantToListen: boolean;
 }
 
+/** The member's home page: « Bientôt dans tes oreilles » and the « Sort … » card (issue #32). */
+export interface UpcomingHome {
+  /** Follows at least one artist. */
+  following: boolean;
+  /** The next few upcoming releases of the followed artists (year-only ones last). */
+  items: UpcomingItem[];
+  /** The first followed release with a day between tomorrow and 6 days ahead, if any. */
+  soon: { item: UpcomingItem; inDays: number } | null;
+}
+
 /** « Tes artistes les plus écoutés » on « Mes sorties à venir ». */
 export interface UpcomingSuggestions {
   /** Artists the member follows. */
