@@ -1,9 +1,13 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import type { FormEvent } from "react";
+import { useActionState, type FormEvent } from "react";
 
-import { artistFollowFormAction, setArtistFollowAction } from "@/app/[locale]/artist/actions";
+import {
+  artistFollowFormAction,
+  setArtistFollowAction,
+  type ArtistFollowResult,
+} from "@/app/[locale]/artist/actions";
 import { Button } from "@/components/ui/Button";
 import { ReactionStatus } from "@/components/ui/ReactionStatus";
 import { useInstantWrites } from "@/lib/use-instant-writes";
@@ -29,6 +33,11 @@ export function ArtistFollowButton({
   className?: string;
 }) {
   const t = useTranslations("artist");
+  // Without JavaScript the form posts to the action; its answer carries the error to show.
+  const [posted, formAction] = useActionState<ArtistFollowResult, FormData>(
+    artistFollowFormAction,
+    {},
+  );
   const follow = useInstantWrites({
     key: `artist-follow:${artistId}`,
     props: following,
@@ -49,14 +58,14 @@ export function ArtistFollowButton({
   };
 
   return (
-    <form action={artistFollowFormAction} onSubmit={submit} className="inline-flex flex-col">
+    <form action={formAction} onSubmit={submit} className="inline-flex flex-col">
       <input type="hidden" name="artistId" value={artistId} />
       <input type="hidden" name="follow" value={String(!follow.shown)} />
       <Button type="submit" variant={follow.shown ? "secondary" : "primary"} className={className}>
         {follow.shown ? t("unfollow") : t("follow")}
         <span className="sr-only"> {name}</span>
       </Button>
-      <ReactionStatus error={follow.error} />
+      <ReactionStatus error={follow.error ?? posted.error ?? null} />
     </form>
   );
 }

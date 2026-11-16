@@ -33,9 +33,15 @@ export async function setArtistFollowAction(
   }
 }
 
-/** The same write from the button's form, sent without JavaScript; the page re-renders. */
-export async function artistFollowFormAction(formData: FormData): Promise<void> {
-  await setArtistFollowAction(
+/**
+ * The same write from the button's form, sent without JavaScript; the page re-renders and the
+ * button shows the error, if any (`useActionState`).
+ */
+export async function artistFollowFormAction(
+  _previous: ArtistFollowResult,
+  formData: FormData,
+): Promise<ArtistFollowResult> {
+  return setArtistFollowAction(
     String(formData.get("artistId") ?? ""),
     formData.get("follow") === "true",
   );
