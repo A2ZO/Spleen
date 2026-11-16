@@ -28,13 +28,13 @@ each step and the usual checks), `decisions.md`, `journal.md`. Screenshots go to
 1. If `docs/pilote/STOP` exists, or `etat.md` says phase `attente` or `fini`: stop without
    writing anything.
 2. Lock: if `.git/pilote.lock` exists and the time written in it is less than 2 hours old, another run is working: stop without writing anything. Otherwise (no lock, or a stale one left by a run cut short by the usage limit) write the current date and time into it, and rewrite that time at each commit and each phase change. Delete it at the end of the run, whatever happens. Then run `pnpm run free-port`: a run cut short may have left a server on port 3000.
-3. `git branch --show-current` must be the branch named in `etat.md`. If it is not, switch only
-   when the working tree is clean; otherwise go to « Attente » with the reason. When the tree is
-   clean, `git pull --ff-only` (the owner may have answered from GitHub).
+3. If the branch named in `etat.md` does not exist yet (a new milestone prepared by the advisor): `git switch dev`, `git pull --ff-only` (the advisor's uncommitted changes under `docs/` stay in the working tree), `git switch -c <branch>`, commit everything under `docs/` (`git add -A docs`) as « docs: pilote jalon <nn> préparé par le conseiller », then `git push -u origin <branch>`. Otherwise `git branch --show-current` must be that branch: if it is not, switch only when the working tree is clean, else « Attente » with the reason. When the tree is clean, `git pull --ff-only` (an answer may have been pushed from GitHub).
 4. Resuming: uncommitted changes, or a phase other than `plan`, mean the previous run may have been cut short. Read « Avancement » at the end of the step's plan, `git log` since the last `docs: pilote étape` commit and `git diff`, then continue from the first unchecked line. If the plan has no « Avancement » yet, add it from what `git log` shows. Never discard changes; never redo what is checked and committed.
 5. Read the milestone doc named in `etat.md` (« Doc du jalon »), `docs/pilote/decisions.md`
    (the owner's answers included), `docs/design/README.md` when the step changes screens, and,
    in `feuille-de-route.md`, its « Cadre », the usual checks and the brief of the current step.
+   Rules and answers written by the advisor (« Décidé par le conseiller », « Réponse du
+   conseiller ») count as the owner's: he delegated those decisions.
 
 ## 1. Plan — phase `plan`
 
