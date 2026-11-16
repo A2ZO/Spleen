@@ -84,7 +84,6 @@ export const verification = pgTable(
 /* Spleen profile, 1:1 with `user`. */
 
 export const userRole = pgEnum("user_role", ["member", "admin"]);
-export const themePreference = pgEnum("theme_preference", ["dark", "light"]);
 
 export const profiles = pgTable(
   "profiles",
@@ -98,7 +97,6 @@ export const profiles = pgTable(
     avatarUrl: text("avatar_url"),
     bannerUrl: text("banner_url"),
     locale: varchar("locale", { length: 8 }).notNull().default("fr"),
-    theme: themePreference("theme").notNull().default("dark"),
     /** IANA time zone: "today" for a new listen is computed in it, never in the server's. */
     timeZone: text("time_zone").notNull().default("Europe/Paris"),
     statsPrivate: boolean("stats_private").notNull().default(false),

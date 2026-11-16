@@ -81,7 +81,6 @@ describe("onboardingSchema", () => {
     displayName: " Camille ",
     termsAccepted: true,
     locale: "fr",
-    theme: "dark",
   };
 
   it("normalizes the input", () => {

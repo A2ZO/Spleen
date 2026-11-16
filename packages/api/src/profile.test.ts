@@ -50,7 +50,6 @@ async function member(options: { timeZone?: string; blindMode?: boolean } = {}) 
     displayName: username,
     termsAccepted: true,
     locale: "fr",
-    theme: "dark",
     timeZone: options.timeZone ?? "Europe/Paris",
   });
   if (options.blindMode) {

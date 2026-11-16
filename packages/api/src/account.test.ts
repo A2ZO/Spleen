@@ -50,7 +50,6 @@ async function member(username: string): Promise<SessionUser> {
     displayName: username,
     termsAccepted: true,
     locale: "fr",
-    theme: "dark",
   });
   return user;
 }
@@ -108,7 +107,6 @@ describe("per-request memo", () => {
       displayName: "Mémo",
       bio: "",
       locale: "fr",
-      theme: "dark",
       statsPrivate: false,
       diaryPrivate: false,
       blindMode: false,
@@ -124,7 +122,6 @@ describe("account.onboard", () => {
     displayName: "Camille",
     termsAccepted: true as const,
     locale: "en" as const,
-    theme: "light" as const,
   };
 
   it("creates the profile with the age and terms dates, and the terms version", async () => {
@@ -135,7 +132,6 @@ describe("account.onboard", () => {
       username: "camille_r",
       displayName: "Camille",
       locale: "en",
-      theme: "light",
     });
     expect(await api(user).account.usernameChangeAvailableAt()).toBeNull();
     const [row] = await handle.db
@@ -227,7 +223,6 @@ describe("account.updateProfile", () => {
       displayName: "Édith",
       bio: "Du jazz, la nuit.",
       locale: "en",
-      theme: "light",
       statsPrivate: true,
       diaryPrivate: true,
       blindMode: true,
@@ -346,7 +341,6 @@ describe("account.delete", () => {
       displayName: "Alice Nocturne",
       termsAccepted: true,
       locale: "fr",
-      theme: "dark",
     });
     await api(tester).account.delete({ confirmUsername: "e2e_mvx1abcd" });
     expect(
@@ -365,7 +359,6 @@ describe("account.delete", () => {
       displayName: "Alice Nocturne",
       termsAccepted: true,
       locale: "fr",
-      theme: "dark",
     });
     vi.stubEnv("NODE_ENV", "production");
     try {
@@ -398,7 +391,6 @@ describe("account.delete", () => {
           displayName: "New",
           termsAccepted: true,
           locale: "fr",
-          theme: "dark",
         }),
       ),
     ).toBe("USERNAME_RESERVED");
@@ -410,7 +402,6 @@ describe("account.delete", () => {
       displayName: "New",
       termsAccepted: true,
       locale: "fr",
-      theme: "dark",
     });
     const anonymous = await handle.db
       .select()

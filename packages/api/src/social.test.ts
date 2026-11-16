@@ -61,7 +61,6 @@ async function member(options: { diaryPrivate?: boolean; blindMode?: boolean } =
     displayName: `Member ${memberCount}`,
     termsAccepted: true,
     locale: "fr",
-    theme: "dark",
     timeZone: "Europe/Paris",
   });
   if (options.diaryPrivate || options.blindMode) {
