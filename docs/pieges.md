@@ -71,7 +71,7 @@ Moved out of CLAUDE.md to keep it short. Append new ones here.
   redirect) and covers the failure with JavaScript off, with late scripts and after hydration.
 - CSP: `*.archive.org` does not cover `archive.org` itself (both are listed). A nonce or hash
   in `script-src` makes `'unsafe-inline'` ignored: the static policy of cached pages (issue #22)
-  carries no hash at all (cover script, future theme script), `'unsafe-inline'` covers them.
+  carries no hash at all (not even the cover script's): `'unsafe-inline'` covers it.
   A whole-page navigation (`window.location.href`, the Google sign-in) is not bound by the
   policy. next-intl copies the request headers: set the CSP on a
   `new NextRequest(request, { headers })`.
