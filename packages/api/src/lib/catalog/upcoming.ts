@@ -221,36 +221,47 @@ export async function upcomingHome(
   now: Date,
 ): Promise<UpcomingHome> {
   const today = todayIn(timeZone || DEFAULT_TIME_ZONE, now);
-  const [next, soon, follows] = await Promise.all([
-    db.execute(sql`
-      select ${rowColumns}
-      from releases r
-      where ${upcomingSql(today)} and ${followedBy(userId)}
-      order by (r.release_date_precision = 'year'), r.release_date, r.title, r.id
-      limit ${UPCOMING_HOME_MAX}
+  // One statement (the home page already fills the small pool): `following` on every row,
+  // and one row with null columns when nothing is upcoming.
+  const picked = rowsOf<{ following: boolean; pick: "next" | "soon" | null } & UpcomingRow>(
+    await db.execute(sql`
+      select f.following, p.id, p.date, p.precision, p.changed, p.pick
+      from (
+        select exists (select 1 from artist_follows where user_id = ${userId}) as following
+      ) f
+      left join lateral (
+        (
+          select ${rowColumns}, 'next' as pick, row_number() over (
+            order by (r.release_date_precision = 'year'), r.release_date, r.title, r.id
+          ) as ord
+          from releases r
+          where ${upcomingSql(today)} and ${followedBy(userId)}
+          order by ord
+          limit ${UPCOMING_HOME_MAX}
+        )
+        union all
+        (
+          select ${rowColumns}, 'soon' as pick, 0 as ord
+          from releases r
+          where ${upcomingSql(today)} and ${followedBy(userId)}
+            and r.release_date_precision = 'day'
+            and r.release_date <= ${addDays(today, UPCOMING_SOON_DAYS)}::date
+          order by r.release_date, r.title, r.id
+          limit 1
+        )
+      ) p on true
+      order by p.pick, p.ord
     `),
-    db.execute(sql`
-      select ${rowColumns}
-      from releases r
-      where ${upcomingSql(today)} and ${followedBy(userId)}
-        and r.release_date_precision = 'day'
-        and r.release_date <= ${addDays(today, UPCOMING_SOON_DAYS)}::date
-      order by r.release_date, r.title, r.id
-      limit 1
-    `),
-    db.execute(
-      sql`select exists (select 1 from artist_follows where user_id = ${userId}) as following`,
-    ),
-  ]);
-  const nextRows = rowsOf<UpcomingRow>(next);
-  const soonRow = rowsOf<UpcomingRow>(soon)[0];
+  );
+  const nextRows = picked.filter((r) => r.pick === "next");
+  const soonRow = picked.find((r) => r.pick === "soon");
   // The soon release is often among the next ones: one card load for both.
   const rows =
     soonRow && !nextRows.some((r) => r.id === soonRow.id) ? [...nextRows, soonRow] : nextRows;
   const items = await toItems(db, viewer, rows, today, false);
   const soonItem = soonRow && items.find((i) => i.release.id === soonRow.id);
   return {
-    following: rowsOf<{ following: boolean }>(follows)[0]?.following ?? false,
+    following: picked[0]?.following ?? false,
     items: items.filter((i) => nextRows.some((r) => r.id === i.release.id)),
     soon: soonItem ? { item: soonItem, inDays: daysBetween(today, soonItem.date) } : null,
   };
