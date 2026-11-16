@@ -35,8 +35,9 @@ Ajouts du conseiller, validés :
 - 2026-11-16, étape 1 — L'état « je suis cet artiste » vient d'une procédure à part
   (`artistFollow.status`), pas de `artist.bySlug`. Raison : garder la lecture de la fiche
   identique pour tous (cache public, issue #22). Écarté : un champ `viewerFollows`.
-- 2026-11-16, étape 1 — Bouton « Suivre » / « Ne plus suivre » (`aria-pressed`), comme le bouton
-  d'abonnement à un membre. Écarté : « Suivi », qui ne dit pas ce que fait le clic.
+- 2026-11-16, étape 1 — Bouton « Suivre » / « Ne plus suivre », sans `aria-pressed` : le
+  libellé dit l'état (correction 1 d'Azzo ci-dessous, appliquée aussi à `FollowButton`). Écarté :
+  « Suivi », qui ne dit pas ce que fait le clic.
 - 2026-11-16, étape 1 — Réglages : « Mes artistes suivis » sans compteur dans le titre ; le
   bouton redevient « Suivre » au clic (annulation). Écarté : sous-page dédiée.
 

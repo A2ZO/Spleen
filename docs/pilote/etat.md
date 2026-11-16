@@ -4,7 +4,7 @@
 - Branche : feat/11-sorties-a-venir
 - Doc du jalon : docs/jalon-11-en-cours.md
 - Étape : 1 (Suivre un artiste)
-- Phase : code (plan validé par Azzo le 16 novembre, avec deux corrections dans `decisions.md`)
+- Phase : verif (code commité : e2fce69, c3124ce, 6b7cfa1)
 - Mis à jour : 2026-11-16
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante, sans arrêt entre les
