@@ -10,6 +10,7 @@ import { getLocale, getTranslations } from "next-intl/server";
 
 import { ReleaseGrid, TopRatedList, TrendsGrid } from "@/components/discovery/Charts";
 import { ReviewCard } from "@/components/social/ReviewCard";
+import { UpcomingGrid } from "@/components/upcoming/UpcomingGrid";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { SelectField, TextField } from "@/components/ui/Field";
@@ -50,7 +51,8 @@ function yearParam(value: string | string[] | undefined, step = 1): number | und
 }
 
 /**
- * Discovery: the week's trends by audience, recent releases, top rated charts (filters in
+ * Discovery: the week's trends by audience, the most awaited upcoming releases, recent
+ * releases, top rated charts (filters in
  * the URL, plain GET form) and popular reviews. Every block reads real data only.
  */
 export default async function DiscoverPage({ params, searchParams }: Props) {
@@ -73,8 +75,9 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
   } as const;
 
   const api = await getApi();
-  const [trends, recent, top, genres, popular, t, uiLocale] = await Promise.all([
+  const [trends, awaited, recent, top, genres, popular, t, uiLocale] = await Promise.all([
     api.discovery.trends({ lang }),
+    api.discovery.awaited(),
     api.discovery.recent({
       type: recentType.success && recentType.data === "single" ? "single" : undefined,
       page: pageParam(raw.rpage),
@@ -127,6 +130,16 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
           <TrendsGrid items={trends} />
         )}
       </section>
+
+      {awaited.length > 0 && (
+        <section aria-labelledby="awaited" className="scroll-mt-24">
+          <SectionHeading id="awaited">{t("discover.awaitedTitle")}</SectionHeading>
+          <p className="mb-5 max-w-2xl text-sm text-fg-muted text-pretty">
+            {t("discover.awaitedHint")}
+          </p>
+          <UpcomingGrid items={awaited} />
+        </section>
+      )}
 
       <section aria-labelledby="recent" className="scroll-mt-24">
         <SectionHeading id="recent">{t("discover.recentTitle")}</SectionHeading>

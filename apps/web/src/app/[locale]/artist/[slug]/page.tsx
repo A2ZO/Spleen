@@ -2,7 +2,7 @@ import { TRPCError } from "@trpc/server";
 import type { ReleaseCard } from "@spleen/api";
 import { discographyGroupSchema, slugSchema, type DiscographyGroup } from "@spleen/validators";
 import type { Metadata } from "next";
-import { getFormatter, getLocale, getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
 import { ArtistFollowButton } from "@/components/catalog/ArtistFollowButton";
@@ -13,6 +13,7 @@ import { DetailBar } from "@/components/detail/DetailBar";
 import { moreMenuItem } from "@/components/detail/MoreMenu";
 import { AddToListButton } from "@/components/lists/AddToList";
 import { ReleaseTile } from "@/components/release/ReleaseTile";
+import { UpcomingGrid } from "@/components/upcoming/UpcomingGrid";
 import { Avatar } from "@/components/ui/Avatar";
 import { Badge } from "@/components/ui/Badge";
 import { ButtonLink } from "@/components/ui/Button";
@@ -24,7 +25,6 @@ import { missingCatalogPage } from "@/lib/catalog-redirect";
 import { artistKind } from "@/lib/catalog-labels";
 import { cn } from "@/lib/cn";
 import { phoneTitleSize } from "@/lib/display-title";
-import { formatUpcomingDate } from "@/lib/release-date";
 import { seoMetadata } from "@/lib/seo";
 import { getApi } from "@/server/api";
 
@@ -144,13 +144,12 @@ export default async function ArtistPage({ params, searchParams }: Props) {
   const { locale, slug } = await params;
   initRouteLocale(locale);
   const all = await fullGroup(searchParams);
-  const [artist, { me, followStatus }, upcoming, t, uiLocale, format] = await Promise.all([
+  const [artist, { me, followStatus }, upcoming, t, uiLocale] = await Promise.all([
     getArtist(slug, all),
     memberState(slug),
     upcomingFor(slug),
     getTranslations(),
     getLocale(),
-    getFormatter(),
   ]);
   if (!artist) return missingCatalogPage("artist", slug, locale);
 
@@ -287,16 +286,7 @@ export default async function ArtistPage({ params, searchParams }: Props) {
         {upcoming.length > 0 && (
           <section aria-labelledby="upcoming">
             <SectionHeading id="upcoming">{t("upcoming.artistTitle")}</SectionHeading>
-            <ul className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
-              {upcoming.map((item) => (
-                <li key={item.release.id}>
-                  <ReleaseTile
-                    release={item.release}
-                    detail={formatUpcomingDate(format, item.date, item.precision)}
-                  />
-                </li>
-              ))}
-            </ul>
+            <UpcomingGrid items={upcoming} />
           </section>
         )}
         {me?.profile && (

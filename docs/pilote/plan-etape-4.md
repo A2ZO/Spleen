@@ -43,9 +43,9 @@ Brief : `feuille-de-route.md`, « Étape 4 ». Aucune migration ni dépendance. 
 - [x] 1. `upcoming.home`
 - [x] 2. `discovery.awaited`
 - [x] 3. Passage aux sorties récentes
-- [ ] 4. `UpcomingGrid`
-- [ ] 5. Accueil membre
-- [ ] 6. Carte #32
-- [ ] 7. `/discover`
+- [x] 4. `UpcomingGrid`
+- [x] 5. Accueil membre
+- [x] 6. Carte #32
+- [x] 7. `/discover`
 - [ ] 8. e2e
 - [ ] 9. Docs et captures
