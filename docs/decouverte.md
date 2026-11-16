@@ -61,7 +61,9 @@ artiste. Server Actions : `apps/web/src/app/[locale]/list/actions.ts`.
 
 - Disques sortis ces 90 derniers jours, au jour ou au mois près (une année seule n'est pas
   « récente »), sans live ni compilation ; albums et EP par défaut, singles à part ;
-  du plus récent au plus ancien. Aucun appel à MusicBrainz à l'affichage.
+  du plus récent au plus ancien. Aucun appel à MusicBrainz à l'affichage. Ce que la règle
+  des sorties à venir retient (jour de Paris) en est exclu : un mois annoncé reste « à venir »
+  pendant ce mois, puis devient récent.
 - Alimentation : `pnpm catalog:refresh` relit la discographie (stubs des nouvelles
   sorties) d'au plus 150 artistes : ceux écoutés par des membres sur 30 jours (disques,
   morceaux, artistes) et ceux présents sur une Étagère, les plus suivis d'abord, chacun au
@@ -70,6 +72,27 @@ artiste. Server Actions : `apps/web/src/app/[locale]/list/actions.ts`.
 - Lancement : chaque nuit par `.github/workflows/catalog-refresh.yml` (environnement
   GitHub `production`, secret `DATABASE_URL_UNPOOLED` ; activation :
   `docs/mise-en-ligne.md` § 9), ou à la main sur Neon `dev` : `pnpm catalog:refresh`.
+
+## Sorties à venir (jalon 11)
+
+Règle partagée (`lib/catalog/upcoming.ts`), au jour du lecteur (fuseau de son profil,
+Europe/Paris pour un visiteur) :
+
+- au jour : après aujourd'hui ; au mois : un mois suivant, ou le mois en cours si la sortie a
+  été annoncée (`announced_at`) ; à l'année : l'année suivante, ou l'année en cours si annoncée ;
+- jamais au-delà de 12 mois (une année : la suivante au plus) ;
+- non fusionnée, disque principal (sans live ni compilation), album, EP ou single.
+
+Lectures (routeur `upcoming`) :
+
+- `mine({ type? })` (membre) : sorties des artistes suivis, par date puis titre, 200 au plus,
+  en groupes `week` (7 prochains jours), `month` (reste du mois, ou mois en cours au mois),
+  `later`, `tba` (année seule) ; `dateChanged` quand la date a bougé ;
+- `byArtist({ slug })` (publique) : 20 au plus, identique pour tous (cache public, issue #22),
+  jour de Paris ; un artiste fusionné lit la fiche gardée, inconnu → `NOT_FOUND`.
+
+Démo : `nuitblanche` suit trois artistes, `vinylvince` deux, six sorties annoncées
+(`seed/upcoming.ts`, dates recalculées à chaque seed, sans `mbid`).
 
 ## Les mieux notés
 
