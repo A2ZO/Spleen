@@ -60,7 +60,34 @@ Appris en route :
 - Pas de retour après connexion dans Spleen (tout le monde arrive sur `/welcome`).
 - La case « Me prévenir » existe dès maintenant mais n'agit qu'à l'étape 5.
 
-## Prochaine étape : 2 « Alimentation de nuit et lectures »
+## Étape 2 — faite (16 novembre)
 
-Brief : `docs/pilote/feuille-de-route.md`, « Étape 2 ». Commencer par le plan
-(`docs/pilote/plan-etape-2.md`), validé par Azzo avant tout code (nouvelle migration possible).
+- Données : migration 0015 (`releases.release_date_precision`, `announced_at`,
+  `release_date_changed_at`) ; suivi des dates dans `lib/catalog/release-dates.ts` (une
+  précision ajoutée n'est pas un report ; dates passées jamais réécrites).
+- Règle partagée `lib/catalog/upcoming.ts` (jour : après aujourd'hui ; mois / année : plus tard,
+  ou en cours si annoncée ; 12 mois au plus ; sortie principale album / EP / single), groupes
+  `week` / `month` / `later` / `tba`. Lectures tRPC `upcoming.mine` (membre, son fuseau, 200
+  au plus, filtre par type) et `upcoming.byArtist` (public, jour de Paris, 20 au plus, doublon
+  fusionné suivi). `discovery.recent` exclut ce qui est à venir.
+- Nuit (`pnpm catalog:refresh`) : `lib/catalog/upcoming-feed.ts` d'abord (ListenBrainz « fresh
+  releases » → artistes suivis → MusicBrainz, 40 relectures : imports, fiches à compléter,
+  dates plus tôt, puis plus tard), puis les discographies, artistes suivis en tête.
+- Démo : `seed/upcoming.ts` (suivis de `nuitblanche` et `vinylvince`, six sorties annoncées).
+- Docs : `catalogue.md` « Dates annoncées et sorties annoncées », `decouverte.md` « Sorties à
+  venir ».
+
+Appris en route :
+
+- ListenBrainz donne la date d'une édition : MusicBrainz reste la seule source de date ; une
+  date ListenBrainz plus tard n'est relue qu'avec le budget restant (souvent une édition,
+  parfois un report).
+- À date égale, `upcoming.mine` trie par titre.
+
+## Prochaine étape : 3 « Les écrans des sorties à venir »
+
+Brief : `docs/pilote/feuille-de-route.md`, « Étape 3 » (page `/[locale]/upcoming`, section
+« À venir » de la fiche artiste, fiche d'un disque pas encore sorti, refus côté API). Commencer
+par le plan (`docs/pilote/plan-etape-3.md`), relu par le relecteur. Lectures prêtes :
+`upcoming.mine` / `upcoming.byArtist` (`packages/api/src/root.ts`), données de démo sur
+`nuitblanche`.
