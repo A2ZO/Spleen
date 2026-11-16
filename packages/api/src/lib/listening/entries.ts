@@ -25,6 +25,7 @@ import {
 } from "@spleen/validators";
 
 import { fail } from "../../trpc";
+import { upcomingRelease } from "../catalog/upcoming";
 import type { MyEntry, MyItemState } from "../../types";
 import { requireListener, requireReleased, requireTarget, targetWhere, toTarget } from "./targets";
 
@@ -383,7 +384,8 @@ export async function getMyItemState(
   const { timeZone } = listener ?? (await requireListener(db, userId));
   const listenTarget = toTarget(input);
 
-  const [[state], rows, fallback] = await Promise.all([
+  const today = todayIn(timeZone, now);
+  const [[state], rows, fallback, notOut] = await Promise.all([
     db
       .select()
       .from(userItemState)
@@ -394,6 +396,7 @@ export async function getMyItemState(
       .where(targetWhere(entries, userId, listenTarget))
       .orderBy(sql`${entries.listenedOn} desc nulls first`, desc(entries.createdAt)),
     quickFallback(db, userId, listenTarget),
+    "releaseId" in listenTarget ? upcomingRelease(db, listenTarget.releaseId, today) : null,
   ]);
   const ids = rows.map((r) => r.id);
   const [moodRows, ratingRows, reviewRows] =
@@ -437,7 +440,8 @@ export async function getMyItemState(
     listened: state?.listened ?? false,
     wantToListen: state?.wantToListen ?? false,
     entries: myEntries,
-    today: todayIn(timeZone, now),
+    today,
     quickFallback: fallback,
+    releaseNotOut: notOut !== null,
   };
 }

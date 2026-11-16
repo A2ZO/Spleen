@@ -1,8 +1,8 @@
-import { and, eq, rowsOf, schema, sql, type DbOrTx, type ListenTarget } from "@spleen/db";
+import { and, eq, schema, type DbOrTx, type ListenTarget } from "@spleen/db";
 import { DEFAULT_TIME_ZONE, todayIn, type ListenTargetInput } from "@spleen/validators";
 
 import { fail } from "../../trpc";
-import { upcomingSql } from "../catalog/upcoming";
+import { upcomingRelease } from "../catalog/upcoming";
 
 const { profiles, releases, tracks } = schema;
 
@@ -55,10 +55,5 @@ export async function requireReleased(
 ): Promise<void> {
   if (!("releaseId" in target)) return;
   const today = todayIn(timeZone || DEFAULT_TIME_ZONE, now);
-  const rows = rowsOf<{ id: string }>(
-    await db.execute(sql`
-      select r.id from releases r where r.id = ${target.releaseId} and ${upcomingSql(today)}
-    `),
-  );
-  if (rows.length > 0) fail("BAD_REQUEST", "RELEASE_NOT_OUT");
+  if (await upcomingRelease(db, target.releaseId, today)) fail("BAD_REQUEST", "RELEASE_NOT_OUT");
 }

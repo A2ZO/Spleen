@@ -1,11 +1,12 @@
 import { MAIN_SECONDARY_TYPES, type DatePrecision } from "@spleen/catalog";
-import { rowsOf, sql, type Db, type SQL } from "@spleen/db";
+import { rowsOf, sql, type Db, type DbOrTx, type SQL } from "@spleen/db";
 import { DEFAULT_TIME_ZONE, todayIn, type ReleaseType } from "@spleen/validators";
 
 import { fail } from "../../trpc";
-import type { ReleaseCard, UpcomingGroup, UpcomingItem } from "../../types";
+import type { ReleaseCard, UpcomingGroup, UpcomingItem, UpcomingSuggestions } from "../../types";
 import { loadReleaseCards, toReleaseCard } from "./cards";
 import { maskRelease, ratedIds } from "../listening/blind";
+import { getMemberStats } from "../stats";
 import type { Viewer } from "../viewer";
 
 /*
@@ -60,6 +61,21 @@ export function upcomingSql(today: string): SQL {
   return sql`(${mainReleaseSql()} and ${upcomingDateSql(today)})`;
 }
 
+/** The release when the rule calls it upcoming for `today`, else null. */
+export async function upcomingRelease(
+  db: DbOrTx,
+  releaseId: string,
+  today: string,
+): Promise<{ dateChanged: boolean } | null> {
+  const [row] = rowsOf<{ changed: boolean }>(
+    await db.execute(sql`
+      select r.release_date_changed_at is not null as changed
+      from releases r where r.id = ${releaseId} and ${upcomingSql(today)}
+    `),
+  );
+  return row ? { dateChanged: row.changed } : null;
+}
+
 const addDays = (day: string, days: number) => {
   const at = new Date(`${day}T00:00:00Z`);
   at.setUTCDate(at.getUTCDate() + days);
@@ -100,6 +116,20 @@ async function toItems(
       )
     ).map((c) => [c.id, toReleaseCard(c)]),
   );
+  const queued = new Set<string>();
+  if (viewer.id && cards.size > 0) {
+    const rows = rowsOf<{ id: string }>(
+      await db.execute(sql`
+        select release_id as id from user_item_state
+        where user_id = ${viewer.id} and want_to_listen
+          and release_id in (${sql.join(
+            [...cards.keys()].map((id) => sql`${id}::uuid`),
+            sql`, `,
+          )})
+      `),
+    );
+    for (const r of rows) queued.add(r.id);
+  }
   let mask = (card: ReleaseCard) => card;
   if (viewer.blind) {
     const rated = await ratedIds(db, viewer.blind.userId, "releaseId", [...cards.keys()]);
@@ -115,6 +145,7 @@ async function toItems(
         precision: row.precision,
         dateChanged: row.changed,
         group: upcomingGroup(row.date, row.precision, today),
+        wantToListen: queued.has(row.id),
       },
     ];
   });
@@ -175,4 +206,43 @@ export async function upcomingByArtist(db: Db, slug: string, now: Date): Promise
     limit ${UPCOMING_ARTIST_MAX}
   `);
   return toItems(db, { id: null, blind: null }, rowsOf<UpcomingRow>(result), today);
+}
+
+/** Suggested artists at most (the profile's top artists of the year: five). */
+const SUGGESTIONS_MAX = 5;
+
+/**
+ * How many artists the member follows, and their top artists of the year (profile stats, cached)
+ * not followed yet, in the stats order; a merged artist's slug gives the artist kept.
+ */
+export async function upcomingSuggestions(
+  db: Db,
+  userId: string,
+  now: Date,
+): Promise<UpcomingSuggestions> {
+  const [stats, counted] = await Promise.all([
+    getMemberStats(db, userId, now),
+    db.execute(sql`select count(*)::int as n from artist_follows where user_id = ${userId}`),
+  ]);
+  const following = rowsOf<{ n: number }>(counted)[0]?.n ?? 0;
+  const slugs = (stats?.base.topArtists ?? []).map((a) => a.slug);
+  if (slugs.length === 0) return { following, artists: [] };
+  const list = sql.join(
+    slugs.map((slug) => sql`${slug}`),
+    sql`, `,
+  );
+  const rows = rowsOf<{ id: string; slug: string; name: string }>(
+    await db.execute(sql`
+      select kept.id, kept.slug, kept.name
+      from artists a join artists kept on kept.id = coalesce(a.merged_into_id, a.id)
+      where a.slug in (${list})
+        and not exists (
+          select 1 from artist_follows af where af.user_id = ${userId} and af.artist_id = kept.id
+        )
+      group by kept.id, kept.slug, kept.name
+      order by min(array_position(array[${list}]::text[], a.slug::text))
+      limit ${SUGGESTIONS_MAX}
+    `),
+  );
+  return { following, artists: rows.map(({ id, slug, name }) => ({ id, slug, name })) };
 }

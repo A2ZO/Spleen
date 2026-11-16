@@ -129,6 +129,16 @@ export interface UpcomingItem {
   /** The announced date moved at least once (`release_date_changed_at`). */
   dateChanged: boolean;
   group: UpcomingGroup;
+  /** In the reader's « À écouter » (always false for a visitor and on an artist page). */
+  wantToListen: boolean;
+}
+
+/** « Tes artistes les plus écoutés » on « Mes sorties à venir ». */
+export interface UpcomingSuggestions {
+  /** Artists the member follows. */
+  following: number;
+  /** Top artists of the year (profile stats) the member does not follow yet. */
+  artists: { id: string; slug: string; name: string }[];
 }
 
 /** A place in a top rated chart. */
@@ -207,6 +217,8 @@ export interface ReleaseDetail extends ReleaseCard {
   reviews: ReviewCard[];
   lists: ListCard[];
   listenLinks: ListenLink[];
+  /** Not out yet for a Paris reader (the upcoming rule): the page says « Sort le … ». */
+  upcoming: { dateChanged: boolean } | null;
 }
 
 export interface MoodRef {
@@ -262,6 +274,8 @@ export interface MyItemState {
    * (`applyListenWrite` in `@spleen/api/instant`).
    */
   quickFallback: { rating: number | null; listened: boolean };
+  /** A record not out yet in the member's zone: no rating, heart or listen (RELEASE_NOT_OUT). */
+  releaseNotOut: boolean;
 }
 
 /** Distinct items listened to; `track` = tracks logged on their own (not inside an album). */

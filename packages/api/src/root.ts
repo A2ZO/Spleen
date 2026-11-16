@@ -76,7 +76,7 @@ import {
 } from "./lib/catalog/artist-follows";
 import { importArtist, importEntity, importReleaseGroup } from "./lib/catalog/import";
 import { mergeCatalog, mergedSlug, previewMerge } from "./lib/catalog/merge";
-import { upcomingByArtist, upcomingForMember } from "./lib/catalog/upcoming";
+import { upcomingByArtist, upcomingForMember, upcomingSuggestions } from "./lib/catalog/upcoming";
 import { createCatalogReport } from "./lib/catalog/reports";
 import {
   artistIdBySlug,
@@ -407,7 +407,7 @@ export const appRouter = router({
       }
       // After an import the row changed: read it again.
       const known = user ? undefined : found;
-      const detail = await getReleaseDetail(ctx.db(), input.slug, viewer.id, known);
+      const detail = await getReleaseDetail(ctx.db(), input.slug, viewer.id, ctx.now, known);
       return detail && blindReleaseDetail(ctx.db(), viewer.blind, detail);
     }),
   }),
@@ -473,6 +473,10 @@ export const appRouter = router({
     byArtist: publicProcedure
       .input(z.object({ slug: slugSchema }))
       .query(({ input, ctx }) => upcomingByArtist(ctx.db(), input.slug, ctx.now)),
+    /** Followed count and top artists not followed yet (« Tes artistes les plus écoutés »). */
+    suggestions: protectedProcedure.query(({ ctx }) =>
+      upcomingSuggestions(ctx.db(), ctx.user.id, ctx.now),
+    ),
   }),
   track: router({
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 
-import { schema, type DbHandle } from "@spleen/db";
+import { eq, schema, type DbHandle } from "@spleen/db";
 import { createTestDb } from "@spleen/db/testing";
 import { TRPCError } from "@trpc/server";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
@@ -219,5 +219,88 @@ describe("upcoming.byArtist", () => {
     await expect(api(null).upcoming.byArtist({ slug: "nobody-here" })).rejects.toMatchObject({
       code: "NOT_FOUND",
     });
+  });
+});
+
+describe("upcoming on the item pages", () => {
+  it("marks the release page and the member's state, in each one's zone", async () => {
+    const a = await artist();
+    // Tomorrow in Paris, already today in Kiritimati.
+    const [soon] = await releases(a.id, [{ date: "2026-11-17", changed: true }]);
+    const [out] = await releases(a.id, [{ date: "2026-11-10" }]);
+    const page = await api(null).release.bySlug({ slug: soon!.slug });
+    expect(page?.upcoming).toEqual({ dateChanged: true });
+    expect((await api(null).release.bySlug({ slug: out!.slug }))?.upcoming).toBeNull();
+
+    const paris = await member();
+    const kiritimati = await member("Pacific/Kiritimati");
+    const target = { kind: "release" as const, id: soon!.id };
+    expect((await api(paris).listening.myState(target))?.releaseNotOut).toBe(true);
+    expect((await api(kiritimati).listening.myState(target))?.releaseNotOut).toBe(false);
+  });
+
+  it("gives each upcoming item the reader's « À écouter »", async () => {
+    const a = await artist();
+    const m = await member();
+    await follow(m.id, a.id);
+    const [queued, other] = await releases(a.id, [{ date: "2026-12-01" }, { date: "2026-12-02" }]);
+    await api(m).listening.setWantToListen({
+      target: { kind: "release", id: queued!.id },
+      wantToListen: true,
+    });
+    const mine = await api(m).upcoming.mine({});
+    expect(mine.find((i) => i.release.id === queued!.id)?.wantToListen).toBe(true);
+    expect(mine.find((i) => i.release.id === other!.id)?.wantToListen).toBe(false);
+    const byArtist = await api(m).upcoming.byArtist({ slug: a.slug });
+    expect(byArtist.every((i) => !i.wantToListen)).toBe(true);
+  });
+});
+
+describe("upcoming.suggestions", () => {
+  async function listenTo(userId: string, artistId: string, times: number) {
+    const [r] = await releases(artistId, [{ date: "2020-01-01" }]);
+    await db()
+      .insert(schema.entries)
+      .values(
+        Array.from({ length: times }, (_, i) => ({
+          userId,
+          releaseId: r!.id,
+          listenedOn: `2026-0${i + 1}-10`,
+        })),
+      );
+  }
+
+  it("is empty with no listens this year, and counts the follows", async () => {
+    const m = await member();
+    await follow(m.id, (await artist()).id);
+    expect(await api(m).upcoming.suggestions()).toEqual({ following: 1, artists: [] });
+  });
+
+  it("gives the top artists not followed, in order, and the artist kept after a merge", async () => {
+    const m = await member();
+    const [top, followed, second, kept] = [
+      await artist(),
+      await artist(),
+      await artist(),
+      await artist(),
+    ];
+    const merged = await artist();
+    await db()
+      .update(schema.artists)
+      .set({ mergedIntoId: kept.id })
+      .where(eq(schema.artists.id, merged.id));
+    await listenTo(m.id, top.id, 5);
+    await listenTo(m.id, followed.id, 4);
+    await listenTo(m.id, second.id, 3);
+    await listenTo(m.id, merged.id, 2);
+    await follow(m.id, followed.id);
+    const result = await api(m).upcoming.suggestions();
+    expect(result.following).toBe(1);
+    expect(result.artists.map((a) => a.id)).toEqual([top.id, second.id, kept.id]);
+    expect(result.artists[2]).toEqual({ id: kept.id, slug: kept.slug, name: kept.name });
+  });
+
+  it("needs a signed-in member", async () => {
+    await expect(api(null).upcoming.suggestions()).rejects.toBeInstanceOf(TRPCError);
   });
 });
