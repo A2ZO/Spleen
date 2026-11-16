@@ -158,10 +158,21 @@ Appris en route :
 - e2e : `notifyReleasesInDatabase` (helpers) lance la tâche pour le seul compte du test ; le
   nettoyage supprime ces notifications avant les disques jetables.
 
-## Prochaine étape : 6 « La passe finale »
+## Étape 6 — faite (16 novembre)
 
-Brief : `docs/pilote/feuille-de-route.md`, « Étape 6 ». `docs/sorties.md` (déjà cité par
-`release-notifications.ts`), renvois depuis `decouverte.md` et `catalogue.md` ; question
-ouverte du cahier cochée ; captures de tous les écrans du jalon ; axe, `overflow.spec`, e2e
-complet, mesures complètes ; `CLAUDE.md`. Puis la PR vers `dev` (`Closes #32`, écart e2e de
-l'étape 5, questions pour Azzo de `decisions.md`).
+- `docs/sorties.md` (point d'entrée du domaine), renvois depuis `decouverte.md` et
+  `catalogue.md`, question du cahier cochée, `CLAUDE.md` à jour (jalon 11 coché,
+  `pnpm releases:notify`, décision ListenBrainz / MusicBrainz).
+- Fiche d'un disque à venir : texte visiteur « Connecte-toi pour l'ajouter à « À écouter ». » ;
+  moyenne et critiques gardent leurs règles (décision actée ; question pour Azzo à la PR).
+- `pnpm check` vert ; e2e complet en dev 245 / 1 / 10 (`undo-delete.spec.ts:289` passe seul) ;
+  prod : specs sans compte + `overflow.spec` 114 / 2 / 10 (`covers.spec.ts:72` passe seul) ;
+  les deux sur l'issue #34. axe 0 violation sur toutes les captures (`docs/pilote/captures/6/`).
+- Mesures prod : 215/213 · 136/135 · 231/219 · 182/180 · 228/225 contre 237 / 140 / 225 / 208 /
+  210 ; `/upcoming` 158 / 160 contre 149 / 151.
+
+## Suite : fin du jalon
+
+PR `feat/11-sorties-a-venir` → `dev` (`Closes #32`, écart e2e de l'étape 5, questions pour
+Azzo de `decisions.md`), fusion par le pilote si la section 6 du skill le permet, puis PR de
+release `dev` → `main` en brouillon, fusionnée par Azzo.

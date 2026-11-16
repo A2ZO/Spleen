@@ -46,3 +46,11 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   prod : 217 / 136 / 228 / 181 / 227 contre 237 / 140 / 225 / 208 / 210 (première série 234 sur
   discover→accueil, page non touchée). Relecteur : 1 tour, OK avec corrections (deux lignes
   par disque à 390 px, groupe vide filtré). Écart e2e et deux questions pour Azzo à la PR.
+- 2026-11-16 — Étape 6 « La passe finale » faite : 7c6250c..HEAD (`docs/sorties.md`, renvois,
+  cahier, `CLAUDE.md`, texte visiteur d'un disque à venir). `pnpm check` vert ; e2e complet en
+  dev 245 réussis · 1 échoué · 10 ignorés (`undo-delete.spec.ts:289`, passe seul, issue #34) ;
+  prod sans compte + overflow 114 · 2 · 10 (`covers.spec.ts:72`, passe seul, issue #34) ; axe
+  AA 2.2 0 violation. Mesures prod : 215/213 · 136/135 · 231/219 · 182/180 · 228/225 contre
+  237 / 140 / 225 / 208 / 210 ; `/upcoming` 158/160 contre 149/151. Relecteur : 2 tours (OK avec
+  corrections, puis OK) ; moyenne et critiques remises selon les décisions actées, question à
+  la PR.
