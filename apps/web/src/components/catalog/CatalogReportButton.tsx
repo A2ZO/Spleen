@@ -26,9 +26,15 @@ const EXAMPLES: Record<CatalogKind, string> = {
 export function CatalogReportButton({
   target,
   className = "flex items-center gap-2 text-xs text-fg-muted hover:text-fg",
+  defaultType = null,
+  label,
 }: {
   target: { kind: CatalogKind; id: string };
   className?: string;
+  /** The kind of report already ticked when the form opens (« Une sortie manque ? »). */
+  defaultType?: CatalogReportType | null;
+  /** Button text in place of the generic one. */
+  label?: string;
 }) {
   const t = useTranslations("catalogReport");
   const [open, setOpen] = useState(false);
@@ -40,12 +46,16 @@ export function CatalogReportButton({
         onClick={() => setOpen(true)}
         className={className}
       >
-        <FlagIcon /> {t("button")}
+        <FlagIcon /> {label ?? t("button")}
       </button>
       {/* In `document.body`: it outlives a menu that hides its button. */}
       {open &&
         createPortal(
-          <CatalogReportDialog target={target} onClose={() => setOpen(false)} />,
+          <CatalogReportDialog
+            target={target}
+            defaultType={defaultType}
+            onClose={() => setOpen(false)}
+          />,
           document.body,
         )}
     </>
@@ -54,16 +64,18 @@ export function CatalogReportButton({
 
 function CatalogReportDialog({
   target,
+  defaultType,
   onClose,
 }: {
   target: { kind: CatalogKind; id: string };
+  defaultType: CatalogReportType | null;
   onClose: () => void;
 }) {
   const t = useTranslations("catalogReport");
   const te = useTranslations("errors");
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
-  const [type, setType] = useState<CatalogReportType | null>(null);
+  const [type, setType] = useState<CatalogReportType | null>(defaultType);
   const [duplicate, setDuplicate] = useState("");
   const [details, setDetails] = useState("");
   const [sent, setSent] = useState(false);

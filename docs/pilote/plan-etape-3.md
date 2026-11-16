@@ -65,7 +65,7 @@ Relu par le relecteur (OK avec corrections, appliquées).
 - [x] 3. Dates
 - [x] 4. Page `/upcoming`
 - [x] 5. Rangée
-- [ ] 6. Fiche artiste
+- [x] 6. Fiche artiste
 - [ ] 7. Fiche d'un disque à venir
 - [ ] 8. Réglages
 - [ ] 9. e2e

@@ -1,7 +1,7 @@
 import type { ReleaseCard } from "@spleen/api";
 import { discographyGroupSchema, slugSchema, type DiscographyGroup } from "@spleen/validators";
 import type { Metadata } from "next";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 import { cache } from "react";
 
 import { ArtistFollowButton } from "@/components/catalog/ArtistFollowButton";
@@ -23,6 +23,7 @@ import { missingCatalogPage } from "@/lib/catalog-redirect";
 import { artistKind } from "@/lib/catalog-labels";
 import { cn } from "@/lib/cn";
 import { phoneTitleSize } from "@/lib/display-title";
+import { formatUpcomingDate } from "@/lib/release-date";
 import { seoMetadata } from "@/lib/seo";
 import { getApi } from "@/server/api";
 
@@ -134,6 +135,10 @@ export default async function ArtistPage({ params, searchParams }: Props) {
     getLocale(),
   ]);
   if (!artist) return missingCatalogPage("artist", slug, locale);
+  const [upcoming, format] = await Promise.all([
+    (await getApi()).upcoming.byArtist({ slug: artist.slug }),
+    getFormatter(),
+  ]);
 
   const { albums, eps, singles, other } = artist.discography;
   const totals = artist.discographyTotals;
@@ -265,6 +270,32 @@ export default async function ArtistPage({ params, searchParams }: Props) {
       )}
 
       <div className="mt-14 space-y-14 md:mt-20 md:space-y-20">
+        {upcoming.length > 0 && (
+          <section aria-labelledby="upcoming">
+            <SectionHeading id="upcoming">{t("upcoming.artistTitle")}</SectionHeading>
+            <ul className="grid grid-cols-2 gap-x-5 gap-y-8 sm:grid-cols-3 lg:grid-cols-5">
+              {upcoming.map((item) => (
+                <li key={item.release.id}>
+                  <ReleaseTile
+                    release={item.release}
+                    detail={formatUpcomingDate(format, item.date, item.precision)}
+                  />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+        {me?.profile && (
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-fg-muted">
+            {t("upcoming.artistMissing")}
+            <CatalogReportButton
+              target={target}
+              defaultType="addition"
+              label={t("upcoming.artistReport")}
+              className="inline-flex min-h-11 items-center gap-2 text-link underline-offset-2 hover:underline"
+            />
+          </p>
+        )}
         {empty && <p className="text-fg-muted">{t("artist.empty")}</p>}
         {group("albums", albums)}
         {group("eps", eps)}
