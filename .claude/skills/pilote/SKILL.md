@@ -80,7 +80,7 @@ line), so that an interruption loses little. Tick each item of « Avancement » 
    without its recap and without waiting for `/clear`.
 2. Append to `journal.md`, 10 lines at most: date, step, commits, results (check, e2e summary
    line, axe, measures against the reference), decisions taken, open points.
-3. In `etat.md`: next step, phase `plan`, date. Commit `docs: pilote étape <n>`, push.
+3. In `etat.md`: next step, phase `plan`, date. Tick « clôture » in « Avancement » in the same commit as `etat.md`. Commit `docs: pilote étape <n>`, push.
 4. `pnpm run free-port`, delete the lock, stop.
 
 ## 5. End of the milestone
