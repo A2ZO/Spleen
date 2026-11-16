@@ -4,7 +4,7 @@
 - Branche : feat/11-sorties-a-venir
 - Doc du jalon : docs/jalon-11-en-cours.md
 - Étape : 1 (Suivre un artiste)
-- Phase : plan
+- Phase : attente (plan à valider ; reprendre en `code` après validation)
 - Mis à jour : 2026-11-16
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante. Ce jalon, chaque plan

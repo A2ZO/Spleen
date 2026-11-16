@@ -29,3 +29,21 @@ Ajouts du conseiller, validés :
   politique de confidentialité.
 
 ## Décisions du pilote
+
+- 2026-11-16, étape 1 — Suivre une fiche fusionnée suit la fiche gardée (seul un artiste inconnu
+  est refusé). Raison : même règle que les autres cibles fusionnées. Écarté : refuser.
+- 2026-11-16, étape 1 — L'état « je suis cet artiste » vient d'une procédure à part
+  (`artistFollow.status`), pas de `artist.bySlug`. Raison : garder la lecture de la fiche
+  identique pour tous (cache public, issue #22). Écarté : un champ `viewerFollows`.
+- 2026-11-16, étape 1 — Bouton « Suivre » / « Ne plus suivre » (`aria-pressed`), comme le bouton
+  d'abonnement à un membre. Écarté : « Suivi », qui ne dit pas ce que fait le clic.
+- 2026-11-16, étape 1 — Réglages : « Mes artistes suivis » sans compteur dans le titre ; le
+  bouton redevient « Suivre » au clic (annulation). Écarté : sous-page dédiée.
+
+## QUESTION POUR AZZO
+
+Plan de l'étape 1 à valider : docs/pilote/plan-etape-1.md (migration `artist_follows` et
+`profiles.notify_releases`). Note du relecteur : la case « Me prévenir le jour de la sortie »
+apparaît dès l'étape 1 mais n'agit qu'à l'étape 5 (tout part dans la même PR de fin de jalon).
+Réponds ici (« validé », avec tes corrections éventuelles), puis mets la phase `code` dans
+`etat.md`.
