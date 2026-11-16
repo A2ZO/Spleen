@@ -40,6 +40,14 @@ Ajouts du conseiller, validés :
   « Suivi », qui ne dit pas ce que fait le clic.
 - 2026-11-16, étape 1 — Réglages : « Mes artistes suivis » sans compteur dans le titre ; le
   bouton redevient « Suivre » au clic (annulation). Écarté : sous-page dédiée.
+- 2026-11-16, étape 1 — Lien « Suivre » du visiteur : vers `/sign-in` sans retour sur la fiche.
+  Aucun mécanisme de retour après connexion n'existe (tout le monde arrive sur `/welcome`) ;
+  aucun créé (correction 2 d'Azzo). Écarté : un paramètre `next` maison.
+- 2026-11-16, étape 1 — Statut de suivi lu par slug, en parallèle de la fiche (fiche artiste
+  201 → 139 ms). Mesures : retour accueil 218–232 ms contre 210 de référence, mais `dev` mesuré
+  dans la même session donne 217–232 (page non touchée) : bruit de la machine. Écarté : rien.
+- 2026-11-16, étape 1 — Sans JavaScript, une erreur de suivi (plafond, limite horaire) s'affiche
+  sous le bouton (`useActionState`), comme les réglages (relecteur). Écarté : la documenter.
 
 ## QUESTION POUR AZZO
 
