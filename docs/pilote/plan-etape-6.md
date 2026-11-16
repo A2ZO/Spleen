@@ -60,3 +60,9 @@ Relu par le relecteur (OK avec corrections, appliquées).
    dépendance). Avant la fusion : `git diff --stat origin/dev...HEAD` comparé à « Autorisé à
    la fusion ». Phase B : PR de release `dev` → `main` en brouillon (`--draft`), qui répète
    `Closes #32` (GitHub ne ferme l'issue qu'à la fusion dans `main`) et les questions.
+
+Avancement (2026-11-16, run interrompu par la limite d'usage) : points 1 à 3 faits (649c239) ;
+captures visiteur et `nuitblanche` sur prod faites (axe : 0 violation) ; mesures prod :
+215/213 · 136/135 · 231/219 · 182/180 · 228/225 ; `/upcoming` 158 / 160 (référence 149 / 151,
++9 ms). Reste : captures `rainydaysam` en dev, copie des captures 5, specs sans compte et
+`overflow.spec` sur prod, e2e complet, `CLAUDE.md`, relecture, PR.
