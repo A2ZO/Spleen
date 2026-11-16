@@ -103,6 +103,8 @@ export const profiles = pgTable(
     diaryPrivate: boolean("diary_private").notNull().default(false),
     /** Hide community averages until the member has rated ("blind listening"). */
     blindMode: boolean("blind_mode").notNull().default(false),
+    /** Notify the member on the release day of a followed artist's record (milestone 11). */
+    notifyReleases: boolean("notify_releases").notNull().default(true),
     role: userRole("role").notNull().default("member"),
     suspendedAt: timestamp("suspended_at", { withTimezone: true }),
     suspensionReason: text("suspension_reason"),

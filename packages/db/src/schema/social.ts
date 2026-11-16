@@ -35,6 +35,25 @@ export const follows = pgTable(
   ],
 );
 
+/**
+ * Artists a member follows (upcoming releases, milestone 11). Private: only the member reads
+ * them. Catalog side `restrict` (artists are never hard-deleted; merges repoint the rows).
+ */
+export const artistFollows = pgTable(
+  "artist_follows",
+  {
+    userId: userRef("user_id").notNull(),
+    artistId: uuid("artist_id")
+      .notNull()
+      .references(() => artists.id, { onDelete: "restrict" }),
+    createdAt: createdAt(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.userId, t.artistId] }),
+    index("artist_follows_artist_idx").on(t.artistId),
+  ],
+);
+
 /** Likes on a review or a list (exactly one). */
 export const likes = pgTable(
   "likes",
