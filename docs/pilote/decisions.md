@@ -107,3 +107,8 @@ légaux.
   visibles (×2 pour le mode aveugle) et décaler les pages ; aucune ligne existante ne change,
   le membre au journal privé reste absent, le fil « Populaire » est identique. Réversible.
   Écarté : des membres suivis par un autre compte (contraire à la consigne) ou l'attente.
+- 2026-11-17, étape 4 : `release.friends` reste dans la première vague de la fiche album.
+  Mesure (build de prod, `nuitblanche`) : pageMs 257/148/241/192/232, 213/141/238/191/233,
+  puis 229/144/236/220/234 contre 215/136/231/182/228 ; le premier passage (257) est un
+  démarrage à froid, les deux suivants restent dans les 20 ms pour l'album. Écarté : la
+  deuxième vague, inutile à ce niveau.
