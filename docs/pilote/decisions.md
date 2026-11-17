@@ -133,3 +133,10 @@ légaux.
   plus : `listTotal` > 0 et `matching` 0 sans filtre ; avec un filtre, « aucun ne correspond »
   puis « Retirer les filtres » mène à ce cas. Raison : forme de réponse actée `{ listTotal,
   matching, pick }`. Écarté : un champ `released`.
+- 2026-11-17, étape 5 : démo `seed/pick.ts` (6 disques sortis dans « À écouter » de
+  `nuitblanche`) → inventaire `db.test.ts` (sorties 52 → 58) et test « demo members » de
+  `listening.test.ts` (7 disques, ordre réel en `toEqual` complet) mis à jour. Les dates
+  `updated_at` sont fixées (1 à 6 jours avant) car les lignes du seed partagent le `now()` de la
+  transaction (ordre sinon aléatoire). Artistes choisis hors des tests (pas `lune-basse` ni
+  `odette-marchal`), titres sans les mots tapés par les tests de recherche. Écarté : un compte
+  de démo dédié (plus de données, aucun gain).
