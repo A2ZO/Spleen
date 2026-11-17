@@ -13,7 +13,7 @@ import { mainReleaseSql } from "./upcoming";
  */
 
 /** The member's today, or the site's when their zone is empty or unknown to `Intl`. */
-function todayOf(timeZone: string | null, now: Date): string {
+export function todayOf(timeZone: string | null, now: Date): string {
   try {
     if (timeZone) return todayIn(timeZone, now);
   } catch {

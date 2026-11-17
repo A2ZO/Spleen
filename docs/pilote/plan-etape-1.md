@@ -49,7 +49,7 @@ Vérifications d'écran :
   d'un disque à venir (visiteur, membre). axe sur ces pages ; `overflow.spec` ; specs sans
   compte en prod ; `measure.mjs` deux passages contre la référence.
 ## Avancement
-- [ ] 1. API `releaseDay` / `releasedToday` et tests PGlite
+- [x] 1. API `releaseDay` / `releasedToday` et tests PGlite
 - [ ] 2. Écran des notifications et textes FR/EN
 - [ ] 3. Fiche d'un disque à venir (moyenne, critiques)
 - [ ] 4. e2e

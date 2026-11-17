@@ -368,6 +368,7 @@ export const appRouter = router({
           ctx.user.id,
           input.cursor,
           ctx.contactEmail ?? CONTACT_PLACEHOLDER,
+          ctx.now,
         ),
       ),
     /** Unread groups, for the header badge (0 when signed out). */

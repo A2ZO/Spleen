@@ -418,6 +418,10 @@ export interface NotificationGroup {
   releases: ReleaseCard[];
   /** How many records the group holds (`releases` shows the first 3). */
   releaseCount: number;
+  /** Day of a `release` group ("2026-11-16", from its key); null for other types. */
+  releaseDay: string | null;
+  /** `releaseDay` is today in the member's zone (Paris when empty or unknown). */
+  releasedToday: boolean;
 }
 
 export interface ModerationNotice {
