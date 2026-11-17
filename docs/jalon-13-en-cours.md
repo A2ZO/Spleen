@@ -64,9 +64,23 @@ connaît, les notes et cœurs de mes amis sur une fiche, et « Tire un disque »
 - Appris en route : la clé `restrict` de `listen_links` bloque la suppression des disques e2e
   (d'où la purge) ; l'artiste et le morceau jetables, jamais supprimés, gardent leurs liens sur
   Neon `dev` (sans effet, ils s'accumulent ; à purger si ça gêne).
-- **Prochaine : étape 3**, « Écouter sur… » : la relecture de nuit (`getEditionLinks`, consignes
-  dans `docs/pilote/feuille-de-route.md`, « Étape 3 ») ; plan à écrire dans
-  `docs/pilote/plan-etape-3.md`. Aucune nouvelle migration (celle du jalon est faite).
+- **Étape 3 faite** (17 novembre) : `getEditionLinks` (parcours des éditions d'un groupe avec
+  `url-rels`, fixture `12.json` ; fixtures 01–11 réenregistrées, aucun attendu changé) ;
+  `refreshListenLinks` (`packages/api/src/lib/catalog/listen-links-refresh.ts`) : 200 disques,
+  100 artistes, 10 min, relus tous les 30 jours ; en dernier dans `pnpm catalog:refresh`, seule
+  avec `-- --links-only`. Détail : `docs/catalogue.md`, « Relecture de nuit ».
+- Essais réels sur Neon `dev` (`links: postgres, not Neon's production branch: true`) :
+  19 disques, 48 liens, 1 échec, 148 pour plus tard, puis 8 disques, 21 liens, 1 échec,
+  140 pour plus tard ; liens de disques : Spotify 16, Deezer 15, Apple Music 15, Bandcamp 2.
+  Échecs = `CatalogError` MusicBrainz indisponible/occupé (arrêt de la phase). Artistes relus
+  à part (script temporaire, 5 artistes, 14 liens, 0 échec) pour la capture.
+- Décisions : `maxAttempts` 3 et 0 édition traité comme `not_found` ; le parcours renvoie bien
+  les relations (`docs/pilote/decisions.md`).
+- Appris en route : un 503 de MusicBrainz arrête la phase avant les artistes ; si ça se
+  répète chaque nuit, les artistes ne sont jamais relus (point ouvert, voir le journal).
+- **Prochaine : étape 4**, « Tes amis sur ce disque » (consignes dans
+  `docs/pilote/feuille-de-route.md`, « Étape 4 ») ; plan à écrire dans
+  `docs/pilote/plan-etape-4.md`.
 
 ## Mesures de référence
 
