@@ -56,6 +56,13 @@ export interface MemberRef {
   avatarUrl?: string | null;
 }
 
+/** « Tes amis sur ce disque »: followed members with a rating or a heart on a record. */
+export interface ReleaseFriends {
+  items: { member: MemberRef; rating: number | null; liked: boolean }[];
+  /** All of them, beyond the rows returned. */
+  total: number;
+}
+
 export interface ReviewCard {
   id: string;
   author: MemberRef;

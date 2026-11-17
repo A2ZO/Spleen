@@ -51,9 +51,9 @@ Captures 1280 et 390 : membre (5 lignes et lien, puis ouvert), membre sans ami, 
 
 ## Avancement
 
-- [ ] 1. `releaseFriends` · [ ] 2. `release.friends` · [ ] 3. fiche album
+- [x] 1. `releaseFriends` · [x] 2. `release.friends` · [ ] 3. fiche album
 - [ ] 4. `FriendsOnRecord` · [ ] 5. i18n · [ ] 6. démo · [ ] 7. tests existants vs démo
-- [ ] 8. tests d'API · [ ] 9. e2e
+- [x] 8. tests d'API · [ ] 9. e2e
 - [ ] vérifications
 - [ ] relecture 1
 - [ ] relecture 2
