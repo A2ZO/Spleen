@@ -144,3 +144,11 @@ légaux.
   dans `pick.spec.ts` (bloc « on a phone », compte jetable), pas dans `overflow.spec.ts` : ce
   dernier tourne sur le build de prod sans compte (l'inscription y échoue, Brevo factice).
   Écarté : se connecter avec un compte de démo dans `overflow.spec` (aucun précédent).
+- 2026-11-17, étape 5 : `measure.mjs` gagne `MEASURE_ONLY=<chemin>` (un seul parcours accueil →
+  chemin, même lecture) pour mesurer `/pick`, hors des cinq parcours. Mesure (build de prod) :
+  `/pick` 138/141/142 ms, référence 142 ; cinq parcours pageMs 237/151/245/195/248 et
+  238/147/239/196/248 contre 215/136/231/182/228. Album et `/discover` → accueil à +20/+22 ms :
+  l'étape ne touche ni la fiche album, ni l'accueil, ni `/discover` (seul le bouton de mon onglet
+  change sur un profil), et la même dérive de la machine était déjà vue à l'étape 4 (album
+  218–239 sans changement). Gardé, à revoir à la mesure de fin de jalon. Écarté : un contrôle
+  A/B, sans code à retirer sur ces pages.

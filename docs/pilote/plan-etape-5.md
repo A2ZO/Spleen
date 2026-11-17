@@ -57,4 +57,4 @@ inchangé, écart noté). Données existantes : `user_item_state` (`want_to_list
 ## Avancement
 
 - [x] 1 validateur · [x] 2 API · [x] 3 procédure · [x] 4 page · [x] 5 bouton · [x] 6 i18n
-- [x] 7 démo · [x] 8 tests API · [x] 9 e2e · [ ] 10 mesure · [ ] 11 écrans · [ ] vérifications · [ ] relecture 1 · [ ] relecture 2 · [ ] clôture
+- [x] 7 démo · [x] 8 tests API · [x] 9 e2e · [x] 10 mesure · [ ] 11 écrans · [ ] vérifications · [ ] relecture 1 · [ ] relecture 2 · [ ] clôture
