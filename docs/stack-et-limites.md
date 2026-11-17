@@ -1,6 +1,6 @@
 # Stack technique, limites et montée en charge
 
-État au **27 octobre 2026** (jalon 9 en cours), mis à jour le 16 novembre (dépôt public, jalons 12 et 17 faits) et le 17 novembre (jalon 11 fait : ListenBrainz et notifications dans la tâche de nuit). Ce document répond à trois questions :
+État au **27 octobre 2026** (jalon 9 en cours), mis à jour le 16 novembre (dépôt public, jalons 12 et 17 faits) et le 17 novembre (jalon 11 fait : ListenBrainz et notifications dans la tâche de nuit ; jalon 13 fait : liens « Écouter sur… » relus la nuit, mesures). Ce document répond à trois questions :
 quelles technologies Spleen utilise, à partir de combien de membres chaque service gratuit
 lâche, et comment desserrer chaque limite sans réécrire le code.
 
@@ -45,7 +45,7 @@ Versions relevées dans les `package.json` du dépôt le 27 octobre 2026.
 | Pochettes | Cover Art Archive (servies par archive.org) | Affichées sans optimisation, chargées par le navigateur | Gratuit |
 | Limitation de débit | Table Postgres `rate_limits` (pas de Redis) | Limiteur MusicBrainz global, quotas par membre, connexion | Inclus dans la base |
 | Tests | Vitest 5.0.5, Playwright 1.64.1 (axe prévu au jalon 9) | ~200 tests d'API, ~60 e2e | Gratuit |
-| CI et tâches planifiées | GitHub Actions : `ci.yml` (check + api-postgres), « Nightly » à 03:17 UTC (`catalog-refresh.yml` : sorties à venir et discographies, puis notifications « Sortie aujourd'hui » ; rétention de modération ; ne fait rien tant que la base de production n'est pas configurée), Dependabot | Contrôles à chaque PR, tâches de nuit | Illimité (dépôt public depuis novembre) |
+| CI et tâches planifiées | GitHub Actions : `ci.yml` (check + api-postgres), « Nightly » à 03:17 UTC (`catalog-refresh.yml` : sorties à venir et discographies, puis liens « Écouter sur… » (jalon 13), puis notifications « Sortie aujourd'hui » ; rétention de modération ; ne fait rien tant que la base de production n'est pas configurée), Dependabot | Contrôles à chaque PR, tâches de nuit | Illimité (dépôt public depuis novembre) |
 | Hébergement (jalon 10) | Vercel Hobby, puis Vercel Pro ou Cloudflare Workers (OpenNext) | Servir le site | Gratuit, puis 5 à 20 $/mois |
 | Plus tard | Expo (appli), Stripe (Spleen+) | — | — |
 
@@ -191,6 +191,18 @@ du jalon 17 (237 / 140 / 225 / 208 / 210 ms pour les cinq parcours ci-dessus).
 - Pool de 5 connexions : trois lectures parallèles de plus sur l'accueil le ralentissaient de
   25 à 32 ms ; les fondre en une seule requête a suffi. Une lecture lancée après celle de la
   fiche ajoute une vague (+36 à +60 ms) : la lancer dans le même `Promise.all`, par le slug.
+
+### Mesure : quoi écouter ce soir (jalon 13)
+
+`measure.mjs` sur un build de production local, deux passages, A/B dans la même session à la fin
+du jalon (`docs/jalon-13-en-cours.md`).
+
+- Fin du jalon : `origin/dev` 214/134/220/180/226 ms contre HEAD 215/132/216/180/223 ms : aucun
+  écart dû au jalon (un premier passage à +20 ms venait de la machine). C'est la référence du
+  jalon 14.
+- Nouvelle page `/pick` (accueil → `/pick`, `MEASURE_ONLY`) : 142 ms à l'étape 5, 137 ms à la fin.
+- Les liens d'écoute se lisent avec la fiche (sous-requête `json_agg`, aucune requête de plus) ;
+  « Tes amis sur ce disque » part dans la première vague de la fiche album.
 
 ### Tableau des seuils
 

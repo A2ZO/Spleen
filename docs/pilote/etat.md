@@ -1,10 +1,10 @@
 # État du pilote
 
-- Jalon : 13 « Quoi écouter ce soir ? »
-- Branche : feat/13-quoi-ecouter
-- Doc du jalon : docs/jalon-13-en-cours.md
-- Étape : fin du jalon (sections 5 et 6 du skill)
-- Phase : fini (fusion de la PR 46 autorisée par Azzo le 2026-11-17)
+- Jalon : 14 « Souvenirs »
+- Branche : feat/14-souvenirs
+- Doc du jalon : docs/jalon-14-en-cours.md
+- Étape : 1
+- Phase : plan
 - Mis à jour : 2026-11-17
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante, sans arrêt entre les

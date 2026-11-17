@@ -2,7 +2,7 @@
 
 Version 3 du 16 novembre 2026, mise à jour le 17 novembre (v2 : 27 octobre ; v1 : 19 octobre 2026) · @Azzo
 
-La v3 ajoute les jalons 12 et 17 (vitesse, identité « Lilas »), les règles du jalon 11 validées le 16 novembre et l'organisation du travail (branches `dev` et `main`, pilote automatique). La mise à jour du 17 novembre note la fin du jalon 11 (réponses de fin de jalon, question encore ouverte), les règles du jalon 13 retenues par le conseiller et la fin du jalon 13. La v2 avait ajouté ce que les jalons 1 à 9 ont changé, les sorties à venir (jalon 11) et la question de la licence des genres. La stack réelle, ses limites en nombre de membres et les chemins de montée en charge sont dans `docs/stack-et-limites.md`.
+La v3 ajoute les jalons 12 et 17 (vitesse, identité « Lilas »), les règles du jalon 11 validées le 16 novembre et l'organisation du travail (branches `dev` et `main`, pilote automatique). La mise à jour du 17 novembre note la fin du jalon 11 (réponses de fin de jalon ; sorties à venir gardées dans la discographie, décidé par Azzo), les règles du jalon 13 retenues par le conseiller, la fin du jalon 13 et les règles du jalon 14 retenues par le conseiller. La v2 avait ajouté ce que les jalons 1 à 9 ont changé, les sorties à venir (jalon 11) et la question de la licence des genres. La stack réelle, ses limites en nombre de membres et les chemins de montée en charge sont dans `docs/stack-et-limites.md`.
 
 Deux copies : `docs/cahier-des-charges.md` dans le dépôt (lue par Claude Code) et `claude/cahier-des-charges.md` dans le projet claude.ai (lue par le conseiller). Le conseiller les remet d'accord à chaque fin de jalon.
 
@@ -51,13 +51,14 @@ La v1 décrivait l'intention. Voici ce que le développement a ajouté ou tranch
 
 **Ce qui reste du MVP** : pages légales, référencement et images de partage, PWA, finitions et accessibilité (fin du jalon 9) ; branchement des vrais services, e2e en CI et mise en ligne (jalon 10, `docs/mise-en-ligne.md`).
 
-**Jalons 12, 17 et 11, et les 16 et 17 novembre**
+**Jalons 12, 17, 11 et 13, et les 16 et 17 novembre**
 
 - Jalon 12 « Douceurs » : navigation rapide (barre en haut après 150 ms, ni Suspense ni `loading.tsx`), recherche instantanée, réactions instantanées, « Annuler » pendant 8 s après une suppression, notation au clavier. Transitions de page abandonnées (issue #29, bug de Next 16.4).
 - Jalon 17 « Nouvelle peau » : identité « Lilas » (section Identité visuelle), un seul thème sombre ; la colonne `theme` est supprimée (issue #30).
 - 16 novembre : le mois courant (accueil, journal) suit le fuseau du membre, Europe/Paris pour un visiteur (issue #33). Branche `dev` par défaut, `main` protégée : seules des PR de release `dev` → `main`, fusionnées par Azzo. Les jalons 11, 13 et 14 sont confiés au pilote automatique (Claude Code en tâche planifiée), avec des décisions prises à l'avance par le conseiller.
 - Jalon 11 « Sorties à venir » : fini le 16 novembre (PR #40 fusionnée dans `dev`). Suivre un artiste, page `/upcoming`, « À venir » sur la fiche artiste, « Bientôt dans tes oreilles », « Les plus attendus », notification « Sortie aujourd'hui » dans le site (section du jalon 11, `docs/sorties.md`).
 - Jalon 13 « Quoi écouter ce soir ? » : fini le 17 novembre par le pilote, avec les règles retenues par le conseiller. « Écouter sur… » direct ou en recherche sur les trois fiches, « Tes amis sur ce disque », « Tire un disque » dans « À écouter » (section du jalon 13, `docs/quoi-ecouter.md`).
+- 17 novembre : jalon 14 « Souvenirs » en cours, confié au pilote, avec les règles retenues par le conseiller (section du jalon 14). Son étape 1 fait le reste du jalon 13 décidé par Azzo : sur l'accueil membre, le 2e bouton devient « Tire un disque au hasard » et mène à `/pick`.
 
 **Ajouté le 27 octobre** : les sorties à venir des artistes suivis (jalon 11, section dédiée plus bas) et la licence des genres MusicBrainz, à régler avant toute monétisation (section Modèle économique).
 
@@ -105,7 +106,7 @@ Positionnement : « le carnet d'écoute qui a une âme » — fiable comme un ou
 Le site gratuit d'abord, la monétisation ensuite, et l'appli seulement quand Spleen+ rapporte de quoi payer le compte Apple.
 
 1. **Phase 0, fondations** (jalons 1 et 2) : faite.
-2. **Phase 1, MVP du site, gratuit et sans pub** (jalons 3 à 14) : jalons 3 à 9, 12 (douceurs), 17 (nouvelle peau) et 11 (sorties à venir) faits ; puis 13 (quoi écouter ce soir, en cours depuis le 17 novembre) → 14 (souvenirs) → 10 (mise en ligne). Après la mise en ligne, toujours gratuits : 15 (défi de l'année) puis 16 (en ce moment et RSS). **Condition de passage** : bêta stable, micro-entreprise créée, hébergement commercial, licence des genres réglée.
+2. **Phase 1, MVP du site, gratuit et sans pub** (jalons 3 à 14) : jalons 3 à 9, 12 (douceurs), 17 (nouvelle peau), 11 (sorties à venir) et 13 (quoi écouter ce soir) faits ; puis 14 (souvenirs, en cours depuis le 17 novembre) → 10 (mise en ligne). Après la mise en ligne, toujours gratuits : 15 (défi de l'année) puis 16 (en ce moment et RSS). **Condition de passage** : bêta stable, micro-entreprise créée, hébergement commercial, licence des genres réglée.
 3. **Phase 2, monétisation** : Spleen+ (1 €/mois ou 10 €/an via Stripe), stats avancées, thèmes de profil, cartes partageables, Toi vs moi, Club du dimanche, Prête-moi un disque, import CSV, pubs discrètes. **Condition de passage** : Spleen+ rapporte de quoi payer le compte Apple (99 $/an).
 4. **Phase 3, appli Spleen** : Expo sur la même API, Se connecter avec Apple, notifications push, achats intégrés Apple et Google.
 5. **Phase 4, plus tard** : Apple Music, import Last.fm ; Spotify et Deezer si leurs règles s'assouplissent.
@@ -158,7 +159,7 @@ Suivre un artiste et voir en un coup d'œil ce qu'il va sortir : la semaine proc
 
 Les deux changements (notification, fiche d'un disque pas encore sorti) se font à l'étape 1 du jalon 13.
 
-**Encore ouvert** : retirer les sorties à venir de la discographie de la fiche artiste ? Elles apparaissent aujourd'hui à la fois dans « À venir » et dans la discographie.
+**Décidé par Azzo le 17 novembre** : les sorties à venir restent dans la discographie de la fiche artiste, en plus de la section « À venir ». Rien à changer.
 
 **Parcours**
 
@@ -210,7 +211,7 @@ Limite assumée : ces données viennent des bénévoles de MusicBrainz. Les gros
 
 ## Quoi écouter ce soir ? (jalon 13)
 
-Aider à passer de la fiche à l'écoute, et à choisir quand on ne sait pas quoi mettre. **Fini le 17 novembre** par le pilote. Règles ci-dessous = **retenues par le conseiller le 17 novembre** ; détail et décisions de chaque étape : `docs/pilote/decisions.md` (« Décidé par le conseiller ») et `docs/pilote/feuille-de-route.md`. L'étape 1 traite les restes du jalon 11 (section précédente).
+Aider à passer de la fiche à l'écoute, et à choisir quand on ne sait pas quoi mettre. **Fini le 17 novembre** par le pilote. Règles ci-dessous = **retenues par le conseiller le 17 novembre** ; détail et décisions de chaque étape : `docs/pilote/archives/jalon-13/decisions.md` (« Décidé par le conseiller ») et `docs/pilote/archives/jalon-13/feuille-de-route.md`. L'étape 1 traite les restes du jalon 11 (section précédente).
 
 - **Écouter sur…** : sur les fiches album (EP, single), morceau et artiste, cinq services toujours dans cet ordre : Spotify, Deezer, Apple Music, YouTube Music, Bandcamp (remplace les simples liens de recherche prévus au MVP : YouTube Music remplace YouTube, Bandcamp s'ajoute).
   - Lien direct quand MusicBrainz le connaît et qu'il passe la validation ; sinon une recherche « premier artiste + titre » (le nom seul sur une fiche artiste).
@@ -226,10 +227,15 @@ Aider à passer de la fiche à l'écoute, et à choisir quand on ne sait pas quo
 
 ## Souvenirs (jalon 14)
 
-Faire revenir sans rien demander, à partir de ce que le membre a déjà noté. Décisions par défaut, à valider au début du jalon.
+Faire revenir sans rien demander, à partir de ce que le membre a déjà noté. **En cours depuis le 17 novembre**, confié au pilote. Règles ci-dessous = **retenues par le conseiller le 17 novembre** ; détail et décisions de chaque étape : `docs/pilote/decisions.md` (« Décidé par le conseiller ») et `docs/pilote/feuille-de-route.md`. L'étape 1 traite le reste du jalon 13 décidé par Azzo le 17 novembre : sur l'accueil membre, le 2e bouton du bloc lilas devient « Tire un disque au hasard » et mène à `/pick` (accueil visiteur inchangé).
 
-- **Ce jour-là** : un bloc d'accueil « Il y a un an, tu écoutais… », à partir des écoutes datées, dans le fuseau du membre. Rien s'il n'y a rien ; un réglage pour le masquer.
-- **Anniversaires** : pour les disques que j'ai notés ou aimés, « *Titre* a N ans aujourd'hui », seulement pour les dates connues au jour près. Les anniversaires ronds sont mis en avant (10, 20, 25, 30, 40, 50 ans). Plus un bloc « Sortis un <jour mois> » sur `/discover`.
+- **Une section « Souvenirs »** sur l'accueil membre, entre « Bientôt dans tes oreilles » et les tendances, avec deux groupes ; un groupe vide disparaît, la section aussi quand il n'y a rien. Tuiles de disques sans moyenne de la communauté (le bloc montre une date, pas une note). Calculé à la lecture : rien n'est enregistré, aucune notification ni email.
+- **Ce jour-là** : « Il y a un an, tu écoutais… » (ou « Il y a N ans » : l'année passée la plus récente qui a des écoutes ce jour-là), à partir des écoutes datées de disques (pas les morceaux, jamais les écoutes sans date), dans le fuseau du membre ; une tuile par disque, 6 au plus ; lien vers ce mois dans le journal.
+- **Anniversaires du jour** : les disques que j'ai notés ou aimés (état actuel), disques principaux (ni live ni compilation), datés au jour près : « N ans aujourd'hui » (N ≥ 1). Les anniversaires ronds (10, 20, 25, 30, 40, 50 ans, puis chaque dizaine et 75) passent en tête, l'âge écrit en lilas. 6 au plus.
+- **29 février** : un souvenir ou un anniversaire du 29 février ne revient qu'un 29 février.
+- **Réglage** : une case « Afficher mes souvenirs sur l'accueil » (section « Souvenirs » des réglages, colonne `profiles.show_memories`, cochée par défaut) masque toute la section ; elle part dans l'export et disparaît avec le compte. Politique de confidentialité inchangée dans le jalon : phrase proposée à Azzo dans la PR (« souvenirs sur l'accueil » dans la liste des réglages).
+- **Sortis un <jour mois>** sur `/discover` (après « Sorties récentes ») : jour de Paris, le même pour tous ; disques principaux datés au jour près, sortis ce jour-là une année passée, avec au moins 2 membres qui les ont notés ou aimés (comptes suspendus exclus) ; les plus aimés d'abord, puis les plus anciens ; 6 au plus ; aucun bloc s'il n'y a rien.
+- **Hors périmètre** : notifications, emails ou push de souvenirs, souvenirs des amis, des critiques, des morceaux ou des artistes, page ou historique des souvenirs, souvenirs sur le profil public, cartes partageables, Spleen Rewind, stats de souvenirs, défi de l'année (jalon 15), nouveaux textes légaux.
 
 ## Défi de l'année (jalon 15, après la mise en ligne)
 
@@ -469,7 +475,7 @@ Le plus gros risque n'est pas technique : c'est un site vide au lancement et un 
 - [ ] Qui aide à modérer quand la communauté grandit ?
 - [ ] Genres : licence commerciale MetaBrainz ou autre source ? (avant la monétisation)
 - [x] Sorties à venir : règles validées par Azzo le 16 novembre (section du jalon 11) et livrées au jalon 11 : suivi réservé aux membres (500 artistes, 200 écritures par heure), liste privée, seulement « À écouter » avant la sortie, « Sortie aujourd'hui » dans le site selon le fuseau de chacun (`docs/sorties.md`).
-- [ ] Fiche artiste : retirer les sorties à venir de la discographie ? (reste du jalon 11, section du jalon 11)
+- [x] Fiche artiste : les sorties à venir restent dans la discographie (décidé par Azzo le 17 novembre, section du jalon 11).
 
 ## Sources
 
