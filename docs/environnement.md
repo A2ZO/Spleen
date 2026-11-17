@@ -53,8 +53,10 @@ session y est enregistrée), arrêter le dev, `pnpm build`, `pnpm start` (la pro
 les variables Brevo et S3 : des valeurs factices suffisent en local, aucun email ne part), puis
 relancer le script avec le même `MEASURE_STATE`. `MEASURE_ONLY=/fr/pick` ne mesure que le
 parcours accueil → ce chemin (une page hors des cinq ; sous Git Bash, ajouter
-`MSYS_NO_PATHCONV=1`, sinon le chemin devient un chemin Windows). Jamais de `next build`
-pendant `pnpm dev`.
+`MSYS_NO_PATHCONV=1`, sinon le chemin devient un chemin Windows). `MEASURE_EMAIL=<adresse>`
+connecte un autre membre de démo (par défaut `nuitblanche@example.test` ; par exemple
+`vieuxsillons@example.test` pour l'accueil avec souvenirs). Jamais de `next build` pendant
+`pnpm dev`.
 
 ### Mesurer la recherche instantanée (`apps/web/scripts/measure-search.mjs`)
 

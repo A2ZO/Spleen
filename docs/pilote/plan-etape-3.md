@@ -59,7 +59,7 @@ correction dans la requête (jamais d'index), sinon 3e passage, puis note dans `
 - [x] accueil
 - [x] réglages
 - [x] démo + `db.test.ts` + test démo + `db:seed`
-- [ ] `measure.mjs`
+- [x] `measure.mjs`
 - [ ] e2e
 - [ ] vérifications
 - [ ] relecture 1
