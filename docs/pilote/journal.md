@@ -35,3 +35,11 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   182/169 contre 205/134/207/183/187 (+18 au plus) → nouvelle référence de cet accueil.
   Relecteur : plan OK avec corrections, étape OK au 1er tour. Décision : F à 8 ans un 29 février.
   Prochaine : étape 4.
+- 2026-11-17 — Étape 4 (« Sortis un <jour mois> » sur `/discover`). Commits `85a55e6`..HEAD
+  (plan relu, `d814146` API, `850233f` écran, `c1f114a` démo `deuxiemeface`, `4c277e8` e2e,
+  `55ae795` passation). `pnpm check` vert ; e2e complet 274 réussis, 0 échoué, 10 ignorés.
+  Prod sans compte + overflow 116 · 2 (`hydration.spec:17`, connu). axe AA 0 (`/discover`
+  visiteur et `nuitblanche`, 1280/390). `EXPLAIN` Neon `dev` 0,41 ms ; index utilisés quand le
+  parcours complet est coupé. Mesures pageMs (plus haut de deux) 231/141/229/193/246 : profil →
+  `/discover` +13 ; `/discover` → accueil 246 comme HEAD de l'étape 3 (244). Relecteur : plan
+  OK avec corrections, étape OK au 1er tour. Aucune décision nouvelle. Prochaine : étape 5.

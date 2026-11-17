@@ -67,7 +67,7 @@ prod : specs sans compte + `overflow.spec`. axe AA `/discover` visiteur et `nuit
 - [x] démo + `db.test.ts` + test démo + `db:seed`
 - [x] e2e
 - [x] EXPLAIN (Neon `dev`, 517 disques : parcours complets choisis, 0,41 ms ; `enable_seqscan` off : `releases_release_date_idx` + `user_item_state_release_idx`, 0,26 ms)
-- [ ] vérifications
-- [ ] relecture 1
-- [ ] relecture 2
-- [ ] clôture
+- [x] vérifications
+- [x] relecture 1 (OK, aucune correction)
+- [x] relecture 2 (inutile : OK au 1er tour)
+- [x] clôture
