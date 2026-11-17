@@ -392,7 +392,10 @@
     "releasesTitle": "Sorties à venir",
     "notifyReleases": "Me prévenir le jour de la sortie",
     "followedArtists": "Mes artistes suivis",
-    "followedArtistsEmpty": "Tu ne suis aucun artiste pour l'instant. Suis-les depuis leur fiche pour voir leurs prochains disques."
+    "followedArtistsEmpty": "Tu ne suis aucun artiste pour l'instant. Suis-les depuis leur fiche pour voir leurs prochains disques.",
+    "memoriesTitle": "Souvenirs",
+    "showMemories": "Afficher mes souvenirs sur l'accueil",
+    "showMemoriesHint": "« Il y a un an, tu écoutais… » et les anniversaires de tes disques."
   },
   "errors": {
     "UNAUTHENTICATED": "Connecte-toi pour continuer.",
@@ -797,6 +800,13 @@
     "releasesOn": "Sort le {date}",
     "releasesIn": "Sort en {date}",
     "announcedFor": "Annoncé pour {date}"
+  },
+  "memories": {
+    "title": "Souvenirs",
+    "listened": "{years, plural, one {Il y a un an, tu écoutais…} other {Il y a # ans, tu écoutais…}}",
+    "diaryLink": "Ouvrir ce mois dans mon journal",
+    "anniversaries": "Anniversaires du jour",
+    "age": "{years, plural, one {# an aujourd'hui} other {# ans aujourd'hui}}"
   },
   "pick": {
     "title": "Tire un disque",

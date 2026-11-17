@@ -54,10 +54,10 @@ correction dans la requête (jamais d'index), sinon 3e passage, puis note dans `
 
 ## Avancement
 
-- [ ] textes
-- [ ] `MemoryGrid`
-- [ ] accueil
-- [ ] réglages
+- [x] textes
+- [x] `MemoryGrid`
+- [x] accueil
+- [x] réglages
 - [ ] démo + `db.test.ts` + test démo + `db:seed`
 - [ ] `measure.mjs`
 - [ ] e2e

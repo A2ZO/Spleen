@@ -392,7 +392,10 @@
     "releasesTitle": "Upcoming releases",
     "notifyReleases": "Notify me on release day",
     "followedArtists": "Artists I follow",
-    "followedArtistsEmpty": "You don't follow any artist yet. Follow them from their page to see their next records."
+    "followedArtistsEmpty": "You don't follow any artist yet. Follow them from their page to see their next records.",
+    "memoriesTitle": "Memories",
+    "showMemories": "Show my memories on the home page",
+    "showMemoriesHint": "“One year ago, you were listening to…” and your records’ anniversaries."
   },
   "errors": {
     "UNAUTHENTICATED": "Sign in to continue.",
@@ -797,6 +800,13 @@
     "releasesOn": "Out on {date}",
     "releasesIn": "Out in {date}",
     "announcedFor": "Announced for {date}"
+  },
+  "memories": {
+    "title": "Memories",
+    "listened": "{years, plural, one {One year ago, you were listening to…} other {# years ago, you were listening to…}}",
+    "diaryLink": "Open that month in my diary",
+    "anniversaries": "Anniversaries today",
+    "age": "{years, plural, one {# year old today} other {# years old today}}"
   },
   "pick": {
     "title": "Pick a record",

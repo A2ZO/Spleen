@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import { AvatarForm } from "@/components/account/AvatarForm";
 import { DeleteAccountForm } from "@/components/account/DeleteAccountForm";
+import { MemoriesForm } from "@/components/account/MemoriesForm";
 import { NotifyReleasesForm } from "@/components/account/NotifyReleasesForm";
 import { ProfileForm } from "@/components/account/ProfileForm";
 import { SignOutButton } from "@/components/account/SignOutButton";
@@ -113,6 +114,10 @@ export default async function SettingsPage({ params }: Props) {
             ))}
           </ul>
         )}
+      </Section>
+
+      <Section id="memories" title={t("memoriesTitle")}>
+        <MemoriesForm enabled={profile.showMemories} />
       </Section>
 
       <Section id="account" title={t("accountTitle")}>
