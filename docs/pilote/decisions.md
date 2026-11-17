@@ -117,3 +117,7 @@ liens avant les artistes, les fiches e2e jetables qui s'accumulent sur Neon `dev
   8 ans au lieu de 4 (règle du multiple de 4 supérieur appliquée à son écart de 2 ans). Raison :
   F doit rester une année plus ancienne que D et E (4 ans), sinon il sortirait avec eux
   (relecteur). Écarté : garder 4 ans (F visible ce jour-là, contraire au brief).
+- 17 novembre 2026, étape 5 : Next.js monte à **16.4.5**, pas à 16.4.6 (publié le 9 novembre).
+  Raison : le brief et « Autorisé à la fusion » nomment 16.4.5, qui porte les correctifs de
+  sécurité du 3 novembre ; le plus petit saut. Écarté : 16.4.6 (à reprendre au jalon 10 si ses
+  notes de version portent aussi des correctifs de sécurité ; question du relecteur).
