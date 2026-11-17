@@ -53,3 +53,14 @@ Mesures album 213–239 ms contre 215, A/B sans l'appel identique : bruit de la 
 Décisions : inventaire `db.test.ts` et snapshot `feed-loading` mis à jour (ajouts seuls).
 Ouvert : Azzo valide la régénération du snapshot ou préfère un autre compte de démo suiveur.
 Relecteur : OK avec corrections au premier tour. Prochaine : étape 5.
+
+## 2026-11-17 — étape 5, « Tire un disque »
+
+Commits d70f426..HEAD (`toListen.pick`, page `/pick`, bouton de l'onglet, démo, tests, e2e,
+`MEASURE_ONLY`). `pnpm check` vert ; e2e 262 réussis · 0 échoué · 0 instable · 10 ignorés, garde-fou
+du log : 1 × render cancelled mid-stream, non reproduit seul (issue #34 commentée). Prod sans
+compte + overflow : 118 · 2 (hydration.spec:17, Brevo factice) · 10. Axe : 0 à 1280 et 390.
+Mesures : `/pick` 142 ms (nouvelle référence) ; A/B `d70f426` / HEAD identiques, dans les 20 ms.
+Relecteur : corrections au tour 1 (durée cohérente avec les filtres, titres longs sur téléphone,
+A/B), OK au tour 2. Ouvert : `rainydaysam` non vide sur la base de dev (hors seed) ; point de
+l'étape 4 (snapshot `feed-loading`) toujours à valider par Azzo. Prochaine : étape 6.

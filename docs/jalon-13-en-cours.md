@@ -93,8 +93,27 @@ connaît, les notes et cœurs de mes amis sur une fiche, et « Tire un disque »
   d'écoute pour un ordre lisible ; ne jamais lancer deux passes Playwright en même temps (le
   nettoyage global de l'une supprime les comptes de l'autre) ; `pnpm start` se lance depuis
   `apps/web`.
-- **Prochaine : étape 5**, « Tire un disque » (consignes dans `docs/pilote/feuille-de-route.md`,
-  « Étape 5 », lire l'issue #31) ; plan à écrire dans `docs/pilote/plan-etape-5.md`.
+- **Étape 5 faite** (17 novembre) : `pickToListen` (`packages/api/src/lib/listening/pick.ts`,
+  deux vagues, aléa injectable, rien d'écrit) derrière `toListen.pick({ type?, duration?, not?
+  })` → `{ listTotal, matching, pick }` (`pick.durationMinutes` via `pickMinutes`, jamais en
+  contradiction avec le filtre) ; page `/[locale]/pick` (noindex, filtres en `LinkTabs`,
+  `PickCard`, « Un autre » = formulaire GET + `useNavigate` dans `AnotherPick`) ; bouton
+  « Tire un disque » sur mon onglet « À écouter » seulement ; démo `seed/pick.ts` (6 disques
+  pour `nuitblanche`, dates `updated_at` fixées) ; tests `pick.test.ts`, e2e `pick.spec.ts`
+  (débordement à 390 px dedans, pas dans `overflow.spec`) ; `measure.mjs` gagne
+  `MEASURE_ONLY=<chemin>`.
+- Décisions : accueil inchangé malgré l'issue #31 (décisions actées) ; tailles de titre de carte
+  `phoneCardTitleSize` / `phoneCardLineSize` (`lib/display-title.ts`) ; détail dans
+  `docs/pilote/decisions.md`.
+- Appris en route : sous Git Bash, un chemin dans une variable (`MEASURE_ONLY=/fr/pick`) devient
+  un chemin Windows : `MSYS_NO_PATHCONV=1` ; `rainydaysam` n'est plus vide sur la base de dev
+  (ajouts hors seed) : prendre un compte e2e jetable pour un état vide ; le garde-fou du log
+  serveur a relevé une fois « render cancelled mid-stream » en passe complète, non reproduit
+  seul (issue #34).
+- **Prochaine : étape 6**, « La passe finale » (consignes dans `docs/pilote/feuille-de-route.md`,
+  « Étape 6 ») : doc `docs/quoi-ecouter.md`, cahier des charges, captures de tout le jalon, axe,
+  e2e complet, mesures contre la référence (`/pick` 142 ms), `CLAUDE.md`, puis la PR (« Closes
+  #31 », #41, #42) ; plan à écrire dans `docs/pilote/plan-etape-6.md`.
 
 ## Mesures de référence
 
