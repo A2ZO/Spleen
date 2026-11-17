@@ -59,7 +59,8 @@ describe("release.bySlug (database)", () => {
       "spotify",
       "deezer",
       "appleMusic",
-      "youtube",
+      "youtubeMusic",
+      "bandcamp",
     ]);
   });
 

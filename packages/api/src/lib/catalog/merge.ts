@@ -23,7 +23,7 @@ import { record } from "../moderation/decisions";
  * Duplicate merges (admins only). One transaction moves everything that pointed to the
  * duplicate onto the page kept: listens, track ratings, reviews, list items, Shelves, member
  * states (recomputed), open reports; the kept page takes what it lacks from the duplicate
- * (credits, tracklist, genres, cover, date). The duplicate is never deleted: it points to the
+ * (credits, tracklist, genres, cover, date, "Listen on" links). The duplicate is never deleted: it points to the
  * page kept (`merged_into_id`), its URL redirects there and imports follow the link.
  * Conflicts (one member, list or Shelf holding both) keep a single row. Rules: docs/social.md.
  */
@@ -167,6 +167,15 @@ async function moveIfMissing(
   await tx.execute(sql`delete from ${ident(table)} where ${ident(column)} = ${dupId}`);
 }
 
+/** "Listen on" links: the page kept takes the services it lacks; the duplicate's are dropped. */
+async function mergeListenLinks(tx: DbOrTx, column: string, keepId: string, dupId: string) {
+  await tx.execute(sql`
+    insert into "listen_links" (${ident(column)}, "service", "url")
+    select ${keepId}, "service", "url" from "listen_links" where ${ident(column)} = ${dupId}
+    on conflict do nothing`);
+  await tx.execute(sql`delete from "listen_links" where ${ident(column)} = ${dupId}`);
+}
+
 /**
  * Undated listens: at most one per member and target. A member with one on each page keeps
  * the most recently changed (it holds their current quick rating and heart); reviews and the
@@ -304,6 +313,7 @@ async function mergeRelease(tx: DbOrTx, keepId: string, dupId: string) {
     select ${keepId}, "genre_id" from "release_genres" where "release_id" = ${dupId}
     on conflict do nothing`);
   await tx.execute(sql`delete from "release_genres" where "release_id" = ${dupId}`);
+  await mergeListenLinks(tx, "release_id", keepId, dupId);
 }
 
 async function mergeTrack(tx: DbOrTx, keepId: string, dupId: string) {
@@ -319,6 +329,7 @@ async function mergeTrack(tx: DbOrTx, keepId: string, dupId: string) {
     update "tracks" "k" set "duration_ms" = coalesce("k"."duration_ms", "d"."duration_ms")
     from "tracks" "d" where "k"."id" = ${keepId} and "d"."id" = ${dupId}`);
   await moveIfMissing(tx, "track_artists", "track_id", keepId, dupId);
+  await mergeListenLinks(tx, "track_id", keepId, dupId);
 }
 
 async function mergeArtist(tx: DbOrTx, keepId: string, dupId: string) {
@@ -345,6 +356,7 @@ async function mergeArtist(tx: DbOrTx, keepId: string, dupId: string) {
       "type" = coalesce("k"."type", "d"."type"),
       "image_url" = coalesce("k"."image_url", "d"."image_url")
     from "artists" "d" where "k"."id" = ${keepId} and "d"."id" = ${dupId}`);
+  await mergeListenLinks(tx, "artist_id", keepId, dupId);
   for (const { userId } of users) await bumpStatsVersion(tx, userId);
 }
 
