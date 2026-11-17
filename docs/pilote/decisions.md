@@ -77,3 +77,10 @@ légaux.
   : slug facultatif gardé comme dans le tableau. Bandcamp : tableau tel quel (artiste `/` vu).
   Raison : prudence, réversible à l'étape 3 si la relecture de nuit en montre. Écarté : ajouter
   les formes YouTube Music du tableau sans exemple réel.
+- 2026-11-17, étape 2 : la purge e2e (`deleteE2eAccounts`, `packages/db/src/e2e.ts`) supprime
+  les disques jetables, que la clé `restrict` de `listen_links` bloque. Les liens de ces disques
+  sont effacés dans `apps/web/e2e/cleanup.ts`, juste avant. Raison : « Autorisé à la fusion »
+  n'ouvre dans `packages/db` que le schéma et le seed. Écarté : la ligne dans `e2e.ts`. Le
+  disque est lu avec ses liens dans la même requête (sous-requête `json_agg`, comme l'artiste
+  et le morceau) plutôt qu'une requête de plus dans le `Promise.all` : rien de plus en
+  parallèle sur le pool ; la mesure tranchera.

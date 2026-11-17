@@ -139,6 +139,38 @@ et à travers le pooler Neon (pas de verrou de session). Intervalle : 1,1 s.
   `dev`) utilisées en même temps depuis la même machine font deux limiteurs, donc jusqu'à
   2 requêtes/s. Ne lance pas `db:seed:catalog` sur l'une pendant que l'autre importe.
 
+## « Écouter sur… » (jalon 13)
+
+Cinq services, toujours dans cet ordre : Spotify, Deezer, Apple Music, YouTube Music, Bandcamp.
+Lien direct quand MusicBrainz connaît la page, sinon recherche « premier artiste crédité +
+titre » (le nom seul pour un artiste). Pas de lien d'affiliation, `rel="nofollow noopener
+noreferrer"`, la recherche est annoncée « (recherche) » aux lecteurs d'écran.
+
+- **Lecture des relations** : `inc=url-rels` (+ `recording-level-rels` sur l'édition de la liste
+  des titres, + `url-rels` sur l'artiste et l'enregistrement). `urlRelations` n'existe que là
+  où on l'a demandé ; relations terminées (`ended`) ignorées. Types retenus : `free streaming`,
+  `streaming`, `purchase for download`, `download for free` ; pour un artiste aussi `apple
+  music`, `bandcamp`, `youtube music`.
+- **Validation** (`packages/api/src/lib/listen-links.ts`, `validListenUrl`) : `https`, 300
+  caractères au plus, ni identifiant ni port, hôte exact, chemin d'une forme connue pour ce type
+  de fiche ; l'URL est **reconstruite** à partir des parties validées (paramètres de suivi
+  perdus). Faite avant d'écrire **et** avant d'afficher : une ligne en base qui ne passe plus,
+  ou rangée sous un autre service, laisse la recherche. Formes acceptées d'après les réponses
+  réelles (`docs/pilote/decisions.md`) : YouTube Music seulement pour l'artiste
+  (`/channel/UC…`), `itunes.apple.com` refusé.
+- **Stockage** : `listen_links` (une ligne par fiche et service, cible = colonnes
+  `release_id` / `track_id` / `artist_id`), premier lien valide par service.
+- **Import** : disque = liens de l'édition de la liste des titres ; morceaux = leurs liens dans
+  cette liste, ou ceux de `getRecording` à l'import d'un morceau ; artiste = seulement son
+  propre import (`links_checked_at` posé), jamais un artiste de crédit. Ré-import : lien ajouté
+  ou remplacé, jamais retiré.
+- **Fusion** : la fiche gardée prend les services qui lui manquent, ceux du doublon sont
+  supprimés.
+- **Lecture** : sous-requête `json_agg` dans la lecture de la ligne de la fiche (aucune requête
+  de plus) ; même bloc pour tout le monde (cache public, issue #22).
+- e2e : les liens des disques jetables sont effacés par `apps/web/e2e/cleanup.ts` avant la
+  purge des disques (clé `restrict`).
+
 ## Pochettes
 
 URL `https://coverartarchive.org/release-group/{mbid}/front-500`, vérifiée à l'import (HEAD :
