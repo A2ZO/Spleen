@@ -18,6 +18,8 @@ l'appli iPhone / Android (Expo) ensuite, en réutilisant les mêmes paquets.
 - Suivre des membres, liker, commenter, signaler ; fil « Amis » et « Populaire », notifications.
 - Créer des listes, explorer `/discover`.
 - Suivre un artiste, voir ses sorties à venir et être prévenu le jour de la sortie.
+- Savoir quoi écouter ce soir (`/pick`), ouvrir un disque sur sa plateforme, voir les amis qui l'ont écouté.
+- Retrouver ses souvenirs du jour sur l'accueil, et les disques « Sortis un » jour comme aujourd'hui sur `/discover`.
 - Côté équipe : administration et modération, pages légales.
 - Installer le site comme une appli (PWA) ; « Annuler » pendant 8 s après une suppression.
 
@@ -107,7 +109,8 @@ Variables d'environnement, CI et détails de la base : [`docs/environnement.md`]
 - Domaines : [comptes](docs/accounts.md), [catalogue](docs/catalogue.md),
   [écoute](docs/ecoute.md), [profil et stats](docs/profil-stats.md), [social](docs/social.md),
   [listes et découverte](docs/decouverte.md), [référencement](docs/referencement.md),
-  [sorties à venir](docs/sorties.md).
+  [sorties à venir](docs/sorties.md), [quoi écouter](docs/quoi-ecouter.md),
+  [souvenirs](docs/souvenirs.md).
 - [Pièges déjà rencontrés](docs/pieges.md).
 
 ## Données et crédits
