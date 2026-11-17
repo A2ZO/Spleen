@@ -38,7 +38,8 @@ pnpm db:migrate          # apply migrations (direct connection on Neon)
 pnpm db:seed             # migrate + insert demo data (idempotent) — never in production
 pnpm db:reset            # wipe the LOCAL PGlite database, migrate, seed (refuses Postgres)
 pnpm db:seed:catalog     # import packages/api/scripts/catalog-seed.json from MusicBrainz
-pnpm catalog:refresh     # re-read discographies for recent releases (nightly in Actions)
+pnpm catalog:refresh     # re-read discographies, then listen links (nightly in Actions)
+pnpm catalog:refresh -- --links-only   # only the capped "Listen on" links re-read
 pnpm releases:notify     # "out today" notifications for followers (nightly, after catalog:refresh)
 pnpm admin:grant <email> # admin role (also admin:revoke); never from the site
 pnpm retention          # privacy retention rules (nightly in Actions, src/lib/retention.ts)

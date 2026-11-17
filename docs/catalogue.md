@@ -164,6 +164,18 @@ noreferrer"`, la recherche est annoncée « (recherche) » aux lecteurs d'écran
   cette liste, ou ceux de `getRecording` à l'import d'un morceau ; artiste = seulement son
   propre import (`links_checked_at` posé), jamais un artiste de crédit. Ré-import : lien ajouté
   ou remplacé, jamais retiré.
+- **Relecture de nuit** (`lib/catalog/listen-links-refresh.ts`, dernière phase de
+  `pnpm catalog:refresh`, seule avec `-- --links-only`) : 200 disques complets puis 100 artistes
+  dont la discographie est importée, 10 min au plus (fournisseur à 3 essais), le reste la nuit
+  suivante ; jamais relus d'abord, puis relus il y a plus de 30 jours. Disque : une navigation
+  `release?release-group=…&inc=url-rels&limit=100`, premier lien valide par service dans
+  l'ordre `rankEditions` ; le résultat remplace les liens (retrait d'un service disparu) sauf
+  lecture partielle (plus de 100 éditions : ajout et mise à jour seulement). Artiste :
+  `getArtist`, liens remplacés, rien d'autre. `not_found` ou 0 édition : liens gardés,
+  `links_checked_at` posé. Indisponible ou occupé : la phase s'arrête pour la nuit. Ses erreurs
+  ne changent ni les autres phases ni le code de sortie. **Limites assumées** : les morceaux ne
+  sont jamais relus la nuit (une requête de plus par disque), ni les fiches incomplètes (liens
+  reçus à leur import).
 - **Fusion** : la fiche gardée prend les services qui lui manquent, ceux du doublon sont
   supprimés.
 - **Lecture** : sous-requête `json_agg` dans la lecture de la ligne de la fiche (aucune requête
