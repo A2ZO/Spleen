@@ -122,3 +122,14 @@ légaux.
   snapshot `feed-loading` (voir plus haut). Choix gardé (réversible, ajouts seuls), sans
   attente : point ouvert dans `journal.md` et dans la passation ; l'alternative (membres suivis
   par un autre compte de démo) changerait la consigne de l'étape et l'e2e.
+- 2026-11-17, étape 5 : l'issue #31 demandait de remplacer le 2e bouton de l'accueil par « Tire
+  un disque au hasard » ; les décisions actées gardent l'accueil inchangé et mettent l'accès
+  dans l'onglet « À écouter » de mon profil : elles priment, le bouton provisoire de l'accueil
+  reste. Écarté : changer l'accueil (contraire à la consigne).
+- 2026-11-17, étape 5 : « Un autre » navigue avec `useNavigate().push` dans un `onSubmit` (formulaire
+  GET classique sans JavaScript). Raison : règle du projet (seul moyen de naviguer depuis le
+  code, il alimente la barre du haut). Écarté : `next/form` (navigation hors de la barre).
+- 2026-11-17, étape 5 : le cas « rien n'est encore sorti » se lit sur la page sans champ de
+  plus : `listTotal` > 0 et `matching` 0 sans filtre ; avec un filtre, « aucun ne correspond »
+  puis « Retirer les filtres » mène à ce cas. Raison : forme de réponse actée `{ listTotal,
+  matching, pick }`. Écarté : un champ `released`.
