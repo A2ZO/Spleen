@@ -8,6 +8,7 @@ import {
   inArray,
   isPostgresUrl,
   loadRootEnv,
+  recomputeItemState,
   schema,
   setAdminRole,
 } from "@spleen/db";
@@ -435,3 +436,68 @@ export const followMembersInDatabase = (username: string, usernames: string[]) =
       .values(followees.map((f) => ({ followerId, followeeId: f.id })))
       .onConflictDoNothing();
   });
+
+/**
+ * « Souvenirs » for a throwaway account (milestone 14): on the account's real day (its time
+ * zone), a record released on 2000-01-01 listened to on this day `listenedYearsAgo` years ago,
+ * and one record per `heartedYearsAgo` released on this day that many years ago, with a heart
+ * (no date, no rating). Writes are 40 days old. Use multiples of 4: they hold on a 29 February.
+ * Null on PGlite (the dev server's own database).
+ */
+export async function throwawayMemories(
+  testInfo: TestInfo,
+  username: string,
+  { listenedYearsAgo, heartedYearsAgo }: { listenedYearsAgo: number; heartedYearsAgo: number[] },
+): Promise<{ listened: string; hearted: { title: string; years: number }[] } | null> {
+  loadRootEnv();
+  const url = process.env.DATABASE_URL;
+  if (!isPostgresUrl(url)) return null;
+  const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}${testInfo.project.name.slice(0, 1)}`;
+  const handle = createDb(url);
+  try {
+    const db = handle.db;
+    const [profile] = await db
+      .select({ userId: schema.profiles.userId, timeZone: schema.profiles.timeZone })
+      .from(schema.profiles)
+      .where(eq(schema.profiles.username, username));
+    const userId = profile!.userId;
+    const today = todayIn(profile!.timeZone, new Date());
+    const yearsAgo = (n: number) =>
+      `${String(Number(today.slice(0, 4)) - n).padStart(4, "0")}-${today.slice(5)}`;
+    const at = new Date(Date.now() - 40 * 24 * 60 * 60 * 1000);
+    const releases = await db
+      .insert(schema.releases)
+      .values(
+        [{ date: "2000-01-01" }, ...heartedYearsAgo.map((n) => ({ date: yearsAgo(n) }))].map(
+          ({ date }, i) => ({
+            slug: `e2e-${id}-${i + 1}`,
+            title: `Souvenir jetable ${id} ${i + 1}`,
+            type: "album" as const,
+            releaseDate: date,
+            releaseDatePrecision: "day" as const,
+            tracklistImportedAt: new Date(),
+          }),
+        ),
+      )
+      .returning({ id: schema.releases.id, title: schema.releases.title });
+    await db.insert(schema.entries).values(
+      releases.map((release, i) => ({
+        userId,
+        releaseId: release.id,
+        listenedOn: i === 0 ? yearsAgo(listenedYearsAgo) : null,
+        liked: i > 0,
+        createdAt: at,
+        updatedAt: at,
+      })),
+    );
+    for (const release of releases) {
+      await recomputeItemState(db, userId, { releaseId: release.id });
+    }
+    return {
+      listened: releases[0]!.title,
+      hearted: heartedYearsAgo.map((years, i) => ({ title: releases[i + 1]!.title, years })),
+    };
+  } finally {
+    await handle.close();
+  }
+}
