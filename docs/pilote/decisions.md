@@ -85,3 +85,11 @@ légaux.
   et le morceau) plutôt qu'une requête de plus dans le `Promise.all` : rien de plus en
   parallèle sur le pool. Mesure (build de prod, deux passages) : pageMs 212/133/219/182/226
   et 211/134/219/167/227 contre 215/136/231/182/228 : gardé.
+- 2026-11-17, étape 3 : la navigation `release?release-group=…&inc=url-rels` renvoie bien les
+  relations (BRAT : 25 éditions, toutes avec des liens) : pas de repli sur l'édition de
+  référence. Aucune forme YouTube Music disque ou morceau vue : `validListenUrl` inchangé.
+- 2026-11-17, étape 3 : la phase des liens a son propre fournisseur (`maxAttempts: 3` au lieu
+  de 8) pour borner le dépassement du budget de 10 min. Raison : le relecteur a montré qu'une
+  requête à 8 essais peut durer plus de 16 min. Écarté : garder 8 essais et écrire la borne.
+  Une navigation qui renvoie 0 édition est traitée comme `not_found` (liens gardés). Écarté :
+  retirer tous les liens.
