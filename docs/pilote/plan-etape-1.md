@@ -55,6 +55,6 @@ Vérifications d'écran :
 - [x] 4. e2e
 - [x] 5. Docs
 - [x] vérifications
-- [ ] relecture 1
+- [x] relecture 1
 - [ ] relecture 2
-- [ ] clôture
+- [x] clôture
