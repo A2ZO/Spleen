@@ -78,6 +78,6 @@ mesures (aucun écran ne change).
 - [x] routeur `memories.home`
 - [x] tests `memories.test.ts`
 - [x] vérifications
-- [ ] relecture 1
-- [ ] relecture 2
-- [ ] clôture
+- [x] relecture 1 (OK, aucune correction)
+- [x] relecture 2 (sans objet)
+- [x] clôture

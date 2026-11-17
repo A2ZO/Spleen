@@ -54,10 +54,19 @@ depuis `dev`. L'étape 1 traite le reste du jalon 13 décidé par Azzo (bouton d
 - Appris en route : sous Git Bash, un chemin `/c/…` passé à Node avec `MSYS_NO_PATHCONV=1`
   devient `C:\c\…` (donner `MEASURE_STATE` en `C:/…`). Mesures du jour plus lentes sur la
   machine : l'A/B tranche (voir « Mesures de référence »).
-- **Prochaine : étape 2** (souvenirs de l'accueil : réglage et API) : migration
-  `profiles.show_memories` (`pnpm db:generate`, puis `pnpm db:migrate` sur Neon `dev`),
-  `account.setShowMemories`, `packages/api/src/lib/memories.ts`, routeur `memories.home`, types,
-  `memories.test.ts` ; détail dans `feuille-de-route.md`, « Étape 2 ». Pas d'écran.
+- **Étape 2 faite** (17 novembre, pilote) : migration `0018` (`profiles.show_memories`, défaut
+  vrai ; `pnpm db:migrate` sur Neon `dev`), `account.setShowMemories` (`PROFILE_REQUIRED` sans
+  profil), `MyProfile.showMemories`, export par la ligne `profiles`. `lib/memories.ts` :
+  `sameDayInPastYears`, `isRoundAnniversary` / `roundAnniversarySql` (mêmes constantes),
+  `homeMemories` en une requête `union all` (écoutes du jour le plus récent, anniversaires ronds
+  d'abord, 6 au plus chacun). Routeur `memories.home` : null sans requête pour un visiteur, un
+  suspendu, sans profil ou réglage coupé. Types `HomeMemories`, `AnniversaryItem`,
+  `MemoryRelease`. 21 tests dans `memories.test.ts`.
+- Décision : « Ce jour-là » applique les exclusions (disques fusionnés, sorties à venir) avant de
+  choisir l'année la plus récente (`decisions.md`).
+- **Prochaine : étape 3** (souvenirs de l'accueil : écrans, réglages et démo) : section
+  « Souvenirs » de l'accueil, `MemoryGrid`, section des réglages, `seed/memories.ts`,
+  `MEASURE_EMAIL`, e2e, captures, mesures ; détail dans `feuille-de-route.md`, « Étape 3 ».
 
 ## Mesures de référence
 

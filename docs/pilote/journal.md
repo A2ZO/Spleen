@@ -18,3 +18,10 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   196/241) ; A/B même session `origin/dev` 241/144/242/194/242 contre HEAD 227/144/230/194/241
   → pas de régression. Relecteur : plan OK avec 3 corrections appliquées, étape OK au 1er tour.
   Aucune décision nouvelle. Prochaine : étape 2.
+- 2026-11-17 — Étape 2 (souvenirs de l'accueil : réglage et API, pas d'écran). Commits
+  `904fc66`..HEAD (plan relu, `f9ea530` migration `0018` `show_memories`, `45cdb03`
+  `memories.home` + `account.setShowMemories`, `e81b4d3` 21 tests). `pnpm check` vert ;
+  snapshot `feed-loading` inchangé ; e2e complet 264 réussis, 0 échoué, 10 ignorés (teardown
+  « render cancelled mid-stream » → #34 commentée). Pas d'axe ni de mesures (aucun écran ne
+  change). Relecteur : plan OK avec corrections appliquées, étape OK au 1er tour. Décision :
+  exclusions appliquées avant le choix de l'année la plus récente. Prochaine : étape 3.
