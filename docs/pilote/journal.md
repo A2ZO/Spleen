@@ -43,3 +43,13 @@ Relecteur : corrections au premier tour (capture artiste, passation, risque ci-d
 Décisions : `maxAttempts` 3, 0 édition = `not_found`. Ouvert : un 503 de MusicBrainz arrête la
 phase avant les artistes ; s'il se répète chaque nuit, les artistes ne sont jamais relus.
 Prochaine : étape 4.
+
+## 2026-11-17 — étape 4, « Tes amis sur ce disque »
+
+Commits 458340f..HEAD (`release.friends`, section `FriendsOnRecord`, démo, e2e, docs).
+`pnpm check` vert ; e2e 254 réussis · 2 échoués, run perturbé par une passe concurrente (les 3
+specs passent seules 34/34, issue #34 commentée). Axe : 0 à 1280 et 390 (membre, visiteur prod).
+Mesures album 213–239 ms contre 215, A/B sans l'appel identique : bruit de la machine.
+Décisions : inventaire `db.test.ts` et snapshot `feed-loading` mis à jour (ajouts seuls).
+Ouvert : Azzo valide la régénération du snapshot ou préfère un autre compte de démo suiveur.
+Relecteur : OK avec corrections au premier tour. Prochaine : étape 5.

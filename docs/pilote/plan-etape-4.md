@@ -56,5 +56,5 @@ Captures 1280 et 390 : membre (5 lignes et lien, puis ouvert), membre sans ami, 
 - [x] 8. tests d'API · [x] 9. e2e
 - [x] vérifications
 - [x] relecture 1
-- [ ] relecture 2
-- [ ] clôture
+- [x] relecture 2 (inutile : OK au premier tour)
+- [x] clôture
