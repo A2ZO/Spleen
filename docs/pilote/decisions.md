@@ -191,3 +191,7 @@ automatique.
    le pilote refera la section 6.
 2. Next.js 16.4.2 est annoncé vulnérable pendant `pnpm build` (un premier build en code 1, le
    second passe). Faut-il une PR `chore/` de mise à jour avant la release `dev` → `main` ?
+
+Réponse d'Azzo (17 novembre 2026, dans la conversation) : « Oui, fusion autorisée » (point 1 :
+`db.test.ts` et snapshot `feed-loading` acceptés). Point 2 (Next.js) sans réponse : reste ouvert
+dans la PR de release.

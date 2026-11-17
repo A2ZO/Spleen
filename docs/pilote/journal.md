@@ -77,3 +77,5 @@ build en code 1). Prochaine : fin du jalon.
 
 - 2026-11-17 — Fin du jalon 13 : PR 46 vers `dev`, CI verte ; relecteur `BLOQUANT` (formel :
   `db.test.ts` hors de « Autorisé à la fusion ») → attente, questions dans `decisions.md`.
+- 2026-11-17 — Azzo autorise la fusion de la PR 46 (`db.test.ts`, snapshot `feed-loading`) :
+  phase `fini`, fusion dans `dev`, puis PR de release `dev` → `main` en brouillon.

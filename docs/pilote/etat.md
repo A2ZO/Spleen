@@ -4,7 +4,7 @@
 - Branche : feat/13-quoi-ecouter
 - Doc du jalon : docs/jalon-13-en-cours.md
 - Étape : fin du jalon (sections 5 et 6 du skill)
-- Phase : attente
+- Phase : fini (fusion de la PR 46 autorisée par Azzo le 2026-11-17)
 - Mis à jour : 2026-11-17
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante, sans arrêt entre les
