@@ -120,6 +120,13 @@
       "when": 1794841911329,
       "tag": "0016_violet_goliath",
       "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1794885299922,
+      "tag": "0017_lowly_silhouette",
+      "breakpoints": true
     }
   ]
 }

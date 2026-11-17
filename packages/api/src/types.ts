@@ -40,9 +40,13 @@ export interface Track {
   durationMs: number | null;
 }
 
+export type ListenService = "spotify" | "deezer" | "appleMusic" | "youtubeMusic" | "bandcamp";
+
+/** "Listen on": a direct link when MusicBrainz knows one that passes validation, else a search. */
 export interface ListenLink {
-  service: "spotify" | "deezer" | "appleMusic" | "youtube";
+  service: ListenService;
   url: string;
+  direct: boolean;
 }
 
 export interface MemberRef {
@@ -50,6 +54,29 @@ export interface MemberRef {
   displayName: string;
   /** Uploaded avatar, when the source loads it (initials are shown otherwise). */
   avatarUrl?: string | null;
+}
+
+/** « Tes amis sur ce disque »: followed members with a rating or a heart on a record. */
+export interface ReleaseFriends {
+  items: { member: MemberRef; rating: number | null; liked: boolean }[];
+  /** All of them, beyond the rows returned. */
+  total: number;
+}
+
+/** « Tire un disque »: the record drawn from the member's « À écouter » list. */
+export interface ToListenPick {
+  /** Records in the list (out or not). */
+  listTotal: number;
+  /** Released records left by the filters. */
+  matching: number;
+  pick:
+    | (ReleaseCard & {
+        durationMs: number | null;
+        /** Rounded so it never contradicts the length filters (`pickMinutes`). */
+        durationMinutes: number | null;
+        listenLinks: ListenLink[];
+      })
+    | null;
 }
 
 export interface ReviewCard {
@@ -418,6 +445,10 @@ export interface NotificationGroup {
   releases: ReleaseCard[];
   /** How many records the group holds (`releases` shows the first 3). */
   releaseCount: number;
+  /** Day of a `release` group ("2026-11-16", from its key); null for other types. */
+  releaseDay: string | null;
+  /** `releaseDay` is today in the member's zone (Paris when empty or unknown). */
+  releasedToday: boolean;
 }
 
 export interface ModerationNotice {

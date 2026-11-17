@@ -51,7 +51,10 @@ jamais ses paramètres ; il est coupé dès que `NODE_ENV=production`, et
 SQL) : se connecter une fois contre `pnpm dev` avec `$env:MEASURE_STATE="<fichier>"` (la
 session y est enregistrée), arrêter le dev, `pnpm build`, `pnpm start` (la production exige
 les variables Brevo et S3 : des valeurs factices suffisent en local, aucun email ne part), puis
-relancer le script avec le même `MEASURE_STATE`. Jamais de `next build` pendant `pnpm dev`.
+relancer le script avec le même `MEASURE_STATE`. `MEASURE_ONLY=/fr/pick` ne mesure que le
+parcours accueil → ce chemin (une page hors des cinq ; sous Git Bash, ajouter
+`MSYS_NO_PATHCONV=1`, sinon le chemin devient un chemin Windows). Jamais de `next build`
+pendant `pnpm dev`.
 
 ### Mesurer la recherche instantanée (`apps/web/scripts/measure-search.mjs`)
 

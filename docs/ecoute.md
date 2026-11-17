@@ -4,6 +4,9 @@ Tout est dans `packages/api/src/lib/listening/` (routers `listening.*` et `revie
 dérivation de l'état vit dans `packages/db/src/listening-state.ts` pour que le seed et l'API
 utilisent exactement le même code.
 
+« Tire un disque » (tirage dans « À écouter », `lib/listening/pick.ts`, jalon 13) :
+`docs/quoi-ecouter.md`.
+
 ## Modèle
 
 - `entries` = le journal : une ligne par écoute d'un album/EP/single **ou** d'un morceau
@@ -38,7 +41,9 @@ une critique, « À écouter » et les listes restent permis ; un morceau n'est 
 Écran : `myState.releaseNotOut` (fuseau du membre) passe `notOut` à `ListenControls` : ni
 étoiles, ni « J'ai écouté », ni cœur, ni journal détaillé, ni raccourcis clavier ; « À
 écouter » et les listes restent, sans carte « Tes écoutes » ni étagère. Visiteur : jour de
-Paris (`release.upcoming`).
+Paris (`release.upcoming`). Pour tous (jalon 13) : pas de carte « Note de la communauté »
+(la mosaïque recompte ses cartes, aucune grille vide) ; sans critique, « Les critiques
+ouvriront le jour de la sortie. » ; des critiques déjà écrites restent affichées.
 
 ## Écoute sans date
 

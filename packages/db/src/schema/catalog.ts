@@ -49,6 +49,8 @@ export const artists = pgTable(
     discographyImportedAt: timestamp("discography_imported_at", { withTimezone: true }),
     /** Last time the nightly job re-read the discography for new releases. */
     discographyRefreshedAt: timestamp("discography_refreshed_at", { withTimezone: true }),
+    /** Last time the "Listen on" links were read from the artist's own page (import or night). */
+    linksCheckedAt: timestamp("links_checked_at", { withTimezone: true }),
     mergedIntoId: mergedInto((): AnyPgColumn => artists.id),
     ...timestamps(),
   },
@@ -92,6 +94,8 @@ export const releases = pgTable(
      * artist's discography only), completed when its page is opened by a member.
      */
     tracklistImportedAt: timestamp("tracklist_imported_at", { withTimezone: true }),
+    /** Last time the nightly job read the "Listen on" links of every edition (step 3). */
+    linksCheckedAt: timestamp("links_checked_at", { withTimezone: true }),
     mergedIntoId: mergedInto((): AnyPgColumn => releases.id),
     ...timestamps(),
   },

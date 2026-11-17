@@ -1,0 +1,2459 @@
+{
+  "release-count": 25,
+  "releases": [
+    {
+      "status": "Official",
+      "packaging": "Jewel Case",
+      "country": "US",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+      "date": "2024-06-07",
+      "id": "06272341-cea9-42ad-9b0c-6ec47954417c",
+      "relations": [
+        {
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for mail-order",
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "id": "35124785-e123-4db5-8df5-b5cda23f5aea",
+            "resource": "https://shop.spotify.com/en-US/artist/25uiPmTg16RbhZWAqwLBy5/product/brat-signed-cd"
+          },
+          "attributes": [],
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7"
+        },
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "attribute-values": {},
+          "source-credit": "",
+          "type": "purchase for mail-order",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "url": {
+            "id": "26f9f54f-a85b-4a97-aaa9-29851f7f60e4",
+            "resource": "https://store.charlixcx.com/products/brat-signed-cd"
+          },
+          "target-credit": "",
+          "begin": null
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "title": "BRAT",
+      "quality": "normal",
+      "barcode": "075678607516",
+      "asin": null,
+      "release-events": [
+        {
+          "area": {
+            "name": "United States",
+            "disambiguation": "",
+            "type-id": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type": null
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "cover-art-archive": {
+        "artwork": false,
+        "darkened": false,
+        "count": 0,
+        "front": false,
+        "back": false
+      },
+      "disambiguation": "signed"
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2024-06-07",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "status": "Official",
+      "packaging": "Gatefold Cover",
+      "country": "US",
+      "cover-art-archive": {
+        "darkened": false,
+        "artwork": true,
+        "front": true,
+        "back": false,
+        "count": 2
+      },
+      "disambiguation": "green picture disc",
+      "id": "0aa87f3e-a91a-4355-ad9e-6d60be378841",
+      "relations": [
+        {
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for mail-order",
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "id": "1c27ba3d-6a2a-43ce-ac5a-f13c84b0c2ce",
+            "resource": "https://shop.spotify.com/en-US/artist/25uiPmTg16RbhZWAqwLBy5/product/brat-green-picture-disc"
+          },
+          "attributes": [],
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7"
+        },
+        {
+          "attributes": [],
+          "url": {
+            "resource": "https://store.charlixcx.com/products/brat-green-picture-disc",
+            "id": "679d64c2-66f6-46c0-926f-450e3bb41f35"
+          },
+          "target-credit": "",
+          "begin": null,
+          "type": "purchase for mail-order",
+          "ended": false,
+          "attribute-ids": {},
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "source-credit": "",
+          "attribute-values": {},
+          "end": null,
+          "target-type": "url",
+          "direction": "forward"
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "asin": null,
+      "release-events": [
+        {
+          "date": "2024-06-07",
+          "area": {
+            "type": null,
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": ""
+          }
+        }
+      ],
+      "barcode": "075678609299",
+      "title": "BRAT",
+      "quality": "normal"
+    },
+    {
+      "relations": [
+        {
+          "url": {
+            "id": "a5f4607e-c3f3-4d6e-b9c8-7712409011b7",
+            "resource": "https://tidal.com/album/367598682"
+          },
+          "target-credit": "",
+          "begin": null,
+          "attributes": [],
+          "ended": false,
+          "attribute-ids": {},
+          "type": "streaming",
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "target-type": "url",
+          "direction": "forward",
+          "end": null
+        }
+      ],
+      "id": "1e584997-245d-4c57-ba83-fa72bc0c1ca3",
+      "release-events": [
+        {
+          "date": "2025-05-07",
+          "area": {
+            "disambiguation": "",
+            "name": "[Worldwide]",
+            "type-id": null,
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "sort-name": "[Worldwide]",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "type": null
+          }
+        }
+      ],
+      "asin": null,
+      "barcode": "075679666147",
+      "quality": "normal",
+      "title": "BRAT",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "cover-art-archive": {
+        "darkened": false,
+        "artwork": true,
+        "front": true,
+        "back": false,
+        "count": 1
+      },
+      "disambiguation": "Dolby Atmos mix, rotting cover",
+      "packaging": "None",
+      "status": "Official",
+      "country": "XW",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2025-05-07",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b"
+    },
+    {
+      "packaging": "None",
+      "status": "Official",
+      "country": "XW",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2025-04-23",
+      "relations": [
+        {
+          "attributes": [],
+          "url": {
+            "id": "a5f4607e-c3f3-4d6e-b9c8-7712409011b7",
+            "resource": "https://tidal.com/album/367598682"
+          },
+          "target-credit": "",
+          "begin": null,
+          "type": "streaming",
+          "ended": false,
+          "attribute-ids": {},
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "source-credit": "",
+          "attribute-values": {},
+          "end": null,
+          "target-type": "url",
+          "direction": "forward"
+        }
+      ],
+      "id": "1ff14927-5b00-437f-b64a-1add910c8204",
+      "quality": "normal",
+      "title": "BRAT",
+      "barcode": "075679666147",
+      "asin": null,
+      "release-events": [
+        {
+          "date": "2025-04-23",
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "name": "[Worldwide]",
+            "type": null,
+            "sort-name": "[Worldwide]",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f"
+          }
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "cover-art-archive": {
+        "count": 1,
+        "front": true,
+        "back": false,
+        "artwork": true,
+        "darkened": false
+      },
+      "disambiguation": "Dolby Atmos mix, crossed-out cover"
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2024-06-10",
+      "packaging": "None",
+      "status": "Official",
+      "country": "XW",
+      "disambiguation": "",
+      "cover-art-archive": {
+        "count": 1,
+        "front": true,
+        "back": false,
+        "artwork": true,
+        "darkened": false
+      },
+      "relations": [
+        {
+          "type-id": "08445ccf-7b99-4438-9f9a-fb9ac18099ee",
+          "source-credit": "",
+          "attribute-values": {},
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "attributes": [],
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://open.spotify.com/album/316O0Xetgx2NJLRgJBw4uq",
+            "id": "ebc182ed-4be8-471e-999e-0d3f83d2a656"
+          },
+          "type": "free streaming",
+          "attribute-ids": {},
+          "ended": false
+        },
+        {
+          "attributes": [],
+          "url": {
+            "id": "772ee287-f032-462f-8bce-0066cfed38b1",
+            "resource": "https://www.deezer.com/album/598319362"
+          },
+          "target-credit": "",
+          "begin": null,
+          "type": "free streaming",
+          "ended": false,
+          "attribute-ids": {},
+          "type-id": "08445ccf-7b99-4438-9f9a-fb9ac18099ee",
+          "source-credit": "",
+          "attribute-values": {},
+          "end": null,
+          "target-type": "url",
+          "direction": "forward"
+        },
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4",
+          "attribute-values": {},
+          "source-credit": "",
+          "type": "purchase for download",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.qobuz.com/us-en/album/brat-and-its-the-same-but-theres-three-more-songs-so-its-not-charli-xcx/mpb8nnrcraixc",
+            "id": "06aa38fa-8e82-4519-a89b-f0f6f690c894"
+          },
+          "begin": null
+        },
+        {
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "attribute-values": {},
+          "source-credit": "",
+          "type": "streaming",
+          "attribute-ids": {},
+          "ended": false,
+          "attributes": [],
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "id": "b35fe4d2-17c1-4d83-bd77-d874a0f97c92",
+            "resource": "https://music.amazon.co.uk/albums/B0D6HZM472"
+          }
+        },
+        {
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "attribute-values": {},
+          "source-credit": "",
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "attributes": [],
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "id": "0d333572-07bd-45a9-bf97-7fcdc5ad8222",
+            "resource": "https://music.apple.com/gb/album/1750468113"
+          },
+          "type": "streaming",
+          "attribute-ids": {},
+          "ended": false
+        },
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "attribute-values": {},
+          "source-credit": "",
+          "type": "streaming",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "target-credit": "",
+          "url": {
+            "id": "27abbbb7-f443-4c3c-824d-daa1b1aa715a",
+            "resource": "https://tidal.com/album/368132206"
+          },
+          "begin": null
+        },
+        {
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "ended": false,
+          "attribute-ids": {},
+          "type": "streaming",
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.qobuz.com/us-en/album/brat-and-its-the-same-but-theres-three-more-songs-so-its-not-charli-xcx/mpb8nnrcraixc",
+            "id": "06aa38fa-8e82-4519-a89b-f0f6f690c894"
+          },
+          "begin": null,
+          "attributes": []
+        }
+      ],
+      "id": "336e198f-1835-483d-811f-da24539c2e7f",
+      "title": "Brat and it’s the same but there’s three more songs so it’s not",
+      "quality": "normal",
+      "release-events": [
+        {
+          "area": {
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "sort-name": "[Worldwide]",
+            "type": null,
+            "name": "[Worldwide]",
+            "disambiguation": "",
+            "type-id": null
+          },
+          "date": "2024-06-10"
+        }
+      ],
+      "asin": null,
+      "barcode": "075679643087",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      }
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2024-06-07",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "status": "Official",
+      "packaging": "Gatefold Cover",
+      "country": "CA",
+      "disambiguation": "translucent black vinyl",
+      "cover-art-archive": {
+        "count": 3,
+        "back": true,
+        "front": true,
+        "artwork": true,
+        "darkened": false
+      },
+      "id": "4b4698bd-25c7-4635-96e2-178ae2d5cd3b",
+      "relations": [
+        {
+          "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+          "source-credit": "",
+          "attribute-values": {},
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "attributes": [],
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "id": "927e56c3-7f16-44ee-a15c-324dfa693c20",
+            "resource": "https://www.discogs.com/release/30891144"
+          },
+          "type": "discogs",
+          "attribute-ids": {},
+          "ended": false
+        },
+        {
+          "target-credit": "",
+          "url": {
+            "id": "6d6a4948-e0cd-44b6-9b78-9602438a5852",
+            "resource": "https://store.charlixcx.com/products/brat-translucent-black-vinyl"
+          },
+          "begin": null,
+          "attributes": [],
+          "ended": false,
+          "attribute-ids": {},
+          "type": "purchase for mail-order",
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "target-type": "url",
+          "direction": "forward",
+          "end": null
+        },
+        {
+          "type": "purchase for mail-order",
+          "ended": true,
+          "attribute-ids": {},
+          "attributes": [],
+          "target-credit": "",
+          "url": {
+            "id": "d65d02c9-5e7f-4bed-957c-0feecbc133cb",
+            "resource": "https://shop.spotify.com/en-us/artist/25uiPmTg16RbhZWAqwLBy5/product/brat-translucent-black-lp"
+          },
+          "begin": null,
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "attribute-values": {},
+          "source-credit": ""
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "barcode": "075678611674",
+      "release-events": [
+        {
+          "date": "2024-06-07",
+          "area": {
+            "type-id": null,
+            "name": "Canada",
+            "disambiguation": "",
+            "type": null,
+            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+            "iso-3166-1-codes": [
+              "CA"
+            ],
+            "sort-name": "Canada"
+          }
+        },
+        {
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "name": "United Kingdom",
+            "type": null,
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "sort-name": "United Kingdom",
+            "iso-3166-1-codes": [
+              "GB"
+            ]
+          },
+          "date": "2024-06-07"
+        },
+        {
+          "area": {
+            "type": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": ""
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "asin": null,
+      "quality": "normal",
+      "title": "BRAT"
+    },
+    {
+      "country": "US",
+      "status": "Official",
+      "packaging": "Gatefold Cover",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "date": "2024-06-07",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "title": "BRAT",
+      "quality": "normal",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": "",
+            "type": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98"
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "barcode": "075678609312",
+      "asin": null,
+      "id": "576cf2ca-81ec-48ed-8038-e2fe2deded4f",
+      "relations": [
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "source-credit": "",
+          "attribute-values": {},
+          "type": "purchase for mail-order",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "target-credit": "",
+          "url": {
+            "id": "ccac961b-435c-4ef9-af62-747d27be8a57",
+            "resource": "https://shop.spotify.com/en-US/artist/25uiPmTg16RbhZWAqwLBy5/product/brat-blue-picture-disc"
+          },
+          "begin": null
+        },
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "source-credit": "",
+          "attribute-values": {},
+          "type": "purchase for mail-order",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "target-credit": "",
+          "url": {
+            "resource": "https://store.charlixcx.com/products/brat-blue-picture-disc",
+            "id": "096a0b31-6624-40b6-a0b0-8d7a5d14a041"
+          },
+          "begin": null
+        }
+      ],
+      "disambiguation": "blue picture disc",
+      "cover-art-archive": {
+        "count": 0,
+        "back": false,
+        "front": false,
+        "artwork": false,
+        "darkened": false
+      }
+    },
+    {
+      "date": "2024-06-10",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "XW",
+      "packaging": "None",
+      "status": "Official",
+      "cover-art-archive": {
+        "count": 1,
+        "back": false,
+        "front": true,
+        "artwork": true,
+        "darkened": false
+      },
+      "disambiguation": "Dolby Atmos mix",
+      "barcode": "075679643094",
+      "release-events": [
+        {
+          "date": "2024-06-10",
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "name": "[Worldwide]",
+            "type": null,
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "sort-name": "[Worldwide]"
+          }
+        }
+      ],
+      "asin": null,
+      "quality": "normal",
+      "title": "Brat and it’s the same but there’s three more songs so it’s not",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "relations": [
+        {
+          "type": "streaming",
+          "attribute-ids": {},
+          "ended": false,
+          "attributes": [],
+          "begin": null,
+          "url": {
+            "id": "be699d5c-d076-4281-8c2c-1f5d0b7844be",
+            "resource": "https://tidal.com/album/368169975"
+          },
+          "target-credit": "",
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "source-credit": "",
+          "attribute-values": {}
+        }
+      ],
+      "id": "57eb1b7a-1561-4feb-9c0a-6b01184c7581"
+    },
+    {
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "title": "BRAT",
+      "quality": "normal",
+      "release-events": [
+        {
+          "area": {
+            "disambiguation": "",
+            "name": "[Worldwide]",
+            "type-id": null,
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "sort-name": "[Worldwide]",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "type": null
+          },
+          "date": "2025-05-07"
+        }
+      ],
+      "asin": null,
+      "barcode": "075679666130",
+      "id": "6dce09fc-571a-44e9-8001-6115f0e438ae",
+      "relations": [
+        {
+          "type-id": "08445ccf-7b99-4438-9f9a-fb9ac18099ee",
+          "source-credit": "",
+          "attribute-values": {},
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "attributes": [],
+          "url": {
+            "resource": "https://open.spotify.com/album/2lIZef4lzdvZkiiCzvPKj7",
+            "id": "a5bd995c-392f-4410-839b-af760797cc04"
+          },
+          "target-credit": "",
+          "begin": null,
+          "type": "free streaming",
+          "ended": false,
+          "attribute-ids": {}
+        },
+        {
+          "type-id": "08445ccf-7b99-4438-9f9a-fb9ac18099ee",
+          "attribute-values": {},
+          "source-credit": "",
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "attributes": [],
+          "url": {
+            "resource": "https://www.deezer.com/album/597350882",
+            "id": "74335e47-dcf7-4b24-8a6b-ae2bd20e5398"
+          },
+          "target-credit": "",
+          "begin": null,
+          "type": "free streaming",
+          "ended": false,
+          "attribute-ids": {}
+        },
+        {
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4",
+          "source-credit": "",
+          "attribute-values": {},
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "attributes": [],
+          "begin": null,
+          "url": {
+            "id": "b7383439-a1b6-441a-a93d-662f899dea73",
+            "resource": "https://music.apple.com/gb/album/1739079974"
+          },
+          "target-credit": "",
+          "type": "purchase for download",
+          "attribute-ids": {},
+          "ended": false
+        },
+        {
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "source-credit": "",
+          "attribute-values": {},
+          "type": "streaming",
+          "attribute-ids": {},
+          "ended": false,
+          "attributes": [],
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://music.apple.com/gb/album/1739079974",
+            "id": "b7383439-a1b6-441a-a93d-662f899dea73"
+          }
+        },
+        {
+          "type": "streaming",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "target-credit": "",
+          "url": {
+            "id": "1ed619a6-f733-4a3c-a84f-e755858ead7c",
+            "resource": "https://tidal.com/album/367578589"
+          },
+          "begin": null,
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "source-credit": "",
+          "attribute-values": {}
+        }
+      ],
+      "cover-art-archive": {
+        "artwork": true,
+        "darkened": false,
+        "count": 1,
+        "back": false,
+        "front": true
+      },
+      "disambiguation": "rotting cover",
+      "country": "XW",
+      "status": "Official",
+      "packaging": "None",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2025-05-07",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "country": "US",
+      "packaging": "Jewel Case",
+      "status": "Official",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+      "date": "2024-06-10",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "title": "Brat and it’s the same but there’s three more songs so it’s not",
+      "quality": "normal",
+      "asin": null,
+      "release-events": [
+        {
+          "area": {
+            "type": null,
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": ""
+          },
+          "date": "2024-06-10"
+        }
+      ],
+      "barcode": "075678606328",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "relations": [
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+          "attribute-values": {},
+          "source-credit": "",
+          "type": "discogs",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.discogs.com/release/31120088",
+            "id": "b0cdf22d-162c-4564-9c19-a225c8b2d19e"
+          },
+          "begin": null
+        },
+        {
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://shop.spotify.com/en-US/artist/25uiPmTg16RbhZWAqwLBy5/product/brat-deluxe-cd",
+            "id": "04bcac8f-d2a0-486b-aa94-ac4f3ecd62a0"
+          },
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for mail-order"
+        },
+        {
+          "attributes": [],
+          "url": {
+            "resource": "https://store.charlixcx.com/products/brat-deluxe-cd",
+            "id": "df629e01-72b8-4d76-9abb-23b5551ffdd4"
+          },
+          "target-credit": "",
+          "begin": null,
+          "type": "purchase for mail-order",
+          "ended": false,
+          "attribute-ids": {},
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "attribute-values": {},
+          "source-credit": "",
+          "end": null,
+          "target-type": "url",
+          "direction": "forward"
+        }
+      ],
+      "id": "70f1b4e3-db24-4006-ab4e-5f8f1ae981cc",
+      "cover-art-archive": {
+        "count": 1,
+        "front": true,
+        "back": false,
+        "artwork": true,
+        "darkened": false
+      },
+      "disambiguation": ""
+    },
+    {
+      "relations": [
+        {
+          "type": "discogs",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "url": {
+            "id": "9228cba1-7458-4022-97e1-ce6dda79c0ee",
+            "resource": "https://www.discogs.com/release/31789415"
+          },
+          "target-credit": "",
+          "begin": null,
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+          "source-credit": "",
+          "attribute-values": {}
+        }
+      ],
+      "id": "71d5a15f-82c6-4b62-ab84-3e0f2f7baa5b",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "name": "United States",
+            "type": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98"
+          },
+          "date": "2024-09"
+        }
+      ],
+      "asin": null,
+      "barcode": "075678604232",
+      "title": "BRAT",
+      "quality": "normal",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "cover-art-archive": {
+        "darkened": false,
+        "artwork": false,
+        "front": false,
+        "back": false,
+        "count": 0
+      },
+      "disambiguation": "split-color vinyl",
+      "packaging": "Gatefold Cover",
+      "status": "Official",
+      "country": "US",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2024-09",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202"
+    },
+    {
+      "date": "2024-06-07",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "US",
+      "packaging": "Jewel Case",
+      "status": "Official",
+      "disambiguation": "",
+      "cover-art-archive": {
+        "artwork": false,
+        "darkened": false,
+        "count": 0,
+        "front": false,
+        "back": false
+      },
+      "release-events": [
+        {
+          "area": {
+            "disambiguation": "",
+            "name": "United States",
+            "type-id": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type": null
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "asin": null,
+      "barcode": "075678611698",
+      "quality": "normal",
+      "title": "BRAT",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "relations": [
+        {
+          "begin": null,
+          "url": {
+            "id": "0bf2bdee-48b1-4236-8fd7-6f73bde2658f",
+            "resource": "https://shop.spotify.com/en-US/artist/25uiPmTg16RbhZWAqwLBy5/product/brat-cd"
+          },
+          "target-credit": "",
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for mail-order",
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null
+        },
+        {
+          "ended": false,
+          "attribute-ids": {},
+          "type": "purchase for mail-order",
+          "target-credit": "",
+          "url": {
+            "resource": "https://store.charlixcx.com/products/brat-cd",
+            "id": "17d44ec6-d64b-4980-830e-979fe69d3d22"
+          },
+          "begin": null,
+          "attributes": [],
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7"
+        }
+      ],
+      "id": "82082eb8-19a0-4957-9a99-e8fda1bb6b88"
+    },
+    {
+      "title": "BRAT",
+      "quality": "normal",
+      "barcode": "075678608858",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "name": "United States",
+            "type": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98"
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "asin": null,
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "relations": [
+        {
+          "url": {
+            "id": "3d2b20c6-d5f1-4509-8983-eae9b2844130",
+            "resource": "https://www.discogs.com/release/30900081"
+          },
+          "target-credit": "",
+          "begin": null,
+          "attributes": [],
+          "ended": false,
+          "attribute-ids": {},
+          "type": "discogs",
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+          "target-type": "url",
+          "direction": "forward",
+          "end": null
+        },
+        {
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "ended": false,
+          "attribute-ids": {},
+          "type": "purchase for mail-order",
+          "url": {
+            "resource": "https://shop.spotify.com/en-US/artist/25uiPmTg16RbhZWAqwLBy5/product/brat-club-classics-vinyl-includes-7",
+            "id": "7bb0aabf-f175-486c-a487-85f78a69bdd0"
+          },
+          "target-credit": "",
+          "begin": null,
+          "attributes": []
+        },
+        {
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "url": {
+            "resource": "https://store.charlixcx.com/products/brat-club-classics-vinyl-includes-7",
+            "id": "bd63aa5b-528e-459a-8228-730f0b984628"
+          },
+          "target-credit": "",
+          "begin": null,
+          "attributes": [],
+          "ended": false,
+          "attribute-ids": {},
+          "type": "purchase for mail-order"
+        }
+      ],
+      "id": "8b3b6e9c-4ecc-404a-ab2f-79830dba03e2",
+      "disambiguation": "",
+      "cover-art-archive": {
+        "artwork": false,
+        "darkened": false,
+        "count": 0,
+        "back": false,
+        "front": false
+      },
+      "country": "US",
+      "packaging": "Plastic Sleeve",
+      "status": "Official",
+      "packaging-id": "bf996342-d111-4d37-b9d6-d759f0787533",
+      "date": "2024-06-07",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2025-06-07",
+      "status": "Official",
+      "packaging": "None",
+      "country": "XW",
+      "cover-art-archive": {
+        "count": 1,
+        "back": false,
+        "front": true,
+        "artwork": true,
+        "darkened": false
+      },
+      "disambiguation": "forever <3 cover",
+      "id": "9551f126-abe9-4cbb-a12e-7e5980015af4",
+      "relations": [
+        {
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "08445ccf-7b99-4438-9f9a-fb9ac18099ee",
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://open.spotify.com/album/2lIZef4lzdvZkiiCzvPKj7",
+            "id": "a5bd995c-392f-4410-839b-af760797cc04"
+          },
+          "begin": null,
+          "attributes": [],
+          "ended": false,
+          "attribute-ids": {},
+          "type": "free streaming"
+        },
+        {
+          "type": "free streaming",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "url": {
+            "resource": "https://www.deezer.com/album/597350882",
+            "id": "74335e47-dcf7-4b24-8a6b-ae2bd20e5398"
+          },
+          "target-credit": "",
+          "begin": null,
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "08445ccf-7b99-4438-9f9a-fb9ac18099ee",
+          "attribute-values": {},
+          "source-credit": ""
+        },
+        {
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4",
+          "ended": false,
+          "attribute-ids": {},
+          "type": "purchase for download",
+          "target-credit": "",
+          "url": {
+            "id": "b7383439-a1b6-441a-a93d-662f899dea73",
+            "resource": "https://music.apple.com/gb/album/1739079974"
+          },
+          "begin": null,
+          "attributes": []
+        },
+        {
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "attribute-ids": {},
+          "ended": false,
+          "type": "streaming",
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://music.apple.com/gb/album/1739079974",
+            "id": "b7383439-a1b6-441a-a93d-662f899dea73"
+          },
+          "attributes": []
+        },
+        {
+          "type": "streaming",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "target-credit": "",
+          "url": {
+            "resource": "https://tidal.com/album/367578589",
+            "id": "1ed619a6-f733-4a3c-a84f-e755858ead7c"
+          },
+          "begin": null,
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "attribute-values": {},
+          "source-credit": ""
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "quality": "normal",
+      "title": "BRAT",
+      "asin": null,
+      "barcode": "075679666130",
+      "release-events": [
+        {
+          "date": "2025-06-07",
+          "area": {
+            "type-id": null,
+            "name": "[Worldwide]",
+            "disambiguation": "",
+            "type": null,
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "sort-name": "[Worldwide]"
+          }
+        }
+      ]
+    },
+    {
+      "date": "2024-06-07",
+      "packaging-id": "c70b737a-0114-39a9-88f7-82843e54f906",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "US",
+      "status": "Official",
+      "packaging": "Cassette Case",
+      "cover-art-archive": {
+        "artwork": false,
+        "darkened": false,
+        "count": 0,
+        "back": false,
+        "front": false
+      },
+      "disambiguation": "",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "barcode": "075678611681",
+      "release-events": [
+        {
+          "date": "2024-06-07",
+          "area": {
+            "disambiguation": "",
+            "name": "United States",
+            "type-id": null,
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "type": null
+          }
+        }
+      ],
+      "asin": null,
+      "title": "BRAT",
+      "quality": "normal",
+      "id": "97b69f53-5b37-4b94-856b-8fa32063310a",
+      "relations": [
+        {
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for mail-order",
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://shop.spotify.com/en-us/artist/25uiPmTg16RbhZWAqwLBy5/product/brat-cassette",
+            "id": "91fff0c0-fc53-4865-9bf3-beed5eac0c59"
+          },
+          "attributes": []
+        },
+        {
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "source-credit": "",
+          "attribute-values": {},
+          "type": "purchase for mail-order",
+          "attribute-ids": {},
+          "ended": false,
+          "attributes": [],
+          "begin": null,
+          "url": {
+            "resource": "https://store.charlixcx.com/products/brat-cassette",
+            "id": "30d694d8-671c-47e5-983e-844c3dc21e27"
+          },
+          "target-credit": ""
+        }
+      ]
+    },
+    {
+      "relations": [
+        {
+          "attributes": [],
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.discogs.com/release/31063643",
+            "id": "a9802458-a710-4a98-9d30-27ed96890d46"
+          },
+          "begin": null,
+          "type": "discogs",
+          "ended": false,
+          "attribute-ids": {},
+          "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+          "source-credit": "",
+          "attribute-values": {},
+          "end": null,
+          "target-type": "url",
+          "direction": "forward"
+        }
+      ],
+      "id": "9f7a7091-22b3-4fc7-b9aa-ebbed8ca5518",
+      "barcode": "075678611698",
+      "asin": null,
+      "release-events": [
+        {
+          "date": "2024-06-07",
+          "area": {
+            "name": "Europe",
+            "disambiguation": "",
+            "type-id": null,
+            "sort-name": "Europe",
+            "iso-3166-1-codes": [
+              "XE"
+            ],
+            "id": "89a675c2-3e37-3518-b83c-418bad59a85a",
+            "type": null
+          }
+        }
+      ],
+      "title": "BRAT",
+      "quality": "normal",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "cover-art-archive": {
+        "artwork": true,
+        "darkened": false,
+        "count": 13,
+        "back": true,
+        "front": true
+      },
+      "disambiguation": "",
+      "packaging": "Jewel Case",
+      "status": "Official",
+      "country": "XE",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2024-06-07",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a"
+    },
+    {
+      "disambiguation": "crossed-out cover",
+      "cover-art-archive": {
+        "back": false,
+        "front": true,
+        "count": 1,
+        "darkened": false,
+        "artwork": true
+      },
+      "id": "a66832eb-1b4f-49e3-907b-6bbc87770c9a",
+      "relations": [
+        {
+          "attribute-ids": {},
+          "ended": false,
+          "type": "free streaming",
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://open.spotify.com/album/2lIZef4lzdvZkiiCzvPKj7",
+            "id": "a5bd995c-392f-4410-839b-af760797cc04"
+          },
+          "attributes": [],
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "08445ccf-7b99-4438-9f9a-fb9ac18099ee"
+        },
+        {
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "id": "74335e47-dcf7-4b24-8a6b-ae2bd20e5398",
+            "resource": "https://www.deezer.com/album/597350882"
+          },
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "free streaming",
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "08445ccf-7b99-4438-9f9a-fb9ac18099ee",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null
+        },
+        {
+          "attributes": [],
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "id": "b7383439-a1b6-441a-a93d-662f899dea73",
+            "resource": "https://music.apple.com/gb/album/1739079974"
+          },
+          "type": "purchase for download",
+          "attribute-ids": {},
+          "ended": false,
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4",
+          "source-credit": "",
+          "attribute-values": {},
+          "end": null,
+          "direction": "forward",
+          "target-type": "url"
+        },
+        {
+          "ended": false,
+          "attribute-ids": {},
+          "type": "purchase for download",
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.qobuz.com/gb-en/album/brat-charli-xcx/capw1vifm759b",
+            "id": "57051e97-9f45-40a9-abd4-55e3dfa0842b"
+          },
+          "begin": null,
+          "attributes": [],
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4"
+        },
+        {
+          "begin": null,
+          "url": {
+            "resource": "https://music.amazon.co.uk/albums/B0CZMDFFDP",
+            "id": "f9af7655-bc30-4803-a8ac-2d634b49f8c8"
+          },
+          "target-credit": "",
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "streaming",
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null
+        },
+        {
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "begin": null,
+          "url": {
+            "id": "b7383439-a1b6-441a-a93d-662f899dea73",
+            "resource": "https://music.apple.com/gb/album/1739079974"
+          },
+          "target-credit": "",
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "streaming"
+        },
+        {
+          "ended": false,
+          "attribute-ids": {},
+          "type": "streaming",
+          "target-credit": "",
+          "url": {
+            "id": "57051e97-9f45-40a9-abd4-55e3dfa0842b",
+            "resource": "https://www.qobuz.com/gb-en/album/brat-charli-xcx/capw1vifm759b"
+          },
+          "begin": null,
+          "attributes": [],
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb"
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "barcode": "075679666130",
+      "release-events": [
+        {
+          "date": "2025-04-23",
+          "area": {
+            "sort-name": "[Worldwide]",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "type": null,
+            "name": "[Worldwide]",
+            "disambiguation": "",
+            "type-id": null
+          }
+        }
+      ],
+      "asin": null,
+      "quality": "normal",
+      "title": "BRAT",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2025-04-23",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "status": "Official",
+      "packaging": "None",
+      "country": "XW"
+    },
+    {
+      "disambiguation": "",
+      "cover-art-archive": {
+        "count": 1,
+        "front": true,
+        "back": false,
+        "artwork": true,
+        "darkened": false
+      },
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "quality": "normal",
+      "title": "BRAT",
+      "asin": null,
+      "release-events": [
+        {
+          "area": {
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "sort-name": "[Worldwide]",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "type": null,
+            "disambiguation": "",
+            "name": "[Worldwide]",
+            "type-id": null
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "barcode": "075679666130",
+      "id": "ab55ac76-eee5-4f89-ac14-7bb9aa837bc8",
+      "relations": [
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+          "source-credit": "",
+          "attribute-values": {},
+          "type": "discogs",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "url": {
+            "id": "011de24b-c5b6-475b-a059-8266145c33f3",
+            "resource": "https://www.discogs.com/release/30892041"
+          },
+          "target-credit": "",
+          "begin": null
+        },
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+          "source-credit": "",
+          "attribute-values": {},
+          "type": "discogs",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.discogs.com/release/30909993",
+            "id": "5bd776d0-815e-4452-aabc-2a1810401c3b"
+          },
+          "begin": null
+        },
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "08445ccf-7b99-4438-9f9a-fb9ac18099ee",
+          "attribute-values": {},
+          "source-credit": "",
+          "type": "free streaming",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "url": {
+            "id": "a5bd995c-392f-4410-839b-af760797cc04",
+            "resource": "https://open.spotify.com/album/2lIZef4lzdvZkiiCzvPKj7"
+          },
+          "target-credit": "",
+          "begin": null
+        },
+        {
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "08445ccf-7b99-4438-9f9a-fb9ac18099ee",
+          "attribute-ids": {},
+          "ended": false,
+          "type": "free streaming",
+          "begin": null,
+          "url": {
+            "resource": "https://www.deezer.com/album/597350882",
+            "id": "74335e47-dcf7-4b24-8a6b-ae2bd20e5398"
+          },
+          "target-credit": "",
+          "attributes": []
+        },
+        {
+          "url": {
+            "resource": "https://music.apple.com/gb/album/1739079974",
+            "id": "b7383439-a1b6-441a-a93d-662f899dea73"
+          },
+          "target-credit": "",
+          "begin": null,
+          "attributes": [],
+          "ended": false,
+          "attribute-ids": {},
+          "type": "purchase for download",
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4",
+          "target-type": "url",
+          "direction": "forward",
+          "end": null
+        },
+        {
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.hdtracks.com/#/album/6662afd5e0f3a8585afc2f30",
+            "id": "61c4d2b1-7670-4395-a377-8a1246bdb11e"
+          },
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for download",
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null
+        },
+        {
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4",
+          "source-credit": "",
+          "attribute-values": {},
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "attributes": [],
+          "url": {
+            "resource": "https://www.hdtracks.com/#/album/6662afd6e0f3a8585afc2f72",
+            "id": "f6e24133-2127-4d7b-af4f-c776218440ec"
+          },
+          "target-credit": "",
+          "begin": null,
+          "type": "purchase for download",
+          "ended": false,
+          "attribute-ids": {}
+        },
+        {
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "begin": null,
+          "url": {
+            "id": "46be1b0f-dfd8-40d2-8b76-5721a2d8cbe1",
+            "resource": "https://www.hdtracks.com/#/album/6662afd6e0f3a8585afc2fb4"
+          },
+          "target-credit": "",
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for download"
+        },
+        {
+          "type": "purchase for download",
+          "attribute-ids": {},
+          "ended": false,
+          "attributes": [],
+          "begin": null,
+          "url": {
+            "id": "0a379adf-bee3-40de-a71b-b1a6d56e3505",
+            "resource": "https://www.prostudiomasters.com/album/page/264460"
+          },
+          "target-credit": "",
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4",
+          "source-credit": "",
+          "attribute-values": {}
+        },
+        {
+          "url": {
+            "id": "57051e97-9f45-40a9-abd4-55e3dfa0842b",
+            "resource": "https://www.qobuz.com/gb-en/album/brat-charli-xcx/capw1vifm759b"
+          },
+          "target-credit": "",
+          "begin": null,
+          "attributes": [],
+          "ended": false,
+          "attribute-ids": {},
+          "type": "purchase for download",
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "98e08c20-8402-4163-8970-53504bb6a1e4",
+          "target-type": "url",
+          "direction": "forward",
+          "end": null
+        },
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "source-credit": "",
+          "attribute-values": {},
+          "type": "streaming",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "url": {
+            "id": "f9af7655-bc30-4803-a8ac-2d634b49f8c8",
+            "resource": "https://music.amazon.co.uk/albums/B0CZMDFFDP"
+          },
+          "target-credit": "",
+          "begin": null
+        },
+        {
+          "type": "streaming",
+          "attribute-ids": {},
+          "ended": false,
+          "attributes": [],
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://music.apple.com/gb/album/1739079974",
+            "id": "b7383439-a1b6-441a-a93d-662f899dea73"
+          },
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "attribute-values": {},
+          "source-credit": ""
+        },
+        {
+          "url": {
+            "id": "1ed619a6-f733-4a3c-a84f-e755858ead7c",
+            "resource": "https://tidal.com/album/367578589"
+          },
+          "target-credit": "",
+          "begin": null,
+          "attributes": [],
+          "ended": false,
+          "attribute-ids": {},
+          "type": "streaming",
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "target-type": "url",
+          "direction": "forward",
+          "end": null
+        },
+        {
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "id": "57051e97-9f45-40a9-abd4-55e3dfa0842b",
+            "resource": "https://www.qobuz.com/gb-en/album/brat-charli-xcx/capw1vifm759b"
+          },
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "streaming",
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null
+        }
+      ],
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2024-06-07",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "XW",
+      "status": "Official",
+      "packaging": "None"
+    },
+    {
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": "",
+            "type": null,
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ]
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "asin": null,
+      "barcode": "075678609268",
+      "quality": "normal",
+      "title": "BRAT",
+      "id": "ae27a851-e9d8-44ad-996b-0a980bfde22b",
+      "relations": [
+        {
+          "begin": null,
+          "url": {
+            "id": "5aa2cfb8-345f-4488-8379-940fa0b0a814",
+            "resource": "https://www.target.com/p/-/A-91756937"
+          },
+          "target-credit": "",
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for mail-order",
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null
+        }
+      ],
+      "disambiguation": "Target exclusive",
+      "cover-art-archive": {
+        "count": 0,
+        "front": false,
+        "back": false,
+        "artwork": false,
+        "darkened": false
+      },
+      "country": "US",
+      "status": "Official",
+      "packaging": "Gatefold Cover",
+      "date": "2024-06-07",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "quality": "normal",
+      "title": "Brat and it’s the same but there’s three more songs so it’s not",
+      "asin": null,
+      "release-events": [
+        {
+          "date": "2024-06-10",
+          "area": {
+            "name": "United Kingdom",
+            "disambiguation": "",
+            "type-id": null,
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "sort-name": "United Kingdom",
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "type": null
+          }
+        }
+      ],
+      "barcode": "075678606137",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "relations": [
+        {
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+          "ended": false,
+          "attribute-ids": {},
+          "type": "discogs",
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.discogs.com/release/30936255",
+            "id": "eef4096b-524f-4bf0-8033-ff73306433c6"
+          },
+          "begin": null,
+          "attributes": []
+        },
+        {
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "source-credit": "",
+          "attribute-values": {},
+          "type": "purchase for mail-order",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "url": {
+            "id": "9eb6162f-74aa-4414-afda-eee3a1c070c8",
+            "resource": "https://store.uk.charlixcx.com/products/brat-deluxe-cd"
+          },
+          "target-credit": "",
+          "begin": null
+        }
+      ],
+      "id": "b13a6e36-6093-4fd6-863c-021fcf8cbebe",
+      "disambiguation": "",
+      "cover-art-archive": {
+        "count": 0,
+        "front": false,
+        "back": false,
+        "artwork": false,
+        "darkened": false
+      },
+      "country": "GB",
+      "packaging": "Jewel Case",
+      "status": "Official",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+      "date": "2024-06-10",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "quality": "normal",
+      "title": "Brat and it’s the same but there’s three more songs so it’s not",
+      "asin": null,
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": "",
+            "type": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98"
+          },
+          "date": "2024-10"
+        }
+      ],
+      "barcode": "075678603983",
+      "id": "b2176814-eccb-4652-9de2-d719e17f6952",
+      "relations": [
+        {
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.discogs.com/release/31943833",
+            "id": "d74b0fe3-1a0f-431d-b306-43dade6544a5"
+          },
+          "begin": null,
+          "attributes": [],
+          "ended": false,
+          "attribute-ids": {},
+          "type": "discogs"
+        },
+        {
+          "ended": false,
+          "attribute-ids": {},
+          "type": "purchase for mail-order",
+          "target-credit": "",
+          "url": {
+            "resource": "https://shop.spotify.com/en/artist/25uiPmTg16RbhZWAqwLBy5/product/brat-deluxe-double-vinyl",
+            "id": "a4a0f83a-d83f-42b2-a975-280b9d86a22a"
+          },
+          "begin": null,
+          "attributes": [],
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "source-credit": "",
+          "attribute-values": {},
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7"
+        },
+        {
+          "type": "purchase for mail-order",
+          "ended": false,
+          "attribute-ids": {},
+          "attributes": [],
+          "url": {
+            "resource": "https://store.charlixcx.com/products/brat-deluxe-double-vinyl",
+            "id": "c59e98ec-232f-4036-9a2a-1e344ffd655d"
+          },
+          "target-credit": "",
+          "begin": null,
+          "end": null,
+          "target-type": "url",
+          "direction": "forward",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "attribute-values": {},
+          "source-credit": ""
+        },
+        {
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for mail-order",
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.target.com/p/-/A-93252565",
+            "id": "6bf0aa5e-d41b-4360-8a14-5e9154162aea"
+          },
+          "attributes": [],
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7"
+        }
+      ],
+      "cover-art-archive": {
+        "darkened": false,
+        "artwork": false,
+        "front": false,
+        "back": false,
+        "count": 0
+      },
+      "disambiguation": "",
+      "country": "US",
+      "status": "Official",
+      "packaging": "Gatefold Cover",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "date": "2024-10",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "cover-art-archive": {
+        "artwork": false,
+        "darkened": false,
+        "count": 0,
+        "front": false,
+        "back": false
+      },
+      "disambiguation": "360_brat exclusive",
+      "id": "c7bf41e6-c03c-428b-8a03-5ed418f2ed69",
+      "relations": [
+        {
+          "target-credit": "",
+          "url": {
+            "id": "c1019a91-8f61-467a-874d-7b06e1369cd0",
+            "resource": "https://shop.spotify.com/en-US/artist/25uiPmTg16RbhZWAqwLBy5/product/360_brat-exclusive-vinyl"
+          },
+          "begin": null,
+          "attributes": [],
+          "ended": false,
+          "attribute-ids": {},
+          "type": "purchase for mail-order",
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "target-type": "url",
+          "direction": "forward",
+          "end": null
+        },
+        {
+          "begin": null,
+          "url": {
+            "id": "95996e8c-449b-42c6-8dba-e4cf75234fc9",
+            "resource": "https://store.charlixcx.com/products/360_brat-exclusive-vinyl"
+          },
+          "target-credit": "",
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for mail-order",
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "title": "BRAT",
+      "quality": "normal",
+      "asin": null,
+      "release-events": [
+        {
+          "area": {
+            "disambiguation": "",
+            "name": "United States",
+            "type-id": null,
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "type": null
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "barcode": "075678609282",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "date": "2024-06-07",
+      "status": "Official",
+      "packaging": "Gatefold Cover",
+      "country": "US"
+    },
+    {
+      "id": "e770aa7f-12d8-4c8d-82c3-c5937164851d",
+      "relations": [
+        {
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "resource": "https://shop.spotify.com/en-US/artist/25uiPmTg16RbhZWAqwLBy5/product/brat-red-picture-disc",
+            "id": "a792fbb9-34b0-4521-a01f-f476278f6238"
+          },
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "purchase for mail-order"
+        },
+        {
+          "end": null,
+          "direction": "forward",
+          "target-type": "url",
+          "type-id": "3ee51e05-a06a-415e-b40c-b3f740dedfd7",
+          "attribute-values": {},
+          "source-credit": "",
+          "type": "purchase for mail-order",
+          "attribute-ids": {},
+          "ended": false,
+          "attributes": [],
+          "begin": null,
+          "target-credit": "",
+          "url": {
+            "id": "8a39a01a-ef0c-49ff-b3cc-ea9966ac4bc4",
+            "resource": "https://store.charlixcx.com/products/brat-red-picture-disc"
+          }
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "barcode": "075678608865",
+      "asin": null,
+      "release-events": [
+        {
+          "area": {
+            "type": null,
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": ""
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "title": "BRAT",
+      "quality": "normal",
+      "cover-art-archive": {
+        "artwork": false,
+        "darkened": false,
+        "count": 0,
+        "back": false,
+        "front": false
+      },
+      "disambiguation": "red picture disc",
+      "status": "Official",
+      "packaging": "Gatefold Cover",
+      "country": "US",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2024-06-07",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202"
+    },
+    {
+      "country": "XW",
+      "packaging": "None",
+      "status": "Official",
+      "date": "2024-06-07",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "barcode": "075679666147",
+      "asin": null,
+      "release-events": [
+        {
+          "area": {
+            "type": null,
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "sort-name": "[Worldwide]",
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "type-id": null,
+            "name": "[Worldwide]",
+            "disambiguation": ""
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "quality": "normal",
+      "title": "BRAT",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "relations": [
+        {
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "320adf26-96fa-4183-9045-1f5f32f833cb",
+          "direction": "forward",
+          "target-type": "url",
+          "end": null,
+          "begin": null,
+          "url": {
+            "id": "a5f4607e-c3f3-4d6e-b9c8-7712409011b7",
+            "resource": "https://tidal.com/album/367598682"
+          },
+          "target-credit": "",
+          "attributes": [],
+          "attribute-ids": {},
+          "ended": false,
+          "type": "streaming"
+        }
+      ],
+      "id": "f0bf83e1-adec-4ce5-9e1b-0e08db01e2b5",
+      "disambiguation": "Dolby Atmos mix",
+      "cover-art-archive": {
+        "artwork": true,
+        "darkened": false,
+        "count": 1,
+        "back": false,
+        "front": true
+      }
+    },
+    {
+      "id": "f34cf596-739b-4549-b1b9-f0f6c89650e8",
+      "relations": [
+        {
+          "target-type": "url",
+          "direction": "forward",
+          "end": null,
+          "attribute-values": {},
+          "source-credit": "",
+          "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+          "ended": false,
+          "attribute-ids": {},
+          "type": "discogs",
+          "target-credit": "",
+          "url": {
+            "resource": "https://www.discogs.com/release/32910144",
+            "id": "9260ca0d-4a6b-4d61-a054-e130c9247400"
+          },
+          "begin": null,
+          "attributes": []
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Kana"
+      },
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "name": "Japan",
+            "disambiguation": "",
+            "type": null,
+            "iso-3166-1-codes": [
+              "JP"
+            ],
+            "sort-name": "Japan",
+            "id": "2db42837-c832-3c27-b4a3-08198f75693c"
+          },
+          "date": "2025-01-22"
+        }
+      ],
+      "barcode": "4943674402915",
+      "asin": null,
+      "title": "ブラット",
+      "quality": "normal",
+      "cover-art-archive": {
+        "darkened": false,
+        "artwork": true,
+        "back": true,
+        "front": true,
+        "count": 2
+      },
+      "disambiguation": "",
+      "status": "Official",
+      "packaging": "Jewel Case",
+      "country": "JP",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2025-01-22",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a"
+    }
+  ],
+  "release-offset": 0
+}

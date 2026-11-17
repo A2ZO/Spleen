@@ -3,6 +3,7 @@ import {
   deleteE2eAccounts,
   isPostgresUrl,
   loadRootEnv,
+  sql,
   unsafeE2eDatabase,
 } from "@spleen/db";
 
@@ -23,6 +24,11 @@ export default async function cleanup() {
   if (unsafe) throw new Error(`[e2e] Refusing to clean up this database: ${unsafe}.`);
   const handle = createDb(url);
   try {
+    // "Listen on" links point at records with `restrict`: drop those of the throwaway
+    // releases (`throwawayListenPages`) before `deleteE2eAccounts` deletes the releases.
+    await handle.db.execute(sql`
+      delete from "listen_links" where "release_id" in (
+        select "id" from "releases" where "slug" ~ '^e2e-[a-z0-9-]+$' and "mbid" is null)`);
     const count = await deleteE2eAccounts(handle.db);
     if (count > 0) console.log(`[e2e] ${count} test account(s) deleted.`);
   } finally {

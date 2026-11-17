@@ -64,7 +64,7 @@ describe("averageFromDistribution", () => {
 
 describe("buildListenLinks", () => {
   it("builds encoded search URLs", () => {
-    const [spotify] = buildListenLinks("Café crème", ["Quartet Sépia"]);
+    const [spotify] = buildListenLinks([], "release", "Café crème", "Quartet Sépia");
     expect(spotify?.url).toBe(
       "https://open.spotify.com/search/Quartet%20S%C3%A9pia%20Caf%C3%A9%20cr%C3%A8me",
     );

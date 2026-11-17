@@ -1,11 +1,14 @@
 import type { ListenLink } from "@spleen/api";
 import { getTranslations } from "next-intl/server";
 
-import { ExternalIcon } from "@/components/ui/icons";
+import { ExternalIcon, SearchIcon } from "@/components/ui/icons";
 import { pillClasses } from "@/components/ui/Pill";
 import { cn } from "@/lib/cn";
 
-/** "Listen on" search links (no streaming API), as raised pills after an inline label. */
+/**
+ * "Listen on" links as raised pills after an inline label: a direct link when MusicBrainz knows
+ * the page (external icon), a search on the service otherwise (search icon, said aloud).
+ */
 export async function ListenOn({ links, className }: { links: ListenLink[]; className?: string }) {
   const t = await getTranslations();
   return (
@@ -25,11 +28,18 @@ export async function ListenOn({ links, className }: { links: ListenLink[]; clas
             <a
               href={link.url}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="nofollow noopener noreferrer"
               className={pillClasses("raised", "min-h-11 hover:text-link")}
             >
               {t(`services.${link.service}`)}
-              <ExternalIcon className="text-xs text-fg-muted" />
+              {link.direct ? (
+                <ExternalIcon className="text-xs text-fg-muted" />
+              ) : (
+                <>
+                  <span className="sr-only"> {t("album.listenSearch")}</span>
+                  <SearchIcon className="text-xs text-fg-muted" />
+                </>
+              )}
             </a>
           </li>
         ))}

@@ -114,8 +114,14 @@
     "distributionLabel": "Répartition des notes",
     "reviewsTitle": "Critiques",
     "reviewsEmpty": "Personne n'a encore écrit sur ce disque. La première critique t'attend.",
+    "reviewsOnRelease": "Les critiques ouvriront le jour de la sortie.",
     "listsTitle": "Dans les listes",
+    "friendsTitle": "Tes amis sur ce disque",
+    "friendsAll": "Voir tous tes amis ({total})",
+    "friendsLess": "Voir moins",
+    "friendsOthers": "et {count, plural, one {# autre} other {# autres}}",
     "listenOn": "Écouter sur",
+    "listenSearch": "(recherche)",
     "coverAlt": "Pochette de {title}",
     "actions": {
       "title": "Ton écoute",
@@ -140,7 +146,8 @@
     "spotify": "Spotify",
     "deezer": "Deezer",
     "appleMusic": "Apple Music",
-    "youtube": "YouTube"
+    "youtubeMusic": "YouTube Music",
+    "bandcamp": "Bandcamp"
   },
   "review": {
     "byline": "Critique de {name}",
@@ -244,7 +251,8 @@
       "thisYear": "{count, plural, one {disque} other {disques}} en {year}",
       "total": "{count, plural, one {disque} other {disques}} depuis toujours",
       "rated": "{count, plural, one {disque noté} other {disques notés}}"
-    }
+    },
+    "pick": "Tire un disque"
   },
   "stats": {
     "thisYear": "En {year}",
@@ -709,6 +717,8 @@
     "commentList": "{others, plural, =0 {{name} a commenté ta liste « {title} »} one {{name} et une autre personne ont commenté ta liste « {title} »} other {{name} et # autres ont commenté ta liste « {title} »}}",
     "release": "Sortie aujourd'hui : <b>{title}</b> de {artists}",
     "releases": "{count} sorties aujourd'hui chez tes artistes",
+    "releasePast": "Sorti le {date} : <b>{title}</b> de {artists}",
+    "releasesPast": "{count} sorties le {date} chez tes artistes",
     "releasesMore": "{count, plural, one {et # autre} other {et # autres}}",
     "excerpt": "« {text} »",
     "pagingLabel": "Pages des notifications",
@@ -786,6 +796,29 @@
     "releasesOn": "Sort le {date}",
     "releasesIn": "Sort en {date}",
     "announcedFor": "Annoncé pour {date}"
+  },
+  "pick": {
+    "title": "Tire un disque",
+    "kicker": "Quoi écouter ce soir ?",
+    "intro": "Le hasard choisit dans ta liste « À écouter ».",
+    "typeLabel": "Type de disque",
+    "all": "Tout",
+    "albums": "Albums",
+    "eps": "EP",
+    "singles": "Singles",
+    "durationLabel": "Durée",
+    "anyLength": "Toutes durées",
+    "short": "Moins de 30 min",
+    "medium": "30 à 60 min",
+    "long": "Plus d'une heure",
+    "another": "Un autre",
+    "only": "C'est le seul disque de ta liste qui correspond.",
+    "seeList": "Voir ma liste « À écouter »",
+    "empty": "Ta liste « À écouter » est vide. Ajoute des disques depuis leur fiche.",
+    "discover": "Découvrir des disques",
+    "noMatch": "Aucun disque de ta liste ne correspond à ces filtres.",
+    "clearFilters": "Retirer les filtres",
+    "notOut": "Les disques de ta liste ne sont pas encore sortis."
   },
   "discover": {
     "title": "Découvrir",

@@ -18,6 +18,23 @@ export function formatReleaseDate(
 }
 
 /**
+ * A past day in words, without the weekday: "14 novembre" ("14 novembre 2025" outside the
+ * current year). `today` defaults to the day in Europe/Paris. Never a time.
+ */
+export function formatDayMonth(
+  format: Formatter,
+  day: string,
+  today: string = todayIn(DEFAULT_TIME_ZONE, new Date()),
+): string {
+  return format.dateTime(new Date(`${day}T12:00:00Z`), {
+    day: "numeric",
+    month: "long",
+    ...(day.slice(0, 4) !== today.slice(0, 4) && { year: "numeric" }),
+    timeZone: "UTC",
+  });
+}
+
+/**
  * An upcoming date, short: "ven. 21 nov." for a day ("mer. 10 nov. 2027" outside the current
  * year, so it never reads as a past date), "novembre 2026" for a month, "2027" for a year
  * (never an invented day). `today` defaults to the day in Europe/Paris.

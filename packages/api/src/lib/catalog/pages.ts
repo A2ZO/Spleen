@@ -1,5 +1,17 @@
 import { isMainRelease } from "@spleen/catalog";
-import { and, asc, desc, eq, inArray, isNotNull, isNull, schema, sql, type Db } from "@spleen/db";
+import {
+  and,
+  asc,
+  desc,
+  eq,
+  inArray,
+  isNotNull,
+  isNull,
+  schema,
+  sql,
+  type Db,
+  type SQL,
+} from "@spleen/db";
 import {
   DEFAULT_TIME_ZONE,
   todayIn,
@@ -39,14 +51,32 @@ const LIST_PREVIEW_SIZE = 4;
 const { artists, genres, lists, listItems, profiles, releaseArtists, releaseGenres } = schema;
 const { releaseTracks, releases, reviews, tracks, userItemState } = schema;
 
-/** The release row behind a slug (merged releases left out), reused by `getReleaseDetail`. */
-export async function releaseIdBySlug(db: Db, slug: string) {
-  const [row] = await db
-    .select()
+/**
+ * The stored "Listen on" links of the row, read with it (no extra round trip on a pool of 5).
+ * Spelled with qualified names: single-table selects drop qualifiers (docs/pieges.md).
+ */
+const storedLinks = (column: "release_id" | "track_id" | "artist_id", table: string) =>
+  sql<StoredLinks>`coalesce((
+    select json_agg(json_build_object('service', "listen_links"."service", 'url', "listen_links"."url"))
+    from "listen_links" where "listen_links".${sql.identifier(column)} = ${sql.identifier(table)}."id"
+  ), '[]'::json)`.as("listen_links");
+
+type StoredLinks = { service: string; url: string }[];
+type ReleaseRow = typeof releases.$inferSelect & { listenLinks: StoredLinks };
+
+const releaseRow = (db: Db, where: SQL | undefined) =>
+  db
+    .select({ row: releases, listenLinks: storedLinks("release_id", "releases") })
     .from(releases)
-    .where(and(eq(releases.slug, slug), isNull(releases.mergedIntoId)))
-    .limit(1);
-  return row ?? null;
+    .where(where)
+    .limit(1)
+    .then(([found]): ReleaseRow | null =>
+      found ? { ...found.row, listenLinks: found.listenLinks } : null,
+    );
+
+/** The release row behind a slug (merged releases left out), reused by `getReleaseDetail`. */
+export function releaseIdBySlug(db: Db, slug: string): Promise<ReleaseRow | null> {
+  return releaseRow(db, and(eq(releases.slug, slug), isNull(releases.mergedIntoId)));
 }
 
 /** Ratings 1..10 of the release (suspended members left out, as in `ratingSummaries`). */
@@ -206,10 +236,9 @@ export async function getReleaseDetail(
   slug: string,
   viewerId: string | null,
   now: Date,
-  known?: typeof releases.$inferSelect,
+  known?: ReleaseRow,
 ): Promise<ReleaseDetail | null> {
-  const row =
-    known ?? (await db.select().from(releases).where(eq(releases.slug, slug)).limit(1))[0];
+  const row = known ?? (await releaseRow(db, eq(releases.slug, slug)));
   if (!row) return null;
   const card = loadReleaseCards(db, [row.id]).then(([c]) => toReleaseCard(c!));
 
@@ -255,23 +284,27 @@ export async function getReleaseDetail(
     ratingDistribution: distribution,
     reviews: reviewCards,
     lists: listCards,
-    listenLinks: buildListenLinks(
-      row.title,
-      release.artists.map((a) => a.name),
-    ),
+    listenLinks: buildListenLinks(row.listenLinks, "release", row.title, release.artists[0]?.name),
     seo,
     upcoming,
   };
 }
 
-/** The artist row behind a slug (merged artists left out), reused by `getArtistDetail`. */
-export async function artistIdBySlug(db: Db, slug: string) {
-  const [row] = await db
-    .select()
+type ArtistRow = typeof artists.$inferSelect & { listenLinks: StoredLinks };
+
+const artistRow = (db: Db, where: SQL | undefined) =>
+  db
+    .select({ row: artists, listenLinks: storedLinks("artist_id", "artists") })
     .from(artists)
-    .where(and(eq(artists.slug, slug), isNull(artists.mergedIntoId)))
-    .limit(1);
-  return row ?? null;
+    .where(where)
+    .limit(1)
+    .then(([found]): ArtistRow | null =>
+      found ? { ...found.row, listenLinks: found.listenLinks } : null,
+    );
+
+/** The artist row behind a slug (merged artists left out), reused by `getArtistDetail`. */
+export function artistIdBySlug(db: Db, slug: string): Promise<ArtistRow | null> {
+  return artistRow(db, and(eq(artists.slug, slug), isNull(artists.mergedIntoId)));
 }
 
 /** Releases shown per discography group before "see all". */
@@ -297,10 +330,10 @@ function discographyGroup(r: { type: string; secondaryTypes: string[] }): Discog
 export async function getArtistDetail(
   db: Db,
   slug: string,
-  known?: typeof artists.$inferSelect,
+  known?: ArtistRow,
   all?: DiscographyGroup,
 ): Promise<ArtistDetail | null> {
-  const row = known ?? (await db.select().from(artists).where(eq(artists.slug, slug)).limit(1))[0];
+  const row = known ?? (await artistRow(db, eq(artists.slug, slug)));
   if (!row) return null;
   const [releaseRows, seo] = await Promise.all([
     db
@@ -361,14 +394,14 @@ export async function getArtistDetail(
       singles: groups.singles.length,
       other: groups.other.length,
     },
-    listenLinks: buildListenLinks("", [row.name]),
+    listenLinks: buildListenLinks(row.listenLinks, "artist", "", row.name),
     seo,
   };
 }
 
 export async function getTrackDetail(db: Db, slug: string): Promise<TrackDetail | null> {
   const [row] = await db
-    .select({ id: tracks.id })
+    .select({ id: tracks.id, listenLinks: storedLinks("track_id", "tracks") })
     .from(tracks)
     .where(and(eq(tracks.slug, slug), isNull(tracks.mergedIntoId)))
     .limit(1);
@@ -384,9 +417,6 @@ export async function getTrackDetail(db: Db, slug: string): Promise<TrackDetail 
     appearsOn,
     averageRating: ratings.get(row.id)?.average ?? null,
     ratingCount: ratings.get(row.id)?.count ?? 0,
-    listenLinks: buildListenLinks(
-      card!.title,
-      card!.artists.map((a) => a.name),
-    ),
+    listenLinks: buildListenLinks(row.listenLinks, "track", card!.title, card!.artists[0]?.name),
   };
 }

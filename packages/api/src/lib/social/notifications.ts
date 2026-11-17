@@ -2,6 +2,7 @@ import { and, eq, inArray, isNull, or, schema, sql, type Db, type DbOrTx } from 
 
 import type { CursorPage, NotificationGroup } from "../../types";
 import { loadReleaseCards, toReleaseCard } from "../catalog/cards";
+import { todayOf } from "../catalog/release-notifications";
 import { CONTACT_PLACEHOLDER } from "../moderation/emails";
 import { cursorTime, decodeCursor, encodeCursor, pageOf } from "./cursor";
 import { isBlockedBetween, memberRefs, notBlockedWith } from "./relations";
@@ -123,6 +124,12 @@ export async function markAllRead(db: Db, userId: string, now: Date): Promise<vo
     .where(and(eq(notifications.userId, userId), isNull(notifications.readAt)));
 }
 
+/** The day of a `release:day:<day>` group key, or null. */
+function releaseDayOf(key: string): string | null {
+  const match = /^release:day:(\d{4}-\d{2}-\d{2})$/.exec(key);
+  return match ? match[1]! : null;
+}
+
 /** Notification groups, most recent first. */
 export async function listNotifications(
   db: Db,
@@ -130,10 +137,16 @@ export async function listNotifications(
   cursor: string | undefined,
   /** Shown with moderation notices: where to contest a decision. */
   contactEmail: string = CONTACT_PLACEHOLDER,
+  now: Date = new Date(),
 ): Promise<CursorPage<NotificationGroup>> {
   const after = cursor ? decodeCursor(cursor, 2) : null;
   const latest = sql<Date>`max(${notifications.createdAt})`;
-  const rows = await db
+  // The member's zone joins the first wave: the second one already holds 6 reads (pool of 5).
+  const zone = db
+    .select({ timeZone: profiles.timeZone })
+    .from(profiles)
+    .where(eq(profiles.userId, userId));
+  const groups = db
     .select({
       key: notifications.groupKey,
       type: sql<NotificationGroup["type"]>`min(${notifications.type}::text)`,
@@ -165,6 +178,8 @@ export async function listNotifications(
     )
     .orderBy(sql`max(${notifications.createdAt}) desc`, sql`${notifications.groupKey} desc`)
     .limit(NOTIFICATIONS_PAGE_SIZE + 1);
+  const [[profile], rows] = await Promise.all([zone, groups]);
+  const today = todayOf(profile?.timeZone ?? null, now);
   const page = pageOf(rows, NOTIFICATIONS_PAGE_SIZE, (last) =>
     encodeCursor([last.latestText, last.key]),
   );
@@ -244,6 +259,10 @@ export async function listNotifications(
           .sort((a, b) => a.title.localeCompare(b.title) || a.id.localeCompare(b.id))
           .slice(0, RELEASES_SHOWN),
         releaseCount: r.releaseCount,
+        ...(() => {
+          const day = r.type === "release" ? releaseDayOf(r.key) : null;
+          return { releaseDay: day, releasedToday: day !== null && day === today };
+        })(),
         commentExcerpt:
           body === undefined
             ? null

@@ -114,8 +114,14 @@
     "distributionLabel": "Rating distribution",
     "reviewsTitle": "Reviews",
     "reviewsEmpty": "Nobody has written about this record yet. The first review is waiting for you.",
+    "reviewsOnRelease": "Reviews open on release day.",
     "listsTitle": "In lists",
+    "friendsTitle": "Your friends on this record",
+    "friendsAll": "See all your friends ({total})",
+    "friendsLess": "See less",
+    "friendsOthers": "and {count, plural, other {# more}}",
     "listenOn": "Listen on",
+    "listenSearch": "(search)",
     "coverAlt": "Cover of {title}",
     "actions": {
       "title": "Your listen",
@@ -140,7 +146,8 @@
     "spotify": "Spotify",
     "deezer": "Deezer",
     "appleMusic": "Apple Music",
-    "youtube": "YouTube"
+    "youtubeMusic": "YouTube Music",
+    "bandcamp": "Bandcamp"
   },
   "review": {
     "byline": "Review by {name}",
@@ -244,7 +251,8 @@
       "thisYear": "{count, plural, one {record} other {records}} in {year}",
       "total": "{count, plural, one {record} other {records}} all time",
       "rated": "{count, plural, one {record rated} other {records rated}}"
-    }
+    },
+    "pick": "Pick a record"
   },
   "stats": {
     "thisYear": "In {year}",
@@ -709,6 +717,8 @@
     "commentList": "{others, plural, =0 {{name} commented on your list “{title}”} one {{name} and one other person commented on your list “{title}”} other {{name} and # others commented on your list “{title}”}}",
     "release": "Out today: <b>{title}</b> by {artists}",
     "releases": "{count} records out today from your artists",
+    "releasePast": "Out on {date}: <b>{title}</b> by {artists}",
+    "releasesPast": "{count} releases on {date} from your artists",
     "releasesMore": "{count, plural, one {and # more} other {and # more}}",
     "excerpt": "“{text}”",
     "pagingLabel": "Notification pages",
@@ -786,6 +796,29 @@
     "releasesOn": "Out on {date}",
     "releasesIn": "Out in {date}",
     "announcedFor": "Announced for {date}"
+  },
+  "pick": {
+    "title": "Pick a record",
+    "kicker": "What to play tonight?",
+    "intro": "Chance picks from your “To listen” list.",
+    "typeLabel": "Record type",
+    "all": "All",
+    "albums": "Albums",
+    "eps": "EPs",
+    "singles": "Singles",
+    "durationLabel": "Length",
+    "anyLength": "Any length",
+    "short": "Under 30 min",
+    "medium": "30 to 60 min",
+    "long": "Over an hour",
+    "another": "Another one",
+    "only": "It’s the only record in your list that matches.",
+    "seeList": "See my “To listen” list",
+    "empty": "Your “To listen” list is empty. Add records from their pages.",
+    "discover": "Discover records",
+    "noMatch": "No record in your list matches these filters.",
+    "clearFilters": "Clear filters",
+    "notOut": "The records in your list aren’t out yet."
   },
   "discover": {
     "title": "Discover",

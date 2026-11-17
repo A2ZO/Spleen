@@ -3,7 +3,7 @@
  *   pnpm --filter @spleen/catalog record
  * Tests replay them through a fake `fetch`, so they never touch the network.
  */
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -15,13 +15,17 @@ import {
   FIXTURE_ALBUM,
   FIXTURE_ARTIST_QUERY,
   FIXTURE_RECORDING,
+  FIXTURE_STREAMING_ALBUM,
   fixtureKey,
 } from "../src/test-fixtures";
 
 loadRootEnv();
 const dir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../test/fixtures");
-await rm(dir, { recursive: true, force: true });
 await mkdir(dir, { recursive: true });
+// Only the MusicBrainz answers are recorded here: the ListenBrainz one stays.
+for (const file of await readdir(dir)) {
+  if (/^\d+\.json$/.test(file) || file === "manifest.json") await rm(path.join(dir, file));
+}
 
 const manifest: Record<string, string> = {};
 const recordingFetch: typeof fetch = async (input, init) => {
@@ -44,16 +48,7 @@ const provider = createMusicBrainzProvider({
 });
 
 await provider.searchReleaseGroups(FIXTURE_ALBUM.query);
-const album = await provider.getReleaseGroup(FIXTURE_ALBUM.mbid);
-// Same fallback as the importer: the next edition when MusicBrainz cannot serve one.
-for (const edition of rankEditions(album.editions).slice(0, 2)) {
-  try {
-    await provider.getTracklist(edition.mbid);
-    break;
-  } catch (error) {
-    console.error(`edition ${edition.mbid}: ${String(error)}`);
-  }
-}
+await recordAlbum(FIXTURE_ALBUM.mbid);
 
 const [artist] = await provider.searchArtists(FIXTURE_ARTIST_QUERY);
 if (!artist) throw new Error("Fixture artist not found.");
@@ -62,6 +57,23 @@ await provider.getArtistReleaseGroups(artist.item.mbid);
 
 await provider.searchRecordings(FIXTURE_RECORDING.query);
 await provider.getRecording(FIXTURE_RECORDING.mbid);
+
+await recordAlbum(FIXTURE_STREAMING_ALBUM.mbid);
+// Nightly "Listen on" re-read: every edition of the group with its URL relationships.
+await provider.getEditionLinks(FIXTURE_STREAMING_ALBUM.mbid);
+
+async function recordAlbum(mbid: string) {
+  const album = await provider.getReleaseGroup(mbid);
+  // Same fallback as the importer: the next edition when MusicBrainz cannot serve one.
+  for (const edition of rankEditions(album.editions).slice(0, 2)) {
+    try {
+      await provider.getTracklist(edition.mbid);
+      return;
+    } catch (error) {
+      console.error(`edition ${edition.mbid}: ${String(error)}`);
+    }
+  }
+}
 
 await writeFile(path.join(dir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`);
 console.log(`catalog: ${Object.keys(manifest).length} responses recorded`);
