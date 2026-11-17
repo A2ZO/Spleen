@@ -78,9 +78,23 @@ connaît, les notes et cœurs de mes amis sur une fiche, et « Tire un disque »
   les relations (`docs/pilote/decisions.md`).
 - Appris en route : un 503 de MusicBrainz arrête la phase avant les artistes ; si ça se
   répète chaque nuit, les artistes ne sont jamais relus (point ouvert, voir le journal).
-- **Prochaine : étape 4**, « Tes amis sur ce disque » (consignes dans
-  `docs/pilote/feuille-de-route.md`, « Étape 4 ») ; plan à écrire dans
-  `docs/pilote/plan-etape-4.md`.
+- **Étape 4 faite** (17 novembre) : `releaseFriends` (`packages/api/src/lib/social/
+  release-friends.ts`, une requête, total par `count(*) over ()`) derrière `release.friends`
+  (`{ slug, all? }`, null pour visiteur, compte suspendu ou sans profil) ; section
+  `FriendsOnRecord` sur la fiche album (après la mosaïque, avant « Liste des titres ») ;
+  `?friends=all#friends` ouvre la liste sans JavaScript ; démo `seed/friends.ts` (« Dernier
+  métro pour Belleville », 7 membres suivis par `nuitblanche`, 6 visibles) ; e2e
+  `release-friends.spec.ts` (helper `followMembersInDatabase`, Postgres seulement).
+- Décisions : inventaire de `db.test.ts` mis à jour ; snapshot `feed-loading` régénéré (ajouts
+  seuls) — **point ouvert pour Azzo** : valider, ou faire suivre ces membres par un autre
+  compte de démo ; appel gardé en première vague (A/B sans l'appel : même temps) ; détail dans
+  `docs/pilote/decisions.md`. `docs/social.md` cite le fichier parmi les filtres de masquage.
+- Appris en route : `user_item_state.updated_at` suit l'horloge, la démo le recale sur la date
+  d'écoute pour un ordre lisible ; ne jamais lancer deux passes Playwright en même temps (le
+  nettoyage global de l'une supprime les comptes de l'autre) ; `pnpm start` se lance depuis
+  `apps/web`.
+- **Prochaine : étape 5**, « Tire un disque » (consignes dans `docs/pilote/feuille-de-route.md`,
+  « Étape 5 », lire l'issue #31) ; plan à écrire dans `docs/pilote/plan-etape-5.md`.
 
 ## Mesures de référence
 
