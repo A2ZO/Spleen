@@ -123,7 +123,9 @@ Lectures (routeur `upcoming`) :
 - `/discover` : « Les plus attendus » (`#awaited`) avant « Sorties récentes », caché si vide.
   Les tuiles de ces trois endroits viennent de `components/upcoming/UpcomingGrid.tsx`.
 - Fiche d'un disque à venir : « Sort le … », « Sort en … » ou « Annoncé pour … » à la place de
-  la date, badge « Date modifiée » ; contrôles réduits (voir `docs/ecoute.md`).
+  la date, badge « Date modifiée » ; contrôles réduits, sans carte « Note de la communauté »,
+  et « Les critiques ouvriront le jour de la sortie. » quand il n'a aucune critique (voir
+  `docs/ecoute.md`).
 - Notifications du jour J (étape 5) : `pnpm releases:notify` (chaque nuit après
   `catalog:refresh` dans `.github/workflows/catalog-refresh.yml`, même si la relecture a
   échoué) crée « Sortie aujourd'hui » pour chaque membre qui suit un artiste crédité, a
@@ -133,6 +135,9 @@ Lectures (routeur `upcoming`) :
   d'un même jour forment un groupe : un seul → « Sortie aujourd'hui : **Titre** de Artiste »,
   carte liée à la fiche ; plusieurs → « N sorties aujourd'hui chez tes artistes », les 3
   premiers par titre liés, puis « et N autres ». La fusion de doublons repointe `release_id`.
+  Lue un autre jour (`releasedToday` faux, calculé par l'API dans le fuseau du membre) : « Sorti
+  le 14 novembre : **Titre** de Artiste » ou « N sorties le 14 novembre chez tes artistes »
+  (jour et mois en lettres, année hors de l'année en cours, jamais d'heure ; jalon 13).
 
 Démo : `nuitblanche` suit trois artistes, `vinylvince` deux, six sorties annoncées
 (`seed/upcoming.ts`, dates recalculées à chaque seed, sans `mbid`).

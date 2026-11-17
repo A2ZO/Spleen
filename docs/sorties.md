@@ -59,12 +59,17 @@ d'entrée du domaine ; le détail reste dans les docs citées.
 - `/upcoming` : « Mes sorties à venir », filtre par type, suggestions d'artistes.
 - Accueil membre : « Bientôt dans tes oreilles », carte « Sort demain » / « Sort vendredi ».
 - `/discover` : « Les plus attendus ». Fiche d'un disque à venir : « Sort le … », contrôles
-  réduits. Notifications : « Sortie aujourd'hui », regroupées par jour.
+  réduits, sans moyenne. Notifications : « Sortie aujourd'hui » (« Sorti le … » lue un autre
+  jour), regroupées par jour.
 - Démo : `packages/db/src/seed/upcoming.ts` (`nuitblanche` suit trois artistes, `vinylvince`
   deux, six sorties annoncées, dates recalculées à chaque seed).
 
 ## Questions laissées à Azzo (PR du jalon)
 
-- Retirer les sorties à venir de la discographie de la fiche artiste ?
-- Notification d'un jour passé : garder « Sortie aujourd'hui » ou dire « Sorti le … » ?
-- La tâche de 03:17 UTC prévient les Amériques le soir de la sortie : acceptable ?
+- Retirer les sorties à venir de la discographie de la fiche artiste ? (toujours ouverte)
+- Notification d'un jour passé : réponse du conseiller (16 novembre, issue #41) : « Sorti le
+  {date} », fait au jalon 13, étape 1.
+- La tâche de 03:17 UTC prévient les Amériques le soir de la sortie : réponse du conseiller :
+  horaire inchangé.
+- Fiche d'un disque à venir : réponse du conseiller (issue #42) : moyenne masquée et « Les
+  critiques ouvriront le jour de la sortie. », fait au jalon 13, étape 1.

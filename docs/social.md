@@ -112,7 +112,10 @@ compte les groupes non lus. Pas de temps réel : le compteur se met à jour au r
 Type `release` (jalon 11) : « Sortie aujourd'hui », sans acteur (`actor_id` nul), créé la
 nuit par `pnpm releases:notify` (`lib/catalog/release-notifications.ts`), une ligne par
 membre et par disque (`notifications_release_once_uidx`), `group_key` = `release:day:<jour>`
-dans le fuseau du destinataire. Règles dans `docs/decouverte.md`, « Sorties à venir ».
+dans le fuseau du destinataire. `notification.list` y ajoute `releaseDay` (le jour de la clé)
+et `releasedToday` (ce jour est aujourd'hui dans le fuseau du membre, repli Europe/Paris) :
+lue un autre jour, la notification dit « Sorti le {date} » (jalon 13, étape 1). Règles dans
+`docs/decouverte.md`, « Sorties à venir ».
 
 ## Blocage
 

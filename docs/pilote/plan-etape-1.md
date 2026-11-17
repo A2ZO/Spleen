@@ -53,7 +53,7 @@ Vérifications d'écran :
 - [x] 2. Écran des notifications et textes FR/EN
 - [x] 3. Fiche d'un disque à venir (moyenne, critiques)
 - [x] 4. e2e
-- [ ] 5. Docs
+- [x] 5. Docs
 - [ ] vérifications
 - [ ] relecture 1
 - [ ] relecture 2
