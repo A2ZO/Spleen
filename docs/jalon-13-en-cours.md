@@ -39,6 +39,22 @@ connaît, les notes et cœurs de mes amis sur une fiche, et « Tire un disque »
 6. **La passe finale** : `docs/quoi-ecouter.md`, captures, axe, mesures, `CLAUDE.md`, cahier,
    puis fin de jalon.
 
+## Où on en est
+
+- **Étape 1 faite** (17 novembre) : `notification.list` renvoie `releaseDay` et `releasedToday`
+  (jour du membre, repli Paris ; `ctx.now`), l'écran dit « Sorti le {date} : … » et « {count}
+  sorties le {date} chez tes artistes » un autre jour ; la fiche d'un disque à venir n'a plus
+  de moyenne et dit « Les critiques ouvriront le jour de la sortie. ». Issues #41 et #42 : la PR
+  de fin de jalon dira `Closes #41`, `Closes #42` (et `Closes #31` à l'étape 5).
+- Décisions : l'année de « Sorti le … » s'ajoute quand elle diffère de celle du jour de Paris,
+  calculée par la page (`formatDayMonth`) ; détail dans `docs/pilote/decisions.md`.
+- Appris en route : sur le build de prod avec Brevo factice, `hydration.spec.ts:17` échoue
+  toujours (HTTP 401 de Brevo, envoi du lien) ; il passe en dev, ce n'est pas une régression.
+  Mesures prod : se connecter une fois en dev avec `MEASURE_STATE`, puis mesurer la prod.
+- **Prochaine : étape 2**, « Écouter sur… » à l'import : consignes complètes dans
+  `docs/pilote/feuille-de-route.md` (« Étape 2 »), plan à écrire dans
+  `docs/pilote/plan-etape-2.md`. Seule migration autorisée du jalon.
+
 ## Mesures de référence
 
 - `measure.mjs` (fin du jalon 11, étape 6, build de prod, médianes de 6, deux passages,
