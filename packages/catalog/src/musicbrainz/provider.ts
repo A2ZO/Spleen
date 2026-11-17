@@ -5,6 +5,7 @@ import { escapeLucene, isMainRelease, normalizeLanguage, parsePartialDate } from
 import type {
   ArtistCredit,
   CatalogProvider,
+  EditionLinks,
   ProviderArtist,
   ProviderRecording,
   ProviderUrlRelation,
@@ -23,6 +24,7 @@ import type {
   MbRecording,
   MbRelation,
   MbRelease,
+  MbReleaseBrowse,
   MbReleaseGroup,
   MbReleaseGroupBrowse,
 } from "./raw";
@@ -199,6 +201,21 @@ export function createMusicBrainzProvider(options: MusicBrainzOptions): CatalogP
             : [],
         ),
       } satisfies RecordingDetail;
+    },
+
+    async getEditionLinks(releaseGroupMbid) {
+      const data = await get<MbReleaseBrowse>("release", {
+        "release-group": releaseGroupMbid,
+        inc: "url-rels",
+        limit: String(BROWSE_PAGE_SIZE),
+      });
+      return {
+        editions: data.releases.map((release) => ({
+          ...toEdition(release),
+          urlRelations: toUrlRelations(release.relations) ?? [],
+        })),
+        total: data["release-count"],
+      } satisfies EditionLinks;
     },
 
     async getCoverUrl(releaseGroupMbid) {

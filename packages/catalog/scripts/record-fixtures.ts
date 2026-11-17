@@ -59,6 +59,8 @@ await provider.searchRecordings(FIXTURE_RECORDING.query);
 await provider.getRecording(FIXTURE_RECORDING.mbid);
 
 await recordAlbum(FIXTURE_STREAMING_ALBUM.mbid);
+// Nightly "Listen on" re-read: every edition of the group with its URL relationships.
+await provider.getEditionLinks(FIXTURE_STREAMING_ALBUM.mbid);
 
 async function recordAlbum(mbid: string) {
   const album = await provider.getReleaseGroup(mbid);

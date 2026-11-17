@@ -81,3 +81,8 @@ export interface MbReleaseGroupBrowse {
   "release-group-count": number;
   "release-groups": MbReleaseGroup[];
 }
+
+export interface MbReleaseBrowse {
+  "release-count": number;
+  releases: MbRelease[];
+}

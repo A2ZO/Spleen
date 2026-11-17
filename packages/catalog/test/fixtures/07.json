@@ -1,384 +1,384 @@
 {
+  "release-group-offset": 0,
   "release-group-count": 12,
   "release-groups": [
     {
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "primary-type": "Single",
+      "id": "0d3d3ab7-4d2e-4dab-8876-c7e3f6481412",
       "artist-credit": [
         {
           "artist": {
-            "country": "FR",
+            "disambiguation": "French singer; aka Boss Lady",
+            "type": "Person",
             "sort-name": "Theodora",
             "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
             "name": "Theodora",
             "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
-            "type": "Person",
-            "disambiguation": "French singer; aka Boss Lady"
+            "country": "FR"
           },
-          "name": "Theodora",
-          "joinphrase": " & "
+          "joinphrase": " & ",
+          "name": "Theodora"
         },
         {
           "artist": {
-            "disambiguation": "French-Congolese rapper",
             "country": "FR",
-            "type": "Person",
-            "name": "Guy2Bezbar",
             "id": "368f3a86-e100-44e3-a65e-3f93b60a0cc1",
+            "name": "Guy2Bezbar",
             "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Guy2Bezbar"
+            "sort-name": "Guy2Bezbar",
+            "type": "Person",
+            "disambiguation": "French-Congolese rapper"
           },
           "name": "Guy2Bezbar",
           "joinphrase": ""
         }
       ],
-      "secondary-type-ids": [],
-      "disambiguation": "",
-      "primary-type": "Single",
-      "title": "PAY!",
       "first-release-date": "2025-04-24",
-      "id": "0d3d3ab7-4d2e-4dab-8876-c7e3f6481412",
+      "secondary-type-ids": [],
+      "title": "PAY!",
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "disambiguation": "",
+      "secondary-types": []
+    },
+    {
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "title": "Miss Kitoko",
+      "secondary-type-ids": [],
+      "first-release-date": "2026-03-12",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Theodora",
+          "artist": {
+            "sort-name": "Theodora",
+            "type": "Person",
+            "disambiguation": "French singer; aka Boss Lady",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "country": "FR",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Theodora"
+          }
+        }
+      ],
+      "id": "101b4ce6-26d9-4d66-a30b-53faf5f4d3c9",
+      "primary-type": "Single",
+      "secondary-types": [],
+      "disambiguation": ""
+    },
+    {
+      "primary-type": "Single",
+      "id": "1ca2616c-37f4-4434-b1a8-6122b3fa90d1",
+      "artist-credit": [
+        {
+          "artist": {
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "country": "FR",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Theodora",
+            "sort-name": "Theodora",
+            "disambiguation": "French singer; aka Boss Lady",
+            "type": "Person"
+          },
+          "joinphrase": "",
+          "name": "Theodora"
+        }
+      ],
+      "first-release-date": "2024-06-27",
+      "title": "JTM 1 PEU / MON CASQUE",
+      "secondary-type-ids": [],
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "disambiguation": "",
+      "secondary-types": []
+    },
+    {
+      "id": "27370b68-9c33-494c-bb71-ce63e8c42472",
+      "primary-type": "Single",
+      "artist-credit": [
+        {
+          "joinphrase": " & ",
+          "name": "GIMS",
+          "artist": {
+            "sort-name": "GIMS",
+            "disambiguation": "French-Congolese rapper, Maître Gims",
+            "type": "Person",
+            "country": "FR",
+            "id": "b2fbd053-4380-412c-95d2-35c6da8f1011",
+            "name": "GIMS",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          }
+        },
+        {
+          "joinphrase": "",
+          "name": "Theodora",
+          "artist": {
+            "sort-name": "Theodora",
+            "disambiguation": "French singer; aka Boss Lady",
+            "type": "Person",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "country": "FR",
+            "name": "Theodora",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          }
+        }
+      ],
+      "title": "SPA",
+      "secondary-type-ids": [],
+      "first-release-date": "2026-01-16",
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "disambiguation": "",
       "secondary-types": []
     },
     {
       "disambiguation": "",
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "artist": {
-            "disambiguation": "French singer; aka Boss Lady",
-            "country": "FR",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Theodora",
-            "name": "Theodora",
-            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
-            "type": "Person"
-          },
-          "name": "Theodora"
-        }
-      ],
-      "secondary-type-ids": [],
       "secondary-types": [],
-      "id": "101b4ce6-26d9-4d66-a30b-53faf5f4d3c9",
-      "first-release-date": "2026-03-12",
-      "primary-type": "Single",
-      "title": "Miss Kitoko"
-    },
-    {
-      "disambiguation": "",
-      "artist-credit": [
-        {
-          "artist": {
-            "country": "FR",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Theodora",
-            "name": "Theodora",
-            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
-            "type": "Person",
-            "disambiguation": "French singer; aka Boss Lady"
-          },
-          "name": "Theodora",
-          "joinphrase": ""
-        }
-      ],
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
-      "secondary-type-ids": [],
-      "secondary-types": [],
-      "first-release-date": "2024-06-27",
-      "id": "1ca2616c-37f4-4434-b1a8-6122b3fa90d1",
-      "primary-type": "Single",
-      "title": "JTM 1 PEU / MON CASQUE"
-    },
-    {
-      "title": "SPA",
-      "primary-type": "Single",
-      "first-release-date": "2026-01-16",
-      "id": "27370b68-9c33-494c-bb71-ce63e8c42472",
-      "secondary-types": [],
-      "secondary-type-ids": [],
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
-      "artist-credit": [
-        {
-          "artist": {
-            "sort-name": "GIMS",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "name": "GIMS",
-            "id": "b2fbd053-4380-412c-95d2-35c6da8f1011",
-            "type": "Person",
-            "country": "FR",
-            "disambiguation": "French-Congolese rapper, Maître Gims"
-          },
-          "name": "GIMS",
-          "joinphrase": " & "
-        },
-        {
-          "joinphrase": "",
-          "artist": {
-            "disambiguation": "French singer; aka Boss Lady",
-            "country": "FR",
-            "type": "Person",
-            "sort-name": "Theodora",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "name": "Theodora",
-            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46"
-          },
-          "name": "Theodora"
-        }
-      ],
-      "disambiguation": ""
-    },
-    {
-      "disambiguation": "",
-      "secondary-type-ids": [],
-      "artist-credit": [
-        {
-          "artist": {
-            "disambiguation": "French singer; aka Boss Lady",
-            "country": "FR",
-            "type": "Person",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Theodora",
-            "name": "Theodora",
-            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46"
-          },
-          "name": "Theodora",
-          "joinphrase": ""
-        }
-      ],
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
-      "secondary-types": [],
+      "first-release-date": "2024-03-20",
       "title": "Blues d’hiver",
+      "secondary-type-ids": [],
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
       "primary-type": "Single",
       "id": "2936bb03-3150-4c57-bbae-bdb66983ec02",
-      "first-release-date": "2024-03-20"
-    },
-    {
-      "secondary-types": [],
-      "first-release-date": "2026-02-20",
-      "id": "34e18d83-c409-4b56-8f18-284ba158f00d",
-      "primary-type": "Single",
-      "title": "Sex Model",
-      "disambiguation": "",
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
       "artist-credit": [
         {
-          "joinphrase": " & ",
           "artist": {
             "type": "Person",
+            "disambiguation": "French singer; aka Boss Lady",
+            "sort-name": "Theodora",
+            "name": "Theodora",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "country": "FR"
+          },
+          "name": "Theodora",
+          "joinphrase": ""
+        }
+      ]
+    },
+    {
+      "disambiguation": "",
+      "secondary-types": [],
+      "first-release-date": "2026-02-20",
+      "title": "Sex Model",
+      "secondary-type-ids": [],
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "primary-type": "Single",
+      "id": "34e18d83-c409-4b56-8f18-284ba158f00d",
+      "artist-credit": [
+        {
+          "name": "PLK",
+          "joinphrase": " & ",
+          "artist": {
+            "country": "FR",
             "id": "55304866-1b79-4365-a6b1-961c95e9fc57",
             "name": "PLK",
             "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
             "sort-name": "PLK",
-            "country": "FR",
-            "disambiguation": "French rapper"
-          },
-          "name": "PLK"
+            "disambiguation": "French rapper",
+            "type": "Person"
+          }
         },
         {
+          "joinphrase": "",
           "name": "Theodora",
           "artist": {
-            "type": "Person",
-            "name": "Theodora",
             "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "country": "FR",
+            "name": "Theodora",
             "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
             "sort-name": "Theodora",
+            "disambiguation": "French singer; aka Boss Lady",
+            "type": "Person"
+          }
+        }
+      ]
+    },
+    {
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "secondary-type-ids": [],
+      "title": "Des mythos",
+      "first-release-date": "2026-02-05",
+      "artist-credit": [
+        {
+          "artist": {
+            "name": "Theodora",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
             "country": "FR",
-            "disambiguation": "French singer; aka Boss Lady"
+            "type": "Person",
+            "disambiguation": "French singer; aka Boss Lady",
+            "sort-name": "Theodora"
           },
+          "name": "Theodora",
           "joinphrase": ""
         }
       ],
-      "secondary-type-ids": []
+      "id": "456f9170-c744-4157-940d-dfb4bdee3350",
+      "primary-type": "Single",
+      "secondary-types": [],
+      "disambiguation": ""
     },
     {
+      "id": "58754ee9-240e-4256-b4b4-2fcd54ac10ec",
+      "primary-type": "Single",
+      "artist-credit": [
+        {
+          "name": "Theodora",
+          "joinphrase": "",
+          "artist": {
+            "sort-name": "Theodora",
+            "disambiguation": "French singer; aka Boss Lady",
+            "type": "Person",
+            "country": "FR",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Theodora"
+          }
+        }
+      ],
+      "title": "Be my Valentine ? / MR. DJ",
       "secondary-type-ids": [],
+      "first-release-date": "2026-06-25",
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "disambiguation": "",
+      "secondary-types": []
+    },
+    {
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "secondary-type-ids": [],
+      "title": "Daddy chocolat",
+      "first-release-date": "2022-05-11",
       "artist-credit": [
         {
           "joinphrase": "",
           "name": "Theodora",
           "artist": {
             "name": "Theodora",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "country": "FR",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "type": "Person",
+            "disambiguation": "French singer; aka Boss Lady",
+            "sort-name": "Theodora"
+          }
+        }
+      ],
+      "id": "5a1dd327-dda0-46f4-a4e4-9a1d93f14e09",
+      "primary-type": "Single",
+      "secondary-types": [],
+      "disambiguation": ""
+    },
+    {
+      "secondary-types": [],
+      "disambiguation": "",
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "first-release-date": "2026-06-19",
+      "secondary-type-ids": [],
+      "title": "JETSKI (FRIKI)",
+      "artist-credit": [
+        {
+          "name": "MOLIY",
+          "joinphrase": ", ",
+          "artist": {
+            "id": "3472754c-1a8f-4466-aad8-b42626bbe8b0",
+            "country": "US",
+            "name": "MOLIY",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "sort-name": "MOLIY",
+            "disambiguation": "",
+            "type": "Person"
+          }
+        },
+        {
+          "name": "Yailin la Más Viral",
+          "joinphrase": " & ",
+          "artist": {
+            "sort-name": "Yailin la Más Viral",
+            "type": "Person",
+            "disambiguation": "",
+            "id": "9a11713f-7948-4716-874e-7f80272893d7",
+            "country": "DO",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Yailin la Más Viral"
+          }
+        },
+        {
+          "joinphrase": "",
+          "name": "Theodora",
+          "artist": {
+            "country": "FR",
             "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
             "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Theodora",
             "sort-name": "Theodora",
             "type": "Person",
-            "country": "FR",
             "disambiguation": "French singer; aka Boss Lady"
           }
         }
       ],
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
-      "disambiguation": "",
-      "title": "Des mythos",
       "primary-type": "Single",
-      "first-release-date": "2026-02-05",
-      "id": "456f9170-c744-4157-940d-dfb4bdee3350",
-      "secondary-types": []
+      "id": "5f462868-85c0-49a2-9fc4-7756d95d4fb5"
     },
     {
-      "secondary-types": [],
-      "first-release-date": "2026-06-25",
-      "id": "58754ee9-240e-4256-b4b4-2fcd54ac10ec",
-      "primary-type": "Single",
-      "title": "Be my Valentine ? / MR. DJ",
-      "disambiguation": "",
       "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "first-release-date": "2025-05-13",
+      "title": "DO U WANNA ?",
+      "secondary-type-ids": [],
       "artist-credit": [
         {
+          "name": "Theodora",
           "joinphrase": "",
           "artist": {
-            "disambiguation": "French singer; aka Boss Lady",
-            "type": "Person",
-            "name": "Theodora",
-            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
-            "sort-name": "Theodora",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "country": "FR"
-          },
-          "name": "Theodora"
-        }
-      ],
-      "secondary-type-ids": []
-    },
-    {
-      "secondary-types": [],
-      "first-release-date": "2022-05-11",
-      "id": "5a1dd327-dda0-46f4-a4e4-9a1d93f14e09",
-      "primary-type": "Single",
-      "title": "Daddy chocolat",
-      "disambiguation": "",
-      "artist-credit": [
-        {
-          "artist": {
-            "disambiguation": "French singer; aka Boss Lady",
-            "type": "Person",
-            "sort-name": "Theodora",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
-            "name": "Theodora",
-            "country": "FR"
-          },
-          "name": "Theodora",
-          "joinphrase": ""
-        }
-      ],
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
-      "secondary-type-ids": []
-    },
-    {
-      "secondary-types": [],
-      "first-release-date": "2026-06-19",
-      "id": "5f462868-85c0-49a2-9fc4-7756d95d4fb5",
-      "title": "JETSKI (FRIKI)",
-      "primary-type": "Single",
-      "disambiguation": "",
-      "secondary-type-ids": [],
-      "artist-credit": [
-        {
-          "joinphrase": ", ",
-          "artist": {
-            "disambiguation": "",
-            "id": "3472754c-1a8f-4466-aad8-b42626bbe8b0",
-            "name": "MOLIY",
-            "sort-name": "MOLIY",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "type": "Person",
-            "country": "US"
-          },
-          "name": "MOLIY"
-        },
-        {
-          "artist": {
-            "sort-name": "Yailin la Más Viral",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "id": "9a11713f-7948-4716-874e-7f80272893d7",
-            "name": "Yailin la Más Viral",
-            "type": "Person",
-            "country": "DO",
-            "disambiguation": ""
-          },
-          "name": "Yailin la Más Viral",
-          "joinphrase": " & "
-        },
-        {
-          "artist": {
-            "disambiguation": "French singer; aka Boss Lady",
-            "type": "Person",
-            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
-            "name": "Theodora",
-            "sort-name": "Theodora",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "country": "FR"
-          },
-          "name": "Theodora",
-          "joinphrase": ""
-        }
-      ],
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9"
-    },
-    {
-      "disambiguation": "",
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
-      "artist-credit": [
-        {
-          "artist": {
-            "type": "Person",
-            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
-            "name": "Theodora",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Theodora",
             "country": "FR",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Theodora",
+            "sort-name": "Theodora",
+            "type": "Person",
             "disambiguation": "French singer; aka Boss Lady"
-          },
-          "name": "Theodora",
-          "joinphrase": ""
+          }
         }
       ],
-      "secondary-type-ids": [],
-      "secondary-types": [],
       "primary-type": "Single",
-      "title": "DO U WANNA ?",
-      "first-release-date": "2025-05-13",
-      "id": "85b0c026-98a4-4654-97f0-38cfe4c4cd90"
+      "id": "85b0c026-98a4-4654-97f0-38cfe4c4cd90",
+      "secondary-types": [],
+      "disambiguation": ""
     },
     {
-      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "primary-type": "Single",
+      "id": "c8dc5898-c0ea-48e1-a14b-08b9f7bb68b1",
       "artist-credit": [
         {
           "name": "disiz",
+          "joinphrase": " & ",
           "artist": {
+            "sort-name": "Disiz",
             "disambiguation": "French rapper aka Disiz La Peste since late 90s",
             "type": "Person",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Disiz",
             "id": "daba3096-88f2-4322-9b00-10938b0220b8",
+            "country": "FR",
             "name": "Disiz",
-            "country": "FR"
-          },
-          "joinphrase": " & "
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          }
         },
         {
-          "joinphrase": "",
           "artist": {
-            "type": "Person",
-            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
-            "name": "Theodora",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Theodora",
             "country": "FR",
+            "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Theodora",
+            "sort-name": "Theodora",
+            "type": "Person",
             "disambiguation": "French singer; aka Boss Lady"
           },
-          "name": "Theodora"
+          "name": "Theodora",
+          "joinphrase": ""
         }
       ],
-      "secondary-type-ids": [],
-      "disambiguation": "",
       "first-release-date": "2025-09-26",
-      "id": "c8dc5898-c0ea-48e1-a14b-08b9f7bb68b1",
-      "primary-type": "Single",
       "title": "melodrama",
+      "secondary-type-ids": [],
+      "primary-type-id": "d6038452-8ee0-3f68-affc-2de9a1ede0b9",
+      "disambiguation": "",
       "secondary-types": []
     }
-  ],
-  "release-group-offset": 0
+  ]
 }

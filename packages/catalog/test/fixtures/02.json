@@ -1,3158 +1,22 @@
 {
-  "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-  "first-release-date": "1959-08-17",
-  "releases": [
-    {
-      "quality": "normal",
-      "barcode": "",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "US",
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "name": "Miles Davis",
-          "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person",
-            "genres": [
-              {
-                "count": 3,
-                "name": "bebop",
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
-              },
-              {
-                "count": 1,
-                "name": "blues",
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
-              },
-              {
-                "name": "classical",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "name": "cool jazz",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": "",
-                "count": 10
-              },
-              {
-                "name": "funk",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop",
-                "count": 7
-              },
-              {
-                "count": 27,
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "name": "jazz"
-              },
-              {
-                "name": "jazz fusion",
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "count": 13
-              },
-              {
-                "count": 1,
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk"
-              },
-              {
-                "name": "modal jazz",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "count": 11
-              },
-              {
-                "count": 4,
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "name": "post-bop"
-              },
-              {
-                "name": "rock",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "count": 1
-              }
-            ],
-            "name": "Miles Davis"
-          }
-        }
-      ],
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "date": "1959-08-17",
-      "disambiguation": "stereo",
-      "packaging": null,
-      "packaging-id": null,
-      "status": "Official",
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "date": "1959-08-17",
-          "area": {
-            "sort-name": "United States",
-            "disambiguation": "",
-            "iso-3166-1-codes": [
-              "US"
-            ],
-            "type-id": null,
-            "name": "United States",
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "type": null
-          }
-        }
-      ],
-      "genres": [
-        {
-          "count": 2,
-          "name": "jazz",
-          "disambiguation": "",
-          "id": "a715278f-1580-409f-8078-4ffbc800e08b"
-        },
-        {
-          "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-          "disambiguation": "",
-          "name": "modal jazz",
-          "count": 1
-        }
-      ],
-      "id": "bee5e0cd-1767-4a8e-9578-6455e87ba60b"
-    },
-    {
-      "country": "US",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "quality": "normal",
-      "barcode": null,
-      "packaging": null,
-      "disambiguation": "mono",
-      "date": "1959-08-17",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "artist-credit": [
-        {
-          "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person",
-            "genres": [
-              {
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "name": "bebop",
-                "count": 3
-              },
-              {
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "name": "blues",
-                "count": 1
-              },
-              {
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": "",
-                "name": "classical",
-                "count": 1
-              },
-              {
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": "",
-                "name": "cool jazz",
-                "count": 10
-              },
-              {
-                "count": 1,
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "name": "funk"
-              },
-              {
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop",
-                "count": 7
-              },
-              {
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "name": "jazz",
-                "count": 27
-              },
-              {
-                "count": 13,
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "name": "jazz fusion"
-              },
-              {
-                "count": 1,
-                "name": "jazz-funk",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": ""
-              },
-              {
-                "name": "modal jazz",
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "count": 11
-              },
-              {
-                "name": "post-bop",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "count": 4
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "name": "rock"
-              }
-            ],
-            "name": "Miles Davis"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "id": "79ed3ff2-1b33-3245-8755-947554bc8b3d",
-      "genres": [],
-      "release-events": [
-        {
-          "area": {
-            "name": "United States",
-            "type": null,
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "disambiguation": "",
-            "sort-name": "United States",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "US"
-            ]
-          },
-          "date": "1959-08-17"
-        }
-      ],
-      "title": "Kind of Blue",
-      "status": "Official",
-      "packaging-id": null
-    },
-    {
-      "release-events": [
-        {
-          "area": {
-            "id": "106e0bec-b638-3b37-b731-f53d507dc00e",
-            "type": null,
-            "name": "Australia",
-            "sort-name": "Australia",
-            "disambiguation": "",
-            "iso-3166-1-codes": [
-              "AU"
-            ],
-            "type-id": null
-          },
-          "date": "1959"
-        }
-      ],
-      "title": "Kind of Blue",
-      "packaging-id": null,
-      "status": "Official",
-      "id": "e25dbbbc-7c21-4cf8-9dc7-fdf401b8403c",
-      "genres": [],
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1959",
-      "artist-credit": [
-        {
-          "artist": {
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "name": "bebop",
-                "count": 3
-              },
-              {
-                "name": "blues",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "name": "classical"
-              },
-              {
-                "count": 10,
-                "name": "cool jazz",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": ""
-              },
-              {
-                "count": 1,
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "name": "funk"
-              },
-              {
-                "count": 7,
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop"
-              },
-              {
-                "count": 27,
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "name": "jazz"
-              },
-              {
-                "count": 13,
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "name": "jazz fusion"
-              },
-              {
-                "count": 1,
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk"
-              },
-              {
-                "name": "modal jazz",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "count": 11
-              },
-              {
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "name": "post-bop",
-                "count": 4
-              },
-              {
-                "name": "rock",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "count": 1
-              }
-            ],
-            "type": "Person",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "disambiguation": "mono",
-      "packaging": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "quality": "normal",
-      "barcode": null,
-      "country": "AU"
-    },
-    {
-      "disambiguation": "stereo",
-      "packaging": null,
-      "artist-credit": [
-        {
-          "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "genres": [
-              {
-                "count": 3,
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "name": "bebop"
-              },
-              {
-                "count": 1,
-                "name": "blues",
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
-              },
-              {
-                "count": 1,
-                "name": "classical",
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4"
-              },
-              {
-                "disambiguation": "",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "name": "cool jazz",
-                "count": 10
-              },
-              {
-                "name": "funk",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "count": 7,
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop"
-              },
-              {
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "name": "jazz",
-                "count": 27
-              },
-              {
-                "count": 13,
-                "name": "jazz fusion",
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4"
-              },
-              {
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk",
-                "count": 1
-              },
-              {
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "name": "modal jazz",
-                "count": 11
-              },
-              {
-                "count": 4,
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "name": "post-bop"
-              },
-              {
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "name": "rock",
-                "count": 1
-              }
-            ],
-            "name": "Miles Davis",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "date": "1959",
-      "genres": [],
-      "id": "bc4d1870-1614-411b-85d0-6c76ef3fdd9d",
-      "packaging-id": null,
-      "status": "Official",
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "area": {
-            "sort-name": "Canada",
-            "disambiguation": "",
-            "iso-3166-1-codes": [
-              "CA"
-            ],
-            "type-id": null,
-            "name": "Canada",
-            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
-            "type": null
-          },
-          "date": "1959"
-        }
-      ],
-      "country": "CA",
-      "quality": "normal",
-      "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
-    },
-    {
-      "quality": "normal",
-      "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "JP",
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "name": "Miles Davis",
-          "artist": {
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "name": "bebop",
-                "count": 3
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "name": "blues"
-              },
-              {
-                "count": 1,
-                "name": "classical",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": ""
-              },
-              {
-                "name": "cool jazz",
-                "disambiguation": "",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "count": 10
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "name": "funk"
-              },
-              {
-                "name": "hard bop",
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "count": 7
-              },
-              {
-                "count": 27,
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "name": "jazz"
-              },
-              {
-                "count": 13,
-                "name": "jazz fusion",
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4"
-              },
-              {
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk",
-                "count": 1
-              },
-              {
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "name": "modal jazz",
-                "count": 11
-              },
-              {
-                "name": "post-bop",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "count": 4
-              },
-              {
-                "count": 1,
-                "name": "rock",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": ""
-              }
-            ],
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US"
-          }
-        }
-      ],
-      "date": "1959",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "packaging": null,
-      "disambiguation": "mono",
-      "status": "Official",
-      "packaging-id": null,
-      "release-events": [
-        {
-          "area": {
-            "disambiguation": "",
-            "sort-name": "Japan",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "JP"
-            ],
-            "name": "Japan",
-            "type": null,
-            "id": "2db42837-c832-3c27-b4a3-08198f75693c"
-          },
-          "date": "1959"
-        }
-      ],
-      "title": "Kind of Blue",
-      "genres": [],
-      "id": "53f2acf9-6f05-4bf7-b566-58da62c430df"
-    },
-    {
-      "status": "Promotion",
-      "packaging-id": null,
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "area": {
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "type": null,
-            "name": "United States",
-            "iso-3166-1-codes": [
-              "US"
-            ],
-            "type-id": null,
-            "sort-name": "United States",
-            "disambiguation": ""
-          },
-          "date": "1959"
-        }
-      ],
-      "genres": [],
-      "id": "7b1e1ec9-6b29-4c80-b7a2-bab3f4f6b945",
-      "artist-credit": [
-        {
-          "name": "Miles Davis",
-          "joinphrase": "",
-          "artist": {
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "type": "Person",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "name": "bebop",
-                "count": 3
-              },
-              {
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "disambiguation": "",
-                "name": "blues",
-                "count": 1
-              },
-              {
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": "",
-                "name": "classical",
-                "count": 1
-              },
-              {
-                "count": 10,
-                "name": "cool jazz",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": ""
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "name": "funk"
-              },
-              {
-                "name": "hard bop",
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "count": 7
-              },
-              {
-                "name": "jazz",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "count": 27
-              },
-              {
-                "count": 13,
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "disambiguation": "",
-                "name": "jazz fusion"
-              },
-              {
-                "count": 1,
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk"
-              },
-              {
-                "count": 11,
-                "name": "modal jazz",
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e"
-              },
-              {
-                "name": "post-bop",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "count": 4
-              },
-              {
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "name": "rock",
-                "count": 1
-              }
-            ]
-          }
-        }
-      ],
-      "date": "1959",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "packaging": null,
-      "disambiguation": "mono, promo",
-      "barcode": "",
-      "quality": "normal",
-      "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
-      "country": "US"
-    },
-    {
-      "id": "49234de2-790c-46e5-b780-3cd6be79a2db",
-      "genres": [],
-      "release-events": [
-        {
-          "date": "1959",
-          "area": {
-            "name": "United States",
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "type": null,
-            "iso-3166-1-codes": [
-              "US"
-            ],
-            "type-id": null,
-            "sort-name": "United States",
-            "disambiguation": ""
-          }
-        }
-      ],
-      "title": "Kind of Blue",
-      "packaging-id": null,
-      "status": "Official",
-      "disambiguation": "",
-      "packaging": null,
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "date": "1959",
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "name": "Miles Davis",
-          "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person",
-            "genres": [
-              {
-                "name": "bebop",
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "count": 3
-              },
-              {
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "disambiguation": "",
-                "name": "blues",
-                "count": 1
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "name": "classical"
-              },
-              {
-                "count": 10,
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": "",
-                "name": "cool jazz"
-              },
-              {
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "name": "funk",
-                "count": 1
-              },
-              {
-                "count": 7,
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop"
-              },
-              {
-                "count": 27,
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "name": "jazz"
-              },
-              {
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "name": "jazz fusion",
-                "count": 13
-              },
-              {
-                "count": 1,
-                "name": "jazz-funk",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": ""
-              },
-              {
-                "name": "modal jazz",
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "count": 11
-              },
-              {
-                "count": 4,
-                "name": "post-bop",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": ""
-              },
-              {
-                "count": 1,
-                "name": "rock",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": ""
-              }
-            ],
-            "name": "Miles Davis"
-          }
-        }
-      ],
-      "country": "US",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal"
-    },
-    {
-      "country": "US",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "quality": "normal",
-      "barcode": null,
-      "disambiguation": "",
-      "packaging": null,
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1959",
-      "artist-credit": [
-        {
-          "name": "Miles Davis",
-          "joinphrase": "",
-          "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "genres": [
-              {
-                "count": 3,
-                "name": "bebop",
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
-              },
-              {
-                "count": 1,
-                "name": "blues",
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
-              },
-              {
-                "name": "classical",
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "count": 1
-              },
-              {
-                "disambiguation": "",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "name": "cool jazz",
-                "count": 10
-              },
-              {
-                "name": "funk",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "count": 7,
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop"
-              },
-              {
-                "count": 27,
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "name": "jazz"
-              },
-              {
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "name": "jazz fusion",
-                "count": 13
-              },
-              {
-                "name": "jazz-funk",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "name": "modal jazz",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "count": 11
-              },
-              {
-                "count": 4,
-                "name": "post-bop",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": ""
-              },
-              {
-                "count": 1,
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "name": "rock"
-              }
-            ],
-            "name": "Miles Davis",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person"
-          }
-        }
-      ],
-      "id": "ca6b19c7-08b3-4d98-a5db-d73a08562a73",
-      "genres": [],
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "area": {
-            "sort-name": "United States",
-            "disambiguation": "",
-            "iso-3166-1-codes": [
-              "US"
-            ],
-            "type-id": null,
-            "name": "United States",
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "type": null
-          },
-          "date": "1959"
-        }
-      ],
-      "packaging-id": null,
-      "status": "Official"
-    },
-    {
-      "id": "9768d0fa-28a0-48c8-ab88-8088651eae60",
-      "genres": [],
-      "release-events": [
-        {
-          "area": {
-            "sort-name": "France",
-            "disambiguation": "",
-            "iso-3166-1-codes": [
-              "FR"
-            ],
-            "type-id": null,
-            "name": "France",
-            "id": "08310658-51eb-3801-80de-5a0739207115",
-            "type": null
-          },
-          "date": "1960"
-        }
-      ],
-      "title": "Kind of Blue",
-      "status": "Official",
-      "packaging-id": null,
-      "packaging": null,
-      "disambiguation": "",
-      "date": "1960",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "artist-credit": [
-        {
-          "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "name": "bebop",
-                "count": 3
-              },
-              {
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "disambiguation": "",
-                "name": "blues",
-                "count": 1
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "name": "classical"
-              },
-              {
-                "count": 10,
-                "disambiguation": "",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "name": "cool jazz"
-              },
-              {
-                "count": 1,
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "name": "funk"
-              },
-              {
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop",
-                "count": 7
-              },
-              {
-                "count": 27,
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "name": "jazz"
-              },
-              {
-                "count": 13,
-                "name": "jazz fusion",
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4"
-              },
-              {
-                "count": 1,
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk"
-              },
-              {
-                "count": 11,
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "name": "modal jazz"
-              },
-              {
-                "name": "post-bop",
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "count": 4
-              },
-              {
-                "name": "rock",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "count": 1
-              }
-            ]
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "country": "FR",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal"
-    },
-    {
-      "country": "JP",
-      "quality": "normal",
-      "barcode": null,
-      "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
-      "packaging": null,
-      "disambiguation": "stereo",
-      "artist-credit": [
-        {
-          "artist": {
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "count": 3,
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "name": "bebop"
-              },
-              {
-                "count": 1,
-                "name": "blues",
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
-              },
-              {
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "name": "classical",
-                "count": 1
-              },
-              {
-                "count": 10,
-                "disambiguation": "",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "name": "cool jazz"
-              },
-              {
-                "name": "funk",
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "count": 1
-              },
-              {
-                "count": 7,
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "name": "hard bop"
-              },
-              {
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "name": "jazz",
-                "count": 27
-              },
-              {
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "disambiguation": "",
-                "name": "jazz fusion",
-                "count": 13
-              },
-              {
-                "name": "jazz-funk",
-                "disambiguation": "",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "count": 1
-              },
-              {
-                "name": "modal jazz",
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "count": 11
-              },
-              {
-                "count": 4,
-                "name": "post-bop",
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
-              },
-              {
-                "count": 1,
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "name": "rock"
-              }
-            ],
-            "type": "Person",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "date": "1960",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "genres": [],
-      "id": "cf540ec1-24c6-4f2f-ad9d-b65c517b3b22",
-      "status": "Promotion",
-      "packaging-id": null,
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "date": "1960",
-          "area": {
-            "iso-3166-1-codes": [
-              "JP"
-            ],
-            "type-id": null,
-            "sort-name": "Japan",
-            "disambiguation": "",
-            "name": "Japan",
-            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
-            "type": null
-          }
-        }
-      ]
-    },
-    {
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "date": "1960",
-      "artist-credit": [
-        {
-          "name": "Miles Davis",
-          "joinphrase": "",
-          "artist": {
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "genres": [
-              {
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "name": "bebop",
-                "count": 3
-              },
-              {
-                "count": 1,
-                "name": "blues",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "disambiguation": ""
-              },
-              {
-                "count": 1,
-                "name": "classical",
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4"
-              },
-              {
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": "",
-                "name": "cool jazz",
-                "count": 10
-              },
-              {
-                "count": 1,
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "name": "funk"
-              },
-              {
-                "count": 7,
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "name": "hard bop"
-              },
-              {
-                "count": 27,
-                "name": "jazz",
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b"
-              },
-              {
-                "name": "jazz fusion",
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "count": 13
-              },
-              {
-                "count": 1,
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk"
-              },
-              {
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "name": "modal jazz",
-                "count": 11
-              },
-              {
-                "count": 4,
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "name": "post-bop"
-              },
-              {
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "name": "rock",
-                "count": 1
-              }
-            ],
-            "name": "Miles Davis",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person"
-          }
-        }
-      ],
-      "disambiguation": "stereo",
-      "packaging": null,
-      "release-events": [
-        {
-          "area": {
-            "iso-3166-1-codes": [
-              "JP"
-            ],
-            "type-id": null,
-            "sort-name": "Japan",
-            "disambiguation": "",
-            "name": "Japan",
-            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
-            "type": null
-          },
-          "date": "1960"
-        }
-      ],
-      "title": "Kind of Blue",
-      "packaging-id": null,
-      "status": "Official",
-      "id": "42231daa-6ade-49fc-8ab8-c0b19ca6b237",
-      "genres": [],
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "quality": "normal",
-      "barcode": null,
-      "country": "JP"
-    },
-    {
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "name": "Miles Davis",
-          "artist": {
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person",
-            "genres": [
-              {
-                "count": 3,
-                "name": "bebop",
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
-              },
-              {
-                "name": "blues",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "count": 1,
-                "name": "classical",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": ""
-              },
-              {
-                "count": 10,
-                "disambiguation": "",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "name": "cool jazz"
-              },
-              {
-                "count": 1,
-                "name": "funk",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": ""
-              },
-              {
-                "count": 7,
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "name": "hard bop"
-              },
-              {
-                "count": 27,
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "name": "jazz"
-              },
-              {
-                "name": "jazz fusion",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "disambiguation": "",
-                "count": 13
-              },
-              {
-                "count": 1,
-                "name": "jazz-funk",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": ""
-              },
-              {
-                "name": "modal jazz",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "count": 11
-              },
-              {
-                "name": "post-bop",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "count": 4
-              },
-              {
-                "name": "rock",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "count": 1
-              }
-            ],
-            "name": "Miles Davis"
-          }
-        }
-      ],
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1960",
-      "disambiguation": "mono",
-      "packaging": null,
-      "packaging-id": null,
-      "status": "Official",
-      "release-events": [
-        {
-          "date": "1960",
-          "area": {
-            "sort-name": "Netherlands",
-            "disambiguation": "",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "NL"
-            ],
-            "name": "Netherlands",
-            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
-            "type": null
-          }
-        }
-      ],
-      "title": "Kind of Blue",
-      "genres": [],
-      "id": "57089ee6-9854-409b-93f7-b0536c9625e6",
-      "barcode": null,
-      "quality": "normal",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "NL"
-    },
-    {
-      "quality": "normal",
-      "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "NL",
-      "artist-credit": [
-        {
-          "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "genres": [
-              {
-                "count": 3,
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "name": "bebop"
-              },
-              {
-                "count": 1,
-                "name": "blues",
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
-              },
-              {
-                "count": 1,
-                "name": "classical",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": ""
-              },
-              {
-                "count": 10,
-                "name": "cool jazz",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": ""
-              },
-              {
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "name": "funk",
-                "count": 1
-              },
-              {
-                "count": 7,
-                "name": "hard bop",
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3"
-              },
-              {
-                "count": 27,
-                "name": "jazz",
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b"
-              },
-              {
-                "count": 13,
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "disambiguation": "",
-                "name": "jazz fusion"
-              },
-              {
-                "count": 1,
-                "name": "jazz-funk",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": ""
-              },
-              {
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "name": "modal jazz",
-                "count": 11
-              },
-              {
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "name": "post-bop",
-                "count": 4
-              },
-              {
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "name": "rock",
-                "count": 1
-              }
-            ],
-            "name": "Miles Davis",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person"
-          },
-          "joinphrase": "",
-          "name": "Miles Davis"
-        }
-      ],
-      "date": "1960",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "packaging": null,
-      "disambiguation": "stereo",
-      "status": "Official",
-      "packaging-id": null,
-      "release-events": [
-        {
-          "date": "1960",
-          "area": {
-            "sort-name": "Netherlands",
-            "disambiguation": "",
-            "iso-3166-1-codes": [
-              "NL"
-            ],
-            "type-id": null,
-            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
-            "type": null,
-            "name": "Netherlands"
-          }
-        }
-      ],
-      "title": "Kind of Blue",
-      "genres": [],
-      "id": "1cf21fef-c5d8-480d-8a2f-4a74aa3ab68b"
-    },
-    {
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "quality": "normal",
-      "barcode": null,
-      "country": "GB",
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "date": "1960",
-          "area": {
-            "name": "United Kingdom",
-            "type": null,
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-            "iso-3166-1-codes": [
-              "GB"
-            ],
-            "type-id": null,
-            "disambiguation": "",
-            "sort-name": "United Kingdom"
-          }
-        }
-      ],
-      "status": "Official",
-      "packaging-id": null,
-      "id": "19f628e9-91a7-4037-b7ef-2889aabe9d02",
-      "genres": [],
-      "date": "1960",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "name": "Miles Davis",
-          "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "genres": [
-              {
-                "count": 3,
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "name": "bebop"
-              },
-              {
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "name": "blues",
-                "count": 1
-              },
-              {
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "name": "classical",
-                "count": 1
-              },
-              {
-                "count": 10,
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": "",
-                "name": "cool jazz"
-              },
-              {
-                "name": "funk",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "count": 7,
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "name": "hard bop"
-              },
-              {
-                "count": 27,
-                "name": "jazz",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": ""
-              },
-              {
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "name": "jazz fusion",
-                "count": 13
-              },
-              {
-                "count": 1,
-                "name": "jazz-funk",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": ""
-              },
-              {
-                "count": 11,
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "name": "modal jazz"
-              },
-              {
-                "name": "post-bop",
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "count": 4
-              },
-              {
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "name": "rock",
-                "count": 1
-              }
-            ],
-            "name": "Miles Davis",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person"
-          }
-        }
-      ],
-      "packaging": null,
-      "disambiguation": "mono"
-    },
-    {
-      "packaging": null,
-      "disambiguation": "stereo",
-      "date": "1960",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "artist-credit": [
-        {
-          "artist": {
-            "type": "Person",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "name": "bebop",
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "count": 3
-              },
-              {
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "name": "blues",
-                "count": 1
-              },
-              {
-                "name": "classical",
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "count": 1
-              },
-              {
-                "count": 10,
-                "name": "cool jazz",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": ""
-              },
-              {
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "name": "funk",
-                "count": 1
-              },
-              {
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop",
-                "count": 7
-              },
-              {
-                "name": "jazz",
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "count": 27
-              },
-              {
-                "count": 13,
-                "name": "jazz fusion",
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4"
-              },
-              {
-                "count": 1,
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk"
-              },
-              {
-                "count": 11,
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "name": "modal jazz"
-              },
-              {
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "name": "post-bop",
-                "count": 4
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "name": "rock"
-              }
-            ],
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "id": "28b406fc-3a8b-4c91-baf8-880bfeb990d9",
-      "genres": [],
-      "release-events": [
-        {
-          "date": "1960",
-          "area": {
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-            "type": null,
-            "name": "United Kingdom",
-            "sort-name": "United Kingdom",
-            "disambiguation": "",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "GB"
-            ]
-          }
-        }
-      ],
-      "title": "Kind of Blue",
-      "status": "Official",
-      "packaging-id": null,
-      "country": "GB",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal"
-    },
-    {
-      "country": "CA",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "quality": "normal",
-      "barcode": null,
-      "id": "819a8dc6-8018-42f7-a053-cb04acbddade",
-      "genres": [],
-      "release-events": [
-        {
-          "area": {
-            "sort-name": "Canada",
-            "disambiguation": "",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "CA"
-            ],
-            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
-            "type": null,
-            "name": "Canada"
-          },
-          "date": "1961"
-        }
-      ],
-      "title": "Kind of Blue",
-      "packaging-id": null,
-      "status": "Official",
-      "disambiguation": "stereo, Repress",
-      "packaging": null,
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "date": "1961",
-      "artist-credit": [
-        {
-          "artist": {
-            "genres": [
-              {
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "name": "bebop",
-                "count": 3
-              },
-              {
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "name": "blues",
-                "count": 1
-              },
-              {
-                "count": 1,
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": "",
-                "name": "classical"
-              },
-              {
-                "count": 10,
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": "",
-                "name": "cool jazz"
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "name": "funk"
-              },
-              {
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "name": "hard bop",
-                "count": 7
-              },
-              {
-                "name": "jazz",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "count": 27
-              },
-              {
-                "count": 13,
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "name": "jazz fusion"
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "name": "jazz-funk"
-              },
-              {
-                "count": 11,
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "name": "modal jazz"
-              },
-              {
-                "name": "post-bop",
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "count": 4
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "name": "rock"
-              }
-            ],
-            "name": "Miles Davis",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ]
-    },
-    {
-      "packaging": null,
-      "disambiguation": "mono",
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "name": "Miles Davis",
-          "artist": {
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "count": 3,
-                "disambiguation": "",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "name": "bebop"
-              },
-              {
-                "count": 1,
-                "name": "blues",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "disambiguation": ""
-              },
-              {
-                "count": 1,
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": "",
-                "name": "classical"
-              },
-              {
-                "count": 10,
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": "",
-                "name": "cool jazz"
-              },
-              {
-                "name": "funk",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "count": 7,
-                "name": "hard bop",
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3"
-              },
-              {
-                "name": "jazz",
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "count": 27
-              },
-              {
-                "count": 13,
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "name": "jazz fusion"
-              },
-              {
-                "disambiguation": "",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "name": "jazz-funk",
-                "count": 1
-              },
-              {
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "name": "modal jazz",
-                "count": 11
-              },
-              {
-                "count": 4,
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "name": "post-bop"
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "name": "rock"
-              }
-            ],
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles"
-          }
-        }
-      ],
-      "date": "1961",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "genres": [],
-      "id": "4c76f430-69f9-43b4-84cc-18b8d166e6bc",
-      "status": "Official",
-      "packaging-id": null,
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "area": {
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-            "type": null,
-            "name": "United Kingdom",
-            "sort-name": "United Kingdom",
-            "disambiguation": "",
-            "iso-3166-1-codes": [
-              "GB"
-            ],
-            "type-id": null
-          },
-          "date": "1961"
-        }
-      ],
-      "country": "GB",
-      "barcode": null,
-      "quality": "normal",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
-    },
-    {
-      "packaging-id": null,
-      "status": "Official",
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "date": "1961",
-          "area": {
-            "disambiguation": "",
-            "sort-name": "United States",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "US"
-            ],
-            "name": "United States",
-            "type": null,
-            "id": "489ce91b-6658-3307-9877-795b68554c98"
-          }
-        }
-      ],
-      "genres": [],
-      "id": "a35a08ab-0f6f-4235-8e54-220c5097cbfc",
-      "artist-credit": [
-        {
-          "artist": {
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "count": 3,
-                "name": "bebop",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": ""
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "name": "blues"
-              },
-              {
-                "name": "classical",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "count": 10,
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": "",
-                "name": "cool jazz"
-              },
-              {
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "name": "funk",
-                "count": 1
-              },
-              {
-                "count": 7,
-                "name": "hard bop",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": ""
-              },
-              {
-                "count": 27,
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "name": "jazz"
-              },
-              {
-                "name": "jazz fusion",
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "count": 13
-              },
-              {
-                "count": 1,
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk"
-              },
-              {
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "name": "modal jazz",
-                "count": 11
-              },
-              {
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "name": "post-bop",
-                "count": 4
-              },
-              {
-                "count": 1,
-                "name": "rock",
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798"
-              }
-            ],
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "date": "1961",
-      "disambiguation": "mono, Repress",
-      "packaging": null,
-      "quality": "normal",
-      "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "US"
-    },
-    {
-      "disambiguation": "stereo, misprint, reissue",
-      "packaging": null,
-      "artist-credit": [
-        {
-          "name": "Miles Davis",
-          "joinphrase": "",
-          "artist": {
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person",
-            "genres": [
-              {
-                "count": 3,
-                "name": "bebop",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": ""
-              },
-              {
-                "count": 1,
-                "name": "blues",
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
-              },
-              {
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": "",
-                "name": "classical",
-                "count": 1
-              },
-              {
-                "disambiguation": "",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "name": "cool jazz",
-                "count": 10
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "name": "funk"
-              },
-              {
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop",
-                "count": 7
-              },
-              {
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "name": "jazz",
-                "count": 27
-              },
-              {
-                "count": 13,
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "disambiguation": "",
-                "name": "jazz fusion"
-              },
-              {
-                "count": 1,
-                "name": "jazz-funk",
-                "disambiguation": "",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911"
-              },
-              {
-                "name": "modal jazz",
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "count": 11
-              },
-              {
-                "name": "post-bop",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "count": 4
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "name": "rock"
-              }
-            ],
-            "name": "Miles Davis",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-          }
-        }
-      ],
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1962",
-      "genres": [],
-      "id": "91b60109-f99f-4310-952f-ae2d9869bc10",
-      "packaging-id": null,
-      "status": "Official",
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "date": "1962",
-          "area": {
-            "disambiguation": "",
-            "sort-name": "United Kingdom",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "GB"
-            ],
-            "name": "United Kingdom",
-            "type": null,
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed"
-          }
-        }
-      ],
-      "country": "GB",
-      "barcode": null,
-      "quality": "normal",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
-    },
-    {
-      "country": "GB",
-      "quality": "normal",
-      "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "disambiguation": "mono, Reissue",
-      "packaging": null,
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "name": "Miles Davis",
-          "artist": {
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "genres": [
-              {
-                "name": "bebop",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "count": 3
-              },
-              {
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "name": "blues",
-                "count": 1
-              },
-              {
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": "",
-                "name": "classical",
-                "count": 1
-              },
-              {
-                "count": 10,
-                "disambiguation": "",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "name": "cool jazz"
-              },
-              {
-                "count": 1,
-                "name": "funk",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": ""
-              },
-              {
-                "name": "hard bop",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "count": 7
-              },
-              {
-                "name": "jazz",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "count": 27
-              },
-              {
-                "name": "jazz fusion",
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "count": 13
-              },
-              {
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk",
-                "count": 1
-              },
-              {
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "name": "modal jazz",
-                "count": 11
-              },
-              {
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "name": "post-bop",
-                "count": 4
-              },
-              {
-                "count": 1,
-                "name": "rock",
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798"
-              }
-            ],
-            "name": "Miles Davis",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person"
-          }
-        }
-      ],
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1962",
-      "genres": [],
-      "id": "7fb2d5c8-8a1f-43e4-8de3-c5f64ed725b4",
-      "packaging-id": null,
-      "status": "Official",
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "area": {
-            "iso-3166-1-codes": [
-              "GB"
-            ],
-            "type-id": null,
-            "sort-name": "United Kingdom",
-            "disambiguation": "",
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-            "type": null,
-            "name": "United Kingdom"
-          },
-          "date": "1962"
-        }
-      ]
-    },
-    {
-      "country": "FR",
-      "barcode": null,
-      "quality": "normal",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "packaging": null,
-      "disambiguation": "mono, Reissue",
-      "artist-credit": [
-        {
-          "artist": {
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person",
-            "genres": [
-              {
-                "name": "bebop",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "count": 3
-              },
-              {
-                "count": 1,
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "disambiguation": "",
-                "name": "blues"
-              },
-              {
-                "name": "classical",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "count": 10,
-                "name": "cool jazz",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": ""
-              },
-              {
-                "name": "funk",
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "count": 1
-              },
-              {
-                "name": "hard bop",
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "count": 7
-              },
-              {
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "name": "jazz",
-                "count": 27
-              },
-              {
-                "name": "jazz fusion",
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "count": 13
-              },
-              {
-                "count": 1,
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk"
-              },
-              {
-                "count": 11,
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "name": "modal jazz"
-              },
-              {
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "name": "post-bop",
-                "count": 4
-              },
-              {
-                "count": 1,
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "name": "rock"
-              }
-            ],
-            "name": "Miles Davis",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "date": "1963",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "genres": [],
-      "id": "530ab29f-37ba-4404-9d8f-a9b9124b2bce",
-      "status": "Official",
-      "packaging-id": null,
-      "release-events": [
-        {
-          "date": "1963",
-          "area": {
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "FR"
-            ],
-            "sort-name": "France",
-            "disambiguation": "",
-            "id": "08310658-51eb-3801-80de-5a0739207115",
-            "type": null,
-            "name": "France"
-          }
-        }
-      ],
-      "title": "Kind of Blue"
-    },
-    {
-      "barcode": null,
-      "quality": "normal",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "CA",
-      "status": "Official",
-      "packaging-id": null,
-      "release-events": [
-        {
-          "date": "1964",
-          "area": {
-            "sort-name": "Canada",
-            "disambiguation": "",
-            "iso-3166-1-codes": [
-              "CA"
-            ],
-            "type-id": null,
-            "name": "Canada",
-            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
-            "type": null
-          }
-        }
-      ],
-      "title": "Kind of Blue",
-      "genres": [],
-      "id": "7b3590f9-27e4-4fee-8757-2692b73d5c5e",
-      "artist-credit": [
-        {
-          "artist": {
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person",
-            "genres": [
-              {
-                "count": 3,
-                "name": "bebop",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": ""
-              },
-              {
-                "name": "blues",
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "count": 1
-              },
-              {
-                "count": 1,
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "disambiguation": "",
-                "name": "classical"
-              },
-              {
-                "count": 10,
-                "name": "cool jazz",
-                "disambiguation": "",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e"
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "name": "funk"
-              },
-              {
-                "count": 7,
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop"
-              },
-              {
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "disambiguation": "",
-                "name": "jazz",
-                "count": 27
-              },
-              {
-                "count": 13,
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "disambiguation": "",
-                "name": "jazz fusion"
-              },
-              {
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk",
-                "count": 1
-              },
-              {
-                "count": 11,
-                "disambiguation": "",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "name": "modal jazz"
-              },
-              {
-                "name": "post-bop",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "count": 4
-              },
-              {
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "name": "rock",
-                "count": 1
-              }
-            ],
-            "name": "Miles Davis",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "date": "1964",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "packaging": null,
-      "disambiguation": "stereo, Reissue"
-    },
-    {
-      "country": "NL",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal",
-      "disambiguation": "mono, Reissue",
-      "packaging": null,
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "date": "1964",
-      "artist-credit": [
-        {
-          "artist": {
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "name": "bebop",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "count": 3
-              },
-              {
-                "name": "blues",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "disambiguation": "",
-                "count": 1
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "name": "classical"
-              },
-              {
-                "count": 10,
-                "name": "cool jazz",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": ""
-              },
-              {
-                "count": 1,
-                "name": "funk",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": ""
-              },
-              {
-                "count": 7,
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "name": "hard bop"
-              },
-              {
-                "count": 27,
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "name": "jazz"
-              },
-              {
-                "name": "jazz fusion",
-                "disambiguation": "",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "count": 13
-              },
-              {
-                "disambiguation": "",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "name": "jazz-funk",
-                "count": 1
-              },
-              {
-                "name": "modal jazz",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "count": 11
-              },
-              {
-                "count": 4,
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "disambiguation": "",
-                "name": "post-bop"
-              },
-              {
-                "name": "rock",
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "count": 1
-              }
-            ],
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US"
-          },
-          "joinphrase": "",
-          "name": "Miles Davis"
-        }
-      ],
-      "id": "8db29cd5-74e8-4226-ba12-d9f7d9453ef1",
-      "genres": [],
-      "release-events": [
-        {
-          "area": {
-            "name": "Netherlands",
-            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
-            "type": null,
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "NL"
-            ],
-            "sort-name": "Netherlands",
-            "disambiguation": ""
-          },
-          "date": "1964"
-        }
-      ],
-      "title": "Kind of Blue",
-      "packaging-id": null,
-      "status": "Official"
-    },
-    {
-      "quality": "normal",
-      "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "US",
-      "artist-credit": [
-        {
-          "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "name": "bebop",
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "count": 3
-              },
-              {
-                "count": 1,
-                "name": "blues",
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
-              },
-              {
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "name": "classical",
-                "count": 1
-              },
-              {
-                "disambiguation": "",
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "name": "cool jazz",
-                "count": 10
-              },
-              {
-                "count": 1,
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "disambiguation": "",
-                "name": "funk"
-              },
-              {
-                "disambiguation": "",
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "name": "hard bop",
-                "count": 7
-              },
-              {
-                "count": 27,
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "name": "jazz"
-              },
-              {
-                "name": "jazz fusion",
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "disambiguation": "",
-                "count": 13
-              },
-              {
-                "count": 1,
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
-                "disambiguation": "",
-                "name": "jazz-funk"
-              },
-              {
-                "count": 11,
-                "name": "modal jazz",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": ""
-              },
-              {
-                "count": 4,
-                "name": "post-bop",
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
-              },
-              {
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "disambiguation": "",
-                "name": "rock",
-                "count": 1
-              }
-            ]
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1964",
-      "disambiguation": "stereo, Reissue",
-      "packaging": null,
-      "packaging-id": null,
-      "status": "Official",
-      "release-events": [
-        {
-          "area": {
-            "sort-name": "United States",
-            "disambiguation": "",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "US"
-            ],
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "type": null,
-            "name": "United States"
-          },
-          "date": "1964"
-        }
-      ],
-      "title": "Kind of Blue",
-      "genres": [],
-      "id": "c5a73143-5bd8-4328-955e-ce52e0e7bb8a"
-    },
-    {
-      "disambiguation": "stereo, Reissue",
-      "packaging": null,
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1965",
-      "artist-credit": [
-        {
-          "artist": {
-            "type": "Person",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "name": "Miles Davis",
-            "genres": [
-              {
-                "count": 3,
-                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
-                "disambiguation": "",
-                "name": "bebop"
-              },
-              {
-                "name": "blues",
-                "disambiguation": "",
-                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
-                "count": 1
-              },
-              {
-                "disambiguation": "",
-                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
-                "name": "classical",
-                "count": 1
-              },
-              {
-                "count": 10,
-                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-                "disambiguation": "",
-                "name": "cool jazz"
-              },
-              {
-                "count": 1,
-                "disambiguation": "",
-                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-                "name": "funk"
-              },
-              {
-                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-                "disambiguation": "",
-                "name": "hard bop",
-                "count": 7
-              },
-              {
-                "name": "jazz",
-                "disambiguation": "",
-                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-                "count": 27
-              },
-              {
-                "count": 13,
-                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
-                "disambiguation": "",
-                "name": "jazz fusion"
-              },
-              {
-                "count": 1,
-                "name": "jazz-funk",
-                "disambiguation": "",
-                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911"
-              },
-              {
-                "name": "modal jazz",
-                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-                "disambiguation": "",
-                "count": 11
-              },
-              {
-                "count": 4,
-                "disambiguation": "",
-                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-                "name": "post-bop"
-              },
-              {
-                "disambiguation": "",
-                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
-                "name": "rock",
-                "count": 1
-              }
-            ],
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "id": "78a51ebe-e753-4ac7-a450-7b65b2fc4f83",
-      "genres": [],
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "area": {
-            "sort-name": "United Kingdom",
-            "disambiguation": "",
-            "iso-3166-1-codes": [
-              "GB"
-            ],
-            "type-id": null,
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-            "type": null,
-            "name": "United Kingdom"
-          },
-          "date": "1965"
-        }
-      ],
-      "packaging-id": null,
-      "status": "Official",
-      "country": "GB",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "quality": "normal",
-      "barcode": null
-    }
-  ],
-  "genres": [
-    {
-      "count": 7,
-      "disambiguation": "",
-      "id": "5fc86669-d9ba-4716-8090-eff39081090e",
-      "name": "cool jazz"
-    },
-    {
-      "disambiguation": "",
-      "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
-      "name": "hard bop",
-      "count": 3
-    },
-    {
-      "name": "jazz",
-      "id": "a715278f-1580-409f-8078-4ffbc800e08b",
-      "disambiguation": "",
-      "count": 28
-    },
-    {
-      "count": 4,
-      "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
-      "disambiguation": "",
-      "name": "modal jazz"
-    },
-    {
-      "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
-      "disambiguation": "",
-      "name": "post-bop",
-      "count": 2
-    }
-  ],
-  "title": "Kind of Blue",
-  "secondary-types": [],
-  "disambiguation": "",
   "secondary-type-ids": [],
-  "primary-type": "Album",
-  "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
   "artist-credit": [
     {
-      "joinphrase": "",
-      "name": "Miles Davis",
       "artist": {
-        "disambiguation": "jazz trumpeter, bandleader, songwriter",
-        "sort-name": "Davis, Miles",
-        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-        "type": "Person",
-        "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-        "country": "US",
         "name": "Miles Davis",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
         "genres": [
           {
+            "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
             "count": 3,
             "name": "bebop",
-            "disambiguation": "",
-            "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+            "disambiguation": ""
           },
           {
-            "disambiguation": "",
             "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+            "count": 1,
             "name": "blues",
-            "count": 1
+            "disambiguation": ""
           },
           {
             "count": 1,
@@ -3162,60 +26,3196 @@
           },
           {
             "count": 10,
+            "id": "5fc86669-d9ba-4716-8090-eff39081090e",
             "name": "cool jazz",
-            "disambiguation": "",
-            "id": "5fc86669-d9ba-4716-8090-eff39081090e"
-          },
-          {
-            "count": 1,
-            "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
-            "disambiguation": "",
-            "name": "funk"
-          },
-          {
-            "count": 7,
-            "name": "hard bop",
-            "disambiguation": "",
-            "id": "8c083468-2dce-4a31-ae77-433af3deafd3"
-          },
-          {
-            "count": 27,
-            "name": "jazz",
-            "id": "a715278f-1580-409f-8078-4ffbc800e08b",
             "disambiguation": ""
           },
           {
-            "count": 13,
+            "disambiguation": "",
+            "name": "funk",
+            "count": 1,
+            "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514"
+          },
+          {
+            "count": 7,
+            "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+            "disambiguation": "",
+            "name": "hard bop"
+          },
+          {
+            "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+            "count": 27,
+            "disambiguation": "",
+            "name": "jazz"
+          },
+          {
             "name": "jazz fusion",
             "disambiguation": "",
+            "count": 13,
             "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4"
           },
           {
-            "count": 1,
             "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+            "count": 1,
             "disambiguation": "",
             "name": "jazz-funk"
           },
           {
+            "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
             "count": 11,
             "disambiguation": "",
-            "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
             "name": "modal jazz"
           },
           {
-            "name": "post-bop",
-            "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
             "disambiguation": "",
-            "count": 4
+            "name": "post-bop",
+            "count": 4,
+            "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
           },
           {
-            "count": 1,
-            "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
             "disambiguation": "",
-            "name": "rock"
+            "name": "rock",
+            "count": 1,
+            "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798"
           }
-        ]
-      }
+        ],
+        "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+        "country": "US",
+        "type": "Person",
+        "disambiguation": "jazz trumpeter, bandleader, songwriter",
+        "sort-name": "Davis, Miles"
+      },
+      "name": "Miles Davis",
+      "joinphrase": ""
     }
-  ]
+  ],
+  "title": "Kind of Blue",
+  "first-release-date": "1959-08-17",
+  "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+  "genres": [
+    {
+      "disambiguation": "",
+      "name": "cool jazz",
+      "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+      "count": 7
+    },
+    {
+      "name": "hard bop",
+      "disambiguation": "",
+      "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+      "count": 3
+    },
+    {
+      "name": "jazz",
+      "disambiguation": "",
+      "count": 28,
+      "id": "a715278f-1580-409f-8078-4ffbc800e08b"
+    },
+    {
+      "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+      "count": 4,
+      "name": "modal jazz",
+      "disambiguation": ""
+    },
+    {
+      "name": "post-bop",
+      "disambiguation": "",
+      "count": 2,
+      "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
+    }
+  ],
+  "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+  "primary-type": "Album",
+  "disambiguation": "",
+  "releases": [
+    {
+      "packaging": null,
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "country": "US",
+      "barcode": "",
+      "status": "Official",
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "joinphrase": "",
+          "artist": {
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "sort-name": "Davis, Miles",
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+              },
+              {
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "disambiguation": "",
+                "name": "blues"
+              },
+              {
+                "name": "classical",
+                "disambiguation": "",
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1
+              },
+              {
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10,
+                "name": "cool jazz",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "funk",
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1
+              },
+              {
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7,
+                "name": "hard bop",
+                "disambiguation": ""
+              },
+              {
+                "name": "jazz",
+                "disambiguation": "",
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27
+              },
+              {
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13,
+                "disambiguation": "",
+                "name": "jazz fusion"
+              },
+              {
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "disambiguation": "",
+                "name": "jazz-funk"
+              },
+              {
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "disambiguation": "",
+                "name": "modal jazz"
+              },
+              {
+                "disambiguation": "",
+                "name": "post-bop",
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4
+              },
+              {
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1,
+                "disambiguation": "",
+                "name": "rock"
+              }
+            ],
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
+          }
+        }
+      ],
+      "release-events": [
+        {
+          "date": "1959-08-17",
+          "area": {
+            "type-id": null,
+            "name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "type": null,
+            "disambiguation": "",
+            "sort-name": "United States"
+          }
+        }
+      ],
+      "disambiguation": "stereo",
+      "quality": "normal",
+      "date": "1959-08-17",
+      "id": "bee5e0cd-1767-4a8e-9578-6455e87ba60b",
+      "packaging-id": null,
+      "title": "Kind of Blue",
+      "genres": [
+        {
+          "count": 2,
+          "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+          "name": "jazz",
+          "disambiguation": ""
+        },
+        {
+          "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+          "count": 1,
+          "name": "modal jazz",
+          "disambiguation": ""
+        }
+      ]
+    },
+    {
+      "packaging": null,
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "country": "US",
+      "barcode": null,
+      "status": "Official",
+      "artist-credit": [
+        {
+          "artist": {
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "count": 3
+              },
+              {
+                "disambiguation": "",
+                "name": "blues",
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1
+              },
+              {
+                "name": "classical",
+                "disambiguation": "",
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "cool jazz",
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10
+              },
+              {
+                "name": "funk",
+                "disambiguation": "",
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1
+              },
+              {
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7,
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "name": "jazz",
+                "disambiguation": "",
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27
+              },
+              {
+                "name": "jazz fusion",
+                "disambiguation": "",
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13
+              },
+              {
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "name": "jazz-funk",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "modal jazz",
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e"
+              },
+              {
+                "name": "post-bop",
+                "disambiguation": "",
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
+              },
+              {
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1,
+                "disambiguation": "",
+                "name": "rock"
+              }
+            ],
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person",
+            "sort-name": "Davis, Miles"
+          },
+          "joinphrase": "",
+          "name": "Miles Davis"
+        }
+      ],
+      "release-events": [
+        {
+          "area": {
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "name": "United States",
+            "type-id": null,
+            "sort-name": "United States",
+            "type": null,
+            "disambiguation": ""
+          },
+          "date": "1959-08-17"
+        }
+      ],
+      "disambiguation": "mono",
+      "quality": "normal",
+      "date": "1959-08-17",
+      "id": "79ed3ff2-1b33-3245-8755-947554bc8b3d",
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "genres": []
+    },
+    {
+      "date": "1959",
+      "id": "e25dbbbc-7c21-4cf8-9dc7-fdf401b8403c",
+      "genres": [],
+      "packaging-id": null,
+      "title": "Kind of Blue",
+      "release-events": [
+        {
+          "date": "1959",
+          "area": {
+            "sort-name": "Australia",
+            "type": null,
+            "disambiguation": "",
+            "id": "106e0bec-b638-3b37-b731-f53d507dc00e",
+            "iso-3166-1-codes": [
+              "AU"
+            ],
+            "type-id": null,
+            "name": "Australia"
+          }
+        }
+      ],
+      "disambiguation": "mono",
+      "quality": "normal",
+      "barcode": null,
+      "status": "Official",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "count": 3
+              },
+              {
+                "disambiguation": "",
+                "name": "blues",
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
+              },
+              {
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "disambiguation": "",
+                "name": "classical"
+              },
+              {
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10,
+                "name": "cool jazz",
+                "disambiguation": ""
+              },
+              {
+                "name": "funk",
+                "disambiguation": "",
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1
+              },
+              {
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27,
+                "disambiguation": "",
+                "name": "jazz"
+              },
+              {
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "name": "jazz fusion",
+                "disambiguation": ""
+              },
+              {
+                "name": "jazz-funk",
+                "disambiguation": "",
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911"
+              },
+              {
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11,
+                "name": "modal jazz",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "post-bop",
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
+              },
+              {
+                "disambiguation": "",
+                "name": "rock",
+                "count": 1,
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798"
+              }
+            ],
+            "name": "Miles Davis"
+          }
+        }
+      ],
+      "country": "AU",
+      "packaging": null,
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      }
+    },
+    {
+      "packaging": null,
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "CA",
+      "artist-credit": [
+        {
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US",
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "name": "bebop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "blues",
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1
+              },
+              {
+                "name": "classical",
+                "disambiguation": "",
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1
+              },
+              {
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10,
+                "disambiguation": "",
+                "name": "cool jazz"
+              },
+              {
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1,
+                "name": "funk",
+                "disambiguation": ""
+              },
+              {
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7,
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "disambiguation": "",
+                "name": "jazz"
+              },
+              {
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "disambiguation": "",
+                "name": "jazz fusion"
+              },
+              {
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "name": "jazz-funk",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "modal jazz",
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "name": "post-bop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "rock",
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1
+              }
+            ]
+          },
+          "joinphrase": "",
+          "name": "Miles Davis"
+        }
+      ],
+      "status": "Official",
+      "barcode": null,
+      "release-events": [
+        {
+          "date": "1959",
+          "area": {
+            "sort-name": "Canada",
+            "disambiguation": "",
+            "type": null,
+            "iso-3166-1-codes": [
+              "CA"
+            ],
+            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+            "name": "Canada",
+            "type-id": null
+          }
+        }
+      ],
+      "quality": "normal",
+      "disambiguation": "stereo",
+      "id": "bc4d1870-1614-411b-85d0-6c76ef3fdd9d",
+      "date": "1959",
+      "packaging-id": null,
+      "title": "Kind of Blue",
+      "genres": []
+    },
+    {
+      "release-events": [
+        {
+          "date": "1959",
+          "area": {
+            "type-id": null,
+            "name": "Japan",
+            "iso-3166-1-codes": [
+              "JP"
+            ],
+            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+            "disambiguation": "",
+            "type": null,
+            "sort-name": "Japan"
+          }
+        }
+      ],
+      "disambiguation": "mono",
+      "quality": "normal",
+      "date": "1959",
+      "id": "53f2acf9-6f05-4bf7-b566-58da62c430df",
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "genres": [],
+      "packaging": null,
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "country": "JP",
+      "barcode": null,
+      "artist-credit": [
+        {
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "count": 3
+              },
+              {
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "disambiguation": "",
+                "name": "blues"
+              },
+              {
+                "name": "classical",
+                "disambiguation": "",
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1
+              },
+              {
+                "name": "cool jazz",
+                "disambiguation": "",
+                "count": 10,
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e"
+              },
+              {
+                "disambiguation": "",
+                "name": "funk",
+                "count": 1,
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514"
+              },
+              {
+                "disambiguation": "",
+                "name": "hard bop",
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3"
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz",
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27
+              },
+              {
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13,
+                "disambiguation": "",
+                "name": "jazz fusion"
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz-funk",
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911"
+              },
+              {
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "disambiguation": "",
+                "name": "modal jazz"
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "name": "post-bop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "disambiguation": "",
+                "name": "rock"
+              }
+            ]
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
+        }
+      ],
+      "status": "Official"
+    },
+    {
+      "country": "US",
+      "status": "Promotion",
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "joinphrase": "",
+          "artist": {
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "genres": [
+              {
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "name": "bebop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "blues",
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
+              },
+              {
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "name": "classical",
+                "disambiguation": ""
+              },
+              {
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10,
+                "disambiguation": "",
+                "name": "cool jazz"
+              },
+              {
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1,
+                "name": "funk",
+                "disambiguation": ""
+              },
+              {
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "name": "jazz",
+                "disambiguation": "",
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27
+              },
+              {
+                "name": "jazz fusion",
+                "disambiguation": "",
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13
+              },
+              {
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1,
+                "disambiguation": "",
+                "name": "jazz-funk"
+              },
+              {
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11,
+                "name": "modal jazz",
+                "disambiguation": ""
+              },
+              {
+                "name": "post-bop",
+                "disambiguation": "",
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
+              },
+              {
+                "disambiguation": "",
+                "name": "rock",
+                "count": 1,
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798"
+              }
+            ],
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "sort-name": "Davis, Miles"
+          }
+        }
+      ],
+      "barcode": "",
+      "packaging": null,
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
+      "id": "7b1e1ec9-6b29-4c80-b7a2-bab3f4f6b945",
+      "date": "1959",
+      "packaging-id": null,
+      "title": "Kind of Blue",
+      "genres": [],
+      "release-events": [
+        {
+          "area": {
+            "disambiguation": "",
+            "type": null,
+            "sort-name": "United States",
+            "type-id": null,
+            "name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98"
+          },
+          "date": "1959"
+        }
+      ],
+      "quality": "normal",
+      "disambiguation": "mono, promo"
+    },
+    {
+      "status": "Official",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US",
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "count": 3
+              },
+              {
+                "disambiguation": "",
+                "name": "blues",
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
+              },
+              {
+                "name": "classical",
+                "disambiguation": "",
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1
+              },
+              {
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10,
+                "disambiguation": "",
+                "name": "cool jazz"
+              },
+              {
+                "disambiguation": "",
+                "name": "funk",
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "hard bop",
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz",
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b"
+              },
+              {
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13,
+                "name": "jazz fusion",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz-funk",
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911"
+              },
+              {
+                "name": "modal jazz",
+                "disambiguation": "",
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "disambiguation": "",
+                "name": "post-bop"
+              },
+              {
+                "disambiguation": "",
+                "name": "rock",
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1
+              }
+            ]
+          }
+        }
+      ],
+      "barcode": null,
+      "country": "US",
+      "packaging": null,
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "id": "49234de2-790c-46e5-b780-3cd6be79a2db",
+      "date": "1959",
+      "genres": [],
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "release-events": [
+        {
+          "date": "1959",
+          "area": {
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "type-id": null,
+            "name": "United States",
+            "sort-name": "United States",
+            "disambiguation": "",
+            "type": null
+          }
+        }
+      ],
+      "quality": "normal",
+      "disambiguation": ""
+    },
+    {
+      "release-events": [
+        {
+          "date": "1959",
+          "area": {
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "name": "United States",
+            "type-id": null,
+            "sort-name": "United States",
+            "disambiguation": "",
+            "type": null
+          }
+        }
+      ],
+      "quality": "normal",
+      "disambiguation": "",
+      "id": "ca6b19c7-08b3-4d98-a5db-d73a08562a73",
+      "date": "1959",
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "genres": [],
+      "packaging": null,
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "US",
+      "artist-credit": [
+        {
+          "artist": {
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "name": "bebop",
+                "disambiguation": "",
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "count": 3
+              },
+              {
+                "name": "blues",
+                "disambiguation": "",
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "classical",
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1
+              },
+              {
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10,
+                "disambiguation": "",
+                "name": "cool jazz"
+              },
+              {
+                "disambiguation": "",
+                "name": "funk",
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1
+              },
+              {
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7,
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz",
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27
+              },
+              {
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "name": "jazz fusion",
+                "disambiguation": ""
+              },
+              {
+                "name": "jazz-funk",
+                "disambiguation": "",
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1
+              },
+              {
+                "name": "modal jazz",
+                "disambiguation": "",
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e"
+              },
+              {
+                "disambiguation": "",
+                "name": "post-bop",
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4
+              },
+              {
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1,
+                "name": "rock",
+                "disambiguation": ""
+              }
+            ],
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter"
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
+        }
+      ],
+      "status": "Official",
+      "barcode": null
+    },
+    {
+      "artist-credit": [
+        {
+          "artist": {
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+              },
+              {
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "disambiguation": "",
+                "name": "blues"
+              },
+              {
+                "name": "classical",
+                "disambiguation": "",
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4"
+              },
+              {
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10,
+                "disambiguation": "",
+                "name": "cool jazz"
+              },
+              {
+                "disambiguation": "",
+                "name": "funk",
+                "count": 1,
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514"
+              },
+              {
+                "name": "hard bop",
+                "disambiguation": "",
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz",
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b"
+              },
+              {
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13,
+                "disambiguation": "",
+                "name": "jazz fusion"
+              },
+              {
+                "name": "jazz-funk",
+                "disambiguation": "",
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1
+              },
+              {
+                "name": "modal jazz",
+                "disambiguation": "",
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11
+              },
+              {
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "name": "post-bop",
+                "disambiguation": ""
+              },
+              {
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1,
+                "disambiguation": "",
+                "name": "rock"
+              }
+            ],
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter"
+          },
+          "joinphrase": "",
+          "name": "Miles Davis"
+        }
+      ],
+      "status": "Official",
+      "barcode": null,
+      "country": "FR",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging": null,
+      "genres": [],
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "id": "9768d0fa-28a0-48c8-ab88-8088651eae60",
+      "date": "1960",
+      "quality": "normal",
+      "disambiguation": "",
+      "release-events": [
+        {
+          "date": "1960",
+          "area": {
+            "sort-name": "France",
+            "disambiguation": "",
+            "type": null,
+            "iso-3166-1-codes": [
+              "FR"
+            ],
+            "id": "08310658-51eb-3801-80de-5a0739207115",
+            "name": "France",
+            "type-id": null
+          }
+        }
+      ]
+    },
+    {
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "genres": [],
+      "date": "1960",
+      "id": "cf540ec1-24c6-4f2f-ad9d-b65c517b3b22",
+      "disambiguation": "stereo",
+      "quality": "normal",
+      "release-events": [
+        {
+          "date": "1960",
+          "area": {
+            "iso-3166-1-codes": [
+              "JP"
+            ],
+            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+            "name": "Japan",
+            "type-id": null,
+            "sort-name": "Japan",
+            "disambiguation": "",
+            "type": null
+          }
+        }
+      ],
+      "country": "JP",
+      "barcode": null,
+      "status": "Promotion",
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "joinphrase": "",
+          "artist": {
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "genres": [
+              {
+                "name": "bebop",
+                "disambiguation": "",
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+              },
+              {
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1,
+                "disambiguation": "",
+                "name": "blues"
+              },
+              {
+                "name": "classical",
+                "disambiguation": "",
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1
+              },
+              {
+                "name": "cool jazz",
+                "disambiguation": "",
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10
+              },
+              {
+                "disambiguation": "",
+                "name": "funk",
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1
+              },
+              {
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz",
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b"
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz fusion",
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13
+              },
+              {
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1,
+                "name": "jazz-funk",
+                "disambiguation": ""
+              },
+              {
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "name": "modal jazz",
+                "disambiguation": ""
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "disambiguation": "",
+                "name": "post-bop"
+              },
+              {
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1,
+                "name": "rock",
+                "disambiguation": ""
+              }
+            ],
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter"
+          }
+        }
+      ],
+      "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "packaging": null
+    },
+    {
+      "packaging": null,
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "country": "JP",
+      "barcode": null,
+      "status": "Official",
+      "artist-credit": [
+        {
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "genres": [
+              {
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "disambiguation": "",
+                "name": "bebop"
+              },
+              {
+                "name": "blues",
+                "disambiguation": "",
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1
+              },
+              {
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "name": "classical",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "cool jazz",
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10
+              },
+              {
+                "name": "funk",
+                "disambiguation": "",
+                "count": 1,
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514"
+              },
+              {
+                "name": "hard bop",
+                "disambiguation": "",
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3"
+              },
+              {
+                "name": "jazz",
+                "disambiguation": "",
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b"
+              },
+              {
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13,
+                "disambiguation": "",
+                "name": "jazz fusion"
+              },
+              {
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "disambiguation": "",
+                "name": "jazz-funk"
+              },
+              {
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11,
+                "disambiguation": "",
+                "name": "modal jazz"
+              },
+              {
+                "disambiguation": "",
+                "name": "post-bop",
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
+              },
+              {
+                "disambiguation": "",
+                "name": "rock",
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1
+              }
+            ]
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
+        }
+      ],
+      "release-events": [
+        {
+          "date": "1960",
+          "area": {
+            "sort-name": "Japan",
+            "type": null,
+            "disambiguation": "",
+            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+            "iso-3166-1-codes": [
+              "JP"
+            ],
+            "name": "Japan",
+            "type-id": null
+          }
+        }
+      ],
+      "disambiguation": "stereo",
+      "quality": "normal",
+      "date": "1960",
+      "id": "42231daa-6ade-49fc-8ab8-c0b19ca6b237",
+      "packaging-id": null,
+      "title": "Kind of Blue",
+      "genres": []
+    },
+    {
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "joinphrase": "",
+          "artist": {
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person",
+            "sort-name": "Davis, Miles",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "count": 3
+              },
+              {
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "name": "blues",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "name": "classical",
+                "disambiguation": ""
+              },
+              {
+                "name": "cool jazz",
+                "disambiguation": "",
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10
+              },
+              {
+                "count": 1,
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "disambiguation": "",
+                "name": "funk"
+              },
+              {
+                "name": "hard bop",
+                "disambiguation": "",
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7
+              },
+              {
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "disambiguation": "",
+                "name": "jazz"
+              },
+              {
+                "name": "jazz fusion",
+                "disambiguation": "",
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13
+              },
+              {
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1,
+                "name": "jazz-funk",
+                "disambiguation": ""
+              },
+              {
+                "name": "modal jazz",
+                "disambiguation": "",
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e"
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "disambiguation": "",
+                "name": "post-bop"
+              },
+              {
+                "disambiguation": "",
+                "name": "rock",
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1
+              }
+            ],
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
+          }
+        }
+      ],
+      "status": "Official",
+      "barcode": null,
+      "country": "NL",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging": null,
+      "genres": [],
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "id": "57089ee6-9854-409b-93f7-b0536c9625e6",
+      "date": "1960",
+      "quality": "normal",
+      "disambiguation": "mono",
+      "release-events": [
+        {
+          "area": {
+            "sort-name": "Netherlands",
+            "disambiguation": "",
+            "type": null,
+            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
+            "iso-3166-1-codes": [
+              "NL"
+            ],
+            "name": "Netherlands",
+            "type-id": null
+          },
+          "date": "1960"
+        }
+      ]
+    },
+    {
+      "quality": "normal",
+      "disambiguation": "stereo",
+      "release-events": [
+        {
+          "area": {
+            "iso-3166-1-codes": [
+              "NL"
+            ],
+            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
+            "type-id": null,
+            "name": "Netherlands",
+            "sort-name": "Netherlands",
+            "type": null,
+            "disambiguation": ""
+          },
+          "date": "1960"
+        }
+      ],
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "genres": [],
+      "id": "1cf21fef-c5d8-480d-8a2f-4a74aa3ab68b",
+      "date": "1960",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging": null,
+      "country": "NL",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person",
+            "sort-name": "Davis, Miles",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+              },
+              {
+                "disambiguation": "",
+                "name": "blues",
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1
+              },
+              {
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1,
+                "name": "classical",
+                "disambiguation": ""
+              },
+              {
+                "name": "cool jazz",
+                "disambiguation": "",
+                "count": 10,
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e"
+              },
+              {
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1,
+                "disambiguation": "",
+                "name": "funk"
+              },
+              {
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "name": "jazz",
+                "disambiguation": "",
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27
+              },
+              {
+                "name": "jazz fusion",
+                "disambiguation": "",
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz-funk",
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1
+              },
+              {
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "name": "modal jazz",
+                "disambiguation": ""
+              },
+              {
+                "name": "post-bop",
+                "disambiguation": "",
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
+              },
+              {
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1,
+                "disambiguation": "",
+                "name": "rock"
+              }
+            ],
+            "name": "Miles Davis",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US"
+          }
+        }
+      ],
+      "status": "Official",
+      "barcode": null
+    },
+    {
+      "release-events": [
+        {
+          "date": "1960",
+          "area": {
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "name": "United Kingdom",
+            "type-id": null,
+            "sort-name": "United Kingdom",
+            "disambiguation": "",
+            "type": null
+          }
+        }
+      ],
+      "quality": "normal",
+      "disambiguation": "mono",
+      "id": "19f628e9-91a7-4037-b7ef-2889aabe9d02",
+      "date": "1960",
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "genres": [],
+      "packaging": null,
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "GB",
+      "status": "Official",
+      "artist-credit": [
+        {
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US",
+            "genres": [
+              {
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "disambiguation": "",
+                "name": "bebop"
+              },
+              {
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1,
+                "disambiguation": "",
+                "name": "blues"
+              },
+              {
+                "name": "classical",
+                "disambiguation": "",
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4"
+              },
+              {
+                "disambiguation": "",
+                "name": "cool jazz",
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10
+              },
+              {
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1,
+                "name": "funk",
+                "disambiguation": ""
+              },
+              {
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "name": "jazz",
+                "disambiguation": "",
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz fusion",
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4"
+              },
+              {
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "name": "jazz-funk",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "modal jazz",
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "disambiguation": "",
+                "name": "post-bop"
+              },
+              {
+                "count": 1,
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "disambiguation": "",
+                "name": "rock"
+              }
+            ],
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis"
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
+        }
+      ],
+      "barcode": null
+    },
+    {
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "genres": [],
+      "date": "1960",
+      "id": "28b406fc-3a8b-4c91-baf8-880bfeb990d9",
+      "disambiguation": "stereo",
+      "quality": "normal",
+      "release-events": [
+        {
+          "area": {
+            "sort-name": "United Kingdom",
+            "type": null,
+            "disambiguation": "",
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "name": "United Kingdom",
+            "type-id": null
+          },
+          "date": "1960"
+        }
+      ],
+      "country": "GB",
+      "barcode": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "joinphrase": "",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+              },
+              {
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1,
+                "name": "blues",
+                "disambiguation": ""
+              },
+              {
+                "name": "classical",
+                "disambiguation": "",
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4"
+              },
+              {
+                "name": "cool jazz",
+                "disambiguation": "",
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10
+              },
+              {
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1,
+                "name": "funk",
+                "disambiguation": ""
+              },
+              {
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "name": "hard bop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz",
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b"
+              },
+              {
+                "name": "jazz fusion",
+                "disambiguation": "",
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13
+              },
+              {
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1,
+                "name": "jazz-funk",
+                "disambiguation": ""
+              },
+              {
+                "name": "modal jazz",
+                "disambiguation": "",
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "disambiguation": "",
+                "name": "post-bop"
+              },
+              {
+                "name": "rock",
+                "disambiguation": "",
+                "count": 1,
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798"
+              }
+            ],
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter"
+          }
+        }
+      ],
+      "status": "Official",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "packaging": null
+    },
+    {
+      "packaging-id": null,
+      "title": "Kind of Blue",
+      "genres": [],
+      "date": "1961",
+      "id": "819a8dc6-8018-42f7-a053-cb04acbddade",
+      "disambiguation": "stereo, Repress",
+      "quality": "normal",
+      "release-events": [
+        {
+          "area": {
+            "sort-name": "Canada",
+            "type": null,
+            "disambiguation": "",
+            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+            "iso-3166-1-codes": [
+              "CA"
+            ],
+            "type-id": null,
+            "name": "Canada"
+          },
+          "date": "1961"
+        }
+      ],
+      "country": "CA",
+      "barcode": null,
+      "status": "Official",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+              },
+              {
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "name": "blues",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "classical",
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1
+              },
+              {
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10,
+                "disambiguation": "",
+                "name": "cool jazz"
+              },
+              {
+                "disambiguation": "",
+                "name": "funk",
+                "count": 1,
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514"
+              },
+              {
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7,
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz",
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27
+              },
+              {
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "name": "jazz fusion",
+                "disambiguation": ""
+              },
+              {
+                "name": "jazz-funk",
+                "disambiguation": "",
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "modal jazz",
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e"
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "disambiguation": "",
+                "name": "post-bop"
+              },
+              {
+                "count": 1,
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "disambiguation": "",
+                "name": "rock"
+              }
+            ]
+          }
+        }
+      ],
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "packaging": null
+    },
+    {
+      "packaging": null,
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "barcode": null,
+      "status": "Official",
+      "artist-credit": [
+        {
+          "artist": {
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "genres": [
+              {
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "count": 3,
+                "disambiguation": "",
+                "name": "bebop"
+              },
+              {
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1,
+                "name": "blues",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "classical",
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4"
+              },
+              {
+                "name": "cool jazz",
+                "disambiguation": "",
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10
+              },
+              {
+                "name": "funk",
+                "disambiguation": "",
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1
+              },
+              {
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "disambiguation": "",
+                "name": "jazz"
+              },
+              {
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "name": "jazz fusion",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "name": "jazz-funk",
+                "disambiguation": ""
+              },
+              {
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "name": "modal jazz",
+                "disambiguation": ""
+              },
+              {
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "name": "post-bop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "rock",
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1
+              }
+            ],
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter"
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
+        }
+      ],
+      "country": "GB",
+      "release-events": [
+        {
+          "area": {
+            "type": null,
+            "disambiguation": "",
+            "sort-name": "United Kingdom",
+            "name": "United Kingdom",
+            "type-id": null,
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "iso-3166-1-codes": [
+              "GB"
+            ]
+          },
+          "date": "1961"
+        }
+      ],
+      "disambiguation": "mono",
+      "quality": "normal",
+      "date": "1961",
+      "id": "4c76f430-69f9-43b4-84cc-18b8d166e6bc",
+      "genres": [],
+      "title": "Kind of Blue",
+      "packaging-id": null
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "packaging": null,
+      "barcode": null,
+      "status": "Official",
+      "artist-credit": [
+        {
+          "artist": {
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+              },
+              {
+                "disambiguation": "",
+                "name": "blues",
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1
+              },
+              {
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1,
+                "disambiguation": "",
+                "name": "classical"
+              },
+              {
+                "count": 10,
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "disambiguation": "",
+                "name": "cool jazz"
+              },
+              {
+                "disambiguation": "",
+                "name": "funk",
+                "count": 1,
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514"
+              },
+              {
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7,
+                "name": "hard bop",
+                "disambiguation": ""
+              },
+              {
+                "name": "jazz",
+                "disambiguation": "",
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b"
+              },
+              {
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13,
+                "name": "jazz fusion",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "disambiguation": "",
+                "name": "jazz-funk"
+              },
+              {
+                "disambiguation": "",
+                "name": "modal jazz",
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e"
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "name": "post-bop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "name": "rock",
+                "disambiguation": ""
+              }
+            ],
+            "name": "Miles Davis",
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "sort-name": "Davis, Miles"
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
+        }
+      ],
+      "country": "US",
+      "disambiguation": "mono, Repress",
+      "quality": "normal",
+      "release-events": [
+        {
+          "date": "1961",
+          "area": {
+            "sort-name": "United States",
+            "disambiguation": "",
+            "type": null,
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "type-id": null,
+            "name": "United States"
+          }
+        }
+      ],
+      "genres": [],
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "date": "1961",
+      "id": "a35a08ab-0f6f-4235-8e54-220c5097cbfc"
+    },
+    {
+      "status": "Official",
+      "artist-credit": [
+        {
+          "artist": {
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "name": "bebop",
+                "disambiguation": "",
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+              },
+              {
+                "name": "blues",
+                "disambiguation": "",
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
+              },
+              {
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "name": "classical",
+                "disambiguation": ""
+              },
+              {
+                "count": 10,
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "name": "cool jazz",
+                "disambiguation": ""
+              },
+              {
+                "name": "funk",
+                "disambiguation": "",
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "hard bop",
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3"
+              },
+              {
+                "name": "jazz",
+                "disambiguation": "",
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b"
+              },
+              {
+                "name": "jazz fusion",
+                "disambiguation": "",
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4"
+              },
+              {
+                "name": "jazz-funk",
+                "disambiguation": "",
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1
+              },
+              {
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11,
+                "name": "modal jazz",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "post-bop",
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
+              },
+              {
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1,
+                "disambiguation": "",
+                "name": "rock"
+              }
+            ],
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person"
+          },
+          "joinphrase": "",
+          "name": "Miles Davis"
+        }
+      ],
+      "barcode": null,
+      "country": "GB",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging": null,
+      "genres": [],
+      "packaging-id": null,
+      "title": "Kind of Blue",
+      "id": "91b60109-f99f-4310-952f-ae2d9869bc10",
+      "date": "1962",
+      "quality": "normal",
+      "disambiguation": "stereo, misprint, reissue",
+      "release-events": [
+        {
+          "area": {
+            "name": "United Kingdom",
+            "type-id": null,
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "type": null,
+            "disambiguation": "",
+            "sort-name": "United Kingdom"
+          },
+          "date": "1962"
+        }
+      ]
+    },
+    {
+      "release-events": [
+        {
+          "area": {
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "name": "United Kingdom",
+            "type-id": null,
+            "sort-name": "United Kingdom",
+            "disambiguation": "",
+            "type": null
+          },
+          "date": "1962"
+        }
+      ],
+      "quality": "normal",
+      "disambiguation": "mono, Reissue",
+      "id": "7fb2d5c8-8a1f-43e4-8de3-c5f64ed725b4",
+      "date": "1962",
+      "genres": [],
+      "packaging-id": null,
+      "title": "Kind of Blue",
+      "packaging": null,
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "artist-credit": [
+        {
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person",
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "count": 3
+              },
+              {
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1,
+                "name": "blues",
+                "disambiguation": ""
+              },
+              {
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1,
+                "name": "classical",
+                "disambiguation": ""
+              },
+              {
+                "name": "cool jazz",
+                "disambiguation": "",
+                "count": 10,
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e"
+              },
+              {
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1,
+                "name": "funk",
+                "disambiguation": ""
+              },
+              {
+                "name": "hard bop",
+                "disambiguation": "",
+                "count": 7,
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3"
+              },
+              {
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "disambiguation": "",
+                "name": "jazz"
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz fusion",
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13
+              },
+              {
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "name": "jazz-funk",
+                "disambiguation": ""
+              },
+              {
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "name": "modal jazz",
+                "disambiguation": ""
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "disambiguation": "",
+                "name": "post-bop"
+              },
+              {
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1,
+                "name": "rock",
+                "disambiguation": ""
+              }
+            ],
+            "name": "Miles Davis"
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
+        }
+      ],
+      "status": "Official",
+      "barcode": null,
+      "country": "GB"
+    },
+    {
+      "packaging": null,
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "barcode": null,
+      "artist-credit": [
+        {
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US",
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "count": 3,
+                "disambiguation": "",
+                "name": "bebop"
+              },
+              {
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "disambiguation": "",
+                "name": "blues"
+              },
+              {
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "disambiguation": "",
+                "name": "classical"
+              },
+              {
+                "name": "cool jazz",
+                "disambiguation": "",
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10
+              },
+              {
+                "count": 1,
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "disambiguation": "",
+                "name": "funk"
+              },
+              {
+                "name": "hard bop",
+                "disambiguation": "",
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7
+              },
+              {
+                "name": "jazz",
+                "disambiguation": "",
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27
+              },
+              {
+                "name": "jazz fusion",
+                "disambiguation": "",
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "count": 13
+              },
+              {
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1,
+                "disambiguation": "",
+                "name": "jazz-funk"
+              },
+              {
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11,
+                "name": "modal jazz",
+                "disambiguation": ""
+              },
+              {
+                "name": "post-bop",
+                "disambiguation": "",
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
+              },
+              {
+                "disambiguation": "",
+                "name": "rock",
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1
+              }
+            ]
+          },
+          "joinphrase": "",
+          "name": "Miles Davis"
+        }
+      ],
+      "status": "Official",
+      "country": "FR",
+      "release-events": [
+        {
+          "date": "1963",
+          "area": {
+            "iso-3166-1-codes": [
+              "FR"
+            ],
+            "id": "08310658-51eb-3801-80de-5a0739207115",
+            "type-id": null,
+            "name": "France",
+            "sort-name": "France",
+            "disambiguation": "",
+            "type": null
+          }
+        }
+      ],
+      "disambiguation": "mono, Reissue",
+      "quality": "normal",
+      "date": "1963",
+      "id": "530ab29f-37ba-4404-9d8f-a9b9124b2bce",
+      "genres": [],
+      "packaging-id": null,
+      "title": "Kind of Blue"
+    },
+    {
+      "quality": "normal",
+      "disambiguation": "stereo, Reissue",
+      "release-events": [
+        {
+          "area": {
+            "name": "Canada",
+            "type-id": null,
+            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+            "iso-3166-1-codes": [
+              "CA"
+            ],
+            "disambiguation": "",
+            "type": null,
+            "sort-name": "Canada"
+          },
+          "date": "1964"
+        }
+      ],
+      "genres": [],
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "id": "7b3590f9-27e4-4fee-8757-2692b73d5c5e",
+      "date": "1964",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "joinphrase": "",
+          "artist": {
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+              },
+              {
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "disambiguation": "",
+                "name": "blues"
+              },
+              {
+                "disambiguation": "",
+                "name": "classical",
+                "count": 1,
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4"
+              },
+              {
+                "disambiguation": "",
+                "name": "cool jazz",
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "count": 10
+              },
+              {
+                "disambiguation": "",
+                "name": "funk",
+                "count": 1,
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514"
+              },
+              {
+                "disambiguation": "",
+                "name": "hard bop",
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7
+              },
+              {
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27,
+                "disambiguation": "",
+                "name": "jazz"
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz fusion",
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4"
+              },
+              {
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1,
+                "name": "jazz-funk",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "modal jazz",
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e"
+              },
+              {
+                "name": "post-bop",
+                "disambiguation": "",
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
+              },
+              {
+                "disambiguation": "",
+                "name": "rock",
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1
+              }
+            ],
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person",
+            "sort-name": "Davis, Miles"
+          }
+        }
+      ],
+      "status": "Official",
+      "barcode": null,
+      "country": "CA"
+    },
+    {
+      "quality": "normal",
+      "disambiguation": "mono, Reissue",
+      "release-events": [
+        {
+          "date": "1964",
+          "area": {
+            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
+            "iso-3166-1-codes": [
+              "NL"
+            ],
+            "name": "Netherlands",
+            "type-id": null,
+            "sort-name": "Netherlands",
+            "type": null,
+            "disambiguation": ""
+          }
+        }
+      ],
+      "genres": [],
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "id": "8db29cd5-74e8-4226-ba12-d9f7d9453ef1",
+      "date": "1964",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging": null,
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "joinphrase": "",
+          "artist": {
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "name": "bebop",
+                "disambiguation": "",
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0"
+              },
+              {
+                "name": "blues",
+                "disambiguation": "",
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
+              },
+              {
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1,
+                "disambiguation": "",
+                "name": "classical"
+              },
+              {
+                "count": 10,
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "name": "cool jazz",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "disambiguation": "",
+                "name": "funk"
+              },
+              {
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7,
+                "disambiguation": "",
+                "name": "hard bop"
+              },
+              {
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27,
+                "disambiguation": "",
+                "name": "jazz"
+              },
+              {
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "disambiguation": "",
+                "name": "jazz fusion"
+              },
+              {
+                "name": "jazz-funk",
+                "disambiguation": "",
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "count": 1
+              },
+              {
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11,
+                "name": "modal jazz",
+                "disambiguation": ""
+              },
+              {
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "count": 4,
+                "name": "post-bop",
+                "disambiguation": ""
+              },
+              {
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1,
+                "disambiguation": "",
+                "name": "rock"
+              }
+            ],
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter"
+          }
+        }
+      ],
+      "status": "Official",
+      "barcode": null,
+      "country": "NL"
+    },
+    {
+      "artist-credit": [
+        {
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "count": 3,
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "name": "bebop",
+                "disambiguation": ""
+              },
+              {
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2",
+                "count": 1,
+                "disambiguation": "",
+                "name": "blues"
+              },
+              {
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1,
+                "disambiguation": "",
+                "name": "classical"
+              },
+              {
+                "name": "cool jazz",
+                "disambiguation": "",
+                "count": 10,
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e"
+              },
+              {
+                "disambiguation": "",
+                "name": "funk",
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "count": 1
+              },
+              {
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7,
+                "name": "hard bop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz",
+                "count": 27,
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b"
+              },
+              {
+                "name": "jazz fusion",
+                "disambiguation": "",
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4"
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz-funk",
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911"
+              },
+              {
+                "disambiguation": "",
+                "name": "modal jazz",
+                "count": 11,
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e"
+              },
+              {
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d",
+                "name": "post-bop",
+                "disambiguation": ""
+              },
+              {
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1,
+                "name": "rock",
+                "disambiguation": ""
+              }
+            ],
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person"
+          },
+          "joinphrase": "",
+          "name": "Miles Davis"
+        }
+      ],
+      "status": "Official",
+      "barcode": null,
+      "country": "US",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging": null,
+      "genres": [],
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "id": "c5a73143-5bd8-4328-955e-ce52e0e7bb8a",
+      "date": "1964",
+      "quality": "normal",
+      "disambiguation": "stereo, Reissue",
+      "release-events": [
+        {
+          "area": {
+            "sort-name": "United States",
+            "type": null,
+            "disambiguation": "",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "name": "United States"
+          },
+          "date": "1964"
+        }
+      ]
+    },
+    {
+      "artist-credit": [
+        {
+          "artist": {
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person",
+            "sort-name": "Davis, Miles",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "bebop",
+                "id": "ac30756b-55a7-4dc3-8908-8f94c93318d0",
+                "count": 3
+              },
+              {
+                "name": "blues",
+                "disambiguation": "",
+                "count": 1,
+                "id": "fe12b346-a10e-450f-bf81-fa20894b5ea2"
+              },
+              {
+                "disambiguation": "",
+                "name": "classical",
+                "id": "6ed4e4d1-9a97-4e2c-b8df-083754f154f4",
+                "count": 1
+              },
+              {
+                "count": 10,
+                "id": "5fc86669-d9ba-4716-8090-eff39081090e",
+                "name": "cool jazz",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "fe4ba6a1-9873-4fd0-a12b-a70c81818514",
+                "name": "funk",
+                "disambiguation": ""
+              },
+              {
+                "id": "8c083468-2dce-4a31-ae77-433af3deafd3",
+                "count": 7,
+                "name": "hard bop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "jazz",
+                "id": "a715278f-1580-409f-8078-4ffbc800e08b",
+                "count": 27
+              },
+              {
+                "count": 13,
+                "id": "2377ff19-83e7-4873-b425-dce6d1ad4ef4",
+                "name": "jazz fusion",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "f3c43ae8-839a-4523-b295-cfa4eba6c911",
+                "name": "jazz-funk",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "modal jazz",
+                "id": "ff60b411-27db-4bd3-a444-3afe92cbfa7e",
+                "count": 11
+              },
+              {
+                "name": "post-bop",
+                "disambiguation": "",
+                "count": 4,
+                "id": "94ce0ba0-9043-4b5b-87d6-3c1a8458f75d"
+              },
+              {
+                "disambiguation": "",
+                "name": "rock",
+                "id": "0e3fc579-2d24-4f20-9dae-736e1ec78798",
+                "count": 1
+              }
+            ],
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US"
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
+        }
+      ],
+      "status": "Official",
+      "barcode": null,
+      "country": "GB",
+      "packaging": null,
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "id": "78a51ebe-e753-4ac7-a450-7b65b2fc4f83",
+      "date": "1965",
+      "genres": [],
+      "packaging-id": null,
+      "title": "Kind of Blue",
+      "release-events": [
+        {
+          "area": {
+            "disambiguation": "",
+            "type": null,
+            "sort-name": "United Kingdom",
+            "type-id": null,
+            "name": "United Kingdom",
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "iso-3166-1-codes": [
+              "GB"
+            ]
+          },
+          "date": "1965"
+        }
+      ],
+      "quality": "normal",
+      "disambiguation": "stereo, Reissue"
+    }
+  ],
+  "secondary-types": []
 }

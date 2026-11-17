@@ -1,152 +1,156 @@
 {
+  "length": 545426,
+  "video": false,
+  "disambiguation": "stereo",
+  "id": "60f750f4-d222-46b7-ad5c-905334c9a48a",
   "releases": [
     {
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal",
-      "country": "US",
-      "release-group": {
-        "primary-type": "Album",
-        "secondary-type-ids": [],
-        "disambiguation": "",
-        "artist-credit": [
-          {
-            "artist": {
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "sort-name": "Davis, Miles",
-              "type": "Person",
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "name": "Miles Davis"
-            },
-            "name": "Miles Davis",
-            "joinphrase": ""
-          }
-        ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": [],
-        "secondary-types": [],
-        "title": "Kind of Blue"
-      },
-      "release-events": [
-        {
-          "date": "1959-08-17",
-          "area": {
-            "type": null,
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "name": "United States",
-            "iso-3166-1-codes": [
-              "US"
-            ],
-            "type-id": null,
-            "disambiguation": "",
-            "sort-name": "United States"
-          }
-        }
-      ],
-      "title": "Kind of Blue",
-      "packaging-id": null,
-      "status": "Official",
-      "id": "79ed3ff2-1b33-3245-8755-947554bc8b3d",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1959-08-17",
       "artist-credit": [
         {
           "artist": {
+            "name": "Miles Davis",
             "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
             "country": "US",
-            "type": "Person",
-            "name": "Miles Davis"
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "type": "Person"
           },
           "name": "Miles Davis",
           "joinphrase": ""
         }
       ],
-      "disambiguation": "mono",
-      "packaging": null
-    },
-    {
-      "barcode": "",
-      "quality": "normal",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "US",
-      "release-group": {
-        "artist-credit": [
-          {
-            "name": "Miles Davis",
-            "joinphrase": "",
-            "artist": {
-              "name": "Miles Davis",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "country": "US",
-              "type": "Person",
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-            }
-          }
-        ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "primary-type": "Album",
-        "disambiguation": "",
-        "secondary-type-ids": [],
-        "secondary-types": [],
-        "title": "Kind of Blue",
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": []
-      },
-      "packaging-id": null,
       "status": "Official",
       "title": "Kind of Blue",
+      "packaging-id": null,
+      "release-group": {
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "title": "Kind of Blue",
+        "artist-credit": [
+          {
+            "artist": {
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "sort-name": "Davis, Miles",
+              "country": "US",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "name": "Miles Davis",
+              "type": "Person"
+            },
+            "joinphrase": "",
+            "name": "Miles Davis"
+          }
+        ],
+        "first-release-date": "1959-08-17",
+        "secondary-type-ids": [],
+        "disambiguation": "",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "primary-type": "Album",
+        "releases": [],
+        "secondary-types": []
+      },
+      "barcode": null,
+      "packaging": null,
+      "date": "1959-08-17",
       "release-events": [
         {
           "date": "1959-08-17",
           "area": {
+            "name": "United States",
+            "type-id": null,
             "disambiguation": "",
             "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
             "iso-3166-1-codes": [
               "US"
             ],
-            "type-id": null,
-            "name": "United States",
-            "type": null,
-            "id": "489ce91b-6658-3307-9877-795b68554c98"
+            "type": null
           }
         }
       ],
-      "id": "bee5e0cd-1767-4a8e-9578-6455e87ba60b",
+      "id": "79ed3ff2-1b33-3245-8755-947554bc8b3d",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "quality": "normal",
+      "country": "US",
+      "disambiguation": "mono"
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "quality": "normal",
+      "country": "US",
+      "disambiguation": "stereo",
+      "title": "Kind of Blue",
       "artist-credit": [
         {
           "joinphrase": "",
           "name": "Miles Davis",
           "artist": {
+            "type": "Person",
             "name": "Miles Davis",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
             "country": "US",
             "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person",
             "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
             "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
           }
         }
       ],
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
+      "status": "Official",
+      "packaging-id": null,
+      "barcode": "",
+      "release-group": {
+        "first-release-date": "1959-08-17",
+        "title": "Kind of Blue",
+        "artist-credit": [
+          {
+            "joinphrase": "",
+            "name": "Miles Davis",
+            "artist": {
+              "sort-name": "Davis, Miles",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "country": "US",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "name": "Miles Davis",
+              "type": "Person"
+            }
+          }
+        ],
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "secondary-types": [],
+        "releases": [],
+        "primary-type": "Album",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "secondary-type-ids": []
       },
+      "packaging": null,
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "name": "United States",
+            "type": null,
+            "iso-3166-1-codes": [
+              "US"
+            ]
+          },
+          "date": "1959-08-17"
+        }
+      ],
       "date": "1959-08-17",
-      "disambiguation": "stereo",
-      "packaging": null
+      "id": "bee5e0cd-1767-4a8e-9578-6455e87ba60b"
     },
     {
       "artist-credit": [
@@ -154,136 +158,39 @@
           "artist": {
             "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
             "sort-name": "Davis, Miles",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
             "disambiguation": "jazz trumpeter, bandleader, songwriter",
             "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person",
-            "name": "Miles Davis"
-          },
-          "joinphrase": "",
-          "name": "Miles Davis"
-        }
-      ],
-      "date": "1959",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "packaging": null,
-      "disambiguation": "stereo",
-      "status": "Official",
-      "packaging-id": null,
-      "release-events": [
-        {
-          "date": "1959",
-          "area": {
-            "name": "Canada",
-            "type": null,
-            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
-            "disambiguation": "",
-            "sort-name": "Canada",
-            "iso-3166-1-codes": [
-              "CA"
-            ],
-            "type-id": null
-          }
-        }
-      ],
-      "title": "Kind of Blue",
-      "id": "bc4d1870-1614-411b-85d0-6c76ef3fdd9d",
-      "release-group": {
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "first-release-date": "1959-08-17",
-        "releases": [],
-        "title": "Kind of Blue",
-        "secondary-types": [],
-        "disambiguation": "",
-        "secondary-type-ids": [],
-        "primary-type": "Album",
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "artist-credit": [
-          {
-            "artist": {
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "type": "Person",
-              "name": "Miles Davis",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter"
-            },
-            "joinphrase": "",
-            "name": "Miles Davis"
-          }
-        ]
-      },
-      "quality": "normal",
-      "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "CA"
-    },
-    {
-      "date": "1959",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "artist-credit": [
-        {
-          "artist": {
-            "type": "Person",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
             "name": "Miles Davis",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles"
+            "type": "Person"
           },
           "joinphrase": "",
           "name": "Miles Davis"
         }
       ],
-      "packaging": null,
-      "disambiguation": "",
-      "release-events": [
-        {
-          "date": "1959",
-          "area": {
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "US"
-            ],
-            "disambiguation": "",
-            "sort-name": "United States",
-            "type": null,
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "name": "United States"
-          }
-        }
-      ],
       "title": "Kind of Blue",
       "status": "Official",
       "packaging-id": null,
-      "id": "49234de2-790c-46e5-b780-3cd6be79a2db",
+      "barcode": null,
       "release-group": {
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": [],
         "secondary-types": [],
-        "title": "Kind of Blue",
+        "releases": [],
         "primary-type": "Album",
         "disambiguation": "",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
         "secondary-type-ids": [],
+        "first-release-date": "1959-08-17",
+        "title": "Kind of Blue",
         "artist-credit": [
           {
             "artist": {
               "name": "Miles Davis",
-              "type": "Person",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "country": "US",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "sort-name": "Davis, Miles",
               "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "sort-name": "Davis, Miles"
+              "country": "US",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "type": "Person"
             },
             "joinphrase": "",
             "name": "Miles Davis"
@@ -291,95 +198,173 @@
         ],
         "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
       },
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal",
-      "country": "US"
-    },
-    {
-      "packaging-id": null,
-      "status": "Official",
-      "title": "Kind of Blue",
+      "packaging": null,
+      "date": "1959",
       "release-events": [
         {
           "area": {
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "type": null,
-            "name": "United States",
-            "type-id": null,
             "iso-3166-1-codes": [
-              "US"
+              "CA"
             ],
-            "sort-name": "United States",
-            "disambiguation": ""
+            "type": null,
+            "name": "Canada",
+            "disambiguation": "",
+            "sort-name": "Canada",
+            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+            "type-id": null
           },
           "date": "1959"
         }
       ],
-      "id": "ca6b19c7-08b3-4d98-a5db-d73a08562a73",
-      "artist-credit": [
-        {
-          "name": "Miles Davis",
-          "joinphrase": "",
-          "artist": {
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person",
-            "name": "Miles Davis",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter"
-          }
-        }
-      ],
+      "id": "bc4d1870-1614-411b-85d0-6c76ef3fdd9d",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "disambiguation": "stereo",
+      "quality": "normal",
+      "country": "CA"
+    },
+    {
       "text-representation": {
         "script": "Latn",
         "language": "eng"
       },
-      "date": "1959",
-      "disambiguation": "",
-      "packaging": null,
       "quality": "normal",
-      "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "disambiguation": "",
       "country": "US",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging": null,
+      "date": "1959",
+      "release-events": [
+        {
+          "date": "1959",
+          "area": {
+            "name": "United States",
+            "disambiguation": "",
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "type": null
+          }
+        }
+      ],
+      "id": "49234de2-790c-46e5-b780-3cd6be79a2db",
+      "status": "Official",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "country": "US",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "name": "Miles Davis",
+            "type": "Person"
+          }
+        }
+      ],
+      "title": "Kind of Blue",
+      "packaging-id": null,
       "release-group": {
-        "secondary-type-ids": [],
-        "disambiguation": "",
+        "secondary-types": [],
+        "releases": [],
         "primary-type": "Album",
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "disambiguation": "",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "secondary-type-ids": [],
+        "first-release-date": "1959-08-17",
+        "title": "Kind of Blue",
         "artist-credit": [
           {
             "artist": {
-              "name": "Miles Davis",
               "type": "Person",
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
               "disambiguation": "jazz trumpeter, bandleader, songwriter",
               "sort-name": "Davis, Miles",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              "country": "US",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "name": "Miles Davis"
             },
             "name": "Miles Davis",
             "joinphrase": ""
           }
         ],
-        "releases": [],
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "first-release-date": "1959-08-17",
-        "title": "Kind of Blue",
-        "secondary-types": []
-      }
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+      },
+      "barcode": null
     },
     {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "country": "US",
+      "quality": "normal",
+      "disambiguation": "",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type": "Person"
+          }
+        }
+      ],
+      "title": "Kind of Blue",
+      "status": "Official",
+      "barcode": null,
+      "release-group": {
+        "releases": [],
+        "secondary-types": [],
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "primary-type": "Album",
+        "secondary-type-ids": [],
+        "artist-credit": [
+          {
+            "joinphrase": "",
+            "name": "Miles Davis",
+            "artist": {
+              "type": "Person",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "sort-name": "Davis, Miles",
+              "country": "US",
+              "name": "Miles Davis"
+            }
+          }
+        ],
+        "title": "Kind of Blue",
+        "first-release-date": "1959-08-17",
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+      },
+      "packaging-id": null,
+      "packaging": null,
+      "id": "ca6b19c7-08b3-4d98-a5db-d73a08562a73",
       "release-events": [
         {
           "area": {
-            "name": "United States",
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "type": null,
-            "sort-name": "United States",
             "disambiguation": "",
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
             "type-id": null,
+            "name": "United States",
+            "type": null,
             "iso-3166-1-codes": [
               "US"
             ]
@@ -387,1113 +372,1130 @@
           "date": "1959"
         }
       ],
-      "title": "Kind of Blue",
-      "packaging-id": null,
-      "status": "Promotion",
-      "id": "7b1e1ec9-6b29-4c80-b7a2-bab3f4f6b945",
+      "date": "1959"
+    },
+    {
+      "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
       "text-representation": {
         "script": "Latn",
         "language": "eng"
       },
-      "date": "1959",
-      "artist-credit": [
-        {
-          "name": "Miles Davis",
-          "joinphrase": "",
-          "artist": {
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "name": "Miles Davis",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person"
-          }
-        }
-      ],
-      "disambiguation": "mono, promo",
-      "packaging": null,
-      "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
       "quality": "normal",
-      "barcode": "",
       "country": "US",
-      "release-group": {
-        "secondary-types": [],
-        "title": "Kind of Blue",
-        "releases": [],
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "artist-credit": [
-          {
-            "name": "Miles Davis",
-            "joinphrase": "",
-            "artist": {
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "type": "Person",
-              "name": "Miles Davis",
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-            }
-          }
-        ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "primary-type": "Album",
-        "secondary-type-ids": [],
-        "disambiguation": ""
-      }
-    },
-    {
-      "release-group": {
-        "title": "Kind of Blue",
-        "secondary-types": [],
-        "releases": [],
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "first-release-date": "1959-08-17",
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "artist-credit": [
-          {
-            "name": "Miles Davis",
-            "joinphrase": "",
-            "artist": {
-              "name": "Miles Davis",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "country": "US",
-              "type": "Person",
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-            }
-          }
-        ],
-        "secondary-type-ids": [],
-        "disambiguation": "",
-        "primary-type": "Album"
-      },
-      "country": "JP",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal",
-      "packaging": null,
-      "disambiguation": "mono",
-      "date": "1959",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
+      "disambiguation": "mono, promo",
       "artist-credit": [
         {
           "joinphrase": "",
           "name": "Miles Davis",
           "artist": {
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person",
-            "name": "Miles Davis"
-          }
-        }
-      ],
-      "id": "53f2acf9-6f05-4bf7-b566-58da62c430df",
-      "release-events": [
-        {
-          "date": "1959",
-          "area": {
-            "disambiguation": "",
-            "sort-name": "Japan",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "JP"
-            ],
-            "type": null,
-            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
-            "name": "Japan"
-          }
-        }
-      ],
-      "title": "Kind of Blue",
-      "status": "Official",
-      "packaging-id": null
-    },
-    {
-      "id": "e25dbbbc-7c21-4cf8-9dc7-fdf401b8403c",
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "area": {
-            "sort-name": "Australia",
-            "disambiguation": "",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "AU"
-            ],
-            "name": "Australia",
-            "id": "106e0bec-b638-3b37-b731-f53d507dc00e",
-            "type": null
-          },
-          "date": "1959"
-        }
-      ],
-      "status": "Official",
-      "packaging-id": null,
-      "packaging": null,
-      "disambiguation": "mono",
-      "date": "1959",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "artist-credit": [
-        {
-          "artist": {
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "type": "Person",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "name": "Miles Davis"
-          },
-          "joinphrase": "",
-          "name": "Miles Davis"
-        }
-      ],
-      "country": "AU",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "quality": "normal",
-      "barcode": null,
-      "release-group": {
-        "primary-type": "Album",
-        "secondary-type-ids": [],
-        "disambiguation": "",
-        "artist-credit": [
-          {
-            "name": "Miles Davis",
-            "joinphrase": "",
-            "artist": {
-              "type": "Person",
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "name": "Miles Davis",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "sort-name": "Davis, Miles"
-            }
-          }
-        ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "releases": [],
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "secondary-types": [],
-        "title": "Kind of Blue"
-      }
-    },
-    {
-      "release-group": {
-        "primary-type": "Album",
-        "disambiguation": "",
-        "secondary-type-ids": [],
-        "artist-credit": [
-          {
-            "artist": {
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "country": "US",
-              "type": "Person",
-              "name": "Miles Davis",
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-            },
-            "joinphrase": "",
-            "name": "Miles Davis"
-          }
-        ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": [],
-        "secondary-types": [],
-        "title": "Kind of Blue"
-      },
-      "country": "JP",
-      "barcode": null,
-      "quality": "normal",
-      "status-id": "518ffc83-5cde-34df-8627-81bff5093d92",
-      "disambiguation": "stereo",
-      "packaging": null,
-      "artist-credit": [
-        {
-          "artist": {
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
             "type": "Person",
             "name": "Miles Davis",
-            "sort-name": "Davis, Miles",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
             "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-          },
-          "joinphrase": "",
-          "name": "Miles Davis"
+            "country": "US",
+            "sort-name": "Davis, Miles",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
+          }
         }
       ],
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1960",
-      "id": "cf540ec1-24c6-4f2f-ad9d-b65c517b3b22",
-      "packaging-id": null,
       "status": "Promotion",
-      "release-events": [
-        {
-          "date": "1960",
-          "area": {
-            "iso-3166-1-codes": [
-              "JP"
-            ],
-            "type-id": null,
-            "sort-name": "Japan",
-            "disambiguation": "",
-            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
-            "type": null,
-            "name": "Japan"
-          }
-        }
-      ],
-      "title": "Kind of Blue"
-    },
-    {
-      "release-events": [
-        {
-          "area": {
-            "sort-name": "United Kingdom",
-            "disambiguation": "",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "GB"
-            ],
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-            "type": null,
-            "name": "United Kingdom"
-          },
-          "date": "1960"
-        }
-      ],
       "title": "Kind of Blue",
-      "status": "Official",
       "packaging-id": null,
-      "id": "28b406fc-3a8b-4c91-baf8-880bfeb990d9",
-      "date": "1960",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "artist-credit": [
-        {
-          "name": "Miles Davis",
-          "joinphrase": "",
-          "artist": {
-            "name": "Miles Davis",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-          }
-        }
-      ],
-      "packaging": null,
-      "disambiguation": "stereo",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal",
-      "country": "GB",
       "release-group": {
-        "primary-type": "Album",
+        "secondary-types": [],
+        "releases": [],
         "secondary-type-ids": [],
+        "primary-type": "Album",
         "disambiguation": "",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "first-release-date": "1959-08-17",
         "artist-credit": [
           {
             "artist": {
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "sort-name": "Davis, Miles",
               "type": "Person",
+              "sort-name": "Davis, Miles",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
               "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
               "country": "US",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
               "name": "Miles Davis"
             },
             "joinphrase": "",
             "name": "Miles Davis"
           }
         ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "releases": [],
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "secondary-types": [],
-        "title": "Kind of Blue"
-      }
-    },
-    {
-      "id": "42231daa-6ade-49fc-8ab8-c0b19ca6b237",
-      "packaging-id": null,
-      "status": "Official",
+        "title": "Kind of Blue",
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+      },
+      "barcode": "",
+      "packaging": null,
       "release-events": [
         {
-          "date": "1960",
+          "date": "1959",
           "area": {
+            "sort-name": "United States",
             "disambiguation": "",
-            "sort-name": "Japan",
-            "iso-3166-1-codes": [
-              "JP"
-            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
             "type-id": null,
+            "name": "United States",
+            "type": null,
+            "iso-3166-1-codes": [
+              "US"
+            ]
+          }
+        }
+      ],
+      "date": "1959",
+      "id": "7b1e1ec9-6b29-4c80-b7a2-bab3f4f6b945"
+    },
+    {
+      "quality": "normal",
+      "disambiguation": "mono",
+      "country": "JP",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+            "sort-name": "Japan",
+            "disambiguation": "",
             "name": "Japan",
             "type": null,
-            "id": "2db42837-c832-3c27-b4a3-08198f75693c"
-          }
+            "iso-3166-1-codes": [
+              "JP"
+            ]
+          },
+          "date": "1959"
         }
       ],
-      "title": "Kind of Blue",
-      "disambiguation": "stereo",
+      "date": "1959",
+      "id": "53f2acf9-6f05-4bf7-b566-58da62c430df",
       "packaging": null,
-      "artist-credit": [
-        {
-          "name": "Miles Davis",
-          "joinphrase": "",
-          "artist": {
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "type": "Person",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "name": "Miles Davis"
-          }
-        }
-      ],
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "date": "1960",
-      "country": "JP",
-      "quality": "normal",
+      "packaging-id": null,
       "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
       "release-group": {
+        "primary-type": "Album",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "secondary-type-ids": [],
+        "secondary-types": [],
+        "releases": [],
         "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "first-release-date": "1959-08-17",
         "artist-credit": [
           {
-            "name": "Miles Davis",
             "joinphrase": "",
+            "name": "Miles Davis",
             "artist": {
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "type": "Person",
+              "name": "Miles Davis",
+              "country": "US",
               "disambiguation": "jazz trumpeter, bandleader, songwriter",
               "sort-name": "Davis, Miles",
-              "name": "Miles Davis",
-              "type": "Person",
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
             }
           }
         ],
-        "secondary-type-ids": [],
-        "disambiguation": "",
-        "primary-type": "Album",
-        "title": "Kind of Blue",
-        "secondary-types": [],
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": []
-      }
-    },
-    {
+        "title": "Kind of Blue"
+      },
       "artist-credit": [
         {
           "joinphrase": "",
           "name": "Miles Davis",
           "artist": {
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
             "type": "Person",
             "name": "Miles Davis",
+            "country": "US",
             "sort-name": "Davis, Miles",
             "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
             "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
           }
         }
       ],
-      "date": "1960",
+      "status": "Official",
+      "title": "Kind of Blue"
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
       "text-representation": {
         "language": "eng",
         "script": "Latn"
       },
-      "packaging": null,
-      "disambiguation": "stereo",
-      "status": "Official",
-      "packaging-id": null,
-      "title": "Kind of Blue",
-      "release-events": [
+      "disambiguation": "mono",
+      "quality": "normal",
+      "country": "AU",
+      "artist-credit": [
         {
-          "area": {
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "NL"
-            ],
-            "sort-name": "Netherlands",
-            "disambiguation": "",
-            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
-            "type": null,
-            "name": "Netherlands"
-          },
-          "date": "1960"
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "type": "Person",
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "country": "US",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "sort-name": "Davis, Miles",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
+          }
         }
       ],
-      "id": "1cf21fef-c5d8-480d-8a2f-4a74aa3ab68b",
+      "status": "Official",
+      "title": "Kind of Blue",
+      "packaging-id": null,
       "release-group": {
-        "secondary-types": [],
-        "title": "Kind of Blue",
-        "releases": [],
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
         "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
         "artist-credit": [
           {
             "artist": {
-              "name": "Miles Davis",
               "type": "Person",
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
               "disambiguation": "jazz trumpeter, bandleader, songwriter",
               "sort-name": "Davis, Miles",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+              "country": "US",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "name": "Miles Davis"
+            },
+            "name": "Miles Davis",
+            "joinphrase": ""
+          }
+        ],
+        "title": "Kind of Blue",
+        "primary-type": "Album",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "secondary-type-ids": [],
+        "secondary-types": [],
+        "releases": []
+      },
+      "barcode": null,
+      "packaging": null,
+      "release-events": [
+        {
+          "area": {
+            "type": null,
+            "iso-3166-1-codes": [
+              "AU"
+            ],
+            "type-id": null,
+            "sort-name": "Australia",
+            "disambiguation": "",
+            "id": "106e0bec-b638-3b37-b731-f53d507dc00e",
+            "name": "Australia"
+          },
+          "date": "1959"
+        }
+      ],
+      "date": "1959",
+      "id": "e25dbbbc-7c21-4cf8-9dc7-fdf401b8403c"
+    },
+    {
+      "packaging": null,
+      "id": "cf540ec1-24c6-4f2f-ad9d-b65c517b3b22",
+      "date": "1960",
+      "release-events": [
+        {
+          "date": "1960",
+          "area": {
+            "iso-3166-1-codes": [
+              "JP"
+            ],
+            "type": null,
+            "name": "Japan",
+            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+            "disambiguation": "",
+            "sort-name": "Japan",
+            "type-id": null
+          }
+        }
+      ],
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "joinphrase": "",
+          "artist": {
+            "type": "Person",
+            "sort-name": "Davis, Miles",
+            "country": "US",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis"
+          }
+        }
+      ],
+      "title": "Kind of Blue",
+      "status": "Promotion",
+      "release-group": {
+        "releases": [],
+        "secondary-types": [],
+        "secondary-type-ids": [],
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "primary-type": "Album",
+        "title": "Kind of Blue",
+        "artist-credit": [
+          {
+            "artist": {
+              "type": "Person",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "country": "US",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "sort-name": "Davis, Miles",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "name": "Miles Davis"
             },
             "joinphrase": "",
             "name": "Miles Davis"
           }
         ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "primary-type": "Album",
-        "disambiguation": "",
-        "secondary-type-ids": []
+        "first-release-date": "1959-08-17",
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+      },
+      "barcode": null,
+      "packaging-id": null,
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
       },
       "quality": "normal",
-      "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "NL"
+      "country": "JP",
+      "disambiguation": "stereo",
+      "status-id": "518ffc83-5cde-34df-8627-81bff5093d92"
     },
     {
-      "packaging-id": null,
-      "status": "Official",
-      "title": "Kind of Blue",
+      "packaging": null,
+      "date": "1960",
       "release-events": [
         {
           "date": "1960",
           "area": {
             "iso-3166-1-codes": [
-              "NL"
+              "GB"
             ],
-            "type-id": null,
-            "sort-name": "Netherlands",
+            "type": null,
+            "name": "United Kingdom",
             "disambiguation": "",
-            "name": "Netherlands",
-            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
-            "type": null
+            "sort-name": "United Kingdom",
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "type-id": null
           }
         }
       ],
-      "id": "57089ee6-9854-409b-93f7-b0536c9625e6",
+      "id": "28b406fc-3a8b-4c91-baf8-880bfeb990d9",
+      "title": "Kind of Blue",
+      "artist-credit": [
+        {
+          "artist": {
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "country": "US",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type": "Person"
+          },
+          "joinphrase": "",
+          "name": "Miles Davis"
+        }
+      ],
+      "status": "Official",
+      "packaging-id": null,
+      "release-group": {
+        "secondary-type-ids": [],
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "primary-type": "Album",
+        "releases": [],
+        "secondary-types": [],
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "artist-credit": [
+          {
+            "name": "Miles Davis",
+            "joinphrase": "",
+            "artist": {
+              "type": "Person",
+              "name": "Miles Davis",
+              "country": "US",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "sort-name": "Davis, Miles",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+            }
+          }
+        ],
+        "title": "Kind of Blue",
+        "first-release-date": "1959-08-17"
+      },
+      "barcode": null,
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "disambiguation": "stereo",
+      "quality": "normal",
+      "country": "GB",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "status": "Official",
+      "artist-credit": [
+        {
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "type": "Person"
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
+        }
+      ],
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "barcode": null,
+      "release-group": {
+        "primary-type": "Album",
+        "disambiguation": "",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "secondary-type-ids": [],
+        "secondary-types": [],
+        "releases": [],
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "first-release-date": "1959-08-17",
+        "title": "Kind of Blue",
+        "artist-credit": [
+          {
+            "artist": {
+              "type": "Person",
+              "country": "US",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "sort-name": "Davis, Miles",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "name": "Miles Davis"
+            },
+            "joinphrase": "",
+            "name": "Miles Davis"
+          }
+        ]
+      },
+      "packaging": null,
+      "date": "1960",
+      "release-events": [
+        {
+          "area": {
+            "iso-3166-1-codes": [
+              "JP"
+            ],
+            "type": null,
+            "name": "Japan",
+            "disambiguation": "",
+            "sort-name": "Japan",
+            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+            "type-id": null
+          },
+          "date": "1960"
+        }
+      ],
+      "id": "42231daa-6ade-49fc-8ab8-c0b19ca6b237",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "country": "JP",
+      "quality": "normal",
+      "disambiguation": "stereo"
+    },
+    {
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "disambiguation": "stereo",
+      "quality": "normal",
+      "country": "NL",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging": null,
+      "release-events": [
+        {
+          "area": {
+            "iso-3166-1-codes": [
+              "NL"
+            ],
+            "type": null,
+            "name": "Netherlands",
+            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
+            "disambiguation": "",
+            "sort-name": "Netherlands",
+            "type-id": null
+          },
+          "date": "1960"
+        }
+      ],
+      "date": "1960",
+      "id": "1cf21fef-c5d8-480d-8a2f-4a74aa3ab68b",
+      "status": "Official",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "sort-name": "Davis, Miles",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "type": "Person"
+          }
+        }
+      ],
+      "title": "Kind of Blue",
+      "packaging-id": null,
+      "release-group": {
+        "first-release-date": "1959-08-17",
+        "title": "Kind of Blue",
+        "artist-credit": [
+          {
+            "name": "Miles Davis",
+            "joinphrase": "",
+            "artist": {
+              "name": "Miles Davis",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "sort-name": "Davis, Miles",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "country": "US",
+              "type": "Person"
+            }
+          }
+        ],
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "secondary-types": [],
+        "releases": [],
+        "primary-type": "Album",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "secondary-type-ids": []
+      },
+      "barcode": null
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "quality": "normal",
+      "country": "NL",
+      "disambiguation": "mono",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "packaging-id": null,
+      "barcode": null,
+      "release-group": {
+        "secondary-type-ids": [],
+        "primary-type": "Album",
+        "disambiguation": "",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "secondary-types": [],
+        "releases": [],
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "first-release-date": "1959-08-17",
+        "title": "Kind of Blue",
+        "artist-credit": [
+          {
+            "name": "Miles Davis",
+            "joinphrase": "",
+            "artist": {
+              "type": "Person",
+              "name": "Miles Davis",
+              "sort-name": "Davis, Miles",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "country": "US",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+            }
+          }
+        ]
+      },
+      "title": "Kind of Blue",
       "artist-credit": [
         {
           "name": "Miles Davis",
           "joinphrase": "",
           "artist": {
             "name": "Miles Davis",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type": "Person",
             "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
             "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter"
+            "country": "US",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "type": "Person"
           }
         }
       ],
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
+      "status": "Official",
       "date": "1960",
-      "disambiguation": "mono",
-      "packaging": null,
-      "quality": "normal",
-      "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "NL",
-      "release-group": {
-        "secondary-types": [],
-        "title": "Kind of Blue",
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": [],
-        "artist-credit": [
-          {
-            "name": "Miles Davis",
-            "joinphrase": "",
-            "artist": {
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "country": "US",
-              "type": "Person",
-              "name": "Miles Davis",
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-            }
-          }
-        ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "primary-type": "Album",
-        "secondary-type-ids": [],
-        "disambiguation": ""
-      }
-    },
-    {
-      "country": "GB",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal",
-      "release-group": {
-        "disambiguation": "",
-        "secondary-type-ids": [],
-        "primary-type": "Album",
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "artist-credit": [
-          {
-            "joinphrase": "",
-            "name": "Miles Davis",
-            "artist": {
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "sort-name": "Davis, Miles",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "name": "Miles Davis",
-              "type": "Person",
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
-            }
-          }
-        ],
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": [],
-        "title": "Kind of Blue",
-        "secondary-types": []
-      },
-      "id": "19f628e9-91a7-4037-b7ef-2889aabe9d02",
-      "title": "Kind of Blue",
       "release-events": [
         {
           "area": {
-            "type": null,
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-            "name": "United Kingdom",
+            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
+            "sort-name": "Netherlands",
             "disambiguation": "",
-            "sort-name": "United Kingdom",
+            "type-id": null,
+            "name": "Netherlands",
+            "type": null,
             "iso-3166-1-codes": [
-              "GB"
-            ],
-            "type-id": null
+              "NL"
+            ]
           },
           "date": "1960"
         }
       ],
-      "packaging-id": null,
-      "status": "Official",
-      "disambiguation": "mono",
-      "packaging": null,
+      "id": "57089ee6-9854-409b-93f7-b0536c9625e6",
+      "packaging": null
+    },
+    {
       "text-representation": {
         "script": "Latn",
         "language": "eng"
       },
+      "quality": "normal",
+      "disambiguation": "mono",
+      "country": "GB",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging": null,
+      "id": "19f628e9-91a7-4037-b7ef-2889aabe9d02",
+      "release-events": [
+        {
+          "date": "1960",
+          "area": {
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "type": null,
+            "name": "United Kingdom",
+            "type-id": null,
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "disambiguation": "",
+            "sort-name": "United Kingdom"
+          }
+        }
+      ],
       "date": "1960",
       "artist-credit": [
         {
           "artist": {
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
             "name": "Miles Davis",
             "disambiguation": "jazz trumpeter, bandleader, songwriter",
             "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "type": "Person"
           },
           "name": "Miles Davis",
           "joinphrase": ""
         }
-      ]
-    },
-    {
-      "country": "FR",
-      "quality": "normal",
+      ],
+      "title": "Kind of Blue",
+      "status": "Official",
       "barcode": null,
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
       "release-group": {
-        "title": "Kind of Blue",
-        "secondary-types": [],
         "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": [],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
         "artist-credit": [
           {
             "name": "Miles Davis",
             "joinphrase": "",
             "artist": {
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "sort-name": "Davis, Miles",
               "country": "US",
               "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "type": "Person",
               "name": "Miles Davis",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              "type": "Person"
             }
           }
         ],
-        "disambiguation": "",
+        "title": "Kind of Blue",
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "secondary-types": [],
+        "releases": [],
         "secondary-type-ids": [],
-        "primary-type": "Album"
+        "primary-type": "Album",
+        "disambiguation": "",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7"
       },
-      "id": "9768d0fa-28a0-48c8-ab88-8088651eae60",
+      "packaging-id": null
+    },
+    {
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "sort-name": "Davis, Miles",
+            "country": "US",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "type": "Person"
+          }
+        }
+      ],
       "status": "Official",
+      "title": "Kind of Blue",
+      "release-group": {
+        "primary-type": "Album",
+        "disambiguation": "",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "secondary-type-ids": [],
+        "secondary-types": [],
+        "releases": [],
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "first-release-date": "1959-08-17",
+        "artist-credit": [
+          {
+            "name": "Miles Davis",
+            "joinphrase": "",
+            "artist": {
+              "type": "Person",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "country": "US",
+              "sort-name": "Davis, Miles",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "name": "Miles Davis"
+            }
+          }
+        ],
+        "title": "Kind of Blue"
+      },
+      "barcode": null,
       "packaging-id": null,
+      "packaging": null,
+      "id": "9768d0fa-28a0-48c8-ab88-8088651eae60",
       "release-events": [
         {
+          "date": "1960",
           "area": {
-            "name": "France",
             "type": null,
-            "id": "08310658-51eb-3801-80de-5a0739207115",
             "iso-3166-1-codes": [
               "FR"
             ],
             "type-id": null,
             "disambiguation": "",
-            "sort-name": "France"
-          },
-          "date": "1960"
-        }
-      ],
-      "title": "Kind of Blue",
-      "packaging": null,
-      "disambiguation": "",
-      "artist-credit": [
-        {
-          "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "name": "Miles Davis",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person"
-          },
-          "joinphrase": "",
-          "name": "Miles Davis"
+            "sort-name": "France",
+            "id": "08310658-51eb-3801-80de-5a0739207115",
+            "name": "France"
+          }
         }
       ],
       "date": "1960",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      }
-    },
-    {
-      "disambiguation": "mono, Repress",
-      "packaging": null,
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1961",
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "name": "Miles Davis",
-          "artist": {
-            "name": "Miles Davis",
-            "type": "Person",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles"
-          }
-        }
-      ],
-      "id": "a35a08ab-0f6f-4235-8e54-220c5097cbfc",
-      "release-events": [
-        {
-          "area": {
-            "iso-3166-1-codes": [
-              "US"
-            ],
-            "type-id": null,
-            "sort-name": "United States",
-            "disambiguation": "",
-            "name": "United States",
-            "id": "489ce91b-6658-3307-9877-795b68554c98",
-            "type": null
-          },
-          "date": "1961"
-        }
-      ],
-      "title": "Kind of Blue",
-      "packaging-id": null,
-      "status": "Official",
-      "release-group": {
-        "artist-credit": [
-          {
-            "joinphrase": "",
-            "name": "Miles Davis",
-            "artist": {
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "sort-name": "Davis, Miles",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "name": "Miles Davis",
-              "type": "Person",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "country": "US"
-            }
-          }
-        ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "primary-type": "Album",
-        "secondary-type-ids": [],
-        "disambiguation": "",
-        "secondary-types": [],
-        "title": "Kind of Blue",
-        "releases": [],
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7"
-      },
-      "country": "US",
       "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal"
-    },
-    {
-      "country": "GB",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal",
-      "release-group": {
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "artist-credit": [
-          {
-            "joinphrase": "",
-            "name": "Miles Davis",
-            "artist": {
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "name": "Miles Davis",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "country": "US",
-              "type": "Person"
-            }
-          }
-        ],
-        "disambiguation": "",
-        "secondary-type-ids": [],
-        "primary-type": "Album",
-        "title": "Kind of Blue",
-        "secondary-types": [],
-        "releases": [],
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7"
-      },
-      "id": "4c76f430-69f9-43b4-84cc-18b8d166e6bc",
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "date": "1961",
-          "area": {
-            "type": null,
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-            "name": "United Kingdom",
-            "disambiguation": "",
-            "sort-name": "United Kingdom",
-            "iso-3166-1-codes": [
-              "GB"
-            ],
-            "type-id": null
-          }
-        }
-      ],
-      "status": "Official",
-      "packaging-id": null,
-      "packaging": null,
-      "disambiguation": "mono",
-      "date": "1961",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "artist-credit": [
-        {
-          "artist": {
-            "name": "Miles Davis",
-            "type": "Person",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles"
-          },
-          "joinphrase": "",
-          "name": "Miles Davis"
-        }
-      ]
-    },
-    {
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1961",
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "name": "Miles Davis",
-          "artist": {
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "name": "Miles Davis"
-          }
-        }
-      ],
-      "disambiguation": "stereo, Repress",
-      "packaging": null,
-      "release-events": [
-        {
-          "area": {
-            "name": "Canada",
-            "type": null,
-            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
-            "disambiguation": "",
-            "sort-name": "Canada",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "CA"
-            ]
-          },
-          "date": "1961"
-        }
-      ],
-      "title": "Kind of Blue",
-      "packaging-id": null,
-      "status": "Official",
-      "id": "819a8dc6-8018-42f7-a053-cb04acbddade",
-      "release-group": {
-        "artist-credit": [
-          {
-            "joinphrase": "",
-            "name": "Miles Davis",
-            "artist": {
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "country": "US",
-              "type": "Person",
-              "name": "Miles Davis"
-            }
-          }
-        ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "primary-type": "Album",
-        "disambiguation": "",
-        "secondary-type-ids": [],
-        "secondary-types": [],
-        "title": "Kind of Blue",
-        "releases": [],
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7"
-      },
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal",
-      "country": "CA"
-    },
-    {
-      "disambiguation": "mono, Reissue",
-      "packaging": null,
       "text-representation": {
         "language": "eng",
         "script": "Latn"
       },
-      "date": "1962",
-      "artist-credit": [
-        {
-          "joinphrase": "",
-          "name": "Miles Davis",
-          "artist": {
-            "name": "Miles Davis",
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles"
-          }
-        }
-      ],
-      "id": "7fb2d5c8-8a1f-43e4-8de3-c5f64ed725b4",
-      "title": "Kind of Blue",
-      "release-events": [
-        {
-          "area": {
-            "name": "United Kingdom",
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-            "type": null,
-            "sort-name": "United Kingdom",
-            "disambiguation": "",
-            "iso-3166-1-codes": [
-              "GB"
-            ],
-            "type-id": null
-          },
-          "date": "1962"
-        }
-      ],
+      "quality": "normal",
+      "disambiguation": "",
+      "country": "FR"
+    },
+    {
       "packaging-id": null,
-      "status": "Official",
       "release-group": {
-        "title": "Kind of Blue",
-        "secondary-types": [],
+        "primary-type": "Album",
         "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "first-release-date": "1959-08-17",
-        "releases": [],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "artist-credit": [
-          {
-            "joinphrase": "",
-            "name": "Miles Davis",
-            "artist": {
-              "name": "Miles Davis",
-              "type": "Person",
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "sort-name": "Davis, Miles",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-            }
-          }
-        ],
         "disambiguation": "",
         "secondary-type-ids": [],
-        "primary-type": "Album"
-      },
-      "country": "GB",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "quality": "normal",
-      "barcode": null
-    },
-    {
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "date": "1962",
-      "artist-credit": [
-        {
-          "artist": {
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "name": "Miles Davis",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "disambiguation": "stereo, misprint, reissue",
-      "packaging": null,
-      "release-events": [
-        {
-          "date": "1962",
-          "area": {
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "GB"
-            ],
-            "disambiguation": "",
-            "sort-name": "United Kingdom",
-            "name": "United Kingdom",
-            "type": null,
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed"
-          }
-        }
-      ],
-      "title": "Kind of Blue",
-      "packaging-id": null,
-      "status": "Official",
-      "id": "91b60109-f99f-4310-952f-ae2d9869bc10",
-      "release-group": {
+        "secondary-types": [],
+        "releases": [],
         "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "first-release-date": "1959-08-17",
+        "title": "Kind of Blue",
         "artist-credit": [
           {
             "artist": {
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
               "name": "Miles Davis",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "sort-name": "Davis, Miles",
               "country": "US",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
               "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
               "type": "Person"
             },
             "joinphrase": "",
             "name": "Miles Davis"
           }
+        ]
+      },
+      "barcode": null,
+      "status": "Official",
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "joinphrase": "",
+          "artist": {
+            "type": "Person",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          }
+        }
+      ],
+      "title": "Kind of Blue",
+      "date": "1961",
+      "release-events": [
+        {
+          "date": "1961",
+          "area": {
+            "name": "United States",
+            "disambiguation": "",
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "type": null
+          }
+        }
+      ],
+      "id": "a35a08ab-0f6f-4235-8e54-220c5097cbfc",
+      "packaging": null,
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "US",
+      "quality": "normal",
+      "disambiguation": "mono, Repress",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      }
+    },
+    {
+      "artist-credit": [
+        {
+          "artist": {
+            "type": "Person",
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "sort-name": "Davis, Miles",
+            "country": "US"
+          },
+          "joinphrase": "",
+          "name": "Miles Davis"
+        }
+      ],
+      "title": "Kind of Blue",
+      "status": "Official",
+      "packaging-id": null,
+      "barcode": null,
+      "release-group": {
+        "first-release-date": "1959-08-17",
+        "artist-credit": [
+          {
+            "joinphrase": "",
+            "name": "Miles Davis",
+            "artist": {
+              "type": "Person",
+              "sort-name": "Davis, Miles",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "country": "US",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "name": "Miles Davis"
+            }
+          }
         ],
-        "disambiguation": "",
+        "title": "Kind of Blue",
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "secondary-types": [],
+        "releases": [],
         "secondary-type-ids": [],
         "primary-type": "Album",
-        "title": "Kind of Blue",
-        "secondary-types": [],
-        "first-release-date": "1959-08-17",
         "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": []
+        "disambiguation": ""
       },
+      "packaging": null,
+      "date": "1961",
+      "release-events": [
+        {
+          "date": "1961",
+          "area": {
+            "type": null,
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "sort-name": "United Kingdom",
+            "disambiguation": "",
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "type-id": null,
+            "name": "United Kingdom"
+          }
+        }
+      ],
+      "id": "4c76f430-69f9-43b4-84cc-18b8d166e6bc",
       "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
       "quality": "normal",
-      "barcode": null,
+      "disambiguation": "mono",
       "country": "GB"
     },
     {
-      "status": "Official",
       "packaging-id": null,
+      "release-group": {
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "artist-credit": [
+          {
+            "joinphrase": "",
+            "name": "Miles Davis",
+            "artist": {
+              "type": "Person",
+              "name": "Miles Davis",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "sort-name": "Davis, Miles",
+              "country": "US",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
+            }
+          }
+        ],
+        "title": "Kind of Blue",
+        "first-release-date": "1959-08-17",
+        "secondary-type-ids": [],
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "primary-type": "Album",
+        "releases": [],
+        "secondary-types": []
+      },
+      "barcode": null,
+      "status": "Official",
+      "artist-credit": [
+        {
+          "name": "Miles Davis",
+          "joinphrase": "",
+          "artist": {
+            "type": "Person",
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
+          }
+        }
+      ],
       "title": "Kind of Blue",
+      "release-events": [
+        {
+          "date": "1961",
+          "area": {
+            "sort-name": "Canada",
+            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+            "disambiguation": "",
+            "type-id": null,
+            "name": "Canada",
+            "type": null,
+            "iso-3166-1-codes": [
+              "CA"
+            ]
+          }
+        }
+      ],
+      "date": "1961",
+      "id": "819a8dc6-8018-42f7-a053-cb04acbddade",
+      "packaging": null,
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "quality": "normal",
+      "disambiguation": "stereo, Repress",
+      "country": "CA",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      }
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "quality": "normal",
+      "country": "GB",
+      "disambiguation": "mono, Reissue",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "release-group": {
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "first-release-date": "1959-08-17",
+        "title": "Kind of Blue",
+        "artist-credit": [
+          {
+            "artist": {
+              "type": "Person",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "country": "US",
+              "sort-name": "Davis, Miles",
+              "name": "Miles Davis"
+            },
+            "name": "Miles Davis",
+            "joinphrase": ""
+          }
+        ],
+        "primary-type": "Album",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "secondary-type-ids": [],
+        "secondary-types": [],
+        "releases": []
+      },
+      "barcode": null,
+      "packaging-id": null,
+      "artist-credit": [
+        {
+          "artist": {
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "country": "US",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "type": "Person"
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
+        }
+      ],
+      "title": "Kind of Blue",
+      "status": "Official",
+      "id": "7fb2d5c8-8a1f-43e4-8de3-c5f64ed725b4",
+      "release-events": [
+        {
+          "area": {
+            "type": null,
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "sort-name": "United Kingdom",
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "disambiguation": "",
+            "type-id": null,
+            "name": "United Kingdom"
+          },
+          "date": "1962"
+        }
+      ],
+      "date": "1962",
+      "packaging": null
+    },
+    {
+      "packaging": null,
+      "id": "91b60109-f99f-4310-952f-ae2d9869bc10",
+      "release-events": [
+        {
+          "area": {
+            "name": "United Kingdom",
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "disambiguation": "",
+            "sort-name": "United Kingdom",
+            "type-id": null,
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "type": null
+          },
+          "date": "1962"
+        }
+      ],
+      "date": "1962",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "type": "Person",
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "country": "US",
+            "sort-name": "Davis, Miles",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
+          }
+        }
+      ],
+      "status": "Official",
+      "title": "Kind of Blue",
+      "release-group": {
+        "artist-credit": [
+          {
+            "artist": {
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "sort-name": "Davis, Miles",
+              "country": "US",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "name": "Miles Davis",
+              "type": "Person"
+            },
+            "joinphrase": "",
+            "name": "Miles Davis"
+          }
+        ],
+        "title": "Kind of Blue",
+        "first-release-date": "1959-08-17",
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "releases": [],
+        "secondary-types": [],
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "primary-type": "Album",
+        "secondary-type-ids": []
+      },
+      "barcode": null,
+      "packaging-id": null,
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "quality": "normal",
+      "country": "GB",
+      "disambiguation": "stereo, misprint, reissue",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "date": "1963",
       "release-events": [
         {
           "date": "1963",
           "area": {
-            "type": null,
+            "type-id": null,
+            "sort-name": "France",
+            "disambiguation": "",
             "id": "08310658-51eb-3801-80de-5a0739207115",
             "name": "France",
-            "disambiguation": "",
-            "sort-name": "France",
-            "type-id": null,
+            "type": null,
             "iso-3166-1-codes": [
               "FR"
             ]
@@ -1501,373 +1503,371 @@
         }
       ],
       "id": "530ab29f-37ba-4404-9d8f-a9b9124b2bce",
+      "packaging": null,
+      "packaging-id": null,
+      "release-group": {
+        "releases": [],
+        "secondary-types": [],
+        "secondary-type-ids": [],
+        "disambiguation": "",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "primary-type": "Album",
+        "artist-credit": [
+          {
+            "name": "Miles Davis",
+            "joinphrase": "",
+            "artist": {
+              "name": "Miles Davis",
+              "sort-name": "Davis, Miles",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "country": "US",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "type": "Person"
+            }
+          }
+        ],
+        "title": "Kind of Blue",
+        "first-release-date": "1959-08-17",
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+      },
+      "barcode": null,
       "artist-credit": [
         {
-          "name": "Miles Davis",
-          "joinphrase": "",
           "artist": {
-            "sort-name": "Davis, Miles",
+            "type": "Person",
+            "name": "Miles Davis",
             "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "sort-name": "Davis, Miles",
             "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
             "country": "US",
-            "type": "Person",
-            "name": "Miles Davis"
-          }
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          },
+          "name": "Miles Davis",
+          "joinphrase": ""
         }
       ],
-      "date": "1963",
+      "title": "Kind of Blue",
+      "status": "Official",
+      "quality": "normal",
+      "disambiguation": "mono, Reissue",
+      "country": "FR",
       "text-representation": {
         "script": "Latn",
         "language": "eng"
       },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "date": "1964",
+      "release-events": [
+        {
+          "area": {
+            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+            "disambiguation": "",
+            "sort-name": "Canada",
+            "type-id": null,
+            "name": "Canada",
+            "type": null,
+            "iso-3166-1-codes": [
+              "CA"
+            ]
+          },
+          "date": "1964"
+        }
+      ],
+      "id": "7b3590f9-27e4-4fee-8757-2692b73d5c5e",
       "packaging": null,
-      "disambiguation": "mono, Reissue",
+      "packaging-id": null,
       "barcode": null,
-      "quality": "normal",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "FR",
       "release-group": {
-        "title": "Kind of Blue",
-        "secondary-types": [],
-        "releases": [],
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "first-release-date": "1959-08-17",
         "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+        "first-release-date": "1959-08-17",
         "artist-credit": [
           {
             "artist": {
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "type": "Person",
               "name": "Miles Davis",
               "sort-name": "Davis, Miles",
               "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "country": "US",
+              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "type": "Person"
+            },
+            "joinphrase": "",
+            "name": "Miles Davis"
+          }
+        ],
+        "title": "Kind of Blue",
+        "secondary-type-ids": [],
+        "primary-type": "Album",
+        "disambiguation": "",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "secondary-types": [],
+        "releases": []
+      },
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "name": "Miles Davis",
+          "artist": {
+            "type": "Person",
+            "name": "Miles Davis",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "sort-name": "Davis, Miles",
+            "country": "US",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a"
+          }
+        }
+      ],
+      "status": "Official",
+      "title": "Kind of Blue",
+      "disambiguation": "stereo, Reissue",
+      "quality": "normal",
+      "country": "CA",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "release-group": {
+        "secondary-types": [],
+        "releases": [],
+        "secondary-type-ids": [],
+        "primary-type": "Album",
+        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "disambiguation": "",
+        "first-release-date": "1959-08-17",
+        "title": "Kind of Blue",
+        "artist-credit": [
+          {
+            "artist": {
+              "type": "Person",
+              "name": "Miles Davis",
+              "country": "US",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
+              "sort-name": "Davis, Miles",
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
               "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
             },
             "name": "Miles Davis",
             "joinphrase": ""
           }
         ],
-        "secondary-type-ids": [],
-        "disambiguation": "",
-        "primary-type": "Album"
-      }
-    },
-    {
-      "id": "7b3590f9-27e4-4fee-8757-2692b73d5c5e",
-      "release-events": [
-        {
-          "area": {
-            "name": "Canada",
-            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
-            "type": null,
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "CA"
-            ],
-            "sort-name": "Canada",
-            "disambiguation": ""
-          },
-          "date": "1964"
-        }
-      ],
-      "title": "Kind of Blue",
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc"
+      },
+      "barcode": null,
       "packaging-id": null,
-      "status": "Official",
-      "disambiguation": "stereo, Reissue",
-      "packaging": null,
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "date": "1964",
-      "artist-credit": [
-        {
-          "artist": {
-            "name": "Miles Davis",
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "sort-name": "Davis, Miles"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
-      "country": "CA",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "quality": "normal",
-      "barcode": null,
-      "release-group": {
-        "releases": [],
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "first-release-date": "1959-08-17",
-        "title": "Kind of Blue",
-        "secondary-types": [],
-        "secondary-type-ids": [],
-        "disambiguation": "",
-        "primary-type": "Album",
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "artist-credit": [
-          {
-            "artist": {
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "sort-name": "Davis, Miles",
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "name": "Miles Davis",
-              "type": "Person",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "country": "US"
-            },
-            "name": "Miles Davis",
-            "joinphrase": ""
-          }
-        ]
-      }
-    },
-    {
-      "release-group": {
-        "title": "Kind of Blue",
-        "secondary-types": [],
-        "first-release-date": "1959-08-17",
-        "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": [],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "artist-credit": [
-          {
-            "joinphrase": "",
-            "name": "Miles Davis",
-            "artist": {
-              "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "sort-name": "Davis, Miles",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "name": "Miles Davis",
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-              "type": "Person"
-            }
-          }
-        ],
-        "disambiguation": "",
-        "secondary-type-ids": [],
-        "primary-type": "Album"
-      },
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "barcode": null,
-      "quality": "normal",
-      "country": "NL",
-      "text-representation": {
-        "language": "eng",
-        "script": "Latn"
-      },
-      "date": "1964",
       "artist-credit": [
         {
           "joinphrase": "",
           "name": "Miles Davis",
           "artist": {
-            "type": "Person",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "country": "US",
-            "name": "Miles Davis",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
             "sort-name": "Davis, Miles",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "country": "US",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Miles Davis",
+            "type": "Person"
           }
         }
       ],
-      "disambiguation": "mono, Reissue",
-      "packaging": null,
-      "release-events": [
-        {
-          "area": {
-            "type": null,
-            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
-            "name": "Netherlands",
-            "disambiguation": "",
-            "sort-name": "Netherlands",
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "NL"
-            ]
-          },
-          "date": "1964"
-        }
-      ],
       "title": "Kind of Blue",
-      "packaging-id": null,
       "status": "Official",
-      "id": "8db29cd5-74e8-4226-ba12-d9f7d9453ef1"
-    },
-    {
-      "artist-credit": [
-        {
-          "artist": {
-            "name": "Miles Davis",
-            "country": "US",
-            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-            "type": "Person",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
-          },
-          "name": "Miles Davis",
-          "joinphrase": ""
-        }
-      ],
+      "id": "8db29cd5-74e8-4226-ba12-d9f7d9453ef1",
       "date": "1964",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
-      "packaging": null,
-      "disambiguation": "stereo, Reissue",
-      "status": "Official",
-      "packaging-id": null,
       "release-events": [
         {
           "date": "1964",
           "area": {
             "type-id": null,
-            "iso-3166-1-codes": [
-              "US"
-            ],
+            "sort-name": "Netherlands",
             "disambiguation": "",
-            "sort-name": "United States",
-            "name": "United States",
+            "id": "ef1b7cc0-cd26-36f4-8ea0-04d9623786c7",
+            "name": "Netherlands",
             "type": null,
-            "id": "489ce91b-6658-3307-9877-795b68554c98"
+            "iso-3166-1-codes": [
+              "NL"
+            ]
           }
         }
       ],
-      "title": "Kind of Blue",
+      "packaging": null,
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "NL",
+      "quality": "normal",
+      "disambiguation": "mono, Reissue",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      }
+    },
+    {
+      "packaging": null,
+      "release-events": [
+        {
+          "date": "1964",
+          "area": {
+            "type": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "disambiguation": "",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "name": "United States"
+          }
+        }
+      ],
+      "date": "1964",
       "id": "c5a73143-5bd8-4328-955e-ce52e0e7bb8a",
+      "title": "Kind of Blue",
+      "artist-credit": [
+        {
+          "artist": {
+            "type": "Person",
+            "name": "Miles Davis",
+            "sort-name": "Davis, Miles",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
+            "country": "US",
+            "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          },
+          "joinphrase": "",
+          "name": "Miles Davis"
+        }
+      ],
+      "status": "Official",
+      "packaging-id": null,
       "release-group": {
-        "secondary-types": [],
-        "title": "Kind of Blue",
-        "releases": [],
+        "secondary-type-ids": [],
+        "primary-type": "Album",
+        "disambiguation": "",
         "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
+        "secondary-types": [],
+        "releases": [],
+        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
         "first-release-date": "1959-08-17",
         "artist-credit": [
           {
             "artist": {
               "name": "Miles Davis",
-              "type": "Person",
-              "country": "US",
-              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
               "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+              "sort-name": "Davis, Miles",
               "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "sort-name": "Davis, Miles"
+              "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "country": "US",
+              "type": "Person"
             },
-            "joinphrase": "",
-            "name": "Miles Davis"
+            "name": "Miles Davis",
+            "joinphrase": ""
           }
         ],
-        "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "primary-type": "Album",
-        "disambiguation": "",
-        "secondary-type-ids": []
+        "title": "Kind of Blue"
       },
       "barcode": null,
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "country": "US",
       "quality": "normal",
-      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
-      "country": "US"
+      "disambiguation": "stereo, Reissue",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
     },
     {
-      "country": "GB",
       "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "disambiguation": "stereo, Reissue",
       "quality": "normal",
-      "barcode": null,
+      "country": "GB",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
       "release-group": {
+        "first-release-date": "1959-08-17",
+        "title": "Kind of Blue",
         "artist-credit": [
           {
             "name": "Miles Davis",
             "joinphrase": "",
             "artist": {
               "name": "Miles Davis",
-              "type": "Person",
+              "disambiguation": "jazz trumpeter, bandleader, songwriter",
               "country": "US",
               "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+              "sort-name": "Davis, Miles",
               "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-              "disambiguation": "jazz trumpeter, bandleader, songwriter",
-              "sort-name": "Davis, Miles"
+              "type": "Person"
             }
           }
         ],
         "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
-        "primary-type": "Album",
-        "secondary-type-ids": [],
-        "disambiguation": "",
         "secondary-types": [],
-        "title": "Kind of Blue",
-        "first-release-date": "1959-08-17",
+        "releases": [],
+        "secondary-type-ids": [],
+        "primary-type": "Album",
         "id": "8e8a594f-2175-38c7-a871-abb68ec363e7",
-        "releases": []
+        "disambiguation": ""
       },
-      "id": "78a51ebe-e753-4ac7-a450-7b65b2fc4f83",
-      "release-events": [
-        {
-          "area": {
-            "name": "United Kingdom",
-            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
-            "type": null,
-            "type-id": null,
-            "iso-3166-1-codes": [
-              "GB"
-            ],
-            "sort-name": "United Kingdom",
-            "disambiguation": ""
-          },
-          "date": "1965"
-        }
-      ],
-      "title": "Kind of Blue",
-      "status": "Official",
+      "barcode": null,
       "packaging-id": null,
-      "packaging": null,
-      "disambiguation": "stereo, Reissue",
-      "date": "1965",
-      "text-representation": {
-        "script": "Latn",
-        "language": "eng"
-      },
+      "title": "Kind of Blue",
       "artist-credit": [
         {
           "artist": {
-            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-            "sort-name": "Davis, Miles",
-            "disambiguation": "jazz trumpeter, bandleader, songwriter",
             "name": "Miles Davis",
             "country": "US",
+            "disambiguation": "jazz trumpeter, bandleader, songwriter",
             "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+            "sort-name": "Davis, Miles",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
             "type": "Person"
           },
           "joinphrase": "",
           "name": "Miles Davis"
         }
-      ]
+      ],
+      "status": "Official",
+      "id": "78a51ebe-e753-4ac7-a450-7b65b2fc4f83",
+      "date": "1965",
+      "release-events": [
+        {
+          "date": "1965",
+          "area": {
+            "type": null,
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "type-id": null,
+            "disambiguation": "",
+            "sort-name": "United Kingdom",
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "name": "United Kingdom"
+          }
+        }
+      ],
+      "packaging": null
     }
   ],
-  "id": "60f750f4-d222-46b7-ad5c-905334c9a48a",
-  "relations": [],
   "first-release-date": "1959-08-17",
-  "length": 545426,
   "title": "So What",
-  "video": false,
-  "disambiguation": "stereo",
+  "relations": [],
   "artist-credit": [
     {
       "artist": {
-        "disambiguation": "jazz trumpeter, bandleader, songwriter",
         "sort-name": "Davis, Miles",
-        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-        "type": "Person",
-        "country": "US",
         "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-        "name": "Miles Davis"
+        "country": "US",
+        "disambiguation": "jazz trumpeter, bandleader, songwriter",
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "name": "Miles Davis",
+        "type": "Person"
       },
       "name": "Miles Davis",
       "joinphrase": ""

@@ -62,6 +62,18 @@ export interface ReleaseEdition {
   country: string | null;
 }
 
+/** An edition with its URL relationships (nightly "Listen on" re-read, milestone 13). */
+export interface EditionWithLinks extends ReleaseEdition {
+  urlRelations: ProviderUrlRelation[];
+}
+
+export interface EditionLinks {
+  /** The editions read, at most one browse page (100), in MusicBrainz order. */
+  editions: EditionWithLinks[];
+  /** Editions of the group at MusicBrainz: more than `editions.length` = partial read. */
+  total: number;
+}
+
 export interface ReleaseGroupDetail extends ReleaseGroupSummary {
   /** Most voted genres first, at most 5. */
   genres: string[];
@@ -114,6 +126,8 @@ export interface CatalogProvider {
   /** The artist's release groups, albums and EPs first, capped to keep imports short. */
   getArtistReleaseGroups(mbid: string): Promise<ReleaseGroupSummary[]>;
   getRecording(mbid: string): Promise<RecordingDetail>;
+  /** Every edition of a release group with its URL relationships, one request (100 at most). */
+  getEditionLinks(releaseGroupMbid: string): Promise<EditionLinks>;
   /** URL of the front cover, or null when there is none. */
   getCoverUrl(releaseGroupMbid: string): Promise<string | null>;
 }

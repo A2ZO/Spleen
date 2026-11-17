@@ -11,10 +11,15 @@ import {
   type ReleaseGroupSummary,
   type Tracklist,
 } from "@spleen/catalog";
-import { and, eq, inArray, isNotNull, schema, slugify, sql, type Db } from "@spleen/db";
+import { and, eq, inArray, isNotNull, ne, schema, slugify, sql, type Db } from "@spleen/db";
 import type { ImportKind } from "@spleen/validators";
 
-import { LISTEN_SERVICE_DB, pickListenLinks, type ListenKind } from "../listen-links";
+import {
+  LISTEN_SERVICE_DB,
+  pickListenLinks,
+  type ListenKind,
+  type ValidListenUrl,
+} from "../listen-links";
 import { announcedAtFor, mayUpdateDate, trackedDateSet } from "./release-dates";
 
 /*
@@ -298,18 +303,23 @@ const LINK_COLUMN = { release: "releaseId", track: "trackId", artist: "artistId"
 
 /**
  * Stores the valid "Listen on" links of one entity (one per service): a new link is added, a
- * changed one replaced; a link that disappeared from MusicBrainz is kept (docs/catalogue.md).
+ * changed one replaced. With `removeMissing` (nightly re-read of a complete answer), a service
+ * absent from `links` is removed; the import never removes one (docs/catalogue.md).
  */
-async function upsertListenLinks(
+export async function storeListenLinks(
   db: Db,
   kind: ListenKind,
   id: string,
-  relations: ProviderUrlRelation[],
+  links: ValidListenUrl[],
   now: Date,
+  { removeMissing }: { removeMissing: boolean },
 ) {
-  const links = pickListenLinks(relations, kind);
-  if (links.length === 0) return;
   const column = listenLinks[LINK_COLUMN[kind]];
+  if (removeMissing) {
+    const kept = links.map((link) => ne(listenLinks.service, LISTEN_SERVICE_DB[link.service]));
+    await db.delete(listenLinks).where(and(eq(column, id), ...kept));
+  }
+  if (links.length === 0) return;
   await db
     .insert(listenLinks)
     .values(
@@ -324,6 +334,19 @@ async function upsertListenLinks(
       targetWhere: isNotNull(column),
       set: { url: sql`excluded.url`, updatedAt: now },
     });
+}
+
+/** Import: the valid links of the answer are added or updated, none is ever removed. */
+async function upsertListenLinks(
+  db: Db,
+  kind: ListenKind,
+  id: string,
+  relations: ProviderUrlRelation[],
+  now: Date,
+) {
+  await storeListenLinks(db, kind, id, pickListenLinks(relations, kind), now, {
+    removeMissing: false,
+  });
 }
 
 /** Inserts or refreshes a track (recording), its credited artists and its listen links. */

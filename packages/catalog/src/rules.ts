@@ -39,7 +39,7 @@ const dateKey = (date: PartialDate | null) => {
  * Importers try the next edition when MusicBrainz cannot serve the first one.
  * Documented in docs/catalogue.md.
  */
-export function rankEditions(editions: ReleaseEdition[]): ReleaseEdition[] {
+export function rankEditions<T extends ReleaseEdition>(editions: T[]): T[] {
   const year = (e: ReleaseEdition) => e.date?.date.slice(0, 4) ?? "9999";
   return [...editions].sort(
     (a, b) =>

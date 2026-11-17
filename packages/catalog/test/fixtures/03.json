@@ -1,18 +1,13 @@
 {
-  "quality": "normal",
-  "text-representation": {
-    "language": "eng",
-    "script": "Latn"
-  },
   "artist-credit": [
     {
       "artist": {
-        "country": "US",
-        "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-        "name": "Miles Davis",
+        "type": "Person",
         "sort-name": "Davis, Miles",
         "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-        "type": "Person",
+        "name": "Miles Davis",
+        "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+        "country": "US",
         "disambiguation": "jazz trumpeter, bandleader, songwriter"
       },
       "name": "Miles Davis",
@@ -20,385 +15,408 @@
     }
   ],
   "status": "Official",
-  "asin": null,
-  "packaging-id": null,
-  "date": "1959-08-17",
+  "text-representation": {
+    "script": "Latn",
+    "language": "eng"
+  },
+  "quality": "normal",
   "title": "Kind of Blue",
+  "packaging": null,
   "id": "79ed3ff2-1b33-3245-8755-947554bc8b3d",
   "release-events": [
     {
       "date": "1959-08-17",
       "area": {
-        "name": "United States",
-        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "disambiguation": "",
         "type-id": null,
         "sort-name": "United States",
+        "id": "489ce91b-6658-3307-9877-795b68554c98",
+        "name": "United States",
         "type": null,
         "iso-3166-1-codes": [
           "US"
-        ],
-        "disambiguation": ""
+        ]
       }
     }
   ],
-  "packaging": null,
-  "barcode": null,
-  "disambiguation": "mono",
+  "packaging-id": null,
+  "asin": null,
+  "date": "1959-08-17",
   "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
   "cover-art-archive": {
-    "count": 4,
-    "darkened": false,
-    "back": true,
     "front": true,
-    "artwork": true
+    "artwork": true,
+    "back": true,
+    "count": 4,
+    "darkened": false
   },
+  "disambiguation": "mono",
+  "barcode": null,
   "country": "US",
   "relations": [
     {
       "source-credit": "",
       "type": "discogs",
-      "direction": "forward",
-      "attribute-ids": {},
       "type-id": "4a78823c-1c53-4176-a5f3-58026c76f2bc",
+      "attribute-ids": {},
+      "direction": "forward",
       "attributes": [],
       "attribute-values": {},
+      "target-credit": "",
       "url": {
         "resource": "https://www.discogs.com/release/2252871",
         "id": "b53c041f-6a58-43f4-a77f-2e4b80668d0e"
       },
-      "target-credit": "",
       "ended": false,
-      "end": null,
       "target-type": "url",
+      "end": null,
       "begin": null
     }
   ],
   "media": [
     {
       "track-offset": 0,
-      "position": 1,
       "format": "12\" Vinyl",
+      "position": 1,
       "format-id": "3e9080b0-5e6c-34ab-bd15-f526b6306a64",
       "tracks": [
         {
           "position": 1,
           "recording": {
-            "relations": [],
-            "length": 545426,
-            "title": "So What",
-            "video": false,
-            "first-release-date": "1959-08-17",
-            "id": "60f750f4-d222-46b7-ad5c-905334c9a48a",
             "disambiguation": "stereo",
             "artist-credit": [
               {
+                "joinphrase": "",
                 "name": "Miles Davis",
                 "artist": {
-                  "disambiguation": "jazz trumpeter, bandleader, songwriter",
-                  "sort-name": "Davis, Miles",
+                  "country": "US",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "sort-name": "Davis, Miles",
                   "name": "Miles Davis",
                   "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
                   "type": "Person",
-                  "country": "US"
-                },
-                "joinphrase": ""
+                  "disambiguation": "jazz trumpeter, bandleader, songwriter"
+                }
               }
-            ]
+            ],
+            "relations": [],
+            "title": "So What",
+            "length": 545426,
+            "video": false,
+            "id": "60f750f4-d222-46b7-ad5c-905334c9a48a",
+            "first-release-date": "1959-08-17"
           },
           "number": "A1",
           "id": "ddf0af9a-7346-32a9-a13d-67604885992d",
           "artist-credit": [
             {
-              "name": "Miles Davis",
               "artist": {
-                "disambiguation": "jazz trumpeter, bandleader, songwriter",
                 "country": "US",
-                "name": "Miles Davis",
-                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "type": "Person",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                 "sort-name": "Davis, Miles",
-                "type": "Person"
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
               },
+              "name": "Miles Davis",
               "joinphrase": ""
             }
           ],
-          "title": "So What",
-          "length": 545426
+          "length": 545426,
+          "title": "So What"
         },
         {
-          "number": "A2",
-          "recording": {
-            "disambiguation": "stereo",
-            "artist-credit": [
-              {
-                "name": "Miles Davis Quintet",
-                "artist": {
-                  "country": "US",
-                  "type": "Group",
-                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
-                  "sort-name": "Davis, Miles, Quintet",
-                  "id": "fe7245e7-d734-4ca1-8e26-691883f58201",
-                  "name": "Miles Davis Quintet",
-                  "disambiguation": "US jazz group, active 1955–58 and 1964-1970"
-                },
-                "joinphrase": ""
-              }
-            ],
-            "relations": [],
-            "id": "852bf62a-29f9-4026-abc5-86d6e973196f",
-            "first-release-date": "1959-08-17",
-            "length": 575800,
-            "title": "Freddie Freeloader",
-            "video": false
-          },
-          "position": 2,
-          "title": "Freddie Freeloader",
-          "length": 575800,
+          "id": "a499fa44-a456-3d00-aa2c-8ece850f5fda",
           "artist-credit": [
             {
               "name": "Miles Davis",
               "artist": {
-                "disambiguation": "jazz trumpeter, bandleader, songwriter",
                 "type": "Person",
-                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
                 "name": "Miles Davis",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
                 "sort-name": "Davis, Miles",
-                "country": "US"
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "country": "US",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
               },
               "joinphrase": ""
             }
           ],
-          "id": "a499fa44-a456-3d00-aa2c-8ece850f5fda"
+          "title": "Freddie Freeloader",
+          "length": 575800,
+          "position": 2,
+          "recording": {
+            "artist-credit": [
+              {
+                "artist": {
+                  "disambiguation": "US jazz group, active 1955–58 and 1964-1970",
+                  "type": "Group",
+                  "id": "fe7245e7-d734-4ca1-8e26-691883f58201",
+                  "name": "Miles Davis Quintet",
+                  "sort-name": "Davis, Miles, Quintet",
+                  "type-id": "e431f5f6-b5d2-343d-8b36-72607fffb74b",
+                  "country": "US"
+                },
+                "name": "Miles Davis Quintet",
+                "joinphrase": ""
+              }
+            ],
+            "disambiguation": "stereo",
+            "length": 575800,
+            "title": "Freddie Freeloader",
+            "video": false,
+            "id": "852bf62a-29f9-4026-abc5-86d6e973196f",
+            "first-release-date": "1959-08-17",
+            "relations": []
+          },
+          "number": "A2"
         },
         {
+          "position": 3,
           "number": "A3",
           "recording": {
-            "relations": [],
             "id": "67a9794c-153a-4a24-82ec-9eace7e208f2",
             "first-release-date": "1959-08-17",
             "title": "Blue in Green",
             "length": 328666,
             "video": false,
-            "disambiguation": "stereo",
+            "relations": [],
             "artist-credit": [
               {
-                "name": "Miles Davis",
+                "joinphrase": "",
                 "artist": {
-                  "disambiguation": "jazz trumpeter, bandleader, songwriter",
                   "country": "US",
+                  "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                  "name": "Miles Davis",
                   "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
                   "sort-name": "Davis, Miles",
-                  "name": "Miles Davis",
-                  "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-                  "type": "Person"
+                  "type": "Person",
+                  "disambiguation": "jazz trumpeter, bandleader, songwriter"
                 },
-                "joinphrase": ""
+                "name": "Miles Davis"
               }
-            ]
+            ],
+            "disambiguation": "stereo"
           },
-          "position": 3,
+          "id": "947d44bd-50cf-322e-953e-dde11861fe4c",
           "length": 328666,
           "title": "Blue in Green",
+          "artist-credit": [
+            {
+              "joinphrase": "",
+              "artist": {
+                "disambiguation": "jazz trumpeter, bandleader, songwriter",
+                "name": "Miles Davis",
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Davis, Miles",
+                "type": "Person",
+                "country": "US"
+              },
+              "name": "Miles Davis"
+            }
+          ]
+        },
+        {
           "artist-credit": [
             {
               "name": "Miles Davis",
               "artist": {
                 "country": "US",
-                "type": "Person",
-                "name": "Miles Davis",
                 "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-                "sort-name": "Davis, Miles",
+                "name": "Miles Davis",
                 "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Davis, Miles",
+                "type": "Person",
                 "disambiguation": "jazz trumpeter, bandleader, songwriter"
               },
               "joinphrase": ""
             }
           ],
-          "id": "947d44bd-50cf-322e-953e-dde11861fe4c"
-        },
-        {
-          "id": "a99dca4f-ddb6-3a9a-8bbf-52b8c747149f",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "artist": {
-                "name": "Miles Davis",
-                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-                "sort-name": "Davis, Miles",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "type": "Person",
-                "country": "US",
-                "disambiguation": "jazz trumpeter, bandleader, songwriter"
-              },
-              "name": "Miles Davis"
-            }
-          ],
-          "length": 693800,
           "title": "All Blues",
-          "position": 4,
+          "length": 693800,
+          "id": "a99dca4f-ddb6-3a9a-8bbf-52b8c747149f",
           "recording": {
-            "disambiguation": "stereo",
-            "artist-credit": [
-              {
-                "name": "Miles Davis",
-                "artist": {
-                  "country": "US",
-                  "sort-name": "Davis, Miles",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                  "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-                  "name": "Miles Davis",
-                  "type": "Person",
-                  "disambiguation": "jazz trumpeter, bandleader, songwriter"
-                },
-                "joinphrase": ""
-              }
-            ],
-            "relations": [
-              {
-                "attributes": [],
-                "attribute-values": {},
-                "source-credit": "",
-                "type-id": "7e41ef12-a124-4324-afdb-fdbae687a89c",
-                "direction": "forward",
-                "attribute-ids": {},
-                "type": "free streaming",
-                "begin": null,
-                "ended": false,
-                "target-credit": "",
-                "url": {
-                  "id": "23e96873-cee9-4a7b-9933-f7f7002b5f5a",
-                  "resource": "https://open.spotify.com/track/0TUa7gBg7LJH6B8dkNVioU"
-                },
-                "target-type": "url",
-                "end": null
-              },
-              {
-                "begin": null,
-                "end": null,
-                "target-type": "url",
-                "url": {
-                  "id": "75badb91-9dc0-44f8-8ce5-7cfb93c9e004",
-                  "resource": "https://www.deezer.com/track/15600319"
-                },
-                "target-credit": "",
-                "ended": false,
-                "attribute-values": {},
-                "attributes": [],
-                "type": "free streaming",
-                "attribute-ids": {},
-                "direction": "forward",
-                "type-id": "7e41ef12-a124-4324-afdb-fdbae687a89c",
-                "source-credit": ""
-              },
-              {
-                "attribute-values": {},
-                "attributes": [],
-                "type-id": "92777657-504c-4acb-bd33-51a201bd57e1",
-                "attribute-ids": {},
-                "direction": "forward",
-                "type": "purchase for download",
-                "source-credit": "",
-                "begin": null,
-                "target-type": "url",
-                "end": null,
-                "ended": false,
-                "url": {
-                  "resource": "https://music.apple.com/us/song/268443200",
-                  "id": "4a778b15-ad17-43c1-a238-c8108709896d"
-                },
-                "target-credit": ""
-              },
-              {
-                "begin": null,
-                "ended": false,
-                "url": {
-                  "id": "03760b35-8e90-4871-863e-955a919ffa22",
-                  "resource": "https://open.qobuz.com/track/13176086"
-                },
-                "target-credit": "",
-                "end": null,
-                "target-type": "url",
-                "attributes": [],
-                "attribute-values": {},
-                "source-credit": "",
-                "direction": "forward",
-                "attribute-ids": {},
-                "type-id": "92777657-504c-4acb-bd33-51a201bd57e1",
-                "type": "purchase for download"
-              },
-              {
-                "attribute-ids": {},
-                "direction": "forward",
-                "type-id": "b5f3058a-666c-406f-aafb-f9249fc7b122",
-                "type": "streaming",
-                "source-credit": "",
-                "attribute-values": {},
-                "attributes": [],
-                "end": null,
-                "target-type": "url",
-                "ended": false,
-                "url": {
-                  "resource": "https://music.apple.com/us/song/268443200",
-                  "id": "4a778b15-ad17-43c1-a238-c8108709896d"
-                },
-                "target-credit": "",
-                "begin": null
-              },
-              {
-                "target-credit": "",
-                "url": {
-                  "id": "03760b35-8e90-4871-863e-955a919ffa22",
-                  "resource": "https://open.qobuz.com/track/13176086"
-                },
-                "ended": false,
-                "end": null,
-                "target-type": "url",
-                "begin": null,
-                "source-credit": "",
-                "type": "streaming",
-                "direction": "forward",
-                "attribute-ids": {},
-                "type-id": "b5f3058a-666c-406f-aafb-f9249fc7b122",
-                "attributes": [],
-                "attribute-values": {}
-              },
-              {
-                "attribute-values": {},
-                "attributes": [],
-                "type": "streaming",
-                "attribute-ids": {},
-                "direction": "forward",
-                "type-id": "b5f3058a-666c-406f-aafb-f9249fc7b122",
-                "source-credit": "",
-                "begin": null,
-                "end": null,
-                "target-type": "url",
-                "url": {
-                  "resource": "https://tidal.com/track/655913",
-                  "id": "d2da9ec8-6369-4d50-bb05-573e858c9852"
-                },
-                "target-credit": "",
-                "ended": false
-              }
-            ],
             "video": false,
             "title": "All Blues",
             "length": 693800,
             "id": "b7ebe185-21e9-4400-a17a-3d0cee232925",
-            "first-release-date": "1959-08-17"
+            "first-release-date": "1959-08-17",
+            "relations": [
+              {
+                "source-credit": "",
+                "attribute-ids": {},
+                "direction": "forward",
+                "type-id": "7e41ef12-a124-4324-afdb-fdbae687a89c",
+                "type": "free streaming",
+                "attributes": [],
+                "attribute-values": {},
+                "ended": false,
+                "url": {
+                  "resource": "https://open.spotify.com/track/0TUa7gBg7LJH6B8dkNVioU",
+                  "id": "23e96873-cee9-4a7b-9933-f7f7002b5f5a"
+                },
+                "target-credit": "",
+                "end": null,
+                "target-type": "url",
+                "begin": null
+              },
+              {
+                "begin": null,
+                "ended": false,
+                "target-credit": "",
+                "url": {
+                  "resource": "https://www.deezer.com/track/15600319",
+                  "id": "75badb91-9dc0-44f8-8ce5-7cfb93c9e004"
+                },
+                "target-type": "url",
+                "end": null,
+                "attributes": [],
+                "attribute-values": {},
+                "source-credit": "",
+                "type-id": "7e41ef12-a124-4324-afdb-fdbae687a89c",
+                "attribute-ids": {},
+                "direction": "forward",
+                "type": "free streaming"
+              },
+              {
+                "begin": null,
+                "url": {
+                  "id": "4a778b15-ad17-43c1-a238-c8108709896d",
+                  "resource": "https://music.apple.com/us/song/268443200"
+                },
+                "target-credit": "",
+                "ended": false,
+                "end": null,
+                "target-type": "url",
+                "attributes": [],
+                "attribute-values": {},
+                "source-credit": "",
+                "type": "purchase for download",
+                "attribute-ids": {},
+                "direction": "forward",
+                "type-id": "92777657-504c-4acb-bd33-51a201bd57e1"
+              },
+              {
+                "attribute-values": {},
+                "attributes": [],
+                "type": "purchase for download",
+                "attribute-ids": {},
+                "direction": "forward",
+                "type-id": "92777657-504c-4acb-bd33-51a201bd57e1",
+                "source-credit": "",
+                "begin": null,
+                "end": null,
+                "target-type": "url",
+                "target-credit": "",
+                "url": {
+                  "id": "03760b35-8e90-4871-863e-955a919ffa22",
+                  "resource": "https://open.qobuz.com/track/13176086"
+                },
+                "ended": false
+              },
+              {
+                "source-credit": "",
+                "type": "streaming",
+                "type-id": "b5f3058a-666c-406f-aafb-f9249fc7b122",
+                "attribute-ids": {},
+                "direction": "forward",
+                "attributes": [],
+                "attribute-values": {},
+                "url": {
+                  "resource": "https://music.apple.com/us/song/268443200",
+                  "id": "4a778b15-ad17-43c1-a238-c8108709896d"
+                },
+                "target-credit": "",
+                "ended": false,
+                "target-type": "url",
+                "end": null,
+                "begin": null
+              },
+              {
+                "attribute-values": {},
+                "attributes": [],
+                "type-id": "b5f3058a-666c-406f-aafb-f9249fc7b122",
+                "attribute-ids": {},
+                "direction": "forward",
+                "type": "streaming",
+                "source-credit": "",
+                "begin": null,
+                "target-type": "url",
+                "end": null,
+                "ended": false,
+                "target-credit": "",
+                "url": {
+                  "resource": "https://open.qobuz.com/track/13176086",
+                  "id": "03760b35-8e90-4871-863e-955a919ffa22"
+                }
+              },
+              {
+                "attribute-values": {},
+                "attributes": [],
+                "direction": "forward",
+                "attribute-ids": {},
+                "type-id": "b5f3058a-666c-406f-aafb-f9249fc7b122",
+                "type": "streaming",
+                "source-credit": "",
+                "begin": null,
+                "end": null,
+                "target-type": "url",
+                "ended": false,
+                "url": {
+                  "resource": "https://tidal.com/track/655913",
+                  "id": "d2da9ec8-6369-4d50-bb05-573e858c9852"
+                },
+                "target-credit": ""
+              }
+            ],
+            "artist-credit": [
+              {
+                "joinphrase": "",
+                "artist": {
+                  "disambiguation": "jazz trumpeter, bandleader, songwriter",
+                  "type": "Person",
+                  "sort-name": "Davis, Miles",
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "name": "Miles Davis",
+                  "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                  "country": "US"
+                },
+                "name": "Miles Davis"
+              }
+            ],
+            "disambiguation": "stereo"
           },
-          "number": "B1"
+          "number": "B1",
+          "position": 4
         },
         {
-          "position": 5,
+          "length": 564800,
+          "title": "Flamenco Sketches",
+          "artist-credit": [
+            {
+              "artist": {
+                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
+                "name": "Miles Davis",
+                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                "sort-name": "Davis, Miles",
+                "type": "Person",
+                "country": "US",
+                "disambiguation": "jazz trumpeter, bandleader, songwriter"
+              },
+              "name": "Miles Davis",
+              "joinphrase": ""
+            }
+          ],
+          "id": "edd43056-92b8-3075-a40d-0eadd7be693c",
+          "number": "B2",
           "recording": {
-            "id": "250b3f1d-7620-42a9-87b3-5d1a166e0f2f",
-            "first-release-date": "1959-08-17",
             "video": false,
             "title": "Flamenco Sketches",
             "length": 564800,
+            "id": "250b3f1d-7620-42a9-87b3-5d1a166e0f2f",
+            "first-release-date": "1959-08-17",
             "relations": [
               {
                 "attributes": [],
@@ -419,61 +437,67 @@
                 "end": null
               },
               {
-                "begin": null,
-                "ended": false,
-                "url": {
-                  "id": "ee6240b7-d049-461e-8edb-ee0d14045736",
-                  "resource": "https://www.deezer.com/track/15600320"
-                },
-                "target-credit": "",
                 "target-type": "url",
                 "end": null,
-                "attributes": [],
-                "attribute-values": {},
-                "source-credit": "",
+                "ended": false,
+                "url": {
+                  "resource": "https://www.deezer.com/track/15600320",
+                  "id": "ee6240b7-d049-461e-8edb-ee0d14045736"
+                },
+                "target-credit": "",
+                "begin": null,
                 "type-id": "7e41ef12-a124-4324-afdb-fdbae687a89c",
                 "attribute-ids": {},
                 "direction": "forward",
-                "type": "free streaming"
-              },
-              {
-                "type": "purchase for download",
-                "attribute-ids": {},
-                "direction": "forward",
-                "type-id": "92777657-504c-4acb-bd33-51a201bd57e1",
+                "type": "free streaming",
                 "source-credit": "",
                 "attribute-values": {},
-                "attributes": [],
+                "attributes": []
+              },
+              {
+                "begin": null,
                 "end": null,
                 "target-type": "url",
-                "target-credit": "",
                 "url": {
                   "id": "392862f6-5724-4c58-9903-49377acec6ca",
                   "resource": "https://music.apple.com/us/song/268443216"
                 },
-                "ended": false,
-                "begin": null
-              },
-              {
-                "begin": null,
-                "target-type": "url",
-                "end": null,
-                "ended": false,
                 "target-credit": "",
-                "url": {
-                  "resource": "https://open.qobuz.com/track/13176087",
-                  "id": "ec6ac647-8ce7-42d2-83a6-b36f82cfc376"
-                },
+                "ended": false,
                 "attribute-values": {},
                 "attributes": [],
-                "type-id": "92777657-504c-4acb-bd33-51a201bd57e1",
+                "type": "purchase for download",
                 "direction": "forward",
                 "attribute-ids": {},
-                "type": "purchase for download",
+                "type-id": "92777657-504c-4acb-bd33-51a201bd57e1",
                 "source-credit": ""
               },
               {
+                "attributes": [],
+                "attribute-values": {},
+                "source-credit": "",
+                "type": "purchase for download",
+                "attribute-ids": {},
+                "direction": "forward",
+                "type-id": "92777657-504c-4acb-bd33-51a201bd57e1",
                 "begin": null,
+                "url": {
+                  "resource": "https://open.qobuz.com/track/13176087",
+                  "id": "ec6ac647-8ce7-42d2-83a6-b36f82cfc376"
+                },
+                "target-credit": "",
+                "ended": false,
+                "end": null,
+                "target-type": "url"
+              },
+              {
+                "source-credit": "",
+                "type-id": "b5f3058a-666c-406f-aafb-f9249fc7b122",
+                "attribute-ids": {},
+                "direction": "forward",
+                "type": "streaming",
+                "attributes": [],
+                "attribute-values": {},
                 "ended": false,
                 "target-credit": "",
                 "url": {
@@ -482,91 +506,67 @@
                 },
                 "target-type": "url",
                 "end": null,
-                "attributes": [],
+                "begin": null
+              },
+              {
                 "attribute-values": {},
-                "source-credit": "",
+                "attributes": [],
+                "type": "streaming",
                 "type-id": "b5f3058a-666c-406f-aafb-f9249fc7b122",
                 "attribute-ids": {},
                 "direction": "forward",
-                "type": "streaming"
+                "source-credit": "",
+                "begin": null,
+                "target-type": "url",
+                "end": null,
+                "url": {
+                  "id": "ec6ac647-8ce7-42d2-83a6-b36f82cfc376",
+                  "resource": "https://open.qobuz.com/track/13176087"
+                },
+                "target-credit": "",
+                "ended": false
               },
               {
+                "end": null,
+                "target-type": "url",
+                "ended": false,
+                "target-credit": "",
+                "url": {
+                  "id": "213b2cfa-c3a4-4b1b-868a-69e1d4087600",
+                  "resource": "https://tidal.com/track/655914"
+                },
+                "begin": null,
                 "attribute-ids": {},
                 "direction": "forward",
                 "type-id": "b5f3058a-666c-406f-aafb-f9249fc7b122",
                 "type": "streaming",
                 "source-credit": "",
                 "attribute-values": {},
-                "attributes": [],
-                "end": null,
-                "target-type": "url",
-                "ended": false,
-                "url": {
-                  "resource": "https://open.qobuz.com/track/13176087",
-                  "id": "ec6ac647-8ce7-42d2-83a6-b36f82cfc376"
-                },
-                "target-credit": "",
-                "begin": null
-              },
-              {
-                "source-credit": "",
-                "type": "streaming",
-                "direction": "forward",
-                "attribute-ids": {},
-                "type-id": "b5f3058a-666c-406f-aafb-f9249fc7b122",
-                "attributes": [],
-                "attribute-values": {},
-                "url": {
-                  "resource": "https://tidal.com/track/655914",
-                  "id": "213b2cfa-c3a4-4b1b-868a-69e1d4087600"
-                },
-                "target-credit": "",
-                "ended": false,
-                "end": null,
-                "target-type": "url",
-                "begin": null
+                "attributes": []
               }
             ],
             "artist-credit": [
               {
                 "name": "Miles Davis",
                 "artist": {
-                  "disambiguation": "jazz trumpeter, bandleader, songwriter",
                   "country": "US",
-                  "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
                   "name": "Miles Davis",
-                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
                   "sort-name": "Davis, Miles",
-                  "type": "Person"
+                  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+                  "type": "Person",
+                  "disambiguation": "jazz trumpeter, bandleader, songwriter"
                 },
                 "joinphrase": ""
               }
             ],
             "disambiguation": "stereo"
           },
-          "number": "B2",
-          "id": "edd43056-92b8-3075-a40d-0eadd7be693c",
-          "artist-credit": [
-            {
-              "joinphrase": "",
-              "artist": {
-                "country": "US",
-                "sort-name": "Davis, Miles",
-                "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-                "id": "561d854a-6a28-4aa7-8c99-323e6ce46c2a",
-                "name": "Miles Davis",
-                "type": "Person",
-                "disambiguation": "jazz trumpeter, bandleader, songwriter"
-              },
-              "name": "Miles Davis"
-            }
-          ],
-          "title": "Flamenco Sketches",
-          "length": 564800
+          "position": 5
         }
       ],
-      "track-count": 5,
       "title": "",
+      "track-count": 5,
       "id": "e8dcd5fa-6fed-39a4-a93a-1bf5856e66b9"
     }
   ]

@@ -9,12 +9,13 @@ import {
   pickReferenceEdition,
   type Throttle,
 } from ".";
-import { escapeLucene } from "./rules";
+import { escapeLucene, rankEditions } from "./rules";
 import {
   createReplayFetch,
   FIXTURE_ALBUM,
   FIXTURE_ARTIST_QUERY,
   FIXTURE_RECORDING,
+  FIXTURE_STREAMING_ALBUM,
 } from "./test-fixtures";
 
 const noThrottle = (): Throttle & { backOffs: number[] } => {
@@ -145,6 +146,21 @@ describe("MusicBrainz provider (recorded responses)", () => {
     // Credits never carry relations, even in a response that asked for them.
     expect(brat.tracks[0]?.recording.artists[0]?.artist.urlRelations).toBeUndefined();
     expect((await provider.getRecording(FIXTURE_RECORDING.mbid)).urlRelations).toEqual([]);
+  });
+
+  it("browses every edition of a group with its URL relationships", async () => {
+    const provider = replayProvider();
+    const { editions, total } = await provider.getEditionLinks(FIXTURE_STREAMING_ALBUM.mbid);
+    expect(total).toBe(editions.length);
+    expect(editions.length).toBeGreaterThan(1);
+    const reference = editions.find((e) => e.mbid === "ab55ac76-eee5-4f89-ac14-7bb9aa837bc8");
+    expect(reference?.urlRelations).toContainEqual({
+      type: "free streaming",
+      url: "https://open.spotify.com/album/2lIZef4lzdvZkiiCzvPKj7",
+    });
+    // Browsing really returns the relations (else the nightly re-read would remove links).
+    expect(editions.every((e) => e.urlRelations.length > 0)).toBe(true);
+    expect(rankEditions(editions)[0]?.urlRelations).toBeDefined();
   });
 
   it("finds covers on Cover Art Archive", async () => {
