@@ -6,6 +6,7 @@ import { recomputeItemState, setWantToListen } from "../listening-state";
 import * as s from "../schema";
 import { seedCrate } from "./crate";
 import { seedDiscovery } from "./discovery";
+import { seedFriends } from "./friends";
 import {
   artists,
   diaryEntries,
@@ -323,6 +324,7 @@ export async function seed(db: Db, options: { now?: Date } = {}): Promise<void> 
     await seedLists(tx, now);
     // After the lists: a report points to one of them.
     await seedModeration(tx, now);
+    await seedFriends(tx, now);
 
     // Inserts above do nothing on conflict: existing demo profiles (created before the terms box,
     // or on an older TERMS_VERSION) accept the current terms here, so demo sign-ins never land on

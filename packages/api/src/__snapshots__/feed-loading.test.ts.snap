@@ -322,6 +322,70 @@ exports[`feed loading > returns the same pages as before 1`] = `
         "track": null,
       },
       {
+        "at": "2026-09-10T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Salomé",
+          "username": "metrominuit",
+        },
+        "id": "00000000-0000-4000-8000-000000046300",
+        "kind": "listen",
+        "liked": true,
+        "listenedOn": "2026-09-10",
+        "rating": 8,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": 7.17,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 6,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
+        "at": "2026-09-07T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Malik",
+          "username": "quaidelaloire",
+        },
+        "id": "00000000-0000-4000-8000-000000046301",
+        "kind": "listen",
+        "liked": true,
+        "listenedOn": "2026-09-07",
+        "rating": null,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": 7.17,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 6,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
         "at": "2026-09-05T21:00:00.000Z",
         "author": {
           "avatarUrl": null,
@@ -354,6 +418,70 @@ exports[`feed loading > returns the same pages as before 1`] = `
         "track": null,
       },
       {
+        "at": "2026-09-03T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Odile",
+          "username": "ticketchoc",
+        },
+        "id": "00000000-0000-4000-8000-000000046302",
+        "kind": "listen",
+        "liked": false,
+        "listenedOn": "2026-09-03",
+        "rating": 7,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": 7.17,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 6,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
+        "at": "2026-08-30T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Rémi",
+          "username": "bellevilleblues",
+        },
+        "id": "00000000-0000-4000-8000-000000046303",
+        "kind": "listen",
+        "liked": true,
+        "listenedOn": "2026-08-30",
+        "rating": 6,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": 7.17,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 6,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
         "at": "2026-08-27T21:00:00.000Z",
         "author": {
           "avatarUrl": null,
@@ -380,6 +508,70 @@ exports[`feed loading > returns the same pages as before 1`] = `
           "title": "Fumée bleue",
           "type": "album",
           "year": 2010,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
+        "at": "2026-08-25T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Lina",
+          "username": "contrebandiere",
+        },
+        "id": "00000000-0000-4000-8000-000000046304",
+        "kind": "listen",
+        "liked": false,
+        "listenedOn": "2026-08-25",
+        "rating": 7,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": 7.17,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 6,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
+        "at": "2026-08-19T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Hugo",
+          "username": "derniertrain",
+        },
+        "id": "00000000-0000-4000-8000-000000046305",
+        "kind": "listen",
+        "liked": false,
+        "listenedOn": "2026-08-19",
+        "rating": 8,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": 7.17,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 6,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
         },
         "relisten": false,
         "review": null,
@@ -545,6 +737,8 @@ exports[`feed loading > returns the same pages as before 1`] = `
         "review": null,
         "track": null,
       },
+    ],
+    [
       {
         "at": "2026-07-13T21:00:00.000Z",
         "author": {
@@ -737,8 +931,6 @@ exports[`feed loading > returns the same pages as before 1`] = `
         "review": null,
         "track": null,
       },
-    ],
-    [
       {
         "at": "2026-05-20T21:00:00.000Z",
         "author": {
@@ -1187,6 +1379,8 @@ exports[`feed loading > returns the same pages as before 1`] = `
         "review": null,
         "track": null,
       },
+    ],
+    [
       {
         "at": "2026-01-14T21:00:00.000Z",
         "author": {
@@ -1575,6 +1769,72 @@ exports[`feed loading > returns the same pages as before 1`] = `
         "track": null,
       },
       {
+        "at": "2026-09-10T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Salomé",
+          "username": "metrominuit",
+        },
+        "id": "00000000-0000-4000-8000-000000046300",
+        "kind": "listen",
+        "liked": true,
+        "listenedOn": "2026-09-10",
+        "rating": null,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": null,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 0,
+          "ratingsHidden": true,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
+        "at": "2026-09-07T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Malik",
+          "username": "quaidelaloire",
+        },
+        "id": "00000000-0000-4000-8000-000000046301",
+        "kind": "listen",
+        "liked": true,
+        "listenedOn": "2026-09-07",
+        "rating": null,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": null,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 0,
+          "ratingsHidden": true,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
         "at": "2026-09-05T21:00:00.000Z",
         "author": {
           "avatarUrl": null,
@@ -1608,6 +1868,72 @@ exports[`feed loading > returns the same pages as before 1`] = `
         "track": null,
       },
       {
+        "at": "2026-09-03T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Odile",
+          "username": "ticketchoc",
+        },
+        "id": "00000000-0000-4000-8000-000000046302",
+        "kind": "listen",
+        "liked": false,
+        "listenedOn": "2026-09-03",
+        "rating": null,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": null,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 0,
+          "ratingsHidden": true,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
+        "at": "2026-08-30T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Rémi",
+          "username": "bellevilleblues",
+        },
+        "id": "00000000-0000-4000-8000-000000046303",
+        "kind": "listen",
+        "liked": true,
+        "listenedOn": "2026-08-30",
+        "rating": null,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": null,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 0,
+          "ratingsHidden": true,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
         "at": "2026-08-27T21:00:00.000Z",
         "author": {
           "avatarUrl": null,
@@ -1635,6 +1961,72 @@ exports[`feed loading > returns the same pages as before 1`] = `
           "title": "Fumée bleue",
           "type": "album",
           "year": 2010,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
+        "at": "2026-08-25T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Lina",
+          "username": "contrebandiere",
+        },
+        "id": "00000000-0000-4000-8000-000000046304",
+        "kind": "listen",
+        "liked": false,
+        "listenedOn": "2026-08-25",
+        "rating": null,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": null,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 0,
+          "ratingsHidden": true,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
+        },
+        "relisten": false,
+        "review": null,
+        "track": null,
+      },
+      {
+        "at": "2026-08-19T12:00:00.000Z",
+        "author": {
+          "avatarUrl": null,
+          "displayName": "Hugo",
+          "username": "derniertrain",
+        },
+        "id": "00000000-0000-4000-8000-000000046305",
+        "kind": "listen",
+        "liked": false,
+        "listenedOn": "2026-08-19",
+        "rating": null,
+        "release": {
+          "artists": [
+            {
+              "name": "Lune Basse",
+              "slug": "lune-basse",
+            },
+          ],
+          "averageRating": null,
+          "coverUrl": null,
+          "id": "00000000-0000-4000-8000-000000046000",
+          "ratingCount": 0,
+          "ratingsHidden": true,
+          "slug": "dernier-metro-pour-belleville",
+          "title": "Dernier métro pour Belleville",
+          "type": "album",
+          "year": 2019,
         },
         "relisten": false,
         "review": null,
@@ -1804,6 +2196,8 @@ exports[`feed loading > returns the same pages as before 1`] = `
         "review": null,
         "track": null,
       },
+    ],
+    [
       {
         "at": "2026-07-13T21:00:00.000Z",
         "author": {
@@ -2002,8 +2396,6 @@ exports[`feed loading > returns the same pages as before 1`] = `
         "review": null,
         "track": null,
       },
-    ],
-    [
       {
         "at": "2026-05-20T21:00:00.000Z",
         "author": {
@@ -2466,6 +2858,8 @@ exports[`feed loading > returns the same pages as before 1`] = `
         "review": null,
         "track": null,
       },
+    ],
+    [
       {
         "at": "2026-01-14T21:00:00.000Z",
         "author": {

@@ -93,3 +93,17 @@ légaux.
   requête à 8 essais peut durer plus de 16 min. Écarté : garder 8 essais et écrire la borne.
   Une navigation qui renvoie 0 édition est traitée comme `not_found` (liens gardés). Écarté :
   retirer tous les liens.
+- 2026-11-17, étape 4 : l'inventaire de la démo (`packages/db/src/db.test.ts`, « loads the demo
+  dataset ») suit les nouvelles données : 52 disques, 18 profils, 80 écoutes, 14 abonnements.
+  Raison : la feuille de route impose un disque et des membres de démo ; ce test compte les
+  lignes du seed, et les étapes précédentes (60dcb06) l'ont mis à jour de même. Aucun autre
+  test ni e2e ne compte les abonnements de `nuitblanche` (`pnpm check` vert). Écarté : une
+  démo sans nouvelles lignes, impossible pour ce besoin.
+- 2026-11-17, étape 4 : le snapshot `packages/api/src/__snapshots__/feed-loading.test.ts.snap`
+  (fil « Amis » de `nuitblanche`) est régénéré. Raison : deux consignes de la feuille de route
+  se contredisent (membres de démo suivis par `nuitblanche` avec une note ou un cœur, et
+  « ajuster la démo, jamais les tests ») : le fil montre ces écoutes avec les mêmes règles que
+  la section, aucune démo ne peut les y cacher. Le diff ne fait qu'ajouter les 6 écoutes
+  visibles (×2 pour le mode aveugle) et décaler les pages ; aucune ligne existante ne change,
+  le membre au journal privé reste absent, le fil « Populaire » est identique. Réversible.
+  Écarté : des membres suivis par un autre compte (contraire à la consigne) ou l'attente.
