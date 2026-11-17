@@ -1,79 +1,59 @@
-# Plan — étape 6 « La passe finale » (jalon 11)
+# Plan — étape 6 « La passe finale » (jalon 13)
 
-Brief : `feuille-de-route.md`, « Étape 6 ». Aucune migration, aucune dépendance, aucun code
-métier : docs, vérifications, captures. Code touché seulement si une vérification échoue.
-Relu par le relecteur (OK avec corrections, appliquées).
+Brief : `feuille-de-route.md`, « Étape 6 ». Aucune migration, dépendance ni code métier :
+docs, vérifications, captures ; code touché seulement si une vérification échoue. Relu par le
+relecteur (OK avec corrections, appliquées).
 
-1. [x] **`docs/sorties.md`** (doc du domaine, 80 lignes au plus) : le point d'entrée du jalon,
-   sans recopier le détail qui reste où il est :
-   - règles retenues (validées le 16 novembre) : suivi réservé aux membres, 500 artistes,
-     200 écritures par heure, liste privée (réglages), « à venir » (renvoi `decouverte.md`),
-     précision de la date, horizon 12 mois, rien d'autre que « À écouter » avant la sortie
-     (`RELEASE_NOT_OUT`, renvoi `ecoute.md`), notification du jour J (in-site, réglage
-     `notify_releases`) ;
-   - données : migrations 0014 (`artist_follows`, `profiles.notify_releases`), 0015
-     (`releases.announced_at`, `release_date_changed_at`), 0016 (`notifications.release_id`,
-     type `release`) ; `releases.release_date_precision` existait avant le jalon ; export,
-     suppression du compte, fusion de doublons ;
-   - API par routeur (`artistFollow`, `upcoming`, `discovery.awaited`, `notification`) et
-     fichiers (`lib/catalog/artist-follows.ts`, `upcoming.ts`, `upcoming-feed.ts`,
-     `release-dates.ts`, `release-notifications.ts`) ;
-   - commandes et tâches de nuit : `pnpm catalog:refresh` (fil ListenBrainz puis
-     discographies), `pnpm releases:notify`, ordre dans `catalog-refresh.yml` (03:17 UTC) ;
-   - écrans (une ligne chacun, renvoi `decouverte.md`) ; démo (`seed/upcoming.ts`) ;
-   - questions laissées à Azzo (doublon « À venir » / discographie, texte d'une notification
-     d'un jour passé, heure de la tâche pour les Amériques).
-2. [x] **Renvois** : une ligne en tête de « Sorties à venir » dans `decouverte.md` et de « Dates
-   annoncées et sorties annoncées » dans `catalogue.md` vers `docs/sorties.md` ; vérifier que
-   la référence de `release-notifications.ts` pointe vers un fichier qui existe.
-3. [x] **Cahier** : cocher « Sorties à venir : valider les règles par défaut », avec les règles
-   retenues en une phrase et le renvoi `docs/sorties.md` (date du 16 novembre).
-4. [x] **Captures 1280 et 390 px** dans `docs/pilote/captures/6/`, données de démo, axe WCAG 2.2
-   AA à chaque capture (script du scratchpad dérivé de `shots4.cjs`) :
-   - avant tout : la carte « Sort … » de l'accueil de `nuitblanche` et les groupes de
-     `/upcoming` sont non vides (dates de démo calculées au seed ; sinon `pnpm db:seed`) ;
-   - visiteur sur le build de prod : `/fr`, `/fr/discover`, `/fr/artist/lune-basse`,
-     `/fr/album/les-heures-bleues`, `/fr/album/nuit-polaire` (« Annoncé pour … ») ;
-   - `nuitblanche` (session enregistrée) sur le build de prod : les mêmes, plus
-     `/fr/upcoming`, `/fr/upcoming?type=album`, `/fr/settings` ;
-   - `rainydaysam` (sans suivi) en dev : `/fr`, `/fr/upcoming`, `/fr/discover`,
-     `/fr/artist/lune-basse` ;
-   - écart à noter dans `decisions.md` : axe membre sur des comptes de démo (les données de
-     démo sont nécessaires), pas sur un compte e2e jetable ;
-   - notifications « Sortie aujourd'hui » : captures de l'étape 5 copiées (aucune donnée de
-     démo n'est datée d'aujourd'hui ; écart déjà noté dans `decisions.md`).
-   Relues par le relecteur avec l'étape.
-5. [x] **Vérifications** : `pnpm check` ; build de prod (`pnpm run free-port`, valeurs factices
+1. **`docs/quoi-ecouter.md`** (90 lignes au plus), point d'entrée sans recopier le détail :
+   règles retenues (conseiller, 17 novembre) des trois fonctions — « Écouter sur… » (5
+   services dans l'ordre, direct si MusicBrainz le connaît sinon recherche, hôtes et chemins
+   validés, URL reconstruite, aucun logo ni lien affilié), « Tes amis sur ce disque »
+   (abonnements, notes et cœurs déjà visibles du fil Amis, masquage, suspension), « Tire un
+   disque » (« À écouter », sortis selon mon jour, filtres type et durée, rien d'écrit) ;
+   données (migration `0017`, fusion, purge e2e, aucune donnée personnelle nouvelle) ; API
+   (`*.bySlug` avec liens identiques pour tous, `release.friends`, `toListen.pick`, fichiers
+   `lib/listen-links.ts`, `lib/catalog/listen-links-refresh.ts`,
+   `lib/social/release-friends.ts`, `lib/listening/pick.ts`) ; commande et phase de nuit
+   (`pnpm catalog:refresh`, liens en dernier, 200 disques, 100 artistes, 10 min, 30 jours,
+   `maxAttempts` 3, `-- --links-only`) ; écrans (`ListenOn`, `FriendsOnRecord`, `/pick`,
+   bouton de l'onglet) et démo (`seed/friends.ts`, `seed/pick.ts`) ; restes du jalon 11 ;
+   points ouverts (snapshot `feed-loading`, 503 avant les artistes, liens e2e jetables).
+2. **Renvois** d'une ligne vers `docs/quoi-ecouter.md` depuis `catalogue.md`, `ecoute.md`,
+   `social.md`, `decouverte.md`.
+3. **Cahier** : ligne cochée « Quoi écouter ce soir ? : règles retenues… » dans la section du
+   jalon 13 (renvoi) ; lignes 5 (version) et 60 (« en cours ») : jalon fait ; ligne 125 (page
+   album) : liens directs quand MusicBrainz les connaît, sinon recherche, cinq services.
+4. **Captures 1280 et 390 px** dans `docs/pilote/captures/6/`, axe WCAG 2.2 AA à chacune.
+   Avant : vérifier sur la base de dev que les fiches choisies ont des liens directs (fiches
+   réelles relues à l'étape 3) et des données de démo.
+   - Visiteur, build de prod : fiches album, artiste et morceau avec liens directs, « Dernier
+     métro pour Belleville », disque à venir de la démo (`seed/upcoming.ts`, refait :
+     pastilles, pas de section des amis), `/fr/pick` (→ connexion).
+   - `nuitblanche` : session obtenue une fois en dev (lien magique, `MEASURE_STATE`), réutilisée
+     sur le build de prod (même base) : les mêmes fiches, « Dernier métro » dans ses deux états
+     (5 lignes + « Voir tous tes amis », puis `?friends=all#friends` + « Voir moins »),
+     `/fr/pick`, `/fr/pick?type=ep`, son onglet « À écouter ».
+   - Compte e2e jetable en dev (supprimé par le nettoyage) : `/fr/pick` liste vide.
+   - Notifications « Sorti le … » / « Sortie aujourd'hui » seulement : captures de l'étape 1
+     copiées (aucune donnée de démo du jour) ; écart noté dans `decisions.md`.
+5. **Vérifications** : `pnpm check` ; build de prod (`pnpm run free-port`, valeurs factices
    dans la commande) : specs sans compte et `overflow.spec` ; `measure.mjs` complet, deux
-   passages, contre 237 / 140 / 225 / 208 / 210 (+20 ms) ; `/upcoming` avec la méthode de sa
-   référence (accueil → `/upcoming` par `router.push`, `nuitblanche`, médianes de 6,
-   `upcoming-measure.cjs`) contre 149 / 151 ;
-   e2e complet en dev via `verificateur`.
-6. [x] **`CLAUDE.md`** : jalon 11 coché en une ligne dans « Milestones » (renvoi
-   `docs/sorties.md`), retiré de la liste à faire ; `pnpm releases:notify` dans « Commands » ;
-   `docs/sorties.md` dans les docs de domaine ; une décision (ListenBrainz ne sert qu'à choisir
-   quoi relire, MusicBrainz seule source des dates) ; ordre des jalons mis à jour (13 → 14 → 10
-   → 15 → 16). Rien d'autre.
-7. [ ] **Vérif** de l'étape (relecteur), puis clôture et fin de jalon (sections 5 et 6 du
-   skill) : PR vers `dev` avec `Closes #32`, l'écart e2e de l'étape 5, les trois questions
-   pour Azzo et la ligne de script `releases:notify` du `package.json` racine (pas une
-   dépendance). Avant la fusion : `git diff --stat origin/dev...HEAD` comparé à « Autorisé à
-   la fusion ». Phase B : PR de release `dev` → `main` en brouillon (`--draft`), qui répète
-   `Closes #32` (GitHub ne ferme l'issue qu'à la fusion dans `main`) et les questions.
+   passages, contre 215 / 136 / 231 / 182 / 228 (+20 ms) ; `MEASURE_ONLY=/fr/pick`
+   (`MSYS_NO_PATHCONV=1`) contre 142 ; écart → build de prod de `origin/dev`, mêmes parcours,
+   `nuitblanche`, deux passages, comparé à HEAD dans la même session ; e2e complet en dev via
+   `verificateur` (jamais deux passes Playwright en même temps).
+6. **`CLAUDE.md`** : jalon 13 coché en une ligne (renvoi) et retiré de la liste à faire ;
+   `docs/quoi-ecouter.md` dans les docs de domaine ; `--links-only` déjà dans « Commands »
+   (gardé) ; décision « liens d'écoute : relations d'URL MusicBrainz seulement, hôtes validés,
+   aucun lien affilié » ; ordre 14 → 10 → 15 → 16. Rien d'autre.
+7. **Relecture**, clôture, fin de jalon (sections 5 et 6) : PR vers `dev` avec `Closes #31`,
+   `#41`, `#42`, points ouverts et questions de `decisions.md`, dont la validation du snapshot
+   `feed-loading` en clair (réponse attendue avant la release vers `main`) ; avant la fusion,
+   `git diff --stat origin/dev...HEAD` contre « Autorisé à la fusion » ; phase B : PR de
+   release `dev` → `main` en brouillon, qui répète les `Closes`.
 
-Avancement (2026-11-16, run interrompu par la limite d'usage) : points 1 à 3 faits (649c239) ;
-captures visiteur et `nuitblanche` sur prod faites (axe : 0 violation) ; mesures prod :
-215/213 · 136/135 · 231/219 · 182/180 · 228/225 ; `/upcoming` 158 / 160 (référence 149 / 151,
-+9 ms). Reste : captures `rainydaysam` en dev, copie des captures 5, specs sans compte et
-`overflow.spec` sur prod, e2e complet, `CLAUDE.md`, relecture, PR.
+## Avancement
 
-Suite (2026-11-16, second run) : captures `rainydaysam` en dev (axe : 0 violation), captures 5
-copiées ; `pnpm check` vert ; e2e complet en dev 245 réussis · 1 échoué · 10 ignorés
-(`undo-delete.spec.ts:289` passe seul, issue #34) ; build de prod, specs sans compte +
-`overflow.spec` 114 réussis · 2 échoués · 10 ignorés (`covers.spec.ts:72` passe seul sur les
-deux projets, issue #34) ; `CLAUDE.md` à jour.
-
-- [x] vérifications
-- [x] relecture 1 (OK avec corrections : fiche d'un disque à venir, appliquées)
-- [x] relecture 2 (OK ; moyenne et critiques remises selon les décisions actées, voir `decisions.md`)
-- [x] clôture
+- [x] 1 doc du domaine · [x] 2 renvois · [x] 3 cahier · [x] 4 captures · [x] 5 mesures et
+  specs prod · [x] 6 `CLAUDE.md`
+- [x] vérifications · [x] relecture 1 (OK) · [x] relecture 2 (inutile, OK au tour 1) · [x] clôture

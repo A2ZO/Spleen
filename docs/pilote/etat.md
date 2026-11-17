@@ -1,11 +1,11 @@
 # État du pilote
 
-- Jalon : 11 « Sorties à venir »
-- Branche : feat/11-sorties-a-venir
-- Doc du jalon : docs/jalon-11-en-cours.md
-- Étape : fin du jalon
-- Phase : fini (PR 40 fusionnée par Azzo le 16 novembre)
-- Mis à jour : 2026-11-16
+- Jalon : 13 « Quoi écouter ce soir ? »
+- Branche : feat/13-quoi-ecouter
+- Doc du jalon : docs/jalon-13-en-cours.md
+- Étape : fin du jalon (sections 5 et 6 du skill)
+- Phase : fini (fusion de la PR 46 autorisée par Azzo le 2026-11-17)
+- Mis à jour : 2026-11-17
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante, sans arrêt entre les
 étapes (décisions actées dans `feuille-de-route.md`). `attente` : une question pour Azzo dans

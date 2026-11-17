@@ -1,3 +1,5 @@
+import { todayIn } from "@spleen/validators";
+
 import { expect, test } from "./fixtures";
 
 import {
@@ -13,6 +15,7 @@ import {
 test.use({ locale: "fr-FR", timezoneId: "Europe/Paris" });
 
 const NEEDS_POSTGRES = "needs the Postgres database of the dev server";
+const REVIEWS_ON_RELEASE = "Les critiques ouvriront le jour de la sortie.";
 
 test("a visitor is sent to sign-in from « Mes sorties à venir »", async ({ page }) => {
   await page.goto("/fr/upcoming");
@@ -73,6 +76,9 @@ test("a record not out yet offers « À écouter » but no listen", async ({
   const visitor = await (await browser.newContext({ locale: "fr-FR" })).newPage();
   await visitor.goto(`/fr/album/${record!.slug}`);
   await expect(visitor.getByText("Connecte-toi pour l'ajouter à « À écouter ».")).toBeVisible();
+  // No average before the release, and reviews wait for the day.
+  await expect(visitor.getByText(REVIEWS_ON_RELEASE)).toBeVisible();
+  await expect(visitor.getByText("Note de la communauté")).toHaveCount(0);
   await visitor.context().close();
 
   await signUp(page, testInfo, "Patiente");
@@ -80,6 +86,8 @@ test("a record not out yet offers « À écouter » but no listen", async ({
   await expect(page.getByText(/^Sort le /)).toBeVisible();
   await expect(page.getByRole("button", { name: "J'ai écouté" })).toHaveCount(0);
   await expect(page.getByRole("button", { name: "Coup de cœur" })).toHaveCount(0);
+  await expect(page.getByText(REVIEWS_ON_RELEASE)).toBeVisible();
+  await expect(page.getByText("Note de la communauté")).toHaveCount(0);
   await waitForHydration(page);
   const queue = page.getByRole("button", { name: "À écouter" });
   const saved = actionAnswered(page);
@@ -152,4 +160,42 @@ test("the notifications page announces today's records of the artists a member f
   await expect(group.getByText("et 2 autres")).toBeVisible();
   await group.getByRole("link").first().click();
   await expect(page).toHaveURL(/\/fr\/album\/e2e-/);
+});
+
+test("a release notification read days later names its day", async ({ page }, testInfo) => {
+  // The nightly run happened 3 days ago: the records are of that day in Paris (the member's
+  // zone), and the page reads it today.
+  const now = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
+  const day = todayIn("Europe/Paris", now);
+  const thisYear = todayIn("Europe/Paris", new Date()).slice(0, 4);
+  const date = new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "long",
+    ...(day.slice(0, 4) !== thisYear && { year: "numeric" }),
+    timeZone: "UTC",
+  }).format(new Date(`${day}T12:00:00Z`));
+  const that = { date: { inDays: 0 } };
+  const single = await throwawayCatalog(testInfo, [that], true, now);
+  test.skip(!single, NEEDS_POSTGRES);
+  const four = (await throwawayCatalog(testInfo, [that, that, that, that], true, now))!;
+  const username = await signUp(page, testInfo, "Distraite");
+
+  await notifyReleasesInDatabase(username, [single!.artist!.slug], now);
+  await page.goto("/fr/notifications");
+  const record = single!.releases[0]!;
+  await expect(
+    page.getByRole("link", {
+      name: `Sorti le ${date} : ${record.title} de ${single!.artist!.name}`,
+      exact: false,
+    }),
+  ).toBeVisible();
+  await expect(page.getByText("Sortie aujourd'hui")).toHaveCount(0);
+
+  await notifyReleasesInDatabase(username, [four.artist!.slug], now);
+  await page.reload();
+  const group = page
+    .getByRole("listitem")
+    .filter({ hasText: `5 sorties le ${date} chez tes artistes` });
+  await expect(group.getByRole("link")).toHaveCount(3);
+  await expect(group.getByText("et 2 autres")).toBeVisible();
 });

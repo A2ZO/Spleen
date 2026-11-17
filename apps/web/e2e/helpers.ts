@@ -247,6 +247,61 @@ export async function throwawayCatalog(
   }
 }
 
+/**
+ * A throwaway album, its artist and one track, each with stored "Listen on" links: album on
+ * Spotify and Bandcamp, artist on Deezer, track on Apple Music. Null on PGlite.
+ */
+export async function throwawayListenPages(testInfo: TestInfo) {
+  const catalog = await throwawayCatalog(testInfo, [{}], true);
+  if (!catalog) return null;
+  const handle = createDb(process.env.DATABASE_URL!);
+  try {
+    const [release] = await handle.db
+      .select({ id: schema.releases.id })
+      .from(schema.releases)
+      .where(eq(schema.releases.slug, catalog.releases[0]!.slug));
+    const [artist] = await handle.db
+      .select({ id: schema.artists.id })
+      .from(schema.artists)
+      .where(eq(schema.artists.slug, catalog.artist!.slug));
+    const [track] = await handle.db
+      .insert(schema.tracks)
+      .values({ slug: `${catalog.releases[0]!.slug}-t`, title: "Morceau jetable" })
+      .returning({ id: schema.tracks.id, slug: schema.tracks.slug, title: schema.tracks.title });
+    await handle.db
+      .insert(schema.releaseTracks)
+      .values({ releaseId: release!.id, trackId: track!.id, disc: 1, position: 1 });
+    await handle.db
+      .insert(schema.trackArtists)
+      .values({ trackId: track!.id, artistId: artist!.id });
+    await handle.db.insert(schema.listenLinks).values([
+      {
+        releaseId: release!.id,
+        service: "spotify",
+        url: "https://open.spotify.com/album/2lIZef4lzdvZkiiCzvPKj7",
+      },
+      {
+        releaseId: release!.id,
+        service: "bandcamp",
+        url: "https://charlixcx.bandcamp.com/album/brat",
+      },
+      { artistId: artist!.id, service: "deezer", url: "https://www.deezer.com/artist/13820325" },
+      {
+        trackId: track!.id,
+        service: "apple_music",
+        url: "https://music.apple.com/de/song/1739079976",
+      },
+    ]);
+    return {
+      release: catalog.releases[0]!,
+      artist: catalog.artist!,
+      track: { slug: track!.slug, title: track!.title },
+    };
+  } finally {
+    await handle.close();
+  }
+}
+
 /** Server Action calls of the page (POST with a `next-action` header). */
 const isAction = (request: { method(): string; headers(): Record<string, string> }) =>
   request.method() === "POST" && "next-action" in request.headers();
@@ -365,4 +420,18 @@ export const suspendInDatabase = (username: string) =>
       .update(schema.profiles)
       .set({ suspendedAt: new Date() })
       .where(eq(schema.profiles.username, username));
+  });
+
+/** The member follows these members (outside the site), as if they had clicked « Suivre ». */
+export const followMembersInDatabase = (username: string, usernames: string[]) =>
+  onDevDatabase(async (db) => {
+    const followerId = await userIdOf(db, username);
+    const followees = await db
+      .select({ id: schema.profiles.userId })
+      .from(schema.profiles)
+      .where(inArray(schema.profiles.username, usernames));
+    await db
+      .insert(schema.follows)
+      .values(followees.map((f) => ({ followerId, followeeId: f.id })))
+      .onConflictDoNothing();
   });

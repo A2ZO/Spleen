@@ -14,6 +14,16 @@ export interface PartialDate {
   precision: DatePrecision;
 }
 
+/**
+ * A link from a catalog entity to a web page (MusicBrainz URL relationship), ended ones left
+ * out. Raw volunteer data: validate it before storing or showing it.
+ */
+export interface ProviderUrlRelation {
+  /** Relationship type, lowercased: "free streaming", "streaming", "bandcamp"… */
+  type: string;
+  url: string;
+}
+
 export interface ProviderArtist {
   mbid: string;
   name: string;
@@ -23,6 +33,8 @@ export interface ProviderArtist {
   country: string | null;
   /** "person", "group", "orchestra"… lowercased; null when unknown. */
   type: string | null;
+  /** Absent when the request did not ask for URL relationships (search hits, credits). */
+  urlRelations?: ProviderUrlRelation[];
 }
 
 /** An artist as credited on a release or a recording ("feat." credits included). */
@@ -50,6 +62,18 @@ export interface ReleaseEdition {
   country: string | null;
 }
 
+/** An edition with its URL relationships (nightly "Listen on" re-read, milestone 13). */
+export interface EditionWithLinks extends ReleaseEdition {
+  urlRelations: ProviderUrlRelation[];
+}
+
+export interface EditionLinks {
+  /** The editions read, at most one browse page (100), in MusicBrainz order. */
+  editions: EditionWithLinks[];
+  /** Editions of the group at MusicBrainz: more than `editions.length` = partial read. */
+  total: number;
+}
+
 export interface ReleaseGroupDetail extends ReleaseGroupSummary {
   /** Most voted genres first, at most 5. */
   genres: string[];
@@ -61,6 +85,8 @@ export interface ProviderRecording {
   title: string;
   lengthMs: number | null;
   artists: ArtistCredit[];
+  /** Absent when the request did not ask for URL relationships (search hits). */
+  urlRelations?: ProviderUrlRelation[];
 }
 
 export interface TracklistEntry {
@@ -75,6 +101,8 @@ export interface Tracklist {
   /** Language of the titles, "fr" / "en" or an ISO 639-3 code; null when unknown. */
   language: string | null;
   tracks: TracklistEntry[];
+  /** URL relationships of that edition. */
+  urlRelations: ProviderUrlRelation[];
 }
 
 /** A recording with the release groups it appears on (to import it through an album). */
@@ -98,6 +126,8 @@ export interface CatalogProvider {
   /** The artist's release groups, albums and EPs first, capped to keep imports short. */
   getArtistReleaseGroups(mbid: string): Promise<ReleaseGroupSummary[]>;
   getRecording(mbid: string): Promise<RecordingDetail>;
+  /** Every edition of a release group with its URL relationships, one request (100 at most). */
+  getEditionLinks(releaseGroupMbid: string): Promise<EditionLinks>;
   /** URL of the front cover, or null when there is none. */
   getCoverUrl(releaseGroupMbid: string): Promise<string | null>;
 }

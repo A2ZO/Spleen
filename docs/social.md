@@ -8,6 +8,9 @@ API : `packages/api/src/lib/social/` — `relations.ts` (blocages, cartes de mem
 `/[locale]/notifications`, `/[locale]/settings/blocks`. Server Actions :
 `apps/web/src/app/[locale]/social/actions.ts`.
 
+« Tes amis sur ce disque » (`release.friends`, `lib/social/release-friends.ts`, jalon 13) :
+mêmes exclusions que le fil Amis ; règles dans `docs/quoi-ecouter.md`.
+
 ## Procédures
 
 | Procédure                                   | Rôle                                              | Limite / h |
@@ -112,7 +115,10 @@ compte les groupes non lus. Pas de temps réel : le compteur se met à jour au r
 Type `release` (jalon 11) : « Sortie aujourd'hui », sans acteur (`actor_id` nul), créé la
 nuit par `pnpm releases:notify` (`lib/catalog/release-notifications.ts`), une ligne par
 membre et par disque (`notifications_release_once_uidx`), `group_key` = `release:day:<jour>`
-dans le fuseau du destinataire. Règles dans `docs/decouverte.md`, « Sorties à venir ».
+dans le fuseau du destinataire. `notification.list` y ajoute `releaseDay` (le jour de la clé)
+et `releasedToday` (ce jour est aujourd'hui dans le fuseau du membre, repli Europe/Paris) :
+lue un autre jour, la notification dit « Sorti le {date} » (jalon 13, étape 1). Règles dans
+`docs/decouverte.md`, « Sorties à venir ».
 
 ## Blocage
 
@@ -183,7 +189,9 @@ jamais suspendu depuis le site (`CANNOT_MODERATE_ADMIN`).
 page de connexion répond comme pour tout le monde, et le motif ne s'affiche qu'une fois
 l'identité prouvée, sur l'écran « Compte suspendu » qui remplace toutes les pages. Profil,
 critiques, listes, commentaires, écoutes du fil et cartes de membre disparaissent pour les
-autres (`findProfile`, `memberRefs`, `memberCards`, filtres `hidden_at is null`). Ses notes et
+autres (`findProfile`, `memberRefs`, `memberCards`, filtres `hidden_at is null` ; « Tes amis
+sur ce disque », `lib/social/release-friends.ts`, refiltre en SQL suspension, journal privé et
+blocages : toute nouvelle règle de masquage d'un membre s'y reporte aussi). Ses notes et
 écoutes sortent de tous les chiffres publics (moyennes, répartition, tendances, mieux notés)
 par un filtre calculé à la volée (`countsPublicly`, `lib/ratings.ts`) : rien à invalider, et
 elles reviennent quand la suspension est levée. Son propre état (`user_item_state`) n'est pas

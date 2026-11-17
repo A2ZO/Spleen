@@ -1,6 +1,6 @@
 # Stack technique, limites et montée en charge
 
-État au **27 octobre 2026** (jalon 9 en cours). Ce document répond à trois questions :
+État au **27 octobre 2026** (jalon 9 en cours), mis à jour le 16 novembre (dépôt public, jalons 12 et 17 faits) et le 17 novembre (jalon 11 fait : ListenBrainz et notifications dans la tâche de nuit). Ce document répond à trois questions :
 quelles technologies Spleen utilise, à partir de combien de membres chaque service gratuit
 lâche, et comment desserrer chaque limite sans réécrire le code.
 
@@ -41,12 +41,13 @@ Versions relevées dans les `package.json` du dépôt le 27 octobre 2026.
 | Emails | Brevo (API HTTP, sans SDK) | Liens de connexion, emails de suspension | Free 300/jour |
 | Fichiers | Cloudflare R2 via `@aws-sdk/client-s3` 3.1152 | Avatars (bannières plus tard) | Free 10 Go |
 | Catalogue | MusicBrainz WS/2 (simple `fetch`) derrière `CatalogProvider` | Artistes, disques, titres, genres, dates | Gratuit, 1 req/s |
+| Sorties à venir (jalon 11) | ListenBrainz « fresh releases » (simple `fetch`, sans clé, `packages/catalog/src/listenbrainz.ts`) | Choisit chaque nuit les sorties annoncées à relire sur MusicBrainz, seule source des dates (`docs/sorties.md`) | Gratuit, une requête par nuit |
 | Pochettes | Cover Art Archive (servies par archive.org) | Affichées sans optimisation, chargées par le navigateur | Gratuit |
 | Limitation de débit | Table Postgres `rate_limits` (pas de Redis) | Limiteur MusicBrainz global, quotas par membre, connexion | Inclus dans la base |
 | Tests | Vitest 5.0.5, Playwright 1.64.1 (axe prévu au jalon 9) | ~200 tests d'API, ~60 e2e | Gratuit |
-| CI et tâches planifiées | GitHub Actions : `ci.yml` (check + api-postgres), « Nightly » (catalogue + rétention de modération), Dependabot | Contrôles à chaque PR, tâches de nuit | 2 000 min/mois en dépôt privé |
+| CI et tâches planifiées | GitHub Actions : `ci.yml` (check + api-postgres), « Nightly » à 03:17 UTC (`catalog-refresh.yml` : sorties à venir et discographies, puis notifications « Sortie aujourd'hui » ; rétention de modération ; ne fait rien tant que la base de production n'est pas configurée), Dependabot | Contrôles à chaque PR, tâches de nuit | Illimité (dépôt public depuis novembre) |
 | Hébergement (jalon 10) | Vercel Hobby, puis Vercel Pro ou Cloudflare Workers (OpenNext) | Servir le site | Gratuit, puis 5 à 20 $/mois |
-| Plus tard | Expo (appli), Stripe (Spleen+), ListenBrainz (sorties à venir, jalon 11) | — | — |
+| Plus tard | Expo (appli), Stripe (Spleen+) | — | — |
 
 Règles qui rendent tout remplaçable (rappel de `CLAUDE.md`) : aucun service propre à un
 hébergeur, Postgres standard (postgres.js, pas le pilote Neon), stockage S3 standard,
@@ -65,7 +66,12 @@ Pour comprendre les limites, il faut savoir ce que coûte une visite :
 - **Chaque écriture d'un membre** (écoute, note, like, commentaire…) = une transaction
   Postgres + un compteur dans `rate_limits`.
 - **MusicBrainz n'est jamais appelé à l'affichage.** Seulement quand un membre connecté
-  importe un disque ou ouvre une fiche incomplète, et la nuit pour les sorties récentes.
+  importe un disque ou ouvre une fiche incomplète, et la nuit pour les sorties récentes et
+  les sorties à venir des artistes suivis.
+- **ListenBrainz n'est appelé que la nuit** : une requête « fresh releases » (90 jours), qui
+  dit seulement quelles sorties relire sur MusicBrainz (jalon 11).
+- **Les notifications « Sortie aujourd'hui »** sont créées la nuit, dans la base, sans email
+  ni push : aucun quota Brevo consommé.
 - **Les pochettes ne coûtent rien à Spleen** : le navigateur les télécharge directement
   depuis archive.org.
 - **Un email part à chaque connexion par lien magique.** Les sessions Better Auth durent
@@ -174,6 +180,18 @@ Temps entre la dernière frappe et les résultats affichés (frappes espacées d
   10 ms ≈ 0,2 s de CPU par membre et par mois, négligeable devant les pages (≈ 50 ms chacune).
 - Limite par IP : 30 d'un coup, puis 3/s ; au-delà, 429 sans toucher la base.
 
+### Mesure : sorties à venir (jalon 11)
+
+`measure.mjs` sur un build de production local, deux passages, contre la référence de la fin
+du jalon 17 (237 / 140 / 225 / 208 / 210 ms pour les cinq parcours ci-dessus).
+
+- Fin du jalon : 215/213 · 136/135 · 231/219 · 182/180 · 228/225 ms, dans les 20 ms de la
+  référence. Nouvelle page `/upcoming` (accueil → `/upcoming`) : 158/160 ms (149/151 à
+  l'étape 3).
+- Pool de 5 connexions : trois lectures parallèles de plus sur l'accueil le ralentissaient de
+  25 à 32 ms ; les fondre en une seule requête a suffi. Une lecture lancée après celle de la
+  fiche ajoute une vague (+36 à +60 ms) : la lancer dans le même `Promise.all`, par le slug.
+
 ### Tableau des seuils
 
 | Service | Limite gratuite | Ce qui la consomme | Casse vers… (estimation) | Ce qui se passe | Sortie |
@@ -184,8 +202,9 @@ Temps entre la dernière frappe et les résultats affichés (frappes espacées d
 | **Brevo Free** | 300 emails par jour | Connexions par lien magique, emails de suspension | Un jour à plus de ~300 inscriptions ou reconnexions (lancement, post viral). Au quotidien, plusieurs milliers de membres actifs tiennent grâce aux sessions longues | Plus de connexion par email ce jour-là ; Google marche toujours | Brevo Starter (dès 9 $/mois, 5 000 emails, tarif à revérifier) ou Amazon SES ; mettre Google en avant |
 | **Cloudflare R2** | 10 Go, 1 million d'écritures, 10 millions de lectures par mois | Avatars (≈ 100 Ko, 512 px) | ~100 000 avatars stockés ; lectures absorbées par le cache Cloudflare devant `files.<domaine>` | Facturation à l'usage, quelques centimes | Rien à faire avant longtemps |
 | **MusicBrainz** | 1 requête par seconde pour tout le site | Imports de disques jamais vus, fiches incomplètes, tâche de nuit | ~1 000 à 1 600 imports d'albums par heure au maximum (2 à 3 requêtes chacun). Saturation quand **~150 à 200 membres en ligne au même moment** ajoutent des disques absents | Une page attend 8 s son créneau puis affiche « catalogue occupé » ; le reste du site marche | § 5.1 |
-| **Tâche de nuit** | 45 min de délai dans le workflow | Relecture des discographies (150 artistes ≈ 600 requêtes ≈ 11 min) | ~2 400 requêtes par nuit au maximum à 1,1 s | Tâche coupée, reprise la nuit suivante | Plafonner et prioriser (déjà fait), § 5.1 |
-| **GitHub Actions** | 2 000 min par mois (dépôt privé) | CI ≈ 2 min par push ; e2e en CI ajoutera ≈ 10 min | Ne dépend pas des membres : ~150 PR par mois avec les e2e | Actions bloquées jusqu'au mois suivant | Dépôt public (illimité) ou 0,006 $/min |
+| **ListenBrainz** | Limites annoncées dans les en-têtes `X-RateLimit-*` | Une requête par nuit (jalon 11) | Ne dépend pas des membres | Erreur, ou attente de plus de 60 s refusée : les sorties à venir ne sont pas relues cette nuit-là, la suite de la tâche continue | — |
+| **Tâche de nuit** | 45 min de délai dans le workflow | Sorties à venir (une requête ListenBrainz, puis 40 relectures MusicBrainz au plus, jalon 11) et relecture des discographies (150 artistes ≈ 600 requêtes), puis liens « Écouter sur… » (200 disques + 100 artistes, une requête chacun, 10 min au plus, jalon 13) : ≈ 940 requêtes ≈ 17 min au pire (estimation). Une requête lancée avant la fin des 10 min peut les dépasser de 3 × (2 min d'attente + 10 s) plus les pauses, soit ≈ 7 min au pire. Les notifications qui suivent ne font aucune requête externe | ~2 400 requêtes par nuit au maximum à 1,1 s | Tâche coupée, reprise la nuit suivante | Plafonner et prioriser (déjà fait), § 5.1 |
+| **GitHub Actions** | Illimité : le dépôt est public (2 000 min par mois s'il redevenait privé) | CI ≈ 2 min par push ; e2e en CI ajoutera ≈ 10 min | Ne dépend pas des membres | — | Rien à faire tant que le dépôt reste public |
 | **Cover Art Archive** | Pas de limite annoncée | Les navigateurs des visiteurs | Ne dépend pas de Spleen | Panne d'archive.org : pochettes vides | Copier les pochettes dans R2 (§ 5.3) |
 | **Google OAuth** | Pas de quota pour `openid` / `email` / `profile` | — | Jamais, une fois l'appli publiée « In production » | — | — |
 | **Recherche locale** (`pg_trgm`) | Pas de limite, mais du temps de calcul | Taille du catalogue | Rapide jusqu'à quelques centaines de milliers de disques ; à surveiller si on importe les dumps complets (§ 5.1) | Recherche plus lente | Index dédiés, puis un moteur de recherche (Meilisearch, Typesense) |
@@ -222,8 +241,9 @@ Les sorties, de la moins chère à la plus lourde :
    donne en **une seule requête** toutes les sorties des 90 jours passés ou à venir, avec
    les identifiants MusicBrainz des artistes et des disques. Il a ses propres limites de
    débit, annoncées dans les en-têtes `X-RateLimit-*`
-   ([doc](https://listenbrainz.readthedocs.io/en/latest/users/api/)). Utilisé par le
-   jalon 11 (sorties à venir).
+   ([doc](https://listenbrainz.readthedocs.io/en/latest/users/api/)). En service depuis le
+   jalon 11 (sorties à venir) : une requête par nuit, qui choisit quoi relire ; les dates
+   viennent toujours de MusicBrainz (`docs/sorties.md`).
 3. **Pré-remplissage massif depuis les dumps.** MusicBrainz publie des
    [dumps JSON](https://wiki.musicbrainz.org/Development/JSON_Data_Dumps) complets, une ligne
    par entité, au format de l'API. Importer tous les artistes et disques (sans les listes de
@@ -324,3 +344,5 @@ Une fois ces chiffres connus, remplacer les hypothèses du § 3 et recalculer le
   [licence des données](https://musicbrainz.org/doc/About/Data_License),
   [licence des genres](https://blog.musicbrainz.org/2018/11/02/musicbrainz-introducing-genres/).
 - Versions des bibliothèques : `package.json` du dépôt au 27 octobre 2026.
+- Jalon 11 (ListenBrainz, tâche de nuit, mesures) : `docs/sorties.md`, `docs/catalogue.md`,
+  `docs/jalon-11-en-cours.md`, `.github/workflows/catalog-refresh.yml`.

@@ -627,8 +627,15 @@ describe("demo members", () => {
     const withMoods = diary?.items.find((d) => d.moods.length > 0);
     expect(withMoods?.moods.map((x) => x.slug)).toEqual(["rain", "night"]);
     expect((await profile.reviews(page))?.total).toBeGreaterThan(0);
+    // Then the six records of « Tire un disque » (seed/pick.ts), queued a day apart.
     expect((await profile.toListen(page))?.items.map((r) => r.slug)).toEqual([
       "gold-leaf-sessions",
+      "les-horloges-du-canal",
+      "long-way-to-kestrel-bay",
+      "fenetres-sur-cour",
+      "tarmac",
+      "origami-weather",
+      "sans-etiquette",
     ]);
   });
 });

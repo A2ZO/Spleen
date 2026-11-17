@@ -5,8 +5,10 @@ import { escapeLucene, isMainRelease, normalizeLanguage, parsePartialDate } from
 import type {
   ArtistCredit,
   CatalogProvider,
+  EditionLinks,
   ProviderArtist,
   ProviderRecording,
+  ProviderUrlRelation,
   RecordingDetail,
   ReleaseEdition,
   ReleaseGroupDetail,
@@ -20,7 +22,9 @@ import type {
   MbArtistCredit,
   MbGenre,
   MbRecording,
+  MbRelation,
   MbRelease,
+  MbReleaseBrowse,
   MbReleaseGroup,
   MbReleaseGroupBrowse,
 } from "./raw";
@@ -136,7 +140,7 @@ export function createMusicBrainzProvider(options: MusicBrainzOptions): CatalogP
 
     async getTracklist(releaseMbid) {
       const release = await get<MbRelease>(`release/${releaseMbid}`, {
-        inc: "recordings+artist-credits",
+        inc: "recordings+artist-credits+url-rels+recording-level-rels",
       });
       return {
         releaseMbid: release.id,
@@ -151,11 +155,12 @@ export function createMusicBrainzProvider(options: MusicBrainzOptions): CatalogP
             }),
           })),
         ),
+        urlRelations: toUrlRelations(release.relations) ?? [],
       } satisfies Tracklist;
     },
 
     async getArtist(mbid) {
-      return toArtist(await get<MbArtist>(`artist/${mbid}`, {}));
+      return toArtist(await get<MbArtist>(`artist/${mbid}`, { inc: "url-rels" }));
     },
 
     async getArtistReleaseGroups(mbid) {
@@ -181,7 +186,7 @@ export function createMusicBrainzProvider(options: MusicBrainzOptions): CatalogP
 
     async getRecording(mbid) {
       const recording = await get<MbRecording>(`recording/${mbid}`, {
-        inc: "artist-credits+releases+release-groups",
+        inc: "artist-credits+releases+release-groups+url-rels",
       });
       return {
         ...toRecording(recording),
@@ -196,6 +201,21 @@ export function createMusicBrainzProvider(options: MusicBrainzOptions): CatalogP
             : [],
         ),
       } satisfies RecordingDetail;
+    },
+
+    async getEditionLinks(releaseGroupMbid) {
+      const data = await get<MbReleaseBrowse>("release", {
+        "release-group": releaseGroupMbid,
+        inc: "url-rels",
+        limit: String(BROWSE_PAGE_SIZE),
+      });
+      return {
+        editions: data.releases.map((release) => ({
+          ...toEdition(release),
+          urlRelations: toUrlRelations(release.relations) ?? [],
+        })),
+        total: data["release-count"],
+      } satisfies EditionLinks;
     },
 
     async getCoverUrl(releaseGroupMbid) {
@@ -235,6 +255,7 @@ function everyWordIn(text: string, titleField: string, artistField: string): str
 }
 
 function toArtist(a: MbArtist): ProviderArtist {
+  const urlRelations = toUrlRelations(a.relations);
   return {
     mbid: a.id,
     name: a.name,
@@ -242,7 +263,18 @@ function toArtist(a: MbArtist): ProviderArtist {
     disambiguation: a.disambiguation || null,
     country: a.country && /^[A-Z]{2}$/.test(a.country) ? a.country : null,
     type: a.type ? a.type.toLowerCase() : null,
+    ...(urlRelations && { urlRelations }),
   };
+}
+
+/** URL relationships still current; undefined when the response carries none (not asked). */
+function toUrlRelations(relations: MbRelation[] | undefined): ProviderUrlRelation[] | undefined {
+  if (!relations) return undefined;
+  return relations.flatMap((relation) =>
+    !relation.ended && relation.url?.resource
+      ? [{ type: relation.type.toLowerCase(), url: relation.url.resource }]
+      : [],
+  );
 }
 
 function toCredits(credits: MbArtistCredit[] | undefined): ArtistCredit[] {
@@ -260,11 +292,13 @@ function toCredits(credits: MbArtistCredit[] | undefined): ArtistCredit[] {
 }
 
 function toRecording(r: MbRecording): ProviderRecording {
+  const urlRelations = toUrlRelations(r.relations);
   return {
     mbid: r.id,
     title: r.title,
     lengthMs: r.length ?? null,
     artists: toCredits(r["artist-credit"]),
+    ...(urlRelations && { urlRelations }),
   };
 }
 

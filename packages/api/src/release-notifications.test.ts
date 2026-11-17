@@ -209,4 +209,68 @@ describe("reading release notifications", () => {
     expect(group).toMatchObject({ releaseCount: 1 });
     expect(group!.releases[0]!.slug).toBe(keep!.slug);
   });
+
+  describe("the day of a group", () => {
+    const at = (iso: string) => (user: SessionUser) =>
+      createCaller(
+        createContext({ now: new Date(iso), db: () => handle.db, user: async () => user }),
+      );
+
+    async function notified(timeZone: string) {
+      const a = await artist();
+      await releases([a.id], [{ date: "2026-11-16" }]);
+      const m = await member({ timeZone });
+      await follow(m.id, a.id);
+      await run([m], new Date("2026-11-16T12:00:00Z"));
+      return m;
+    }
+
+    it("is today the day it came out, a past day afterwards", async () => {
+      const m = await notified("Europe/Paris");
+      const [sameDay] = (await at("2026-11-16T20:00:00Z")(m).notification.list({})).items;
+      expect(sameDay).toMatchObject({ releaseDay: "2026-11-16", releasedToday: true });
+      const [later] = (await at("2026-11-18T09:00:00Z")(m).notification.list({})).items;
+      expect(later).toMatchObject({ releaseDay: "2026-11-16", releasedToday: false });
+    });
+
+    it("follows the member's zone on both sides of midnight", async () => {
+      const angeles = await notified("America/Los_Angeles");
+      const tokyo = await notified("Asia/Tokyo");
+      // 2026-11-17T03:00Z: still the 16th in Los Angeles, already the 17th in Tokyo.
+      const read = at("2026-11-17T03:00:00Z");
+      const [la] = (await read(angeles).notification.list({})).items;
+      const [jp] = (await read(tokyo).notification.list({})).items;
+      expect(la).toMatchObject({ releaseDay: "2026-11-16", releasedToday: true });
+      expect(jp).toMatchObject({ releaseDay: "2026-11-16", releasedToday: false });
+    });
+
+    it("an unknown zone reads Paris's day", async () => {
+      const m = await notified("Europe/Paris");
+      await db()
+        .update(schema.profiles)
+        .set({ timeZone: "Mars/Olympus" })
+        .where(eq(schema.profiles.userId, m.id));
+      // 23:30Z on the 16th: already the 17th in Paris.
+      const [group] = (await at("2026-11-16T23:30:00Z")(m).notification.list({})).items;
+      expect(group).toMatchObject({ releaseDay: "2026-11-16", releasedToday: false });
+      const [before] = (await at("2026-11-16T22:30:00Z")(m).notification.list({})).items;
+      expect(before).toMatchObject({ releasedToday: true });
+    });
+
+    it("other groups have no day", async () => {
+      const m = await member();
+      const fan = await member();
+      await api(fan).social.follow({ username: (await usernameOf(m.id))! });
+      const [group] = (await api(m).notification.list({})).items;
+      expect(group).toMatchObject({ type: "follow", releaseDay: null, releasedToday: false });
+    });
+  });
 });
+
+async function usernameOf(userId: string) {
+  const [row] = await db()
+    .select({ username: schema.profiles.username })
+    .from(schema.profiles)
+    .where(eq(schema.profiles.userId, userId));
+  return row?.username;
+}

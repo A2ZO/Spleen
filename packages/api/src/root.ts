@@ -8,6 +8,7 @@ import {
   likeSetSchema,
   popularFeedSchema,
   recentReleasesSchema,
+  pickSchema,
   upcomingMineSchema,
   topRatedSchema,
   trendsSchema,
@@ -157,6 +158,8 @@ import { CONTACT_PLACEHOLDER } from "./lib/moderation/emails";
 import { listModerationHistory } from "./lib/moderation/history";
 import { listReports, listSuspended } from "./lib/moderation/queue";
 import { listNotifications, markAllRead, unreadCount } from "./lib/social/notifications";
+import { pickToListen } from "./lib/listening/pick";
+import { releaseFriends } from "./lib/social/release-friends";
 import { getReviewDetail } from "./lib/social/reviews";
 import type { Viewer } from "./lib/viewer";
 import { usernameStatus } from "./lib/usernames";
@@ -368,6 +371,7 @@ export const appRouter = router({
           ctx.user.id,
           input.cursor,
           ctx.contactEmail ?? CONTACT_PLACEHOLDER,
+          ctx.now,
         ),
       ),
     /** Unread groups, for the header badge (0 when signed out). */
@@ -418,6 +422,27 @@ export const appRouter = router({
       const detail = await getReleaseDetail(ctx.db(), input.slug, viewer.id, ctx.now, known);
       return detail && blindReleaseDetail(ctx.db(), viewer.blind, detail);
     }),
+    /**
+     * « Tes amis sur ce disque », read apart from `bySlug` (the same for everyone): null for
+     * a visitor, a suspended account or one without a profile. Never imports anything.
+     */
+    friends: publicProcedure
+      .input(z.object({ slug: slugSchema, all: z.boolean().optional() }))
+      .query(async ({ input, ctx }) => {
+        const account = await ctx.account();
+        if (!account || account.suspendedAt || !account.profile) return null;
+        return releaseFriends(
+          ctx.db(),
+          {
+            id: account.user.id,
+            timeZone: account.profile.timeZone,
+            blind: account.blindMode,
+          },
+          input.slug,
+          ctx.now,
+          input.all,
+        );
+      }),
   }),
   artist: router({
     /** The discography is imported when a member first opens the page. */
@@ -500,6 +525,19 @@ export const appRouter = router({
     suggestions: protectedProcedure.query(({ ctx }) =>
       upcomingSuggestions(ctx.db(), ctx.user.id, ctx.now),
     ),
+  }),
+  /** « Tire un disque » (docs/decouverte.md): a record drawn from the caller's « À écouter ». */
+  toListen: router({
+    pick: protectedProcedure.input(pickSchema).query(async ({ input, ctx }) => {
+      const account = await ctx.account();
+      if (!account?.profile) fail("PRECONDITION_FAILED", "PROFILE_REQUIRED");
+      return pickToListen(
+        ctx.db(),
+        { id: ctx.user.id, timeZone: account.profile.timeZone, blind: account.blindMode },
+        input,
+        ctx.now,
+      );
+    }),
   }),
   track: router({
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {

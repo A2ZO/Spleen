@@ -1,74 +1,72 @@
-# Plan — étape 2 « Alimentation de nuit et lectures »
+# Plan — étape 2 : « Écouter sur… », les liens à l'import et l'affichage
 
-Pas d'écran. Doc ListenBrainz vérifiée (16 nov.) : paramètres `release_date`, `days` ≤ 90,
-`past`, `future` ; réponse `payload.releases[]`, en-têtes `X-RateLimit-*`.
+Consignes et décisions : `feuille-de-route.md`, « Étape 2 ». Existant vérifié : `targetColumns()`,
+`buildListenLinks`, `ListenLink`, `ListenOn.tsx` (3 pages), `SearchIcon`, `services.*`, import,
+fusion (`merge.ts`), dernière migration `0016`. Relu : OK avec 5 corrections, appliquées.
 
-1. **Migration** (`schema/catalog.ts`, `pnpm db:generate`, `pnpm db:migrate` sur Neon dev) :
-   `releases.announced_at`, `releases.release_date_changed_at`, `timestamptz` nullables.
-2. **Client ListenBrainz** `packages/catalog/src/listenbrainz.ts` :
-   `createListenBrainzClient({ userAgent, fetch? }).freshReleases(releaseDate)` (`days=90`,
-   `past=false`, `future=true`), réponse validée par Zod ; `Remaining` à 0 → attend
-   `Reset-In`, au-delà de 60 s ou en cas d'erreur (HTTP, délai 30 s, JSON) →
-   `CatalogError("unavailable")`. Fixture réduite rejouée par `createReplayFetch`, tests du client.
-3. **Suivi des dates** `lib/catalog/release-dates.ts`, une expression SQL partagée :
-   - `announced_at` : rempli une fois, si le premier jour de la période (date au mois ou à
-     l'année stockée au 1er) est après le jour UTC du passage ; jamais réécrit ;
-   - `release_date_changed_at` : si `announced_at` existe et que la nouvelle date sort de la
-     période de l'ancienne (comparée à la précision la plus grossière des deux) : « 2027 » →
-     « 2027-03-14 » est une précision ajoutée, pas un changement ;
-   - utilisée par `writeReleaseGroup`, `insertStubs`, et par `refreshArtistDiscography` pour les
-     groupes connus, mais seulement s'ils ont un `announced_at` ou si l'ancienne ou la nouvelle
-     date est après aujourd'hui (jamais de réécriture des dates passées).
-4. **Passage de nuit** (`scripts/refresh-catalog.ts` + `lib/catalog/upcoming-feed.ts`, date en
-   paramètre) :
-   a. ListenBrainz ; erreur notée dans la sortie, la suite continue ;
-   b. rapprochement par `artists.mbid` des artistes suivis seulement (le reste ignoré).
-      MusicBrainz reste la seule source de date (ListenBrainz donne la date d'une édition) :
-      groupe inconnu → `importReleaseGroup` ; groupe connu (fusion suivie) dont la date
-      ListenBrainz diffère → relecture du groupe sur MusicBrainz (`getReleaseGroup`), fiche
-      gardée, date appliquée par le point 3 ;
-   c. fiches incomplètes (`tracklist_imported_at` nul) des sorties à venir d'artistes suivis →
-      `importReleaseGroup`. b + c : 40 appels par nuit au plus ;
-   d. `artistsToRefresh` : artistes suivis en tête (suiveurs décroissants), même règle des 7
-      jours, même plafond de 150 ; ordre du reste inchangé.
-5. **Règle partagée** `lib/catalog/upcoming.ts` : `mainReleaseSql()` (repris par
-   `recentReleases`) et `upcomingSql(today)` : jour > today ; mois > mois en cours, ou mois en
-   cours avec `announced_at` ; année > année en cours, ou en cours avec `announced_at` ; jamais
-   au-delà de today + 12 mois (année : la suivante au plus) ; non fusionnée, disque principal,
-   album / ep / single. `recentReleases` ajoute `and not upcoming` (jour de Paris).
-6. **Lectures tRPC** (routeur `upcoming`) :
-   - `mine({ type? })` (protégée) : `todayIn(profiles.time_zone)`, artistes suivis via
-     `release_artists` ; groupes `week` / `month` / `later` / `tba` en JS selon la consigne ; tri
-     date puis titre ; 200 au plus ; élément `{ release: ReleaseCard, date, precision,
-     dateChanged, group }` ;
-   - `byArtist({ slug })` (publique, Europe/Paris, identique pour tous) : 20 au plus, par date ;
-     artiste fusionné suivi, inconnu → `NOT_FOUND`.
-7. **Démo** (`seed/upcoming.ts` après `seedDiscovery`, ids `fixtureId(45_xxx)`) : `nuitblanche`
-   suit 3 artistes, `vinylvince` 2 (un en commun) ; 6 sorties aux titres inventés, sans `mbid`
-   (comme tous les artistes de la démo : le vrai passage ne les relit pas), dates recalculées à
-   chaque seed (J+3, J+10, mois prochain au jour, M+2 au mois, année suivante, une avec
-   `release_date_changed_at`), toutes avec `announced_at`. Puis `pnpm db:seed` et un vrai
-   `pnpm catalog:refresh` sur Neon dev (résultat au journal).
-8. **Docs** : `catalogue.md`, `decouverte.md`, ligne « validé par Azzo » de `jalon-11-en-cours.md`.
+1. **Réponses réelles.** `record-fixtures.ts` : ne plus vider `listenbrainz-fresh-releases.json`
+   (le supprimer du `rm` : effacer seulement les `NN.json` et `manifest.json`) ; ajouter un
+   disque récent sorti en numérique avec liens de streaming sur l'édition (choisi sur
+   MusicBrainz, constante `FIXTURE_STREAMING_ALBUM` dans `test-fixtures.ts`). Changer les `inc=`
+   (point 3) puis `pnpm --filter @spleen/catalog record`. Noter au journal la forme réelle des
+   relations et des URL par service. Tests existants : suivre les nouvelles valeurs si besoin.
+   Si MusicBrainz refuse `recording-level-rels` : le retirer (règle actée), le noter.
+2. **Migration** (la seule) : `listen_service` + `listen_links` + `links_checked_at` sur
+   `releases` et `artists`, exactement « Autorisé à la fusion », dans `schema/catalog.ts` ;
+   `pnpm db:generate`, relire le `.sql`, `pnpm db:migrate` (Neon `dev`).
+3. **Fournisseur** : `MbRelation { type; ended?; direction?; url?: { resource } }` dans `raw.ts`
+   (`relations` sur `MbRelease`, `MbRecording`, `MbArtist`) ; type neutre
+   `ProviderUrlRelation { type: string; url: string }` ; champ facultatif `urlRelations` sur
+   `Tracklist`, `ProviderRecording`, `ProviderArtist`, présent seulement quand demandé (sans
+   `ended: true`, `url` présente). `inc=` actés (`getTracklist`, `getArtist`, `getRecording`).
+   Recherches et crédits : champ absent.
+4. **Validation** : `listen-links.ts` → `validListenUrl(raw, kind)` (seule fonction, tableau acté,
+   URL reconstruite, `null` sinon) et `pickListenLinks(relations, kind)` (types retenus selon la
+   fiche, service déduit de l'URL validée, premier valide par service). Formes Apple Music /
+   YouTube Music / `itunes.apple.com` ajustées aux réponses réelles (`decisions.md`).
+5. **Lecture** : `buildListenLinks(stored, title, firstArtist)` → 5 liens dans l'ordre fixe
+   (`spotify`, `deezer`, `appleMusic`, `youtubeMusic`, `bandcamp`), `direct: true` si la ligne
+   en base repasse `validListenUrl` **et** que le service déduit est celui de la ligne ; on
+   affiche l'URL renvoyée par `validListenUrl`, jamais la chaîne en base ; sinon recherche « premier artiste crédité + titre » (nom
+   seul sur l'artiste ; aujourd'hui tous les artistes : le test existant suit). `ListenLink`
+   gagne `direct`, `youtube` → `youtubeMusic`, `bandcamp`. Artiste et morceau : sous-requête
+   `json_agg` sur la ligne de la fiche, dans `artistIdBySlug` (ligne `known` du visiteur,
+   `root.ts`) **et** dans la lecture de repli de `getArtistDetail` (de même pour le morceau) ; disque (la ligne peut arriver déjà lue, `known`) :
+   une requête dans le `Promise.all`, gardée si la mesure tient la référence, sinon sous-requête
+   dans la lecture des genres (noté au journal).
+6. **Import** (`import.ts`) : `upsertListenLinks(tdb, target, links)` (insert … on conflict
+   sur l'index partiel : `target: [colonne, service]` + `targetWhere: isNotNull(colonne)` →
+   update `url`, `updated_at` ; jamais de suppression ; couvert par le test de ré-import) ; disque : liens
+   de l'édition de la liste des titres dans `writeReleaseGroup`, `links_checked_at` laissé
+   vide ; morceaux : dans `upsertTrack` quand `urlRelations` existe ; artiste : seulement
+   `importArtist` (+ `artists.links_checked_at = now`). `upsertArtist` des crédits n'y touche pas.
+   `importRecording` : écrire aussi les `urlRelations` de `getRecording` quand le morceau est
+   déjà dans la liste des titres (retour anticipé, l. 673-677).
+7. **Fusion** (`merge.ts`) : dans `mergeRelease` / `mergeTrack` / `mergeArtist`, insérer pour la
+   fiche gardée les services qui lui manquent (`on conflict do nothing`), puis supprimer les
+   liens du doublon.
+8. **Écran** : `ListenOn` : libellé texte, direct → `ExternalIcon`, recherche → `SearchIcon` +
+   « (recherche) » en `sr-only` ; `rel="nofollow noopener noreferrer"` ; `min-h-11` ;
+   `flex-wrap`. i18n FR/EN : `services.youtubeMusic`, `services.bandcamp`,
+   `album.listenSearch` ; `services.youtube` retirée (vérifier qu'aucun autre usage).
+9. **Tests API** (PGlite) : validation (valides par service et pièges actés), import depuis les
+   réponses enregistrées (disque, morceaux, artiste ; artiste de crédit sans effet ;
+   ré-import : ajout/mise à jour, jamais de retrait), fusion, lecture (direct puis recherche,
+   ordre fixe, URL invalide en base → recherche). Test catalogue : `urlRelations` lues.
+10. **e2e** `listen-on.spec.ts` : disque jetable avec Spotify + Bandcamp directs (`href`
+    exacts, `rel`) et trois recherches ; fiche artiste ; fiche morceau.
+11. **Docs** : `docs/catalogue.md` (relations, validation), `docs/jalon-13-en-cours.md`.
 
-Tests d'API (PGlite, date en paramètre, sans réseau) : `announced_at` (jour futur ; mois en cours
-vu la première fois → rien ; mois suivant → rempli et reste à venir pendant ce mois) ; changement
-contre précision affinée ; dates passées jamais réécrites ; ListenBrainz ≠ MusicBrainz sur deux
-passages → aucun second changement ; artiste non suivi ignoré ; erreur ListenBrainz sans arrêt ;
-plafond de 40 ; ordre de la file ; règle par précision, 12 mois, groupes, filtre, 200, passage
-aux récentes, `byArtist` identique visiteur / membre.
+Vérifications (écrans changés) : `pnpm check`, specs touchés, e2e complet (`verificateur`) ;
+build de prod : specs sans compte et `overflow.spec` ; axe 1280 / 390 px sur album, artiste,
+morceau, visiteur et membre ; `measure.mjs` deux passages (tranche le choix du point 5, noté au
+journal) ; captures des trois fiches, visiteur et membre, 1280 / 390, dans `captures/2/`.
+
+Seed : aucun lien direct (acté). Aucune dépendance, variable, CSP ni workflow.
 
 ## Avancement
 
-- [x] 1. Migration
-- [x] 2. Client ListenBrainz
-- [x] 3. Suivi des dates
-- [x] 4. Passage de nuit
-- [x] 5. Règle partagée
-- [x] 6. Lectures tRPC
-- [x] 7. Démo
-- [x] 8. Docs
-- [x] vérifications
-- [x] relecture 1
-- [x] relecture 2
-- [x] clôture
+- [x] 1. réponses réelles · - [x] 2. migration · - [x] 3. fournisseur · - [x] 4. validation
+- [x] 5. lecture · - [x] 6. import · - [x] 7. fusion · - [x] 8. écran
+- [x] 9. tests API · - [x] 10. e2e · - [x] 11. docs
+- [x] vérifications · - [x] relecture 1 · - [x] relecture 2 (sans objet : OK au premier tour) · - [x] clôture

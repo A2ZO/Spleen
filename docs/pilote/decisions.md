@@ -1,175 +1,197 @@
-# Décisions du pilote — jalon 11 « Sorties à venir »
+# Décisions du pilote — jalon 13 « Quoi écouter ce soir ? »
 
 Chaque choix pris sans Azzo : date, étape, choix, raison, alternative écartée. Azzo relit et
 peut revenir sur n'importe lequel. Les questions qui demandent Azzo sont sous un titre
-`QUESTION POUR AZZO`. Décisions du jalon 17 : `docs/pilote/archives/jalon-17/decisions.md`.
+`QUESTION POUR AZZO`. Décisions du jalon 11 : `docs/pilote/archives/jalon-11/decisions.md`.
 
-## Déjà décidé avec Azzo (16 novembre)
+## Décidé par le conseiller (17 novembre 2026)
 
-Règles par défaut du cahier des charges, validées :
+Règles par défaut du cahier des charges (section « Quoi écouter ce soir ? (jalon 13) »),
+retenues ou ajustées. Le détail de chaque étape est dans les « Décisions actées » de
+`feuille-de-route.md`.
 
-- Suivre un artiste : membres connectés ; 500 artistes au plus ; 200 suivis par heure.
-- La liste des artistes suivis est privée : visible seulement dans mes réglages.
-- « À venir » : disque principal (album, EP, single ; ni live ni compilation) d'un artiste
-  suivi, daté après aujourd'hui dans le fuseau du membre, 12 mois au plus.
-- Date au jour ou au mois : classée par date. Année seule : « Annoncé, date à préciser ».
-- Avant la sortie : ni « J'ai écouté », ni note, ni critique ; « À écouter » autorisé.
-- Date modifiée : la dernière date connue, avec un badge « date modifiée ».
-- Notifications : le jour de la sortie, regroupées par jour, avec un réglage pour les couper,
-  jamais pour un compte suspendu. Elles partent avec la tâche de nuit (vers 4 h à Paris) : pour
-  un fuseau très à l'ouest, elles arrivent le soir du jour J.
-- Fusion de doublons d'artistes : les suivis passent sur la fiche gardée. Suppression du compte :
-  les suivis disparaissent.
+**Écouter sur…**
 
-Ajouts du conseiller, validés :
+- Fiches album (EP, single), morceau et artiste ; cinq services, toujours dans cet ordre :
+  Spotify, Deezer, Apple Music, YouTube Music, Bandcamp. Chaque service a un lien : direct quand
+  MusicBrainz le connaît et qu'il passe la validation, sinon une recherche « premier artiste +
+  titre » (le nom seul sur une fiche artiste). Ajusté : YouTube Music remplace la recherche
+  YouTube actuelle et Bandcamp s'ajoute, comme le dit le cahier.
+- Seule source : les relations d'URL de MusicBrainz, demandées dans les requêtes existantes de
+  l'import (aucune requête en plus). Aucun appel pendant l'affichage d'une page.
+- Fiches déjà importées : relues par la tâche de nuit, plafonnée à 200 disques et 100 artistes
+  (10 minutes au plus), puis de nouveau après 30 jours. Ajusté : les morceaux déjà importés ne
+  sont pas relus la nuit (une requête de plus par disque) ; ils reçoivent leurs liens directs à
+  l'import seulement, et gardent la recherche sinon.
+- Validation stricte avant d'enregistrer et avant d'afficher : `https`, hôte exact par service,
+  forme de chemin selon le type de fiche, URL reconstruite. Un lien refusé laisse la recherche.
+- Aucun lien affilié, aucun paramètre de suivi, aucun logo (noms en texte), liens en
+  `nofollow`.
 
-- « Les plus attendus » : 2 membres au moins par disque (comme les tendances), comptes
-  suspendus exclus.
-- Les suivis et le réglage des notifications entrent dans l'export des données et dans la
-  politique de confidentialité.
+**Tes amis sur ce disque**
+
+- Sur la fiche d'un disque. Ajusté : pas sur les morceaux ni les artistes (le nom de la
+  fonction dit « disque » ; une fiche de morceau pourra suivre plus tard).
+- Les membres que je suis, avec une note ou un cœur sur le disque ; 5 au plus, les plus récents
+  d'abord, puis « Voir tous ».
+- Exclus : comptes bloqués dans un sens ou l'autre, comptes suspendus, membres au journal privé.
+  Ajusté : « contenus privés » = journal privé, comme pour le fil Amis.
+- Écoute à l'aveugle : section cachée tant que je n'ai pas noté le disque. Ajouté : cachée aussi
+  sur un disque pas encore sorti (comme la moyenne, voir plus bas), et pour un visiteur.
+
+**Tire un disque**
+
+- Un bouton dans l'onglet « À écouter » de mon profil mène à une page qui tire au hasard, côté
+  serveur, un disque de ma liste ; filtres de type (album, EP, single) et de durée (moins de
+  30 min, 30 à 60 min, plus d'une heure) ; bouton « Un autre » ; marche sans JavaScript.
+- Ajusté : seulement les disques (pas les morceaux, absents de l'onglet du profil), déjà sortis
+  dans mon fuseau ; une durée inconnue est exclue quand un filtre de durée est choisi. Rien
+  n'est enregistré (ni historique ni compteur). Ferme l'issue #31.
+
+**Restes du jalon 11** (réponses du conseiller du 16 novembre, en issues)
+
+- Notification d'une sortie d'un jour passé : « Sorti le <date> » ; horaire de nuit inchangé.
+- Disque pas encore sorti : moyenne masquée et « Les critiques ouvriront le jour de la
+  sortie. ».
+- Toujours ouvert, hors de ce jalon : retirer les sorties à venir de la discographie de la
+  fiche artiste.
+
+**Hors périmètre** : connexion aux services de streaming, lecteurs intégrés, extraits, images ou
+logos de marque, liens affiliés, autres services (Tidal, Qobuz, SoundCloud), tirage dans une
+liste ou dans tout le catalogue, historique des tirages, amis sur les morceaux, nouveaux textes
+légaux.
 
 ## Décisions du pilote
 
-- 2026-11-16, étape 1 — Suivre une fiche fusionnée suit la fiche gardée (seul un artiste inconnu
-  est refusé). Raison : même règle que les autres cibles fusionnées. Écarté : refuser.
-- 2026-11-16, étape 1 — L'état « je suis cet artiste » vient d'une procédure à part
-  (`artistFollow.status`), pas de `artist.bySlug`. Raison : garder la lecture de la fiche
-  identique pour tous (cache public, issue #22). Écarté : un champ `viewerFollows`.
-- 2026-11-16, étape 1 — Bouton « Suivre » / « Ne plus suivre », sans `aria-pressed` : le
-  libellé dit l'état (correction 1 d'Azzo ci-dessous, appliquée aussi à `FollowButton`). Écarté :
-  « Suivi », qui ne dit pas ce que fait le clic.
-- 2026-11-16, étape 1 — Réglages : « Mes artistes suivis » sans compteur dans le titre ; le
-  bouton redevient « Suivre » au clic (annulation). Écarté : sous-page dédiée.
-- 2026-11-16, étape 1 — Lien « Suivre » du visiteur : vers `/sign-in` sans retour sur la fiche.
-  Aucun mécanisme de retour après connexion n'existe (tout le monde arrive sur `/welcome`) ;
-  aucun créé (correction 2 d'Azzo). Écarté : un paramètre `next` maison.
-- 2026-11-16, étape 1 — Statut de suivi lu par slug, en parallèle de la fiche (fiche artiste
-  201 → 139 ms). Mesures : retour accueil 218–232 ms contre 210 de référence, mais `dev` mesuré
-  dans la même session donne 217–232 (page non touchée) : bruit de la machine. Écarté : rien.
-- 2026-11-16, étape 1 — Sans JavaScript, une erreur de suivi (plafond, limite horaire) s'affiche
-  sous le bouton (`useActionState`), comme les réglages (relecteur). Écarté : la documenter.
-- 2026-11-16, étape 2 — MusicBrainz reste la seule source de date : une sortie inconnue vue
-  par ListenBrainz est importée par MusicBrainz, une sortie connue dont la date ListenBrainz
-  diffère est relue sur MusicBrainz (ListenBrainz donne la date d'une édition ; relecteur).
-  Écarté : créer ou dater la fiche depuis ListenBrainz.
-- 2026-11-16, étape 2 — 40 appels MusicBrainz par nuit au plus pour ces imports et relectures.
-  Raison : garder le passage dans sa durée actuelle. Écarté : sans plafond.
-- 2026-11-16, étape 2 — `announced_at` compare au jour UTC du passage (vers 4 h à Paris, même
-  jour civil) ; une date au mois ou à l'année compte par son premier jour. Écarté : le fuseau
-  de chaque membre (la fiche est commune).
-- 2026-11-16, étape 2 — Une précision ajoutée (« 2027 » → « 2027-03-14 ») n'est pas une date
-  modifiée ; seules les dates des sorties annoncées ou futures sont mises à jour par la
-  relecture, jamais les dates passées (relecteur). Écarté : tout réécrire.
-- 2026-11-16, étape 2 — Budget de nuit dans l'ordre : imports, fiches à compléter, dates
-  ListenBrainz plus tôt, puis dates plus tard (souvent une édition, parfois un report) avec ce
-  qui reste. Raison : un report reste visible sans gaspiller le budget (relecteur, tour 1).
-  Écarté : ne jamais relire une date plus tard (un report passerait inaperçu).
-- 2026-11-16, étape 3 — Fiche d'un disque à venir : `ShelfPicker` caché avec « Noter en
-  détail » (le brief ne garde que « À écouter » et « Ajouter à une liste »). Écarté : le garder.
-- 2026-11-16, étape 3 — Fiche artiste : « Une sortie manque ? » reste affichée aux membres
-  quand « À venir » est vide (c'est là qu'elle sert ; une phrase, pas une carte vide).
-- 2026-11-16, étape 3 — « La première critique t'attend » inchangée sur un disque à venir
-  (règles actuelles des blocs vides, brief). Écarté : une variante (à proposer à Azzo).
-- 2026-11-16, étape 3 — Refus `RELEASE_NOT_OUT` pour ce qui ajoute seulement : retirer une
-  note, un cœur ou une écoute reste permis (disque reporté après coup ; relecteur).
-- 2026-11-16, étape 3 — Fiche artiste : les sorties à venir restent aussi dans la discographie
-  et ses compteurs (relecteur : doublon). Choix le plus prudent : ne pas toucher
-  `getArtistDetail` dans cette étape, la section « À venir » au-dessus suffit à les situer.
-  Écarté : les retirer de la discographie (règle `upcomingSql` côté API) ; à proposer à Azzo
-  dans la PR.
-- 2026-11-16, étape 3 — Fiche d'un disque à venir : la ligne « Sort le … » suit le jour de
-  Paris (identique pour tous, cache public #22), les contrôles le fuseau du membre
-  (`releaseNotOut`). Quelques heures autour du jour de sortie, un membre loin de Paris peut
-  voir l'une sans l'autre. Écarté : la ligne au fuseau du membre (page différente par membre).
-- 2026-11-16, étape 3 — Suggestions de `/upcoming` : boutons « Suivre » secondaires et petits
-  (un seul bloc lilas par page, relecteur) ; le bouton principal reste sur la fiche artiste.
+- 2026-11-17, étape 1 : l'année de « Sorti le {date} » s'ajoute quand elle diffère de celle du
+  jour de Paris (comme `formatUpcomingDate`), calculée par la page à l'affichage ; `releaseDay`
+  et `releasedToday` viennent de l'API. Raison : même règle que les dates à venir, aucun champ
+  de plus dans l'API. Écarté : un champ `releaseYearShown` dans `NotificationGroup`.
+- 2026-11-17, étape 1 : issues de l'étape trouvées : #41 (« Sorti le … ») et #42 (disque à
+  venir).
+- 2026-11-17, étape 2 : formes d'URL d'après les réponses réelles. YouTube Music : seule la
+  forme artiste `/channel/UC{22}` a été vue ; les formes disque (`/playlist?list=`,
+  `/browse/`) et morceau (`/watch?v=`) ne sont pas ajoutées (règle actée : une forme jamais
+  vue n'est pas ajoutée), ces fiches gardent la recherche YouTube Music. `itunes.apple.com`
+  n'apparaît que terminé et sous une autre forme (`/artist/id{n}`) : non accepté. Apple Music
+  : slug facultatif gardé comme dans le tableau. Bandcamp : tableau tel quel (artiste `/` vu).
+  Raison : prudence, réversible à l'étape 3 si la relecture de nuit en montre. Écarté : ajouter
+  les formes YouTube Music du tableau sans exemple réel.
+- 2026-11-17, étape 2 : la purge e2e (`deleteE2eAccounts`, `packages/db/src/e2e.ts`) supprime
+  les disques jetables, que la clé `restrict` de `listen_links` bloque. Les liens de ces disques
+  sont effacés dans `apps/web/e2e/cleanup.ts`, juste avant. Raison : « Autorisé à la fusion »
+  n'ouvre dans `packages/db` que le schéma et le seed. Écarté : la ligne dans `e2e.ts`. Le
+  disque est lu avec ses liens dans la même requête (sous-requête `json_agg`, comme l'artiste
+  et le morceau) plutôt qu'une requête de plus dans le `Promise.all` : rien de plus en
+  parallèle sur le pool. Mesure (build de prod, deux passages) : pageMs 212/133/219/182/226
+  et 211/134/219/167/227 contre 215/136/231/182/228 : gardé.
+- 2026-11-17, étape 3 : la navigation `release?release-group=…&inc=url-rels` renvoie bien les
+  relations (BRAT : 25 éditions, toutes avec des liens) : pas de repli sur l'édition de
+  référence. Aucune forme YouTube Music disque ou morceau vue : `validListenUrl` inchangé.
+- 2026-11-17, étape 3 : la phase des liens a son propre fournisseur (`maxAttempts: 3` au lieu
+  de 8) pour borner le dépassement du budget de 10 min. Raison : le relecteur a montré qu'une
+  requête à 8 essais peut durer plus de 16 min. Écarté : garder 8 essais et écrire la borne.
+  Une navigation qui renvoie 0 édition est traitée comme `not_found` (liens gardés). Écarté :
+  retirer tous les liens.
+- 2026-11-17, étape 4 : l'inventaire de la démo (`packages/db/src/db.test.ts`, « loads the demo
+  dataset ») suit les nouvelles données : 52 disques, 18 profils, 80 écoutes, 14 abonnements.
+  Raison : la feuille de route impose un disque et des membres de démo ; ce test compte les
+  lignes du seed, et les étapes précédentes (60dcb06) l'ont mis à jour de même. Aucun autre
+  test ni e2e ne compte les abonnements de `nuitblanche` (`pnpm check` vert). Écarté : une
+  démo sans nouvelles lignes, impossible pour ce besoin.
+- 2026-11-17, étape 4 : le snapshot `packages/api/src/__snapshots__/feed-loading.test.ts.snap`
+  (fil « Amis » de `nuitblanche`) est régénéré. Raison : deux consignes de la feuille de route
+  se contredisent (membres de démo suivis par `nuitblanche` avec une note ou un cœur, et
+  « ajuster la démo, jamais les tests ») : le fil montre ces écoutes avec les mêmes règles que
+  la section, aucune démo ne peut les y cacher. Le diff ne fait qu'ajouter les 6 écoutes
+  visibles (×2 pour le mode aveugle) et décaler les pages ; aucune ligne existante ne change,
+  le membre au journal privé reste absent, le fil « Populaire » est identique. Réversible.
+  Écarté : des membres suivis par un autre compte (contraire à la consigne) ou l'attente.
+- 2026-11-17, étape 4 : `release.friends` reste dans la première vague de la fiche album.
+  Mesure (build de prod, `nuitblanche`) : pageMs 257/148/241/192/232, 213/141/238/191/233,
+  puis 229/144/236/220/234 contre 215/136/231/182/228 ; le premier passage (257) est un
+  démarrage à froid, les deux suivants restent dans les 20 ms pour l'album. Écarté : la
+  deuxième vague, inutile à ce niveau.
+- 2026-11-17, étape 4, relecture 1 : nouvelle mesure. Même build de prod, trois passages :
+  pageMs 239/155/237/173/230, 229/138/237/168/227, 218/139/234/170/229 (profil → `/discover`
+  revenu à 168–173 ms : le 220 était du bruit). Contrôle A/B, même build sans l'appel
+  `release.friends` (retiré le temps de la mesure, rien de commité) : album 236/207/227/225
+  contre 239/229/218 avec. L'écart avec la référence vient de la machine ce jour-là, pas de
+  la section : l'appel reste dans la première vague.
+- 2026-11-17, étape 4, relecture 1 : le relecteur demande que Azzo valide la régénération du
+  snapshot `feed-loading` (voir plus haut). Choix gardé (réversible, ajouts seuls), sans
+  attente : point ouvert dans `journal.md` et dans la passation ; l'alternative (membres suivis
+  par un autre compte de démo) changerait la consigne de l'étape et l'e2e.
+- 2026-11-17, étape 5 : l'issue #31 demandait de remplacer le 2e bouton de l'accueil par « Tire
+  un disque au hasard » ; les décisions actées gardent l'accueil inchangé et mettent l'accès
+  dans l'onglet « À écouter » de mon profil : elles priment, le bouton provisoire de l'accueil
+  reste. Écarté : changer l'accueil (contraire à la consigne).
+- 2026-11-17, étape 5 : « Un autre » navigue avec `useNavigate().push` dans un `onSubmit` (formulaire
+  GET classique sans JavaScript). Raison : règle du projet (seul moyen de naviguer depuis le
+  code, il alimente la barre du haut). Écarté : `next/form` (navigation hors de la barre).
+- 2026-11-17, étape 5 : le cas « rien n'est encore sorti » se lit sur la page sans champ de
+  plus : `listTotal` > 0 et `matching` 0 sans filtre ; avec un filtre, « aucun ne correspond »
+  puis « Retirer les filtres » mène à ce cas. Raison : forme de réponse actée `{ listTotal,
+  matching, pick }`. Écarté : un champ `released`.
+- 2026-11-17, étape 5 : démo `seed/pick.ts` (6 disques sortis dans « À écouter » de
+  `nuitblanche`) → inventaire `db.test.ts` (sorties 52 → 58) et test « demo members » de
+  `listening.test.ts` (7 disques, ordre réel en `toEqual` complet) mis à jour. Les dates
+  `updated_at` sont fixées (1 à 6 jours avant) car les lignes du seed partagent le `now()` de la
+  transaction (ordre sinon aléatoire). Artistes choisis hors des tests (pas `lune-basse` ni
+  `odette-marchal`), titres sans les mots tapés par les tests de recherche. Écarté : un compte
+  de démo dédié (plus de données, aucun gain).
+- 2026-11-17, étape 5 : le contrôle de débordement à 390 px de `/fr/pick` et de mon onglet est
+  dans `pick.spec.ts` (bloc « on a phone », compte jetable), pas dans `overflow.spec.ts` : ce
+  dernier tourne sur le build de prod sans compte (l'inscription y échoue, Brevo factice).
+  Écarté : se connecter avec un compte de démo dans `overflow.spec` (aucun précédent).
+- 2026-11-17, étape 5 : `measure.mjs` gagne `MEASURE_ONLY=<chemin>` (un seul parcours accueil →
+  chemin, même lecture) pour mesurer `/pick`, hors des cinq parcours. Mesure (build de prod) :
+  `/pick` 138/141/142 ms, référence 142 ; cinq parcours pageMs 237/151/245/195/248 et
+  238/147/239/196/248 contre 215/136/231/182/228. Album et `/discover` → accueil à +20/+22 ms :
+  l'étape ne touche ni la fiche album, ni l'accueil, ni `/discover` (seul le bouton de mon onglet
+  change sur un profil), et la même dérive de la machine était déjà vue à l'étape 4 (album
+  218–239 sans changement). Relecture 1 : contrôle A/B dans la même session, build de prod de
+  `d70f426` (fin de l'étape 4) contre `f6fcdad` : pageMs 225/140/229/187/233 et
+  226/144/233/188/231 contre 221/143/230/184/234 et 220/138/229/187/232 : aucun écart dû à
+  l'étape, tout dans les 20 ms de la référence.
+- 2026-11-17, étape 5, relecture 1 : la durée de la carte vient de l'API (`durationMinutes`,
+  `pickMinutes`) : vers le bas sous 30 min, vers le haut au-delà d'une heure, sinon au plus
+  proche, pour ne jamais contredire le filtre (29:59 n'affiche pas « 30 min »). Le titre et la
+  ligne des artistes rapetissent sur téléphone selon le mot le plus long
+  (`phoneCardTitleSize` / `phoneCardLineSize`, `lib/display-title.ts`), la carte partant de
+  32 px quand `phoneTitleSize` part de 48/56. La fiche album garde son arrondi. Écarté :
+  réutiliser `phoneTitleSize` (tailles plus grandes que celles de la carte).
+- 2026-11-17, étape 6 : captures (build de prod, axe WCAG 2.2 AA : 0 violation, aucun
+  débordement, visiteur et `nuitblanche`). Deux états copiés plutôt que refaits, le code étant
+  inchangé depuis : la liste vide de `/pick` (captures de l'étape 5, compte jetable) et les
+  notifications (étape 1). Le morceau `archangel-burial` n'a que des liens de recherche : aucune
+  fiche morceau de la base de dev n'a de relation URL MusicBrainz. Écarté : importer un morceau
+  pour la capture (écriture dans le catalogue sans besoin).
+- 2026-11-17, étape 6 : mesures (build de prod, pageMs) d'abord 238/146/235/198/247 et
+  233/144/242/195/240 contre 215/136/231/182/228 ; A/B demandé par le plan, même session :
+  `origin/dev` 213/134/215/180/223 et 214/134/220/180/226, HEAD (`d806eee`) 215/129/211/179/223
+  et 213/132/216/180/223 : aucun écart dû au jalon, le premier écart venait de la machine.
+  `/pick` 137/136, référence 142. Specs sans compte + `overflow.spec` sur prod : 116 réussis,
+  2 échoués (`hydration.spec.ts:17`, Brevo factice, déjà connu), 10 ignorés.
+- 2026-11-17, étape 6 : le premier `pnpm build` est sorti en code 1 juste après l'avertissement
+  « Next.js 16.4.2 affected by a known security vulnerability » ; le second a réussi. Aucune
+  montée de dépendance permise dans le jalon : point ouvert pour Azzo dans la PR.
 
-- 2026-11-16, étape 4 — « Bientôt dans tes oreilles » en section pleine largeur juste sous la
-  grille du haut (donc sous « Ton mois »), pas dans la colonne de droite, trop étroite pour 5
-  tuiles. Écarté : une liste compacte dans la colonne.
-- 2026-11-16, étape 4 — « Les plus attendus » sans nombre de membres affiché (le brief ne
-  demande que disque, artiste, date) et sans données du lecteur (cache public #22). Écarté :
-  « 12 membres l'attendent ».
-- 2026-11-16, étape 4 — Sorties à l'année seule après les sorties datées dans les 5 tuiles de
-  l'accueil et à égalité dans « Les plus attendus » (relecteur : le 1er janvier stocké n'est
-  pas une vraie date).
+## QUESTION POUR AZZO (17 novembre 2026, fin du jalon 13)
 
-## QUESTION POUR AZZO
+PR 46 (`feat/13-quoi-ecouter` → `dev`), CI verte. Le relecteur rend `BLOQUANT` avant la fusion,
+pour une raison formelle : `packages/db/src/db.test.ts` (inventaire de la démo : disques 51 → 58,
+profils 11 → 18, écoutes 73 → 80, abonnements 7 → 14, aucune assertion retirée) sort de
+« Autorisé à la fusion » (« rien d'autre dans `packages/db` hors du seed »). Pas de fusion
+automatique.
 
-Plan de l'étape 1 à valider : docs/pilote/plan-etape-1.md (migration `artist_follows` et
-`profiles.notify_releases`). Note du relecteur : la case « Me prévenir le jour de la sortie »
-apparaît dès l'étape 1 mais n'agit qu'à l'étape 5 (tout part dans la même PR de fin de jalon).
-Réponds ici (« validé », avec tes corrections éventuelles), puis mets la phase `code` dans
-`etat.md`.
+1. Acceptes-tu cette mise à jour de `db.test.ts` et le snapshot `feed-loading.test.ts.snap`
+   régénéré à l'étape 4 ? Si oui : fusionne la PR 46 toi-même (commit de fusion), ou réponds
+   « fusion autorisée » ici et remets la phase `plan` dans `etat.md` (étape « fin du jalon ») :
+   le pilote refera la section 6.
+2. Next.js 16.4.2 est annoncé vulnérable pendant `pnpm build` (un premier build en code 1, le
+   second passe). Faut-il une PR `chore/` de mise à jour avant la release `dev` → `main` ?
 
-**Réponse d'Azzo (16 novembre) : validé, avec deux corrections.**
-
-1. Bouton dont le libellé change (« Suivre » / « Ne plus suivre ») : pas d'`aria-pressed`, le
-   libellé suffit (un bouton bascule garde un libellé fixe, sinon les lecteurs d'écran
-   annoncent « Ne plus suivre, enfoncé »). Même correction pour `FollowButton` (abonnement à
-   un membre) s'il fait pareil, dans cette étape.
-2. Lien « Suivre » d'un visiteur : vers la connexion avec retour sur la fiche de l'artiste
-   après la connexion, comme les autres liens visiteurs vers `/sign-in` (même mécanisme ; s'il
-   n'en existe pas, le noter dans le journal sans en créer un).
-
-- 2026-11-16 — Étape 5. Unicité « une notification par membre et par disque » : index unique
-  partiel sur (`user_id`, `release_id`) plutôt qu'étendre `notifications_once_uidx` (la
-  nouvelle valeur d'enum n'est pas utilisée dans la migration qui la crée). Écarté : modifier
-  l'index existant.
-- 2026-11-16 — Étape 5. « Aujourd'hui » par fuseau calculé en JS avec `todayIn()`, repli
-  `DEFAULT_TIME_ZONE` pour un fuseau refusé, plutôt que `timezone()` en SQL (un fuseau inconnu
-  de Postgres ferait échouer tout le passage). Écarté : le calcul SQL.
-- 2026-11-16 — Étape 5. **Écart à la feuille de route** : l'e2e n'utilise ni les données de
-  démo ni `page.clock`. Le texte est rendu côté serveur (l'horloge du navigateur n'y change
-  rien) et aucune date de démo ne reste « aujourd'hui ». Catalogue jetable daté du jour comme
-  les autres e2e du jalon, tâche limitée au compte du test. À redire dans la PR. Écarté : figer
-  des notifications de démo dans le seed.
-- 2026-11-16 — Étape 5 (relecture). Une notification d'un jour passé garde « Sortie
-  aujourd'hui : … » (texte de la décision actée), à côté de « il y a 3 jours ». Choix
-  prudent : texte inchangé. Écarté pour l'instant : « Sorti le {date} » quand le jour est
-  passé. À poser à Azzo dans la PR.
-- 2026-11-16 — Étape 5 (relecture). La tâche de nuit tourne à 03:17 UTC : les membres des
-  Amériques reçoivent la notification le soir de la sortie (17 h à 22 h chez eux). Choix
-  prudent : horaire inchangé (une seule tâche, celle de `catalog:refresh`). Écarté : une
-  seconde exécution dans la journée. À poser à Azzo dans la PR.
-- 2026-11-16 — Étape 6. axe et captures membre sur les comptes de démo (`nuitblanche` sur le
-  build de prod, `rainydaysam` en dev) plutôt qu'un compte e2e jetable : les écrans du jalon
-  n'ont de contenu qu'avec les suivis et sorties de la démo. Les captures de « Sortie
-  aujourd'hui » restent celles de l'étape 5 (compte jetable). Écarté : recréer les données de
-  démo dans un compte e2e.
-- 2026-11-16 — Étape 6 (relecture 1 et 2). Le relecteur demandait de masquer la « Note de la
-  communauté » et l'invitation à la critique sur un disque à venir. Appliqué puis retiré : les
-  « Décisions actées » (fiche d'un disque à venir) disent que les blocs vides (moyenne,
-  critiques) suivent leurs règles actuelles. Gardé : le texte visiteur « Connecte-toi pour
-  l'ajouter à « À écouter ». » (ce n'est pas un bloc vide ; l'ancien parlait d'écoutes,
-  refusées avant la sortie). Fiche d'un titre inchangée : les morceaux ne sont pas concernés
-  (décision actée). Captures `*-album_nuit-polaire-*` refaites en dev (axe : 0 violation). À
-  poser à Azzo dans la PR : masquer la moyenne et remplacer l'invitation à la critique par
-  « Les critiques ouvriront le jour de la sortie. » sur un disque à venir ?
-- 2026-11-16 — Fin du jalon (relecture de la PR 40). Corrigé sur la branche plutôt que dans
-  `dev` après fusion : « pas encore sorti » sans le plafond de 12 mois (un disque daté dans
-  18 mois refuse aussi écoutes et notes ; test PGlite) et l'année ajoutée aux dates au jour hors
-  de l'année en cours. Année courante prise à Paris dans `formatUpcomingDate()` (écart de
-  quelques heures possible le 31 décembre pour un autre fuseau). Écarté : passer le jour du
-  lecteur à chaque composant.
-
-## QUESTION POUR AZZO
-
-- 2026-11-16 — Fin du jalon 11, fusion de la PR 40 (https://github.com/A2ZO/Spleen/pull/40)
-  en suspens. CI verte, corrections de la relecture appliquées (ad44693), zones sensibles dans
-  « Autorisé à la fusion ». Verdict du relecteur avant fusion : `BLOQUANT`, pour une seule
-  raison : la PR contient quatre commits qui modifient `.claude/` (ddb5e1a, 991a58a, 8abaf21,
-  2ad3881, trailer `Claude-Session: session_01T5msRKGPL1juWy9yXHhCLM`, donc une session
-  interactive, pas le pilote). ddb5e1a et 991a58a assouplissent la règle de fusion du relecteur
-  (migrations et workflow permis via « Autorisé à la fusion ») ; 8abaf21 et 2ad3881 modifient
-  `SKILL.md` (verrou, reprise, « Avancement »). As-tu demandé toi-même ces quatre commits ?
-  Si oui : fusionne la PR 40 dans `dev` (ou réponds « oui » ici et remets la phase `cloture`
-  dans `etat.md` pour que le pilote la fusionne et ouvre la PR `dev` → `main`). Questions de la
-  PR à trancher aussi : voir sa description (dont la question 4, moyenne et critiques sur un
-  disque à venir).
-
-Réponse d'Azzo (16 novembre) : oui, ces quatre commits de `.claude/` viennent de mes demandes
-(prompts du conseiller). J'ai fusionné la PR 40 moi-même. Questions de la PR, tranchées par le
-conseiller : notification d'un jour passé → « Sorti le <date> » ; horaire de nuit inchangé ;
-disque à venir → moyenne masquée et « Les critiques ouvriront le jour de la sortie. ». Les deux
-changements font l'objet d'issues.
+Réponse d'Azzo (17 novembre 2026, dans la conversation) : « Oui, fusion autorisée » (point 1 :
+`db.test.ts` et snapshot `feed-loading` acceptés). Point 2 (Next.js) sans réponse : reste ouvert
+dans la PR de release.

@@ -6,13 +6,20 @@ import {
   type CatalogProvider,
   type ProviderArtist,
   type ProviderRecording,
+  type ProviderUrlRelation,
   type ReleaseGroupDetail,
   type ReleaseGroupSummary,
   type Tracklist,
 } from "@spleen/catalog";
-import { and, eq, inArray, schema, slugify, sql, type Db } from "@spleen/db";
+import { and, eq, inArray, isNotNull, ne, schema, slugify, sql, type Db } from "@spleen/db";
 import type { ImportKind } from "@spleen/validators";
 
+import {
+  LISTEN_SERVICE_DB,
+  pickListenLinks,
+  type ListenKind,
+  type ValidListenUrl,
+} from "../listen-links";
 import { announcedAtFor, mayUpdateDate, trackedDateSet } from "./release-dates";
 
 /*
@@ -22,7 +29,7 @@ import { announcedAtFor, mayUpdateDate, trackedDateSet } from "./release-dates";
  */
 
 const { artists, catalogImportJobs, genres, releaseArtists, releaseGenres, releases } = schema;
-const { releaseTracks, trackArtists, tracks } = schema;
+const { listenLinks, releaseTracks, trackArtists, tracks } = schema;
 
 /** Editions tried for the tracklist when MusicBrainz cannot serve the reference one. */
 const EDITION_TRIES = 2;
@@ -292,7 +299,57 @@ async function setReleaseGenres(db: Db, releaseId: string, names: string[]) {
     .onConflictDoNothing();
 }
 
-/** Inserts or refreshes a track (recording) and its credited artists. */
+const LINK_COLUMN = { release: "releaseId", track: "trackId", artist: "artistId" } as const;
+
+/**
+ * Stores the valid "Listen on" links of one entity (one per service): a new link is added, a
+ * changed one replaced. With `removeMissing` (nightly re-read of a complete answer), a service
+ * absent from `links` is removed; the import never removes one (docs/catalogue.md).
+ */
+export async function storeListenLinks(
+  db: Db,
+  kind: ListenKind,
+  id: string,
+  links: ValidListenUrl[],
+  now: Date,
+  { removeMissing }: { removeMissing: boolean },
+) {
+  const column = listenLinks[LINK_COLUMN[kind]];
+  if (removeMissing) {
+    const kept = links.map((link) => ne(listenLinks.service, LISTEN_SERVICE_DB[link.service]));
+    await db.delete(listenLinks).where(and(eq(column, id), ...kept));
+  }
+  if (links.length === 0) return;
+  await db
+    .insert(listenLinks)
+    .values(
+      links.map((link) => ({
+        [LINK_COLUMN[kind]]: id,
+        service: LISTEN_SERVICE_DB[link.service],
+        url: link.url,
+      })),
+    )
+    .onConflictDoUpdate({
+      target: [column, listenLinks.service],
+      targetWhere: isNotNull(column),
+      set: { url: sql`excluded.url`, updatedAt: now },
+    });
+}
+
+/** Import: the valid links of the answer are added or updated, none is ever removed. */
+async function upsertListenLinks(
+  db: Db,
+  kind: ListenKind,
+  id: string,
+  relations: ProviderUrlRelation[],
+  now: Date,
+) {
+  await storeListenLinks(db, kind, id, pickListenLinks(relations, kind), now, {
+    removeMissing: false,
+  });
+}
+
+/** Inserts or refreshes a track (recording), its credited artists and its listen links. */
 async function upsertTrack(
   db: Db,
   recording: ProviderRecording,
@@ -330,6 +387,9 @@ async function upsertTrack(
       .values({ ...fields, slug, mbid: recording.mbid })
       .onConflictDoUpdate({ target: tracks.mbid, set: { updatedAt: now } })
       .returning({ id: tracks.id, slug: tracks.slug });
+  }
+  if (recording.urlRelations) {
+    await upsertListenLinks(db, "track", track!.id, recording.urlRelations, now);
   }
   await db.delete(trackArtists).where(eq(trackArtists.trackId, track!.id));
   if (credited.length > 0) {
@@ -380,6 +440,7 @@ async function writeReleaseGroup(
     const releaseId = release!.id;
     await setReleaseArtists(tdb, releaseId, credited);
     await setReleaseGenres(tdb, releaseId, group.genres);
+    if (tracklist) await upsertListenLinks(tdb, "release", releaseId, tracklist.urlRelations, now);
 
     await tdb.delete(releaseTracks).where(eq(releaseTracks.releaseId, releaseId));
     const rows = [];
@@ -592,8 +653,9 @@ export async function importArtist(
       const own = await upsertArtist(tdb, artist, cache, now);
       await tdb
         .update(artists)
-        .set({ discographyImportedAt: now, discographyRefreshedAt: now })
+        .set({ discographyImportedAt: now, discographyRefreshedAt: now, linksCheckedAt: now })
         .where(eq(artists.id, own.id));
+      await upsertListenLinks(tdb, "artist", own.id, artist.urlRelations ?? [], now);
       await insertStubs(tdb, stubs, covers, cache, now);
       return own.slug;
     });
@@ -673,7 +735,13 @@ export async function importRecording(
     if (best) await importReleaseGroup(db, provider, best.releaseGroup.mbid, options);
     // The reference tracklist may use another recording of the song: keep this one too.
     const imported = await findBy(db, tracks, mbid);
-    if (imported) return (await followMerge(db, tracks, imported)).slug;
+    if (imported) {
+      const kept = await followMerge(db, tracks, imported);
+      // The tracklist may not carry this recording's links: write the ones read here.
+      const now = options.now ?? new Date();
+      await upsertListenLinks(db, "track", kept.id, recording.urlRelations ?? [], now);
+      return kept.slug;
+    }
     const track = await upsertTrack(db, recording, null, new Map(), options.now ?? new Date());
     return track.slug;
   });

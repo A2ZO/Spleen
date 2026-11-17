@@ -1,6 +1,7 @@
 // Navigation timing on 5 member paths (home → album → artist → profile → discover → home):
 // a soft navigation to a fixed demo album, then real clicks in Chrome, then each page's RSC request replayed alone with its SQL trace.
 // Usage (from apps/web, server already running): node scripts/measure.mjs [baseURL] [runs]
+// (MEASURE_ONLY=<path>: only home → <path>, e.g. a page outside the five paths).
 // SQL columns need the dev server started with SPLEEN_QUERY_TRACE=1 (docs/environnement.md);
 // against a production build they stay empty. Signs in nuitblanche@example.test (demo seed)
 // through the dev outbox, so it needs Brevo unset, like e2e.
@@ -21,13 +22,17 @@ const email = "nuitblanche@example.test";
 // change with "Just out", so a click there would measure a different record from run to run.
 // `window.next.router.push` is the router a <Link> click uses (no click, no hover prefetch).
 const album = "/fr/album/brume-sur-le-canal";
-const steps = [
-  { name: "accueil→album", push: album, url: /\/album\/brume-sur-le-canal$/ },
-  { name: "album→artiste", sel: 'main a[href*="/artist/"]:visible', url: /\/artist\// },
-  { name: "artiste→profil", sel: 'a[href*="/u/"]:visible', url: /\/u\// },
-  { name: "profil→discover", sel: 'a[href$="/discover"]:visible', url: /\/discover$/ },
-  { name: "discover→accueil", sel: 'header a[href="/fr"]:visible', url: /\/fr$/ },
-];
+// MEASURE_ONLY=/fr/pick: one step only, home → that path (same push, same reading).
+const only = process.env.MEASURE_ONLY;
+const steps = only
+  ? [{ name: `accueil→${only}`, push: only, url: (url) => url.pathname === only }]
+  : [
+      { name: "accueil→album", push: album, url: /\/album\/brume-sur-le-canal$/ },
+      { name: "album→artiste", sel: 'main a[href*="/artist/"]:visible', url: /\/artist\// },
+      { name: "artiste→profil", sel: 'a[href*="/u/"]:visible', url: /\/u\// },
+      { name: "profil→discover", sel: 'a[href$="/discover"]:visible', url: /\/discover$/ },
+      { name: "discover→accueil", sel: 'header a[href="/fr"]:visible', url: /\/fr$/ },
+    ];
 
 const median = (xs) => {
   const s = [...xs].sort((a, b) => a - b);

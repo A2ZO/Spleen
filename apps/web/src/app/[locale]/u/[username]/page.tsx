@@ -216,6 +216,13 @@ async function TabContent({
       }
       return (
         <>
+          {profile.isOwner && (
+            <div className="mb-5 flex justify-end">
+              <ButtonLink href="/pick" variant="secondary">
+                {t("profile.pick")}
+              </ButtonLink>
+            </div>
+          )}
           <ul className={gridClasses}>
             {queue.items.map((release) => (
               <li key={release.id}>

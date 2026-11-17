@@ -1,43 +1,279 @@
 {
+  "gender": "Female",
+  "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
+  "disambiguation": "French singer; aka Boss Lady",
+  "sort-name": "Theodora",
+  "end-area": null,
+  "isnis": [
+    "0000000522696384"
+  ],
+  "name": "Theodora",
+  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+  "relations": [
+    {
+      "end": null,
+      "source-credit": "",
+      "ended": false,
+      "url": {
+        "resource": "https://open.spotify.com/artist/3PpJbrAbphauEun8Xf9tD2",
+        "id": "06ae713f-8613-483f-b5f4-5196202862f5"
+      },
+      "attribute-values": {},
+      "type": "free streaming",
+      "begin": null,
+      "direction": "forward",
+      "target-type": "url",
+      "attributes": [],
+      "target-credit": "",
+      "attribute-ids": {},
+      "type-id": "769085a1-c2f7-4c24-a532-2375a77693bd"
+    },
+    {
+      "type-id": "769085a1-c2f7-4c24-a532-2375a77693bd",
+      "attribute-ids": {},
+      "target-credit": "",
+      "attributes": [],
+      "target-type": "url",
+      "begin": null,
+      "direction": "forward",
+      "type": "free streaming",
+      "attribute-values": {},
+      "url": {
+        "id": "2499896a-a7d5-4c23-af1e-24a969717209",
+        "resource": "https://www.deezer.com/artist/13820325"
+      },
+      "ended": false,
+      "source-credit": "",
+      "end": null
+    },
+    {
+      "end": null,
+      "ended": false,
+      "source-credit": "",
+      "url": {
+        "resource": "https://open.qobuz.com/artist/24611736",
+        "id": "069285d2-a0bf-44df-8e5f-85e4cd9a106a"
+      },
+      "type": "purchase for download",
+      "attribute-values": {},
+      "target-type": "url",
+      "direction": "forward",
+      "begin": null,
+      "attributes": [],
+      "attribute-ids": {},
+      "type-id": "f8319a2f-f824-4617-81c8-be6560b3b203",
+      "target-credit": ""
+    },
+    {
+      "attributes": [],
+      "target-credit": "",
+      "attribute-ids": {},
+      "type-id": "99429741-f3f6-484b-84f8-23af51991770",
+      "attribute-values": {},
+      "type": "social network",
+      "begin": null,
+      "direction": "forward",
+      "target-type": "url",
+      "url": {
+        "id": "d7b75ebb-0039-478c-be1e-4f6b76a7eea4",
+        "resource": "https://twitter.com/theodorabossy"
+      },
+      "end": null,
+      "source-credit": "",
+      "ended": false
+    },
+    {
+      "target-type": "url",
+      "begin": null,
+      "direction": "forward",
+      "type": "social network",
+      "attribute-values": {},
+      "attribute-ids": {},
+      "type-id": "99429741-f3f6-484b-84f8-23af51991770",
+      "target-credit": "",
+      "attributes": [],
+      "ended": false,
+      "source-credit": "",
+      "end": null,
+      "url": {
+        "id": "872a088c-60e1-4c6c-8e12-325e84f85b3c",
+        "resource": "https://www.instagram.com/theodorabosslady/"
+      }
+    },
+    {
+      "url": {
+        "id": "307aa7f2-2e81-4721-96ef-4a8c4baaec8e",
+        "resource": "https://www.tiktok.com/@theodorabossladyy"
+      },
+      "end": null,
+      "source-credit": "",
+      "ended": false,
+      "attributes": [],
+      "target-credit": "",
+      "attribute-ids": {},
+      "type-id": "99429741-f3f6-484b-84f8-23af51991770",
+      "attribute-values": {},
+      "type": "social network",
+      "direction": "forward",
+      "begin": null,
+      "target-type": "url"
+    },
+    {
+      "url": {
+        "resource": "https://soundcloud.com/user-755572059",
+        "id": "8be26ed5-dc09-4246-81e9-298e1eff9701"
+      },
+      "source-credit": "",
+      "ended": false,
+      "end": null,
+      "target-credit": "",
+      "type-id": "89e4a949-0976-440d-bda1-5f772c1e5710",
+      "attribute-ids": {},
+      "attributes": [],
+      "begin": null,
+      "direction": "forward",
+      "target-type": "url",
+      "attribute-values": {},
+      "type": "soundcloud"
+    },
+    {
+      "source-credit": "",
+      "ended": false,
+      "end": null,
+      "url": {
+        "resource": "https://open.qobuz.com/artist/24611736",
+        "id": "069285d2-a0bf-44df-8e5f-85e4cd9a106a"
+      },
+      "direction": "forward",
+      "begin": null,
+      "target-type": "url",
+      "attribute-values": {},
+      "type": "streaming",
+      "target-credit": "",
+      "type-id": "63cc5d1f-f096-4c94-a43f-ecb32ea94161",
+      "attribute-ids": {},
+      "attributes": []
+    },
+    {
+      "url": {
+        "id": "f710f564-4cc3-4425-80c3-5fcc3002d1c7",
+        "resource": "https://tidal.com/artist/39827454"
+      },
+      "end": null,
+      "ended": false,
+      "source-credit": "",
+      "attributes": [],
+      "type-id": "63cc5d1f-f096-4c94-a43f-ecb32ea94161",
+      "attribute-ids": {},
+      "target-credit": "",
+      "type": "streaming",
+      "attribute-values": {},
+      "target-type": "url",
+      "direction": "forward",
+      "begin": null
+    },
+    {
+      "end": null,
+      "source-credit": "",
+      "ended": false,
+      "url": {
+        "id": "1280fd7f-e960-42d0-b671-c6a32a9b1d1a",
+        "resource": "https://tidal.com/artist/5746274"
+      },
+      "attribute-values": {},
+      "type": "streaming",
+      "begin": null,
+      "direction": "forward",
+      "target-type": "url",
+      "attributes": [],
+      "target-credit": "",
+      "type-id": "63cc5d1f-f096-4c94-a43f-ecb32ea94161",
+      "attribute-ids": {}
+    },
+    {
+      "attributes": [],
+      "target-credit": "",
+      "attribute-ids": {},
+      "type-id": "689870a4-a1e4-4912-b17f-7b2664215698",
+      "attribute-values": {},
+      "type": "wikidata",
+      "direction": "forward",
+      "begin": null,
+      "target-type": "url",
+      "url": {
+        "id": "4a9cb00f-0e8a-4578-8215-d17586996f93",
+        "resource": "https://www.wikidata.org/wiki/Q131577832"
+      },
+      "end": null,
+      "source-credit": "",
+      "ended": false
+    },
+    {
+      "target-type": "url",
+      "begin": null,
+      "direction": "forward",
+      "type": "youtube",
+      "attribute-values": {},
+      "attribute-ids": {},
+      "type-id": "6a540e5b-58c6-4192-b6ba-dbc71ec8fcf0",
+      "target-credit": "",
+      "attributes": [],
+      "ended": false,
+      "source-credit": "",
+      "end": null,
+      "url": {
+        "resource": "https://www.youtube.com/@Theodorabosslady",
+        "id": "8cd132da-8972-4dcb-b145-9e2755ac58da"
+      }
+    },
+    {
+      "end": null,
+      "source-credit": "",
+      "ended": true,
+      "url": {
+        "id": "5a92ad56-7371-4e84-b5f6-e0df403db91b",
+        "resource": "https://www.youtube.com/@maisonneptune"
+      },
+      "attribute-values": {},
+      "type": "youtube",
+      "begin": null,
+      "direction": "forward",
+      "target-type": "url",
+      "attributes": [],
+      "target-credit": "",
+      "attribute-ids": {},
+      "type-id": "6a540e5b-58c6-4192-b6ba-dbc71ec8fcf0"
+    }
+  ],
+  "country": "FR",
+  "life-span": {
+    "end": null,
+    "ended": false,
+    "begin": "2003-10-23"
+  },
   "area": {
     "id": "08310658-51eb-3801-80de-5a0739207115",
-    "name": "France",
+    "sort-name": "France",
     "disambiguation": "",
+    "type-id": null,
     "iso-3166-1-codes": [
       "FR"
     ],
     "type": null,
-    "sort-name": "France",
-    "type-id": null
+    "name": "France"
   },
-  "isnis": [
-    "0000000522696384"
-  ],
   "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
-  "sort-name": "Theodora",
-  "gender": "Female",
-  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-  "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
   "ipis": [
     "01170513098",
     "01260470773"
   ],
-  "country": "FR",
-  "disambiguation": "French singer; aka Boss Lady",
-  "name": "Theodora",
-  "life-span": {
-    "ended": false,
-    "end": null,
-    "begin": "2003-10-23"
-  },
-  "type": "Person",
   "begin-area": {
-    "id": "f4524357-871a-4c23-9043-1a785978ad4f",
-    "name": "Lucerne",
-    "disambiguation": "",
+    "sort-name": "Lucerne",
     "type-id": null,
+    "id": "f4524357-871a-4c23-9043-1a785978ad4f",
+    "disambiguation": "",
     "type": null,
-    "sort-name": "Lucerne"
+    "name": "Lucerne"
   },
-  "end-area": null
+  "type": "Person"
 }
