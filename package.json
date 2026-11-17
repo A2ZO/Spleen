@@ -15,6 +15,7 @@
     "e2e": "turbo run e2e",
     "e2e:quiet": "node scripts/e2e-quiet.mjs",
     "free-port": "node scripts/free-port.mjs",
+    "vitrine": "node scripts/vitrine.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "prettier --check . --log-level warn && turbo run lint typecheck test --output-logs=errors-only",
