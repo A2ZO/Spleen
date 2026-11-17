@@ -78,10 +78,22 @@ depuis `dev`. L'étape 1 traite le reste du jalon 13 décidé par Azzo (bouton d
   `git switch --detach origin/dev`, puis revenir sur la branche ; le `next dev` de Playwright a
   une fois refusé de démarrer derrière l'avis de sécurité de Next 16.4.2 (relancer, ne rien
   mettre à jour).
-- **Prochaine : étape 4** (« Sortis un <jour mois> » sur `/discover`) : API, bloc de
-  `/discover`, démo (2e membre), tests, e2e, captures, mesures, vérification `EXPLAIN` sur Neon
-  `dev` ; détail dans `feuille-de-route.md`, « Étape 4 ». Mesures : `/discover` → accueil est à
-  +18 ms de `origin/dev` ; surveiller que l'étape 4 n'ajoute pas sa propre marge.
+- **Étape 4 faite** (17 novembre, pilote) : `discovery.releasedOnThisDay` (`publicProcedure`,
+  sans entrée) dans `lib/memories.ts` : jour de Paris (`todayIn(DEFAULT_TIME_ZONE, now)`), mêmes
+  jours que `sameDayInPastYears`, une requête partant de `releases` (précision `day`,
+  `mainReleaseSql()`), au moins 2 membres avec note ou cœur (`countsPublicly`), tri membres,
+  date, titre, id, 6 au plus ; même réponse pour tout lecteur (#22). Bloc « Sortis un <jour
+  mois> » de `/discover` entre « Sorties récentes » et « Les mieux notés » (`MemoryGrid`, absent
+  si vide). Démo : 2e membre `deuxiemeface` (Gaspard, cœurs sur A et B) → B puis A, pas C.
+  e2e : `ThrowawayOptions.date` `{ yearsAgo }`, helper `throwawayFans`. `EXPLAIN` sur Neon
+  `dev` (517 disques) : 0,41 ms en parcours complets ; `enable_seqscan` off :
+  `releases_release_date_idx` + `user_item_state_release_idx` (0,26 ms). Aucune décision
+  nouvelle.
+- Appris en route : `EXPLAIN` avec `set local` seulement sur l'URL directe (le pooler refuse
+  `SET`) ; script tsx en `.mts` et imports en `file:///C:/…`.
+- **Prochaine : étape 5** (la passe finale) : `docs/souvenirs.md`, renvois, cahier,
+  `docs/stack-et-limites.md`, captures, axe, mesures, `CLAUDE.md`, puis fin de jalon ; détail
+  dans `feuille-de-route.md`, « Étape 5 ».
 
 ## Mesures de référence
 
@@ -102,6 +114,9 @@ depuis `dev`. L'étape 1 traite le reste du jalon 13 décidé par Azzo (bouton d
   **Accueil avec souvenirs** (`MEASURE_EMAIL=vieuxsillons@example.test`) : `origin/dev`
   196/133/213/182/169, HEAD 205/134/207/183/187 ms (+18). Référence de cet accueil (HEAD) :
   **205 / 134 / 207 / 183 / 187 ms**.
+- Étape 4 (17 novembre, build de prod, `nuitblanche`, pageMs, plus haut de deux passages) :
+  231/141/229/193/246 ms ; profil → `/discover` +13 (dans les 20 ms) ; `/discover` → accueil
+  246, comme HEAD à l'étape 3 (244), l'accueil ne change pas à cette étape.
 - Pour mémoire, l'ancienne référence (fin du jalon 11) : 215 / 136 / 231 / 182 / 228 ms.
 - `/pick` (`MEASURE_ONLY=/fr/pick`, build de prod, `nuitblanche`) : 137 / 136 ms en fin de
   jalon 13, référence **142 ms**.
