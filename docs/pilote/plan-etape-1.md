@@ -54,7 +54,7 @@ Vérifications d'écran :
 - [x] 3. Fiche d'un disque à venir (moyenne, critiques)
 - [x] 4. e2e
 - [x] 5. Docs
-- [ ] vérifications
+- [x] vérifications
 - [ ] relecture 1
 - [ ] relecture 2
 - [ ] clôture
