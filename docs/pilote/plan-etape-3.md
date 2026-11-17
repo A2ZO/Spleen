@@ -62,6 +62,6 @@ correction dans la requête (jamais d'index), sinon 3e passage, puis note dans `
 - [x] `measure.mjs`
 - [x] e2e
 - [x] vérifications
-- [ ] relecture 1
-- [ ] relecture 2
-- [ ] clôture
+- [x] relecture 1
+- [x] relecture 2 (inutile : OK au 1er tour)
+- [x] clôture

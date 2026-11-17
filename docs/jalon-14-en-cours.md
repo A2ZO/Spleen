@@ -64,9 +64,24 @@ depuis `dev`. L'étape 1 traite le reste du jalon 13 décidé par Azzo (bouton d
   `MemoryRelease`. 21 tests dans `memories.test.ts`.
 - Décision : « Ce jour-là » applique les exclusions (disques fusionnés, sorties à venir) avant de
   choisir l'année la plus récente (`decisions.md`).
-- **Prochaine : étape 3** (souvenirs de l'accueil : écrans, réglages et démo) : section
-  « Souvenirs » de l'accueil, `MemoryGrid`, section des réglages, `seed/memories.ts`,
-  `MEASURE_EMAIL`, e2e, captures, mesures ; détail dans `feuille-de-route.md`, « Étape 3 ».
+- **Étape 3 faite** (17 novembre, pilote) : section « Souvenirs » de l'accueil membre entre
+  « Bientôt » et « Tendances » (`memoriesRead` dans la première vague ; `h3` par groupe ; lien
+  du journal `view=calendar&month=`), `components/memories/MemoryGrid.tsx` (grille des
+  tendances, sans étoile, âge `text-star` si rond), réglage `MemoriesForm` +
+  `setShowMemoriesAction` (section « Souvenirs » de `/settings`, marche sans JS). Démo
+  `seed/memories.ts` : `vieuxsillons` (Suzanne), disques A–F suivant le jour du seed (Paris),
+  29 février → multiples de 4 (F à 8 ans). `measure.mjs` : `MEASURE_EMAIL`. e2e
+  `memories.spec.ts` + helper `throwawayMemories` (jour réel du compte, écarts multiples de 4).
+- Décision : un 29 février, F passe à 8 ans pour rester plus ancien que D et E (`decisions.md`).
+- Appris en route : `todayIn(timeZone, now)` prend deux arguments ; pour l'A/B, copier le
+  `measure.mjs` de HEAD (`measure-head.mjs`, non suivi, supprimé après) avant
+  `git switch --detach origin/dev`, puis revenir sur la branche ; le `next dev` de Playwright a
+  une fois refusé de démarrer derrière l'avis de sécurité de Next 16.4.2 (relancer, ne rien
+  mettre à jour).
+- **Prochaine : étape 4** (« Sortis un <jour mois> » sur `/discover`) : API, bloc de
+  `/discover`, démo (2e membre), tests, e2e, captures, mesures, vérification `EXPLAIN` sur Neon
+  `dev` ; détail dans `feuille-de-route.md`, « Étape 4 ». Mesures : `/discover` → accueil est à
+  +18 ms de `origin/dev` ; surveiller que l'étape 4 n'ajoute pas sa propre marge.
 
 ## Mesures de référence
 

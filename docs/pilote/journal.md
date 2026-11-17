@@ -25,3 +25,13 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   « render cancelled mid-stream » → #34 commentée). Pas d'axe ni de mesures (aucun écran ne
   change). Relecteur : plan OK avec corrections appliquées, étape OK au 1er tour. Décision :
   exclusions appliquées avant le choix de l'année la plus récente. Prochaine : étape 3.
+- 2026-11-17 — Étape 3 (souvenirs de l'accueil : écrans, réglages et démo). Commits
+  `288d1cc`..HEAD (plan relu, `3882cd9` accueil + réglage, `aac8674` démo `vieuxsillons`,
+  `d4837b9` `MEASURE_EMAIL`, `3127ecc` e2e). `pnpm check` vert ; `memories.spec` 8/8 ; e2e
+  complet 272 réussis, 0 échoué, 10 ignorés (teardown « render cancelled mid-stream » → #34
+  commentée). Prod sans compte + overflow 114 · 2 (`hydration.spec:17`, connu). axe AA 0
+  (accueil `vieuxsillons`, réglages ; 1280/390). Mesures A/B même session : `nuitblanche`
+  `origin/dev` 219/137/216/182/226 contre HEAD 219/136/219/163/244 ; `vieuxsillons` 196/133/213/
+  182/169 contre 205/134/207/183/187 (+18 au plus) → nouvelle référence de cet accueil.
+  Relecteur : plan OK avec corrections, étape OK au 1er tour. Décision : F à 8 ans un 29 février.
+  Prochaine : étape 4.
