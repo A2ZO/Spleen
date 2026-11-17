@@ -77,7 +77,7 @@ mesures (aucun écran ne change).
 - [x] `lib/memories.ts`
 - [x] routeur `memories.home`
 - [x] tests `memories.test.ts`
-- [ ] vérifications
+- [x] vérifications
 - [ ] relecture 1
 - [ ] relecture 2
 - [ ] clôture
