@@ -62,7 +62,7 @@ passages) contre 215/132/216/180/223 ; `MEASURE_ONLY=/fr/pick` contre 142 ms ; a
 - [x] Next.js 16.4.5
 - [x] `docs/souvenirs.md`
 - [x] renvois
-- [ ] cahier
+- [x] cahier
 - [ ] `stack-et-limites.md`
 - [ ] `CLAUDE.md`
 - [ ] vérifications
