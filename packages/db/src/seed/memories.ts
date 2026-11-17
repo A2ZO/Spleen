@@ -16,10 +16,15 @@ import { slugify } from "./slugify";
  * in Paris, recomputed at each run; on a 29 February every gap goes to the next multiple of 4
  * and F to 8 years, so it stays older than D and E. No track: nothing else in the inventory
  * moves. Ids live in their own range (48_000+); idempotent like the rest of the seed.
+ *
+ * Step 4: `deuxiemeface` (Gaspard), same rules as Suzanne and no dated listen, hearts A and B
+ * 60 days ago too: with two members each, they come out on `/discover`'s « Sortis un <jour
+ * mois> » (B, the oldest, then A); C, hearted by Suzanne only, does not.
  */
 
 const releaseId = (i: number) => fixtureId(48_000 + i);
 const MEMBER = fixtureId(48_100);
+const SECOND = fixtureId(48_101);
 const entryId = (i: number) => fixtureId(48_200 + i);
 
 interface MemoryRecord {
@@ -47,6 +52,8 @@ const listens: [number, number, number, boolean][] = [
   [5, 2, 21, false],
 ];
 const hearts = [0, 1, 2];
+/** Gaspard's hearts (no date either), entries after Suzanne's. */
+const secondHearts = [0, 1];
 
 const parisDay = (at: Date) =>
   new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Paris" }).format(at);
@@ -64,31 +71,37 @@ export async function seedMemories(tx: DbOrTx, now: Date): Promise<void> {
   const dayYearsAgo = (years: number, isF = false) =>
     `${String(year - gap(years, isF)).padStart(4, "0")}-${monthDay}`;
 
-  await tx
-    .insert(s.user)
-    .values({
-      id: MEMBER,
-      name: "Suzanne",
-      email: "vieuxsillons@example.test",
-      emailVerified: true,
-      createdAt: joinedAt,
-    })
-    .onConflictDoNothing();
-  await tx
-    .insert(s.profiles)
-    .values({
-      userId: MEMBER,
-      username: "vieuxsillons",
-      displayName: "Suzanne",
-      locale: "fr",
-      timeZone: "Europe/Paris",
-      showMemories: true,
-      ageConfirmedAt: joinedAt,
-      termsAcceptedAt: joinedAt,
-      termsVersion: TERMS_VERSION,
-      createdAt: joinedAt,
-    })
-    .onConflictDoNothing();
+  const members = [
+    { id: MEMBER, name: "Suzanne", username: "vieuxsillons" },
+    { id: SECOND, name: "Gaspard", username: "deuxiemeface" },
+  ];
+  for (const { id, name, username } of members) {
+    await tx
+      .insert(s.user)
+      .values({
+        id,
+        name,
+        email: `${username}@example.test`,
+        emailVerified: true,
+        createdAt: joinedAt,
+      })
+      .onConflictDoNothing();
+    await tx
+      .insert(s.profiles)
+      .values({
+        userId: id,
+        username,
+        displayName: name,
+        locale: "fr",
+        timeZone: "Europe/Paris",
+        showMemories: true,
+        ageConfirmedAt: joinedAt,
+        termsAcceptedAt: joinedAt,
+        termsVersion: TERMS_VERSION,
+        createdAt: joinedAt,
+      })
+      .onConflictDoNothing();
+  }
 
   for (const [i, record] of records.entries()) {
     const id = releaseId(i);
@@ -115,26 +128,46 @@ export async function seedMemories(tx: DbOrTx, now: Date): Promise<void> {
       .onConflictDoNothing();
   }
 
-  const written: { entry: number; release: number; at: Date; listenedOn: string | null }[] = [
-    ...hearts.map((release, k) => ({ entry: k, release, at: ago(60), listenedOn: null })),
+  const written: {
+    user: string;
+    entry: number;
+    release: number;
+    at: Date;
+    listenedOn: string | null;
+  }[] = [
+    ...hearts.map((release, k) => ({
+      user: MEMBER,
+      entry: k,
+      release,
+      at: ago(60),
+      listenedOn: null,
+    })),
     ...listens.map(([release, years, hour], k) => {
       const listenedOn = dayYearsAgo(years, release === 5);
       return {
+        user: MEMBER,
         entry: hearts.length + k,
         release,
         at: new Date(`${listenedOn}T${String(hour).padStart(2, "0")}:00:00Z`),
         listenedOn,
       };
     }),
+    ...secondHearts.map((release, k) => ({
+      user: SECOND,
+      entry: hearts.length + listens.length + k,
+      release,
+      at: ago(60),
+      listenedOn: null,
+    })),
   ];
-  for (const { entry, release, at, listenedOn } of written) {
+  for (const { user, entry, release, at, listenedOn } of written) {
     const isHeart = listenedOn === null;
     const relisten = !isHeart && listens[entry - hearts.length]![3];
     await tx
       .insert(s.entries)
       .values({
         id: entryId(entry),
-        userId: MEMBER,
+        userId: user,
         releaseId: releaseId(release),
         listenedOn,
         liked: isHeart,
@@ -147,15 +180,18 @@ export async function seedMemories(tx: DbOrTx, now: Date): Promise<void> {
         set: { listenedOn, createdAt: at, updatedAt: at },
       });
   }
-  for (const release of new Set(written.map((w) => w.release))) {
-    await recomputeItemState(tx, MEMBER, { releaseId: releaseId(release) });
+  const states = new Map(written.map((w) => [`${w.user}:${w.release}`, w]));
+  for (const { user, release } of states.values()) {
+    await recomputeItemState(tx, user, { releaseId: releaseId(release) });
     // The state's latest change follows the wall clock: keep it at the record's last write.
-    const last = Math.max(...written.filter((w) => w.release === release).map((w) => +w.at));
+    const last = Math.max(
+      ...written.filter((w) => w.user === user && w.release === release).map((w) => +w.at),
+    );
     await tx
       .update(s.userItemState)
       .set({ updatedAt: new Date(last) })
       .where(
-        and(eq(s.userItemState.userId, MEMBER), eq(s.userItemState.releaseId, releaseId(release))),
+        and(eq(s.userItemState.userId, user), eq(s.userItemState.releaseId, releaseId(release))),
       );
   }
 }

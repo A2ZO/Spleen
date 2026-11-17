@@ -64,7 +64,7 @@ prod : specs sans compte + `overflow.spec`. axe AA `/discover` visiteur et `nuit
 - [x] tests API
 - [x] textes
 - [x] écran
-- [ ] démo + `db.test.ts` + test démo + `db:seed`
+- [x] démo + `db.test.ts` + test démo + `db:seed`
 - [ ] e2e
 - [ ] EXPLAIN
 - [ ] vérifications

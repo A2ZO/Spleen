@@ -696,6 +696,16 @@ describe("memories.home on the demo seed", () => {
     ]);
   });
 
+  it("puts B then A on /discover (two members each), not C (Suzanne only)", async () => {
+    const released = await createCaller(
+      createContext({ now, db: () => demo.db, user: async () => null, storage }),
+    ).discovery.releasedOnThisDay();
+    expect(released.items.map((i) => [i.release.title, i.years, i.round])).toEqual([
+      ["Les jours ralentis", 30, true],
+      ["Harbour Postcards", 10, true],
+    ]);
+  });
+
   it("moves to multiples of 4 on a 29 February, F staying older", async () => {
     const leap = new Date("2028-02-29T12:00:00Z");
     await seed(demo.db, { now: leap });
