@@ -186,7 +186,9 @@ jamais suspendu depuis le site (`CANNOT_MODERATE_ADMIN`).
 page de connexion répond comme pour tout le monde, et le motif ne s'affiche qu'une fois
 l'identité prouvée, sur l'écran « Compte suspendu » qui remplace toutes les pages. Profil,
 critiques, listes, commentaires, écoutes du fil et cartes de membre disparaissent pour les
-autres (`findProfile`, `memberRefs`, `memberCards`, filtres `hidden_at is null`). Ses notes et
+autres (`findProfile`, `memberRefs`, `memberCards`, filtres `hidden_at is null` ; « Tes amis
+sur ce disque », `lib/social/release-friends.ts`, refiltre en SQL suspension, journal privé et
+blocages : toute nouvelle règle de masquage d'un membre s'y reporte aussi). Ses notes et
 écoutes sortent de tous les chiffres publics (moyennes, répartition, tendances, mieux notés)
 par un filtre calculé à la volée (`countsPublicly`, `lib/ratings.ts`) : rien à invalider, et
 elles reviennent quand la suspension est levée. Son propre état (`user_item_state`) n'est pas

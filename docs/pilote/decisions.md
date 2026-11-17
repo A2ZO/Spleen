@@ -112,3 +112,13 @@ légaux.
   puis 229/144/236/220/234 contre 215/136/231/182/228 ; le premier passage (257) est un
   démarrage à froid, les deux suivants restent dans les 20 ms pour l'album. Écarté : la
   deuxième vague, inutile à ce niveau.
+- 2026-11-17, étape 4, relecture 1 : nouvelle mesure. Même build de prod, trois passages :
+  pageMs 239/155/237/173/230, 229/138/237/168/227, 218/139/234/170/229 (profil → `/discover`
+  revenu à 168–173 ms : le 220 était du bruit). Contrôle A/B, même build sans l'appel
+  `release.friends` (retiré le temps de la mesure, rien de commité) : album 236/207/227/225
+  contre 239/229/218 avec. L'écart avec la référence vient de la machine ce jour-là, pas de
+  la section : l'appel reste dans la première vague.
+- 2026-11-17, étape 4, relecture 1 : le relecteur demande que Azzo valide la régénération du
+  snapshot `feed-loading` (voir plus haut). Choix gardé (réversible, ajouts seuls), sans
+  attente : point ouvert dans `journal.md` et dans la passation ; l'alternative (membres suivis
+  par un autre compte de démo) changerait la consigne de l'étape et l'e2e.
