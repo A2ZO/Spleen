@@ -63,6 +63,7 @@ export async function getMe(account: () => Promise<Account | null>): Promise<Me 
     blindMode: row.blindMode,
     timeZone: row.timeZone,
     notifyReleases: row.notifyReleases,
+    showMemories: row.showMemories,
   };
   return {
     userId: found.user.id,
@@ -70,6 +71,16 @@ export async function getMe(account: () => Promise<Account | null>): Promise<Me 
     profile,
     isAdmin: found.role === "admin",
   };
+}
+
+/** Shows or hides « Souvenirs » on the home page (milestone 14). */
+export async function setShowMemories(db: Db, userId: string, enabled: boolean): Promise<void> {
+  const updated = await db
+    .update(schema.profiles)
+    .set({ showMemories: enabled })
+    .where(eq(schema.profiles.userId, userId))
+    .returning({ userId: schema.profiles.userId });
+  if (updated.length === 0) fail("PRECONDITION_FAILED", "PROFILE_REQUIRED");
 }
 
 /** ISO date from which the @username can change again; null when it can now (settings page). */

@@ -66,6 +66,7 @@ import {
   usernameChangeAvailableAt,
   removeAvatar,
   setAvatar,
+  setShowMemories,
   updateProfile,
 } from "./lib/account";
 import {
@@ -97,6 +98,7 @@ import { searchCatalog, searchRemote } from "./lib/catalog/search";
 import { suggestCatalog } from "./lib/catalog/suggest";
 import { genreOptions, recentReleases, topRated, weeklyTrends } from "./lib/discovery";
 import { checkHealth } from "./lib/health";
+import { homeMemories } from "./lib/memories";
 import { ogCard, seoPage, sitemapEntries, sitemapFiles } from "./lib/seo";
 import {
   blindArtistDetail,
@@ -526,6 +528,20 @@ export const appRouter = router({
       upcomingSuggestions(ctx.db(), ctx.user.id, ctx.now),
     ),
   }),
+  /** « Souvenirs » (milestone 14): computed at read time, nothing stored. */
+  memories: router({
+    /**
+     * The member's home page: null for a visitor, a suspended account, before onboarding or
+     * with the setting off (all read from `ctx.account()`, no query), so it can start before
+     * `account.me`.
+     */
+    home: publicProcedure.query(async ({ ctx }) => {
+      const account = await ctx.account();
+      const profile = account?.profile;
+      if (!account || !profile || account.suspendedAt || !profile.showMemories) return null;
+      return homeMemories(ctx.db(), { id: account.user.id, timeZone: profile.timeZone }, ctx.now);
+    }),
+  }),
   /** « Tire un disque » (docs/decouverte.md): a record drawn from the caller's « À écouter ». */
   toListen: router({
     pick: protectedProcedure.input(pickSchema).query(async ({ input, ctx }) => {
@@ -795,6 +811,9 @@ export const appRouter = router({
     setNotifyReleases: protectedProcedure
       .input(z.object({ enabled: z.boolean() }))
       .mutation(({ input, ctx }) => setNotifyReleases(ctx.db(), ctx.user.id, input.enabled)),
+    setShowMemories: protectedProcedure
+      .input(z.object({ enabled: z.boolean() }))
+      .mutation(({ input, ctx }) => setShowMemories(ctx.db(), ctx.user.id, input.enabled)),
     removeAvatar: protectedProcedure.mutation(({ ctx }) =>
       removeAvatar(ctx.db(), ctx.storage(), ctx.user),
     ),

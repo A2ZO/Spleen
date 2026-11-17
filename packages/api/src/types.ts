@@ -632,6 +632,8 @@ export interface MyProfile {
   timeZone: string;
   /** Notified on the release day of a followed artist's record. */
   notifyReleases: boolean;
+  /** « Souvenirs » shown on the home page (milestone 14). */
+  showMemories: boolean;
 }
 
 /** Who is calling. `profile` is null until the member picks a @username (onboarding). */
@@ -793,4 +795,23 @@ export interface OgCard {
   excerpt?: string;
   /** Items in a list. */
   items?: number;
+}
+
+/** A record in « Souvenirs » blocks: no community numbers, these blocks show a date, not a rating. */
+export type MemoryRelease = Omit<ReleaseCard, "averageRating" | "ratingCount" | "ratingsHidden">;
+
+/** A record whose release day comes back today, `years` years later (≥ 1). */
+export interface AnniversaryItem {
+  release: MemoryRelease;
+  years: number;
+  /** A round anniversary (`isRoundAnniversary`): listed first, highlighted. */
+  round: boolean;
+}
+
+/** « Souvenirs » on the member's home page, in the member's day (`today`, `YYYY-MM-DD`). */
+export interface HomeMemories {
+  today: string;
+  /** « Il y a N ans, tu écoutais… »: the most recent past year with dated listens on this day. */
+  listens: { day: string; yearsAgo: number; releases: MemoryRelease[] } | null;
+  anniversaries: AnniversaryItem[];
 }
