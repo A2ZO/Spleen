@@ -363,8 +363,8 @@ export default async function HomePage({ params, searchParams }: Props) {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <RateButton label={t("nav.rate")} />
-            <ButtonLink href="/discover" variant="on-accent">
-              {t("home.findMusic")}
+            <ButtonLink href="/pick" variant="on-accent">
+              {t("home.pickRandom")}
             </ButtonLink>
           </div>
         </Card>

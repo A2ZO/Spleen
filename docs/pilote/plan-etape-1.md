@@ -51,8 +51,8 @@ Aucun test d'API (l'API ne change pas).
 
 ## Avancement
 
-- [ ] i18n `home.pickRandom`
-- [ ] bouton de l'accueil membre
+- [x] i18n `home.pickRandom`
+- [x] bouton de l'accueil membre
 - [ ] e2e `pick.spec.ts`
 - [ ] doc `docs/quoi-ecouter.md`
 - [ ] vérifications
