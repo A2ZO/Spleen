@@ -36,3 +36,16 @@ export type TopRatedInput = z.infer<typeof topRatedSchema>;
 
 /** « Mes sorties à venir »: the three types, or one. */
 export const upcomingMineSchema = z.object({ type: releaseTypeSchema.optional() });
+
+/** « Tire un disque »: total length of a record, `medium` from 30 to 60 minutes inclusive. */
+export const pickDurations = ["short", "medium", "long"] as const;
+export const pickDurationSchema = z.enum(pickDurations);
+export type PickDuration = z.infer<typeof pickDurationSchema>;
+
+/** « Tire un disque »: optional filters, and the record shown (`not`) to draw another one. */
+export const pickSchema = z.object({
+  type: releaseTypeSchema.optional(),
+  duration: pickDurationSchema.optional(),
+  not: z.uuid().optional(),
+});
+export type PickInput = z.infer<typeof pickSchema>;

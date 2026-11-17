@@ -63,6 +63,15 @@ export interface ReleaseFriends {
   total: number;
 }
 
+/** « Tire un disque »: the record drawn from the member's « À écouter » list. */
+export interface ToListenPick {
+  /** Records in the list (out or not). */
+  listTotal: number;
+  /** Released records left by the filters. */
+  matching: number;
+  pick: (ReleaseCard & { durationMs: number | null; listenLinks: ListenLink[] }) | null;
+}
+
 export interface ReviewCard {
   id: string;
   author: MemberRef;

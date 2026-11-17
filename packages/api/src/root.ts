@@ -8,6 +8,7 @@ import {
   likeSetSchema,
   popularFeedSchema,
   recentReleasesSchema,
+  pickSchema,
   upcomingMineSchema,
   topRatedSchema,
   trendsSchema,
@@ -157,6 +158,7 @@ import { CONTACT_PLACEHOLDER } from "./lib/moderation/emails";
 import { listModerationHistory } from "./lib/moderation/history";
 import { listReports, listSuspended } from "./lib/moderation/queue";
 import { listNotifications, markAllRead, unreadCount } from "./lib/social/notifications";
+import { pickToListen } from "./lib/listening/pick";
 import { releaseFriends } from "./lib/social/release-friends";
 import { getReviewDetail } from "./lib/social/reviews";
 import type { Viewer } from "./lib/viewer";
@@ -523,6 +525,19 @@ export const appRouter = router({
     suggestions: protectedProcedure.query(({ ctx }) =>
       upcomingSuggestions(ctx.db(), ctx.user.id, ctx.now),
     ),
+  }),
+  /** « Tire un disque » (docs/decouverte.md): a record drawn from the caller's « À écouter ». */
+  toListen: router({
+    pick: protectedProcedure.input(pickSchema).query(async ({ input, ctx }) => {
+      const account = await ctx.account();
+      if (!account?.profile) fail("PRECONDITION_FAILED", "PROFILE_REQUIRED");
+      return pickToListen(
+        ctx.db(),
+        { id: ctx.user.id, timeZone: account.profile.timeZone, blind: account.blindMode },
+        input,
+        ctx.now,
+      );
+    }),
   }),
   track: router({
     bySlug: publicProcedure.input(z.object({ slug: slugSchema })).query(async ({ input, ctx }) => {
