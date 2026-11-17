@@ -176,3 +176,18 @@ légaux.
 - 2026-11-17, étape 6 : le premier `pnpm build` est sorti en code 1 juste après l'avertissement
   « Next.js 16.4.2 affected by a known security vulnerability » ; le second a réussi. Aucune
   montée de dépendance permise dans le jalon : point ouvert pour Azzo dans la PR.
+
+## QUESTION POUR AZZO (17 novembre 2026, fin du jalon 13)
+
+PR 46 (`feat/13-quoi-ecouter` → `dev`), CI verte. Le relecteur rend `BLOQUANT` avant la fusion,
+pour une raison formelle : `packages/db/src/db.test.ts` (inventaire de la démo : disques 51 → 58,
+profils 11 → 18, écoutes 73 → 80, abonnements 7 → 14, aucune assertion retirée) sort de
+« Autorisé à la fusion » (« rien d'autre dans `packages/db` hors du seed »). Pas de fusion
+automatique.
+
+1. Acceptes-tu cette mise à jour de `db.test.ts` et le snapshot `feed-loading.test.ts.snap`
+   régénéré à l'étape 4 ? Si oui : fusionne la PR 46 toi-même (commit de fusion), ou réponds
+   « fusion autorisée » ici et remets la phase `plan` dans `etat.md` (étape « fin du jalon ») :
+   le pilote refera la section 6.
+2. Next.js 16.4.2 est annoncé vulnérable pendant `pnpm build` (un premier build en code 1, le
+   second passe). Faut-il une PR `chore/` de mise à jour avant la release `dev` → `main` ?

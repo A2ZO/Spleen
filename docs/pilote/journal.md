@@ -74,3 +74,6 @@ passage +20 ms (album, `/discover` → accueil), A/B même session `origin/dev` 
 contre HEAD 215/132/216/180/223 : aucun écart dû au jalon ; `/pick` 137 (réf. 142). Relecteur : OK
 au premier tour. Ouvert : snapshot `feed-loading`, Next.js 16.4.2 signalé vulnérable (premier
 build en code 1). Prochaine : fin du jalon.
+
+- 2026-11-17 — Fin du jalon 13 : PR 46 vers `dev`, CI verte ; relecteur `BLOQUANT` (formel :
+  `db.test.ts` hors de « Autorisé à la fusion ») → attente, questions dans `decisions.md`.

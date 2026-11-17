@@ -4,7 +4,7 @@
 - Branche : feat/13-quoi-ecouter
 - Doc du jalon : docs/jalon-13-en-cours.md
 - Étape : fin du jalon (sections 5 et 6 du skill)
-- Phase : plan
+- Phase : attente
 - Mis à jour : 2026-11-17
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante, sans arrêt entre les
