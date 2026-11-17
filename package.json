@@ -22,6 +22,7 @@
     "db:migrate": "pnpm --filter @spleen/db migrate",
     "db:seed": "pnpm --filter @spleen/db seed",
     "db:reset": "pnpm --filter @spleen/db reset",
+    "db:clean-demo": "pnpm --filter @spleen/db clean-demo",
     "admin:grant": "pnpm --filter @spleen/db admin grant",
     "admin:revoke": "pnpm --filter @spleen/db admin revoke",
     "db:seed:catalog": "pnpm --filter @spleen/api seed:catalog",
