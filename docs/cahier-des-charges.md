@@ -1,15 +1,17 @@
 # Spleen — Cahier des charges
 
-Version 2 du 27 octobre 2026 (v1 : 19 octobre 2026) · @Azzo
+Version 3 du 16 novembre 2026, mise à jour le 17 novembre (v2 : 27 octobre ; v1 : 19 octobre 2026) · @Azzo
 
-La v2 ajoute ce que le développement a changé pendant les jalons 1 à 9 (section « Ce qui a changé depuis la v1 »), la fonction « Sorties à venir de tes artistes » (jalon 11) et la question de la licence des genres. La stack réelle, ses limites en nombre de membres et les chemins de montée en charge sont dans `docs/stack-et-limites.md`.
+La v3 ajoute les jalons 12 et 17 (vitesse, identité « Lilas »), les règles du jalon 11 validées le 16 novembre et l'organisation du travail (branches `dev` et `main`, pilote automatique). La mise à jour du 17 novembre note la fin du jalon 11 (réponses de fin de jalon, question encore ouverte) et les règles du jalon 13 retenues par le conseiller. La v2 avait ajouté ce que les jalons 1 à 9 ont changé, les sorties à venir (jalon 11) et la question de la licence des genres. La stack réelle, ses limites en nombre de membres et les chemins de montée en charge sont dans `docs/stack-et-limites.md`.
+
+Deux copies : `docs/cahier-des-charges.md` dans le dépôt (lue par Claude Code) et `claude/cahier-des-charges.md` dans le projet claude.ai (lue par le conseiller). Le conseiller les remet d'accord à chaque fin de jalon.
 
 ## Résumé et vision
 
 Spleen est un carnet d'écoute social : on note, critique et range en listes des albums, EP, morceaux et artistes, puis on consulte ses stats et celles des autres. Le site web sort en premier, en français et en anglais ; l'appli iPhone/Android suivra avec React Native (Expo), sur la même base.
 
 - **Promesse** : le Letterboxd de la musique, plus chaleureux et plus fiable que ce qui existe.
-- **Ambiance** : cozy et jazzy, clin d'œil assumé au spleen baudelairien.
+- **Ambiance** : chaleureuse et moderne (identité « Lilas » depuis le jalon 17, voir Identité visuelle), clin d'œil assumé au spleen baudelairien.
 - **Principe clé** : chacun saisit ce qu'il écoute, sans connexion à Spotify, Deezer ou Apple Music au lancement (voir Contraintes techniques).
 - **Modèle** : gratuit et sans pub au lancement, puis pubs pour les comptes gratuits et un abonnement Spleen+ à 1 € qui les retire et débloque la personnalisation et des stats avancées.
 - **Contexte** : projet public, porté par une seule personne, budget très serré.
@@ -49,6 +51,14 @@ La v1 décrivait l'intention. Voici ce que le développement a ajouté ou tranch
 
 **Ce qui reste du MVP** : pages légales, référencement et images de partage, PWA, finitions et accessibilité (fin du jalon 9) ; branchement des vrais services, e2e en CI et mise en ligne (jalon 10, `docs/mise-en-ligne.md`).
 
+**Jalons 12, 17 et 11, et les 16 et 17 novembre**
+
+- Jalon 12 « Douceurs » : navigation rapide (barre en haut après 150 ms, ni Suspense ni `loading.tsx`), recherche instantanée, réactions instantanées, « Annuler » pendant 8 s après une suppression, notation au clavier. Transitions de page abandonnées (issue #29, bug de Next 16.4).
+- Jalon 17 « Nouvelle peau » : identité « Lilas » (section Identité visuelle), un seul thème sombre ; la colonne `theme` est supprimée (issue #30).
+- 16 novembre : le mois courant (accueil, journal) suit le fuseau du membre, Europe/Paris pour un visiteur (issue #33). Branche `dev` par défaut, `main` protégée : seules des PR de release `dev` → `main`, fusionnées par Azzo. Les jalons 11, 13 et 14 sont confiés au pilote automatique (Claude Code en tâche planifiée), avec des décisions prises à l'avance par le conseiller.
+- Jalon 11 « Sorties à venir » : fini le 16 novembre (PR #40 fusionnée dans `dev`). Suivre un artiste, page `/upcoming`, « À venir » sur la fiche artiste, « Bientôt dans tes oreilles », « Les plus attendus », notification « Sortie aujourd'hui » dans le site (section du jalon 11, `docs/sorties.md`).
+- 17 novembre : jalon 13 « Quoi écouter ce soir ? » en cours, confié au pilote, avec les règles retenues par le conseiller (section du jalon 13).
+
 **Ajouté le 27 octobre** : les sorties à venir des artistes suivis (jalon 11, section dédiée plus bas) et la licence des genres MusicBrainz, à régler avant toute monétisation (section Modèle économique).
 
 ## Analyse concurrentielle
@@ -74,7 +84,7 @@ Positionnement : « le carnet d'écoute qui a une âme » — fiable comme un ou
 | Écoute à l'aveugle | Option qui masque la moyenne de la communauté tant qu'on n'a pas noté | Demandé par les fans d'AOTY (extension Better AOTY) | MVP |
 | Note piste par piste | On note chaque morceau, Spleen propose une note d'album | Absent ou bricolé ailleurs | MVP |
 | Le Carnet d'humeur | Chaque écoute peut porter un format (vinyle, CD, cassette, streaming, concert), un moment (nuit, pluie, dimanche matin, trajet) et « première écoute / réécoute » | Personne ne relie musique et ambiance ; nourrit des stats uniques et la découverte « qu'écoute-t-on quand il pleut ? » | MVP (saisie), V2 (stats) |
-| L'Étagère | Les 4 albums favoris présentés comme des vinyles sur une étagère en bois sur le profil | Identité visuelle forte, profil qu'on a envie de montrer | MVP |
+| L'Étagère | Les disques favoris en grille de pochettes sur le profil (des vinyles sur une étagère en bois jusqu'au jalon 17) | Identité visuelle forte, profil qu'on a envie de montrer | MVP |
 | Tendances par langue | Classements FR et EN séparés (« le rap FR de la semaine ») | RYM et AOTY sont pensés pour un public anglophone | MVP |
 | Cartes partageables | Image format story pour une critique, un récap du mois, le « Spleen Rewind » annuel | Acquisition gratuite via Instagram et TikTok | V2 |
 | Affinité / Toi vs moi | Score de compatibilité entre deux profils et comparaison des stats côte à côte | Répond à l'envie de regarder les stats des autres | V2 |
@@ -95,7 +105,7 @@ Positionnement : « le carnet d'écoute qui a une âme » — fiable comme un ou
 Le site gratuit d'abord, la monétisation ensuite, et l'appli seulement quand Spleen+ rapporte de quoi payer le compte Apple.
 
 1. **Phase 0, fondations** (jalons 1 et 2) : faite.
-2. **Phase 1, MVP du site, gratuit et sans pub** (jalons 3 à 14) : jalons 3 à 9 faits ; ordre de réalisation 12 (douceurs, en cours) → 11 (sorties à venir) → 13 (quoi écouter ce soir) → 14 (souvenirs) → 10 (mise en ligne). Après la mise en ligne, toujours gratuits : 15 (défi de l'année) puis 16 (en ce moment et RSS). **Condition de passage** : bêta stable, micro-entreprise créée, hébergement commercial, licence des genres réglée.
+2. **Phase 1, MVP du site, gratuit et sans pub** (jalons 3 à 14) : jalons 3 à 9, 12 (douceurs), 17 (nouvelle peau) et 11 (sorties à venir) faits ; puis 13 (quoi écouter ce soir, en cours depuis le 17 novembre) → 14 (souvenirs) → 10 (mise en ligne). Après la mise en ligne, toujours gratuits : 15 (défi de l'année) puis 16 (en ce moment et RSS). **Condition de passage** : bêta stable, micro-entreprise créée, hébergement commercial, licence des genres réglée.
 3. **Phase 2, monétisation** : Spleen+ (1 €/mois ou 10 €/an via Stripe), stats avancées, thèmes de profil, cartes partageables, Toi vs moi, Club du dimanche, Prête-moi un disque, import CSV, pubs discrètes. **Condition de passage** : Spleen+ rapporte de quoi payer le compte Apple (99 $/an).
 4. **Phase 3, appli Spleen** : Expo sur la même API, Se connecter avec Apple, notifications push, achats intégrés Apple et Google.
 5. **Phase 4, plus tard** : Apple Music, import Last.fm ; Spotify et Deezer si leurs règles s'assouplissent.
@@ -138,6 +148,18 @@ Le MVP couvre le cœur Letterboxd — noter, critiquer, tenir son journal, suivr
 
 Suivre un artiste et voir en un coup d'œil ce qu'il va sortir : la semaine prochaine, dans trois mois, ou « annoncé, date à préciser ». Le jour de la sortie, Spleen prévient. C'est une raison de revenir même quand on n'a rien à noter, et ça ne coûte presque rien : une requête par nuit.
 
+**Fini le 16 novembre** (PR #40 fusionnée dans `dev`). Doc du domaine, avec ce qui a été tranché en route : `docs/sorties.md`. La spécification ci-dessous reste celle qui a été validée.
+
+**Réponses de fin de jalon** (conseiller, 16 novembre)
+
+- Notification d'une sortie d'un jour passé : « Sorti le <date> » au lieu de « Sortie aujourd'hui ».
+- Horaire de la tâche de nuit inchangé (ligne « Notifications » des règles).
+- Disque pas encore sorti : moyenne masquée et « Les critiques ouvriront le jour de la sortie. ».
+
+Les deux changements (notification, fiche d'un disque pas encore sorti) se font à l'étape 1 du jalon 13.
+
+**Encore ouvert** : retirer les sorties à venir de la discographie de la fiche artiste ? Elles apparaissent aujourd'hui à la fois dans « À venir » et dans la discographie.
+
 **Parcours**
 
 1. Sur la fiche d'un artiste, je clique sur **Suivre**. La page des sorties à venir me propose aussi de suivre en un clic les artistes que j'écoute le plus (tirés de mes stats).
@@ -148,7 +170,7 @@ Suivre un artiste et voir en un coup d'œil ce qu'il va sortir : la semaine proc
 6. Le jour de la sortie, une **notification** : « Sortie aujourd'hui : *Titre* de *Artiste* », regroupée s'il y en a plusieurs (« 3 sorties aujourd'hui chez tes artistes »).
 7. Depuis une sortie à venir, je peux l'ajouter à **« À écouter »**. Après la date, la fiche redevient normale et le disque rejoint les sorties récentes.
 
-**Règles (décisions par défaut, à valider au début du jalon)**
+**Règles (validées par Azzo le 16 novembre)**
 
 | Sujet | Règle proposée | Pourquoi |
 | --- | --- | --- |
@@ -159,9 +181,11 @@ Suivre un artiste et voir en un coup d'œil ce qu'il va sortir : la semaine proc
 | Horizon | 12 mois au plus | Au-delà, les dates bougent trop |
 | Avant la sortie | Pas de « J'ai écouté », ni de note, ni de critique ; « À écouter » autorisé | Éviter les notes sur des fuites ou des disques pas encore sortis |
 | Date modifiée | On affiche la dernière date connue, avec un badge « date modifiée » si elle a changé depuis l'annonce | Les reports sont fréquents |
-| Notifications | Le jour J au matin (fuseau du membre), regroupées par jour ; réglage pour les couper ; jamais pour un compte suspendu | Une notification utile, pas du bruit |
+| Notifications | Le jour J, dans le fuseau du membre, regroupées par jour ; réglage pour les couper ; jamais pour un compte suspendu. Envoyées par la tâche de nuit (vers 4 h à Paris) : pour un fuseau très à l'ouest, le soir du jour J | Une notification utile, pas du bruit |
 | Doublons fusionnés | La fusion d'artistes transfère les suivis vers la fiche gardée | Comme le reste des données |
 | Suppression du compte | Les suivis disparaissent avec le compte | Comme le reste des données |
+| Les plus attendus | Un disque n'y figure qu'à partir de 2 membres intéressés ; comptes suspendus exclus | Comme les tendances : un seul membre serait exposé |
+| Export et confidentialité | Les suivis et le réglage des notifications entrent dans l'export et la politique de confidentialité | Données personnelles nouvelles |
 
 **D'où viennent les données**
 
@@ -186,11 +210,17 @@ Limite assumée : ces données viennent des bénévoles de MusicBrainz. Les gros
 
 ## Quoi écouter ce soir ? (jalon 13)
 
-Aider à passer de la fiche à l'écoute, et à choisir quand on ne sait pas quoi mettre. Règles ci-dessous = **décisions par défaut, à valider au début du jalon**.
+Aider à passer de la fiche à l'écoute, et à choisir quand on ne sait pas quoi mettre. **En cours depuis le 17 novembre**, confié au pilote. Règles ci-dessous = **retenues par le conseiller le 17 novembre** ; détail et décisions de chaque étape : `docs/pilote/decisions.md` (« Décidé par le conseiller ») et `docs/pilote/feuille-de-route.md`. L'étape 1 traite les restes du jalon 11 (section précédente).
 
-- **Écouter sur…** : sur les fiches album, morceau et artiste, des liens vers Spotify, Deezer, Apple Music, YouTube Music et Bandcamp (remplace les simples liens de recherche prévus au MVP). Lien direct quand MusicBrainz le connaît : relations d'URL demandées dans l'import existant, sans requête en plus ; les fiches déjà importées sont relues peu à peu par la tâche de nuit. Sinon, un lien de recherche (artiste + titre). Aucun lien affilié avant la monétisation.
-- **Tes amis sur ce disque** : sur une fiche, les notes et cœurs des membres que je suis (5 au plus, puis « voir tous »). Comptes bloqués ou suspendus et contenus privés exclus. Caché en écoute à l'aveugle tant que je n'ai pas noté.
-- **Tire un disque** : un bouton qui pioche au hasard dans ma liste « À écouter », avec des filtres de type et de durée et un bouton « Un autre ». Marche sans JavaScript (tirage côté serveur).
+- **Écouter sur…** : sur les fiches album (EP, single), morceau et artiste, cinq services toujours dans cet ordre : Spotify, Deezer, Apple Music, YouTube Music, Bandcamp (remplace les simples liens de recherche prévus au MVP : YouTube Music remplace YouTube, Bandcamp s'ajoute).
+  - Lien direct quand MusicBrainz le connaît et qu'il passe la validation ; sinon une recherche « premier artiste + titre » (le nom seul sur une fiche artiste).
+  - Seule source : les relations d'URL de MusicBrainz, demandées dans les requêtes existantes de l'import, sans requête en plus ; aucun appel pendant l'affichage d'une page.
+  - Fiches déjà importées relues par la tâche de nuit (200 disques et 100 artistes au plus, 10 minutes au plus, puis de nouveau après 30 jours). Les morceaux déjà importés ne sont pas relus : liens directs à l'import seulement.
+  - Validation stricte avant d'enregistrer et avant d'afficher (`https`, hôte exact par service, forme de chemin selon la fiche, URL reconstruite) ; un lien refusé laisse la recherche.
+  - Aucun lien affilié, aucun paramètre de suivi, aucun logo (noms en texte), liens en `nofollow`.
+- **Tes amis sur ce disque** : sur la fiche d'un disque seulement (ni morceau, ni artiste). Les membres que je suis qui ont une note ou un cœur sur ce disque, 5 au plus, les plus récents d'abord, puis « Voir tous ». Exclus : comptes bloqués dans un sens ou l'autre, comptes suspendus, membres au journal privé (comme le fil Amis). Section cachée en écoute à l'aveugle tant que je n'ai pas noté le disque, sur un disque pas encore sorti et pour un visiteur.
+- **Tire un disque** : un bouton dans l'onglet « À écouter » de mon profil mène à une page (`/pick`) qui tire au hasard, côté serveur, un disque de ma liste (pas les morceaux), déjà sorti dans mon fuseau. Filtres de type (album, EP, single) et de durée (moins de 30 min, 30 à 60 min, plus d'une heure ; une durée inconnue est exclue dès qu'un filtre de durée est choisi), bouton « Un autre », marche sans JavaScript. Rien n'est enregistré (ni historique ni compteur). Ferme l'issue #31.
+- **Hors périmètre** : connexion aux services de streaming, lecteurs intégrés, extraits, images ou logos de marque, liens affiliés, autres services (Tidal, Qobuz, SoundCloud), tirage dans une liste ou dans tout le catalogue, historique des tirages, amis sur les morceaux, nouveaux textes légaux.
 
 ## Souvenirs (jalon 14)
 
@@ -297,8 +327,8 @@ Aucune connexion aux services de streaming au lancement : Spotify et Deezer sont
 Un monorepo TypeScript où toute la logique vit dans des paquets partagés : le site Next.js d'aujourd'hui et l'appli Expo de demain appellent la même API, avec les mêmes validations, textes et couleurs.
 
 - `apps/web` (Next.js) appelle l'API tRPC de `packages/api`, qui contient toute la logique ; `packages/db` (Drizzle), `packages/validators` (Zod), les textes et les couleurs sont partagés.
-- Services externes : PostgreSQL (Neon), MusicBrainz + Cover Art Archive pour le catalogue, Brevo pour les emails, Cloudflare R2 pour les avatars. ListenBrainz s'ajoute au jalon 11.
-- Une tâche de nuit (GitHub Actions) relit les discographies et anonymise l'ancien historique de modération.
+- Services externes : PostgreSQL (Neon), MusicBrainz + Cover Art Archive pour le catalogue, Brevo pour les emails, Cloudflare R2 pour les avatars. ListenBrainz depuis le jalon 11 (sorties à venir).
+- Une tâche de nuit (GitHub Actions) relit les sorties annoncées et les discographies, envoie les notifications « Sortie aujourd'hui » (depuis le jalon 11) et anonymise l'ancien historique de modération.
 - Phase 3 : `apps/mobile` (Expo) se branche sur la même API sans rien réécrire.
 
 Versions exactes, limites de chaque service et paliers de montée en charge : `docs/stack-et-limites.md`.
@@ -363,33 +393,20 @@ Le journal d'écoute daté ne coûtera presque rien : comme chacun saisit ses é
 - Identifiants UUID partout, slugs lisibles pour les URL.
 - Index sur (membre, date d'écoute) pour le journal et sur la cible pour les pages album.
 
-## Identité visuelle cozy et jazzy
+## Identité visuelle « Lilas » (jalon 17)
 
-L'image directrice : un club de jazz à une heure du matin, lumière tamisée, pluie sur la vitre, un disque qui tourne. Mode sombre par défaut, mode clair « papier crème ».
+Depuis le jalon 17, l'ambiance « club de jazz » de la v1 laisse la place à l'identité « Lilas », plus nette et plus moderne. Référence complète : `docs/design/README.md` du dépôt (principes, jetons, relief, mouvement) et les maquettes `docs/design/maquettes/*.png`. Artefact Design « Spleen — Nouvelle peau ».
 
-**Palette proposée**
-
-| Nom | Couleur | Usage |
-| --- | --- | --- |
-| Encre de nuit | #15131C | Fond du mode sombre |
-| Fumée | #2A2633 | Cartes, surfaces |
-| Velours bordeaux | #6E2335 | Accent principal, boutons |
-| Laiton | #C9A25C | Étoiles, détails, Spleen+ |
-| Bleu minuit | #1E2A44 | Accent secondaire, liens |
-| Papier crème | #F3EAD8 | Texte en sombre, fond en clair |
-
-**Typographie** : titres en serif à caractère (Fraunces ou DM Serif Display), texte en sans-serif lisible (Inter), chiffres des stats en monospace façon pochette de jazz (IBM Plex Mono). Toutes disponibles sur Google Fonts.
-
-**Matières et mouvements**
-
-- Léger grain de papier, pochettes posées avec une ombre douce, coins peu arrondis.
-- Le vinyle sort un peu de sa pochette au survol ; un bras de platine se pose quand on clique sur « J'ai écouté » ; étoiles en laiton.
-- Animations courtes et coupées si l'utilisateur a demandé moins de mouvement.
-- Contraste vérifié (niveau AA) : le laiton sur fond sombre est à contrôler.
+- **Un seul thème, sombre.** Plus de mode clair, plus de réglage de thème.
+- **Couleurs** : uniquement par jetons (`packages/design-tokens`), jamais de code couleur en dur. Un accent lilas pour le bouton principal, les étoiles, le grand bloc et la lune du logo.
+- **Un seul grand bloc lilas par page au plus.** Ni dégradé ni halo.
+- **Typographie** : Bricolage Grotesque 700/800 pour les titres et les grands chiffres, Geist pour le texte, Geist Mono pour les petites étiquettes. Ni serif ni italique.
+- **Formes** : pochettes arrondies, cartes en relief léger ; une carte qui est un lien entier monte au survol.
+- **Accessibilité** : contraste AA (texte 4,5:1, éléments non textuels 3:1), cibles de 44 px au moins (52 px pour le bouton principal), focus visible, tout marche sans JavaScript.
+- **Mouvement** : animations courtes, en transform et opacity seulement, coupées si le membre demande moins de mouvement ; jamais de contenu caché en attendant une animation.
+- **Logo** : un croissant de lune lilas devant « spleen ».
 
 **Ton** : tutoiement, phrases courtes et douces. Exemples : « Qu'as-tu écouté ce soir ? », « Ton étagère prend la poussière ». Clins d'œil à Baudelaire (domaine public) sur la page 404 et les écrans d'attente, par exemple « Je suis comme le roi d'un pays pluvieux ».
-
-**Logo (pistes)** : « Spleen » en serif italique ; un S dessiné par le sillon d'un vinyle ; une lune en croissant posée sur un disque.
 
 ## Légal et RGPD
 
@@ -449,7 +466,8 @@ Le plus gros risque n'est pas technique : c'est un site vide au lancement et un 
 - [ ] Bêta : sur invitation seulement, ou liste d'attente publique ?
 - [ ] Qui aide à modérer quand la communauté grandit ?
 - [ ] Genres : licence commerciale MetaBrainz ou autre source ? (avant la monétisation)
-- [x] Sorties à venir : valider les règles par défaut (liste des suivis privée, pas de note avant la sortie, notification le matin du jour J). Validées par Azzo le 16 novembre 2026 et livrées au jalon 11 : suivi réservé aux membres (500 artistes, 200 écritures par heure), liste privée, seulement « À écouter » avant la sortie, « Sortie aujourd'hui » dans le site selon le fuseau de chacun (`docs/sorties.md`).
+- [x] Sorties à venir : règles validées par Azzo le 16 novembre (section du jalon 11) et livrées au jalon 11 : suivi réservé aux membres (500 artistes, 200 écritures par heure), liste privée, seulement « À écouter » avant la sortie, « Sortie aujourd'hui » dans le site selon le fuseau de chacun (`docs/sorties.md`).
+- [ ] Fiche artiste : retirer les sorties à venir de la discographie ? (reste du jalon 11, section du jalon 11)
 
 ## Sources
 
