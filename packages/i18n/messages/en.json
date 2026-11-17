@@ -117,6 +117,7 @@
     "reviewsOnRelease": "Reviews open on release day.",
     "listsTitle": "In lists",
     "listenOn": "Listen on",
+    "listenSearch": "(search)",
     "coverAlt": "Cover of {title}",
     "actions": {
       "title": "Your listen",
@@ -141,7 +142,8 @@
     "spotify": "Spotify",
     "deezer": "Deezer",
     "appleMusic": "Apple Music",
-    "youtube": "YouTube"
+    "youtubeMusic": "YouTube Music",
+    "bandcamp": "Bandcamp"
   },
   "review": {
     "byline": "Review by {name}",

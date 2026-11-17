@@ -117,6 +117,7 @@
     "reviewsOnRelease": "Les critiques ouvriront le jour de la sortie.",
     "listsTitle": "Dans les listes",
     "listenOn": "Écouter sur",
+    "listenSearch": "(recherche)",
     "coverAlt": "Pochette de {title}",
     "actions": {
       "title": "Ton écoute",
@@ -141,7 +142,8 @@
     "spotify": "Spotify",
     "deezer": "Deezer",
     "appleMusic": "Apple Music",
-    "youtube": "YouTube"
+    "youtubeMusic": "YouTube Music",
+    "bandcamp": "Bandcamp"
   },
   "review": {
     "byline": "Critique de {name}",

@@ -40,9 +40,13 @@ export interface Track {
   durationMs: number | null;
 }
 
+export type ListenService = "spotify" | "deezer" | "appleMusic" | "youtubeMusic" | "bandcamp";
+
+/** "Listen on": a direct link when MusicBrainz knows one that passes validation, else a search. */
 export interface ListenLink {
-  service: "spotify" | "deezer" | "appleMusic" | "youtube";
+  service: ListenService;
   url: string;
+  direct: boolean;
 }
 
 export interface MemberRef {
