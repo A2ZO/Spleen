@@ -74,7 +74,7 @@ mesures (aucun écran ne change).
 - [x] migration `show_memories` (+ `db:migrate` Neon `dev`)
 - [x] réglage `account.setShowMemories`, `MyProfile.showMemories`
 - [x] types
-- [ ] `lib/memories.ts`
+- [x] `lib/memories.ts`
 - [x] routeur `memories.home`
 - [ ] tests `memories.test.ts`
 - [ ] vérifications
