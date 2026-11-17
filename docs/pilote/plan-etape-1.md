@@ -58,4 +58,4 @@ Aucun test d'API (l'API ne change pas).
 - [x] vérifications
 - [x] relecture 1 (OK)
 - [x] relecture 2 (sans objet : OK au 1er tour)
-- [ ] clôture
+- [x] clôture

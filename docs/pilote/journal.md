@@ -9,3 +9,12 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   dans `decisions.md`, une seule migration autorisée (`profiles.show_memories`), inventaire de
   `db.test.ts` autorisé (ajouts seuls), snapshot `feed-loading` à ne pas toucher. Prochaine :
   étape 1.
+- 2026-11-17 — Étape 1 (bouton « Tire un disque au hasard » de l'accueil membre → `/pick`,
+  accueil visiteur inchangé). Commits `4839b2d`..`98d1ace` (plan, `b18b637` feat, `13c30e2`
+  e2e + doc, passation). `pnpm check` vert ; `pick.spec` 8/8 ; e2e complet dev 264 réussis,
+  0 échoué, 10 ignorés (teardown « render cancelled mid-stream » → #34 commentée). Prod sans
+  compte + overflow 116 · 2 (`hydration.spec:17`, Brevo factice, connu). axe AA 0 (accueil
+  visiteur et `nuitblanche`, 1280/390). Mesures : 1er passage hors des 20 ms (241/144/238/
+  196/241) ; A/B même session `origin/dev` 241/144/242/194/242 contre HEAD 227/144/230/194/241
+  → pas de régression. Relecteur : plan OK avec 3 corrections appliquées, étape OK au 1er tour.
+  Aucune décision nouvelle. Prochaine : étape 2.
