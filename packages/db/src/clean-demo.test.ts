@@ -21,45 +21,52 @@ let importedArtist: string;
 
 const count = async (table: Parameters<DbHandle["db"]["$count"]>[0]) => handle.db.$count(table);
 
-beforeEach(async () => {
-  handle = await createTestDb();
-  await seed(handle.db);
-  // A real member and a record imported from MusicBrainz, which shares a seed genre.
-  [{ id: member }] = (await handle.db
-    .insert(s.user)
-    .values({ name: "Membre", email: "membre@spleen.invalid", emailVerified: true })
-    .returning({ id: s.user.id })) as [{ id: string }];
-  [{ id: importedArtist }] = (await handle.db
-    .insert(s.artists)
-    .values({ slug: "e2e-band", name: "Vrai groupe", mbid: randomUUID() })
-    .returning({ id: s.artists.id })) as [{ id: string }];
-  [{ id: imported }] = (await handle.db
-    .insert(s.releases)
-    .values({ slug: "vrai-disque", title: "Vrai disque", type: "album", mbid: randomUUID() })
-    .returning({ id: s.releases.id })) as [{ id: string }];
-  await handle.db
-    .insert(s.releaseArtists)
-    .values({ releaseId: imported, artistId: importedArtist });
-  const [jazz] = await handle.db
-    .select({ id: s.genres.id })
-    .from(s.genres)
-    .where(eq(s.genres.slug, slugify("Jazz")));
-  await handle.db.insert(s.releaseGenres).values({ releaseId: imported, genreId: jazz!.id });
-  await handle.db.insert(s.entries).values({ userId: member, releaseId: imported, rating: 8 });
-  // An e2e account and a throwaway record.
-  await handle.db
-    .insert(s.user)
-    .values({ name: "", email: "e2e-abc1d@example.test", emailVerified: true });
-  await handle.db
-    .insert(s.releases)
-    .values({ slug: "e2e-abc1d-1", title: "Jetable", type: "album" });
-});
+// A fresh seeded database per test (each one deletes): slow on CI runners.
+const SETUP_TIMEOUT = 60_000;
 
-afterEach(async () => {
-  await handle.close();
-});
+function setup() {
+  beforeEach(async () => {
+    handle = await createTestDb();
+    await seed(handle.db);
+    // A real member and a record imported from MusicBrainz, which shares a seed genre.
+    [{ id: member }] = (await handle.db
+      .insert(s.user)
+      .values({ name: "Membre", email: "membre@spleen.invalid", emailVerified: true })
+      .returning({ id: s.user.id })) as [{ id: string }];
+    [{ id: importedArtist }] = (await handle.db
+      .insert(s.artists)
+      .values({ slug: "e2e-band", name: "Vrai groupe", mbid: randomUUID() })
+      .returning({ id: s.artists.id })) as [{ id: string }];
+    [{ id: imported }] = (await handle.db
+      .insert(s.releases)
+      .values({ slug: "vrai-disque", title: "Vrai disque", type: "album", mbid: randomUUID() })
+      .returning({ id: s.releases.id })) as [{ id: string }];
+    await handle.db
+      .insert(s.releaseArtists)
+      .values({ releaseId: imported, artistId: importedArtist });
+    const [jazz] = await handle.db
+      .select({ id: s.genres.id })
+      .from(s.genres)
+      .where(eq(s.genres.slug, slugify("Jazz")));
+    await handle.db.insert(s.releaseGenres).values({ releaseId: imported, genreId: jazz!.id });
+    await handle.db.insert(s.entries).values({ userId: member, releaseId: imported, rating: 8 });
+    // An e2e account and a throwaway record.
+    await handle.db
+      .insert(s.user)
+      .values({ name: "", email: "e2e-abc1d@example.test", emailVerified: true });
+    await handle.db
+      .insert(s.releases)
+      .values({ slug: "e2e-abc1d-1", title: "Jetable", type: "album" });
+  }, SETUP_TIMEOUT);
+
+  afterEach(async () => {
+    await handle.close();
+  });
+}
 
 describe("db:clean-demo", () => {
+  setup();
+
   it("counts without deleting anything when not applied", async () => {
     const [users, releases] = [await count(s.user), await count(s.releases)];
     const result = await cleanDemo(handle.db, { apply: false });
