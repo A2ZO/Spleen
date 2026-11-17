@@ -14,6 +14,7 @@ import {
   isRoundAnniversary,
   MEMORIES_ANNIVERSARIES_MAX,
   MEMORIES_LISTENS_MAX,
+  RELEASED_ON_THIS_DAY_MAX,
   roundAnniversarySql,
   sameDayInPastYears,
 } from "./lib/memories";
@@ -499,6 +500,167 @@ describe("account.setShowMemories", () => {
     expect(await errorCode(() => api(fresh).account.setShowMemories({ enabled: false }))).toBe(
       "PROFILE_REQUIRED",
     );
+  });
+});
+
+describe("discovery.releasedOnThisDay", () => {
+  // Each case uses its own day: the database is shared with the other tests of this file.
+  const on = (monthDay: string) => new Date(`2026-${monthDay}T10:00:00Z`);
+  const released = (at: Date, who: Member | null = null) =>
+    api(who, at).discovery.releasedOnThisDay();
+  async function ids(at: Date, who: Member | null = null) {
+    return (await released(at, who)).items.map((i) => i.release.id);
+  }
+  /** `count` new members (Paris) with these state values on the record. */
+  async function fans(
+    releaseId: string,
+    count: number,
+    values: Partial<typeof schema.userItemState.$inferInsert> = { liked: true },
+  ) {
+    const members: Member[] = [];
+    for (let i = 0; i < count; i++) {
+      const who = await member();
+      await state(who, releaseId, values);
+      members.push(who);
+    }
+    return members;
+  }
+
+  it("keeps records two members rated or hearted, with their age", async () => {
+    const two = await record({ releaseDate: "2016-06-04", title: "Two" });
+    const one = await record({ releaseDate: "2015-06-04" });
+    await fans(two.id, 1, { rating: 8 });
+    await fans(two.id, 1, { liked: true });
+    await fans(one.id, 1);
+    expect(await released(on("06-04"))).toEqual({
+      day: "2026-06-04",
+      items: [
+        {
+          release: {
+            id: two.id,
+            slug: two.slug,
+            title: "Two",
+            type: "album",
+            year: 2016,
+            coverUrl: null,
+            artists: [],
+          },
+          years: 10,
+          round: true,
+        },
+      ],
+    });
+  });
+
+  it("counts ratings and hearts only, private diaries included, suspended accounts left out", async () => {
+    const listenedOnly = await record({ releaseDate: "2016-06-05" });
+    await fans(listenedOnly.id, 1, { liked: true });
+    await fans(listenedOnly.id, 1, { listened: true });
+    const queued = await record({ releaseDate: "2015-06-05" });
+    await fans(queued.id, 1, { rating: 9 });
+    await fans(queued.id, 1, { wantToListen: true });
+    const withSuspended = await record({ releaseDate: "2014-06-05" });
+    await fans(withSuspended.id, 1);
+    const [suspended] = await fans(withSuspended.id, 1);
+    await db()
+      .update(schema.profiles)
+      .set({ suspendedAt: now, suspensionReason: "Spam" })
+      .where(eq(schema.profiles.userId, suspended!.id));
+    const privateDiary = await record({ releaseDate: "2013-06-05" });
+    const [secret] = await fans(privateDiary.id, 2);
+    await db()
+      .update(schema.profiles)
+      .set({ diaryPrivate: true, statsPrivate: true })
+      .where(eq(schema.profiles.userId, secret!.id));
+    expect(await ids(on("06-05"))).toEqual([privateDiary.id]);
+  });
+
+  it("needs a main, unmerged record, dated to the day, in a past year", async () => {
+    const kept = await record({ releaseDate: "2016-06-06" });
+    const excluded = [
+      await record({ releaseDate: "2016-06-06", releaseDatePrecision: "month" }),
+      await record({ releaseDate: "2026-06-06" }), // out today: not an anniversary
+      await record({ releaseDate: "2016-06-06", secondaryTypes: ["live"] }),
+      await record({ releaseDate: "2016-06-06", secondaryTypes: ["compilation"] }),
+      await record({ releaseDate: "2016-06-06", mergedIntoId: kept.id }),
+    ];
+    for (const r of [kept, ...excluded]) await fans(r.id, 2);
+    expect(await ids(on("06-06"))).toEqual([kept.id]);
+  });
+
+  it("sorts by members, then the oldest, then title, then id; six at most", async () => {
+    const make = (year: number, title: string) => record({ releaseDate: `${year}-06-07`, title });
+    const three = await make(2020, "Z three members");
+    const oldest = await make(1990, "Y oldest");
+    const titleA = await make(2000, "A title");
+    const titleB = await make(2000, "B title");
+    const sameX = await make(2005, "Same");
+    const sameY = await make(2005, "Same");
+    const seventh = await make(2010, "Seventh");
+    await fans(three.id, 3);
+    for (const r of [oldest, titleA, titleB, sameX, sameY, seventh]) await fans(r.id, 2);
+    const [first, second] = [sameX, sameY].sort((a, b) => (a.id < b.id ? -1 : 1));
+
+    const result = await released(on("06-07"));
+    expect(result.items).toHaveLength(RELEASED_ON_THIS_DAY_MAX);
+    expect(result.items.map((i) => i.release.id)).toEqual([
+      three.id,
+      oldest.id,
+      titleA.id,
+      titleB.id,
+      first!.id,
+      second!.id,
+    ]);
+    expect(result.items.map((i) => [i.years, i.round])).toEqual([
+      [6, false],
+      [36, false],
+      [26, false],
+      [26, false],
+      [21, false],
+      [21, false],
+    ]);
+  });
+
+  it("uses Paris's day, whoever reads it, blind or in another zone", async () => {
+    const on17 = await record({ releaseDate: "1999-11-17" });
+    const on18 = await record({ releaseDate: "1999-11-18" });
+    for (const r of [on17, on18]) await fans(r.id, 2, { rating: 7 });
+    const mine = (items: { release: { id: string } }[]) =>
+      items.map((i) => i.release.id).filter((id) => id === on17.id || id === on18.id);
+
+    const visitor = await released(midnight);
+    expect(visitor.day).toBe("2026-11-18");
+    expect(mine(visitor.items)).toEqual([on18.id]);
+
+    const la = await member("America/Los_Angeles");
+    const blind = await member();
+    await db()
+      .update(schema.profiles)
+      .set({ blindMode: true })
+      .where(eq(schema.profiles.userId, blind.id));
+    await state(blind, on18.id, { wantToListen: true });
+    expect(await released(midnight, la)).toEqual(visitor);
+    expect(await released(midnight, blind)).toEqual(visitor);
+  });
+
+  it("brings 29 February back on 29 February only", async () => {
+    const leap = await record({ releaseDate: "1996-02-29" });
+    await fans(leap.id, 2);
+    expect(await ids(new Date("2028-02-29T12:00:00Z"))).toContain(leap.id);
+    expect(await ids(new Date("2027-02-28T12:00:00Z"))).not.toContain(leap.id);
+    expect(await ids(new Date("2027-03-01T12:00:00Z"))).not.toContain(leap.id);
+  });
+
+  it.skipIf(process.env.TEST_DATABASE_URL)("costs one round trip", async () => {
+    const r = await record({ releaseDate: "2016-06-08" });
+    await fans(r.id, 2);
+    const tracker = trackRoundTrips(handle.db);
+    try {
+      expect(await ids(on("06-08"))).toEqual([r.id]);
+      expect(tracker.take()).toBe(1);
+    } finally {
+      tracker.restore();
+    }
   });
 });
 

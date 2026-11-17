@@ -1,8 +1,15 @@
 import { rowsOf, sql, type Db, type SQL } from "@spleen/db";
 import { DEFAULT_TIME_ZONE, isTimeZone, todayIn, type ReleaseType } from "@spleen/validators";
 
-import type { AnniversaryItem, ArtistRef, HomeMemories, MemoryRelease } from "../types";
+import type {
+  AnniversaryItem,
+  ArtistRef,
+  HomeMemories,
+  MemoryRelease,
+  ReleasedOnThisDay,
+} from "../types";
 import { mainReleaseSql, upcomingSql } from "./catalog/upcoming";
+import { countsPublicly } from "./ratings";
 
 /*
  * « Souvenirs » (milestone 14): computed at read time from dated listens and the current state,
@@ -16,6 +23,10 @@ export const MEMORIES_FROM_YEAR = 1900;
 export const MEMORIES_LISTENS_MAX = 6;
 /** « Anniversaires du jour »: at most this many records. */
 export const MEMORIES_ANNIVERSARIES_MAX = 6;
+/** « Sortis un <jour mois> » (`/discover`): distinct members with a rating or a heart needed… */
+export const RELEASED_ON_THIS_DAY_MIN_MEMBERS = 2;
+/** …and at most this many records. */
+export const RELEASED_ON_THIS_DAY_MAX = 6;
 /** Round anniversaries, highlighted and listed first… */
 export const ROUND_ANNIVERSARIES: readonly number[] = [10, 20, 25, 30, 40, 50, 75];
 /** …and every decade after this one (60, 70, 80…). */
@@ -55,11 +66,7 @@ export function roundAnniversarySql(years: SQL): SQL {
     or (${years} > ${ROUND_EVERY_DECADE_FROM}::int and ${years} % 10 = 0))`;
 }
 
-interface MemoryRow {
-  grp: "listens" | "anniversaries";
-  rank: number | string;
-  day: string | null;
-  years: number | null;
+interface ReleaseRow {
   id: string;
   slug: string;
   title: string;
@@ -69,7 +76,28 @@ interface MemoryRow {
   artists: ArtistRef[] | string | null;
 }
 
-function toMemoryRelease(row: MemoryRow): MemoryRelease {
+interface MemoryRow extends ReleaseRow {
+  grp: "listens" | "anniversaries";
+  rank: number | string;
+  day: string | null;
+  years: number | null;
+}
+
+/** The artists of `releases r`, in their order, as JSON (same shape as `ArtistRef`). */
+const artistsJsonSql = sql`coalesce((
+  select json_agg(json_build_object('slug', a.slug, 'name', a.name) order by ra.position)
+  from release_artists ra
+  join artists a on a.id = ra.artist_id
+  where ra.release_id = r.id
+), '[]'::json)`;
+
+const dayListSql = (days: string[]) =>
+  sql.join(
+    days.map((d) => sql`${d}::date`),
+    sql`, `,
+  );
+
+function toMemoryRelease(row: ReleaseRow): MemoryRelease {
   const artists = typeof row.artists === "string" ? JSON.parse(row.artists) : row.artists;
   return {
     id: row.id,
@@ -96,10 +124,7 @@ export async function homeMemories(
   const days = sameDayInPastYears(today);
   if (days.length === 0) return null;
   const year = Number(today.slice(0, 4));
-  const dayList = sql.join(
-    days.map((d) => sql`${d}::date`),
-    sql`, `,
-  );
+  const dayList = dayListSql(days);
 
   const rows = rowsOf<MemoryRow>(
     await db.execute(sql`
@@ -145,12 +170,7 @@ export async function homeMemories(
       )
       select p.grp, p.rank, p.day, p.years, r.id, r.slug, r.title, r.type, r.cover_url,
         extract(year from r.release_date)::int as year,
-        coalesce((
-          select json_agg(json_build_object('slug', a.slug, 'name', a.name) order by ra.position)
-          from release_artists ra
-          join artists a on a.id = ra.artist_id
-          where ra.release_id = r.id
-        ), '[]'::json) as artists
+        ${artistsJsonSql} as artists
       from picked p
       join releases r on r.id = p.id
     `),
@@ -177,4 +197,55 @@ export async function homeMemories(
         };
   if (!listens && anniversaries.length === 0) return null;
   return { today, listens, anniversaries };
+}
+
+interface ReleasedOnThisDayRow extends ReleaseRow {
+  years: number | string;
+}
+
+/**
+ * « Sortis un <jour mois> » on `/discover`: main, unmerged records released on Paris's day in a
+ * past year, to the day, that at least `RELEASED_ON_THIS_DAY_MIN_MEMBERS` members rated or
+ * hearted (current state; suspended accounts left out, private diaries counted as in the
+ * averages, blocks ignored as in the trends). Nothing about the reader: the same for everyone.
+ * One query, from the release dates (index) to each record's states (index by release).
+ */
+export async function releasedOnThisDay(db: Db, now: Date): Promise<ReleasedOnThisDay> {
+  const day = todayIn(DEFAULT_TIME_ZONE, now);
+  const days = sameDayInPastYears(day);
+  if (days.length === 0) return { day, items: [] };
+  const year = Number(day.slice(0, 4));
+
+  const rows = rowsOf<ReleasedOnThisDayRow>(
+    await db.execute(sql`
+      select r.id, r.slug, r.title, r.type, r.cover_url,
+        extract(year from r.release_date)::int as year,
+        ${year}::int - extract(year from r.release_date)::int as years,
+        ${artistsJsonSql} as artists
+      from (
+        select r.id, count(distinct s.user_id) as members
+        from releases r
+        join user_item_state s on s.release_id = r.id
+          and (s.rating is not null or s.liked)
+          and ${countsPublicly(sql`s.user_id`)}
+        where r.release_date in (${dayListSql(days)})
+          and r.release_date_precision = 'day'
+          and ${mainReleaseSql()}
+        group by r.id
+        having count(distinct s.user_id) >= ${RELEASED_ON_THIS_DAY_MIN_MEMBERS}
+      ) m
+      join releases r on r.id = m.id
+      order by m.members desc, r.release_date asc, r.title, r.id
+      limit ${RELEASED_ON_THIS_DAY_MAX}
+    `),
+  );
+
+  return {
+    day,
+    items: rows.map((r) => ({
+      release: toMemoryRelease(r),
+      years: Number(r.years),
+      round: isRoundAnniversary(Number(r.years)),
+    })),
+  };
 }

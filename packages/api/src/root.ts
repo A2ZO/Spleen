@@ -98,7 +98,7 @@ import { searchCatalog, searchRemote } from "./lib/catalog/search";
 import { suggestCatalog } from "./lib/catalog/suggest";
 import { genreOptions, recentReleases, topRated, weeklyTrends } from "./lib/discovery";
 import { checkHealth } from "./lib/health";
-import { homeMemories } from "./lib/memories";
+import { homeMemories, releasedOnThisDay } from "./lib/memories";
 import { ogCard, seoPage, sitemapEntries, sitemapFiles } from "./lib/seo";
 import {
   blindArtistDetail,
@@ -315,6 +315,8 @@ export const appRouter = router({
     genres: publicProcedure.query(({ ctx }) => genreOptions(ctx.db())),
     /** « Les plus attendus »: the upcoming releases most members wait for (Paris day). */
     awaited: publicProcedure.query(({ ctx }) => awaitedReleases(ctx.db(), ctx.now)),
+    /** « Sortis un <jour mois> »: records members love, out on Paris's day in past years. */
+    releasedOnThisDay: publicProcedure.query(({ ctx }) => releasedOnThisDay(ctx.db(), ctx.now)),
   }),
   social: router({
     follow: followWrite

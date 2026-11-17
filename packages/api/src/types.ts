@@ -808,6 +808,12 @@ export interface AnniversaryItem {
   round: boolean;
 }
 
+/** « Sortis un <jour mois> » on `/discover`: the same for every reader, in Paris's day (`day`). */
+export interface ReleasedOnThisDay {
+  day: string;
+  items: AnniversaryItem[];
+}
+
 /** « Souvenirs » on the member's home page, in the member's day (`today`, `YYYY-MM-DD`). */
 export interface HomeMemories {
   today: string;
