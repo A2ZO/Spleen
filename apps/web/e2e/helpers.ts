@@ -12,7 +12,7 @@ import {
   schema,
   setAdminRole,
 } from "@spleen/db";
-import { todayIn } from "@spleen/validators";
+import { TERMS_VERSION, todayIn } from "@spleen/validators";
 import { expect, type Page, type TestInfo } from "./fixtures";
 
 // Without BREVO_API_KEY, the dev server writes emails to <repo>/.data/outbox (see @spleen/infra).
@@ -173,8 +173,11 @@ export async function throwawayReleases(
 /** A throwaway release's type and date (none by default). */
 export interface ThrowawayOptions {
   type?: "album" | "ep" | "single";
-  /** Days after today in Paris (day precision), or next year (year precision, announced). */
-  date?: { inDays: number } | "nextYear";
+  /**
+   * Days after today in Paris (day precision, announced), next year (year precision, announced),
+   * or the same day in Paris `yearsAgo` years earlier (day precision, a past release).
+   */
+  date?: { inDays: number } | { yearsAgo: number } | "nextYear";
 }
 
 /**
@@ -204,6 +207,10 @@ export async function throwawayCatalog(
         releaseDatePrecision: "year" as const,
         announcedAt: new Date(),
       };
+    }
+    if ("yearsAgo" in date) {
+      const year = String(Number(today.slice(0, 4)) - date.yearsAgo).padStart(4, "0");
+      return { releaseDate: `${year}-${today.slice(5)}`, releaseDatePrecision: "day" as const };
     }
     const day = new Date(`${today}T12:00:00Z`);
     day.setUTCDate(day.getUTCDate() + date.inDays);
@@ -436,6 +443,55 @@ export const followMembersInDatabase = (username: string, usernames: string[]) =
       .values(followees.map((f) => ({ followerId, followeeId: f.id })))
       .onConflictDoNothing();
   });
+
+/**
+ * `count` throwaway members (onboarded, `e2e-<id>f<i>@example.test`, removed by the global
+ * cleanup), each with a 40-day-old heart on the release `releaseSlug`. Null on PGlite.
+ */
+export async function throwawayFans(
+  testInfo: TestInfo,
+  releaseSlug: string,
+  count: number,
+): Promise<true | null> {
+  loadRootEnv();
+  const url = process.env.DATABASE_URL;
+  if (!isPostgresUrl(url)) return null;
+  const id = `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}${testInfo.project.name.slice(0, 1)}`;
+  const handle = createDb(url);
+  try {
+    const db = handle.db;
+    const [release] = await db
+      .select({ id: schema.releases.id })
+      .from(schema.releases)
+      .where(eq(schema.releases.slug, releaseSlug));
+    const at = new Date(Date.now() - 40 * 24 * 60 * 60 * 1000);
+    for (let i = 0; i < count; i++) {
+      const [user] = await db
+        .insert(schema.user)
+        .values({ name: "", email: `e2e-${id}f${i}@example.test`, emailVerified: true })
+        .returning({ id: schema.user.id });
+      await db.insert(schema.profiles).values({
+        userId: user!.id,
+        username: `e2e_${id}f${i}`,
+        displayName: `Fan ${i + 1}`,
+        ageConfirmedAt: at,
+        termsAcceptedAt: at,
+        termsVersion: TERMS_VERSION,
+      });
+      await db.insert(schema.entries).values({
+        userId: user!.id,
+        releaseId: release!.id,
+        liked: true,
+        createdAt: at,
+        updatedAt: at,
+      });
+      await recomputeItemState(db, user!.id, { releaseId: release!.id });
+    }
+    return true;
+  } finally {
+    await handle.close();
+  }
+}
 
 /**
  * « Souvenirs » for a throwaway account (milestone 14): on the account's real day (its time

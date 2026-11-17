@@ -1,6 +1,12 @@
 import { expect, test, type Page } from "./fixtures";
 
-import { signUp, throwawayMemories, waitForHydration } from "./helpers";
+import {
+  signUp,
+  throwawayCatalog,
+  throwawayFans,
+  throwawayMemories,
+  waitForHydration,
+} from "./helpers";
 
 // « Souvenirs » on the member home (milestone 14, step 3): a listen on this day 4 years ago and
 // two records released on this day 20 and 12 years ago, hearted by a throwaway account. The
@@ -89,6 +95,27 @@ test("no section without memories, nor for a visitor", async ({ page, browser },
   await expect(visitor.locator("main")).toBeVisible();
   await expect(memories(visitor)).toHaveCount(0);
   await visitor.context().close();
+});
+
+// « Sortis un <jour mois> » on /discover (step 4): the same for every reader, Paris's day. Three
+// fans put the 80-year-old record ahead of the dev database's two-member records.
+test("/discover shows records members love, released on this day", async ({ page }, testInfo) => {
+  const catalog = await throwawayCatalog(testInfo, [
+    { date: { yearsAgo: 80 } },
+    { date: { yearsAgo: 12 } },
+  ]);
+  test.skip(!catalog, NEEDS_DB);
+  const [loved, alone] = catalog!.releases;
+  await throwawayFans(testInfo, loved!.slug, 3);
+  await throwawayFans(testInfo, alone!.slug, 1);
+
+  await page.goto("/fr/discover");
+  const section = page.getByRole("region", { name: /^Sortis un \d+ \S+$/ });
+  await expect(section).toBeVisible();
+  const tile = section.getByRole("listitem").filter({ hasText: loved!.title });
+  await expect(tile.getByRole("link", { name: loved!.title })).toBeVisible();
+  await expect(tile.getByText("80 ans aujourd'hui")).toBeVisible();
+  await expect(section.getByText(alone!.title)).toHaveCount(0);
 });
 
 test.describe("on a phone", () => {
