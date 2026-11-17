@@ -6,9 +6,10 @@ import {
   type AudienceLang,
 } from "@spleen/validators";
 import type { Metadata } from "next";
-import { getLocale, getTranslations } from "next-intl/server";
+import { getFormatter, getLocale, getTranslations } from "next-intl/server";
 
 import { ReleaseGrid, TopRatedList, TrendsGrid } from "@/components/discovery/Charts";
+import { MemoryGrid } from "@/components/memories/MemoryGrid";
 import { ReviewCard } from "@/components/social/ReviewCard";
 import { UpcomingGrid } from "@/components/upcoming/UpcomingGrid";
 import { Button } from "@/components/ui/Button";
@@ -18,6 +19,7 @@ import { LinkTabs } from "@/components/ui/LinkTabs";
 import { Pagination } from "@/components/ui/Pagination";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
+import { formatDayMonth } from "@/lib/release-date";
 import { seoMetadata } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
 import { firstParam, hrefWith, pageParam, type SearchParams } from "@/lib/search-params";
@@ -75,19 +77,22 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
   } as const;
 
   const api = await getApi();
-  const [trends, awaited, recent, top, genres, popular, t, uiLocale] = await Promise.all([
-    api.discovery.trends({ lang }),
-    api.discovery.awaited(),
-    api.discovery.recent({
-      type: recentType.success && recentType.data === "single" ? "single" : undefined,
-      page: pageParam(raw.rpage),
-    }),
-    api.discovery.topRated(topInput),
-    api.discovery.genres(),
-    api.feed.popular({ lang, size: POPULAR_ON_PAGE }),
-    getTranslations(),
-    getLocale(),
-  ]);
+  const [trends, awaited, recent, onThisDay, top, genres, popular, t, format, uiLocale] =
+    await Promise.all([
+      api.discovery.trends({ lang }),
+      api.discovery.awaited(),
+      api.discovery.recent({
+        type: recentType.success && recentType.data === "single" ? "single" : undefined,
+        page: pageParam(raw.rpage),
+      }),
+      api.discovery.releasedOnThisDay(),
+      api.discovery.topRated(topInput),
+      api.discovery.genres(),
+      api.feed.popular({ lang, size: POPULAR_ON_PAGE }),
+      getTranslations(),
+      getFormatter(),
+      getLocale(),
+    ]);
   const other: AudienceLang = lang === "fr" ? "en" : "fr";
   const keep = {
     lang: lang === uiLocale ? null : lang,
@@ -173,6 +178,20 @@ export default async function DiscoverPage({ params, searchParams }: Props) {
           />
         </div>
       </section>
+
+      {onThisDay.items.length > 0 && (
+        <section aria-labelledby="on-this-day" className="scroll-mt-24">
+          <SectionHeading id="on-this-day">
+            {t("discover.onThisDayTitle", {
+              day: formatDayMonth(format, onThisDay.day, onThisDay.day),
+            })}
+          </SectionHeading>
+          <p className="mb-5 max-w-2xl text-sm text-fg-muted text-pretty">
+            {t("discover.onThisDayHint")}
+          </p>
+          <MemoryGrid items={onThisDay.items} />
+        </section>
+      )}
 
       <section aria-labelledby="top" className="scroll-mt-24">
         <SectionHeading id="top">{t("discover.topTitle")}</SectionHeading>

@@ -1,60 +1,61 @@
-# Plan — étape 1 : les restes du jalon 11
-Issues #41 (« Sorti le … ») et #42 (disque à venir), retrouvées par `gh issue list` ; la PR de
-fin de jalon dira `Closes #41` et `Closes #42`. Pas de migration, rien ne change en base.
+# Plan — étape 1 : le bouton « Tire un disque au hasard » de l'accueil membre
 
-## 1. API — `notification.list` (#41)
-- `types.ts`, `NotificationGroup` : `releaseDay: string | null` (`YYYY-MM-DD` tiré de
-  `release:day:<jour>`, groupes `release` seulement, null sinon ou clé mal formée) et
-  `releasedToday: boolean` (false hors `release`).
-- `lib/social/notifications.ts`, `listNotifications(…, now)` : fuseau du membre lu en parallèle
-  de la requête groupée (première vague ; la seconde garde ses 6 requêtes, pool de 5) ;
-  aujourd'hui = `todayOf(timeZone, now)` exporté de `lib/catalog/release-notifications.ts`
-  (repli Europe/Paris) ; `releasedToday = releaseDay === aujourd'hui`. `root.ts` passe `ctx.now`.
-- PGlite (`release-notifications.test.ts`) : groupe du 16 lu le 16 → vrai, le 18 → faux,
-  `releaseDay` = `2026-11-16` ; même `now`, Tokyo déjà au 17 et Los Angeles au 16 → vrai pour
-  Los Angeles seulement ; fuseau inconnu → Paris ; groupe `follow` → null / faux.
+Reste du jalon 13 décidé par Azzo le 17 novembre (suite de l'issue #31, fermée par la PR 46).
+Sans migration ni API. Décisions actées : `feuille-de-route.md`, étape 1.
 
-## 2. Écran des notifications (#41)
-- `notifications/page.tsx` : `releasedToday` → textes actuels ; sinon `notifications.releasePast`
-  (« Sorti le {date} : <b>{title}</b> de {artists} » / « Out on {date}: <b>{title}</b> by
-  {artists} ») et `notifications.releasesPast` (« {count} sorties le {date} chez tes artistes »
-  / « {count} releases on {date} from your artists »). 3 liens et « et N autres » inchangés.
-- `lib/release-date.ts`, `formatDayMonth(format, day, today)` : jour et mois en lettres (UTC),
-  année ajoutée si elle diffère de celle de `today` (défaut : jour de Paris, comme
-  `formatUpcomingDate`). Jamais d'heure.
+## Données vérifiées
 
-## 3. Fiche d'un disque pas encore sorti (#42)
-- `album/[slug]/page.tsx`, `notOut` existant : `CommunityRating` non rendu ; `cards` et
-  `phoneCards` recomptent (`hasLists ? 1 : 0` puisque `showMine` est déjà faux) ; à 0, pas de
-  grille du tout.
-- « Critiques » sans critique et `notOut` → `album.reviewsOnRelease` (« Les critiques ouvriront
-  le jour de la sortie. » / « Reviews open on release day. »). Critiques existantes affichées.
-  Fiche morceau et API inchangées.
+- `apps/web/src/app/[locale]/page.tsx` : branche membre, l. 365-368 : `RateButton`, puis
+  `ButtonLink href="/discover" variant="on-accent"` avec `home.findMusic`. Branche visiteur
+  (et compte sans profil), l. 314-316 : même lien, inchangé.
+- `/pick` existe (jalon 13) et gère la liste vide (« Ta liste « À écouter » est vide. » et
+  « Découvrir des disques »). Clé `home.findMusic` présente dans `fr.json` / `en.json`.
+- `apps/web/e2e/pick.spec.ts` : `signUp`, sélecteurs `getByRole("link", { name: "Tire un
+  disque" })` (l. 39 et 115), sans `exact`.
 
-## 4. e2e (`upcoming.spec.ts`)
-- Jour passé : `now` = il y a 3 jours, catalogue jetable de ce jour (1 disque, puis 4 d'un autre
-  artiste), `notifyReleasesInDatabase(…, now)` → « Sorti le {date} : … » puis « 5 sorties le
-  {date} chez tes artistes ». Jour attendu = jour de `now` dans le fuseau du compte e2e
-  (Europe/Paris), jamais celui de la machine ; date par `Intl` fr avec la règle de l'année.
-- « a record not out yet » étendu : visiteur et membre voient la phrase des critiques, pas
-  « Note de la communauté ».
+## Changements
 
-## 5. Docs
-- `docs/sorties.md` « Questions laissées à Azzo » : les trois réponses du conseiller ; la
-  discographie reste ouverte. `docs/social.md` (type `release`) : « Sorti le {date} »,
-  `releaseDay`, `releasedToday`. `docs/decouverte.md` et `docs/ecoute.md` : moyenne masquée et
-  phrase des critiques d'un disque à venir, groupes d'un jour passé.
-Vérifications d'écran :
-- Captures `captures/1/` 1280 et 390 : notifications (jour, jour passé ; un, plusieurs) ; fiche
-  d'un disque à venir (visiteur, membre). axe sur ces pages ; `overflow.spec` ; specs sans
-  compte en prod ; `measure.mjs` deux passages contre la référence.
+1. **i18n** : `home.pickRandom` après `home.findMusic` dans les deux fichiers : FR « Tire un
+   disque au hasard », EN « Pick a random record ». `home.findMusic` reste (accueil visiteur).
+2. **Accueil membre** (`page.tsx`, branche membre seulement) : le 2e bouton devient
+   `ButtonLink href="/pick" variant="on-accent"` avec `t("home.pickRandom")`. Même place, même
+   style, sans icône. Aucune lecture ajoutée (ni `toListen.pick`, ni compte de la liste).
+3. **e2e** `pick.spec.ts` :
+   - les deux sélecteurs « Tire un disque » existants prennent `exact: true` (le libellé de
+     l'accueil le contient) ;
+   - nouveau test « the member home links to the draw » : compte jetable (`signUp`) → `/fr` :
+     lien « Tire un disque au hasard » (`exact: true`) avec `href` `/fr/pick` ; clic → URL
+     `/fr/pick`, phrase de liste vide visible ;
+   - nouveau test visiteur : sur `/fr`, ce lien est absent (`toHaveCount(0)`) et « Trouver
+     quoi écouter » a pour cible `/fr/discover`.
+   - bloc « on a phone » : après le `signUp` existant, `noOverflow()` aussi sur l'accueil membre
+     `/fr` à 390 px (libellé plus long à côté de `RateButton` ; `overflow.spec` est sans compte).
+4. **Doc** `docs/quoi-ecouter.md` : « Ferme l'issue #31 » reste ; seule la suite « l'accueil
+   reste inchangé (décision actée…) » disparaît ; « Accès » ajoute « 2e bouton du bloc lilas de l'accueil membre (« Tire un disque
+   au hasard », jalon 14, étape 1, toujours affiché) ».
+
+Aucun test d'API (l'API ne change pas).
+
+## Vérifications
+
+- `pnpm check` ; `pick.spec.ts` seul ; puis e2e complet via `verificateur`.
+- Build de prod : specs sans compte et `overflow.spec` (Brevo, S3, `CONTACT_EMAIL` factices dans
+  la commande seulement).
+- `pnpm db:seed` sur Neon `dev` le jour des captures et des mesures.
+- axe WCAG 2.2 AA à 1280 et 390 : accueil visiteur (build de prod) et accueil `nuitblanche`
+  (build de prod, session via `MEASURE_STATE` ; à défaut en dev avec un compte e2e jetable
+  supprimé à la fin).
+- Captures 1280 et 390 dans `docs/pilote/captures/1/` : accueil `nuitblanche` et visiteur
+  (mêmes conditions que l'axe).
+- `measure.mjs` complet, deux passages, contre 215 / 132 / 216 / 180 / 223 ms (A/B si écart).
+
 ## Avancement
-- [x] 1. API `releaseDay` / `releasedToday` et tests PGlite
-- [x] 2. Écran des notifications et textes FR/EN
-- [x] 3. Fiche d'un disque à venir (moyenne, critiques)
-- [x] 4. e2e
-- [x] 5. Docs
+
+- [x] i18n `home.pickRandom`
+- [x] bouton de l'accueil membre
+- [x] e2e `pick.spec.ts`
+- [x] doc `docs/quoi-ecouter.md`
 - [x] vérifications
-- [x] relecture 1
-- [ ] relecture 2
+- [x] relecture 1 (OK)
+- [x] relecture 2 (sans objet : OK au 1er tour)
 - [x] clôture

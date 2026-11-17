@@ -8,6 +8,9 @@ artiste. Server Actions : `apps/web/src/app/[locale]/list/actions.ts`.
 Quoi écouter ce soir ? (« Écouter sur… », « Tes amis sur ce disque », « Tire un disque »,
 jalon 13) : `docs/quoi-ecouter.md`.
 
+Souvenirs (« Sortis un <jour mois> » sur `/discover`, section « Souvenirs » de l'accueil membre,
+jalon 14) : `docs/souvenirs.md`.
+
 ## Listes
 
 | Procédure                                 | Rôle                                                   | Limite / h |

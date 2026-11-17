@@ -18,6 +18,7 @@ import {
   users,
 } from "./fixtures";
 import { seedLists } from "./lists";
+import { seedMemories } from "./memories";
 import { seedModeration } from "./moderation";
 import { seedPick } from "./pick";
 import { seedUpcoming } from "./upcoming";
@@ -327,6 +328,7 @@ export async function seed(db: Db, options: { now?: Date } = {}): Promise<void> 
     await seedModeration(tx, now);
     await seedFriends(tx, now);
     await seedPick(tx, now);
+    await seedMemories(tx, now);
 
     // Inserts above do nothing on conflict: existing demo profiles (created before the terms box,
     // or on an older TERMS_VERSION) accept the current terms here, so demo sign-ins never land on

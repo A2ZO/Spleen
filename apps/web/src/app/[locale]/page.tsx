@@ -7,6 +7,7 @@ import { TrendsGrid } from "@/components/discovery/Charts";
 import { JustOutCard } from "@/components/home/JustOutCard";
 import { MonthCard } from "@/components/home/MonthCard";
 import { RateButton } from "@/components/home/RateButton";
+import { MemoryGrid } from "@/components/memories/MemoryGrid";
 import { FeedItemCard } from "@/components/social/FeedItemCard";
 import { MemberRow } from "@/components/social/MemberRow";
 import { ReviewCard } from "@/components/social/ReviewCard";
@@ -66,6 +67,49 @@ const discoveryReads = cache(async (lang: AudienceLang) => {
  * `null` for a visitor. Memoised per request, started with `account.me`.
  */
 const upcomingRead = cache(async () => (await getApi()).upcoming.home());
+
+/** The member's « Souvenirs » of the day: `null` for a visitor (no query) or when switched off. */
+const memoriesRead = cache(async () => (await getApi()).memories.home());
+
+/** « Souvenirs »: listens of this day in a past year and today's anniversaries, never empty. */
+async function Memories({ username }: { username: string }) {
+  const t = await getTranslations("memories");
+  const memories = await memoriesRead();
+  if (!memories) return null;
+  const { listens, anniversaries } = memories;
+  return (
+    <section aria-labelledby="memories" className="scroll-mt-24">
+      <SectionHeading id="memories">{t("title")}</SectionHeading>
+      <div className="space-y-10">
+        {listens && (
+          <div>
+            <h3 className="mb-4 font-display text-xl font-bold tracking-[-0.02em]">
+              {t("listened", { years: listens.yearsAgo })}
+            </h3>
+            <MemoryGrid items={listens.releases.map((release) => ({ release }))} />
+            <Link
+              href={hrefWith(`/u/${username}/diary`, {
+                view: "calendar",
+                month: listens.day.slice(0, 7),
+              })}
+              className="mt-4 inline-flex min-h-11 items-center text-sm text-link underline-offset-2 hover:underline"
+            >
+              {t("diaryLink")}
+            </Link>
+          </div>
+        )}
+        {anniversaries.length > 0 && (
+          <div>
+            <h3 className="mb-4 font-display text-xl font-bold tracking-[-0.02em]">
+              {t("anniversaries")}
+            </h3>
+            <MemoryGrid items={anniversaries} />
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
 
 /** « Bientôt dans tes oreilles »: an invitation without follows, nothing when none is announced. */
 async function Soon() {
@@ -287,6 +331,7 @@ export default async function HomePage({ params, searchParams }: Props) {
   // Shown to everyone: started before knowing who is looking.
   discoveryReads(lang).catch(() => {});
   upcomingRead().catch(() => {});
+  memoriesRead().catch(() => {});
   const [t, format, me] = await Promise.all([
     getTranslations(),
     getFormatter(),
@@ -363,8 +408,8 @@ export default async function HomePage({ params, searchParams }: Props) {
           </div>
           <div className="mt-8 flex flex-wrap gap-3">
             <RateButton label={t("nav.rate")} />
-            <ButtonLink href="/discover" variant="on-accent">
-              {t("home.findMusic")}
+            <ButtonLink href="/pick" variant="on-accent">
+              {t("home.pickRandom")}
             </ButtonLink>
           </div>
         </Card>
@@ -374,6 +419,7 @@ export default async function HomePage({ params, searchParams }: Props) {
         </div>
       </div>
       <Soon />
+      <Memories username={member.username} />
       <Trends lang={lang} />
       <section aria-labelledby="feed">
         <SectionHeading

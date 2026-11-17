@@ -66,7 +66,8 @@ d'entrée du domaine ; le détail reste dans les docs citées.
 
 ## Questions laissées à Azzo (PR du jalon)
 
-- Retirer les sorties à venir de la discographie de la fiche artiste ? (toujours ouverte)
+- Les sorties à venir restent dans la discographie de la fiche artiste, en plus de « À venir » :
+  décidé par Azzo le 17 novembre.
 - Notification d'un jour passé : réponse du conseiller (16 novembre, issue #41) : « Sorti le
   {date} », fait au jalon 13, étape 1.
 - La tâche de 03:17 UTC prévient les Amériques le soir de la sortie : réponse du conseiller :

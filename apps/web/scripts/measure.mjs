@@ -3,8 +3,9 @@
 // Usage (from apps/web, server already running): node scripts/measure.mjs [baseURL] [runs]
 // (MEASURE_ONLY=<path>: only home → <path>, e.g. a page outside the five paths).
 // SQL columns need the dev server started with SPLEEN_QUERY_TRACE=1 (docs/environnement.md);
-// against a production build they stay empty. Signs in nuitblanche@example.test (demo seed)
-// through the dev outbox, so it needs Brevo unset, like e2e.
+// against a production build they stay empty. Signs in nuitblanche@example.test (demo seed;
+// MEASURE_EMAIL=<address> for another demo member) through the dev outbox, so it needs Brevo
+// unset, like e2e.
 import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
@@ -16,7 +17,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const outbox = path.resolve(here, "../../../.data/outbox");
 const base = process.argv[2] ?? "http://localhost:3000";
 const runs = Number(process.argv[3] ?? 6);
-const email = "nuitblanche@example.test";
+const email = process.env.MEASURE_EMAIL ?? "nuitblanche@example.test";
 
 // The first step always opens the same demo album (crate seed): the home page's album links
 // change with "Just out", so a click there would measure a different record from run to run.
@@ -67,7 +68,7 @@ async function signIn(page) {
   await page.getByRole("button", { name: "Recevoir mon lien" }).click();
   for (let i = 0; i < 50; i++) {
     const fresh = (await readdir(outbox)).filter(
-      (f) => !before.has(f) && f.includes("nuitblanche"),
+      (f) => !before.has(f) && f.includes(email.split("@")[0]),
     );
     if (fresh.length) {
       const mail = JSON.parse(await readFile(path.join(outbox, fresh.sort().at(-1)), "utf8"));

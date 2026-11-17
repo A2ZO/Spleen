@@ -84,6 +84,7 @@
     "ctaJoin": "Créer mon compte",
     "ctaWelcome": "Choisir mon pseudo",
     "findMusic": "Trouver quoi écouter",
+    "pickRandom": "Tire un disque au hasard",
     "memberTitle": "Qu'est-ce que tu écoutes, {name} ?",
     "rate": "Noter un disque",
     "monthTitle": "Ton mois {m, select, 4 {d'avril} 8 {d'août} 10 {d'octobre} other {de {month}}}",
@@ -391,7 +392,10 @@
     "releasesTitle": "Sorties à venir",
     "notifyReleases": "Me prévenir le jour de la sortie",
     "followedArtists": "Mes artistes suivis",
-    "followedArtistsEmpty": "Tu ne suis aucun artiste pour l'instant. Suis-les depuis leur fiche pour voir leurs prochains disques."
+    "followedArtistsEmpty": "Tu ne suis aucun artiste pour l'instant. Suis-les depuis leur fiche pour voir leurs prochains disques.",
+    "memoriesTitle": "Souvenirs",
+    "showMemories": "Afficher mes souvenirs sur l'accueil",
+    "showMemoriesHint": "« Il y a un an, tu écoutais… » et les anniversaires de tes disques."
   },
   "errors": {
     "UNAUTHENTICATED": "Connecte-toi pour continuer.",
@@ -797,6 +801,13 @@
     "releasesIn": "Sort en {date}",
     "announcedFor": "Annoncé pour {date}"
   },
+  "memories": {
+    "title": "Souvenirs",
+    "listened": "{years, plural, one {Il y a un an, tu écoutais…} other {Il y a # ans, tu écoutais…}}",
+    "diaryLink": "Ouvrir ce mois dans mon journal",
+    "anniversaries": "Anniversaires du jour",
+    "age": "{years, plural, one {# an aujourd'hui} other {# ans aujourd'hui}}"
+  },
   "pick": {
     "title": "Tire un disque",
     "kicker": "Quoi écouter ce soir ?",
@@ -826,6 +837,8 @@
     "intro": "Les disques que les membres écoutent cette semaine, les sorties récentes, les mieux notés et les critiques qui font parler.",
     "awaitedTitle": "Les plus attendus",
     "awaitedHint": "Les sorties à venir que les membres attendent le plus.",
+    "onThisDayTitle": "Sortis un {day}",
+    "onThisDayHint": "Les disques que les membres aiment, sortis ce jour-là les années passées.",
     "trendsTitleFr": "Tendances chez les membres francophones",
     "trendsTitleEn": "Trending with English-speaking members",
     "trendsHint": "Les disques écoutés par le plus de membres ces 7 derniers jours.",

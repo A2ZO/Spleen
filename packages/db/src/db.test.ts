@@ -64,9 +64,9 @@ describe("migrations", () => {
 describe("seed", () => {
   it("loads the demo dataset", async () => {
     expect(await count(s.artists)).toBe(12);
-    expect(await count(s.releases)).toBe(58);
-    expect(await count(s.profiles)).toBe(18);
-    expect(await count(s.entries)).toBe(80);
+    expect(await count(s.releases)).toBe(64);
+    expect(await count(s.profiles)).toBe(20);
+    expect(await count(s.entries)).toBe(89);
     expect(await count(s.favorites)).toBe(12);
     expect(await count(s.follows)).toBe(14);
     expect(await count(s.artistFollows)).toBe(5);

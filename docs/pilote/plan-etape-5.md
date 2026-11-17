@@ -1,60 +1,71 @@
-# Plan de l'étape 5 — « Tire un disque »
+# Plan — étape 5 : la passe finale
 
-Décisions actées : `feuille-de-route.md`, « Étape 5 » (elles priment sur l'issue #31 : accueil
-inchangé, écart noté). Données existantes : `user_item_state` (`want_to_listen`, `release_id`,
-`rating`), `releases` (`type`, `merged_into_id`), `release_tracks` → `tracks.duration_ms`,
-`listen_links`, `upcomingSql(today, false)`, `todayIn`, `loadReleaseCards`, `maskRelease`,
-`buildListenLinks`, `ctx.account()`.
+Brief : `feuille-de-route.md`, « Étape 5 » (décisions actées). Étapes 1 à 4 faites.
 
-1. **Validateur** : `pickSchema` = `{ type?: releaseTypeSchema, duration?: short|medium|long,
-   not?: uuid }`.
-2. **API** `lib/listening/pick.ts`, `pickToListen(db, { id, timeZone, blind }, input, now,
-   random = Math.random)`. Vague 1, une requête : mes `want_to_listen` à `release_id` non nul →
-   `releases r` non fusionné ; `id`, `type`, `out` (`not coalesce(upcomingSql(mon jour, false),
-   false)`), `rated` (`rating` non nul), `duration_ms` (somme si ≥ 1 piste et toutes avec durée,
-   sinon null). En JS : `listTotal` = toutes ; candidats `out` ; filtres (`short` < 30 min,
-   `medium` 30..60 min bornes comprises, `long` > 60 min ; durée null exclue avec un filtre de
-   durée) ; `matching` ; `not` retiré s'il reste un autre candidat ; index `floor(random()·n)`
-   borné. Vague 2 en parallèle : `loadReleaseCards([id])` + liens stockés ; carte masquée
-   (`maskRelease`) en aveugle sans `rated` ; `buildListenLinks(…, "release", titre, 1er
-   artiste)`. Renvoie `{ listTotal, matching, pick: (ReleaseCard & { durationMs, listenLinks })
-   | null }` (`ToListenPick`). Rien n'est écrit.
-3. **`toListen.pick`** (nouveau routeur) : `protectedProcedure` ; sans profil
-   `PRECONDITION_FAILED`/`PROFILE_REQUIRED` (comme `artistFollow.status`) ; fuseau du profil.
-4. **Page `/[locale]/pick`** (`noindex`) : visiteur → `/sign-in`, sans profil → `/welcome` ;
-   `type`/`duration`/`not` en `safeParse` (invalide = absent). Bloc lilas ; `listTotal` 0 :
-   « liste vide » + « Découvrir des disques », sans filtres ; sinon deux `LinkTabs` (`hrefWith`,
-   l'autre filtre gardé, `not` retiré) puis : `matching` 0 sans filtre → « pas encore sortis » +
-   lien vers ma liste ; avec filtre → « aucun ne correspond » + « Retirer les filtres » ; sinon
-   `components/pick/PickCard.tsx` (`Card`, pas un lien entier) : grande `Cover`, titre et
-   artistes liés, « Album · 1959 · 42 min », `ListenOn`, « Un autre » ou (un seul) la phrase
-   « seul disque », lien « Voir ma liste « À écouter » » (onglet du profil, forme réelle).
-   « Un autre » : `AnotherPick.tsx` (client), `<form method="get" action="/<locale>/pick">`,
-   champs cachés, bouton `primary` ; avec JS `useNavigate().push` (barre du haut ; `next/form`
-   écarté, noté). Sans JS : soumission classique.
-5. **Accès** : onglet « À écouter » de mon profil, liste non vide : en tête, `ButtonLink
-   secondary` « Tire un disque » (comme « Créer une liste »).
-6. **i18n** FR/EN : `pick.*`, `profile.pick`, tutoiement.
-7. **Démo** `seed/pick.ts` (ids 47 000+, idempotent, après `seedFriends`) : 6 disques fictifs
-   sortis (2012–2021), artistes de démo, dans « À écouter » de `nuitblanche`, jamais écoutés :
-   albums ~45, ~72 et ~38 min, EP ~18 min, single ~7 min, album sans pistes. Mettre à jour
-   inventaire `db.test.ts` et « demo members » (`toEqual` complet, ordre réel), notés ; avant,
-   vérifier fiches artiste, recherche, `/discover`, specs mockup/a11y/overflow (sinon la démo).
-8. **Tests API** `pick.test.ts` (`now` fixe, aléa injecté) : les miens seulement, morceaux
-   exclus, pas sorti selon le fuseau (Paris / Los Angeles), fusionné exclu, types, bornes
-   29:59 / 30:00 / 60:00 / 60:01, durée inconnue (piste sans durée, sans pistes) avec et sans
-   filtre, `not`, un seul, les trois cas vides, aveugle, visiteur / suspendu / sans profil refusés.
-9. **e2e** `pick.spec.ts` : compte jetable, liste vide ; ajoute l'EP et le single de démo via
-   « À écouter » → bouton sur mon onglet ; `?type=ep` → l'EP seul ; « Un autre » → l'autre ;
-   sans JS ; profil de `nuitblanche` sans bouton ; visiteur → `/sign-in`.
-10. **Mesure** : `MEASURE_ONLY=<chemin>` dans `measure.mjs` (accueil → chemin) ; `/fr/pick`,
-    deux passages, build de prod (sans la variable : comportement inchangé) ; référence dans
-    `docs/jalon-13-en-cours.md` ; plus `measure.mjs` complet (l'onglet du profil change).
-11. **Écrans** : titre et artistes en `text-balance` + `clamp`, jamais coupés ; année en chaîne.
-    Captures 1280/390 (`captures/5/`) : tirage, filtre actif, un seul, liste vide, onglet avec
-    bouton ; axe AA sur `/pick` et l'onglet ; `/fr/pick` dans `overflow.spec`.
+## Existant vérifié
+
+- `next` 16.4.2 dans `apps/web/package.json` ; `eslint-config-next` 16.4.2 dans
+  `packages/config/package.json` ; aucun `@next/*` en dépendance directe. Registre npm :
+  16.4.5 publié le 3 novembre (14 jours), `eslint-config-next@16.4.5` existe ; aucun
+  `minimumReleaseAge` réglé dans `pnpm-workspace.yaml` (défaut de pnpm).
+- Code du jalon : `packages/api/src/lib/memories.ts`, `memories.test.ts`,
+  `apps/web/src/components/memories/MemoryGrid.tsx`, `packages/db/src/seed/memories.ts`,
+  `apps/web/e2e/memories.spec.ts`, migration `0018`.
+- Cahier : section « Souvenirs (jalon 14) » l. 228, ligne 5 (mise à jour), puces des jalons
+  l. 60-61, roadmap l. 109, « Questions ouvertes » l. 470. `stack-et-limites.md` § 3,
+  « Mesure : quoi écouter ce soir (jalon 13) » l. 195 avant « Tableau des seuils ».
+  `accounts.md` l. 56 : liste des sections de `/settings`.
+
+## Travail
+
+0. **Next.js 16.4.5**, premier commit seul : `next` et `eslint-config-next` à `16.4.5` exact,
+   `pnpm install`, `pnpm check`, `pnpm build` (`pnpm run free-port` avant ; valeurs factices
+   Brevo/S3/`CONTACT_EMAIL` dans la commande seulement) ; `chore(deps): bump next to 16.4.5
+   (security)`. Avant le commit : diff des deux `package.json` limité aux deux lignes de
+   version (exactes, sans `^`) ; `git diff pnpm-lock.yaml` limité à `next`, `@next/*` et
+   `eslint-config-next`, sinon revenir en arrière et noter. Refus de pnpm → dernier 16.4.x permis ≥ 16.4.5, sinon renoncer et noter.
+   Régression → corriger le code de Spleen, sinon revenir à 16.4.2 et noter. Pas 16.4.6 :
+   le brief nomme 16.4.5 (choix prudent, noté dans `decisions.md`).
+1. **`docs/souvenirs.md`** (≤ 90 lignes) : règles des trois blocs et du réglage, cas sans objet
+   (29 février, groupes vides, visiteur, suspendu), données, API (`memories.home`,
+   `discovery.releasedOnThisDay`, `account.setShowMemories`, `lib/memories.ts`, une requête par
+   bloc, listes de jours), écrans, démo, e2e, bouton de l'étape 1, points ouverts (dont la phrase
+   FR/EN proposée pour la politique de confidentialité, texte exact de `decisions.md`). Relire le code
+   pour chaque nom cité.
+2. **Renvois** d'une ligne depuis `ecoute.md`, `decouverte.md`, `profil-stats.md`, `accounts.md`
+   (« Souvenirs » dans la liste de `/settings`).
+3. **Cahier** : « Fini le 17 novembre » dans la section du jalon 14 + ligne cochée du brief ;
+   ligne 5 ; puce du jalon 14 (fini) l. 61 ; puce du jalon 13 « et le 2e bouton de l'accueil
+   membre (jalon 14) » ; roadmap (13 et 14 faits, puis 10) ; question ouverte « Politique de
+   confidentialité ».
+4. **`stack-et-limites.md` § 3** : « Mesure : souvenirs (jalon 14) », trois lignes.
+5. **Vérifications** (ci-dessous) puis mesures finales dans 4 et dans `jalon-14-en-cours.md`.
+6. **`CLAUDE.md`** : exactement les points du brief (jalon 14 coché, ordre « 10 (launch) → 15 →
+   16 », doc de domaine, `vieuxsillons` dans la démo, décision « Memories: … »). Rien d'autre.
+7. **Fin de jalon** (sections 5 et 6 du skill) dans un run suivant si celui-ci est long :
+   l'étape se clôt d'abord (section 4).
+
+## Vérifications
+
+D'abord `pnpm db:seed` sur Neon `dev`, avant captures et mesures, même jour de Paris. Passes
+Playwright l'une après l'autre, jamais en même temps : e2e complet en dev, puis build de prod
+(specs sans compte + `overflow.spec`), puis axe et captures. `pnpm check` ; e2e complet en dev via
+`verificateur`. Build de prod : specs sans compte + `overflow.spec` (`hydration.spec:17` connu).
+axe AA 1280/390 : accueil `vieuxsillons`, `/settings`, `/discover` visiteur et membre.
+Captures 1280/390 dans `docs/pilote/captures/5/` : accueil membre (`vieuxsillons`), réglages,
+`/discover` visiteur et membre, accueil visiteur. `measure.mjs` complet `nuitblanche` (deux
+passages) contre 215/132/216/180/223 ; `MEASURE_ONLY=/fr/pick` contre 142 ms ; accueil de
+`vieuxsillons` contre 205/134/207/183/187 ; écart > 20 ms → A/B `origin/dev` / HEAD même session.
 
 ## Avancement
 
-- [x] 1 validateur · [x] 2 API · [x] 3 procédure · [x] 4 page · [x] 5 bouton · [x] 6 i18n
-- [x] 7 démo · [x] 8 tests API · [x] 9 e2e · [x] 10 mesure · [x] 11 écrans · [x] vérifications · [x] relecture 1 · [x] relecture 2 · [x] clôture
+- [x] Next.js 16.4.5
+- [x] `docs/souvenirs.md`
+- [x] renvois
+- [x] cahier
+- [x] `stack-et-limites.md`
+- [x] `CLAUDE.md`
+- [x] vérifications
+- [x] relecture 1
+- [ ] relecture 2
+- [x] clôture

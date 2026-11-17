@@ -54,7 +54,7 @@ Reference for milestone 3. `CLAUDE.md` keeps the summary; this file has the deta
   `termsVersion` differs again is still to build. [À FAIRE RELIRE] wording of the box and of the
   privacy sentence (`welcome.termsLabel`, `welcome.privacyNotice`).
 - `/[locale]/settings`: profile, language, privacy, blind listening, avatar, @username,
-  export (`/api/account/export`) and deletion (typing one's @username to confirm).
+  release notifications, memories (`show_memories`, `docs/souvenirs.md`), export (`/api/account/export`) and deletion (typing one's @username to confirm).
 
 ## @username rules
 

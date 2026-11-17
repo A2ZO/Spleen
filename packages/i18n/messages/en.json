@@ -84,6 +84,7 @@
     "ctaJoin": "Create my account",
     "ctaWelcome": "Pick my username",
     "findMusic": "Find something to listen to",
+    "pickRandom": "Pick a random record",
     "memberTitle": "What are you listening to, {name}?",
     "rate": "Rate a record",
     "monthTitle": "Your {month}",
@@ -391,7 +392,10 @@
     "releasesTitle": "Upcoming releases",
     "notifyReleases": "Notify me on release day",
     "followedArtists": "Artists I follow",
-    "followedArtistsEmpty": "You don't follow any artist yet. Follow them from their page to see their next records."
+    "followedArtistsEmpty": "You don't follow any artist yet. Follow them from their page to see their next records.",
+    "memoriesTitle": "Memories",
+    "showMemories": "Show my memories on the home page",
+    "showMemoriesHint": "“One year ago, you were listening to…” and your records’ anniversaries."
   },
   "errors": {
     "UNAUTHENTICATED": "Sign in to continue.",
@@ -797,6 +801,13 @@
     "releasesIn": "Out in {date}",
     "announcedFor": "Announced for {date}"
   },
+  "memories": {
+    "title": "Memories",
+    "listened": "{years, plural, one {One year ago, you were listening to…} other {# years ago, you were listening to…}}",
+    "diaryLink": "Open that month in my diary",
+    "anniversaries": "Anniversaries today",
+    "age": "{years, plural, one {# year old today} other {# years old today}}"
+  },
   "pick": {
     "title": "Pick a record",
     "kicker": "What to play tonight?",
@@ -826,6 +837,8 @@
     "intro": "What members listen to this week, recent releases, the top rated records and the reviews people talk about.",
     "awaitedTitle": "Most awaited",
     "awaitedHint": "The upcoming releases members are waiting for most.",
+    "onThisDayTitle": "Released on {day}",
+    "onThisDayHint": "Records members love, released on this day in years past.",
     "trendsTitleFr": "Tendances chez les membres francophones",
     "trendsTitleEn": "Trending with English-speaking members",
     "trendsHint": "The records the most members listened to in the last 7 days.",

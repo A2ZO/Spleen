@@ -105,6 +105,8 @@ export const profiles = pgTable(
     blindMode: boolean("blind_mode").notNull().default(false),
     /** Notify the member on the release day of a followed artist's record (milestone 11). */
     notifyReleases: boolean("notify_releases").notNull().default(true),
+    /** Show « Souvenirs » (listens and anniversaries of this day) on the home page (milestone 14). */
+    showMemories: boolean("show_memories").notNull().default(true),
     role: userRole("role").notNull().default("member"),
     suspendedAt: timestamp("suspended_at", { withTimezone: true }),
     suspensionReason: text("suspension_reason"),

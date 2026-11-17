@@ -3,6 +3,7 @@
 API : `packages/api/src/lib/profiles.ts` (sections du profil), `lib/shelf.ts` (Étagère),
 `lib/stats/` (stats). Web : `/[locale]/u/[username]?tab=…&page=…`,
 `/[locale]/u/[username]/diary?view=calendar&month=AAAA-MM`, `/[locale]/review/[id]/edit`.
+Le calendrier du journal est aussi la cible du lien des souvenirs de l'accueil (`docs/souvenirs.md`).
 
 ## Sections du profil
 

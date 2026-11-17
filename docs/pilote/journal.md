@@ -1,81 +1,61 @@
-# Journal du pilote — jalon 13 « Quoi écouter ce soir ? »
+# Journal du pilote — jalon 14 « Souvenirs »
 
-Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal du jalon 11 :
-`docs/pilote/archives/jalon-11/journal.md`.
+Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal du jalon 13 :
+`docs/pilote/archives/jalon-13/journal.md`.
 
-- 2026-11-17 — Jalon 13 préparé par le conseiller : feuille de route en 6 étapes (restes du
-  jalon 11, liens « Écouter sur… » à l'import puis la nuit, « Tes amis sur ce disque », « Tire
-  un disque », passe finale), règles du cahier retenues ou ajustées dans `decisions.md`, une
-  seule migration autorisée. Prochaine : étape 1.
-- 2026-11-17 — Étape 1 (restes du jalon 11, issues #41 et #42) : commits e5d5497..d8e18bf.
-  `notification.list` donne `releaseDay` / `releasedToday`, « Sorti le {date} » un autre jour ;
-  disque à venir sans moyenne, « Les critiques ouvriront le jour de la sortie. ». `pnpm check`
-  vert ; e2e complet 248 passed, 0 failed, 0 flaky, 10 skipped ; specs sans compte en prod
-  114 passed, 2 failed (`hydration.spec.ts:17`, clé Brevo factice refusée, passe en dev).
-  axe 0 violation (fiche visiteur et membre, notifications × 4 cas, 1280 et 390). Mesures prod
-  clicMs 220/219 · 141/140 · 244/230 · 187/187 · 236/242 ms (max +14). Relecteur : OK au
-  premier tour. Décision : année de « Sorti le » comparée au jour de Paris. Prochaine : étape 2.
-- 2026-11-17, étape 2, réponses réelles (MusicBrainz, `inc=url-rels`, `recording-level-rels`
-  accepté) : `relations[]` = `{ type: "free streaming" | "streaming" | "purchase for download"
-  | "youtube music" | "bandcamp"…, direction: "forward", ended, url: { resource } }`, relations
-  des enregistrements présentes (vides parfois). Formes vues : `open.spotify.com/{album,track,
-  artist}/{22}`, `www.deezer.com/{album,track,artist}/{n}`, `music.apple.com/{cc}/{album,song,
-  artist}/{n}` (sans slug), `music.youtube.com/channel/UC…` (artiste), `{nom}.bandcamp.com/`
-  (artiste) ; bruit : `shop.spotify.com`, `itunes.apple.com/gb/artist/id…` (terminé), Tidal,
-  Qobuz, Amazon. Disque de test : BRAT (édition XW `ab55ac76`). Valeurs des tests : inchangées.
-- 2026-11-17, étape 2 terminée, commits `9c92263..0b3e6d4` : url-rels lues, migration 0017,
-  validation unique `validListenUrl`, liens écrits à l'import et repris à la fusion, `ListenOn`
-  direct / recherche. `pnpm check` vert ; e2e complet 250 passed, 0 failed, 0 flaky, 10 skipped ;
-  specs sans compte en prod 116 passed, 2 failed (`hydration.spec.ts:17`, clé Brevo factice).
-  axe WCAG 2.2 AA 0 violation (album, artiste, morceau ; visiteur prod, membre dev ; 1280 et
-  390). Mesures prod pageMs 212/133/219/182/226 et 211/134/219/167/227 (référence
-  215/136/231/182/228). Relecteur : OK au premier tour. Décisions : purge e2e des liens dans
-  `cleanup.ts`, liens lus par `json_agg`. Ouvert : liens des artiste et morceau jetables qui
-  s'accumulent sur Neon `dev`. Prochaine : étape 3.
-
-## 2026-11-17 — étape 3, « Écouter sur… », relecture de nuit
-
-Commits c5ad297..HEAD (`getEditionLinks`, `refreshListenLinks`, `-- --links-only`, docs).
-`pnpm check` vert ; e2e 250 passés, 0 échec, 10 ignorés (1 instabilité au démontage, issue #34).
-Pas d'axe ni de mesures : aucun écran changé. Essais réels sur Neon `dev` : 19 disques, 48 liens,
-1 échec, 148 pour plus tard, puis 8 disques, 21 liens, 1 échec, 140 ; 5 artistes, 14 liens à part.
-Relecteur : corrections au premier tour (capture artiste, passation, risque ci-dessous).
-Décisions : `maxAttempts` 3, 0 édition = `not_found`. Ouvert : un 503 de MusicBrainz arrête la
-phase avant les artistes ; s'il se répète chaque nuit, les artistes ne sont jamais relus.
-Prochaine : étape 4.
-
-## 2026-11-17 — étape 4, « Tes amis sur ce disque »
-
-Commits 458340f..HEAD (`release.friends`, section `FriendsOnRecord`, démo, e2e, docs).
-`pnpm check` vert ; e2e 254 réussis · 2 échoués, run perturbé par une passe concurrente (les 3
-specs passent seules 34/34, issue #34 commentée). Axe : 0 à 1280 et 390 (membre, visiteur prod).
-Mesures album 213–239 ms contre 215, A/B sans l'appel identique : bruit de la machine.
-Décisions : inventaire `db.test.ts` et snapshot `feed-loading` mis à jour (ajouts seuls).
-Ouvert : Azzo valide la régénération du snapshot ou préfère un autre compte de démo suiveur.
-Relecteur : OK avec corrections au premier tour. Prochaine : étape 5.
-
-## 2026-11-17 — étape 5, « Tire un disque »
-
-Commits d70f426..HEAD (`toListen.pick`, page `/pick`, bouton de l'onglet, démo, tests, e2e,
-`MEASURE_ONLY`). `pnpm check` vert ; e2e 262 réussis · 0 échoué · 0 instable · 10 ignorés, garde-fou
-du log : 1 × render cancelled mid-stream, non reproduit seul (issue #34 commentée). Prod sans
-compte + overflow : 118 · 2 (hydration.spec:17, Brevo factice) · 10. Axe : 0 à 1280 et 390.
-Mesures : `/pick` 142 ms (nouvelle référence) ; A/B `d70f426` / HEAD identiques, dans les 20 ms.
-Relecteur : corrections au tour 1 (durée cohérente avec les filtres, titres longs sur téléphone,
-A/B), OK au tour 2. Ouvert : `rainydaysam` non vide sur la base de dev (hors seed) ; point de
-l'étape 4 (snapshot `feed-loading`) toujours à valider par Azzo. Prochaine : étape 6.
-
-## 2026-11-17 — étape 6, « La passe finale »
-
-Commits 82c3991..HEAD (`docs/quoi-ecouter.md`, renvois, cahier, `CLAUDE.md`, passation). `pnpm
-check` vert ; e2e complet en dev vert ; prod sans compte + overflow 116 · 2 (`hydration.spec:17`,
-Brevo factice) · 10. Axe : 0 violation, visiteur et `nuitblanche`, 1280 et 390. Mesures : premier
-passage +20 ms (album, `/discover` → accueil), A/B même session `origin/dev` 214/134/220/180/226
-contre HEAD 215/132/216/180/223 : aucun écart dû au jalon ; `/pick` 137 (réf. 142). Relecteur : OK
-au premier tour. Ouvert : snapshot `feed-loading`, Next.js 16.4.2 signalé vulnérable (premier
-build en code 1). Prochaine : fin du jalon.
-
-- 2026-11-17 — Fin du jalon 13 : PR 46 vers `dev`, CI verte ; relecteur `BLOQUANT` (formel :
-  `db.test.ts` hors de « Autorisé à la fusion ») → attente, questions dans `decisions.md`.
-- 2026-11-17 — Azzo autorise la fusion de la PR 46 (`db.test.ts`, snapshot `feed-loading`) :
-  phase `fini`, fusion dans `dev`, puis PR de release `dev` → `main` en brouillon.
+- 2026-11-17 — Jalon 14 préparé par le conseiller : feuille de route en 5 étapes (bouton « Tire
+  un disque au hasard » de l'accueil membre, souvenirs de l'accueil côté API puis écrans et
+  démo, « Sortis un … » sur `/discover`, passe finale), règles du cahier retenues ou ajustées
+  dans `decisions.md`, une seule migration autorisée (`profiles.show_memories`), inventaire de
+  `db.test.ts` autorisé (ajouts seuls), snapshot `feed-loading` à ne pas toucher. Prochaine :
+  étape 1.
+- 2026-11-17 — Étape 1 (bouton « Tire un disque au hasard » de l'accueil membre → `/pick`,
+  accueil visiteur inchangé). Commits `4839b2d`..`98d1ace` (plan, `b18b637` feat, `13c30e2`
+  e2e + doc, passation). `pnpm check` vert ; `pick.spec` 8/8 ; e2e complet dev 264 réussis,
+  0 échoué, 10 ignorés (teardown « render cancelled mid-stream » → #34 commentée). Prod sans
+  compte + overflow 116 · 2 (`hydration.spec:17`, Brevo factice, connu). axe AA 0 (accueil
+  visiteur et `nuitblanche`, 1280/390). Mesures : 1er passage hors des 20 ms (241/144/238/
+  196/241) ; A/B même session `origin/dev` 241/144/242/194/242 contre HEAD 227/144/230/194/241
+  → pas de régression. Relecteur : plan OK avec 3 corrections appliquées, étape OK au 1er tour.
+  Aucune décision nouvelle. Prochaine : étape 2.
+- 2026-11-17 — Étape 2 (souvenirs de l'accueil : réglage et API, pas d'écran). Commits
+  `904fc66`..HEAD (plan relu, `f9ea530` migration `0018` `show_memories`, `45cdb03`
+  `memories.home` + `account.setShowMemories`, `e81b4d3` 21 tests). `pnpm check` vert ;
+  snapshot `feed-loading` inchangé ; e2e complet 264 réussis, 0 échoué, 10 ignorés (teardown
+  « render cancelled mid-stream » → #34 commentée). Pas d'axe ni de mesures (aucun écran ne
+  change). Relecteur : plan OK avec corrections appliquées, étape OK au 1er tour. Décision :
+  exclusions appliquées avant le choix de l'année la plus récente. Prochaine : étape 3.
+- 2026-11-17 — Étape 3 (souvenirs de l'accueil : écrans, réglages et démo). Commits
+  `288d1cc`..HEAD (plan relu, `3882cd9` accueil + réglage, `aac8674` démo `vieuxsillons`,
+  `d4837b9` `MEASURE_EMAIL`, `3127ecc` e2e). `pnpm check` vert ; `memories.spec` 8/8 ; e2e
+  complet 272 réussis, 0 échoué, 10 ignorés (teardown « render cancelled mid-stream » → #34
+  commentée). Prod sans compte + overflow 114 · 2 (`hydration.spec:17`, connu). axe AA 0
+  (accueil `vieuxsillons`, réglages ; 1280/390). Mesures A/B même session : `nuitblanche`
+  `origin/dev` 219/137/216/182/226 contre HEAD 219/136/219/163/244 ; `vieuxsillons` 196/133/213/
+  182/169 contre 205/134/207/183/187 (+18 au plus) → nouvelle référence de cet accueil.
+  Relecteur : plan OK avec corrections, étape OK au 1er tour. Décision : F à 8 ans un 29 février.
+  Prochaine : étape 4.
+- 2026-11-17 — Étape 4 (« Sortis un <jour mois> » sur `/discover`). Commits `85a55e6`..HEAD
+  (plan relu, `d814146` API, `850233f` écran, `c1f114a` démo `deuxiemeface`, `4c277e8` e2e,
+  `55ae795` passation). `pnpm check` vert ; e2e complet 274 réussis, 0 échoué, 10 ignorés.
+  Prod sans compte + overflow 116 · 2 (`hydration.spec:17`, connu). axe AA 0 (`/discover`
+  visiteur et `nuitblanche`, 1280/390). `EXPLAIN` Neon `dev` 0,41 ms ; index utilisés quand le
+  parcours complet est coupé. Mesures pageMs (plus haut de deux) 231/141/229/193/246 : profil →
+  `/discover` +13 ; `/discover` → accueil 246 comme HEAD de l'étape 3 (244). Relecteur : plan
+  OK avec corrections, étape OK au 1er tour. Aucune décision nouvelle. Prochaine : étape 5.
+- 2026-11-17 — Étape 5 (passe finale). Commits `020edbf`..HEAD (plan relu, `a845bae` Next
+  16.4.5, `ac53904` `docs/souvenirs.md` et renvois, cahier, `b69637f` `CLAUDE.md`, `9a6aace`
+  mesures, passation). `pnpm check` vert ; e2e complet 274 réussis, 0 échoué, 10 ignorés
+  (teardown « render cancelled » → #34 commentée). Prod sans compte + overflow 116 · 2
+  (`hydration.spec:17`, connu). axe AA 0 sur 18 pages × largeurs. Mesures pageMs : HEAD
+  236/143/236/200/253 → A/B `origin/dev` 238/150/240/196/242 (≤ +11, machine plus lente) ;
+  `vieuxsillons` 211/147/226/198/197 ; `/pick` 137. Relecteur : plan OK avec corrections, étape
+  OK au 1er tour. Décision : Next 16.4.5 plutôt que 16.4.6 (à revoir au jalon 10). Ouvert :
+  phrase de confidentialité à valider. Prochaine : fin du jalon (PR → `dev`, fusion, PR de version).
+- 2026-11-17 — Fin du jalon 14. README (jalons 13 et 14) ; PR #50 `feat/14-souvenirs` → `dev`
+  ouverte, CI verte (check, api-postgres). Pas de nouvelle passe locale (code inchangé depuis la
+  passe complète de l'étape 5). Zones sensibles conformes à « Autorisé à la fusion » (migration
+  0018, `auth.ts`, `db.test.ts` +6/+2/+9, Next/eslint-config-next 16.4.5, lockfile). Relecteur :
+  OK avec corrections (description de la PR), puis OK. Fusion automatique dans `dev` demandée.
+  Ouvert : phrase de confidentialité proposée dans la PR, à valider par Azzo (jalon 10 au plus tard).
+- 2026-11-17 — Attente : fusion de la PR #50 refusée par les permissions de la session (question dans `decisions.md`).

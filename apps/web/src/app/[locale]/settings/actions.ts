@@ -2,7 +2,7 @@
 
 import type { ApiErrorCode } from "@spleen/api";
 import { profileUpdateSchema } from "@spleen/validators";
-import { revalidatePath } from "next/cache";
+import { refresh, revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 import { redirect } from "@/i18n/navigation";
@@ -77,4 +77,20 @@ export async function deleteAccountAction(
   }
   redirect({ href: "/", locale: locale === "en" ? "en" : "fr" });
   return {};
+}
+
+/** « Souvenirs » on the home page on or off (settings form, works without JavaScript). */
+export async function setShowMemoriesAction(
+  _previous: FormState,
+  formData: FormData,
+): Promise<FormState> {
+  try {
+    await (
+      await getApi()
+    ).account.setShowMemories({ enabled: formData.get("showMemories") === "on" });
+    refresh();
+    return { ok: true };
+  } catch (error) {
+    return { error: errorCode(error) };
+  }
 }
