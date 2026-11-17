@@ -14,6 +14,7 @@ import { DetailBar } from "@/components/detail/DetailBar";
 import { InListsCard } from "@/components/detail/InListsCard";
 import { moreMenuItem } from "@/components/detail/MoreMenu";
 import { AddToListButton } from "@/components/lists/AddToList";
+import { FriendsOnRecord } from "@/components/release/FriendsOnRecord";
 import { ListenControls } from "@/components/release/ListenControls";
 import { MyListensCard } from "@/components/release/MyListensCard";
 import { ShelfPicker } from "@/components/shelf/ShelfPicker";
@@ -32,7 +33,10 @@ import { phoneTitleSize } from "@/lib/display-title";
 import { formatDuration, formatReleaseDate } from "@/lib/release-date";
 import { getApi } from "@/server/api";
 
-type Props = { params: Promise<{ locale: string; slug: string }> };
+type Props = {
+  params: Promise<{ locale: string; slug: string }>;
+  searchParams: Promise<{ friends?: string | string[] }>;
+};
 
 const getRelease = cache(async (slug: string) => {
   const parsed = slugSchema.safeParse(slug);
@@ -68,8 +72,8 @@ function byDisc(tracks: Track[]): [number, Track[]][] {
   return [...discs.entries()];
 }
 
-export default async function AlbumPage({ params }: Props) {
-  const { locale, slug } = await params;
+export default async function AlbumPage({ params, searchParams }: Props) {
+  const [{ locale, slug }, { friends: friendsParam }] = await Promise.all([params, searchParams]);
   initRouteLocale(locale);
   const api = await getApi();
   // What does not depend on the release starts with it (one wave less).
@@ -78,15 +82,23 @@ export default async function AlbumPage({ params }: Props) {
     api.account.me().then(async (me) => (me ? { me, shelf: await api.shelf.mine() } : null)),
   ]);
   early.catch(() => {}); // awaited below; not awaited when the release is missing
+  // « Tes amis sur ce disque », by slug, read with the release (null for a visitor).
+  const openFriends = friendsParam === "all";
+  const parsedSlug = slugSchema.safeParse(slug);
+  const friendsOnRecord = parsedSlug.success
+    ? api.release.friends({ slug: parsedSlug.data, all: openFriends })
+    : Promise.resolve(null);
+  friendsOnRecord.catch(() => {}); // same as `early`
   const release = await getRelease(slug);
   if (!release) return missingCatalogPage("release", slug, locale);
 
   const target = { kind: "release" as const, id: release.id };
-  const [t, format, mine, [moods, member]] = await Promise.all([
+  const [t, format, mine, [moods, member], friends] = await Promise.all([
     getTranslations(),
     getFormatter(),
     api.listening.myState(target),
     early,
+    friendsOnRecord,
   ]);
   const shelf = member?.shelf ?? null;
   const signedIn = mine !== null;
@@ -274,6 +286,8 @@ export default async function AlbumPage({ params }: Props) {
           )}
         </div>
       )}
+
+      {friends && <FriendsOnRecord friends={friends} slug={release.slug} open={openFriends} />}
 
       <section aria-labelledby="tracklist" className="mt-14 md:mt-20">
         <SectionHeading id="tracklist">{t("album.tracklist")}</SectionHeading>
