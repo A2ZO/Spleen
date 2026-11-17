@@ -81,6 +81,12 @@ depuis `dev`. L'étape 1 traite le reste du jalon 13 décidé par Azzo (bouton d
   premier passage 241/144/238/196/241 ; A/B même session : `origin/dev` (6171a21)
   241/144/242/194/242, HEAD (13c30e2) 227/144/230/194/241 ms → pas de régression (machine plus
   lente ce jour-là). La référence par page reste 215 / 132 / 216 / 180 / 223 ms.
+- Étape 3 (17 novembre, build de prod, pageMs, plus haut de deux passages, A/B même session,
+  `measure.mjs` de HEAD) : `nuitblanche` `origin/dev` (6171a21) 219/137/216/182/226, HEAD
+  (f31ef7a) 219/136/219/163/244 ms (`/discover` → accueil +18, dans les 20 ms).
+  **Accueil avec souvenirs** (`MEASURE_EMAIL=vieuxsillons@example.test`) : `origin/dev`
+  196/133/213/182/169, HEAD 205/134/207/183/187 ms (+18). Référence de cet accueil (HEAD) :
+  **205 / 134 / 207 / 183 / 187 ms**.
 - Pour mémoire, l'ancienne référence (fin du jalon 11) : 215 / 136 / 231 / 182 / 228 ms.
 - `/pick` (`MEASURE_ONLY=/fr/pick`, build de prod, `nuitblanche`) : 137 / 136 ms en fin de
   jalon 13, référence **142 ms**.

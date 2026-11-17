@@ -61,7 +61,7 @@ correction dans la requête (jamais d'index), sinon 3e passage, puis note dans `
 - [x] démo + `db.test.ts` + test démo + `db:seed`
 - [x] `measure.mjs`
 - [x] e2e
-- [ ] vérifications
+- [x] vérifications
 - [ ] relecture 1
 - [ ] relecture 2
 - [ ] clôture
