@@ -4,7 +4,7 @@
 - Branche : feat/14-souvenirs
 - Doc du jalon : docs/jalon-14-en-cours.md
 - Étape : fin du jalon (sections 5 et 6 du skill `pilote`)
-- Phase : fini (fusion automatique de la PR #50 demandée le 2026-11-17)
+- Phase : attente (fin du jalon, section 6 point 4 : fusion de la PR #50 refusée par les permissions de la session)
 - Mis à jour : 2026-11-17
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante, sans arrêt entre les

@@ -121,3 +121,15 @@ liens avant les artistes, les fiches e2e jetables qui s'accumulent sur Neon `dev
   Raison : le brief et « Autorisé à la fusion » nomment 16.4.5, qui porte les correctifs de
   sécurité du 3 novembre ; le plus petit saut. Écarté : 16.4.6 (à reprendre au jalon 10 si ses
   notes de version portent aussi des correctifs de sécurité ; question du relecteur).
+
+## QUESTION POUR AZZO
+
+- 17 novembre 2026, fin du jalon 14 : la PR #50 (`feat/14-souvenirs` → `dev`) remplit toutes les
+  conditions de fusion (FUSION-AUTO, base `dev`, CI verte, relecteur OK, zones sensibles conformes
+  à « Autorisé à la fusion »), mais `gh pr merge 50 --merge` a été refusé par le classifieur du
+  mode auto de Claude Code (« Destructive or Unwanted Actions »). Rien n'a été fusionné.
+  Deux options : fusionner toi-même la PR #50 (commit de fusion), puis remettre ici la phase
+  `fini` pour que le pilote ouvre la PR de version `dev` → `main` ; ou autoriser `gh pr merge`
+  dans les permissions Bash et remettre la phase `cloture`/fin du jalon pour qu'il réessaie.
+- Phrase de confidentialité proposée dans la PR #50 (souvenirs dans la liste des réglages) : à
+  valider maintenant ou à la relecture juridique du jalon 10.

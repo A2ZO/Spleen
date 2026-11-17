@@ -58,3 +58,4 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   0018, `auth.ts`, `db.test.ts` +6/+2/+9, Next/eslint-config-next 16.4.5, lockfile). Relecteur :
   OK avec corrections (description de la PR), puis OK. Fusion automatique dans `dev` demandée.
   Ouvert : phrase de confidentialité proposée dans la PR, à valider par Azzo (jalon 10 au plus tard).
+- 2026-11-17 — Attente : fusion de la PR #50 refusée par les permissions de la session (question dans `decisions.md`).
