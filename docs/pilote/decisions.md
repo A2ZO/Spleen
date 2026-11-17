@@ -108,3 +108,8 @@ jalon, sans y toucher : un 503 de MusicBrainz qui arrête la relecture nocturne 
 liens avant les artistes, les fiches e2e jetables qui s'accumulent sur Neon `dev`.
 
 ## Décisions du pilote
+
+- 17 novembre 2026, étape 2 : « Ce jour-là » applique les exclusions (disque fusionné, sortie
+  reportée) **avant** de choisir l'année la plus récente. Raison : une année dont tous les
+  disques sont exclus ne doit pas cacher une année plus ancienne valable (relecteur). Écarté :
+  choisir l'année sur toutes les écoutes datées puis filtrer (groupe parfois vide à tort).
