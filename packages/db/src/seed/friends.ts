@@ -1,3 +1,4 @@
+import { and, eq } from "drizzle-orm";
 import { TERMS_VERSION } from "@spleen/validators";
 
 import type { DbOrTx } from "../listening-state";
@@ -143,5 +144,11 @@ export async function seedFriends(tx: DbOrTx, now: Date): Promise<void> {
         set: { listenedOn, createdAt: at, updatedAt: at },
       });
     await recomputeItemState(tx, memberId(i), { releaseId: RELEASE });
+    // The section sorts by the state's latest change, which follows the wall clock: set it
+    // to the listen's time so the demo reads from the most recent opinion.
+    await tx
+      .update(s.userItemState)
+      .set({ updatedAt: at })
+      .where(and(eq(s.userItemState.userId, memberId(i)), eq(s.userItemState.releaseId, RELEASE)));
   }
 }
