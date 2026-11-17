@@ -100,6 +100,23 @@ describe("db:clean-demo", () => {
     await expect(cleanDemo(handle.db, { apply: true })).rejects.toThrow(/outside @example.test/);
     expect(await handle.db.$count(s.releases, sql`${s.releases.id} = ${nocturnes}`)).toBe(1);
   });
+
+  it("with withMemberRows, deletes a real member's rows on fictional records, not the member", async () => {
+    await handle.db
+      .insert(s.favorites)
+      .values({ userId: member, releaseId: nocturnes, position: 1 });
+    await handle.db.insert(s.entries).values({ userId: member, releaseId: nocturnes, rating: 6 });
+    const dry = await cleanDemo(handle.db, { apply: false, withMemberRows: true });
+    expect(dry.realMemberRows).toBe(2);
+    expect(dry.deleted.favorites).toBeGreaterThan(0);
+    await cleanDemo(handle.db, { apply: true, withMemberRows: true });
+    expect(await handle.db.$count(s.user)).toBe(1);
+    // Only the entry on the imported record is left, and the stats will be recomputed.
+    expect(await handle.db.select({ releaseId: s.entries.releaseId }).from(s.entries)).toEqual([
+      { releaseId: imported },
+    ]);
+    expect(await handle.db.$count(s.userListeningVersion)).toBe(1);
+  });
 });
 
 describe("vitrine guards", () => {

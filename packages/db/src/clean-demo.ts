@@ -3,6 +3,7 @@ import { sql } from "drizzle-orm";
 import type { Db } from "./client";
 import { unsafeE2eDatabase } from "./e2e";
 import { isVitrine } from "./env";
+import { bumpStatsVersion } from "./listening-state";
 import { rowsOf } from "./rows";
 
 /*
@@ -13,6 +14,8 @@ import { rowsOf } from "./rows";
  * - Catalog: the seed's fixtures (`fixtureId()`, ids `00000000-0000-4000-8000-…`) and the
  *   e2e throwaway rows (slug `e2e-…`), in both cases without a MusicBrainz id. Imported
  *   records always have one, so they are never touched.
+ * - With `withMemberRows` only: what members outside `@example.test` logged on those
+ *   fictional records (listens, reviews, hearts, list items, follows); their accounts stay.
  * - Genres of the seed that no remaining release uses. The suggested moods stay: the app
  *   offers them to every member.
  */
@@ -50,7 +53,7 @@ const keptQuery = sql`
 export interface CleanDemoResult {
   /** Rows deleted (or that would be) per table, cascades included; tables at 0 left out. */
   deleted: Record<string, number>;
-  /** Rows of real members on fictional records: `apply` refuses while it is not 0. */
+  /** Rows of real members on fictional records: refused while not 0, unless `withMemberRows`. */
   realMemberRows: number;
   applied: boolean;
 }
@@ -71,6 +74,29 @@ async function tableCounts(tx: Db): Promise<Map<string, number>> {
     counts.set(name, Number(row!.n));
   }
   return counts;
+}
+
+/** Deletes what real members logged on fictional records; their stats are recomputed. */
+async function deleteMemberRows(tx: Db): Promise<void> {
+  const affected = rowsOf<{ user_id: string }>(
+    await tx.execute(sql`
+      select distinct "user_id" from "entries" where "user_id" not in (${demoUsers})
+        and ("release_id" in (${R}) or "artist_id" in (${A}) or "track_id" in (${T}))
+      union select distinct "user_id" from "user_item_state" where "user_id" not in (${demoUsers})
+        and ("release_id" in (${R}) or "artist_id" in (${A}) or "track_id" in (${T}))`),
+  );
+  for (const table of ["reviews", "entries", "user_item_state"]) {
+    await tx.execute(sql`
+      delete from ${sql.identifier(table)} where "user_id" not in (${demoUsers})
+        and ("release_id" in (${R}) or "artist_id" in (${A}) or "track_id" in (${T}))`);
+  }
+  await tx.execute(sql`delete from "track_ratings" where "track_id" in (${T})`);
+  await tx.execute(sql`delete from "favorites" where "release_id" in (${R})`);
+  await tx.execute(sql`
+    delete from "list_items"
+    where "release_id" in (${R}) or "artist_id" in (${A}) or "track_id" in (${T})`);
+  await tx.execute(sql`delete from "artist_follows" where "artist_id" in (${A})`);
+  for (const { user_id } of affected) await bumpStatsVersion(tx, user_id);
 }
 
 async function deleteDemo(tx: Db): Promise<void> {
@@ -111,21 +137,24 @@ async function deleteDemo(tx: Db): Promise<void> {
 /**
  * Deletes the demo and e2e data in one transaction, and counts what goes table by table.
  * Without `apply`, the same transaction is rolled back: the counts are exact, nothing
- * changes. When a real member has data on a fictional record, counts nothing and, with
- * `apply`, throws; it also throws (and changes nothing) when a real account or an imported
+ * changes. When a real member has data on a fictional record and `withMemberRows` is not
+ * set, counts nothing and, with `apply`, throws; it also throws (and changes nothing) when a real account or an imported
  * record would go.
  */
-export async function cleanDemo(db: Db, { apply }: { apply: boolean }): Promise<CleanDemoResult> {
+export async function cleanDemo(
+  db: Db,
+  { apply, withMemberRows = false }: { apply: boolean; withMemberRows?: boolean },
+): Promise<CleanDemoResult> {
   let result: CleanDemoResult | undefined;
   try {
     await db.transaction(async (tx) => {
       const [real] = rowsOf<{ n: string | number }>(await tx.execute(realMemberRowsQuery));
       const realMemberRows = Number(real!.n);
-      if (realMemberRows > 0) {
+      if (realMemberRows > 0 && !withMemberRows) {
         if (apply) {
           throw new Error(
             `${realMemberRows} row(s) of members outside @example.test point at fictional ` +
-              "records: nothing deleted. Run without --yes to see the counts.",
+              "records: nothing deleted. Add --with-member-rows to delete those rows too.",
           );
         }
         // Their records cannot go (`restrict`): nothing to count until they are dealt with.
@@ -134,6 +163,7 @@ export async function cleanDemo(db: Db, { apply }: { apply: boolean }): Promise<
       }
       const [keptBefore] = rowsOf(await tx.execute(keptQuery));
       const before = await tableCounts(tx);
+      if (withMemberRows) await deleteMemberRows(tx);
       await deleteDemo(tx);
       const after = await tableCounts(tx);
       const [keptAfter] = rowsOf(await tx.execute(keptQuery));
