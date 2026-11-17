@@ -138,6 +138,7 @@ un bouton « Appliquer ». Elle n'est **jamais** appliquée par l'API.
 - **Journal privé** : journal, activité récente et « À écouter » vides pour les autres
   (`diaryHidden`) ; les notes comptent toujours, anonymement, dans les moyennes.
 - **Stats privées** : `statsHidden`.
+- **Souvenirs** (jalon 14) : les écoutes datées et l'état actuel nourrissent la section « Souvenirs » de l'accueil, calculée à la lecture (`docs/souvenirs.md`).
 
 ## Limites de débit (par membre et par heure)
 
