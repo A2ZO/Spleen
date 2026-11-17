@@ -72,9 +72,7 @@ export async function pickToListen(
   );
   const matching = rows.filter(
     (r) =>
-      r.out &&
-      (!input.type || r.type === input.type) &&
-      fitsDuration(r.durationMs, input.duration),
+      r.out && (!input.type || r.type === input.type) && fitsDuration(r.durationMs, input.duration),
   );
   const result = { listTotal: rows.length, matching: matching.length };
   // The record shown is left out when another one remains.
