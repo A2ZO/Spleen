@@ -52,3 +52,9 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   `vieuxsillons` 211/147/226/198/197 ; `/pick` 137. Relecteur : plan OK avec corrections, étape
   OK au 1er tour. Décision : Next 16.4.5 plutôt que 16.4.6 (à revoir au jalon 10). Ouvert :
   phrase de confidentialité à valider. Prochaine : fin du jalon (PR → `dev`, fusion, PR de version).
+- 2026-11-17 — Fin du jalon 14. README (jalons 13 et 14) ; PR #50 `feat/14-souvenirs` → `dev`
+  ouverte, CI verte (check, api-postgres). Pas de nouvelle passe locale (code inchangé depuis la
+  passe complète de l'étape 5). Zones sensibles conformes à « Autorisé à la fusion » (migration
+  0018, `auth.ts`, `db.test.ts` +6/+2/+9, Next/eslint-config-next 16.4.5, lockfile). Relecteur :
+  OK avec corrections (description de la PR), puis OK. Fusion automatique dans `dev` demandée.
+  Ouvert : phrase de confidentialité proposée dans la PR, à valider par Azzo (jalon 10 au plus tard).
