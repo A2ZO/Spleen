@@ -62,3 +62,10 @@ liste ou dans tout le catalogue, historique des tirages, amis sur les morceaux, 
 légaux.
 
 ## Décisions du pilote
+
+- 2026-11-17, étape 1 : l'année de « Sorti le {date} » s'ajoute quand elle diffère de celle du
+  jour de Paris (comme `formatUpcomingDate`), calculée par la page à l'affichage ; `releaseDay`
+  et `releasedToday` viennent de l'API. Raison : même règle que les dates à venir, aucun champ
+  de plus dans l'API. Écarté : un champ `releaseYearShown` dans `NotificationGroup`.
+- 2026-11-17, étape 1 : issues de l'étape trouvées : #41 (« Sorti le … ») et #42 (disque à
+  venir).
