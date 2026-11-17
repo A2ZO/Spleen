@@ -51,9 +51,22 @@ connaît, les notes et cœurs de mes amis sur une fiche, et « Tire un disque »
 - Appris en route : sur le build de prod avec Brevo factice, `hydration.spec.ts:17` échoue
   toujours (HTTP 401 de Brevo, envoi du lien) ; il passe en dev, ce n'est pas une régression.
   Mesures prod : se connecter une fois en dev avec `MEASURE_STATE`, puis mesurer la prod.
-- **Prochaine : étape 2**, « Écouter sur… » à l'import : consignes complètes dans
-  `docs/pilote/feuille-de-route.md` (« Étape 2 »), plan à écrire dans
-  `docs/pilote/plan-etape-2.md`. Seule migration autorisée du jalon.
+- **Étape 2 faite** (17 novembre) : migration `0017` (`listen_service`, `listen_links`,
+  `links_checked_at` sur `releases` et `artists`) ; le fournisseur lit les `url-rels`
+  (`urlRelations`) ; `validListenUrl` / `pickListenLinks` / `buildListenLinks`
+  (`packages/api/src/lib/listen-links.ts`) ; liens écrits à l'import (disque, morceaux, artiste
+  via `importArtist` + `links_checked_at`), repris à la fusion ; `ListenOn` : 5 services dans un
+  ordre fixe, direct (icône externe) ou recherche (« (recherche) » pour les lecteurs d'écran).
+  Détail : `docs/catalogue.md`, « Écouter sur… (jalon 13) ».
+- Décisions : YouTube Music seulement en forme artiste, `itunes.apple.com` refusé ; liens lus
+  dans la même requête que la fiche (sous-requête `json_agg`, mesure dans la référence) ; purge
+  e2e des liens des disques jetables dans `apps/web/e2e/cleanup.ts` (`docs/pilote/decisions.md`).
+- Appris en route : la clé `restrict` de `listen_links` bloque la suppression des disques e2e
+  (d'où la purge) ; l'artiste et le morceau jetables, jamais supprimés, gardent leurs liens sur
+  Neon `dev` (sans effet, ils s'accumulent ; à purger si ça gêne).
+- **Prochaine : étape 3**, « Écouter sur… » : la relecture de nuit (`getEditionLinks`, consignes
+  dans `docs/pilote/feuille-de-route.md`, « Étape 3 ») ; plan à écrire dans
+  `docs/pilote/plan-etape-3.md`. Aucune nouvelle migration (celle du jalon est faite).
 
 ## Mesures de référence
 

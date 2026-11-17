@@ -23,3 +23,12 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   artist}/{n}` (sans slug), `music.youtube.com/channel/UC…` (artiste), `{nom}.bandcamp.com/`
   (artiste) ; bruit : `shop.spotify.com`, `itunes.apple.com/gb/artist/id…` (terminé), Tidal,
   Qobuz, Amazon. Disque de test : BRAT (édition XW `ab55ac76`). Valeurs des tests : inchangées.
+- 2026-11-17, étape 2 terminée, commits `9c92263..0b3e6d4` : url-rels lues, migration 0017,
+  validation unique `validListenUrl`, liens écrits à l'import et repris à la fusion, `ListenOn`
+  direct / recherche. `pnpm check` vert ; e2e complet 250 passed, 0 failed, 0 flaky, 10 skipped ;
+  specs sans compte en prod 116 passed, 2 failed (`hydration.spec.ts:17`, clé Brevo factice).
+  axe WCAG 2.2 AA 0 violation (album, artiste, morceau ; visiteur prod, membre dev ; 1280 et
+  390). Mesures prod pageMs 212/133/219/182/226 et 211/134/219/167/227 (référence
+  215/136/231/182/228). Relecteur : OK au premier tour. Décisions : purge e2e des liens dans
+  `cleanup.ts`, liens lus par `json_agg`. Ouvert : liens des artiste et morceau jetables qui
+  s'accumulent sur Neon `dev`. Prochaine : étape 3.

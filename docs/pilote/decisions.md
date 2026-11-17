@@ -83,4 +83,5 @@ légaux.
   n'ouvre dans `packages/db` que le schéma et le seed. Écarté : la ligne dans `e2e.ts`. Le
   disque est lu avec ses liens dans la même requête (sous-requête `json_agg`, comme l'artiste
   et le morceau) plutôt qu'une requête de plus dans le `Promise.all` : rien de plus en
-  parallèle sur le pool ; la mesure tranchera.
+  parallèle sur le pool. Mesure (build de prod, deux passages) : pageMs 212/133/219/182/226
+  et 211/134/219/167/227 contre 215/136/231/182/228 : gardé.
