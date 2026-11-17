@@ -837,6 +837,8 @@
     "intro": "What members listen to this week, recent releases, the top rated records and the reviews people talk about.",
     "awaitedTitle": "Most awaited",
     "awaitedHint": "The upcoming releases members are waiting for most.",
+    "onThisDayTitle": "Released on {day}",
+    "onThisDayHint": "Records members love, released on this day in years past.",
     "trendsTitleFr": "Tendances chez les membres francophones",
     "trendsTitleEn": "Trending with English-speaking members",
     "trendsHint": "The records the most members listened to in the last 7 days.",

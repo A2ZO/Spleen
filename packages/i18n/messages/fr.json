@@ -837,6 +837,8 @@
     "intro": "Les disques que les membres écoutent cette semaine, les sorties récentes, les mieux notés et les critiques qui font parler.",
     "awaitedTitle": "Les plus attendus",
     "awaitedHint": "Les sorties à venir que les membres attendent le plus.",
+    "onThisDayTitle": "Sortis un {day}",
+    "onThisDayHint": "Les disques que les membres aiment, sortis ce jour-là les années passées.",
     "trendsTitleFr": "Tendances chez les membres francophones",
     "trendsTitleEn": "Trending with English-speaking members",
     "trendsHint": "Les disques écoutés par le plus de membres ces 7 derniers jours.",
