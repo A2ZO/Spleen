@@ -56,6 +56,6 @@ Aucun test d'API (l'API ne change pas).
 - [x] e2e `pick.spec.ts`
 - [x] doc `docs/quoi-ecouter.md`
 - [x] vérifications
-- [ ] relecture 1
-- [ ] relecture 2
+- [x] relecture 1 (OK)
+- [x] relecture 2 (sans objet : OK au 1er tour)
 - [ ] clôture

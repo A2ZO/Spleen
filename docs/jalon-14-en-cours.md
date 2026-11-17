@@ -44,7 +44,20 @@ depuis `dev`. L'étape 1 traite le reste du jalon 13 décidé par Azzo (bouton d
 
 ## Où on en est
 
-- Jalon préparé par le conseiller le 17 novembre. **Prochaine : étape 1.**
+- Jalon préparé par le conseiller le 17 novembre.
+- **Étape 1 faite** (17 novembre, pilote) : sur l'accueil membre, le 2e bouton du bloc lilas
+  devient « Tire un disque au hasard » (`home.pickRandom`, EN « Pick a random record ») → `/pick`,
+  toujours affiché, sans lecture de plus ; accueil visiteur inchangé (« Trouver quoi écouter »,
+  `home.findMusic` gardée). e2e dans `pick.spec.ts` (membre → `/fr/pick`, visiteur → `/discover`,
+  pas de débordement à 390 px) ; sélecteurs « Tire un disque » en `exact: true`.
+  `docs/quoi-ecouter.md` (« Accès ») à jour. Aucune décision nouvelle.
+- Appris en route : sous Git Bash, un chemin `/c/…` passé à Node avec `MSYS_NO_PATHCONV=1`
+  devient `C:\c\…` (donner `MEASURE_STATE` en `C:/…`). Mesures du jour plus lentes sur la
+  machine : l'A/B tranche (voir « Mesures de référence »).
+- **Prochaine : étape 2** (souvenirs de l'accueil : réglage et API) : migration
+  `profiles.show_memories` (`pnpm db:generate`, puis `pnpm db:migrate` sur Neon `dev`),
+  `account.setShowMemories`, `packages/api/src/lib/memories.ts`, routeur `memories.home`, types,
+  `memories.test.ts` ; détail dans `feuille-de-route.md`, « Étape 2 ». Pas d'écran.
 
 ## Mesures de référence
 
@@ -55,6 +68,10 @@ depuis `dev`. L'étape 1 traite le reste du jalon 13 décidé par Azzo (bouton d
   pas prendre plus de 20 ms ; en cas d'écart, A/B `origin/dev` / HEAD dans la même session (au
   jalon 13, un premier passage à +20 ms venait de la machine : `origin/dev` 214/134/220/180/226
   contre HEAD 215/132/216/180/223).
+- Étape 1 (17 novembre, build de prod, `nuitblanche`, pageMs, plus haut de deux passages) :
+  premier passage 241/144/238/196/241 ; A/B même session : `origin/dev` (6171a21)
+  241/144/242/194/242, HEAD (13c30e2) 227/144/230/194/241 ms → pas de régression (machine plus
+  lente ce jour-là). La référence par page reste 215 / 132 / 216 / 180 / 223 ms.
 - Pour mémoire, l'ancienne référence (fin du jalon 11) : 215 / 136 / 231 / 182 / 228 ms.
 - `/pick` (`MEASURE_ONLY=/fr/pick`, build de prod, `nuitblanche`) : 137 / 136 ms en fin de
   jalon 13, référence **142 ms**.
