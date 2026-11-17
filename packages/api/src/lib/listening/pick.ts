@@ -32,6 +32,18 @@ interface CandidateRow {
   durationMs: number | null;
 }
 
+/**
+ * Minutes shown on the card, never contradicting the length filters: under 30 minutes rounds
+ * down (29:59 → 29), over an hour rounds up (60:20 → 61), in between rounds to the nearest.
+ */
+export function pickMinutes(durationMs: number | null): number | null {
+  if (durationMs === null) return null;
+  const minutes = durationMs / MINUTE;
+  if (durationMs < 30 * MINUTE) return Math.floor(minutes);
+  if (durationMs > 60 * MINUTE) return Math.ceil(minutes);
+  return Math.round(minutes);
+}
+
 /** Whether a known length fits the filter (`medium`: 30 to 60 minutes, both included). */
 function fitsDuration(durationMs: number | null, duration: PickInput["duration"]): boolean {
   if (!duration) return true;
@@ -96,6 +108,7 @@ export async function pickToListen(
     pick: {
       ...masked,
       durationMs: drawn.durationMs,
+      durationMinutes: pickMinutes(drawn.durationMs),
       listenLinks: buildListenLinks(links, "release", card.title, card.artists[0]?.name),
     },
   };

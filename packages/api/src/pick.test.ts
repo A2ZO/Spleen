@@ -10,7 +10,7 @@ import type { PickInput } from "@spleen/validators";
 import { TRPCError } from "@trpc/server";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 
-import { pickToListen, type PickViewer } from "./lib/listening/pick";
+import { pickMinutes, pickToListen, type PickViewer } from "./lib/listening/pick";
 import { createCaller } from "./root";
 import { createContext, type SessionUser } from "./trpc";
 
@@ -214,6 +214,17 @@ describe("toListen.pick", () => {
     expect(lengths.get(at60.id)).toBe(3_600_000);
   });
 
+  it("shows minutes that never contradict the length filters", () => {
+    const s = (seconds: number) => pickMinutes(seconds * 1000);
+    expect(s(29 * 60 + 59)).toBe(29); // « Moins de 30 min »
+    expect(s(30 * 60)).toBe(30);
+    expect(s(45 * 60 + 31)).toBe(46);
+    expect(s(60 * 60)).toBe(60);
+    expect(s(60 * 60 + 20)).toBe(61); // « Plus d'une heure »
+    expect(s(7 * 60 + 10)).toBe(7);
+    expect(pickMinutes(null)).toBeNull();
+  });
+
   it("draws another record than `not`, unless it is the only one", async () => {
     const me = await member();
     const a = await record();
@@ -275,7 +286,13 @@ describe("toListen.pick", () => {
     });
     await queue(me, r.id);
     const { pick } = await api(me).toListen.pick({});
-    expect(pick).toMatchObject({ id: r.id, slug: r.slug, durationMs: 1_500_000, year: 2020 });
+    expect(pick).toMatchObject({
+      id: r.id,
+      slug: r.slug,
+      durationMs: 1_500_000,
+      durationMinutes: 25,
+      year: 2020,
+    });
     expect(pick!.listenLinks.map((l) => [l.service, l.direct])).toEqual([
       ["spotify", false],
       ["deezer", true],

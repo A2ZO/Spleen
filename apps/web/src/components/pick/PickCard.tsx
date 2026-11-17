@@ -6,6 +6,8 @@ import { ListenOn } from "@/components/catalog/ListenOn";
 import { Card } from "@/components/ui/Card";
 import { Cover } from "@/components/ui/Cover";
 import { Link } from "@/i18n/navigation";
+import { cn } from "@/lib/cn";
+import { phoneCardLineSize, phoneCardTitleSize } from "@/lib/display-title";
 
 type Picked = NonNullable<ToListenPick["pick"]>;
 
@@ -19,9 +21,7 @@ export async function PickCard({ pick, actions }: { pick: Picked; actions: React
   const details = [
     t(`releaseType.${pick.type}`),
     pick.year === null ? null : String(pick.year),
-    pick.durationMs === null
-      ? null
-      : t("album.duration", { minutes: Math.round(pick.durationMs / 60_000) }),
+    pick.durationMinutes === null ? null : t("album.duration", { minutes: pick.durationMinutes }),
   ].filter((part) => part !== null);
 
   return (
@@ -37,13 +37,23 @@ export async function PickCard({ pick, actions }: { pick: Picked; actions: React
       />
       <div className="min-w-0 space-y-5">
         <div className="space-y-2">
-          <h2 className="font-display text-[32px] leading-[1.02] font-extrabold tracking-[-0.03em] text-balance break-words md:text-[clamp(36px,4vw,52px)]">
+          <h2
+            className={cn(
+              "font-display leading-[1.02] font-extrabold tracking-[-0.03em] text-balance [overflow-wrap:anywhere] md:text-[clamp(36px,4vw,52px)]",
+              phoneCardTitleSize(pick.title),
+            )}
+          >
             <Link href={`/album/${pick.slug}`} className="hover:text-link">
               {pick.title}
             </Link>
           </h2>
           {pick.artists.length > 0 && (
-            <p className="text-lg text-balance break-words">
+            <p
+              className={cn(
+                "text-balance [overflow-wrap:anywhere] md:text-lg",
+                phoneCardLineSize(pick.artists.map((artist) => artist.name).join(" ")),
+              )}
+            >
               {pick.artists.map((artist, i) => (
                 <span key={artist.slug}>
                   {i > 0 && ", "}

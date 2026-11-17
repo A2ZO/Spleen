@@ -69,7 +69,14 @@ export interface ToListenPick {
   listTotal: number;
   /** Released records left by the filters. */
   matching: number;
-  pick: (ReleaseCard & { durationMs: number | null; listenLinks: ListenLink[] }) | null;
+  pick:
+    | (ReleaseCard & {
+        durationMs: number | null;
+        /** Rounded so it never contradicts the length filters (`pickMinutes`). */
+        durationMinutes: number | null;
+        listenLinks: ListenLink[];
+      })
+    | null;
 }
 
 export interface ReviewCard {

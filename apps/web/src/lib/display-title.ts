@@ -10,6 +10,24 @@ export function phoneTitleSize(title: string, base: "56" | "48"): string {
 }
 
 /**
+ * Phone sizes for a card title (32 px) and its artist line (18 px), about 300 px wide on a
+ * 360 px screen: they shrink with the longest word rather than cut it mid-word.
+ */
+export function phoneCardTitleSize(title: string): string {
+  const longest = Math.max(0, ...title.split(/\s+/).map((word) => word.length));
+  if (longest > 16) return "max-md:text-[22px]";
+  if (longest > 12) return "max-md:text-[26px]";
+  return "max-md:text-[32px]";
+}
+
+export function phoneCardLineSize(text: string): string {
+  const longest = Math.max(0, ...text.split(/\s+/).map((word) => word.length));
+  if (longest > 24) return "max-md:text-sm";
+  if (longest > 20) return "max-md:text-base";
+  return "max-md:text-lg";
+}
+
+/**
  * Profile name, set next to an 80 px avatar on phones (about 230 px left on a 360 px screen):
  * past 12 letters in one word the avatar goes above the name so the word gets the full width,
  * and the size keeps shrinking with the longest word. Desktop shrinks only for long words. Every size is returned here: `cn` does not merge classes.
