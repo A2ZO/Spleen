@@ -110,10 +110,23 @@ connaît, les notes et cœurs de mes amis sur une fiche, et « Tire un disque »
   (ajouts hors seed) : prendre un compte e2e jetable pour un état vide ; le garde-fou du log
   serveur a relevé une fois « render cancelled mid-stream » en passe complète, non reproduit
   seul (issue #34).
-- **Prochaine : étape 6**, « La passe finale » (consignes dans `docs/pilote/feuille-de-route.md`,
-  « Étape 6 ») : doc `docs/quoi-ecouter.md`, cahier des charges, captures de tout le jalon, axe,
-  e2e complet, mesures contre la référence (`/pick` 142 ms), `CLAUDE.md`, puis la PR (« Closes
-  #31 », #41, #42) ; plan à écrire dans `docs/pilote/plan-etape-6.md`.
+- **Étape 6 faite** (17 novembre) : doc du domaine `docs/quoi-ecouter.md`, renvois depuis
+  `catalogue.md`, `ecoute.md`, `social.md` et `decouverte.md`, cahier des charges (jalon 13 fini,
+  page album), `CLAUDE.md` (jalon coché, décision des liens d'écoute, ordre 14 → 10 → 15 → 16).
+  Vérifications : `pnpm check` vert, e2e complet en dev vert, prod sans compte + overflow 116 · 2
+  (`hydration.spec:17`, Brevo factice) · 10, axe 0 violation, A/B `origin/dev` / HEAD identiques
+  (pageMs 214/134/220/180/226 contre 215/132/216/180/223), `/pick` 137 ms. Relecteur : OK au
+  premier tour.
+- Appris en route : un premier écart de 20 ms (album, `/discover` → accueil) a disparu en A/B
+  dans la même session : comparer toujours deux builds dans la même session avant de conclure ;
+  `pnpm build` peut sortir en code 1 juste après l'avertissement de sécurité de Next 16.4.2,
+  un second essai passe.
+- **Prochaine : fin du jalon** (sections 5 et 6 du skill du pilote) : PR `feat/13-quoi-ecouter`
+  → `dev` avec `Closes #31`, `#41`, `#42` ; questions pour Azzo : régénération du snapshot
+  `feed-loading` (étape 4), passage à un Next.js corrigé (PR `chore/` séparée) avant la release ;
+  points ouverts : 503 de MusicBrainz qui arrête la phase des liens avant les artistes, liens
+  des fiches e2e jetables qui s'accumulent, disques à venir dans la discographie. Puis fusion
+  dans `dev` si les conditions tiennent, et PR de release `dev` → `main` en brouillon.
 
 ## Mesures de référence
 
