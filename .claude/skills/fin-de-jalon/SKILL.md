@@ -53,6 +53,8 @@ Keep it under 200 lines; only what every session needs. Update:
 - Commands / environment variables / structure if they changed. Remove what became false.
 - Do not copy what the code or `docs/` already say: point to the file path in backticks.
 
+Also update `README.md` when the milestone adds or changes a user-facing feature, a command or the stack (keep it short).
+
 Run `pnpm format:check`, then commit (`docs: update CLAUDE.md for milestone <n>`).
 
 ### 4. Push and open the PR
