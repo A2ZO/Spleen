@@ -421,3 +421,17 @@ export const suspendInDatabase = (username: string) =>
       .set({ suspendedAt: new Date() })
       .where(eq(schema.profiles.username, username));
   });
+
+/** The member follows these members (outside the site), as if they had clicked « Suivre ». */
+export const followMembersInDatabase = (username: string, usernames: string[]) =>
+  onDevDatabase(async (db) => {
+    const followerId = await userIdOf(db, username);
+    const followees = await db
+      .select({ id: schema.profiles.userId })
+      .from(schema.profiles)
+      .where(inArray(schema.profiles.username, usernames));
+    await db
+      .insert(schema.follows)
+      .values(followees.map((f) => ({ followerId, followeeId: f.id })))
+      .onConflictDoNothing();
+  });
