@@ -150,5 +150,14 @@ légaux.
   238/147/239/196/248 contre 215/136/231/182/228. Album et `/discover` → accueil à +20/+22 ms :
   l'étape ne touche ni la fiche album, ni l'accueil, ni `/discover` (seul le bouton de mon onglet
   change sur un profil), et la même dérive de la machine était déjà vue à l'étape 4 (album
-  218–239 sans changement). Gardé, à revoir à la mesure de fin de jalon. Écarté : un contrôle
-  A/B, sans code à retirer sur ces pages.
+  218–239 sans changement). Relecture 1 : contrôle A/B dans la même session, build de prod de
+  `d70f426` (fin de l'étape 4) contre `f6fcdad` : pageMs 225/140/229/187/233 et
+  226/144/233/188/231 contre 221/143/230/184/234 et 220/138/229/187/232 : aucun écart dû à
+  l'étape, tout dans les 20 ms de la référence.
+- 2026-11-17, étape 5, relecture 1 : la durée de la carte vient de l'API (`durationMinutes`,
+  `pickMinutes`) : vers le bas sous 30 min, vers le haut au-delà d'une heure, sinon au plus
+  proche, pour ne jamais contredire le filtre (29:59 n'affiche pas « 30 min »). Le titre et la
+  ligne des artistes rapetissent sur téléphone selon le mot le plus long
+  (`phoneCardTitleSize` / `phoneCardLineSize`, `lib/display-title.ts`), la carte partant de
+  32 px quand `phoneTitleSize` part de 48/56. La fiche album garde son arrondi. Écarté :
+  réutiliser `phoneTitleSize` (tailles plus grandes que celles de la carte).

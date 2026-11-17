@@ -106,7 +106,9 @@ connaît, les notes et cœurs de mes amis sur une fiche, et « Tire un disque »
 - `/upcoming` (fin du jalon 11, accueil → `/upcoming`, mêmes conditions) : 158 / 160 ms,
   référence **160 ms**.
 - `/pick` (étape 5, `MEASURE_ONLY=/fr/pick`, build de prod, `nuitblanche` et ses 7 disques
-  « À écouter ») : 138 / 141 / 142 ms, référence **142 ms**.
+  « À écouter ») : 138 / 141 / 142 ms, référence **142 ms**. Cinq parcours à la fin de
+  l'étape 5 (A/B même session) : `d70f426` 226/144/233/188/233, `f6fcdad` 221/143/230/187/234
+  (plus hauts des deux passages) : inchangés par l'étape.
 - Pages qui changent dans ce jalon et figurent dans `measure.mjs` : la fiche album (liens lus
   avec la fiche, `release.friends` en parallèle) et la fiche artiste (liens). Le pool Postgres a
   5 connexions : une lecture parallèle de plus peut coûter 25 à 30 ms (étape 4 du jalon 11).
