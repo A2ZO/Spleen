@@ -136,8 +136,10 @@ export default async function AlbumPage({ params }: Props) {
   const hasLists = release.lists.length > 0;
   // No "Your listens" card on a record not out yet (nothing can be logged).
   const showMine = mine !== null && !notOut;
-  const cards = 1 + (showMine ? 1 : 0) + (hasLists ? 1 : 0);
-  const phoneCards = 1 + (showMine || hasLists ? 1 : 0);
+  // No community rating either before the release (no listen yet, nothing to average).
+  const showCommunity = !notOut;
+  const cards = (showCommunity ? 1 : 0) + (showMine ? 1 : 0) + (hasLists ? 1 : 0);
+  const phoneCards = Math.min(cards, 2);
 
   return (
     <article className="cover-scope">
@@ -241,33 +243,37 @@ export default async function AlbumPage({ params }: Props) {
         {report && <div className="max-md:hidden">{report}</div>}
       </div>
 
-      <div
-        className={cn(
-          "mt-8 grid grid-cols-2 gap-3 md:mt-12 md:gap-5",
-          cards === 3 ? "md:grid-cols-3" : cards === 2 ? "md:grid-cols-2" : "md:grid-cols-1",
-          phoneCards === 1 && "max-md:*:col-span-2",
-        )}
-      >
-        <CommunityRating
-          average={release.averageRating}
-          count={release.ratingCount}
-          hidden={release.ratingsHidden ?? false}
-          distribution={release.ratingDistribution}
-        />
-        {mine && showMine && (
-          <MyListensCard
-            target={target}
-            title={release.title}
-            initial={mine}
-            moods={moods}
-            tracks={logTracks}
-            username={member?.me.profile?.username ?? null}
-          />
-        )}
-        {hasLists && (
-          <InListsCard lists={release.lists} className={showMine ? "max-md:hidden" : undefined} />
-        )}
-      </div>
+      {cards > 0 && (
+        <div
+          className={cn(
+            "mt-8 grid grid-cols-2 gap-3 md:mt-12 md:gap-5",
+            cards === 3 ? "md:grid-cols-3" : cards === 2 ? "md:grid-cols-2" : "md:grid-cols-1",
+            phoneCards === 1 && "max-md:*:col-span-2",
+          )}
+        >
+          {showCommunity && (
+            <CommunityRating
+              average={release.averageRating}
+              count={release.ratingCount}
+              hidden={release.ratingsHidden ?? false}
+              distribution={release.ratingDistribution}
+            />
+          )}
+          {mine && showMine && (
+            <MyListensCard
+              target={target}
+              title={release.title}
+              initial={mine}
+              moods={moods}
+              tracks={logTracks}
+              username={member?.me.profile?.username ?? null}
+            />
+          )}
+          {hasLists && (
+            <InListsCard lists={release.lists} className={showMine ? "max-md:hidden" : undefined} />
+          )}
+        </div>
+      )}
 
       <section aria-labelledby="tracklist" className="mt-14 md:mt-20">
         <SectionHeading id="tracklist">{t("album.tracklist")}</SectionHeading>
@@ -330,7 +336,9 @@ export default async function AlbumPage({ params }: Props) {
             ))}
           </ul>
         ) : (
-          <p className="text-fg-muted">{t("album.reviewsEmpty")}</p>
+          <p className="text-fg-muted">
+            {t(notOut ? "album.reviewsOnRelease" : "album.reviewsEmpty")}
+          </p>
         )}
       </section>
 
