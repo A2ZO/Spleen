@@ -64,3 +64,13 @@ Mesures : `/pick` 142 ms (nouvelle référence) ; A/B `d70f426` / HEAD identique
 Relecteur : corrections au tour 1 (durée cohérente avec les filtres, titres longs sur téléphone,
 A/B), OK au tour 2. Ouvert : `rainydaysam` non vide sur la base de dev (hors seed) ; point de
 l'étape 4 (snapshot `feed-loading`) toujours à valider par Azzo. Prochaine : étape 6.
+
+## 2026-11-17 — étape 6, « La passe finale »
+
+Commits 82c3991..HEAD (`docs/quoi-ecouter.md`, renvois, cahier, `CLAUDE.md`, passation). `pnpm
+check` vert ; e2e complet en dev vert ; prod sans compte + overflow 116 · 2 (`hydration.spec:17`,
+Brevo factice) · 10. Axe : 0 violation, visiteur et `nuitblanche`, 1280 et 390. Mesures : premier
+passage +20 ms (album, `/discover` → accueil), A/B même session `origin/dev` 214/134/220/180/226
+contre HEAD 215/132/216/180/223 : aucun écart dû au jalon ; `/pick` 137 (réf. 142). Relecteur : OK
+au premier tour. Ouvert : snapshot `feed-loading`, Next.js 16.4.2 signalé vulnérable (premier
+build en code 1). Prochaine : fin du jalon.

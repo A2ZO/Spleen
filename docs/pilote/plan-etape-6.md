@@ -56,4 +56,4 @@ relecteur (OK avec corrections, appliquées).
 
 - [x] 1 doc du domaine · [x] 2 renvois · [x] 3 cahier · [x] 4 captures · [x] 5 mesures et
   specs prod · [x] 6 `CLAUDE.md`
-- [x] vérifications · [ ] relecture 1 · [ ] relecture 2 · [ ] clôture
+- [x] vérifications · [x] relecture 1 (OK) · [x] relecture 2 (inutile, OK au tour 1) · [x] clôture
