@@ -55,7 +55,7 @@ Aucun test d'API (l'API ne change pas).
 - [x] bouton de l'accueil membre
 - [x] e2e `pick.spec.ts`
 - [x] doc `docs/quoi-ecouter.md`
-- [ ] vérifications
+- [x] vérifications
 - [ ] relecture 1
 - [ ] relecture 2
 - [ ] clôture
