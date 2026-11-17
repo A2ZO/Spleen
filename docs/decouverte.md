@@ -5,6 +5,9 @@ Web : `/[locale]/list/[id]` (page publique), `/list/new`, `/list/[id]/edit`, `/d
 les blocs de l'accueil, le bouton « Ajouter à une liste » des fiches album, morceau et
 artiste. Server Actions : `apps/web/src/app/[locale]/list/actions.ts`.
 
+Quoi écouter ce soir ? (« Écouter sur… », « Tes amis sur ce disque », « Tire un disque »,
+jalon 13) : `docs/quoi-ecouter.md`.
+
 ## Listes
 
 | Procédure                                 | Rôle                                                   | Limite / h |

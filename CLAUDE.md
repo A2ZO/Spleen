@@ -70,7 +70,7 @@ CI, e2e cleanup guard, env vars and database details: `docs/environnement.md`.
 
 Domain docs (read before touching the domain): listening `docs/ecoute.md` (`recomputeItemState()`),
 profile & stats `docs/profil-stats.md` (bump `CACHE_VERSION` when a stats rule changes), social &
-moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sharing `docs/referencement.md`, upcoming releases `docs/sorties.md`.
+moderation `docs/social.md`, lists & discovery `docs/decouverte.md`, search & sharing `docs/referencement.md`, upcoming releases `docs/sorties.md`, listen links / friends on a record / pick `docs/quoi-ecouter.md`.
 
 ## Conventions
 
@@ -136,6 +136,7 @@ deletion) still accepts it; `adminProcedure` answers `NOT_FOUND` to non-admins. 
   header (Better Auth's official flow); no `sharp` (not on Workers): avatars resized client-side.
 - "Today" for a listen = member's `profiles.time_zone` (IANA), never the server's zone.
 - Upcoming releases: ListenBrainz only picks what to re-read; MusicBrainz is the only source of dates.
+- Listen links: MusicBrainz URL relations only, hosts and paths validated and the URL rebuilt; no affiliate links.
 - Catalog: MusicBrainz WS/2 with plain `fetch`; global gate = one atomic `rate_limits` statement
   (`reserveSlot`); imports for members only; Cover Art Archive covers `unoptimized` (no quota).
 - Speed (milestone 12): no Suspense / `loading.tsx`; slow clicks show the top bar after 150 ms;
@@ -188,16 +189,14 @@ One line each; details and fixes in `docs/pieges.md` (add new ones there).
       base stats · 7. Social · 8. Lists & discovery · 9. Admin, legal, polish (`docs/social.md`,
       `docs/referencement.md`, CSP `lib/security.ts`, PWA) · 12. Douceurs (navigation speed,
       instant search and reactions, "Undo", keyboard rating; `docs/stack-et-limites.md`) · 17. Nouvelle peau (Lilas identity, `docs/design/README.md`) · 11. Upcoming releases
-      from followed artists (follow, `/upcoming`, out-today notification; `docs/sorties.md`).
+      from followed artists (follow, `/upcoming`, out-today notification; `docs/sorties.md`) · 13. Quoi écouter ce soir ? (listen links, friends on a record, `/pick`; `docs/quoi-ecouter.md`).
 - [ ] 10. **Launch**: a new `TERMS_VERSION` before the first real members (all accept again, after
       the legal review); e2e in CI; issues #22 (public page cache, option a) and #27 (catalog
       popularity counter: nightly job + pnpm command, also run by the seed). **Real services are
       not connected yet** (Google, Brevo, R2, Neon `spleen-prod`, domain): `docs/mise-en-ligne.md`.
-- [ ] 13. **Next. « Quoi écouter ce soir ? »**: "Listen on…" links (direct when MusicBrainz knows the
-      URL, else a search link; no affiliate links), "Your friends on this record", "Pick a record".
-- [ ] 14. **« Souvenirs »**: "One year ago…" on the home page; anniversaries, "Released on" on `/discover`.
+- [ ] 14. **Next. « Souvenirs »**: "One year ago…" on the home page; anniversaries, "Released on" on `/discover`.
 - [ ] 15. **« Défi de l'année »** · 16. **« En ce moment et RSS »** (both after launch).
 - Deferred: page transitions (milestone 12, step 6, abandoned): retry per issue #29 (Next 16.4 pitfall in `docs/pieges.md`).
 
-Order: 13 → 14 → 10 (launch) → 15 → 16. Specs in `docs/cahier-des-charges.md`; each
+Order: 14 → 10 (launch) → 15 → 16. Specs in `docs/cahier-des-charges.md`; each
 milestone opens by having the user validate its default rules.

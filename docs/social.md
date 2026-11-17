@@ -8,6 +8,9 @@ API : `packages/api/src/lib/social/` — `relations.ts` (blocages, cartes de mem
 `/[locale]/notifications`, `/[locale]/settings/blocks`. Server Actions :
 `apps/web/src/app/[locale]/social/actions.ts`.
 
+« Tes amis sur ce disque » (`release.friends`, `lib/social/release-friends.ts`, jalon 13) :
+mêmes exclusions que le fil Amis ; règles dans `docs/quoi-ecouter.md`.
+
 ## Procédures
 
 | Procédure                                   | Rôle                                              | Limite / h |

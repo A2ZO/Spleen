@@ -4,6 +4,9 @@ Tout est dans `packages/api/src/lib/listening/` (routers `listening.*` et `revie
 dérivation de l'état vit dans `packages/db/src/listening-state.ts` pour que le seed et l'API
 utilisent exactement le même code.
 
+« Tire un disque » (tirage dans « À écouter », `lib/listening/pick.ts`, jalon 13) :
+`docs/quoi-ecouter.md`.
+
 ## Modèle
 
 - `entries` = le journal : une ligne par écoute d'un album/EP/single **ou** d'un morceau

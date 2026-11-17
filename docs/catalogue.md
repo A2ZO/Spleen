@@ -141,6 +141,8 @@ et à travers le pooler Neon (pas de verrou de session). Intervalle : 1,1 s.
 
 ## « Écouter sur… » (jalon 13)
 
+Vue d'ensemble du jalon (règles, API, écrans) : `docs/quoi-ecouter.md`.
+
 Cinq services, toujours dans cet ordre : Spotify, Deezer, Apple Music, YouTube Music, Bandcamp.
 Lien direct quand MusicBrainz connaît la page, sinon recherche « premier artiste crédité +
 titre » (le nom seul pour un artiste). Pas de lien d'affiliation, `rel="nofollow noopener

@@ -2,7 +2,7 @@
 
 Version 3 du 16 novembre 2026, mise à jour le 17 novembre (v2 : 27 octobre ; v1 : 19 octobre 2026) · @Azzo
 
-La v3 ajoute les jalons 12 et 17 (vitesse, identité « Lilas »), les règles du jalon 11 validées le 16 novembre et l'organisation du travail (branches `dev` et `main`, pilote automatique). La mise à jour du 17 novembre note la fin du jalon 11 (réponses de fin de jalon, question encore ouverte) et les règles du jalon 13 retenues par le conseiller. La v2 avait ajouté ce que les jalons 1 à 9 ont changé, les sorties à venir (jalon 11) et la question de la licence des genres. La stack réelle, ses limites en nombre de membres et les chemins de montée en charge sont dans `docs/stack-et-limites.md`.
+La v3 ajoute les jalons 12 et 17 (vitesse, identité « Lilas »), les règles du jalon 11 validées le 16 novembre et l'organisation du travail (branches `dev` et `main`, pilote automatique). La mise à jour du 17 novembre note la fin du jalon 11 (réponses de fin de jalon, question encore ouverte), les règles du jalon 13 retenues par le conseiller et la fin du jalon 13. La v2 avait ajouté ce que les jalons 1 à 9 ont changé, les sorties à venir (jalon 11) et la question de la licence des genres. La stack réelle, ses limites en nombre de membres et les chemins de montée en charge sont dans `docs/stack-et-limites.md`.
 
 Deux copies : `docs/cahier-des-charges.md` dans le dépôt (lue par Claude Code) et `claude/cahier-des-charges.md` dans le projet claude.ai (lue par le conseiller). Le conseiller les remet d'accord à chaque fin de jalon.
 
@@ -57,7 +57,7 @@ La v1 décrivait l'intention. Voici ce que le développement a ajouté ou tranch
 - Jalon 17 « Nouvelle peau » : identité « Lilas » (section Identité visuelle), un seul thème sombre ; la colonne `theme` est supprimée (issue #30).
 - 16 novembre : le mois courant (accueil, journal) suit le fuseau du membre, Europe/Paris pour un visiteur (issue #33). Branche `dev` par défaut, `main` protégée : seules des PR de release `dev` → `main`, fusionnées par Azzo. Les jalons 11, 13 et 14 sont confiés au pilote automatique (Claude Code en tâche planifiée), avec des décisions prises à l'avance par le conseiller.
 - Jalon 11 « Sorties à venir » : fini le 16 novembre (PR #40 fusionnée dans `dev`). Suivre un artiste, page `/upcoming`, « À venir » sur la fiche artiste, « Bientôt dans tes oreilles », « Les plus attendus », notification « Sortie aujourd'hui » dans le site (section du jalon 11, `docs/sorties.md`).
-- 17 novembre : jalon 13 « Quoi écouter ce soir ? » en cours, confié au pilote, avec les règles retenues par le conseiller (section du jalon 13).
+- Jalon 13 « Quoi écouter ce soir ? » : fini le 17 novembre par le pilote, avec les règles retenues par le conseiller. « Écouter sur… » direct ou en recherche sur les trois fiches, « Tes amis sur ce disque », « Tire un disque » dans « À écouter » (section du jalon 13, `docs/quoi-ecouter.md`).
 
 **Ajouté le 27 octobre** : les sorties à venir des artistes suivis (jalon 11, section dédiée plus bas) et la licence des genres MusicBrainz, à régler avant toute monétisation (section Modèle économique).
 
@@ -123,7 +123,7 @@ Le MVP couvre le cœur Letterboxd — noter, critiquer, tenir son journal, suivr
 2. **Catalogue**
    - Quatre types : artiste, album, EP/single, morceau.
    - Recherche unifiée avec filtres par type, résultats instantanés sur le catalogue déjà connu de Spleen.
-   - Page album : pochette, artistes, date, type, genres, liste des titres, note moyenne et répartition, critiques populaires et de mes amis, listes qui le contiennent, liens « Écouter sur » Spotify, Deezer, Apple Music et YouTube (simples liens de recherche, sans API).
+   - Page album : pochette, artistes, date, type, genres, liste des titres, note moyenne et répartition, critiques populaires et de mes amis, listes qui le contiennent, liens « Écouter sur » Spotify, Deezer, Apple Music, YouTube Music et Bandcamp, sans API : directs quand MusicBrainz connaît la page, sinon de recherche (jalon 13, `docs/quoi-ecouter.md`).
    - Page artiste : discographie par type, note moyenne, morceaux les mieux notés sur Spleen.
    - Bouton « Signaler une erreur / proposer un ajout ».
 3. **Noter, critiquer, journal**
@@ -210,7 +210,7 @@ Limite assumée : ces données viennent des bénévoles de MusicBrainz. Les gros
 
 ## Quoi écouter ce soir ? (jalon 13)
 
-Aider à passer de la fiche à l'écoute, et à choisir quand on ne sait pas quoi mettre. **En cours depuis le 17 novembre**, confié au pilote. Règles ci-dessous = **retenues par le conseiller le 17 novembre** ; détail et décisions de chaque étape : `docs/pilote/decisions.md` (« Décidé par le conseiller ») et `docs/pilote/feuille-de-route.md`. L'étape 1 traite les restes du jalon 11 (section précédente).
+Aider à passer de la fiche à l'écoute, et à choisir quand on ne sait pas quoi mettre. **Fini le 17 novembre** par le pilote. Règles ci-dessous = **retenues par le conseiller le 17 novembre** ; détail et décisions de chaque étape : `docs/pilote/decisions.md` (« Décidé par le conseiller ») et `docs/pilote/feuille-de-route.md`. L'étape 1 traite les restes du jalon 11 (section précédente).
 
 - **Écouter sur…** : sur les fiches album (EP, single), morceau et artiste, cinq services toujours dans cet ordre : Spotify, Deezer, Apple Music, YouTube Music, Bandcamp (remplace les simples liens de recherche prévus au MVP : YouTube Music remplace YouTube, Bandcamp s'ajoute).
   - Lien direct quand MusicBrainz le connaît et qu'il passe la validation ; sinon une recherche « premier artiste + titre » (le nom seul sur une fiche artiste).
@@ -221,6 +221,8 @@ Aider à passer de la fiche à l'écoute, et à choisir quand on ne sait pas quo
 - **Tes amis sur ce disque** : sur la fiche d'un disque seulement (ni morceau, ni artiste). Les membres que je suis qui ont une note ou un cœur sur ce disque, 5 au plus, les plus récents d'abord, puis « Voir tous ». Exclus : comptes bloqués dans un sens ou l'autre, comptes suspendus, membres au journal privé (comme le fil Amis). Section cachée en écoute à l'aveugle tant que je n'ai pas noté le disque, sur un disque pas encore sorti et pour un visiteur.
 - **Tire un disque** : un bouton dans l'onglet « À écouter » de mon profil mène à une page (`/pick`) qui tire au hasard, côté serveur, un disque de ma liste (pas les morceaux), déjà sorti dans mon fuseau. Filtres de type (album, EP, single) et de durée (moins de 30 min, 30 à 60 min, plus d'une heure ; une durée inconnue est exclue dès qu'un filtre de durée est choisi), bouton « Un autre », marche sans JavaScript. Rien n'est enregistré (ni historique ni compteur). Ferme l'issue #31.
 - **Hors périmètre** : connexion aux services de streaming, lecteurs intégrés, extraits, images ou logos de marque, liens affiliés, autres services (Tidal, Qobuz, SoundCloud), tirage dans une liste ou dans tout le catalogue, historique des tirages, amis sur les morceaux, nouveaux textes légaux.
+
+- [x] Quoi écouter ce soir ? : règles retenues par le conseiller le 17 novembre et livrées au jalon 13 : cinq services dans un ordre fixe, liens directs validés et reconstruits sinon recherche, relecture de nuit plafonnée, amis suivis avec une note ou un cœur (5 puis « Voir tous »), tirage côté serveur des disques sortis de « À écouter », rien d'enregistré (`docs/quoi-ecouter.md`).
 
 ## Souvenirs (jalon 14)
 
