@@ -65,7 +65,7 @@ passages) contre 215/132/216/180/223 ; `MEASURE_ONLY=/fr/pick` contre 142 ms ; a
 - [x] cahier
 - [x] `stack-et-limites.md`
 - [x] `CLAUDE.md`
-- [ ] vérifications
-- [ ] relecture 1
+- [x] vérifications
+- [x] relecture 1
 - [ ] relecture 2
-- [ ] clôture
+- [x] clôture

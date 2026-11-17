@@ -43,3 +43,12 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   parcours complet est coupé. Mesures pageMs (plus haut de deux) 231/141/229/193/246 : profil →
   `/discover` +13 ; `/discover` → accueil 246 comme HEAD de l'étape 3 (244). Relecteur : plan
   OK avec corrections, étape OK au 1er tour. Aucune décision nouvelle. Prochaine : étape 5.
+- 2026-11-17 — Étape 5 (passe finale). Commits `020edbf`..HEAD (plan relu, `a845bae` Next
+  16.4.5, `ac53904` `docs/souvenirs.md` et renvois, cahier, `b69637f` `CLAUDE.md`, `9a6aace`
+  mesures, passation). `pnpm check` vert ; e2e complet 274 réussis, 0 échoué, 10 ignorés
+  (teardown « render cancelled » → #34 commentée). Prod sans compte + overflow 116 · 2
+  (`hydration.spec:17`, connu). axe AA 0 sur 18 pages × largeurs. Mesures pageMs : HEAD
+  236/143/236/200/253 → A/B `origin/dev` 238/150/240/196/242 (≤ +11, machine plus lente) ;
+  `vieuxsillons` 211/147/226/198/197 ; `/pick` 137. Relecteur : plan OK avec corrections, étape
+  OK au 1er tour. Décision : Next 16.4.5 plutôt que 16.4.6 (à revoir au jalon 10). Ouvert :
+  phrase de confidentialité à valider. Prochaine : fin du jalon (PR → `dev`, fusion, PR de version).

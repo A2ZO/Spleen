@@ -91,9 +91,20 @@ depuis `dev`. L'étape 1 traite le reste du jalon 13 décidé par Azzo (bouton d
   nouvelle.
 - Appris en route : `EXPLAIN` avec `set local` seulement sur l'URL directe (le pooler refuse
   `SET`) ; script tsx en `.mts` et imports en `file:///C:/…`.
-- **Prochaine : étape 5** (la passe finale) : `docs/souvenirs.md`, renvois, cahier,
-  `docs/stack-et-limites.md`, captures, axe, mesures, `CLAUDE.md`, puis fin de jalon ; détail
-  dans `feuille-de-route.md`, « Étape 5 ».
+- **Étape 5 faite** (17 novembre, pilote) : Next.js 16.4.5 et `eslint-config-next` 16.4.5
+  (sécurité, lockfile limité à `next`, `@next/*`, `eslint-config-next`) ; `docs/souvenirs.md`
+  (règles, cas sans objet, API, écrans, démo, points ouverts dont la phrase de confidentialité) ;
+  renvois depuis `ecoute.md`, `decouverte.md`, `profil-stats.md`, `accounts.md` ; cahier (jalon
+  14 fini, roadmap 11, 13, 14 faits puis 10) ; `stack-et-limites.md` § 3 ; `CLAUDE.md`. axe AA 0
+  sur 18 pages × largeurs ; mesures dans « Mesures de référence ».
+- Décision : 16.4.5 et non 16.4.6 (le brief nomme 16.4.5 ; 16.4.6 à revoir au jalon 10).
+- Appris en route : l'A/B demande `pnpm install --frozen-lockfile` après chaque
+  `git switch` quand la version de Next diffère entre les deux arbres.
+- **Prochaine : fin du jalon** (sections 5 et 6 du skill `pilote`) : Phase A de
+  `fin-de-jalon` (PR `feat/14-souvenirs` → `dev`, « Suite de #31 », phrase de confidentialité
+  proposée, Next 16.4.5, points ouverts de `docs/souvenirs.md`), relecteur sur la PR, contrôle
+  des fichiers contre « Autorisé à la fusion » (migration `0018`, bump Next), fusion si toutes
+  les conditions tiennent, puis PR de version `dev` → `main` en brouillon.
 
 ## Mesures de référence
 
