@@ -4,7 +4,7 @@
 - Branche : feat/14-souvenirs
 - Doc du jalon : docs/jalon-14-en-cours.md
 - Étape : 4
-- Phase : code
+- Phase : verif
 - Mis à jour : 2026-11-17
 
 Phases : `plan` → `code` → `verif` → `cloture`, puis l'étape suivante, sans arrêt entre les
