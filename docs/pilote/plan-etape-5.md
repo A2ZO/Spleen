@@ -29,7 +29,8 @@ Brief : `feuille-de-route.md`, « Étape 5 » (décisions actées). Étapes 1 à
 1. **`docs/souvenirs.md`** (≤ 90 lignes) : règles des trois blocs et du réglage, cas sans objet
    (29 février, groupes vides, visiteur, suspendu), données, API (`memories.home`,
    `discovery.releasedOnThisDay`, `account.setShowMemories`, `lib/memories.ts`, une requête par
-   bloc, listes de jours), écrans, démo, e2e, bouton de l'étape 1, points ouverts. Relire le code
+   bloc, listes de jours), écrans, démo, e2e, bouton de l'étape 1, points ouverts (dont la phrase
+   FR/EN proposée pour la politique de confidentialité, texte exact de `decisions.md`). Relire le code
    pour chaque nom cité.
 2. **Renvois** d'une ligne depuis `ecoute.md`, `decouverte.md`, `profil-stats.md`, `accounts.md`
    (« Souvenirs » dans la liste de `/settings`).
