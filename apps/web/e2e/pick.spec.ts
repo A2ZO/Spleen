@@ -30,13 +30,38 @@ test("a visitor is sent to sign-in", async ({ page }) => {
   await expect(page).toHaveURL(/\/fr\/sign-in/);
 });
 
+// The second button of the member home's lilac block (milestone 14, step 1); visitors keep
+// « Trouver quoi écouter ».
+test("the member home links to the draw, the visitor home to discover", async ({
+  page,
+  browser,
+}, testInfo) => {
+  await signUp(page, testInfo, "Hasard");
+  await page.goto("/fr");
+  const pick = page.getByRole("link", { name: "Tire un disque au hasard", exact: true });
+  await expect(pick).toHaveAttribute("href", "/fr/pick");
+  await pick.click();
+  await expect(page).toHaveURL(/\/fr\/pick$/);
+  await expect(page.getByText("Ta liste « À écouter » est vide.")).toBeVisible();
+
+  const visitor = await browser.newPage({ locale: "fr-FR" });
+  await visitor.goto("/fr");
+  await expect(
+    visitor.getByRole("link", { name: "Tire un disque au hasard", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    visitor.getByRole("link", { name: "Trouver quoi écouter", exact: true }),
+  ).toHaveAttribute("href", "/fr/discover");
+  await visitor.close();
+});
+
 test("a member draws from their list, filters, draws another, even without JavaScript", async ({
   page,
   browser,
 }, testInfo) => {
   const username = await signUp(page, testInfo, "Tireuse");
   const tab = `/fr/u/${username}?tab=to-listen`;
-  const button = page.getByRole("link", { name: "Tire un disque" });
+  const button = page.getByRole("link", { name: "Tire un disque", exact: true });
 
   // Empty list: an invitation, no filters, no button on my tab.
   await page.goto("/fr/pick");
@@ -104,6 +129,10 @@ test.describe("on a phone", () => {
     };
     // The demo record with the longest title, alone in the list.
     const username = await signUp(page, testInfo, "Étroite");
+    // The member home: its lilac block now holds the longer « Tire un disque au hasard ».
+    await page.goto("/fr");
+    await expect(page.getByRole("link", { name: "Tire un disque au hasard" })).toBeVisible();
+    await noOverflow();
     await queue(page, "long-way-to-kestrel-bay");
     await page.goto("/fr/pick");
     await expect(
@@ -112,7 +141,7 @@ test.describe("on a phone", () => {
     await expect(page.getByText(ONLY_ONE)).toBeVisible();
     await noOverflow();
     await page.goto(`/fr/u/${username}?tab=to-listen`);
-    await expect(page.getByRole("link", { name: "Tire un disque" })).toBeVisible();
+    await expect(page.getByRole("link", { name: "Tire un disque", exact: true })).toBeVisible();
     await noOverflow();
   });
 });

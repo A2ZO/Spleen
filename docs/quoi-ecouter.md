@@ -26,7 +26,7 @@ Tirées du cahier des charges (section du jalon 13) ; texte complet et ajustemen
   (album, EP, single) et de durée (moins de 30 min, 30 à 60 min bornes comprises, plus d'une
   heure ; durée inconnue exclue dès qu'un filtre de durée est choisi). « Un autre » évite le
   disque affiché quand il en reste un autre. Rien n'est écrit (ni historique ni compteur).
-  Ferme l'issue #31 ; l'accueil reste inchangé (décision actée, voir les décisions du pilote).
+  Ferme l'issue #31.
 - **Restes du jalon 11** (étape 1, issues #41 et #42) : une notification lue un autre jour dit
   « Sorti le {date} » (`docs/social.md`, « Notifications ») ; un disque pas encore sorti n'a
   pas de moyenne et dit « Les critiques ouvriront le jour de la sortie. » (`docs/ecoute.md`).
@@ -79,7 +79,8 @@ sur… (jalon 13) ».
   `LinkTabs`, `components/pick/PickCard.tsx`, « Un autre » (`AnotherPick.tsx`, formulaire GET,
   `useNavigate` avec JavaScript) ; états liste vide, rien de sorti, aucun ne correspond, un
   seul. Accès : bouton « Tire un disque » dans l'onglet « À écouter » de mon profil, liste non
-  vide.
+  vide ; 2e bouton du bloc lilas de l'accueil membre (« Tire un disque au hasard », jalon 14,
+  étape 1, toujours affiché, suite de #31 ; l'accueil visiteur garde « Trouver quoi écouter »).
 - Démo : `seed/friends.ts` (« Dernier métro pour Belleville », 7 membres suivis par
   `nuitblanche`, 6 visibles), `seed/pick.ts` (6 disques sortis dans « À écouter » de
   `nuitblanche`).
