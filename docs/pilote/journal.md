@@ -32,3 +32,14 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   215/136/231/182/228). Relecteur : OK au premier tour. Décisions : purge e2e des liens dans
   `cleanup.ts`, liens lus par `json_agg`. Ouvert : liens des artiste et morceau jetables qui
   s'accumulent sur Neon `dev`. Prochaine : étape 3.
+
+## 2026-11-17 — étape 3, « Écouter sur… », relecture de nuit
+
+Commits c5ad297..HEAD (`getEditionLinks`, `refreshListenLinks`, `-- --links-only`, docs).
+`pnpm check` vert ; e2e 250 passés, 0 échec, 10 ignorés (1 instabilité au démontage, issue #34).
+Pas d'axe ni de mesures : aucun écran changé. Essais réels sur Neon `dev` : 19 disques, 48 liens,
+1 échec, 148 pour plus tard, puis 8 disques, 21 liens, 1 échec, 140 ; 5 artistes, 14 liens à part.
+Relecteur : corrections au premier tour (capture artiste, passation, risque ci-dessous).
+Décisions : `maxAttempts` 3, 0 édition = `not_found`. Ouvert : un 503 de MusicBrainz arrête la
+phase avant les artistes ; s'il se répète chaque nuit, les artistes ne sont jamais relus.
+Prochaine : étape 4.

@@ -77,4 +77,4 @@ changé : ni build de prod, ni axe, ni mesure).
 
 - [x] 1. réponse réelle · - [x] 2. fournisseur · - [x] 3. écriture partagée · - [x] 4. relecture
 - [x] 5. script · - [x] 6. tests API · - [x] 7. docs · - [x] 8. passage réel · - [x] 9. captures
-- [x] vérifications · - [x] relecture 1 · - [ ] relecture 2 · - [ ] clôture
+- [x] vérifications · - [x] relecture 1 · - [ ] relecture 2 · - [x] clôture
