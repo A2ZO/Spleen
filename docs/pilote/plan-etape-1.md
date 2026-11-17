@@ -50,7 +50,7 @@ Vérifications d'écran :
   compte en prod ; `measure.mjs` deux passages contre la référence.
 ## Avancement
 - [x] 1. API `releaseDay` / `releasedToday` et tests PGlite
-- [ ] 2. Écran des notifications et textes FR/EN
+- [x] 2. Écran des notifications et textes FR/EN
 - [ ] 3. Fiche d'un disque à venir (moyenne, critiques)
 - [ ] 4. e2e
 - [ ] 5. Docs

@@ -9,6 +9,7 @@ import { Cover } from "@/components/ui/Cover";
 import { initRouteLocale, metadataLocale } from "@/i18n/locale";
 import { Link, redirect } from "@/i18n/navigation";
 import { cn } from "@/lib/cn";
+import { formatDayMonth } from "@/lib/release-date";
 import { loadCursorPage } from "@/lib/api-errors";
 import { firstParam, hrefWith, type SearchParams } from "@/lib/search-params";
 import { getApi } from "@/server/api";
@@ -194,6 +195,9 @@ async function ReleaseItem({ group }: { group: NotificationGroup }) {
     release.artists.map((a) => a.name).join(", ");
   const first = group.releases[0];
   if (!first) return null;
+  // Read on another day than its own, the group names its day (« Sorti le 14 novembre »).
+  const pastDay =
+    !group.releasedToday && group.releaseDay ? formatDayMonth(format, group.releaseDay) : null;
 
   if (group.releaseCount === 1) {
     return (
@@ -215,7 +219,8 @@ async function ReleaseItem({ group }: { group: NotificationGroup }) {
         <span className="min-w-0 flex-1">
           <span className="block text-pretty">
             {group.unread && <UnreadMark label={t("unreadLabel")} />}
-            {t.rich("release", {
+            {t.rich(pastDay ? "releasePast" : "release", {
+              date: pastDay ?? "",
               title: first.title,
               artists: artistsOf(first),
               b: (chunks) => <strong className="font-semibold">{chunks}</strong>,
@@ -232,7 +237,9 @@ async function ReleaseItem({ group }: { group: NotificationGroup }) {
     <div className={cn("rounded-card-sm border px-4 py-3 shadow-card", box)}>
       <p className="text-pretty">
         {group.unread && <UnreadMark label={t("unreadLabel")} />}
-        {t("releases", { count: group.releaseCount })}
+        {pastDay
+          ? t("releasesPast", { count: group.releaseCount, date: pastDay })
+          : t("releases", { count: group.releaseCount })}
       </p>
       <ul className="mt-1">
         {group.releases.map((release) => (
