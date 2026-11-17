@@ -54,6 +54,6 @@ relecteur (OK avec corrections, appliquées).
 
 ## Avancement
 
-- [x] 1 doc du domaine · [x] 2 renvois · [x] 3 cahier · [ ] 4 captures · [ ] 5 mesures et
+- [x] 1 doc du domaine · [x] 2 renvois · [x] 3 cahier · [x] 4 captures · [x] 5 mesures et
   specs prod · [x] 6 `CLAUDE.md`
-- [ ] vérifications · [ ] relecture 1 · [ ] relecture 2 · [ ] clôture
+- [x] vérifications · [ ] relecture 1 · [ ] relecture 2 · [ ] clôture

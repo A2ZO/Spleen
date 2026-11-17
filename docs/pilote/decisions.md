@@ -161,3 +161,18 @@ légaux.
   (`phoneCardTitleSize` / `phoneCardLineSize`, `lib/display-title.ts`), la carte partant de
   32 px quand `phoneTitleSize` part de 48/56. La fiche album garde son arrondi. Écarté :
   réutiliser `phoneTitleSize` (tailles plus grandes que celles de la carte).
+- 2026-11-17, étape 6 : captures (build de prod, axe WCAG 2.2 AA : 0 violation, aucun
+  débordement, visiteur et `nuitblanche`). Deux états copiés plutôt que refaits, le code étant
+  inchangé depuis : la liste vide de `/pick` (captures de l'étape 5, compte jetable) et les
+  notifications (étape 1). Le morceau `archangel-burial` n'a que des liens de recherche : aucune
+  fiche morceau de la base de dev n'a de relation URL MusicBrainz. Écarté : importer un morceau
+  pour la capture (écriture dans le catalogue sans besoin).
+- 2026-11-17, étape 6 : mesures (build de prod, pageMs) d'abord 238/146/235/198/247 et
+  233/144/242/195/240 contre 215/136/231/182/228 ; A/B demandé par le plan, même session :
+  `origin/dev` 213/134/215/180/223 et 214/134/220/180/226, HEAD (`d806eee`) 215/129/211/179/223
+  et 213/132/216/180/223 : aucun écart dû au jalon, le premier écart venait de la machine.
+  `/pick` 137/136, référence 142. Specs sans compte + `overflow.spec` sur prod : 116 réussis,
+  2 échoués (`hydration.spec.ts:17`, Brevo factice, déjà connu), 10 ignorés.
+- 2026-11-17, étape 6 : le premier `pnpm build` est sorti en code 1 juste après l'avertissement
+  « Next.js 16.4.2 affected by a known security vulnerability » ; le second a réussi. Aucune
+  montée de dépendance permise dans le jalon : point ouvert pour Azzo dans la PR.
