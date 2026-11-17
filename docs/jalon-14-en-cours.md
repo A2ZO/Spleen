@@ -117,6 +117,11 @@ depuis `dev`. L'étape 1 traite le reste du jalon 13 décidé par Azzo (bouton d
 - Étape 4 (17 novembre, build de prod, `nuitblanche`, pageMs, plus haut de deux passages) :
   231/141/229/193/246 ms ; profil → `/discover` +13 (dans les 20 ms) ; `/discover` → accueil
   246, comme HEAD à l'étape 3 (244), l'accueil ne change pas à cette étape.
+- Étape 5, fin du jalon (17 novembre, build de prod, Next 16.4.5, pageMs, plus haut de deux
+  passages) : `nuitblanche` 236/143/236/200/253 ms, au-delà des 20 ms sur deux pages → A/B même
+  session : `origin/dev` (6171a21, Next 16.4.2) 238/150/240/196/242 ms, écart ≤ +11 : pas de
+  régression (machine plus lente). `vieuxsillons` 211/147/226/198/197 ms (≤ +19 sur sa
+  référence) ; `/pick` 137 ms (référence 142).
 - Pour mémoire, l'ancienne référence (fin du jalon 11) : 215 / 136 / 231 / 182 / 228 ms.
 - `/pick` (`MEASURE_ONLY=/fr/pick`, build de prod, `nuitblanche`) : 137 / 136 ms en fin de
   jalon 13, référence **142 ms**.

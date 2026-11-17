@@ -204,6 +204,16 @@ du jalon (`docs/jalon-13-en-cours.md`).
 - Les liens d'écoute se lisent avec la fiche (sous-requête `json_agg`, aucune requête de plus) ;
   « Tes amis sur ce disque » part dans la première vague de la fiche album.
 
+### Mesure : souvenirs (jalon 14)
+
+- Une requête par bloc : `memories.home` (`union all`, première vague de l'accueil),
+  `discovery.releasedOnThisDay` (dans le `Promise.all` de `/discover`). Aucun index nouveau : les
+  dates sont comparées à une liste de jours (`in (…)`), servie par les index existants.
+- Fin du jalon (build de prod, Next 16.4.5, `nuitblanche`, pageMs, plus haut de deux passages,
+  A/B même session) : `origin/dev` 238/150/240/196/242, HEAD 236/143/236/200/253 ms (+11 au plus,
+  machine plus lente que la référence). Accueil avec souvenirs (`vieuxsillons`) 211/147/226/198/197
+  ms ; `/pick` 137 ms. Aucun écart dû au jalon.
+
 ### Tableau des seuils
 
 | Service | Limite gratuite | Ce qui la consomme | Casse vers… (estimation) | Ce qui se passe | Sortie |
