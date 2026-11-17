@@ -21,6 +21,7 @@ booléens comme « commence par postgres:// », « contient -pooler »).
 | `DATABASE_URL_UNPOOLED`                     | URL Neon **directe**                | migrations, seed, drizzle-kit     |
 | `DATABASE_URL` absente                      | → PGlite dans `.data/pglite`        | repli local hors ligne            |
 | `NEON_MAIN_HOST`                            | hôte (ou `ep-…`) de la base du site en ligne | garde-fou du nettoyage e2e        |
+| `SPLEEN_VITRINE`                            | `1` dans la vitrine seulement                | garde-fous de la vitrine (ci-dessous) |
 | `SERVICE_WORKER_DISABLED`                   | `1` en cas d'urgence seulement               | retire le service worker (ci-dessous) |
 | `SPLEEN_QUERY_TRACE`                        | `1` en dev seulement (jamais en ligne)       | traçage SQL de la mesure (ci-dessous) |
 | `BETTER_AUTH_SECRET` / `BETTER_AUTH_URL`    | 32+ caractères / URL publique       | Better Auth                       |
@@ -112,6 +113,29 @@ En local : DevTools › Application › Service workers › Unregister, ou « Cl
 - Migrations : `0000_search_extensions.sql` est écrite à la main (pg_trgm, unaccent et
   l'enveloppe `immutable_unaccent()` des index de recherche) ; le reste est généré par
   drizzle-kit.
+
+## Vitrine (données réelles)
+
+- La vitrine = Spleen avec **uniquement des données réelles** (catalogue MusicBrainz et
+  Cover Art Archive, vrais comptes), pour voir le site tel qu'il sera. Branche Neon
+  `vitrine`, worktree `../Spleen-vitrine`, port **3001** ; la branche `dev` (dossier
+  principal, port 3000) reste celle de la démo et des tests (pilote, e2e, mesures).
+- Son `.env` est une copie de celui du dossier principal avec les URL de la branche
+  `vitrine` dans `DATABASE_URL` / `DATABASE_URL_UNPOOLED`, `SPLEEN_VITRINE=1` et
+  `BETTER_AUTH_URL=http://localhost:3001`.
+- Lancer : `pnpm vitrine` dans `../Spleen-vitrine` (`scripts/vitrine.mjs`). Sans
+  changement local, il passe le dossier sur le dernier `dev` (`git switch --detach
+  origin/dev`), puis `pnpm install --frozen-lockfile`, `pnpm db:migrate` et le site sur
+  le port 3001. Il refuse le dossier principal et un `.env` sans `SPLEEN_VITRINE=1`.
+- Garde-fous (`SPLEEN_VITRINE=1`) : `db:seed`, `db:reset`, le nettoyage e2e et
+  Playwright refusent de tourner. Remplir le catalogue : `pnpm db:seed:catalog`,
+  `pnpm catalog:refresh`.
+- `pnpm db:clean-demo` (`packages/db/src/clean-demo.ts`), vitrine seulement (refuse
+  `NEON_MAIN_HOST` et `NODE_ENV=production`) : supprime les comptes `@example.test`
+  avec leurs données, puis les fiches du seed (`fixtureId()`) et les fiches jetables des
+  e2e (slug `e2e-…`), toujours sans MBID. Sans `--yes`, compte les lignes par table
+  (transaction annulée) ; `--with-member-rows` supprime aussi ce qu'un vrai membre a noté
+  sur ces fiches (sinon il refuse).
 
 ## CI
 

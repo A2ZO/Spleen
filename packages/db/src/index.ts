@@ -14,8 +14,9 @@ export {
   neonEndpointId,
   unsafeE2eDatabase,
 } from "./e2e";
+export { cleanDemo, cleanDemoRefusal, type CleanDemoResult } from "./clean-demo";
 export { setAdminRole, type AdminRoleResult } from "./admin";
-export { loadRootEnv, rootEnvFile } from "./env";
+export { isVitrine, loadRootEnv, rootEnvFile, vitrineRefusal } from "./env";
 export { rowsOf } from "./rows";
 export { queryTraceEnabled, takeQueryTrace, type TracedQuery } from "./trace";
 export {

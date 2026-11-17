@@ -47,6 +47,8 @@ $env:PLAYWRIGHT_CHANNEL="chrome"; pnpm e2e     # Playwright with the installed C
 ```
 
 CI, e2e cleanup guard, env vars and database details: `docs/environnement.md`.
+Vitrine = Neon branch `vitrine`, real data only, worktree `../Spleen-vitrine`, port 3001,
+`pnpm vitrine` (`SPLEEN_VITRINE=1`: no seed, reset or e2e; `pnpm db:clean-demo`); `dev` = demo and tests.
 
 ## Environment and database
 

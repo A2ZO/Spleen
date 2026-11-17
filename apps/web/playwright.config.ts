@@ -1,4 +1,11 @@
 import { defineConfig, devices } from "@playwright/test";
+import { loadRootEnv, vitrineRefusal } from "@spleen/db/env";
+
+// The vitrine (`SPLEEN_VITRINE=1`) holds real data only: the suite creates accounts and
+// throwaway records, so it never runs there.
+loadRootEnv();
+const vitrine = vitrineRefusal("Playwright");
+if (vitrine) throw new Error(vitrine);
 
 // Same port as `pnpm dev`: Next allows one dev server per app, so a running one is reused.
 const PORT = 3000;
