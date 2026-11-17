@@ -3,7 +3,8 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
-import { eq, rowsOf, schema, sql, type DbHandle } from "@spleen/db";
+import { eq, rowsOf, schema, seed, sql, type DbHandle } from "@spleen/db";
+import { fixtureId } from "@spleen/db/fixtures";
 import { createTestDb } from "@spleen/db/testing";
 import { createLocalStorage } from "@spleen/infra/storage";
 import { TRPCError } from "@trpc/server";
@@ -498,5 +499,54 @@ describe("account.setShowMemories", () => {
     expect(await errorCode(() => api(fresh).account.setShowMemories({ enabled: false }))).toBe(
       "PROFILE_REQUIRED",
     );
+  });
+});
+
+describe("memories.home on the demo seed", () => {
+  let demo: DbHandle;
+  const suzanne: SessionUser = { id: fixtureId(48_100), email: "vieuxsillons@example.test" };
+  const home = (at: Date) =>
+    createCaller(
+      createContext({ now: at, db: () => demo.db, user: async () => suzanne, storage }),
+    ).memories.home();
+
+  beforeAll(async () => {
+    demo = await createTestDb();
+    await seed(demo.db, { now });
+  }, 120_000);
+
+  afterAll(async () => {
+    await demo.close();
+  });
+
+  it("shows Suzanne's year-ago listens and today's anniversaries", async () => {
+    const memories = await home(now);
+    expect(memories?.listens?.yearsAgo).toBe(1);
+    expect(memories?.listens?.day).toBe("2025-11-17");
+    expect(memories?.listens?.releases.map((r) => r.title)).toEqual([
+      "Paper Boats",
+      "Carnet de bord",
+    ]);
+    expect(memories?.anniversaries.map((a) => [a.release.title, a.years, a.round])).toEqual([
+      ["Les jours ralentis", 30, true],
+      ["Harbour Postcards", 10, true],
+      ["Petit matin, gare de l'Est", 7, false],
+    ]);
+  });
+
+  it("moves to multiples of 4 on a 29 February, F staying older", async () => {
+    const leap = new Date("2028-02-29T12:00:00Z");
+    await seed(demo.db, { now: leap });
+    const memories = await home(leap);
+    expect(memories?.listens?.day).toBe("2024-02-29");
+    expect(memories?.listens?.releases.map((r) => r.title)).toEqual([
+      "Paper Boats",
+      "Carnet de bord",
+    ]);
+    expect(memories?.anniversaries.map((a) => [a.release.title, a.years])).toEqual([
+      ["Les jours ralentis", 32],
+      ["Harbour Postcards", 12],
+      ["Petit matin, gare de l'Est", 8],
+    ]);
   });
 });
