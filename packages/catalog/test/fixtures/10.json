@@ -1,0 +1,5029 @@
+{
+  "secondary-types": [],
+  "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
+  "primary-type": "Album",
+  "disambiguation": "",
+  "releases": [
+    {
+      "disambiguation": "translucent black vinyl",
+      "title": "BRAT",
+      "quality": "normal",
+      "release-events": [
+        {
+          "date": "2024-06-07",
+          "area": {
+            "id": "71bbafaa-e825-3e15-8ca9-017dcad1748b",
+            "iso-3166-1-codes": [
+              "CA"
+            ],
+            "sort-name": "Canada",
+            "type": null,
+            "disambiguation": "",
+            "name": "Canada",
+            "type-id": null
+          }
+        },
+        {
+          "date": "2024-06-07",
+          "area": {
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed",
+            "sort-name": "United Kingdom",
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "type": null,
+            "name": "United Kingdom",
+            "disambiguation": "",
+            "type-id": null
+          }
+        },
+        {
+          "area": {
+            "type": null,
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": ""
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "barcode": "075678611674",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "artist": {
+            "sort-name": "Charli xcx",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "art pop",
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14"
+              },
+              {
+                "name": "avant-garde pop",
+                "disambiguation": "",
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1
+              },
+              {
+                "name": "bubblegum bass",
+                "disambiguation": "",
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2
+              },
+              {
+                "name": "dance",
+                "disambiguation": "",
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "count": 1
+              },
+              {
+                "name": "dance-pop",
+                "disambiguation": "",
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12
+              },
+              {
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "disambiguation": "",
+                "name": "deconstructed club"
+              },
+              {
+                "name": "electroclash",
+                "disambiguation": "",
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2
+              },
+              {
+                "name": "electronic",
+                "disambiguation": "",
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11
+              },
+              {
+                "count": 1,
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "disambiguation": "",
+                "name": "electronica"
+              },
+              {
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18,
+                "name": "electropop",
+                "disambiguation": ""
+              },
+              {
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1,
+                "name": "europop",
+                "disambiguation": ""
+              },
+              {
+                "name": "experimental hip hop",
+                "disambiguation": "",
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1
+              },
+              {
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1,
+                "name": "grime",
+                "disambiguation": ""
+              },
+              {
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1,
+                "name": "hip hop",
+                "disambiguation": ""
+              },
+              {
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1,
+                "name": "house",
+                "disambiguation": ""
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1,
+                "name": "indie pop",
+                "disambiguation": ""
+              },
+              {
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1,
+                "name": "new jack swing",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "disambiguation": "",
+                "name": "new wave"
+              },
+              {
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8,
+                "name": "pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "pop punk",
+                "disambiguation": "",
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1
+              },
+              {
+                "name": "synth-pop",
+                "disambiguation": "",
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "type": "Person",
+            "country": "GB",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          },
+          "name": "Charli xcx"
+        }
+      ],
+      "genres": [],
+      "id": "4b4698bd-25c7-4635-96e2-178ae2d5cd3b",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "date": "2024-06-07",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "CA",
+      "packaging": "Gatefold Cover",
+      "status": "Official"
+    },
+    {
+      "country": "XE",
+      "packaging": "Jewel Case",
+      "status": "Official",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+      "date": "2024-06-07",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "title": "BRAT",
+      "quality": "normal",
+      "release-events": [
+        {
+          "date": "2024-06-07",
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "name": "Europe",
+            "type": null,
+            "id": "89a675c2-3e37-3518-b83c-418bad59a85a",
+            "sort-name": "Europe",
+            "iso-3166-1-codes": [
+              "XE"
+            ]
+          }
+        }
+      ],
+      "barcode": "075678611698",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "joinphrase": "",
+          "artist": {
+            "sort-name": "Charli xcx",
+            "genres": [
+              {
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "disambiguation": "",
+                "name": "art pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "avant-garde pop",
+                "count": 1,
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac"
+              },
+              {
+                "disambiguation": "",
+                "name": "bubblegum bass",
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de"
+              },
+              {
+                "disambiguation": "",
+                "name": "dance",
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33"
+              },
+              {
+                "disambiguation": "",
+                "name": "dance-pop",
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8"
+              },
+              {
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "disambiguation": "",
+                "name": "deconstructed club"
+              },
+              {
+                "name": "electroclash",
+                "disambiguation": "",
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2
+              },
+              {
+                "name": "electronic",
+                "disambiguation": "",
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11
+              },
+              {
+                "count": 1,
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "disambiguation": "",
+                "name": "electronica"
+              },
+              {
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "disambiguation": "",
+                "name": "electropop"
+              },
+              {
+                "count": 1,
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "disambiguation": "",
+                "name": "europop"
+              },
+              {
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "disambiguation": "",
+                "name": "experimental hip hop"
+              },
+              {
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1,
+                "name": "grime",
+                "disambiguation": ""
+              },
+              {
+                "name": "hip hop",
+                "disambiguation": "",
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1
+              },
+              {
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "disambiguation": "",
+                "name": "house"
+              },
+              {
+                "name": "hyperpop",
+                "disambiguation": "",
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "count": 13
+              },
+              {
+                "count": 1,
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "disambiguation": "",
+                "name": "indie pop"
+              },
+              {
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1,
+                "name": "new jack swing",
+                "disambiguation": ""
+              },
+              {
+                "name": "new wave",
+                "disambiguation": "",
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1
+              },
+              {
+                "name": "pop",
+                "disambiguation": "",
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8
+              },
+              {
+                "disambiguation": "",
+                "name": "pop punk",
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab"
+              },
+              {
+                "name": "synth-pop",
+                "disambiguation": "",
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "country": "GB",
+            "type": "Person",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          }
+        }
+      ],
+      "id": "9f7a7091-22b3-4fc7-b9aa-ebbed8ca5518",
+      "genres": [
+        {
+          "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+          "count": 1,
+          "name": "dance-pop",
+          "disambiguation": ""
+        },
+        {
+          "disambiguation": "",
+          "name": "edm",
+          "count": 1,
+          "id": "3976e9ba-16d0-461d-b732-99408a0374ba"
+        },
+        {
+          "name": "electro house",
+          "disambiguation": "",
+          "id": "05247982-e44f-4c58-96f8-a5453be69f5f",
+          "count": 1
+        },
+        {
+          "name": "electroclash",
+          "disambiguation": "",
+          "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+          "count": 1
+        },
+        {
+          "disambiguation": "",
+          "name": "electronic",
+          "count": 1,
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4"
+        },
+        {
+          "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+          "count": 1,
+          "name": "electropop",
+          "disambiguation": ""
+        },
+        {
+          "name": "hyperpop",
+          "disambiguation": "",
+          "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+          "count": 2
+        },
+        {
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "count": 1,
+          "name": "pop",
+          "disambiguation": ""
+        }
+      ],
+      "disambiguation": ""
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2024-06-07",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+      "packaging": "Jewel Case",
+      "status": "Official",
+      "country": "US",
+      "disambiguation": "signed",
+      "genres": [],
+      "id": "06272341-cea9-42ad-9b0c-6ec47954417c",
+      "barcode": "075678607516",
+      "release-events": [
+        {
+          "date": "2024-06-07",
+          "area": {
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type": null,
+            "name": "United States",
+            "disambiguation": "",
+            "type-id": null
+          }
+        }
+      ],
+      "quality": "normal",
+      "title": "BRAT",
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "joinphrase": "",
+          "artist": {
+            "genres": [
+              {
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1,
+                "name": "art pop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "avant-garde pop",
+                "count": 1,
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac"
+              },
+              {
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2,
+                "name": "bubblegum bass",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "name": "dance-pop",
+                "disambiguation": "",
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12
+              },
+              {
+                "name": "deconstructed club",
+                "disambiguation": "",
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "electroclash",
+                "count": 2,
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d"
+              },
+              {
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11,
+                "name": "electronic",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "electronica",
+                "count": 1,
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5"
+              },
+              {
+                "disambiguation": "",
+                "name": "electropop",
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4"
+              },
+              {
+                "disambiguation": "",
+                "name": "europop",
+                "count": 1,
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d"
+              },
+              {
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1,
+                "name": "experimental hip hop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "disambiguation": "",
+                "name": "grime"
+              },
+              {
+                "name": "hip hop",
+                "disambiguation": "",
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1
+              },
+              {
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "disambiguation": "",
+                "name": "house"
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1,
+                "name": "indie pop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "disambiguation": "",
+                "name": "new jack swing"
+              },
+              {
+                "name": "new wave",
+                "disambiguation": "",
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1
+              },
+              {
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8,
+                "name": "pop",
+                "disambiguation": ""
+              },
+              {
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1,
+                "name": "pop punk",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "synth-pop",
+                "count": 10,
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac"
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "sort-name": "Charli xcx",
+            "type": "Person",
+            "country": "GB",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          }
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      }
+    },
+    {
+      "barcode": "075678608858",
+      "release-events": [
+        {
+          "date": "2024-06-07",
+          "area": {
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": "",
+            "type": null,
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98"
+          }
+        }
+      ],
+      "title": "BRAT",
+      "quality": "normal",
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "joinphrase": "",
+          "artist": {
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "sort-name": "Charli xcx",
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "genres": [
+              {
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "disambiguation": "",
+                "name": "art pop"
+              },
+              {
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1,
+                "name": "avant-garde pop",
+                "disambiguation": ""
+              },
+              {
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "disambiguation": "",
+                "name": "bubblegum bass"
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "disambiguation": "",
+                "name": "dance-pop",
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8"
+              },
+              {
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1,
+                "name": "deconstructed club",
+                "disambiguation": ""
+              },
+              {
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2,
+                "name": "electroclash",
+                "disambiguation": ""
+              },
+              {
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11,
+                "name": "electronic",
+                "disambiguation": ""
+              },
+              {
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1,
+                "name": "electronica",
+                "disambiguation": ""
+              },
+              {
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18,
+                "name": "electropop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "europop",
+                "count": 1,
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d"
+              },
+              {
+                "disambiguation": "",
+                "name": "experimental hip hop",
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de"
+              },
+              {
+                "name": "grime",
+                "disambiguation": "",
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1
+              },
+              {
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1,
+                "name": "hip hop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "disambiguation": "",
+                "name": "house"
+              },
+              {
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "count": 13,
+                "name": "hyperpop",
+                "disambiguation": ""
+              },
+              {
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1,
+                "name": "indie pop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "new jack swing",
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397"
+              },
+              {
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1,
+                "name": "new wave",
+                "disambiguation": ""
+              },
+              {
+                "name": "pop",
+                "disambiguation": "",
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8
+              },
+              {
+                "disambiguation": "",
+                "name": "pop punk",
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab"
+              },
+              {
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10,
+                "name": "synth-pop",
+                "disambiguation": ""
+              }
+            ],
+            "type": "Person",
+            "country": "GB"
+          }
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "id": "8b3b6e9c-4ecc-404a-ab2f-79830dba03e2",
+      "genres": [],
+      "disambiguation": "",
+      "country": "US",
+      "packaging": "Plastic Sleeve",
+      "status": "Official",
+      "date": "2024-06-07",
+      "packaging-id": "bf996342-d111-4d37-b9d6-d759f0787533",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2024-06-07",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "status": "Official",
+      "packaging": "Gatefold Cover",
+      "country": "US",
+      "disambiguation": "red picture disc",
+      "genres": [],
+      "id": "e770aa7f-12d8-4c8d-82c3-c5937164851d",
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "artist": {
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "sort-name": "Charli xcx",
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "genres": [
+              {
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1,
+                "name": "art pop",
+                "disambiguation": ""
+              },
+              {
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1,
+                "name": "avant-garde pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "bubblegum bass",
+                "disambiguation": "",
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2
+              },
+              {
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "count": 1,
+                "name": "dance",
+                "disambiguation": ""
+              },
+              {
+                "name": "dance-pop",
+                "disambiguation": "",
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12
+              },
+              {
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1,
+                "name": "deconstructed club",
+                "disambiguation": ""
+              },
+              {
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2,
+                "name": "electroclash",
+                "disambiguation": ""
+              },
+              {
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11,
+                "name": "electronic",
+                "disambiguation": ""
+              },
+              {
+                "name": "electronica",
+                "disambiguation": "",
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1
+              },
+              {
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18,
+                "name": "electropop",
+                "disambiguation": ""
+              },
+              {
+                "name": "europop",
+                "disambiguation": "",
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1
+              },
+              {
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "disambiguation": "",
+                "name": "experimental hip hop"
+              },
+              {
+                "count": 1,
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "disambiguation": "",
+                "name": "grime"
+              },
+              {
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1,
+                "name": "hip hop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "disambiguation": "",
+                "name": "house"
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "count": 1,
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "disambiguation": "",
+                "name": "indie pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "new jack swing",
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397"
+              },
+              {
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "disambiguation": "",
+                "name": "new wave"
+              },
+              {
+                "disambiguation": "",
+                "name": "pop",
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791"
+              },
+              {
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1,
+                "name": "pop punk",
+                "disambiguation": ""
+              },
+              {
+                "count": 10,
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "disambiguation": "",
+                "name": "synth-pop"
+              }
+            ],
+            "type": "Person",
+            "country": "GB"
+          },
+          "joinphrase": ""
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "release-events": [
+        {
+          "area": {
+            "name": "United States",
+            "disambiguation": "",
+            "type-id": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type": null
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "barcode": "075678608865",
+      "quality": "normal",
+      "title": "BRAT"
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "date": "2024-06-07",
+      "packaging": "Gatefold Cover",
+      "status": "Official",
+      "country": "US",
+      "disambiguation": "Target exclusive",
+      "genres": [],
+      "id": "ae27a851-e9d8-44ad-996b-0a980bfde22b",
+      "quality": "normal",
+      "title": "BRAT",
+      "release-events": [
+        {
+          "area": {
+            "type": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "disambiguation": "",
+            "name": "United States"
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "barcode": "075678609268",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "artist": {
+            "sort-name": "Charli xcx",
+            "genres": [
+              {
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "disambiguation": "",
+                "name": "art pop"
+              },
+              {
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1,
+                "name": "avant-garde pop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "bubblegum bass",
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de"
+              },
+              {
+                "disambiguation": "",
+                "name": "dance",
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33"
+              },
+              {
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12,
+                "name": "dance-pop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "deconstructed club",
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b"
+              },
+              {
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2,
+                "name": "electroclash",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "electronic",
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4"
+              },
+              {
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1,
+                "name": "electronica",
+                "disambiguation": ""
+              },
+              {
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18,
+                "name": "electropop",
+                "disambiguation": ""
+              },
+              {
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1,
+                "name": "europop",
+                "disambiguation": ""
+              },
+              {
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1,
+                "name": "experimental hip hop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "disambiguation": "",
+                "name": "grime"
+              },
+              {
+                "disambiguation": "",
+                "name": "hip hop",
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c"
+              },
+              {
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1,
+                "name": "house",
+                "disambiguation": ""
+              },
+              {
+                "name": "hyperpop",
+                "disambiguation": "",
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "count": 13
+              },
+              {
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1,
+                "name": "indie pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "new jack swing",
+                "disambiguation": "",
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "new wave",
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb"
+              },
+              {
+                "disambiguation": "",
+                "name": "pop",
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791"
+              },
+              {
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "disambiguation": "",
+                "name": "pop punk"
+              },
+              {
+                "count": 10,
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "disambiguation": "",
+                "name": "synth-pop"
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "country": "GB",
+            "type": "Person",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          },
+          "joinphrase": ""
+        }
+      ]
+    },
+    {
+      "country": "US",
+      "packaging": "Gatefold Cover",
+      "status": "Official",
+      "date": "2024-06-07",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "barcode": "075678609282",
+      "release-events": [
+        {
+          "area": {
+            "type": null,
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "disambiguation": "",
+            "name": "United States"
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "title": "BRAT",
+      "quality": "normal",
+      "artist-credit": [
+        {
+          "artist": {
+            "genres": [
+              {
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "disambiguation": "",
+                "name": "art pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "avant-garde pop",
+                "count": 1,
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac"
+              },
+              {
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "disambiguation": "",
+                "name": "bubblegum bass"
+              },
+              {
+                "name": "dance",
+                "disambiguation": "",
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "dance-pop",
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8"
+              },
+              {
+                "disambiguation": "",
+                "name": "deconstructed club",
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b"
+              },
+              {
+                "count": 2,
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "disambiguation": "",
+                "name": "electroclash"
+              },
+              {
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "disambiguation": "",
+                "name": "electronic"
+              },
+              {
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1,
+                "name": "electronica",
+                "disambiguation": ""
+              },
+              {
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18,
+                "name": "electropop",
+                "disambiguation": ""
+              },
+              {
+                "name": "europop",
+                "disambiguation": "",
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "experimental hip hop",
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de"
+              },
+              {
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1,
+                "name": "grime",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "disambiguation": "",
+                "name": "hip hop"
+              },
+              {
+                "disambiguation": "",
+                "name": "house",
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3"
+              },
+              {
+                "disambiguation": "",
+                "name": "hyperpop",
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56"
+              },
+              {
+                "name": "indie pop",
+                "disambiguation": "",
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1
+              },
+              {
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1,
+                "name": "new jack swing",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "disambiguation": "",
+                "name": "new wave"
+              },
+              {
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "disambiguation": "",
+                "name": "pop"
+              },
+              {
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1,
+                "name": "pop punk",
+                "disambiguation": ""
+              },
+              {
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10,
+                "name": "synth-pop",
+                "disambiguation": ""
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "sort-name": "Charli xcx",
+            "type": "Person",
+            "country": "GB",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          },
+          "joinphrase": "",
+          "name": "Charli xcx"
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "genres": [],
+      "id": "c7bf41e6-c03c-428b-8a03-5ed418f2ed69",
+      "disambiguation": "360_brat exclusive"
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "date": "2024-06-07",
+      "status": "Official",
+      "packaging": "Gatefold Cover",
+      "country": "US",
+      "disambiguation": "green picture disc",
+      "id": "0aa87f3e-a91a-4355-ad9e-6d60be378841",
+      "genres": [],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "joinphrase": "",
+          "artist": {
+            "sort-name": "Charli xcx",
+            "genres": [
+              {
+                "name": "art pop",
+                "disambiguation": "",
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "avant-garde pop",
+                "count": 1,
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac"
+              },
+              {
+                "name": "bubblegum bass",
+                "disambiguation": "",
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2
+              },
+              {
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "count": 1,
+                "name": "dance",
+                "disambiguation": ""
+              },
+              {
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12,
+                "name": "dance-pop",
+                "disambiguation": ""
+              },
+              {
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1,
+                "name": "deconstructed club",
+                "disambiguation": ""
+              },
+              {
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2,
+                "name": "electroclash",
+                "disambiguation": ""
+              },
+              {
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "disambiguation": "",
+                "name": "electronic"
+              },
+              {
+                "disambiguation": "",
+                "name": "electronica",
+                "count": 1,
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5"
+              },
+              {
+                "disambiguation": "",
+                "name": "electropop",
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4"
+              },
+              {
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1,
+                "name": "europop",
+                "disambiguation": ""
+              },
+              {
+                "name": "experimental hip hop",
+                "disambiguation": "",
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1
+              },
+              {
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1,
+                "name": "grime",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "disambiguation": "",
+                "name": "hip hop"
+              },
+              {
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "disambiguation": "",
+                "name": "house"
+              },
+              {
+                "name": "hyperpop",
+                "disambiguation": "",
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "count": 13
+              },
+              {
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1,
+                "name": "indie pop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "disambiguation": "",
+                "name": "new jack swing"
+              },
+              {
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "disambiguation": "",
+                "name": "new wave"
+              },
+              {
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "disambiguation": "",
+                "name": "pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "pop punk",
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab"
+              },
+              {
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10,
+                "name": "synth-pop",
+                "disambiguation": ""
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "type": "Person",
+            "country": "GB",
+            "name": "Charli xcx",
+            "disambiguation": "",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          }
+        }
+      ],
+      "quality": "normal",
+      "title": "BRAT",
+      "barcode": "075678609299",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": "",
+            "type": null,
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ]
+          },
+          "date": "2024-06-07"
+        }
+      ]
+    },
+    {
+      "packaging": "Gatefold Cover",
+      "status": "Official",
+      "country": "US",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "date": "2024-06-07",
+      "genres": [],
+      "id": "576cf2ca-81ec-48ed-8038-e2fe2deded4f",
+      "title": "BRAT",
+      "quality": "normal",
+      "barcode": "075678609312",
+      "release-events": [
+        {
+          "date": "2024-06-07",
+          "area": {
+            "type": null,
+            "sort-name": "United States",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "type-id": null,
+            "disambiguation": "",
+            "name": "United States"
+          }
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "joinphrase": "",
+          "artist": {
+            "country": "GB",
+            "type": "Person",
+            "genres": [
+              {
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1,
+                "name": "art pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "avant-garde pop",
+                "disambiguation": "",
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1
+              },
+              {
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2,
+                "name": "bubblegum bass",
+                "disambiguation": ""
+              },
+              {
+                "name": "dance",
+                "disambiguation": "",
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "count": 1
+              },
+              {
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12,
+                "name": "dance-pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "deconstructed club",
+                "disambiguation": "",
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1
+              },
+              {
+                "count": 2,
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "disambiguation": "",
+                "name": "electroclash"
+              },
+              {
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "disambiguation": "",
+                "name": "electronic"
+              },
+              {
+                "name": "electronica",
+                "disambiguation": "",
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1
+              },
+              {
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "disambiguation": "",
+                "name": "electropop"
+              },
+              {
+                "count": 1,
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "disambiguation": "",
+                "name": "europop"
+              },
+              {
+                "name": "experimental hip hop",
+                "disambiguation": "",
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1
+              },
+              {
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1,
+                "name": "grime",
+                "disambiguation": ""
+              },
+              {
+                "name": "hip hop",
+                "disambiguation": "",
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1
+              },
+              {
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "disambiguation": "",
+                "name": "house"
+              },
+              {
+                "disambiguation": "",
+                "name": "hyperpop",
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56"
+              },
+              {
+                "count": 1,
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "disambiguation": "",
+                "name": "indie pop"
+              },
+              {
+                "name": "new jack swing",
+                "disambiguation": "",
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1
+              },
+              {
+                "name": "new wave",
+                "disambiguation": "",
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "pop",
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791"
+              },
+              {
+                "disambiguation": "",
+                "name": "pop punk",
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab"
+              },
+              {
+                "name": "synth-pop",
+                "disambiguation": "",
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "sort-name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Charli xcx",
+            "disambiguation": ""
+          }
+        }
+      ],
+      "disambiguation": "blue picture disc"
+    },
+    {
+      "disambiguation": "",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "joinphrase": "",
+          "artist": {
+            "sort-name": "Charli xcx",
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "genres": [
+              {
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1,
+                "name": "art pop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "disambiguation": "",
+                "name": "avant-garde pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "bubblegum bass",
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de"
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "disambiguation": "",
+                "name": "dance-pop"
+              },
+              {
+                "name": "deconstructed club",
+                "disambiguation": "",
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1
+              },
+              {
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2,
+                "name": "electroclash",
+                "disambiguation": ""
+              },
+              {
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11,
+                "name": "electronic",
+                "disambiguation": ""
+              },
+              {
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1,
+                "name": "electronica",
+                "disambiguation": ""
+              },
+              {
+                "name": "electropop",
+                "disambiguation": "",
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18
+              },
+              {
+                "disambiguation": "",
+                "name": "europop",
+                "count": 1,
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d"
+              },
+              {
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "disambiguation": "",
+                "name": "experimental hip hop"
+              },
+              {
+                "disambiguation": "",
+                "name": "grime",
+                "count": 1,
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c"
+              },
+              {
+                "name": "hip hop",
+                "disambiguation": "",
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1
+              },
+              {
+                "name": "house",
+                "disambiguation": "",
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "hyperpop",
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56"
+              },
+              {
+                "disambiguation": "",
+                "name": "indie pop",
+                "count": 1,
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2"
+              },
+              {
+                "disambiguation": "",
+                "name": "new jack swing",
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397"
+              },
+              {
+                "name": "new wave",
+                "disambiguation": "",
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1
+              },
+              {
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "disambiguation": "",
+                "name": "pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "pop punk",
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab"
+              },
+              {
+                "disambiguation": "",
+                "name": "synth-pop",
+                "count": 10,
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac"
+              }
+            ],
+            "type": "Person",
+            "country": "GB",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          }
+        }
+      ],
+      "quality": "normal",
+      "title": "BRAT",
+      "barcode": "075678611681",
+      "release-events": [
+        {
+          "date": "2024-06-07",
+          "area": {
+            "disambiguation": "",
+            "name": "United States",
+            "type-id": null,
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "type": null
+          }
+        }
+      ],
+      "id": "97b69f53-5b37-4b94-856b-8fa32063310a",
+      "genres": [],
+      "packaging-id": "c70b737a-0114-39a9-88f7-82843e54f906",
+      "date": "2024-06-07",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "US",
+      "status": "Official",
+      "packaging": "Cassette Case"
+    },
+    {
+      "disambiguation": "",
+      "id": "82082eb8-19a0-4957-9a99-e8fda1bb6b88",
+      "genres": [
+        {
+          "count": 1,
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "disambiguation": "",
+          "name": "pop"
+        }
+      ],
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "artist": {
+            "country": "GB",
+            "type": "Person",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "art pop",
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14"
+              },
+              {
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1,
+                "name": "avant-garde pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "bubblegum bass",
+                "disambiguation": "",
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2
+              },
+              {
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "count": 1,
+                "name": "dance",
+                "disambiguation": ""
+              },
+              {
+                "name": "dance-pop",
+                "disambiguation": "",
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12
+              },
+              {
+                "name": "deconstructed club",
+                "disambiguation": "",
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1
+              },
+              {
+                "name": "electroclash",
+                "disambiguation": "",
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2
+              },
+              {
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11,
+                "name": "electronic",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "electronica",
+                "count": 1,
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5"
+              },
+              {
+                "name": "electropop",
+                "disambiguation": "",
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18
+              },
+              {
+                "disambiguation": "",
+                "name": "europop",
+                "count": 1,
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d"
+              },
+              {
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "disambiguation": "",
+                "name": "experimental hip hop"
+              },
+              {
+                "count": 1,
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "disambiguation": "",
+                "name": "grime"
+              },
+              {
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "disambiguation": "",
+                "name": "hip hop"
+              },
+              {
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "disambiguation": "",
+                "name": "house"
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1,
+                "name": "indie pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "new jack swing",
+                "disambiguation": "",
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "new wave",
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb"
+              },
+              {
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8,
+                "name": "pop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "disambiguation": "",
+                "name": "pop punk"
+              },
+              {
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10,
+                "name": "synth-pop",
+                "disambiguation": ""
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "sort-name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "disambiguation": "",
+            "name": "Charli xcx"
+          },
+          "name": "Charli xcx"
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "barcode": "075678611698",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "name": "United States",
+            "disambiguation": "",
+            "type": null,
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States"
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "quality": "normal",
+      "title": "BRAT",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2024-06-07",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+      "status": "Official",
+      "packaging": "Jewel Case",
+      "country": "US"
+    },
+    {
+      "country": "XW",
+      "status": "Official",
+      "packaging": "None",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2024-06-07",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "artist": {
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "art pop",
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14"
+              },
+              {
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1,
+                "name": "avant-garde pop",
+                "disambiguation": ""
+              },
+              {
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "disambiguation": "",
+                "name": "bubblegum bass"
+              },
+              {
+                "disambiguation": "",
+                "name": "dance",
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33"
+              },
+              {
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "disambiguation": "",
+                "name": "dance-pop"
+              },
+              {
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1,
+                "name": "deconstructed club",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "electroclash",
+                "count": 2,
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d"
+              },
+              {
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "disambiguation": "",
+                "name": "electronic"
+              },
+              {
+                "name": "electronica",
+                "disambiguation": "",
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1
+              },
+              {
+                "name": "electropop",
+                "disambiguation": "",
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18
+              },
+              {
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1,
+                "name": "europop",
+                "disambiguation": ""
+              },
+              {
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1,
+                "name": "experimental hip hop",
+                "disambiguation": ""
+              },
+              {
+                "name": "grime",
+                "disambiguation": "",
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1
+              },
+              {
+                "name": "hip hop",
+                "disambiguation": "",
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1
+              },
+              {
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1,
+                "name": "house",
+                "disambiguation": ""
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "disambiguation": "",
+                "name": "indie pop",
+                "count": 1,
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2"
+              },
+              {
+                "disambiguation": "",
+                "name": "new jack swing",
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397"
+              },
+              {
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1,
+                "name": "new wave",
+                "disambiguation": ""
+              },
+              {
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8,
+                "name": "pop",
+                "disambiguation": ""
+              },
+              {
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1,
+                "name": "pop punk",
+                "disambiguation": ""
+              },
+              {
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10,
+                "name": "synth-pop",
+                "disambiguation": ""
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "sort-name": "Charli xcx",
+            "country": "GB",
+            "type": "Person",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          },
+          "joinphrase": ""
+        }
+      ],
+      "quality": "normal",
+      "title": "BRAT",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "name": "[Worldwide]",
+            "disambiguation": "",
+            "type": null,
+            "sort-name": "[Worldwide]",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f"
+          },
+          "date": "2024-06-07"
+        }
+      ],
+      "barcode": "075679666130",
+      "id": "ab55ac76-eee5-4f89-ac14-7bb9aa837bc8",
+      "genres": [],
+      "disambiguation": ""
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2024-06-07",
+      "status": "Official",
+      "packaging": "None",
+      "country": "XW",
+      "disambiguation": "Dolby Atmos mix",
+      "id": "f0bf83e1-adec-4ce5-9e1b-0e08db01e2b5",
+      "genres": [],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "artist": {
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "genres": [
+              {
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "disambiguation": "",
+                "name": "art pop"
+              },
+              {
+                "name": "avant-garde pop",
+                "disambiguation": "",
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "bubblegum bass",
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de"
+              },
+              {
+                "name": "dance",
+                "disambiguation": "",
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "count": 1
+              },
+              {
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12,
+                "name": "dance-pop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "deconstructed club",
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b"
+              },
+              {
+                "name": "electroclash",
+                "disambiguation": "",
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2
+              },
+              {
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11,
+                "name": "electronic",
+                "disambiguation": ""
+              },
+              {
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1,
+                "name": "electronica",
+                "disambiguation": ""
+              },
+              {
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18,
+                "name": "electropop",
+                "disambiguation": ""
+              },
+              {
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1,
+                "name": "europop",
+                "disambiguation": ""
+              },
+              {
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1,
+                "name": "experimental hip hop",
+                "disambiguation": ""
+              },
+              {
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1,
+                "name": "grime",
+                "disambiguation": ""
+              },
+              {
+                "name": "hip hop",
+                "disambiguation": "",
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1
+              },
+              {
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "disambiguation": "",
+                "name": "house"
+              },
+              {
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "count": 13,
+                "name": "hyperpop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "indie pop",
+                "count": 1,
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2"
+              },
+              {
+                "disambiguation": "",
+                "name": "new jack swing",
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397"
+              },
+              {
+                "disambiguation": "",
+                "name": "new wave",
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb"
+              },
+              {
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8,
+                "name": "pop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "pop punk",
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab"
+              },
+              {
+                "count": 10,
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "disambiguation": "",
+                "name": "synth-pop"
+              }
+            ],
+            "sort-name": "Charli xcx",
+            "country": "GB",
+            "type": "Person",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          },
+          "name": "Charli xcx"
+        }
+      ],
+      "quality": "normal",
+      "title": "BRAT",
+      "barcode": "075679666147",
+      "release-events": [
+        {
+          "area": {
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "sort-name": "[Worldwide]",
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "type": null,
+            "name": "[Worldwide]",
+            "disambiguation": "",
+            "type-id": null
+          },
+          "date": "2024-06-07"
+        }
+      ]
+    },
+    {
+      "disambiguation": "",
+      "id": "b13a6e36-6093-4fd6-863c-021fcf8cbebe",
+      "genres": [],
+      "quality": "normal",
+      "title": "Brat and it’s the same but there’s three more songs so it’s not",
+      "barcode": "075678606137",
+      "release-events": [
+        {
+          "date": "2024-06-10",
+          "area": {
+            "type-id": null,
+            "name": "United Kingdom",
+            "disambiguation": "",
+            "type": null,
+            "sort-name": "United Kingdom",
+            "iso-3166-1-codes": [
+              "GB"
+            ],
+            "id": "8a754a16-0027-3a29-b6d7-2b40ea0481ed"
+          }
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "artist": {
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "country": "GB",
+            "type": "Person",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "art pop",
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14"
+              },
+              {
+                "name": "avant-garde pop",
+                "disambiguation": "",
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1
+              },
+              {
+                "name": "bubblegum bass",
+                "disambiguation": "",
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "disambiguation": "",
+                "name": "dance-pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "deconstructed club",
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b"
+              },
+              {
+                "disambiguation": "",
+                "name": "electroclash",
+                "count": 2,
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d"
+              },
+              {
+                "disambiguation": "",
+                "name": "electronic",
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4"
+              },
+              {
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1,
+                "name": "electronica",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "electropop",
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4"
+              },
+              {
+                "name": "europop",
+                "disambiguation": "",
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1
+              },
+              {
+                "name": "experimental hip hop",
+                "disambiguation": "",
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1
+              },
+              {
+                "name": "grime",
+                "disambiguation": "",
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "hip hop",
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c"
+              },
+              {
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "disambiguation": "",
+                "name": "house"
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "name": "indie pop",
+                "disambiguation": "",
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1
+              },
+              {
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1,
+                "name": "new jack swing",
+                "disambiguation": ""
+              },
+              {
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1,
+                "name": "new wave",
+                "disambiguation": ""
+              },
+              {
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8,
+                "name": "pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "pop punk",
+                "disambiguation": "",
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1
+              },
+              {
+                "name": "synth-pop",
+                "disambiguation": "",
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "sort-name": "Charli xcx"
+          },
+          "joinphrase": ""
+        }
+      ],
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+      "date": "2024-06-10",
+      "packaging": "Jewel Case",
+      "status": "Official",
+      "country": "GB"
+    },
+    {
+      "packaging": "Jewel Case",
+      "status": "Official",
+      "country": "US",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2024-06-10",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+      "id": "70f1b4e3-db24-4006-ab4e-5f8f1ae981cc",
+      "genres": [],
+      "release-events": [
+        {
+          "date": "2024-06-10",
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "name": "United States",
+            "type": null,
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States"
+          }
+        }
+      ],
+      "barcode": "075678606328",
+      "title": "Brat and it’s the same but there’s three more songs so it’s not",
+      "quality": "normal",
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "artist": {
+            "type": "Person",
+            "country": "GB",
+            "genres": [
+              {
+                "name": "art pop",
+                "disambiguation": "",
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1
+              },
+              {
+                "name": "avant-garde pop",
+                "disambiguation": "",
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1
+              },
+              {
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2,
+                "name": "bubblegum bass",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12,
+                "name": "dance-pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "deconstructed club",
+                "disambiguation": "",
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1
+              },
+              {
+                "name": "electroclash",
+                "disambiguation": "",
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2
+              },
+              {
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "disambiguation": "",
+                "name": "electronic"
+              },
+              {
+                "name": "electronica",
+                "disambiguation": "",
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1
+              },
+              {
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18,
+                "name": "electropop",
+                "disambiguation": ""
+              },
+              {
+                "name": "europop",
+                "disambiguation": "",
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "experimental hip hop",
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de"
+              },
+              {
+                "count": 1,
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "disambiguation": "",
+                "name": "grime"
+              },
+              {
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1,
+                "name": "hip hop",
+                "disambiguation": ""
+              },
+              {
+                "name": "house",
+                "disambiguation": "",
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "hyperpop",
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56"
+              },
+              {
+                "name": "indie pop",
+                "disambiguation": "",
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "new jack swing",
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397"
+              },
+              {
+                "name": "new wave",
+                "disambiguation": "",
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "pop",
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791"
+              },
+              {
+                "name": "pop punk",
+                "disambiguation": "",
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1
+              },
+              {
+                "count": 10,
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "disambiguation": "",
+                "name": "synth-pop"
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "sort-name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "disambiguation": "",
+            "name": "Charli xcx"
+          },
+          "name": "Charli xcx"
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "disambiguation": ""
+    },
+    {
+      "genres": [],
+      "id": "336e198f-1835-483d-811f-da24539c2e7f",
+      "barcode": "075679643087",
+      "release-events": [
+        {
+          "area": {
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "sort-name": "[Worldwide]",
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "type": null,
+            "disambiguation": "",
+            "name": "[Worldwide]",
+            "type-id": null
+          },
+          "date": "2024-06-10"
+        }
+      ],
+      "quality": "normal",
+      "title": "Brat and it’s the same but there’s three more songs so it’s not",
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "joinphrase": "",
+          "artist": {
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Charli xcx",
+            "disambiguation": "",
+            "country": "GB",
+            "type": "Person",
+            "sort-name": "Charli xcx",
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "genres": [
+              {
+                "name": "art pop",
+                "disambiguation": "",
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "avant-garde pop",
+                "count": 1,
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac"
+              },
+              {
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "disambiguation": "",
+                "name": "bubblegum bass"
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "disambiguation": "",
+                "name": "dance-pop"
+              },
+              {
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "disambiguation": "",
+                "name": "deconstructed club"
+              },
+              {
+                "disambiguation": "",
+                "name": "electroclash",
+                "count": 2,
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d"
+              },
+              {
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11,
+                "name": "electronic",
+                "disambiguation": ""
+              },
+              {
+                "name": "electronica",
+                "disambiguation": "",
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "electropop",
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4"
+              },
+              {
+                "name": "europop",
+                "disambiguation": "",
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1
+              },
+              {
+                "name": "experimental hip hop",
+                "disambiguation": "",
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1
+              },
+              {
+                "name": "grime",
+                "disambiguation": "",
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "hip hop",
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c"
+              },
+              {
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1,
+                "name": "house",
+                "disambiguation": ""
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1,
+                "name": "indie pop",
+                "disambiguation": ""
+              },
+              {
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1,
+                "name": "new jack swing",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "disambiguation": "",
+                "name": "new wave"
+              },
+              {
+                "name": "pop",
+                "disambiguation": "",
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8
+              },
+              {
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1,
+                "name": "pop punk",
+                "disambiguation": ""
+              },
+              {
+                "name": "synth-pop",
+                "disambiguation": "",
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10
+              }
+            ]
+          }
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "disambiguation": "",
+      "packaging": "None",
+      "status": "Official",
+      "country": "XW",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2024-06-10",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b"
+    },
+    {
+      "disambiguation": "Dolby Atmos mix",
+      "quality": "normal",
+      "title": "Brat and it’s the same but there’s three more songs so it’s not",
+      "barcode": "075679643094",
+      "release-events": [
+        {
+          "date": "2024-06-10",
+          "area": {
+            "name": "[Worldwide]",
+            "disambiguation": "",
+            "type-id": null,
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "sort-name": "[Worldwide]",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "type": null
+          }
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "joinphrase": "",
+          "artist": {
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Charli xcx",
+            "disambiguation": "",
+            "type": "Person",
+            "country": "GB",
+            "sort-name": "Charli xcx",
+            "genres": [
+              {
+                "name": "art pop",
+                "disambiguation": "",
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1
+              },
+              {
+                "name": "avant-garde pop",
+                "disambiguation": "",
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1
+              },
+              {
+                "name": "bubblegum bass",
+                "disambiguation": "",
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2
+              },
+              {
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "count": 1,
+                "name": "dance",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "dance-pop",
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8"
+              },
+              {
+                "name": "deconstructed club",
+                "disambiguation": "",
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1
+              },
+              {
+                "name": "electroclash",
+                "disambiguation": "",
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2
+              },
+              {
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11,
+                "name": "electronic",
+                "disambiguation": ""
+              },
+              {
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1,
+                "name": "electronica",
+                "disambiguation": ""
+              },
+              {
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18,
+                "name": "electropop",
+                "disambiguation": ""
+              },
+              {
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1,
+                "name": "europop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "experimental hip hop",
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de"
+              },
+              {
+                "disambiguation": "",
+                "name": "grime",
+                "count": 1,
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c"
+              },
+              {
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1,
+                "name": "hip hop",
+                "disambiguation": ""
+              },
+              {
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1,
+                "name": "house",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "hyperpop",
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56"
+              },
+              {
+                "disambiguation": "",
+                "name": "indie pop",
+                "count": 1,
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2"
+              },
+              {
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1,
+                "name": "new jack swing",
+                "disambiguation": ""
+              },
+              {
+                "name": "new wave",
+                "disambiguation": "",
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "pop",
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791"
+              },
+              {
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "disambiguation": "",
+                "name": "pop punk"
+              },
+              {
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10,
+                "name": "synth-pop",
+                "disambiguation": ""
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca"
+          }
+        }
+      ],
+      "id": "57eb1b7a-1561-4feb-9c0a-6b01184c7581",
+      "genres": [],
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2024-06-10",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "XW",
+      "packaging": "None",
+      "status": "Official"
+    },
+    {
+      "disambiguation": "split-color vinyl",
+      "genres": [],
+      "id": "71d5a15f-82c6-4b62-ab84-3e0f2f7baa5b",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "artist": {
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "genres": [
+              {
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1,
+                "name": "art pop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "disambiguation": "",
+                "name": "avant-garde pop"
+              },
+              {
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2,
+                "name": "bubblegum bass",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "name": "dance-pop",
+                "disambiguation": "",
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12
+              },
+              {
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "disambiguation": "",
+                "name": "deconstructed club"
+              },
+              {
+                "disambiguation": "",
+                "name": "electroclash",
+                "count": 2,
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d"
+              },
+              {
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "disambiguation": "",
+                "name": "electronic"
+              },
+              {
+                "name": "electronica",
+                "disambiguation": "",
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1
+              },
+              {
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18,
+                "name": "electropop",
+                "disambiguation": ""
+              },
+              {
+                "name": "europop",
+                "disambiguation": "",
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1
+              },
+              {
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1,
+                "name": "experimental hip hop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "grime",
+                "count": 1,
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c"
+              },
+              {
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "disambiguation": "",
+                "name": "hip hop"
+              },
+              {
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1,
+                "name": "house",
+                "disambiguation": ""
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1,
+                "name": "indie pop",
+                "disambiguation": ""
+              },
+              {
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "disambiguation": "",
+                "name": "new jack swing"
+              },
+              {
+                "disambiguation": "",
+                "name": "new wave",
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb"
+              },
+              {
+                "disambiguation": "",
+                "name": "pop",
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791"
+              },
+              {
+                "name": "pop punk",
+                "disambiguation": "",
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1
+              },
+              {
+                "name": "synth-pop",
+                "disambiguation": "",
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10
+              }
+            ],
+            "sort-name": "Charli xcx",
+            "type": "Person",
+            "country": "GB",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          },
+          "joinphrase": ""
+        }
+      ],
+      "quality": "normal",
+      "title": "BRAT",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "name": "United States",
+            "type": null,
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States",
+            "id": "489ce91b-6658-3307-9877-795b68554c98"
+          },
+          "date": "2024-09"
+        }
+      ],
+      "barcode": "075678604232",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "date": "2024-09",
+      "status": "Official",
+      "packaging": "Gatefold Cover",
+      "country": "US"
+    },
+    {
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "name": "United States",
+            "type": null,
+            "id": "489ce91b-6658-3307-9877-795b68554c98",
+            "iso-3166-1-codes": [
+              "US"
+            ],
+            "sort-name": "United States"
+          },
+          "date": "2024-10"
+        }
+      ],
+      "barcode": "075678603983",
+      "title": "Brat and it’s the same but there’s three more songs so it’s not",
+      "quality": "normal",
+      "artist-credit": [
+        {
+          "artist": {
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Charli xcx",
+            "disambiguation": "",
+            "country": "GB",
+            "type": "Person",
+            "genres": [
+              {
+                "name": "art pop",
+                "disambiguation": "",
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "avant-garde pop",
+                "count": 1,
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac"
+              },
+              {
+                "disambiguation": "",
+                "name": "bubblegum bass",
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de"
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "name": "dance-pop",
+                "disambiguation": "",
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12
+              },
+              {
+                "disambiguation": "",
+                "name": "deconstructed club",
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b"
+              },
+              {
+                "disambiguation": "",
+                "name": "electroclash",
+                "count": 2,
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d"
+              },
+              {
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11,
+                "name": "electronic",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "electronica",
+                "count": 1,
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5"
+              },
+              {
+                "disambiguation": "",
+                "name": "electropop",
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4"
+              },
+              {
+                "name": "europop",
+                "disambiguation": "",
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1
+              },
+              {
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1,
+                "name": "experimental hip hop",
+                "disambiguation": ""
+              },
+              {
+                "name": "grime",
+                "disambiguation": "",
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "hip hop",
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c"
+              },
+              {
+                "name": "house",
+                "disambiguation": "",
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1,
+                "name": "indie pop",
+                "disambiguation": ""
+              },
+              {
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1,
+                "name": "new jack swing",
+                "disambiguation": ""
+              },
+              {
+                "name": "new wave",
+                "disambiguation": "",
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1
+              },
+              {
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8,
+                "name": "pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "pop punk",
+                "disambiguation": "",
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1
+              },
+              {
+                "name": "synth-pop",
+                "disambiguation": "",
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "sort-name": "Charli xcx"
+          },
+          "joinphrase": "",
+          "name": "Charli xcx"
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "genres": [],
+      "id": "b2176814-eccb-4652-9de2-d719e17f6952",
+      "disambiguation": "",
+      "country": "US",
+      "packaging": "Gatefold Cover",
+      "status": "Official",
+      "date": "2024-10",
+      "packaging-id": "e724a489-a7e8-30a1-a17c-30dfd6831202",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe"
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2025-01-22",
+      "packaging-id": "ec27701a-4a22-37f4-bfac-6616e0f9750a",
+      "status": "Official",
+      "packaging": "Jewel Case",
+      "country": "JP",
+      "disambiguation": "",
+      "id": "f34cf596-739b-4549-b1b9-f0f6c89650e8",
+      "genres": [
+        {
+          "count": 1,
+          "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+          "disambiguation": "",
+          "name": "dance-pop"
+        },
+        {
+          "id": "05247982-e44f-4c58-96f8-a5453be69f5f",
+          "count": 1,
+          "name": "electro house",
+          "disambiguation": ""
+        },
+        {
+          "name": "electronic",
+          "disambiguation": "",
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+          "count": 1
+        },
+        {
+          "name": "pop",
+          "disambiguation": "",
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "count": 1
+        }
+      ],
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "artist": {
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "genres": [
+              {
+                "name": "art pop",
+                "disambiguation": "",
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1
+              },
+              {
+                "name": "avant-garde pop",
+                "disambiguation": "",
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "bubblegum bass",
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de"
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "disambiguation": "",
+                "name": "dance-pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "deconstructed club",
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b"
+              },
+              {
+                "name": "electroclash",
+                "disambiguation": "",
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2
+              },
+              {
+                "name": "electronic",
+                "disambiguation": "",
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11
+              },
+              {
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1,
+                "name": "electronica",
+                "disambiguation": ""
+              },
+              {
+                "name": "electropop",
+                "disambiguation": "",
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18
+              },
+              {
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1,
+                "name": "europop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "experimental hip hop",
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de"
+              },
+              {
+                "name": "grime",
+                "disambiguation": "",
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "hip hop",
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c"
+              },
+              {
+                "disambiguation": "",
+                "name": "house",
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3"
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "disambiguation": "",
+                "name": "indie pop",
+                "count": 1,
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2"
+              },
+              {
+                "name": "new jack swing",
+                "disambiguation": "",
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1
+              },
+              {
+                "name": "new wave",
+                "disambiguation": "",
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "pop",
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791"
+              },
+              {
+                "name": "pop punk",
+                "disambiguation": "",
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1
+              },
+              {
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10,
+                "name": "synth-pop",
+                "disambiguation": ""
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "sort-name": "Charli xcx",
+            "type": "Person",
+            "country": "GB"
+          },
+          "name": "Charli xcx"
+        }
+      ],
+      "text-representation": {
+        "script": "Kana",
+        "language": "eng"
+      },
+      "barcode": "4943674402915",
+      "release-events": [
+        {
+          "area": {
+            "type": null,
+            "id": "2db42837-c832-3c27-b4a3-08198f75693c",
+            "sort-name": "Japan",
+            "iso-3166-1-codes": [
+              "JP"
+            ],
+            "type-id": null,
+            "disambiguation": "",
+            "name": "Japan"
+          },
+          "date": "2025-01-22"
+        }
+      ],
+      "quality": "normal",
+      "title": "ブラット"
+    },
+    {
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2025-04-23",
+      "status": "Official",
+      "packaging": "None",
+      "country": "XW",
+      "disambiguation": "crossed-out cover",
+      "id": "a66832eb-1b4f-49e3-907b-6bbc87770c9a",
+      "genres": [],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "joinphrase": "",
+          "artist": {
+            "sort-name": "Charli xcx",
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "genres": [
+              {
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "disambiguation": "",
+                "name": "art pop"
+              },
+              {
+                "name": "avant-garde pop",
+                "disambiguation": "",
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1
+              },
+              {
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "disambiguation": "",
+                "name": "bubblegum bass"
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "disambiguation": "",
+                "name": "dance-pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "deconstructed club",
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b"
+              },
+              {
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2,
+                "name": "electroclash",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "electronic",
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4"
+              },
+              {
+                "name": "electronica",
+                "disambiguation": "",
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1
+              },
+              {
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "disambiguation": "",
+                "name": "electropop"
+              },
+              {
+                "count": 1,
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "disambiguation": "",
+                "name": "europop"
+              },
+              {
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1,
+                "name": "experimental hip hop",
+                "disambiguation": ""
+              },
+              {
+                "name": "grime",
+                "disambiguation": "",
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "hip hop",
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c"
+              },
+              {
+                "name": "house",
+                "disambiguation": "",
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "count": 1,
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "disambiguation": "",
+                "name": "indie pop"
+              },
+              {
+                "name": "new jack swing",
+                "disambiguation": "",
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "new wave",
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb"
+              },
+              {
+                "name": "pop",
+                "disambiguation": "",
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8
+              },
+              {
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "disambiguation": "",
+                "name": "pop punk"
+              },
+              {
+                "count": 10,
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "disambiguation": "",
+                "name": "synth-pop"
+              }
+            ],
+            "type": "Person",
+            "country": "GB",
+            "name": "Charli xcx",
+            "disambiguation": "",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          }
+        }
+      ],
+      "quality": "normal",
+      "title": "BRAT",
+      "barcode": "075679666130",
+      "release-events": [
+        {
+          "area": {
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "sort-name": "[Worldwide]",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "type": null,
+            "disambiguation": "",
+            "name": "[Worldwide]",
+            "type-id": null
+          },
+          "date": "2025-04-23"
+        }
+      ]
+    },
+    {
+      "country": "XW",
+      "status": "Official",
+      "packaging": "None",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2025-04-23",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "artist": {
+            "type": "Person",
+            "country": "GB",
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "genres": [
+              {
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "disambiguation": "",
+                "name": "art pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "avant-garde pop",
+                "count": 1,
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac"
+              },
+              {
+                "name": "bubblegum bass",
+                "disambiguation": "",
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2
+              },
+              {
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "count": 1,
+                "name": "dance",
+                "disambiguation": ""
+              },
+              {
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "disambiguation": "",
+                "name": "dance-pop"
+              },
+              {
+                "name": "deconstructed club",
+                "disambiguation": "",
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "electroclash",
+                "count": 2,
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d"
+              },
+              {
+                "name": "electronic",
+                "disambiguation": "",
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11
+              },
+              {
+                "name": "electronica",
+                "disambiguation": "",
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1
+              },
+              {
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "disambiguation": "",
+                "name": "electropop"
+              },
+              {
+                "name": "europop",
+                "disambiguation": "",
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1
+              },
+              {
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "disambiguation": "",
+                "name": "experimental hip hop"
+              },
+              {
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1,
+                "name": "grime",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "hip hop",
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c"
+              },
+              {
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1,
+                "name": "house",
+                "disambiguation": ""
+              },
+              {
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "count": 13,
+                "name": "hyperpop",
+                "disambiguation": ""
+              },
+              {
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1,
+                "name": "indie pop",
+                "disambiguation": ""
+              },
+              {
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1,
+                "name": "new jack swing",
+                "disambiguation": ""
+              },
+              {
+                "name": "new wave",
+                "disambiguation": "",
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "count": 1
+              },
+              {
+                "name": "pop",
+                "disambiguation": "",
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8
+              },
+              {
+                "name": "pop punk",
+                "disambiguation": "",
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1
+              },
+              {
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10,
+                "name": "synth-pop",
+                "disambiguation": ""
+              }
+            ],
+            "sort-name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "name": "Charli xcx",
+            "disambiguation": ""
+          },
+          "joinphrase": ""
+        }
+      ],
+      "quality": "normal",
+      "title": "BRAT",
+      "barcode": "075679666147",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "name": "[Worldwide]",
+            "disambiguation": "",
+            "type": null,
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "sort-name": "[Worldwide]"
+          },
+          "date": "2025-04-23"
+        }
+      ],
+      "id": "1ff14927-5b00-437f-b64a-1add910c8204",
+      "genres": [],
+      "disambiguation": "Dolby Atmos mix, crossed-out cover"
+    },
+    {
+      "status": "Official",
+      "packaging": "None",
+      "country": "XW",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2025-05-07",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "id": "6dce09fc-571a-44e9-8001-6115f0e438ae",
+      "genres": [
+        {
+          "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+          "count": 1,
+          "name": "dance-pop",
+          "disambiguation": ""
+        },
+        {
+          "id": "3976e9ba-16d0-461d-b732-99408a0374ba",
+          "count": 1,
+          "name": "edm",
+          "disambiguation": ""
+        },
+        {
+          "name": "electro",
+          "disambiguation": "",
+          "id": "60f00d05-df4d-496e-8f5a-c45c03a56ad4",
+          "count": 1
+        },
+        {
+          "disambiguation": "",
+          "name": "electro house",
+          "count": 1,
+          "id": "05247982-e44f-4c58-96f8-a5453be69f5f"
+        },
+        {
+          "disambiguation": "",
+          "name": "electroclash",
+          "count": 1,
+          "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d"
+        },
+        {
+          "disambiguation": "",
+          "name": "electronic",
+          "count": 1,
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4"
+        },
+        {
+          "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+          "count": 1,
+          "name": "electropop",
+          "disambiguation": ""
+        },
+        {
+          "count": 1,
+          "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+          "disambiguation": "",
+          "name": "hyperpop"
+        },
+        {
+          "name": "pop",
+          "disambiguation": "",
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "count": 1
+        }
+      ],
+      "artist-credit": [
+        {
+          "joinphrase": "",
+          "artist": {
+            "country": "GB",
+            "type": "Person",
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "art pop",
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14"
+              },
+              {
+                "name": "avant-garde pop",
+                "disambiguation": "",
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "bubblegum bass",
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de"
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "count": 12,
+                "name": "dance-pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "deconstructed club",
+                "disambiguation": "",
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "electroclash",
+                "count": 2,
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d"
+              },
+              {
+                "disambiguation": "",
+                "name": "electronic",
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4"
+              },
+              {
+                "count": 1,
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "disambiguation": "",
+                "name": "electronica"
+              },
+              {
+                "disambiguation": "",
+                "name": "electropop",
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4"
+              },
+              {
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "count": 1,
+                "name": "europop",
+                "disambiguation": ""
+              },
+              {
+                "name": "experimental hip hop",
+                "disambiguation": "",
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1
+              },
+              {
+                "name": "grime",
+                "disambiguation": "",
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "hip hop",
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c"
+              },
+              {
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "disambiguation": "",
+                "name": "house"
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "name": "indie pop",
+                "disambiguation": "",
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "new jack swing",
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397"
+              },
+              {
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+                "disambiguation": "",
+                "name": "new wave"
+              },
+              {
+                "disambiguation": "",
+                "name": "pop",
+                "count": 8,
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791"
+              },
+              {
+                "disambiguation": "",
+                "name": "pop punk",
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab"
+              },
+              {
+                "name": "synth-pop",
+                "disambiguation": "",
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+                "count": 10
+              }
+            ],
+            "sort-name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "disambiguation": "",
+            "name": "Charli xcx"
+          },
+          "name": "Charli xcx"
+        }
+      ],
+      "text-representation": {
+        "script": "Latn",
+        "language": "eng"
+      },
+      "release-events": [
+        {
+          "area": {
+            "type": null,
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "sort-name": "[Worldwide]",
+            "type-id": null,
+            "disambiguation": "",
+            "name": "[Worldwide]"
+          },
+          "date": "2025-05-07"
+        }
+      ],
+      "barcode": "075679666130",
+      "title": "BRAT",
+      "quality": "normal",
+      "disambiguation": "rotting cover"
+    },
+    {
+      "disambiguation": "Dolby Atmos mix, rotting cover",
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "artist-credit": [
+        {
+          "artist": {
+            "sort-name": "Charli xcx",
+            "genres": [
+              {
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+                "count": 1,
+                "name": "art pop",
+                "disambiguation": ""
+              },
+              {
+                "name": "avant-garde pop",
+                "disambiguation": "",
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "count": 1
+              },
+              {
+                "name": "bubblegum bass",
+                "disambiguation": "",
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "count": 2
+              },
+              {
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+                "disambiguation": "",
+                "name": "dance"
+              },
+              {
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "disambiguation": "",
+                "name": "dance-pop"
+              },
+              {
+                "disambiguation": "",
+                "name": "deconstructed club",
+                "count": 1,
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b"
+              },
+              {
+                "name": "electroclash",
+                "disambiguation": "",
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2
+              },
+              {
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "count": 11,
+                "name": "electronic",
+                "disambiguation": ""
+              },
+              {
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "count": 1,
+                "name": "electronica",
+                "disambiguation": ""
+              },
+              {
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "count": 18,
+                "name": "electropop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "europop",
+                "count": 1,
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d"
+              },
+              {
+                "name": "experimental hip hop",
+                "disambiguation": "",
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+                "count": 1
+              },
+              {
+                "count": 1,
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "disambiguation": "",
+                "name": "grime"
+              },
+              {
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+                "count": 1,
+                "name": "hip hop",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "house",
+                "count": 1,
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3"
+              },
+              {
+                "count": 13,
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "disambiguation": "",
+                "name": "hyperpop"
+              },
+              {
+                "count": 1,
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "disambiguation": "",
+                "name": "indie pop"
+              },
+              {
+                "name": "new jack swing",
+                "disambiguation": "",
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "count": 1
+              },
+              {
+                "disambiguation": "",
+                "name": "new wave",
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb"
+              },
+              {
+                "name": "pop",
+                "disambiguation": "",
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8
+              },
+              {
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "count": 1,
+                "name": "pop punk",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "synth-pop",
+                "count": 10,
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac"
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "type": "Person",
+            "country": "GB",
+            "disambiguation": "",
+            "name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df"
+          },
+          "joinphrase": "",
+          "name": "Charli xcx"
+        }
+      ],
+      "title": "BRAT",
+      "quality": "normal",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "disambiguation": "",
+            "name": "[Worldwide]",
+            "type": null,
+            "sort-name": "[Worldwide]",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f"
+          },
+          "date": "2025-05-07"
+        }
+      ],
+      "barcode": "075679666147",
+      "id": "1e584997-245d-4c57-ba83-fa72bc0c1ca3",
+      "genres": [],
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "date": "2025-05-07",
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "country": "XW",
+      "status": "Official",
+      "packaging": "None"
+    },
+    {
+      "disambiguation": "forever <3 cover",
+      "genres": [
+        {
+          "disambiguation": "",
+          "name": "dance-pop",
+          "count": 1,
+          "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8"
+        },
+        {
+          "name": "edm",
+          "disambiguation": "",
+          "id": "3976e9ba-16d0-461d-b732-99408a0374ba",
+          "count": 1
+        },
+        {
+          "id": "60f00d05-df4d-496e-8f5a-c45c03a56ad4",
+          "count": 1,
+          "name": "electro",
+          "disambiguation": ""
+        },
+        {
+          "count": 1,
+          "id": "05247982-e44f-4c58-96f8-a5453be69f5f",
+          "disambiguation": "",
+          "name": "electro house"
+        },
+        {
+          "name": "electroclash",
+          "disambiguation": "",
+          "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+          "count": 1
+        },
+        {
+          "disambiguation": "",
+          "name": "electronic",
+          "count": 1,
+          "id": "89255676-1f14-4dd8-bbad-fca839d6aff4"
+        },
+        {
+          "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+          "count": 1,
+          "name": "electropop",
+          "disambiguation": ""
+        },
+        {
+          "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+          "count": 1,
+          "name": "hyperpop",
+          "disambiguation": ""
+        },
+        {
+          "count": 1,
+          "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+          "disambiguation": "",
+          "name": "pop"
+        }
+      ],
+      "id": "9551f126-abe9-4cbb-a12e-7e5980015af4",
+      "barcode": "075679666130",
+      "release-events": [
+        {
+          "area": {
+            "type-id": null,
+            "name": "[Worldwide]",
+            "disambiguation": "",
+            "type": null,
+            "id": "525d4e18-3d00-31b9-a58b-a146a916de8f",
+            "iso-3166-1-codes": [
+              "XW"
+            ],
+            "sort-name": "[Worldwide]"
+          },
+          "date": "2025-06-07"
+        }
+      ],
+      "title": "BRAT",
+      "quality": "normal",
+      "artist-credit": [
+        {
+          "name": "Charli xcx",
+          "artist": {
+            "type": "Person",
+            "country": "GB",
+            "genres": [
+              {
+                "disambiguation": "",
+                "name": "art pop",
+                "count": 1,
+                "id": "930ef127-3653-4677-9b95-ecc90c7c1a14"
+              },
+              {
+                "count": 1,
+                "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac",
+                "disambiguation": "",
+                "name": "avant-garde pop"
+              },
+              {
+                "count": 2,
+                "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+                "disambiguation": "",
+                "name": "bubblegum bass"
+              },
+              {
+                "disambiguation": "",
+                "name": "dance",
+                "count": 1,
+                "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33"
+              },
+              {
+                "count": 12,
+                "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+                "disambiguation": "",
+                "name": "dance-pop"
+              },
+              {
+                "id": "5a291744-e683-49bb-883e-bf978f235b6b",
+                "count": 1,
+                "name": "deconstructed club",
+                "disambiguation": ""
+              },
+              {
+                "name": "electroclash",
+                "disambiguation": "",
+                "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+                "count": 2
+              },
+              {
+                "count": 11,
+                "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+                "disambiguation": "",
+                "name": "electronic"
+              },
+              {
+                "count": 1,
+                "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+                "disambiguation": "",
+                "name": "electronica"
+              },
+              {
+                "count": 18,
+                "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+                "disambiguation": "",
+                "name": "electropop"
+              },
+              {
+                "count": 1,
+                "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+                "disambiguation": "",
+                "name": "europop"
+              },
+              {
+                "disambiguation": "",
+                "name": "experimental hip hop",
+                "count": 1,
+                "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de"
+              },
+              {
+                "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+                "count": 1,
+                "name": "grime",
+                "disambiguation": ""
+              },
+              {
+                "disambiguation": "",
+                "name": "hip hop",
+                "count": 1,
+                "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c"
+              },
+              {
+                "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3",
+                "count": 1,
+                "name": "house",
+                "disambiguation": ""
+              },
+              {
+                "name": "hyperpop",
+                "disambiguation": "",
+                "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+                "count": 13
+              },
+              {
+                "name": "indie pop",
+                "disambiguation": "",
+                "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+                "count": 1
+              },
+              {
+                "count": 1,
+                "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+                "disambiguation": "",
+                "name": "new jack swing"
+              },
+              {
+                "disambiguation": "",
+                "name": "new wave",
+                "count": 1,
+                "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb"
+              },
+              {
+                "name": "pop",
+                "disambiguation": "",
+                "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+                "count": 8
+              },
+              {
+                "count": 1,
+                "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+                "disambiguation": "",
+                "name": "pop punk"
+              },
+              {
+                "disambiguation": "",
+                "name": "synth-pop",
+                "count": 10,
+                "id": "988e91a3-3341-416d-b7f8-7dbef6848dac"
+              }
+            ],
+            "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+            "sort-name": "Charli xcx",
+            "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+            "disambiguation": "",
+            "name": "Charli xcx"
+          },
+          "joinphrase": ""
+        }
+      ],
+      "text-representation": {
+        "language": "eng",
+        "script": "Latn"
+      },
+      "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+      "date": "2025-06-07",
+      "packaging-id": "119eba76-b343-3e02-a292-f0f00644bb9b",
+      "packaging": "None",
+      "status": "Official",
+      "country": "XW"
+    }
+  ],
+  "artist-credit": [
+    {
+      "joinphrase": "",
+      "artist": {
+        "country": "GB",
+        "type": "Person",
+        "sort-name": "Charli xcx",
+        "id": "260b6184-8828-48eb-945c-bc4cb6fc34ca",
+        "genres": [
+          {
+            "count": 1,
+            "id": "930ef127-3653-4677-9b95-ecc90c7c1a14",
+            "disambiguation": "",
+            "name": "art pop"
+          },
+          {
+            "disambiguation": "",
+            "name": "avant-garde pop",
+            "count": 1,
+            "id": "0e7a3c6a-4fbc-4b66-8201-9196032768ac"
+          },
+          {
+            "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+            "count": 2,
+            "name": "bubblegum bass",
+            "disambiguation": ""
+          },
+          {
+            "name": "dance",
+            "disambiguation": "",
+            "id": "e5bba957-8c91-496a-a675-c6d0c6b51c33",
+            "count": 1
+          },
+          {
+            "count": 12,
+            "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+            "disambiguation": "",
+            "name": "dance-pop"
+          },
+          {
+            "disambiguation": "",
+            "name": "deconstructed club",
+            "count": 1,
+            "id": "5a291744-e683-49bb-883e-bf978f235b6b"
+          },
+          {
+            "name": "electroclash",
+            "disambiguation": "",
+            "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+            "count": 2
+          },
+          {
+            "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+            "count": 11,
+            "name": "electronic",
+            "disambiguation": ""
+          },
+          {
+            "name": "electronica",
+            "disambiguation": "",
+            "id": "53a3cea3-17af-4421-a07a-5824b540aeb5",
+            "count": 1
+          },
+          {
+            "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+            "count": 18,
+            "name": "electropop",
+            "disambiguation": ""
+          },
+          {
+            "name": "europop",
+            "disambiguation": "",
+            "id": "50e3ff0e-1abb-4577-9bf3-95d5c539ce2d",
+            "count": 1
+          },
+          {
+            "name": "experimental hip hop",
+            "disambiguation": "",
+            "id": "13a4ac4a-8291-4a03-ab7b-311dec6457de",
+            "count": 1
+          },
+          {
+            "count": 1,
+            "id": "51cfaac4-6696-480b-8f1b-27cfc789109c",
+            "disambiguation": "",
+            "name": "grime"
+          },
+          {
+            "count": 1,
+            "id": "52faa157-6bad-4d86-a0ab-d4dec7d2513c",
+            "disambiguation": "",
+            "name": "hip hop"
+          },
+          {
+            "disambiguation": "",
+            "name": "house",
+            "count": 1,
+            "id": "a2782cb6-1cd0-477c-a61d-b3f8b42dd1b3"
+          },
+          {
+            "name": "hyperpop",
+            "disambiguation": "",
+            "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+            "count": 13
+          },
+          {
+            "id": "f390be72-360b-41bb-a310-6a2e638779d2",
+            "count": 1,
+            "name": "indie pop",
+            "disambiguation": ""
+          },
+          {
+            "count": 1,
+            "id": "dd497eac-e915-49a9-b1e4-482792acf397",
+            "disambiguation": "",
+            "name": "new jack swing"
+          },
+          {
+            "count": 1,
+            "id": "56407f9d-3398-4bf3-bbbd-ea372fa5adeb",
+            "disambiguation": "",
+            "name": "new wave"
+          },
+          {
+            "id": "911c7bbb-172d-4df8-9478-dbff4296e791",
+            "count": 8,
+            "name": "pop",
+            "disambiguation": ""
+          },
+          {
+            "id": "60e21d01-ce21-4127-86b7-aada79558dab",
+            "count": 1,
+            "name": "pop punk",
+            "disambiguation": ""
+          },
+          {
+            "disambiguation": "",
+            "name": "synth-pop",
+            "count": 10,
+            "id": "988e91a3-3341-416d-b7f8-7dbef6848dac"
+          }
+        ],
+        "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+        "disambiguation": "",
+        "name": "Charli xcx"
+      },
+      "name": "Charli xcx"
+    }
+  ],
+  "title": "BRAT",
+  "genres": [
+    {
+      "name": "bubblegum bass",
+      "disambiguation": "",
+      "id": "a969d92f-cd87-4a30-820a-e3c6405595de",
+      "count": 5
+    },
+    {
+      "count": 7,
+      "id": "bab69b07-8bb9-4415-b666-c37609cef80b",
+      "disambiguation": "",
+      "name": "club"
+    },
+    {
+      "name": "dance-pop",
+      "disambiguation": "",
+      "id": "b739a895-85ed-4ad3-8717-4e9ef5387dd8",
+      "count": 10
+    },
+    {
+      "disambiguation": "",
+      "name": "edm",
+      "count": 9,
+      "id": "3976e9ba-16d0-461d-b732-99408a0374ba"
+    },
+    {
+      "id": "60f00d05-df4d-496e-8f5a-c45c03a56ad4",
+      "count": 1,
+      "name": "electro",
+      "disambiguation": ""
+    },
+    {
+      "name": "electro house",
+      "disambiguation": "",
+      "id": "05247982-e44f-4c58-96f8-a5453be69f5f",
+      "count": 4
+    },
+    {
+      "count": 2,
+      "id": "cae57e98-c939-4b0e-ae49-8e0cb1bdc91d",
+      "disambiguation": "",
+      "name": "electroclash"
+    },
+    {
+      "count": 3,
+      "id": "89255676-1f14-4dd8-bbad-fca839d6aff4",
+      "disambiguation": "",
+      "name": "electronic"
+    },
+    {
+      "count": 10,
+      "id": "3f3388b4-e36a-4bf8-a0be-66b10d92aaa4",
+      "disambiguation": "",
+      "name": "electropop"
+    },
+    {
+      "name": "hyperpop",
+      "disambiguation": "",
+      "id": "a8a72860-0bf8-44fd-90a1-b947a8ac2c56",
+      "count": 3
+    },
+    {
+      "disambiguation": "",
+      "name": "pop",
+      "count": 5,
+      "id": "911c7bbb-172d-4df8-9478-dbff4296e791"
+    },
+    {
+      "id": "988e91a3-3341-416d-b7f8-7dbef6848dac",
+      "count": 1,
+      "name": "synth-pop",
+      "disambiguation": ""
+    }
+  ],
+  "id": "e0fdb431-0109-420d-8a37-f99eaeb4d671",
+  "secondary-type-ids": [],
+  "first-release-date": "2024-06-07"
+}

@@ -1,5 +1,5 @@
 {
-  "created": "2026-10-21T15:15:34.975Z",
+  "created": "2026-11-17T03:09:53.426Z",
   "count": 8,
   "offset": 0,
   "release-groups": [
@@ -9,7 +9,7 @@
       "score": 100,
       "primary-type-id": "f529b476-6e62-324f-b0aa-1f3e33d313fc",
       "artist-credit-id": "7e5a5673-c1a3-3782-942d-c7693533e532",
-      "count": 136,
+      "count": 137,
       "title": "Kind of Blue",
       "first-release-date": "1959-08-17",
       "primary-type": "Album",
@@ -82,6 +82,12 @@
         }
       ],
       "releases": [
+        {
+          "id": "3636dec5-79ca-42a4-bedd-3dde7a180713",
+          "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
+          "title": "Kind of Blue",
+          "status": "Official"
+        },
         {
           "id": "da2d5394-60d3-4c0a-aec0-f5a6308a665b",
           "status-id": "4e304316-386d-3409-af2e-78857eec5cfe",
@@ -969,7 +975,19 @@
           "artist": {
             "id": "f137837b-fa55-48d1-8c85-f13961b3ac77",
             "name": "Miles Davis Sextet",
-            "sort-name": "Davis, Miles, Sextet"
+            "sort-name": "Davis, Miles, Sextet",
+            "aliases": [
+              {
+                "sort-name": "マイルス・デイヴィス・セクステット",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "マイルス・デイヴィス・セクステット",
+                "locale": "ja",
+                "type": "Artist name",
+                "primary": true,
+                "begin-date": null,
+                "end-date": null
+              }
+            ]
           }
         },
         {
@@ -1493,17 +1511,8 @@
             "disambiguation": "add compilations to this artist",
             "aliases": [
               {
-                "sort-name": "Soca Gold",
-                "name": "Soca Gold",
-                "locale": null,
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Reggae Gold",
-                "name": "Reggae Gold",
+                "sort-name": "VI, Grand Theft Auto",
+                "name": "Grand Theft Auto VI",
                 "locale": null,
                 "type": null,
                 "primary": null,
@@ -1515,6 +1524,16 @@
                 "name": "versch. Künstler",
                 "locale": "de",
                 "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Variuos",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Variuos",
+                "locale": null,
+                "type": "Search hint",
                 "primary": null,
                 "begin-date": null,
                 "end-date": null
@@ -1661,25 +1680,6 @@
                 "sort-name": "(various)",
                 "name": "(various)",
                 "locale": "en",
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Varius Artist",
-                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
-                "name": "Varius Artist",
-                "locale": null,
-                "type": "Search hint",
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Diversen",
-                "name": "Diversen",
-                "locale": "de",
                 "type": null,
                 "primary": null,
                 "begin-date": null,
@@ -1984,6 +1984,15 @@
                 "end-date": null
               },
               {
+                "sort-name": "Varios Artistas",
+                "name": "Varios Artistas",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
                 "sort-name": "Vários",
                 "name": "Vários",
                 "locale": "pt",
@@ -2011,58 +2020,10 @@
                 "end-date": null
               },
               {
-                "sort-name": "Verschiedene Interpret:innen",
-                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
-                "name": "Verschiedene Interpret:innen",
-                "locale": "de",
-                "type": "Artist name",
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Diverse",
-                "name": "Diverse",
-                "locale": "de",
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "More artists",
-                "name": "More artists",
-                "locale": "en",
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
                 "sort-name": "Various Composers",
                 "name": "Various Composers",
                 "locale": "en",
                 "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Suntory Oolong-cha CM Song Collection",
-                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
-                "name": "Suntory Oolong-cha CM Song Collection",
-                "locale": null,
-                "type": "Search hint",
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "V/a",
-                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
-                "name": "V/a",
-                "locale": null,
-                "type": "Search hint",
                 "primary": null,
                 "begin-date": null,
                 "end-date": null
@@ -2217,6 +2178,15 @@
                 "end-date": null
               },
               {
+                "sort-name": "Siren Cues",
+                "name": "Siren Cues",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
                 "sort-name": "Variés",
                 "name": "Variés",
                 "locale": "fr",
@@ -2351,6 +2321,15 @@
                 "name": "Various Artsits",
                 "locale": null,
                 "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Group, The",
+                "name": "Berühmtesten Opernchören",
+                "locale": null,
+                "type": null,
                 "primary": null,
                 "begin-date": null,
                 "end-date": null
@@ -2692,15 +2671,6 @@
                 "end-date": null
               },
               {
-                "sort-name": "Various DJ's",
-                "name": "Various DJ's",
-                "locale": "en",
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
                 "sort-name": "The Metal Observer",
                 "name": "The Metal Observer",
                 "locale": null,
@@ -2774,6 +2744,15 @@
                 "end-date": null
               },
               {
+                "sort-name": "משתתפי פסטיגל",
+                "name": "משתתפי פסטיגל",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
                 "sort-name": "Tabu Recz",
                 "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
                 "name": "Tabu Recz",
@@ -2796,6 +2775,53 @@
                 "sort-name": "Divers",
                 "name": "Divers",
                 "locale": "fr",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Miscellaneous",
+                "name": "Miscellaneous",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "div.",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "div.",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Goths For Palestine",
+                "name": "Goths For Palestine",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various Compiled By",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Various Compiled By",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "MUSIC STUDY PROJECT",
+                "name": "MUSIC STUDY PROJECT",
+                "locale": null,
                 "type": null,
                 "primary": null,
                 "begin-date": null,
@@ -2948,6 +2974,15 @@
                 "end-date": null
               },
               {
+                "sort-name": "Strictly The Best",
+                "name": "Strictly The Best",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
                 "sort-name": "Coala Records",
                 "name": "Coala.Records",
                 "locale": null,
@@ -2969,15 +3004,6 @@
                 "sort-name": "Artisti vari",
                 "name": "Artisti vari",
                 "locale": "it",
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Wszyscy artysci",
-                "name": "Wszyscy artysci",
-                "locale": "pl",
                 "type": null,
                 "primary": null,
                 "begin-date": null,
@@ -3021,8 +3047,8 @@
                 "end-date": null
               },
               {
-                "sort-name": "Strictly The Best",
-                "name": "Strictly The Best",
+                "sort-name": "Soca Gold",
+                "name": "Soca Gold",
                 "locale": null,
                 "type": null,
                 "primary": null,
@@ -3030,11 +3056,95 @@
                 "end-date": null
               },
               {
-                "sort-name": "Variuos",
+                "sort-name": "Reggae Gold",
+                "name": "Reggae Gold",
+                "locale": null,
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Varius Artist",
                 "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
-                "name": "Variuos",
+                "name": "Varius Artist",
                 "locale": null,
                 "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diversen",
+                "name": "Diversen",
+                "locale": "de",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Verschiedene Interpret:innen",
+                "type-id": "894afba6-2816-3c24-8072-eadb66bd04bc",
+                "name": "Verschiedene Interpret:innen",
+                "locale": "de",
+                "type": "Artist name",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Diverse",
+                "name": "Diverse",
+                "locale": "de",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "More artists",
+                "name": "More artists",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Suntory Oolong-cha CM Song Collection",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "Suntory Oolong-cha CM Song Collection",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "V/a",
+                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
+                "name": "V/a",
+                "locale": null,
+                "type": "Search hint",
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Various DJ's",
+                "name": "Various DJ's",
+                "locale": "en",
+                "type": null,
+                "primary": null,
+                "begin-date": null,
+                "end-date": null
+              },
+              {
+                "sort-name": "Wszyscy artysci",
+                "name": "Wszyscy artysci",
+                "locale": "pl",
+                "type": null,
                 "primary": null,
                 "begin-date": null,
                 "end-date": null
@@ -3105,53 +3215,6 @@
                 "end-date": null
               },
               {
-                "sort-name": "Miscellaneous",
-                "name": "Miscellaneous",
-                "locale": "en",
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "div.",
-                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
-                "name": "div.",
-                "locale": null,
-                "type": "Search hint",
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Goths For Palestine",
-                "name": "Goths For Palestine",
-                "locale": null,
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Various Compiled By",
-                "type-id": "1937e404-b981-3cb7-8151-4c86ebfc8d8e",
-                "name": "Various Compiled By",
-                "locale": null,
-                "type": "Search hint",
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "MUSIC STUDY PROJECT",
-                "name": "MUSIC STUDY PROJECT",
-                "locale": null,
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
                 "sort-name": "KC101",
                 "name": "KC101—Connecticut's #1 Hit Music Station",
                 "locale": null,
@@ -3164,33 +3227,6 @@
                 "sort-name": "Blandat",
                 "name": "Blandat",
                 "locale": "sv",
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Group, The",
-                "name": "Berühmtesten Opernchören",
-                "locale": null,
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "משתתפי פסטיגל",
-                "name": "משתתפי פסטיגל",
-                "locale": null,
-                "type": null,
-                "primary": null,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Siren Cues",
-                "name": "Siren Cues",
-                "locale": null,
                 "type": null,
                 "primary": null,
                 "begin-date": null,
@@ -3222,15 +3258,6 @@
                 "locale": "bg",
                 "type": "Artist name",
                 "primary": true,
-                "begin-date": null,
-                "end-date": null
-              },
-              {
-                "sort-name": "Varios Artistas",
-                "name": "Varios Artistas",
-                "locale": null,
-                "type": null,
-                "primary": null,
                 "begin-date": null,
                 "end-date": null
               },

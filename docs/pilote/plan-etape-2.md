@@ -66,7 +66,7 @@ Seed : aucun lien direct (acté). Aucune dépendance, variable, CSP ni workflow.
 
 ## Avancement
 
-- [ ] 1. réponses réelles · - [ ] 2. migration · - [ ] 3. fournisseur · - [ ] 4. validation
+- [x] 1. réponses réelles · - [ ] 2. migration · - [x] 3. fournisseur · - [ ] 4. validation
 - [ ] 5. lecture · - [ ] 6. import · - [ ] 7. fusion · - [ ] 8. écran
 - [ ] 9. tests API · - [ ] 10. e2e · - [ ] 11. docs
 - [ ] vérifications · - [ ] relecture 1 · - [ ] relecture 2 · - [ ] clôture

@@ -124,6 +124,29 @@ describe("MusicBrainz provider (recorded responses)", () => {
     expect(recording.appearsOn.map((a) => a.releaseGroup.mbid)).toContain(FIXTURE_ALBUM.mbid);
   });
 
+  it("reads URL relationships only where they were asked for", async () => {
+    const provider = replayProvider();
+    const brat = await provider.getTracklist("ab55ac76-eee5-4f89-ac14-7bb9aa837bc8");
+    expect(brat.urlRelations).toContainEqual({
+      type: "free streaming",
+      url: "https://open.spotify.com/album/2lIZef4lzdvZkiiCzvPKj7",
+    });
+    expect(brat.tracks[0]?.recording.urlRelations?.length).toBeGreaterThan(0);
+    // The artist page lists an ended YouTube channel: it is left out.
+    const [hit] = await provider.searchArtists(FIXTURE_ARTIST_QUERY);
+    expect(hit?.item.urlRelations).toBeUndefined();
+    const artist = await provider.getArtist(hit!.item.mbid);
+    expect(artist.urlRelations?.map((r) => r.url)).toContain(
+      "https://open.spotify.com/artist/3PpJbrAbphauEun8Xf9tD2",
+    );
+    expect(artist.urlRelations?.map((r) => r.url)).not.toContain(
+      "https://www.youtube.com/@maisonneptune",
+    );
+    // Credits never carry relations, even in a response that asked for them.
+    expect(brat.tracks[0]?.recording.artists[0]?.artist.urlRelations).toBeUndefined();
+    expect((await provider.getRecording(FIXTURE_RECORDING.mbid)).urlRelations).toEqual([]);
+  });
+
   it("finds covers on Cover Art Archive", async () => {
     const provider = replayProvider([FIXTURE_ALBUM.mbid]);
     expect(await provider.getCoverUrl(FIXTURE_ALBUM.mbid)).toBe(

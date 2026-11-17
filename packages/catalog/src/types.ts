@@ -14,6 +14,16 @@ export interface PartialDate {
   precision: DatePrecision;
 }
 
+/**
+ * A link from a catalog entity to a web page (MusicBrainz URL relationship), ended ones left
+ * out. Raw volunteer data: validate it before storing or showing it.
+ */
+export interface ProviderUrlRelation {
+  /** Relationship type, lowercased: "free streaming", "streaming", "bandcamp"… */
+  type: string;
+  url: string;
+}
+
 export interface ProviderArtist {
   mbid: string;
   name: string;
@@ -23,6 +33,8 @@ export interface ProviderArtist {
   country: string | null;
   /** "person", "group", "orchestra"… lowercased; null when unknown. */
   type: string | null;
+  /** Absent when the request did not ask for URL relationships (search hits, credits). */
+  urlRelations?: ProviderUrlRelation[];
 }
 
 /** An artist as credited on a release or a recording ("feat." credits included). */
@@ -61,6 +73,8 @@ export interface ProviderRecording {
   title: string;
   lengthMs: number | null;
   artists: ArtistCredit[];
+  /** Absent when the request did not ask for URL relationships (search hits). */
+  urlRelations?: ProviderUrlRelation[];
 }
 
 export interface TracklistEntry {
@@ -75,6 +89,8 @@ export interface Tracklist {
   /** Language of the titles, "fr" / "en" or an ISO 639-3 code; null when unknown. */
   language: string | null;
   tracks: TracklistEntry[];
+  /** URL relationships of that edition. */
+  urlRelations: ProviderUrlRelation[];
 }
 
 /** A recording with the release groups it appears on (to import it through an album). */

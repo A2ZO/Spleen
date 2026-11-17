@@ -11,6 +11,10 @@ export const FIXTURE_ALBUM = {
   query: "miles davis kind of blue",
   mbid: "8e8a594f-2175-38c7-a871-abb68ec363e7",
 };
+/** BRAT (Charli xcx, 2024): its reference edition (digital, XW) has streaming links. */
+export const FIXTURE_STREAMING_ALBUM = {
+  mbid: "e0fdb431-0109-420d-8a37-f99eaeb4d671",
+};
 export const FIXTURE_ARTIST_QUERY = "theodora";
 export const FIXTURE_RECORDING = {
   query: "so what miles davis",

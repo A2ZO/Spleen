@@ -69,3 +69,11 @@ légaux.
   de plus dans l'API. Écarté : un champ `releaseYearShown` dans `NotificationGroup`.
 - 2026-11-17, étape 1 : issues de l'étape trouvées : #41 (« Sorti le … ») et #42 (disque à
   venir).
+- 2026-11-17, étape 2 : formes d'URL d'après les réponses réelles. YouTube Music : seule la
+  forme artiste `/channel/UC{22}` a été vue ; les formes disque (`/playlist?list=`,
+  `/browse/`) et morceau (`/watch?v=`) ne sont pas ajoutées (règle actée : une forme jamais
+  vue n'est pas ajoutée), ces fiches gardent la recherche YouTube Music. `itunes.apple.com`
+  n'apparaît que terminé et sous une autre forme (`/artist/id{n}`) : non accepté. Apple Music
+  : slug facultatif gardé comme dans le tableau. Bandcamp : tableau tel quel (artiste `/` vu).
+  Raison : prudence, réversible à l'étape 3 si la relecture de nuit en montre. Écarté : ajouter
+  les formes YouTube Music du tableau sans exemple réel.

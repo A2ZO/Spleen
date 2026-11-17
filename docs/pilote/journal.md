@@ -15,3 +15,11 @@ Une entrée par exécution qui a fait quelque chose (10 lignes au plus). Journal
   axe 0 violation (fiche visiteur et membre, notifications × 4 cas, 1280 et 390). Mesures prod
   clicMs 220/219 · 141/140 · 244/230 · 187/187 · 236/242 ms (max +14). Relecteur : OK au
   premier tour. Décision : année de « Sorti le » comparée au jour de Paris. Prochaine : étape 2.
+- 2026-11-17, étape 2, réponses réelles (MusicBrainz, `inc=url-rels`, `recording-level-rels`
+  accepté) : `relations[]` = `{ type: "free streaming" | "streaming" | "purchase for download"
+  | "youtube music" | "bandcamp"…, direction: "forward", ended, url: { resource } }`, relations
+  des enregistrements présentes (vides parfois). Formes vues : `open.spotify.com/{album,track,
+  artist}/{22}`, `www.deezer.com/{album,track,artist}/{n}`, `music.apple.com/{cc}/{album,song,
+  artist}/{n}` (sans slug), `music.youtube.com/channel/UC…` (artiste), `{nom}.bandcamp.com/`
+  (artiste) ; bruit : `shop.spotify.com`, `itunes.apple.com/gb/artist/id…` (terminé), Tidal,
+  Qobuz, Amazon. Disque de test : BRAT (édition XW `ab55ac76`). Valeurs des tests : inchangées.

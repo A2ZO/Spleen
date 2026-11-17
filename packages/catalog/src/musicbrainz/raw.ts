@@ -8,7 +8,16 @@ export interface MbArtist {
   country?: string | null;
   type?: string | null;
   genres?: MbGenre[];
+  relations?: MbRelation[];
   score?: number;
+}
+
+/** A relationship, as returned with `inc=url-rels` (only URL targets are read). */
+export interface MbRelation {
+  type: string;
+  ended?: boolean;
+  direction?: string;
+  url?: { resource?: string };
 }
 
 export interface MbArtistCredit {
@@ -31,6 +40,7 @@ export interface MbRelease {
   "text-representation"?: { language?: string | null };
   "release-group"?: MbReleaseGroup;
   media?: MbMedium[];
+  relations?: MbRelation[];
 }
 
 export interface MbReleaseGroup {
@@ -63,6 +73,7 @@ export interface MbRecording {
   length?: number | null;
   "artist-credit"?: MbArtistCredit[];
   releases?: MbRelease[];
+  relations?: MbRelation[];
   score?: number;
 }
 

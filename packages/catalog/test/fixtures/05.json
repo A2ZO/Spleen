@@ -1,43 +1,279 @@
 {
+  "sort-name": "Theodora",
+  "relations": [
+    {
+      "end": null,
+      "source-credit": "",
+      "begin": null,
+      "attributes": [],
+      "target-type": "url",
+      "ended": false,
+      "attribute-ids": {},
+      "url": {
+        "resource": "https://open.spotify.com/artist/3PpJbrAbphauEun8Xf9tD2",
+        "id": "06ae713f-8613-483f-b5f4-5196202862f5"
+      },
+      "direction": "forward",
+      "attribute-values": {},
+      "type": "free streaming",
+      "type-id": "769085a1-c2f7-4c24-a532-2375a77693bd",
+      "target-credit": ""
+    },
+    {
+      "url": {
+        "resource": "https://www.deezer.com/artist/13820325",
+        "id": "2499896a-a7d5-4c23-af1e-24a969717209"
+      },
+      "direction": "forward",
+      "type": "free streaming",
+      "attribute-values": {},
+      "type-id": "769085a1-c2f7-4c24-a532-2375a77693bd",
+      "target-credit": "",
+      "end": null,
+      "source-credit": "",
+      "begin": null,
+      "attributes": [],
+      "target-type": "url",
+      "ended": false,
+      "attribute-ids": {}
+    },
+    {
+      "end": null,
+      "source-credit": "",
+      "begin": null,
+      "attributes": [],
+      "target-type": "url",
+      "ended": false,
+      "attribute-ids": {},
+      "url": {
+        "id": "069285d2-a0bf-44df-8e5f-85e4cd9a106a",
+        "resource": "https://open.qobuz.com/artist/24611736"
+      },
+      "direction": "forward",
+      "attribute-values": {},
+      "type": "purchase for download",
+      "type-id": "f8319a2f-f824-4617-81c8-be6560b3b203",
+      "target-credit": ""
+    },
+    {
+      "end": null,
+      "source-credit": "",
+      "begin": null,
+      "attributes": [],
+      "ended": false,
+      "target-type": "url",
+      "attribute-ids": {},
+      "url": {
+        "id": "d7b75ebb-0039-478c-be1e-4f6b76a7eea4",
+        "resource": "https://twitter.com/theodorabossy"
+      },
+      "direction": "forward",
+      "type": "social network",
+      "attribute-values": {},
+      "type-id": "99429741-f3f6-484b-84f8-23af51991770",
+      "target-credit": ""
+    },
+    {
+      "end": null,
+      "source-credit": "",
+      "begin": null,
+      "attributes": [],
+      "target-type": "url",
+      "ended": false,
+      "attribute-ids": {},
+      "url": {
+        "id": "872a088c-60e1-4c6c-8e12-325e84f85b3c",
+        "resource": "https://www.instagram.com/theodorabosslady/"
+      },
+      "direction": "forward",
+      "type": "social network",
+      "attribute-values": {},
+      "type-id": "99429741-f3f6-484b-84f8-23af51991770",
+      "target-credit": ""
+    },
+    {
+      "ended": false,
+      "target-type": "url",
+      "attribute-ids": {},
+      "begin": null,
+      "attributes": [],
+      "source-credit": "",
+      "end": null,
+      "target-credit": "",
+      "attribute-values": {},
+      "type": "social network",
+      "type-id": "99429741-f3f6-484b-84f8-23af51991770",
+      "direction": "forward",
+      "url": {
+        "resource": "https://www.tiktok.com/@theodorabossladyy",
+        "id": "307aa7f2-2e81-4721-96ef-4a8c4baaec8e"
+      }
+    },
+    {
+      "source-credit": "",
+      "end": null,
+      "attribute-ids": {},
+      "ended": false,
+      "target-type": "url",
+      "attributes": [],
+      "begin": null,
+      "type-id": "89e4a949-0976-440d-bda1-5f772c1e5710",
+      "type": "soundcloud",
+      "attribute-values": {},
+      "url": {
+        "id": "8be26ed5-dc09-4246-81e9-298e1eff9701",
+        "resource": "https://soundcloud.com/user-755572059"
+      },
+      "direction": "forward",
+      "target-credit": ""
+    },
+    {
+      "end": null,
+      "source-credit": "",
+      "attributes": [],
+      "begin": null,
+      "attribute-ids": {},
+      "target-type": "url",
+      "ended": false,
+      "direction": "forward",
+      "url": {
+        "id": "069285d2-a0bf-44df-8e5f-85e4cd9a106a",
+        "resource": "https://open.qobuz.com/artist/24611736"
+      },
+      "type-id": "63cc5d1f-f096-4c94-a43f-ecb32ea94161",
+      "type": "streaming",
+      "attribute-values": {},
+      "target-credit": ""
+    },
+    {
+      "begin": null,
+      "attributes": [],
+      "ended": false,
+      "target-type": "url",
+      "attribute-ids": {},
+      "end": null,
+      "source-credit": "",
+      "target-credit": "",
+      "url": {
+        "id": "f710f564-4cc3-4425-80c3-5fcc3002d1c7",
+        "resource": "https://tidal.com/artist/39827454"
+      },
+      "direction": "forward",
+      "attribute-values": {},
+      "type": "streaming",
+      "type-id": "63cc5d1f-f096-4c94-a43f-ecb32ea94161"
+    },
+    {
+      "type-id": "63cc5d1f-f096-4c94-a43f-ecb32ea94161",
+      "attribute-values": {},
+      "type": "streaming",
+      "direction": "forward",
+      "url": {
+        "id": "1280fd7f-e960-42d0-b671-c6a32a9b1d1a",
+        "resource": "https://tidal.com/artist/5746274"
+      },
+      "target-credit": "",
+      "source-credit": "",
+      "end": null,
+      "attribute-ids": {},
+      "ended": false,
+      "target-type": "url",
+      "attributes": [],
+      "begin": null
+    },
+    {
+      "source-credit": "",
+      "end": null,
+      "attribute-ids": {},
+      "ended": false,
+      "target-type": "url",
+      "attributes": [],
+      "begin": null,
+      "type-id": "689870a4-a1e4-4912-b17f-7b2664215698",
+      "type": "wikidata",
+      "attribute-values": {},
+      "url": {
+        "id": "4a9cb00f-0e8a-4578-8215-d17586996f93",
+        "resource": "https://www.wikidata.org/wiki/Q131577832"
+      },
+      "direction": "forward",
+      "target-credit": ""
+    },
+    {
+      "target-credit": "",
+      "url": {
+        "resource": "https://www.youtube.com/@Theodorabosslady",
+        "id": "8cd132da-8972-4dcb-b145-9e2755ac58da"
+      },
+      "direction": "forward",
+      "type-id": "6a540e5b-58c6-4192-b6ba-dbc71ec8fcf0",
+      "attribute-values": {},
+      "type": "youtube",
+      "attributes": [],
+      "begin": null,
+      "attribute-ids": {},
+      "target-type": "url",
+      "ended": false,
+      "end": null,
+      "source-credit": ""
+    },
+    {
+      "ended": true,
+      "target-type": "url",
+      "attribute-ids": {},
+      "begin": null,
+      "attributes": [],
+      "source-credit": "",
+      "end": null,
+      "target-credit": "",
+      "type": "youtube",
+      "attribute-values": {},
+      "type-id": "6a540e5b-58c6-4192-b6ba-dbc71ec8fcf0",
+      "url": {
+        "resource": "https://www.youtube.com/@maisonneptune",
+        "id": "5a92ad56-7371-4e84-b5f6-e0df403db91b"
+      },
+      "direction": "forward"
+    }
+  ],
+  "isnis": [
+    "0000000522696384"
+  ],
+  "name": "Theodora",
+  "gender": "Female",
+  "end-area": null,
   "area": {
-    "id": "08310658-51eb-3801-80de-5a0739207115",
+    "sort-name": "France",
     "name": "France",
     "disambiguation": "",
     "iso-3166-1-codes": [
       "FR"
     ],
     "type": null,
-    "sort-name": "France",
-    "type-id": null
+    "type-id": null,
+    "id": "08310658-51eb-3801-80de-5a0739207115"
   },
-  "isnis": [
-    "0000000522696384"
-  ],
-  "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
-  "sort-name": "Theodora",
-  "gender": "Female",
-  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
-  "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
   "ipis": [
     "01170513098",
     "01260470773"
   ],
-  "country": "FR",
+  "id": "3d519348-d1eb-4e8d-aab4-85ebe819bc46",
   "disambiguation": "French singer; aka Boss Lady",
-  "name": "Theodora",
-  "life-span": {
-    "ended": false,
-    "end": null,
-    "begin": "2003-10-23"
-  },
-  "type": "Person",
+  "country": "FR",
+  "gender-id": "93452b5a-a947-30c8-934f-6a4056b151c2",
   "begin-area": {
-    "id": "f4524357-871a-4c23-9043-1a785978ad4f",
-    "name": "Lucerne",
+    "sort-name": "Lucerne",
     "disambiguation": "",
+    "name": "Lucerne",
+    "id": "f4524357-871a-4c23-9043-1a785978ad4f",
     "type-id": null,
-    "type": null,
-    "sort-name": "Lucerne"
+    "type": null
   },
-  "end-area": null
+  "life-span": {
+    "end": null,
+    "begin": "2003-10-23",
+    "ended": false
+  },
+  "type-id": "b6e035f4-3ce9-331c-97df-83397230b0df",
+  "type": "Person"
 }
