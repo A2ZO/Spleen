@@ -140,3 +140,7 @@ légaux.
   transaction (ordre sinon aléatoire). Artistes choisis hors des tests (pas `lune-basse` ni
   `odette-marchal`), titres sans les mots tapés par les tests de recherche. Écarté : un compte
   de démo dédié (plus de données, aucun gain).
+- 2026-11-17, étape 5 : le contrôle de débordement à 390 px de `/fr/pick` et de mon onglet est
+  dans `pick.spec.ts` (bloc « on a phone », compte jetable), pas dans `overflow.spec.ts` : ce
+  dernier tourne sur le build de prod sans compte (l'inscription y échoue, Brevo factice).
+  Écarté : se connecter avec un compte de démo dans `overflow.spec` (aucun précédent).
