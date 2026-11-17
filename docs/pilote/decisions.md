@@ -113,3 +113,7 @@ liens avant les artistes, les fiches e2e jetables qui s'accumulent sur Neon `dev
   reportée) **avant** de choisir l'année la plus récente. Raison : une année dont tous les
   disques sont exclus ne doit pas cacher une année plus ancienne valable (relecteur). Écarté :
   choisir l'année sur toutes les écoutes datées puis filtrer (groupe parfois vide à tort).
+- 17 novembre 2026, étape 3 : démo de « Souvenirs », un 29 février, F (« Amber Hours ») passe à
+  8 ans au lieu de 4 (règle du multiple de 4 supérieur appliquée à son écart de 2 ans). Raison :
+  F doit rester une année plus ancienne que D et E (4 ans), sinon il sortirait avec eux
+  (relecteur). Écarté : garder 4 ans (F visible ce jour-là, contraire au brief).
