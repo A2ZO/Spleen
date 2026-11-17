@@ -251,7 +251,8 @@
       "thisYear": "{count, plural, one {record} other {records}} in {year}",
       "total": "{count, plural, one {record} other {records}} all time",
       "rated": "{count, plural, one {record rated} other {records rated}}"
-    }
+    },
+    "pick": "Pick a record"
   },
   "stats": {
     "thisYear": "In {year}",
@@ -795,6 +796,29 @@
     "releasesOn": "Out on {date}",
     "releasesIn": "Out in {date}",
     "announcedFor": "Announced for {date}"
+  },
+  "pick": {
+    "title": "Pick a record",
+    "kicker": "What to play tonight?",
+    "intro": "Chance picks from your “To listen” list.",
+    "typeLabel": "Record type",
+    "all": "All",
+    "albums": "Albums",
+    "eps": "EPs",
+    "singles": "Singles",
+    "durationLabel": "Length",
+    "anyLength": "Any length",
+    "short": "Under 30 min",
+    "medium": "30 to 60 min",
+    "long": "Over an hour",
+    "another": "Another one",
+    "only": "It’s the only record in your list that matches.",
+    "seeList": "See my “To listen” list",
+    "empty": "Your “To listen” list is empty. Add records from their pages.",
+    "discover": "Discover records",
+    "noMatch": "No record in your list matches these filters.",
+    "clearFilters": "Clear filters",
+    "notOut": "The records in your list aren’t out yet."
   },
   "discover": {
     "title": "Discover",

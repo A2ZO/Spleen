@@ -251,7 +251,8 @@
       "thisYear": "{count, plural, one {disque} other {disques}} en {year}",
       "total": "{count, plural, one {disque} other {disques}} depuis toujours",
       "rated": "{count, plural, one {disque noté} other {disques notés}}"
-    }
+    },
+    "pick": "Tire un disque"
   },
   "stats": {
     "thisYear": "En {year}",
@@ -795,6 +796,29 @@
     "releasesOn": "Sort le {date}",
     "releasesIn": "Sort en {date}",
     "announcedFor": "Annoncé pour {date}"
+  },
+  "pick": {
+    "title": "Tire un disque",
+    "kicker": "Quoi écouter ce soir ?",
+    "intro": "Le hasard choisit dans ta liste « À écouter ».",
+    "typeLabel": "Type de disque",
+    "all": "Tout",
+    "albums": "Albums",
+    "eps": "EP",
+    "singles": "Singles",
+    "durationLabel": "Durée",
+    "anyLength": "Toutes durées",
+    "short": "Moins de 30 min",
+    "medium": "30 à 60 min",
+    "long": "Plus d'une heure",
+    "another": "Un autre",
+    "only": "C'est le seul disque de ta liste qui correspond.",
+    "seeList": "Voir ma liste « À écouter »",
+    "empty": "Ta liste « À écouter » est vide. Ajoute des disques depuis leur fiche.",
+    "discover": "Découvrir des disques",
+    "noMatch": "Aucun disque de ta liste ne correspond à ces filtres.",
+    "clearFilters": "Retirer les filtres",
+    "notOut": "Les disques de ta liste ne sont pas encore sortis."
   },
   "discover": {
     "title": "Découvrir",
